@@ -31,13 +31,12 @@ export const SupplyActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const supply = useRootStore((state) => state.supply);
   const supplyWithPermit = useRootStore((state) => state.supplyWithPermit);
-
+  const tryPermit =
+    currentMarketData.v3 &&
+    permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()];
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      // TODO: move tryPermit
-      tryPermit:
-        currentMarketData.v3 &&
-        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
+      tryPermit,
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
@@ -71,9 +70,19 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval(amountToSupply, poolAddress)}
+      handleApproval={() => approval({ amount: amountToSupply, underlyingAsset: poolAddress })}
       handleAction={action}
       requiresApproval={requiresApproval}
+      approvalFallback={
+        tryPermit
+          ? () =>
+              approval({
+                amount: amountToSupply,
+                underlyingAsset: poolAddress,
+                forceApprovalTx: true,
+              })
+          : undefined
+      }
       sx={sx}
       {...props}
     />

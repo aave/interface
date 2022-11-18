@@ -21,6 +21,12 @@ interface UseTransactionHandlerProps {
   deps?: DependencyList;
 }
 
+interface ApprovalProps {
+  amount?: string;
+  underlyingAsset?: string;
+  forceApprovalTx?: boolean;
+}
+
 export const useTransactionHandler = ({
   handleGetTxns,
   handleGetPermitTxns,
@@ -37,7 +43,6 @@ export const useTransactionHandler = ({
     loadingTxns,
     setLoadingTxns,
     setTxError,
-    setRetryWithApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
@@ -102,9 +107,9 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (amount?: string, underlyingAsset?: string) => {
+  const approval = async ({ amount, underlyingAsset, forceApprovalTx }: ApprovalProps) => {
     if (approvalTx) {
-      if (usePermit && amount && underlyingAsset) {
+      if (usePermit && amount && underlyingAsset && !forceApprovalTx) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature
@@ -134,17 +139,9 @@ export const useTransactionHandler = ({
               txHash: undefined,
               loading: false,
             });
-
-            // set use permit to false to retry with normal approval
-            setUsePermit(false);
-            setRetryWithApproval(true);
           }
         } catch (error) {
           if (!mounted.current) return;
-
-          // set use permit to false to retry with normal approval
-          setUsePermit(false);
-          setRetryWithApproval(true);
 
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);

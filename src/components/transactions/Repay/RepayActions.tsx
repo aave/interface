@@ -37,13 +37,13 @@ export const RepayActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const repay = useRootStore((state) => state.repay);
   const repayWithPermit = useRootStore((state) => state.repayWithPermit);
-
+  const tryPermit =
+    currentMarketData.v3 &&
+    permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()];
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       // move tryPermit to store
-      tryPermit:
-        currentMarketData.v3 &&
-        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
+      tryPermit,
       handleGetTxns: async () => {
         return repay({
           amountToRepay,
@@ -86,9 +86,19 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval(amountToRepay, poolAddress)}
+      handleApproval={() => approval({ amount: amountToRepay, underlyingAsset: poolAddress })}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+      approvalFallback={
+        tryPermit
+          ? () =>
+              approval({
+                amount: amountToRepay,
+                underlyingAsset: poolAddress,
+                forceApprovalTx: true,
+              })
+          : undefined
+      }
     />
   );
 };

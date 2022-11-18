@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, Typography, useTheme } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
@@ -23,6 +23,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  approvalFallback?: () => Promise<void>;
 }
 
 export const TxActionsWrapper = ({
@@ -40,9 +41,10 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  approvalFallback,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError, retryWithApproval } = useModalContext();
+  const { txError } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
@@ -78,15 +80,14 @@ export const TxActionsWrapper = ({
       return null;
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
-    if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
-    if (retryWithApproval)
-      return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
+    if (approvalTxState?.success)
+      return { disabled: true, content: <Trans>Approve Confirmed</Trans> };
     return { content: <Trans>Approve {symbol} to continue</Trans>, handleClick: handleApproval };
   }
 
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
-
+  const theme = useTheme();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {requiresApproval && !watchModeOnlyAddress && (
@@ -127,6 +128,25 @@ export const TxActionsWrapper = ({
         <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
+      )}
+      {approvalFallback && approvalParams && (
+        <Box sx={{ display: 'flex', pt: 4 }}>
+          <Trans>
+            <Typography variant="caption" color="text.secondary">
+              Approval doesn&apos;t work.{' '}
+            </Typography>
+            <Typography
+              variant="subheader2"
+              sx={{ color: theme.palette.info.main, cursor: 'pointer', px: 1 }}
+              onClick={() => approvalFallback()}
+            >
+              Submit a tx
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              to approve instead.
+            </Typography>
+          </Trans>
+        </Box>
       )}
     </Box>
   );
