@@ -14,15 +14,16 @@ import {
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
 import {
+  ERC20_2612Service,
+  SignERC20ApprovalType,
+} from '@aave/contract-helpers/dist/esm/erc20-2612';
+import {
   LPBorrowParamsType,
   LPSetUsageAsCollateral,
   LPSwapBorrowRateMode,
   LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
-import {
-  LPSignERC20ApprovalType,
-  LPSupplyWithPermitType,
-} from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import { LPSupplyWithPermitType } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { normalize } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
@@ -75,7 +76,7 @@ export interface PoolSlice {
     args: Omit<LPSupplyWithPermitType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
-  signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
+  signERC20Approval: (args: Omit<SignERC20ApprovalType, 'user' | 'spender'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
@@ -116,6 +117,10 @@ export const createPoolSlice: StateCreator<
         WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
       });
     }
+  }
+  function getPermitService() {
+    const provider = get().jsonRpcProvider();
+    return new ERC20_2612Service(provider);
   }
   return {
     data: new Map(),
@@ -378,11 +383,13 @@ export const createPoolSlice: StateCreator<
       });
     },
     signERC20Approval: async (args) => {
-      const pool = getCorrectPool() as Pool;
+      const permitService = getPermitService();
       const user = get().account;
-      return pool.signERC20Approval({
+      const spender = get().currentMarketData.addresses.LENDING_POOL;
+      return permitService.signERC20Approval({
         ...args,
         user,
+        spender,
       });
     },
     claimRewards: async ({ selectedReward }) => {
