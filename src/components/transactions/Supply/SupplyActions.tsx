@@ -36,7 +36,8 @@ export const SupplyActions = ({
     useTransactionHandler({
       // TODO: move tryPermit
       tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+        currentMarketData.v3 &&
+        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
@@ -66,6 +67,7 @@ export const SupplyActions = ({
       isWrongNetwork={isWrongNetwork}
       requiresAmount
       amount={amountToSupply}
+      symbol={symbol}
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
