@@ -282,7 +282,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                         visibleDecimals={0}
                       />
                     </Box>
-                    <FormattedNumber value={calculatedBorrowAPY} percent />
+                    <FormattedNumber value={borrowAPYWithMaxDiscount} percent />
                   </Box>
                 </Box>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
