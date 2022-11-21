@@ -1,10 +1,14 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
 
-import { PanelRow, PanelTitle } from '../ReservePanels';
+import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 
 type GhoReserveConfigurationProps = {
@@ -12,6 +16,11 @@ type GhoReserveConfigurationProps = {
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
+  const {
+    ghoFacilitatorBucketLevel,
+    ghoFacilitatorBucketCapacity,
+    ghoComputed: { percentageOfGhoMinted, maxAvailableFromFacilitator },
+  } = useRootStore();
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
       <Box
@@ -100,6 +109,69 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Borrow info</Trans>
         </PanelTitle>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              flexWrap: 'wrap',
+            }}
+          >
+            <CapsCircularStatus
+              value={percentageOfGhoMinted}
+              tooltipContent={
+                <>
+                  <Trans>
+                    Maximum amount available to borrow is{' '}
+                    <FormattedNumber value={maxAvailableFromFacilitator} variant="secondary12" />{' '}
+                    {reserve.symbol} (
+                    <FormattedNumber
+                      value={maxAvailableFromFacilitator}
+                      variant="secondary12"
+                      symbol="USD"
+                    />
+                    ).
+                  </Trans>
+                </>
+              }
+            />
+            <PanelItem
+              title={
+                <Box display="flex" alignItems="center">
+                  <Trans>Total borrowed</Trans>
+                </Box>
+              }
+            >
+              <Box>
+                <FormattedNumber value={ghoFacilitatorBucketLevel} variant="main16" compact />
+                <Typography
+                  component="span"
+                  color="text.primary"
+                  variant="secondary16"
+                  sx={{ display: 'inline-block', mx: 1 }}
+                >
+                  <Trans>of</Trans>
+                </Typography>
+                <FormattedNumber value={ghoFacilitatorBucketCapacity} variant="main16" />
+              </Box>
+              <Box>
+                <ReserveSubheader value={ghoFacilitatorBucketLevel} />
+                <Typography
+                  component="span"
+                  color="text.secondary"
+                  variant="secondary12"
+                  sx={{ display: 'inline-block', mx: 1 }}
+                >
+                  <Trans>of</Trans>
+                </Typography>
+                <ReserveSubheader value={ghoFacilitatorBucketCapacity} />
+              </Box>
+            </PanelItem>
+            <PanelItem title={<Trans>APY</Trans>}>
+              <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
+            </PanelItem>
+          </Box>
+        </Box>
       </PanelRow>
       <Divider sx={{ my: '40px' }} />
       <PanelRow>

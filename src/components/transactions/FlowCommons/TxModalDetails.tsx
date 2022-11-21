@@ -3,7 +3,6 @@ import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
-import { timeFormat } from 'd3-time-format';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { NoData } from 'src/components/primitives/NoData';
@@ -361,9 +360,8 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
 type DiscountDetailsGhoLineProps = {
   title: ReactNode;
   subtitle?: ReactNode;
-  ghoAmount?: number;
+  ghoAmount: number;
   ghoAmountUsd?: number;
-  discountLockPeriod?: string;
 };
 
 export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
@@ -371,48 +369,37 @@ export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
   subtitle,
   ghoAmount,
   ghoAmountUsd,
-  discountLockPeriod,
-}) => {
-  const formatLockPeriodDate = timeFormat('%b %d, %Y');
-  return (
-    <Row
-      caption={
-        <Box>
-          <Typography>{title}</Typography>
-          {subtitle && (
-            <Typography variant="helperText" color="text.secondary">
-              {subtitle}
-            </Typography>
-          )}
-        </Box>
-      }
-      captionVariant="description"
-      mb={4}
-      align="flex-start"
-    >
-      <Box sx={{ textAlign: 'right' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          {ghoAmount && (
-            <>
-              <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />{' '}
-              <FormattedNumber value={ghoAmount} visibleDecimals={2} />
-            </>
-          )}
-          {discountLockPeriod && (
-            <Typography>{formatLockPeriodDate(new Date(discountLockPeriod))}</Typography>
-          )}
-        </Box>
-        {ghoAmountUsd && (
-          <FormattedNumber
-            value={ghoAmountUsd}
-            symbol="USD"
-            visibleDecimals={2}
-            variant="helperText"
-            color="text.secondary"
-            compact
-          />
+}) => (
+  <Row
+    caption={
+      <Box>
+        <Typography>{title}</Typography>
+        {subtitle && (
+          <Typography variant="helperText" color="text.secondary">
+            {subtitle}
+          </Typography>
         )}
       </Box>
-    </Row>
-  );
-};
+    }
+    captionVariant="description"
+    mb={4}
+    align="flex-start"
+  >
+    <Box sx={{ textAlign: 'right' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />{' '}
+        <FormattedNumber value={ghoAmount} visibleDecimals={2} />
+      </Box>
+      {ghoAmountUsd && (
+        <FormattedNumber
+          value={ghoAmountUsd}
+          symbol="USD"
+          visibleDecimals={2}
+          variant="helperText"
+          color="text.secondary"
+          compact
+        />
+      )}
+    </Box>
+  </Row>
+);

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -75,7 +74,6 @@ export const GhoBorrowAssetsListItem = ({
         value={loading ? -1 : borrowRateAfterDiscount}
         incentives={vIncentivesData}
         symbol={symbol}
-        tooltip={loading ? null : <GhoBorrowRateTooltip />}
       />
       <ListAPRColumn value={-1} incentives={[]} symbol={symbol} />
 

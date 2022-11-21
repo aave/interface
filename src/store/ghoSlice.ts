@@ -62,6 +62,8 @@ export interface GhoSlice {
   ghoComputed: {
     borrowAPYWithMaxDiscount: number;
     discountableAmount: number;
+    percentageOfGhoMinted: number;
+    maxAvailableFromFacilitator: number;
   };
   ghoMarketConfig: () => GhoMarketConfig;
   ghoCalculateDiscountRate: (
@@ -94,6 +96,24 @@ export const createGhoSlice: StateCreator<
         const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
         const discountPerToken = get().ghoDiscountedPerToken;
         return Number(stakedAaveBalanceNormalized) * Number(discountPerToken);
+      },
+      get percentageOfGhoMinted() {
+        if (!get()) return 0;
+        const { ghoFacilitatorBucketCapacity, ghoFacilitatorBucketLevel } = { ...get() };
+        const capacity = Number(ghoFacilitatorBucketCapacity);
+        const level = Number(ghoFacilitatorBucketLevel);
+        if (capacity === 0) return 0;
+
+        return (level / capacity) * 100;
+      },
+      get maxAvailableFromFacilitator() {
+        if (!get()) return 0;
+        const { ghoFacilitatorBucketCapacity, ghoFacilitatorBucketLevel } = { ...get() };
+        const capacity = Number(ghoFacilitatorBucketCapacity);
+        const level = Number(ghoFacilitatorBucketLevel);
+        if (capacity === 0) return 0;
+
+        return capacity - level;
       },
     },
     ghoFacilitators: [],

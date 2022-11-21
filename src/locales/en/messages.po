@@ -39,7 +39,6 @@ msgstr "ACTIVATE COOLDOWN"
 msgid "APR"
 msgstr "APR"
 
-#: src/components/GhoDiscountButton.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -47,6 +46,7 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY"
 msgstr "APY"
@@ -753,18 +753,6 @@ msgstr "Discount and discountable amount are determined by AaveDao and may be ch
 msgid "Discount details"
 msgstr "Discount details"
 
-#: src/components/GhoDiscountButton.tsx
-msgid "Discount info"
-msgstr "Discount info"
-
-#: src/components/GhoDiscountButton.tsx
-msgid "Discount is available. Learn more"
-msgstr "Discount is available. Learn more"
-
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Discount lock period"
-msgstr "Discount lock period"
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount on borrow APY"
 msgstr "Discount on borrow APY"
@@ -939,10 +927,6 @@ msgstr "GHO"
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "GHO borrow APY"
 msgstr "GHO borrow APY"
-
-#: src/components/infoTooltips/GhoBorrowRateTooltip.tsx
-msgid "GHO borrow rate can be discounted by holding stkAave."
-msgstr "GHO borrow rate can be discounted by holding stkAave."
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"
@@ -1165,10 +1149,6 @@ msgstr "Liquidation value"
 msgid "Loading data..."
 msgstr "Loading data..."
 
-#: src/components/GhoDiscountButton.tsx
-msgid "Lock period"
-msgstr "Lock period"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
@@ -1212,6 +1192,10 @@ msgstr "Max slippage rate"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
+msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
@@ -2040,6 +2024,7 @@ msgstr "Total borrow balance"
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
@@ -2498,6 +2483,8 @@ msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx

@@ -31,6 +31,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
+  getMaxGhoMintAmount,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isGhoAndSupported } from 'src/utils/ghoUtilities';
@@ -127,16 +128,16 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const canSupply =
     balance?.amount !== '0' && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    poolReserve,
-    user,
-    InterestRate.Variable
-  ).toString();
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance.amount,
-    poolReserve,
-    underlyingAsset
-  ).toString();
+  const displayGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
+
+  const maxAmountToBorrow = displayGho
+    ? getMaxGhoMintAmount(user)
+    : getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable).toString();
+  const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
+
+  const maxAmountToSupply = displayGho
+    ? '0'
+    : getMaxAmountAvailableToSupply(balance.amount, poolReserve, underlyingAsset).toString();
 
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
   const eModeBorrowDisabled =
@@ -263,7 +264,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       >
         {canBorrow ? (
           <FormattedNumber
-            value={canBorrow ? maxAmountToBorrow : '0'}
+            value={canBorrow ? formattedMaxAmountToBorrow : '0'}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />

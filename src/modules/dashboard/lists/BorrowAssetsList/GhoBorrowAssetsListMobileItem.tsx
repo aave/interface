@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -87,7 +86,6 @@ export const GhoBorrowAssetsListMobileItem = ({
           incentives={vIncentivesData}
           symbol={symbol}
           variant="secondary14"
-          tooltip={<GhoBorrowRateTooltip />}
         />
       </Row>
 

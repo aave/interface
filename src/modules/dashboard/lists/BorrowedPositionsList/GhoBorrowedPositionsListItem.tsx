@@ -1,7 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -65,11 +64,7 @@ export const GhoBorrowedPositionsListItem = ({
         subValue={Number(variableBorrowsUSD)}
       />
 
-      <ListAPRColumn
-        symbol={reserve.symbol}
-        value={loading ? -1 : borrowRateAfterDiscount}
-        tooltip={loading ? null : <GhoBorrowRateTooltip />}
-      />
+      <ListAPRColumn symbol={reserve.symbol} value={loading ? -1 : borrowRateAfterDiscount} />
 
       <ListColumn>
         <ListItemAPYButton

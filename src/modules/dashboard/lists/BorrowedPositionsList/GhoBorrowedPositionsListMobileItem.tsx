@@ -1,7 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
@@ -75,7 +74,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
           value={loading ? -1 : borrowRateAfterDiscount}
           symbol={symbol}
           variant="secondary14"
-          tooltip={loading ? null : <GhoBorrowRateTooltip />}
         />
       </Row>
 

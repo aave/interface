@@ -13,7 +13,6 @@ import { useRootStore } from 'src/store/root';
 import {
   displayDiscountableAmount,
   displayNonDiscountableAmount,
-  formatGhoDiscountLockPeriodExpiryDate,
   normalizeBaseVariableBorrowRate,
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
@@ -57,7 +56,6 @@ export const GhoBorrowModalContent = ({
     ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
     stakeUserResult,
     ghoDiscountRatePercent,
-    ghoDiscountLockPeriod,
     ghoCalculateDiscountRate,
   } = useRootStore();
 
@@ -239,13 +237,6 @@ export const GhoBorrowModalContent = ({
                     )} APY`}</Trans>
                   }
                   ghoAmount={displayNonDiscountableAmount(discountableAmount, totalBorrowedGho)}
-                />
-                <DiscountDetailsGhoLine
-                  title={<Trans>Discount lock period</Trans>}
-                  discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
-                    new Date(),
-                    ghoDiscountLockPeriod
-                  )}
                 />
               </>
             )}

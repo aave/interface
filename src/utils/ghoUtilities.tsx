@@ -1,4 +1,3 @@
-import { timeFormat } from 'd3-time-format';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -53,25 +52,6 @@ export const getAvailableBorrows = (
 ): number => {
   const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
   return Math.min(userAvailableBorrows, remainingBucketCapacity);
-};
-
-/**
- * Formats the expiry for a provided date tied with the GHO discount lock period in a human-readable way
- * @param discountLockPeriod - The BigNumber of the discount lock period returned from the GhoVariableDebtToken.sol contract
- * @returns - A formatted date as a string representing when the lock period will expiry for the given date
- */
-export const formatGhoDiscountLockPeriodExpiryDate = (
-  timeOfBorrow: Date,
-  discountLockPeriod: BigNumber
-): string => {
-  const periodInMilliseconds = discountLockPeriod.toNumber();
-  const periodInDays = periodInMilliseconds / 86400;
-  // Calculate the date of the time passed in + the expiry in days
-  const lockPeriodExpiryDate = new Date(
-    timeOfBorrow.setDate(timeOfBorrow.getDate() + periodInDays)
-  );
-  const formatter = timeFormat('%d %B %Y');
-  return formatter(lockPeriodExpiryDate);
 };
 
 // Not gho specific, but we should look at doing this logic in math-helpers
