@@ -8,7 +8,7 @@ export interface AssetSearchInputProps {
   onSearchTermChange: (value: string) => void;
 }
 
-export const AssetSearchInput = ({ onSearchTermChange }: AssetSearchInputProps) => {
+export const MarketAssetSearchInput = ({ onSearchTermChange }: AssetSearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
