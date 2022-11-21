@@ -27,11 +27,11 @@ const Legend = styled('legend')(({ theme }) => ({
   ...theme.typography.subheader2,
 }));
 
-interface GhoAssetItemProps {
+interface GhoMarketAssetsListItemProps {
   reserve?: ComputedReserveData;
 }
 
-export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
+export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
   const {
@@ -61,7 +61,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
             <ListColumn>
               <FormattedNumber compact symbol="usd" value="1" visibleDecimals={2} variant="h3" />
               <Typography variant="secondary12" color="text.secondary">
-                Price
+                <Trans>Price</Trans>
               </Typography>
             </ListColumn>
             <ListColumn>
@@ -73,7 +73,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
                 variant="h3"
               />
               <Typography variant="secondary12" color="text.secondary">
-                Total borrowed
+                <Trans>Total borrowed</Trans>
               </Typography>
             </ListColumn>
             <ListColumn>
@@ -85,7 +85,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
                 variant="h3"
               />
               <Typography variant="secondary12" color="text.secondary">
-                Borrow APY
+                <Trans>Borrow APY</Trans>
               </Typography>
             </ListColumn>
             <ListColumn minWidth={195}>
@@ -100,11 +100,11 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
                 <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
               </Box>
               <Typography variant="secondary12" color="text.secondary">
-                Borrow APY with max discount
+                <Trans>Borrow APY with max discount</Trans>
               </Typography>
             </ListColumn>
-            <ListColumn /> {/* empty column for spacing */}
-            <ListColumn maxWidth={95} minWidth={95} align="right">
+            <ListColumn maxWidth={95} /> {/* empty column for spacing */}
+            <ListColumn minWidth={95} align="right">
               <Button
                 variant="outlined"
                 component={Link}

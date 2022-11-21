@@ -14,13 +14,13 @@ import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from '../../components/lists/ListHeaderWrapper';
 import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
-import { AssetListTitle } from './AssetListTitle';
-import { AssetsListItem } from './AssetsListItem';
-import { AssetsListItemLoader } from './AssetsListItemLoader';
-import { AssetsListMobileItem } from './AssetsListMobileItem';
-import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
-import { GhoAssetItem } from './Gho/GhoAssetItem';
-import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
+import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
+import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
+import { AssetListTitle } from './MarketAssetListTitle';
+import { MarketAssetsListItem } from './MarketAssetsListItem';
+import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
+import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
+import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLoader';
 
 const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
   if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
@@ -37,7 +37,7 @@ const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
   );
 };
 
-export default function AssetsList() {
+export default function MarketAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
@@ -91,7 +91,7 @@ export default function AssetsList() {
     }
   }
 
-  const header = [
+  const headers = [
     {
       title: <Trans>Asset</Trans>,
       sortKey: 'symbol',
@@ -159,16 +159,16 @@ export default function AssetsList() {
       {displayGho && (
         <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
           {isTableChangedToCards ? (
-            <GhoAssetMobileItem reserve={ghoReserve} />
+            <GhoMarketAssetsListMobileItem reserve={ghoReserve} />
           ) : (
-            <GhoAssetItem reserve={ghoReserve} />
+            <GhoMarketAssetsListItem reserve={ghoReserve} />
           )}
         </Box>
       )}
 
       {!isTableChangedToCards && !hideTableHeader && (
         <ListHeaderWrapper px={6}>
-          {header.map((col) => (
+          {headers.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'symbol'}
               maxWidth={col.sortKey === 'symbol' ? 280 : undefined}
@@ -193,9 +193,9 @@ export default function AssetsList() {
       {!loading &&
         filteredData.map((reserve) =>
           isTableChangedToCards ? (
-            <AssetsListMobileItem {...reserve} key={reserve.id} />
+            <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
           ) : (
-            <AssetsListItem {...reserve} key={reserve.id} />
+            <MarketAssetsListItem {...reserve} key={reserve.id} />
           )
         )}
       {showNoResults && <NoSearchResults searchTerm={searchTerm} sm={sm} />}
@@ -210,19 +210,19 @@ const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) => {
   if (isTableChangedToCards) {
     return (
       <>
-        <AssetsListMobileItemLoader />
-        <AssetsListMobileItemLoader />
-        <AssetsListMobileItemLoader />
+        <MarketAssetsListMobileItemLoader />
+        <MarketAssetsListMobileItemLoader />
+        <MarketAssetsListMobileItemLoader />
       </>
     );
   } else {
     return (
       <>
-        <AssetsListItemLoader />
-        <AssetsListItemLoader />
-        <AssetsListItemLoader />
-        <AssetsListItemLoader />
-        <AssetsListItemLoader />
+        <MarketAssetsListItemLoader />
+        <MarketAssetsListItemLoader />
+        <MarketAssetsListItemLoader />
+        <MarketAssetsListItemLoader />
+        <MarketAssetsListItemLoader />
       </>
     );
   }

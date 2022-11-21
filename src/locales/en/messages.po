@@ -93,8 +93,8 @@ msgstr "AToken supply is not zero"
 msgid "Aave Governance"
 msgstr "Aave Governance"
 
-#: src/modules/markets/Gho/GhoAssetItem.tsx
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Aave Protocol native asset"
 msgstr "Aave Protocol native asset"
 
@@ -223,7 +223,7 @@ msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Asset"
 
@@ -354,7 +354,8 @@ msgid "Borrow @ {0} APY"
 msgstr "Borrow @ {0} APY"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Borrow APY"
@@ -364,17 +365,18 @@ msgstr "Borrow APY"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Borrow APY with max discount"
 msgstr "Borrow APY with max discount"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
@@ -476,7 +478,7 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -683,8 +685,8 @@ msgstr "Delegation"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsListItem.tsx
-#: src/modules/markets/Gho/GhoAssetItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Details"
@@ -1278,8 +1280,8 @@ msgstr "New APY"
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -1407,7 +1409,8 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Price"
 msgstr "Price"
 
@@ -1754,8 +1757,8 @@ msgstr "Supply"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Supply APY"
 msgstr "Supply APY"
 
@@ -2029,9 +2032,10 @@ msgstr "Total available"
 msgid "Total borrow balance"
 msgstr "Total borrow balance"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
@@ -2049,8 +2053,8 @@ msgstr "Total emission per day"
 msgid "Total market size"
 msgstr "Total market size"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
@@ -2182,8 +2186,8 @@ msgstr "View all votes"
 msgid "View contract"
 msgstr "View contract"
 
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
 
@@ -2261,7 +2265,7 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 
@@ -2461,7 +2465,7 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "assets"
 msgstr "assets"
 

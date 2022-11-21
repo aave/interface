@@ -10,13 +10,13 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
-import { AssetsListMobileItemLoader } from '../AssetsListMobileItemLoader';
+import { MarketAssetsListMobileItemLoader } from '../MarketAssetsListMobileItemLoader';
 
-interface GhoAssetMobileItemProps {
+interface GhoMarketAssetsListMobileItemProps {
   reserve?: ComputedReserveData;
 }
 
-export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
+export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
 
@@ -29,7 +29,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   } = useRootStore();
 
   if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
-    return <AssetsListMobileItemLoader />;
+    return <MarketAssetsListMobileItemLoader />;
   }
 
   return (
