@@ -13,12 +13,15 @@ import { useState } from 'react';
 
 import { MarketAssetSearchInput } from './MarketAssetSearchInput';
 
-export interface AssetListTitleProps {
+interface MarketAssetListTitleProps {
   marketTitle: string;
   onSearchTermChange: (value: string) => void;
 }
 
-export const MarketAssetListTitle = ({ marketTitle, onSearchTermChange }: AssetListTitleProps) => {
+export const MarketAssetListTitle = ({
+  marketTitle,
+  onSearchTermChange,
+}: MarketAssetListTitleProps) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
