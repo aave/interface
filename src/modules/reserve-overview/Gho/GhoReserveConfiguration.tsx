@@ -110,12 +110,6 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <GhoDiscountCalculator baseVariableBorrowRate={reserve.baseVariableBorrowRate} />
         </Box>
       </PanelRow>
-      <Divider sx={{ my: '40px' }} />
-      <PanelRow>
-        <PanelTitle>
-          <Trans>E-Mode info</Trans>
-        </PanelTitle>
-      </PanelRow>
     </Paper>
   );
 };
