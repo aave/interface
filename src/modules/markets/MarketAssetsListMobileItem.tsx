@@ -12,7 +12,7 @@ import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 
-export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
+export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   return (
     <ListMobileItemWrapper

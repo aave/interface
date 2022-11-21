@@ -11,14 +11,17 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { AssetSearchInput } from './AssetSearchInput';
+import { MarketAssetSearchInput } from './MarketAssetSearchInput';
 
-export interface AssetListTitleProps {
+interface MarketAssetListTitleProps {
   marketTitle: string;
   onSearchTermChange: (value: string) => void;
 }
 
-export const AssetListTitle = ({ marketTitle, onSearchTermChange }: AssetListTitleProps) => {
+export const MarketAssetListTitle = ({
+  marketTitle,
+  onSearchTermChange,
+}: MarketAssetListTitleProps) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
@@ -65,7 +68,7 @@ export const AssetListTitle = ({ marketTitle, onSearchTermChange }: AssetListTit
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <AssetSearchInput onSearchTermChange={onSearchTermChange} />
+            <MarketAssetSearchInput onSearchTermChange={onSearchTermChange} />
             {sm && (
               <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
                 <Typography variant="buttonM">

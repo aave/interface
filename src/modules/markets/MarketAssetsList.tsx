@@ -13,13 +13,13 @@ import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from '../../components/lists/ListHeaderWrapper';
 import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
-import { AssetListTitle } from './AssetListTitle';
-import { AssetsListItem } from './AssetsListItem';
-import { AssetsListItemLoader } from './AssetsListItemLoader';
-import { AssetsListMobileItem } from './AssetsListMobileItem';
-import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
+import { MarketAssetListTitle } from './MarketAssetListTitle';
+import { MarketAssetsListItem } from './MarketAssetsListItem';
+import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
+import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
+import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLoader';
 
-export default function AssetsList() {
+export default function MarketAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
@@ -114,7 +114,7 @@ export default function AssetsList() {
   return (
     <ListWrapper
       titleComponent={
-        <AssetListTitle
+        <MarketAssetListTitle
           onSearchTermChange={setSearchTerm}
           marketTitle={currentMarketData.marketTitle}
         />
@@ -158,25 +158,25 @@ export default function AssetsList() {
       {loading ? (
         isTableChangedToCards ? (
           <>
-            <AssetsListMobileItemLoader />
-            <AssetsListMobileItemLoader />
-            <AssetsListMobileItemLoader />
+            <MarketAssetsListMobileItemLoader />
+            <MarketAssetsListMobileItemLoader />
+            <MarketAssetsListMobileItemLoader />
           </>
         ) : (
           <>
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
+            <MarketAssetsListItemLoader />
+            <MarketAssetsListItemLoader />
+            <MarketAssetsListItemLoader />
+            <MarketAssetsListItemLoader />
+            <MarketAssetsListItemLoader />
           </>
         )
       ) : (
         filteredData.map((reserve) =>
           isTableChangedToCards ? (
-            <AssetsListMobileItem {...reserve} key={reserve.id} />
+            <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
           ) : (
-            <AssetsListItem {...reserve} key={reserve.id} />
+            <MarketAssetsListItem {...reserve} key={reserve.id} />
           )
         )
       )}
