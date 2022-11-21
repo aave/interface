@@ -58,6 +58,7 @@ msgid "APY type"
 msgstr "APY type"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "APY with discount"
 msgstr "APY with discount"
 
@@ -65,6 +66,7 @@ msgstr "APY with discount"
 msgid "APY with max discount"
 msgstr "APY with max discount"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "APY without discount"
 msgstr "APY without discount"
@@ -775,6 +777,7 @@ msgstr "Discount program"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discountable amount"
@@ -1290,6 +1293,7 @@ msgid "No voting power"
 msgstr "No voting power"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Non-discountable amount"
 msgstr "Non-discountable amount"

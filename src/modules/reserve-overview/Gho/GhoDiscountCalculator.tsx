@@ -65,12 +65,104 @@ const GhoMetaHeader: React.FC<GhoMetaHeaderProps> = ({ title, value }) => {
   );
 };
 
+type GhoAmountDisplayComponentProps = {
+  isDiscountableAmount: boolean;
+  value: number;
+  rate: number;
+};
+
+const GhoAmountDisplayComponent = ({
+  isDiscountableAmount,
+  value,
+  rate,
+}: GhoAmountDisplayComponentProps): JSX.Element => (
+  <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
+    <Box
+      sx={{
+        width: 10,
+        height: 10,
+        border: isDiscountableAmount ? '2px solid #B6519F' : '2px solid #2EBAC6',
+        borderRadius: '50%',
+        mr: 3,
+      }}
+    />
+    <Box flexGrow={1}>
+      <Typography>
+        {isDiscountableAmount ? (
+          <Trans>Discountable amount</Trans>
+        ) : (
+          <Trans>Non-discountable amount</Trans>
+        )}
+      </Typography>
+      <Typography variant="secondary12" color="text.secondary">
+        {isDiscountableAmount ? (
+          <Trans>APY with discount</Trans>
+        ) : (
+          <Trans>APY without discount</Trans>
+        )}
+      </Typography>
+    </Box>
+    <Box textAlign="right">
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
+        <FormattedNumber value={value} visibleDecimals={0} />
+      </Box>
+      <FormattedNumber value={rate} percent />
+    </Box>
+  </Box>
+);
+
+const GhoAmountMobileDisplayComponent = ({
+  isDiscountableAmount,
+  value,
+  rate,
+}: GhoAmountDisplayComponentProps): JSX.Element => (
+  <Box mb={4} sx={{ '&:last-child': { mb: 0 } }}>
+    <Box display="flex" alignItems="center" mb={2}>
+      <Box
+        sx={{
+          width: 10,
+          height: 10,
+          border: isDiscountableAmount ? '2px solid #B6519F' : '2px solid #2EBAC6',
+          borderRadius: '50%',
+          mr: 3,
+        }}
+      />
+      <Box flexGrow={1}>
+        <Typography>
+          {isDiscountableAmount ? (
+            <Trans>Discountable amount</Trans>
+          ) : (
+            <Trans>Non-discountable amount</Trans>
+          )}
+        </Typography>
+        <Typography variant="secondary12" color="text.secondary">
+          {isDiscountableAmount ? (
+            <Trans>APY with discount</Trans>
+          ) : (
+            <Trans>APY without discount</Trans>
+          )}
+        </Typography>
+      </Box>
+    </Box>
+    <Box display="flex" alignItems="center">
+      <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 2 }} />
+      <Box display="flex" flexDirection="column">
+        <FormattedNumber value={value} visibleDecimals={0} />
+        <FormattedNumber value={rate} percent />
+      </Box>
+    </Box>
+  </Box>
+);
+
 export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
   const [stkAave, setStkAave] = useState<number>(0);
   const [ghoBorrow, setGhoBorrow] = useState<number>(0);
   const [calculatedDiscountRate, setCalculatedDiscountRate] = useState<number>(0);
   const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
+  const { breakpoints } = useTheme();
+  const mobileScreens = useMediaQuery(breakpoints.down('sm'));
   const {
     ghoDiscountRatePercent,
     ghoDiscountedPerToken,
@@ -256,64 +348,33 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 </Typography>
               </Box>
               <Box>
-                <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
-                  <Box
-                    sx={{
-                      width: 10,
-                      height: 10,
-                      border: '2px solid #B6519F',
-                      borderRadius: '50%',
-                      mr: 3,
-                    }}
-                  />
-                  <Box flexGrow={1}>
-                    <Typography>
-                      <Trans>Discountable amount</Trans>
-                    </Typography>
-                    <Typography variant="secondary12" color="text.secondary">
-                      <Trans>APY with discount</Trans>
-                    </Typography>
-                  </Box>
-                  <Box textAlign="right">
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
-                      <FormattedNumber
-                        value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                        visibleDecimals={0}
-                      />
-                    </Box>
-                    <FormattedNumber value={borrowAPYWithMaxDiscount} percent />
-                  </Box>
-                </Box>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box
-                    sx={{
-                      width: 10,
-                      height: 10,
-                      border: '2px solid #2EBAC6',
-                      borderRadius: '50%',
-                      mr: 3,
-                    }}
-                  />
-                  <Box flexGrow={1}>
-                    <Typography>
-                      <Trans>Non-discountable amount</Trans>
-                    </Typography>
-                    <Typography variant="secondary12" color="text.secondary">
-                      <Trans>APY without discount</Trans>
-                    </Typography>
-                  </Box>
-                  <Box textAlign="right">
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
-                      <FormattedNumber
-                        value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                        visibleDecimals={0}
-                      />
-                    </Box>
-                    <FormattedNumber value={baseBorrowRate} percent />
-                  </Box>
-                </Box>
+                {mobileScreens ? (
+                  <>
+                    <GhoAmountMobileDisplayComponent
+                      isDiscountableAmount
+                      value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
+                      rate={borrowAPYWithMaxDiscount}
+                    />
+                    <GhoAmountMobileDisplayComponent
+                      isDiscountableAmount={false}
+                      value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
+                      rate={baseBorrowRate}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <GhoAmountDisplayComponent
+                      isDiscountableAmount
+                      value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
+                      rate={borrowAPYWithMaxDiscount}
+                    />
+                    <GhoAmountDisplayComponent
+                      isDiscountableAmount={false}
+                      value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
+                      rate={baseBorrowRate}
+                    />
+                  </>
+                )}
               </Box>
             </Box>
           </Grid>
