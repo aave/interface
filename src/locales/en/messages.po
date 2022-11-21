@@ -402,12 +402,11 @@ msgstr "Borrow power used"
 msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
@@ -1861,7 +1860,7 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "The Stable Rate is not enabled for this currency"
 msgstr "The Stable Rate is not enabled for this currency"
 
@@ -1925,7 +1924,7 @@ msgstr "The weighted average of APY for all borrowed assets, including incentive
 msgid "The weighted average of APY for all supplied assets, including incentives."
 msgstr "The weighted average of APY for all supplied assets, including incentives."
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
 
@@ -2336,7 +2335,7 @@ msgstr "You are entering Isolation mode"
 msgid "You borrow (GHO)"
 msgstr "You borrow (GHO)"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 
