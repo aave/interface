@@ -99,7 +99,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/d3-array": "^3.0.3",
     "@types/d3-time-format": "^4.0.0",
-    "@types/lodash": "^4.14.186",
+    "@types/lodash": "^4.14.189",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "axios": "^0.27.2",
