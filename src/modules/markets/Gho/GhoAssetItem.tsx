@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, styled, Typography } from '@mui/material';
+import { Box, Button, Skeleton, styled, Typography } from '@mui/material';
+import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -27,7 +28,7 @@ const Legend = styled('legend')(({ theme }) => ({
 }));
 
 interface GhoAssetItemProps {
-  reserve: ComputedReserveData;
+  reserve?: ComputedReserveData;
 }
 
 export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
@@ -36,7 +37,9 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
   const {
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
-    ghoComputed: { borrowAPRWithMaxDiscount },
+    ghoLoadingData,
+    ghoLoadingMarketData,
+    ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
 
   return (
@@ -45,89 +48,103 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
         <Legend>
           <Trans>Aave Protocol native asset</Trans>
         </Legend>
-        <ListItem sx={{ marginTop: -2, p: 0 }}>
-          <ListColumn isRow maxWidth={190}>
-            <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
-            <Box sx={{ px: 3 }}>
-              <Typography variant="h3">GHO</Typography>
-            </Box>
-          </ListColumn>
-          <ListColumn>
-            <FormattedNumber compact symbol="usd" value="1" visibleDecimals={2} variant="h3" />
-            <Typography variant="secondary12" color="text.secondary">
-              Price
-            </Typography>
-          </ListColumn>
-          <ListColumn>
-            <FormattedNumber
-              compact
-              symbol="usd"
-              value={ghoFacilitatorBucketLevel}
-              visibleDecimals={2}
-              variant="h3"
-            />
-            <Typography variant="secondary12" color="text.secondary">
-              Total borrowed
-            </Typography>
-          </ListColumn>
-          <ListColumn>
-            <FormattedNumber
-              compact
-              percent
-              value={reserve.variableBorrowAPR}
-              visibleDecimals={2}
-              variant="h3"
-            />
-            <Typography variant="secondary12" color="text.secondary">
-              Borrow APY
-            </Typography>
-          </ListColumn>
-          <ListColumn minWidth={195}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {!reserve || ghoLoadingData || ghoLoadingMarketData ? (
+          <GhoSkeleton />
+        ) : (
+          <ListItem sx={{ marginTop: -2, p: 0 }}>
+            <ListColumn isRow maxWidth={190}>
+              <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
+              <Box sx={{ px: 3 }}>
+                <Typography variant="h3">GHO</Typography>
+              </Box>
+            </ListColumn>
+            <ListColumn>
+              <FormattedNumber compact symbol="usd" value="1" visibleDecimals={2} variant="h3" />
+              <Typography variant="secondary12" color="text.secondary">
+                Price
+              </Typography>
+            </ListColumn>
+            <ListColumn>
+              <FormattedNumber
+                compact
+                symbol="usd"
+                value={ghoFacilitatorBucketLevel}
+                visibleDecimals={2}
+                variant="h3"
+              />
+              <Typography variant="secondary12" color="text.secondary">
+                Total borrowed
+              </Typography>
+            </ListColumn>
+            <ListColumn>
               <FormattedNumber
                 compact
                 percent
-                value={borrowAPRWithMaxDiscount}
-                visibleDecimals={1}
+                value={reserve.variableBorrowAPR}
+                visibleDecimals={2}
                 variant="h3"
               />
-              <Box
-                sx={{
-                  color: '#fff',
-                  borderRadius: '4px',
-                  height: '20px',
-                  display: 'flex',
-                  my: 0.5,
-                  p: 1,
-                  background: (theme) => theme.palette.gradients.aaveGradient,
-                }}
-              >
+              <Typography variant="secondary12" color="text.secondary">
+                Borrow APY
+              </Typography>
+            </ListColumn>
+            <ListColumn minWidth={195}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <FormattedNumber
                   compact
                   percent
-                  value={ghoDiscountRatePercent * -1}
-                  visibleDecimals={0}
-                  variant="main12"
-                  symbolsColor="white"
+                  value={borrowAPYWithMaxDiscount}
+                  visibleDecimals={1}
+                  variant="h3"
                 />
+                <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
               </Box>
-            </Box>
-            <Typography variant="secondary12" color="text.secondary">
-              Borrow APY with max discount
-            </Typography>
-          </ListColumn>
-          <ListColumn /> {/* empty column for spacing */}
-          <ListColumn maxWidth={95} minWidth={95} align="right">
-            <Button
-              variant="outlined"
-              component={Link}
-              href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
-            >
-              <Trans>Details</Trans>
-            </Button>
-          </ListColumn>
-        </ListItem>
+              <Typography variant="secondary12" color="text.secondary">
+                Borrow APY with max discount
+              </Typography>
+            </ListColumn>
+            <ListColumn /> {/* empty column for spacing */}
+            <ListColumn maxWidth={95} minWidth={95} align="right">
+              <Button
+                variant="outlined"
+                component={Link}
+                href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+              >
+                <Trans>Details</Trans>
+              </Button>
+            </ListColumn>
+          </ListItem>
+        )}
       </FieldSet>
     </Box>
+  );
+};
+
+const GhoSkeleton = () => {
+  return (
+    <ListItem sx={{ marginTop: -2, p: 0 }}>
+      <ListColumn isRow maxWidth={190}>
+        <Skeleton variant="circular" sx={{ minWidth: 40, maxWidth: 40 }} height={40} />
+        <Box sx={{ px: 3 }}>
+          <Skeleton width={75} height={24} />
+        </Box>
+      </ListColumn>
+      <ListColumn>
+        <Skeleton width={75} height={24} />
+      </ListColumn>
+      <ListColumn>
+        <Skeleton width={70} height={24} />
+      </ListColumn>
+      <ListColumn>
+        <Skeleton width={70} height={24} />
+      </ListColumn>
+      <ListColumn minWidth={195}>
+        <Skeleton width={70} height={24} />
+      </ListColumn>
+      <ListColumn /> {/* empty column for spacing */}
+      <ListColumn maxWidth={95} minWidth={95} align="right">
+        <Skeleton width={74} height={38} />
+      </ListColumn>
+    </ListItem>
   );
 };

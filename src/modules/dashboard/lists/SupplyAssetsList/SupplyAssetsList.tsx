@@ -8,7 +8,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -47,7 +47,7 @@ export const SupplyAssetsList = () => {
   const tokensToSupply = reserves
     .filter(
       (reserve: ComputedReserveData) =>
-        !reserve.isFrozen && !ghoMintingAvailable({ symbol: reserve.symbol, currentMarket })
+        !reserve.isFrozen && !isGhoAndSupported({ symbol: reserve.symbol, currentMarket })
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;

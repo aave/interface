@@ -1,12 +1,15 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { getAvailableBorrows, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  getAvailableBorrows,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -29,10 +32,11 @@ export const GhoBorrowAssetsListMobileItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const {
-    ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    ghoComputed: { discountableAmount },
+    ghoLoadingData,
+    ghoLoadingMarketData,
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
@@ -44,15 +48,13 @@ export const GhoBorrowAssetsListMobileItem = ({
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-  if (discountableAmount < availableBorrows) {
-    // Calculate weighted discount rate aftr max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (availableBorrows - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      availableBorrows;
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    availableBorrows,
+    discountableAmount,
+    borrowAPYWithMaxDiscount
+  );
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -81,7 +83,7 @@ export const GhoBorrowAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={borrowRateAfterDiscount}
+          value={ghoLoadingData || ghoLoadingMarketData ? -1 : borrowRateAfterDiscount}
           incentives={vIncentivesData}
           symbol={symbol}
           variant="secondary14"
@@ -101,10 +103,8 @@ export const GhoBorrowAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard value={0} incentives={[]} symbol={symbol} variant="secondary14" />
+        <IncentivesCard value={-1} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
-
-      {/* <GhoDiscountButton baseRate={baseVariableBorrowRate} /> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

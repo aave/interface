@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
+import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
@@ -9,19 +10,27 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
+import { AssetsListMobileItemLoader } from '../AssetsListMobileItemLoader';
+
 interface GhoAssetMobileItemProps {
-  reserve: ComputedReserveData;
+  reserve?: ComputedReserveData;
 }
 
 export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
 
-  const [totalBorrowed, ghoDiscountRate, getBorrowAPR] = useRootStore((state) => [
-    state.ghoFacilitatorBucketLevel,
-    state.ghoDiscountRatePercent,
-    state.ghoComputed.borrowAPRWithMaxDiscount,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoFacilitatorBucketLevel,
+    ghoLoadingData,
+    ghoLoadingMarketData,
+    ghoComputed: { borrowAPYWithMaxDiscount },
+  } = useRootStore();
+
+  if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
+    return <AssetsListMobileItemLoader />;
+  }
 
   return (
     <Box>
@@ -64,11 +73,11 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           >
             <FormattedNumber
               compact
-              value={totalBorrowed.toString()}
+              value={ghoFacilitatorBucketLevel}
               visibleDecimals={2}
               variant="secondary14"
             />
-            <ReserveSubheader value={totalBorrowed.toString()} rightAlign={true} />
+            <ReserveSubheader value={ghoFacilitatorBucketLevel} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
@@ -85,27 +94,13 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           captionVariant="description"
         >
           <Box>
-            <FormattedNumber compact percent value={getBorrowAPR} variant="secondary14" />
-            <Box
-              sx={{
-                color: '#fff',
-                borderRadius: '4px',
-                height: '20px',
-                display: 'flex',
-                my: 0.5,
-                p: 1,
-                background: (theme) => theme.palette.gradients.aaveGradient,
-              }}
-            >
-              <FormattedNumber
-                compact
-                percent
-                value={ghoDiscountRate * -1}
-                visibleDecimals={0}
-                variant="main12"
-                symbolsColor="white"
-              />
-            </Box>
+            <FormattedNumber
+              compact
+              percent
+              value={borrowAPYWithMaxDiscount}
+              variant="secondary14"
+            />
+            <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
           </Box>
         </Row>
         <Button

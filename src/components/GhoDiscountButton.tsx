@@ -10,21 +10,22 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import dayjs from 'dayjs';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { formatGhoDiscountLockPeriodExpiryDate, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { Link } from './primitives/Link';
 import { TokenIcon } from './primitives/TokenIcon';
 
-export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
+interface GhoDiscountButtonProps {
+  amount: number;
+  rate: number;
+}
+
+export const GhoDiscountButton = ({ amount, rate }: GhoDiscountButtonProps) => {
   const theme = useTheme();
-  const {
-    ghoDiscountRatePercent,
-    ghoComputed: { discountableAmount },
-  } = useRootStore();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const { ghoDiscountLockPeriod } = useRootStore();
 
   const discountPaper = {
     mr: 2,
@@ -38,14 +39,9 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
     width: downToXSM ? '100%' : 'auto',
   };
 
-  const normalizedBaseRate = normalizeBaseVariableBorrowRate(baseRate);
+  const lockPeriod = formatGhoDiscountLockPeriodExpiryDate(new Date(), ghoDiscountLockPeriod);
 
-  const discountRate = normalizedBaseRate - normalizedBaseRate * ghoDiscountRatePercent;
-
-  // TO-DO: fetch timestamp from GHO store
-  const lockPeriod = dayjs.unix(1683292439).format('D MMM YYYY');
-
-  return Number(discountableAmount) > 0 ? (
+  return amount > 0 ? (
     <Box
       sx={{
         display: 'flex',
@@ -60,10 +56,10 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
           <Trans>Discount info</Trans>
         </Typography>
-        <TokenIcon symbol={'GHO'} sx={{ fontSize: `14px`, mr: 1 }} />
-        <FormattedNumber value={discountableAmount} variant="main12" color="text.primary" />
+        <TokenIcon symbol={GHO_SYMBOL} sx={{ fontSize: `14px`, mr: 1 }} />
+        <FormattedNumber value={amount} variant="main12" color="text.primary" />
         <Divider orientation="vertical" color="text.primary" sx={{ mx: 2 }} />
-        <FormattedNumber value={discountRate} variant="main12" color="text.primary" percent />
+        <FormattedNumber value={rate} variant="main12" color="text.primary" percent />
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
           <Trans>APY</Trans>
         </Typography>

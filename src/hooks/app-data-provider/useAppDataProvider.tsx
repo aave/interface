@@ -12,7 +12,11 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { ghoMintingAvailable, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  isGhoAndSupported,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -84,7 +88,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
     eModes,
-    ghoDiscountRatePercent,
     ghoComputed,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
@@ -94,7 +97,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.reserveIncentiveData,
     state.userIncentiveData,
     selectEmodes(state),
-    state.ghoDiscountRatePercent,
     state.ghoComputed,
   ]);
 
@@ -146,22 +148,17 @@ export const AppDataProvider: React.FC = ({ children }) => {
         }
         if (value.variableBorrowsUSD !== '0') {
           // TODO: Export to unified helper function
-          if (ghoMintingAvailable({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+          if (isGhoAndSupported({ symbol: reserve.symbol, currentMarket: currentMarket })) {
             const discountableAmount = ghoComputed.discountableAmount;
             const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(
               reserve.baseVariableBorrowRate
             );
-            let borrowRateAfterDiscount =
-              normalizedBaseVariableBorrowRate -
-              normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-            if (discountableAmount < Number(value.variableBorrows)) {
-              // Calculate weighted discount rate aftr max borrow
-              borrowRateAfterDiscount =
-                (normalizedBaseVariableBorrowRate *
-                  (Number(value.variableBorrows) - discountableAmount) +
-                  borrowRateAfterDiscount * discountableAmount) /
-                Number(value.variableBorrows);
-            }
+            const borrowRateAfterDiscount = weightedAverageAPY(
+              normalizedBaseVariableBorrowRate,
+              Number(value.variableBorrows),
+              discountableAmount,
+              ghoComputed.borrowAPYWithMaxDiscount
+            );
             acc.negativeProportion = acc.negativeProportion.plus(
               new BigNumber(borrowRateAfterDiscount).multipliedBy(value.variableBorrowsUSD)
             );
@@ -210,9 +207,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
   const netAPY =
     (earnedAPY || 0) *
-    (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
+      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
     (debtAPY || 0) *
-    (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
+      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
 
   return (
     <AppDataContext.Provider

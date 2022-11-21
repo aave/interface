@@ -1,11 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -34,27 +33,25 @@ export const GhoBorrowedPositionsListMobileItem = ({
     isFrozen,
     borrowingEnabled,
     stableBorrowRateEnabled,
-    sIncentivesData,
-    vIncentivesData,
     variableBorrowAPY,
     underlyingAsset,
     baseVariableBorrowRate,
   } = reserve;
   const {
-    ghoDiscountRatePercent,
-    ghoComputed: { discountableAmount },
+    ghoLoadingData,
+    ghoLoadingMarketData,
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-  if (discountableAmount < Number(variableBorrows)) {
-    // Calculate weighted discount rate aftr max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (Number(variableBorrows) - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      Number(variableBorrows);
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    Number(variableBorrows),
+    discountableAmount,
+    borrowAPYWithMaxDiscount
+  );
+
+  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListMobileItemWrapper
@@ -75,13 +72,10 @@ export const GhoBorrowedPositionsListMobileItem = ({
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={Number(
-            borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
-          )}
-          incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
+          value={loading ? -1 : borrowRateAfterDiscount}
           symbol={symbol}
           variant="secondary14"
-          tooltip={<GhoBorrowRateTooltip />}
+          tooltip={loading ? null : <GhoBorrowRateTooltip />}
         />
       </Row>
 
@@ -102,8 +96,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
           underlyingAsset={underlyingAsset}
           currentMarket={currentMarket}
         />
-
-        {/* <GhoDiscountButton baseRate={baseVariableBorrowRate} /> */}
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>

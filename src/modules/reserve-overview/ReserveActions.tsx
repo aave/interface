@@ -33,6 +33,7 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -123,7 +124,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   ) as ComputedReserveData;
 
   const balance = walletBalances[underlyingAsset];
-  const canSupply = balance?.amount !== '0' && poolReserve.symbol !== 'GHO';
+  const canSupply =
+    balance?.amount !== '0' && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
     poolReserve,

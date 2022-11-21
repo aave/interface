@@ -15,7 +15,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -149,11 +149,8 @@ export const RepayModalContent = ({
       iconSymbol: poolReserve.iconSymbol,
       balance: maxReserveTokenForRepay.toString(10),
     });
-    // push reserve atoken
-    if (
-      currentMarketData.v3 &&
-      !ghoMintingAvailable({ symbol: poolReserve.symbol, currentMarket })
-    ) {
+    // push reserve aToken
+    if (currentMarketData.v3 && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket })) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,

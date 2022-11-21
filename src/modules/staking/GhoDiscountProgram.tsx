@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Skeleton, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
@@ -29,7 +31,7 @@ export const GhoDiscountProgram = () => {
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const {
     ghoDiscountRatePercent,
-    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   return (
@@ -48,13 +50,13 @@ export const GhoDiscountProgram = () => {
         {downToXsm ? (
           <GhoDiscountProgramMobile
             discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPRWithMaxDiscount}
+            aprWithDiscount={borrowAPYWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         ) : (
           <GhoDiscountProgramDesktop
             discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPRWithMaxDiscount}
+            aprWithDiscount={borrowAPYWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         )}
@@ -74,6 +76,9 @@ const GhoDiscountProgramDesktop = ({
   aprWithDiscount,
   ghoDiscountRatePercent,
 }: GhoDiscountProgramProps) => {
+  const { currentMarket, ghoMarketConfig, ghoLoadingData, ghoLoadingMarketData } = useRootStore();
+  const loading = ghoLoadingData || ghoLoadingMarketData;
+
   return (
     <ListItem sx={{ px: 0, minHeight: 'unset' }}>
       <ListColumn isRow minWidth={120} maxWidth={200}>
@@ -88,7 +93,9 @@ const GhoDiscountProgramDesktop = ({
             <Trans>Discountable amount</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {discountableAmount > 0 ? (
+            {loading ? (
+              <Skeleton width={70} height={20} />
+            ) : discountableAmount > 0 ? (
               <FormattedNumber
                 compact
                 value={discountableAmount}
@@ -115,37 +122,29 @@ const GhoDiscountProgramDesktop = ({
             <Trans>Borrow APY</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <FormattedNumber
-              compact
-              percent
-              value={aprWithDiscount}
-              visibleDecimals={1}
-              variant="main14"
-            />
-            <Box
-              sx={{
-                color: '#fff',
-                borderRadius: '4px',
-                height: '20px',
-                display: 'flex',
-                p: 1,
-                background: (theme) => theme.palette.gradients.aaveGradient,
-              }}
-            >
-              <FormattedNumber
-                compact
-                percent
-                value={ghoDiscountRatePercent * -1}
-                visibleDecimals={0}
-                variant="main12"
-                symbolsColor="white"
-              />
-            </Box>
+            {loading ? (
+              <Skeleton width={80} height={20} />
+            ) : (
+              <>
+                <FormattedNumber
+                  compact
+                  percent
+                  value={aprWithDiscount}
+                  visibleDecimals={1}
+                  variant="main14"
+                />
+                <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
+              </>
+            )}
           </Box>
         </Box>
       </ListColumn>
       <ListColumn align="right">
-        <Button variant="outlined" disabled>
+        <Button
+          variant="outlined"
+          component={Link}
+          href={ROUTES.reserveOverview(ghoMarketConfig().ghoTokenAddress, currentMarket)}
+        >
           <Trans>Details</Trans>
         </Button>
       </ListColumn>
@@ -158,6 +157,8 @@ const GhoDiscountProgramMobile = ({
   aprWithDiscount,
   ghoDiscountRatePercent,
 }: GhoDiscountProgramProps) => {
+  const { currentMarket, ghoMarketConfig, ghoLoadingData, ghoLoadingMarketData } = useRootStore();
+  const loading = ghoLoadingData || ghoLoadingMarketData;
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', my: 4 }}>
@@ -175,7 +176,9 @@ const GhoDiscountProgramMobile = ({
         }
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {discountableAmount > 0 ? (
+          {loading ? (
+            <Skeleton width={70} height={24} />
+          ) : discountableAmount > 0 ? (
             <FormattedNumber
               compact
               value={discountableAmount}
@@ -211,35 +214,27 @@ const GhoDiscountProgramMobile = ({
             justifyContent: 'center',
           }}
         >
-          <FormattedNumber
-            compact
-            percent
-            value={aprWithDiscount}
-            visibleDecimals={1}
-            variant="main14"
-          />
-          <Box
-            sx={{
-              color: '#fff',
-              borderRadius: '4px',
-              height: '20px',
-              display: 'flex',
-              p: 1,
-              background: (theme) => theme.palette.gradients.aaveGradient,
-            }}
-          >
-            <FormattedNumber
-              compact
-              percent
-              value={ghoDiscountRatePercent * -1}
-              visibleDecimals={0}
-              variant="main12"
-              symbolsColor="white"
-            />
-          </Box>
+          {loading ? (
+            <Skeleton width={60} height={40} />
+          ) : (
+            <>
+              <FormattedNumber
+                compact
+                percent
+                value={aprWithDiscount}
+                visibleDecimals={1}
+                variant="main14"
+              />
+              <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
+            </>
+          )}
         </Box>
       </Row>
-      <Button variant="outlined" fullWidth disabled>
+      <Button
+        variant="outlined"
+        component={Link}
+        href={ROUTES.reserveOverview(ghoMarketConfig().ghoTokenAddress, currentMarket)}
+      >
         <Trans>Details</Trans>
       </Button>
     </Box>
