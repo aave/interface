@@ -81,7 +81,7 @@
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "web3-ledgerhq-frame-connector": "^1.0.1",
-    "zustand": "^4.1.2"
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
