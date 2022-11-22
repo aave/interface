@@ -2,11 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   fetchExactInRate,
-  fetchExactInTxParams,
   fetchExactOutRate,
-  fetchExactOutTxParams,
   MESSAGE_MAP,
-  RouteVariant,
+  ParaSwapParams,
   SwapData,
   SwapVariant,
   UseSwapProps,
@@ -14,8 +12,17 @@ import {
 
 type UseRepayWithCollateralProps = UseSwapProps & {
   swapVariant: SwapVariant;
-  routeVariant: RouteVariant;
 };
+
+interface UseRepayWithCollateralResponse {
+  outputAmount: string;
+  outputAmountUSD: string;
+  inputAmount: string;
+  inputAmountUSD: string;
+  loading: boolean;
+  error: string;
+  paraswapParams: ParaSwapParams;
+}
 
 export const useCollateralRepaySwap = ({
   chainId,
@@ -26,12 +33,9 @@ export const useCollateralRepaySwap = ({
   swapOut,
   userAddress,
   swapVariant,
-  routeVariant,
-}: UseRepayWithCollateralProps) => {
+}: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [swapCallData, setSwapCallData] = useState<string>('');
-  const [augustus, setAugustus] = useState<string>('');
   const [inputAmount, setInputAmount] = useState<string>('');
   const [outputAmount, setOutputAmount] = useState<string>('');
   const [outputAmountUSD, setOutputAmountUSD] = useState<string>('');
@@ -71,15 +75,6 @@ export const useCollateralRepaySwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
-  const exactInTx = useCallback(() => {
-    return fetchExactInTxParams(swapInData, swapOutData, chainId, userAddress, maxSlippage);
-  }, [chainId, maxSlippage, swapInData, swapOutData, userAddress]);
-
-  const exactOutTx = useCallback(
-    () => fetchExactOutTxParams(swapInData, swapOutData, chainId, userAddress, maxSlippage, max),
-    [chainId, max, maxSlippage, swapInData, swapOutData, userAddress]
-  );
-
   const exactInRate = useCallback(() => {
     return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, maxSlippage);
   }, [chainId, maxSlippage, swapInData, swapOutData, userAddress]);
@@ -100,21 +95,9 @@ export const useCollateralRepaySwap = ({
       try {
         let route;
         if (swapVariant === 'exactIn') {
-          if (routeVariant === 'transaction') {
-            route = await exactInTx();
-            setAugustus(route.augustus);
-            setSwapCallData(route.swapCallData);
-          } else {
-            route = await exactInRate();
-          }
+          route = await exactInRate();
         } else {
-          if (routeVariant === 'rate') {
-            route = await exactOutTx();
-            setAugustus(route.augustus);
-            setSwapCallData(route.swapCallData);
-          } else {
-            route = await exactOutRate();
-          }
+          route = await exactOutRate();
         }
         setError('');
         setInputAmount(route.inputAmount);
@@ -148,12 +131,9 @@ export const useCollateralRepaySwap = ({
       clearInterval(interval);
     };
   }, [
-    exactInTx,
-    exactOutTx,
     error,
     skip,
     swapVariant,
-    routeVariant,
     swapInData.underlyingAsset,
     swapOutData.underlyingAsset,
     exactInRate,
@@ -165,9 +145,16 @@ export const useCollateralRepaySwap = ({
     outputAmountUSD,
     inputAmount,
     inputAmountUSD,
-    swapCallData,
-    augustus,
     loading,
     error,
+    paraswapParams: {
+      swapInData,
+      swapOutData,
+      chainId,
+      userAddress,
+      maxSlippage,
+      swapVariant,
+      max,
+    }, // Used for calling paraswap buildTx as very last step in transaction
   };
 };
