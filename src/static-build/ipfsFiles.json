@@ -1740,6 +1740,21 @@
       "ipfsHash": "QmUw4d2F8LewcHsqP3vPnQSvLdmchxVrgAFrXrgphGyLtp",
       "originalHash": "0x61f6e82640afe4b7de943c55426f30eae97d53124e43bb7e28ea39f20ce52359",
       "id": 119
+    },
+    {
+      "aip": 120,
+      "title": "Risk Parameter Updates for Aave V2 (2022-11-17)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nathan Lord, Jonathan Reem, Nick Cannon, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-updates-for-aave-v2-eth-and-aave-arc-fireblocks-2022-11-17/10688",
+      "created": "2022-11-17T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to adjust two (2) total risk parameteers …",
+      "basename": "AIP-120",
+      "description": "## Simple Summary\n\nA proposal to adjust two (2) total risk parameters, including Liquidation Threshold and Loan To Value, across one (1) Aave V2 asset. \n\n\n## Motivation\n\nThis set of recommendations follows [AIP 117](https://app.aave.com/governance/proposal/?proposalId=117) to further de-risk the REN market.\n\n### Supporting Data on Aave V2\n\n**Top 30 borrowers’ aggregate positions & borrow usages**\n\n![](https://i.imgur.com/ktXGW6P.png)\n\n**Top 30 borrowers’ entire supply**\n\n![](https://i.imgur.com/zoCKkVn.png)\n\n**Top 30 borrowers’ entire borrows**\n\n![](https://i.imgur.com/xO974Ct.png)\n\n**Price changes of key assets since 2022-11-03**\n\n![](https://i.imgur.com/9D7yUOW.png)\n\n**Time series of Value at Risk (VaR) since 2022-11-03**\n\n![](https://i.imgur.com/R8enrDr.png)\n\n**Top 10 REN suppliers and percentage of total REN supplies:**\n\n![](https://i.imgur.com/m3qrkWx.png)\n\n**Top 10 REN suppliers and borrow usages:**\n\n![](https://i.imgur.com/CNBpVd8.png)\n\n**Entire supply positions for top 10 REN suppliers:**\n\n![](https://i.imgur.com/rMEczds.png)\n\n**Entire borrow positions for top 10 REN suppliers:**\n\n![](https://i.imgur.com/HEKWdu8.png)\n\n## Aave V2 Parameter Changes Specification\n\nGauntlet's simulation engine will continue to adjust risk parameters to protect against outsized market risk while optimizing for capital efficiency.\n\nThese parameter recommendations reflect the unique situation of REN in the current market conditions.\n\n![](https://i.imgur.com/nJyy91U.png)\n\n\n\n\n## Implementation\n\nThe proposal sets the LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` using the address and parameters specific to each token.\n\nThe full list of parameter updates can be found in the [forum](https://governance.aave.com/t/arc-risk-parameter-updates-for-aave-v2-eth-and-aave-arc-fireblocks-2022-11-17/10688).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\nGauntlet launched an insolvency refund for Aave that contains a portion of our payment stream that can be clawed back in the event of insolvencies due to market risk. Since our last recommendation there have been no new insolvencies in Aave. Gauntlet’s Insolvency Refund vault is still live and can be seen here [0x7667095Caa12b79fCa489ff6E2198Ca01fDAe057](https://etherscan.io/address/0x7667095Caa12b79fCa489ff6E2198Ca01fDAe057)\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.*\n",
+      "ipfsHash": "QmVRQEqYXFyqMzMuTKWrxQ9nW64MhQ3go8PESbqk6XANWQ",
+      "originalHash": "0x693959e01abc68712755e9e55809db89991b3762970eb8a97d84d01e17569ec5",
+      "id": 120
     }
   ]
 }
