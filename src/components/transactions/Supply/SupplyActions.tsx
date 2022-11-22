@@ -73,16 +73,7 @@ export const SupplyActions = ({
       handleApproval={() => approval({ amount: amountToSupply, underlyingAsset: poolAddress })}
       handleAction={action}
       requiresApproval={requiresApproval}
-      approvalFallback={
-        tryPermit
-          ? () =>
-              approval({
-                amount: amountToSupply,
-                underlyingAsset: poolAddress,
-                forceApprovalTx: true,
-              })
-          : undefined
-      }
+      tryPermit={tryPermit}
       sx={sx}
       {...props}
     />

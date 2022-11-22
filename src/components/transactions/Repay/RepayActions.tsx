@@ -89,16 +89,7 @@ export const RepayActions = ({
       handleApproval={() => approval({ amount: amountToRepay, underlyingAsset: poolAddress })}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
-      approvalFallback={
-        tryPermit
-          ? () =>
-              approval({
-                amount: amountToRepay,
-                underlyingAsset: poolAddress,
-                forceApprovalTx: true,
-              })
-          : undefined
-      }
+      tryPermit={tryPermit}
     />
   );
 };

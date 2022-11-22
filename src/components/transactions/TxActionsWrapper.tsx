@@ -14,7 +14,7 @@ interface TxActionsWrapperProps extends BoxProps {
   actionText: ReactNode;
   amount?: string;
   approvalTxState?: TxStateType;
-  handleApproval?: () => Promise<void>;
+  handleApproval?: (forceApproval?: boolean) => Promise<void>;
   handleAction: () => Promise<void>;
   isWrongNetwork: boolean;
   mainTxState: TxStateType;
@@ -23,7 +23,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
-  approvalFallback?: () => Promise<void>;
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -41,7 +41,7 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
-  approvalFallback,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
@@ -101,7 +101,7 @@ export const TxActionsWrapper = ({
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
-          onClick={approvalParams.handleClick}
+          onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
           sx={{ minHeight: '44px' }}
           data-cy="approvalButton"
@@ -129,7 +129,7 @@ export const TxActionsWrapper = ({
           <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}
-      {approvalFallback && approvalParams && (
+      {tryPermit && approvalParams && (
         <Box sx={{ display: 'flex', pt: 4 }}>
           <Trans>
             <Typography variant="caption" color="text.secondary">
@@ -138,7 +138,7 @@ export const TxActionsWrapper = ({
             <Typography
               variant="subheader2"
               sx={{ color: theme.palette.info.main, cursor: 'pointer', px: 1 }}
-              onClick={() => approvalFallback()}
+              onClick={() => approvalParams.handleClick && approvalParams.handleClick(true)}
             >
               Submit a tx
             </Typography>
