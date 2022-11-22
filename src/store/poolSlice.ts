@@ -27,10 +27,11 @@ import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
-import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
+import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { getApprovalTx } from 'src/hooks/paraswap/common';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -66,8 +67,15 @@ export interface PoolSlice {
     args: Omit<LPSwapBorrowRateMode, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   paraswapRepayWithCollateral: (
-    args: ParaswapRepayActionProps
+    args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  paraswapRepayWithCollateralApproval: ({
+    amount,
+    token,
+  }: {
+    amount: string;
+    token: string;
+  }) => Promise<EthereumTransactionTypeExtended | undefined>;
   supplyWithPermit: (
     args: Omit<LPSupplyWithPermitType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -76,6 +84,13 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  swapCollateralApproval: ({
+    amount,
+    token,
+  }: {
+    amount: string;
+    token: string;
+  }) => Promise<EthereumTransactionTypeExtended | undefined>;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -317,6 +332,36 @@ export const createPoolSlice: StateCreator<
         ...args,
         user,
         useOptimizedPath: get().useOptimizedPath(),
+      });
+    },
+    paraswapRepayWithCollateralApproval: async ({
+      amount,
+      token,
+    }: {
+      amount: string;
+      token: string;
+    }) => {
+      const user = get().account;
+      const provider = get().jsonRpcProvider();
+      const currentMarketData = get().currentMarketData;
+      return getApprovalTx({
+        provider,
+        token,
+        user,
+        amount,
+        spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER || '',
+      });
+    },
+    swapCollateralApproval: async ({ amount, token }: { amount: string; token: string }) => {
+      const user = get().account;
+      const provider = get().jsonRpcProvider();
+      const currentMarketData = get().currentMarketData;
+      return getApprovalTx({
+        provider,
+        token,
+        user,
+        amount,
+        spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER || '',
       });
     },
     swapCollateral: async ({

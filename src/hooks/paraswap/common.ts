@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId, ERC20Service, EthereumTransactionTypeExtended } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
   constructBuildTx,
@@ -8,6 +8,7 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { RateOptions } from '@paraswap/sdk/dist/rates';
+import { constants, ethers } from 'ethers';
 import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
@@ -28,8 +29,6 @@ export type SwapData = Pick<
   SwapReserveData,
   'amount' | 'underlyingAsset' | 'decimals' | 'supplyAPY' | 'variableBorrowAPY'
 >;
-
-export type RouteVariant = 'rate' | 'transaction';
 
 export type SwapVariant = 'exactIn' | 'exactOut';
 
@@ -68,6 +67,16 @@ type GetSwapAndRepayCallDataProps = {
   chainId: ChainId;
   maxSlippage: number;
 };
+
+export interface ParaSwapParams {
+  swapInData: SwapData;
+  swapOutData: SwapData;
+  userAddress: string;
+  chainId: ChainId;
+  maxSlippage: number;
+  max: boolean;
+  swapVariant: SwapVariant;
+}
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -271,7 +280,7 @@ export async function fetchExactOutTxParams(
   chainId: ChainId,
   userAddress: string,
   maxSlippage: number,
-  max: boolean
+  max?: boolean
 ): Promise<SwapTransactionParams> {
   if (!swapOut.amount || swapOut.amount === '0' || isNaN(+swapOut.amount)) {
     return {
@@ -603,4 +612,57 @@ const getRepayCallData = async ({
     console.log(e);
     throw new Error('Error getting txParams');
   }
+};
+
+export const fetchTxParams = async (
+  swapIn: SwapData,
+  swapOut: SwapData,
+  chainId: ChainId,
+  userAddress: string,
+  maxSlippage: number,
+  swapVariant: SwapVariant,
+  max?: boolean
+): Promise<SwapTransactionParams> => {
+  if (swapVariant === 'exactIn') {
+    return await fetchExactInTxParams(swapIn, swapOut, chainId, userAddress, maxSlippage, max);
+  } else {
+    return await fetchExactOutTxParams(swapIn, swapOut, chainId, userAddress, maxSlippage, max);
+  }
+};
+
+interface GetApprovalTxParams {
+  provider: ethers.providers.Provider;
+  token: string;
+  user: string;
+  spender: string;
+  amount: string;
+}
+
+export const getApprovalTx = async ({
+  provider,
+  token,
+  user,
+  spender,
+  amount,
+}: GetApprovalTxParams): Promise<EthereumTransactionTypeExtended | undefined> => {
+  const erc20Service = new ERC20Service(provider);
+  const approved: boolean = await erc20Service.isApproved({
+    token,
+    user,
+    spender,
+    amount,
+  });
+
+  if (!approved) {
+    const approveTx: EthereumTransactionTypeExtended = erc20Service.approve({
+      user,
+      token,
+      spender,
+      amount: constants.MaxUint256.toString(),
+    });
+
+    return approveTx;
+  }
+
+  return undefined;
 };
