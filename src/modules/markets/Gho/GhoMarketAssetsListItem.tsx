@@ -36,10 +36,10 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
 
   const {
     ghoDiscountRatePercent,
-    ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
+    ghoDisplay: { facilitatorBucketLevel },
   } = useRootStore();
 
   return (
@@ -68,7 +68,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               <FormattedNumber
                 compact
                 symbol="usd"
-                value={ghoFacilitatorBucketLevel}
+                value={facilitatorBucketLevel}
                 visibleDecimals={2}
                 variant="h3"
               />

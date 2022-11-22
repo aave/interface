@@ -22,10 +22,10 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
 
   const {
     ghoDiscountRatePercent,
-    ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
+    ghoDisplay: { facilitatorBucketLevel },
   } = useRootStore();
 
   if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
@@ -73,11 +73,11 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
           >
             <FormattedNumber
               compact
-              value={ghoFacilitatorBucketLevel}
+              value={facilitatorBucketLevel}
               visibleDecimals={2}
               variant="secondary14"
             />
-            <ReserveSubheader value={ghoFacilitatorBucketLevel} rightAlign={true} />
+            <ReserveSubheader value={facilitatorBucketLevel} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
