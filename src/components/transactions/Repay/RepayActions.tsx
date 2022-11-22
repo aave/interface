@@ -86,7 +86,13 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval({ amount: amountToRepay, underlyingAsset: poolAddress })}
+      handleApproval={(forceApproval) =>
+        approval({
+          amount: amountToRepay,
+          underlyingAsset: poolAddress,
+          forceApprovalTx: forceApproval,
+        })
+      }
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       tryPermit={tryPermit}

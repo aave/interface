@@ -70,7 +70,13 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval({ amount: amountToSupply, underlyingAsset: poolAddress })}
+      handleApproval={(forceApproval) =>
+        approval({
+          amount: amountToSupply,
+          underlyingAsset: poolAddress,
+          forceApprovalTx: forceApproval,
+        })
+      }
       handleAction={action}
       requiresApproval={requiresApproval}
       tryPermit={tryPermit}
