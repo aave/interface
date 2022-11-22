@@ -55,7 +55,7 @@ describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
     borrow(testData.testCases.borrow, skipTestState, true);
     supply(testData.testCases.deposit2, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);
-    checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+    checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.08 }, skipTestState);
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
     emodeActivating(
@@ -69,7 +69,7 @@ describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   });
   describe('Turn off E-mode and verify decrease of health factor', () => {
     emodeActivating({ turnOn: false, multipleEmodes: true }, skipTestState, true);
-    checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+    checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.08 }, skipTestState);
   });
   describe('Turn off E-mode blocked with low health factor', () => {
     emodeActivating(
