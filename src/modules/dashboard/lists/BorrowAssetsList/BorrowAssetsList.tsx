@@ -190,10 +190,7 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                  <GhoBorrowAssetsListMobileItem
-                    {...item}
-                    userAvailableBorrows={maxBorrowAmount.toString()}
-                  />
+                  <GhoBorrowAssetsListMobileItem {...item} />
                 ) : (
                   <BorrowAssetsListMobileItem {...item} />
                 )
@@ -201,10 +198,7 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                <GhoBorrowAssetsListItem
-                  {...item}
-                  userAvailableBorrows={maxBorrowAmount.toString()}
-                />
+                <GhoBorrowAssetsListItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}
