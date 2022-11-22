@@ -1,13 +1,14 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { fetchTxParams, ParaSwapParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface RepayActionProps extends BoxProps {
+interface CollateralRepayBaseProps extends BoxProps {
   rateMode: InterestRate;
   repayAmount: string;
   repayWithAmount: string;
@@ -19,9 +20,13 @@ export interface RepayActionProps extends BoxProps {
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
-  swapCallData: string;
-  augustus: string;
   loading?: boolean;
+}
+
+// Used in poolSlice
+export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
+  augustus: string;
+  swapCallData: string;
 }
 
 export const CollateralRepayActions = ({
@@ -36,29 +41,45 @@ export const CollateralRepayActions = ({
   repayAllDebt,
   useFlashLoan,
   blocked,
-  swapCallData,
-  augustus,
   loading,
+  paraswapParams,
   ...props
-}: RepayActionProps) => {
-  const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
+}: CollateralRepayBaseProps & { paraswapParams: ParaSwapParams }) => {
+  const [paraswapRepayWithCollateral, paraswapRepayWithCollateralApproval] = useRootStore(
+    (state) => [state.paraswapRepayWithCollateral, state.paraswapRepayWithCollateralApproval]
+  );
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useTransactionHandler({
+    useParaSwapTransactionHandler({
+      handleGetApprovalTx: async () => {
+        return paraswapRepayWithCollateralApproval({
+          token: fromAssetData.aTokenAddress,
+          amount: repayWithAmount,
+        });
+      },
       handleGetTxns: async () => {
+        const route = await fetchTxParams(
+          paraswapParams.swapInData,
+          paraswapParams.swapOutData,
+          paraswapParams.chainId,
+          paraswapParams.userAddress,
+          paraswapParams.maxSlippage,
+          paraswapParams.swapVariant,
+          paraswapParams.max
+        );
         return paraswapRepayWithCollateral({
           repayAllDebt,
-          repayAmount,
+          repayAmount: route.outputAmount,
           rateMode,
-          repayWithAmount,
+          repayWithAmount: route.inputAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
           symbol,
           useFlashLoan,
           blocked,
-          swapCallData,
-          augustus,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
         });
       },
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,

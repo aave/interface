@@ -1,12 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { fetchTxParams, ParaSwapParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
-import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface SwapActionProps extends BoxProps {
+interface SwapBaseProps extends BoxProps {
   amountToSwap: string;
   amountToReceive: string;
   poolReserve: ComputedReserveData;
@@ -17,9 +19,12 @@ export interface SwapActionProps extends BoxProps {
   blocked: boolean;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
+  loading?: boolean;
+}
+
+export interface SwapActionProps extends SwapBaseProps {
   swapCallData: string;
   augustus: string;
-  loading?: boolean;
 }
 
 export const SwapActions = ({
@@ -31,21 +36,41 @@ export const SwapActions = ({
   targetReserve,
   isMaxSelected,
   useFlashLoan,
-  swapCallData,
-  augustus,
   loading,
   symbol,
+  paraswapParams,
   blocked,
   ...props
-}: SwapActionProps) => {
-  const swapCollateral = useRootStore((state) => state.swapCollateral);
+}: SwapBaseProps & { paraswapParams: ParaSwapParams }) => {
+  const [swapCollateral, swapCollateralApproval] = useRootStore((state) => [
+    state.swapCollateral,
+    state.swapCollateralApproval,
+  ]);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
-    useTransactionHandler({
+    useParaSwapTransactionHandler({
+      handleGetApprovalTx: async () => {
+        return swapCollateralApproval({
+          amount: amountToSwap,
+          token: poolReserve.aTokenAddress,
+        });
+      },
       handleGetTxns: async () => {
+        const route = await fetchTxParams(
+          paraswapParams.swapInData,
+          paraswapParams.swapOutData,
+          paraswapParams.chainId,
+          paraswapParams.userAddress,
+          paraswapParams.maxSlippage,
+          paraswapParams.swapVariant,
+          paraswapParams.max
+        );
+        const minimumReceived = new BigNumber(route.outputAmount || '0')
+          .multipliedBy(new BigNumber(100).minus(paraswapParams.maxSlippage).dividedBy(100))
+          .toString(10);
         return swapCollateral({
-          amountToSwap,
-          amountToReceive,
+          amountToSwap: route.inputAmount,
+          amountToReceive: minimumReceived,
           poolReserve,
           targetReserve,
           isWrongNetwork,
@@ -53,8 +78,8 @@ export const SwapActions = ({
           blocked,
           isMaxSelected,
           useFlashLoan,
-          swapCallData,
-          augustus,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
         });
       },
       skip: !amountToSwap || parseFloat(amountToSwap) === 0,
@@ -77,7 +102,7 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval(amountToSwap, poolReserve.aTokenAddress)}
+      handleApproval={() => approval()}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}

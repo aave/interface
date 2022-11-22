@@ -74,9 +74,8 @@ export const SwapModalContent = ({
     outputAmount,
     outputAmountUSD,
     error,
-    augustus,
-    swapCallData,
     loading,
+    paraswapParams,
   } = useCollateralSwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userAddress: currentAccount,
@@ -85,7 +84,6 @@ export const SwapModalContent = ({
     max: isMaxSelected,
     skip: supplyTxState.loading,
     maxSlippage: Number(maxSlippage),
-    routeVariant: 'rate',
   });
 
   const loadingSkeleton = loading && outputAmountUSD === '0';
@@ -254,9 +252,8 @@ export const SwapModalContent = ({
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
         useFlashLoan={shouldUseFlashloan}
-        augustus={augustus}
-        swapCallData={swapCallData}
         loading={loadingSkeleton}
+        paraswapParams={paraswapParams}
       />
     </>
   );
