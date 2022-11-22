@@ -44,12 +44,10 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <Box>
           <Typography gutterBottom>
             <Trans>
-              GHO is a native decentralized, collateral-backed stablecoin pegged to USD. It is
+              GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is
               created by users via borrowing against multiple collateral. When user repays their GHO
               borrow position, the protocol burns that user’s GHO. All the interest payments accrued
-              by minters of GHO would be directly transferred to the AaveDAO treasury. Also, Safety
-              Module participants (stkAAVE holders) can access a discount on the GHO borrow interest
-              rate.
+              by minters of GHO would be directly transferred to the AaveDAO treasury.
             </Trans>
           </Typography>
           <Box
