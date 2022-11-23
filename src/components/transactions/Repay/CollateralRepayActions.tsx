@@ -45,18 +45,10 @@ export const CollateralRepayActions = ({
   paraswapParams,
   ...props
 }: CollateralRepayBaseProps & { paraswapParams: ParaSwapParams }) => {
-  const [paraswapRepayWithCollateral, paraswapRepayWithCollateralApproval] = useRootStore(
-    (state) => [state.paraswapRepayWithCollateral, state.paraswapRepayWithCollateralApproval]
-  );
+  const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useParaSwapTransactionHandler({
-      handleGetApprovalTx: async () => {
-        return paraswapRepayWithCollateralApproval({
-          token: fromAssetData.aTokenAddress,
-          amount: repayWithAmount,
-        });
-      },
       handleGetTxns: async () => {
         const route = await fetchTxParams(
           paraswapParams.swapInData,

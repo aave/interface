@@ -41,19 +41,10 @@ export const SwapActions = ({
   blocked,
   ...props
 }: SwapBaseProps & { paraswapParams: ParaSwapParams }) => {
-  const [swapCollateral, swapCollateralApproval] = useRootStore((state) => [
-    state.swapCollateral,
-    state.swapCollateralApproval,
-  ]);
+  const swapCollateral = useRootStore((state) => state.swapCollateral);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useParaSwapTransactionHandler({
-      handleGetApprovalTx: async () => {
-        return swapCollateralApproval({
-          amount: amountToSwap,
-          token: poolReserve.aTokenAddress,
-        });
-      },
       handleGetTxns: async () => {
         const route = await fetchTxParams(
           paraswapParams.swapInData,

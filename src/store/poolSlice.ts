@@ -69,13 +69,6 @@ export interface PoolSlice {
   paraswapRepayWithCollateral: (
     args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  paraswapRepayWithCollateralApproval: ({
-    amount,
-    token,
-  }: {
-    amount: string;
-    token: string;
-  }) => Promise<EthereumTransactionTypeExtended | undefined>;
   supplyWithPermit: (
     args: Omit<LPSupplyWithPermitType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -84,13 +77,6 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  swapCollateralApproval: ({
-    amount,
-    token,
-  }: {
-    amount: string;
-    token: string;
-  }) => Promise<EthereumTransactionTypeExtended | undefined>;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -332,36 +318,6 @@ export const createPoolSlice: StateCreator<
         ...args,
         user,
         useOptimizedPath: get().useOptimizedPath(),
-      });
-    },
-    paraswapRepayWithCollateralApproval: async ({
-      amount,
-      token,
-    }: {
-      amount: string;
-      token: string;
-    }) => {
-      const user = get().account;
-      const provider = get().jsonRpcProvider();
-      const currentMarketData = get().currentMarketData;
-      return getApprovalTx({
-        provider,
-        token,
-        user,
-        amount,
-        spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER || '',
-      });
-    },
-    swapCollateralApproval: async ({ amount, token }: { amount: string; token: string }) => {
-      const user = get().account;
-      const provider = get().jsonRpcProvider();
-      const currentMarketData = get().currentMarketData;
-      return getApprovalTx({
-        provider,
-        token,
-        user,
-        amount,
-        spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER || '',
       });
     },
     swapCollateral: async ({

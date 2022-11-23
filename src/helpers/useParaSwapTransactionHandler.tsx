@@ -9,13 +9,11 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
 interface UseParaSwapTransactionHandlerProps {
-  handleGetApprovalTx: () => Promise<EthereumTransactionTypeExtended | undefined>;
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   skip?: boolean;
 }
 
 export const useParaSwapTransactionHandler = ({
-  handleGetApprovalTx,
   handleGetTxns,
   skip,
 }: UseParaSwapTransactionHandlerProps) => {
@@ -179,9 +177,9 @@ export const useParaSwapTransactionHandler = ({
   useEffect(() => {
     if (!skip) {
       setLoadingTxns(true);
-      handleGetApprovalTx()
+      handleGetTxns()
         .then(async (data) => {
-          setApprovalTx(data);
+          setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
           setMainTxState({
             txHash: undefined,
           });
