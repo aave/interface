@@ -161,16 +161,21 @@ export const useParaSwapTransactionHandler = ({
           } catch (error) {
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);
+            setMainTxState({
+              ...mainTxState,
+              loading: false,
+            });
           }
         }
       })
       .catch((error) => {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
+        setMainTxState({
+          ...mainTxState,
+          loading: false,
+        });
       });
-    setMainTxState({
-      loading: false,
-    });
   };
 
   // populate approval transaction
