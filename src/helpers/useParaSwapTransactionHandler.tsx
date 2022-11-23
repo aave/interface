@@ -1,6 +1,6 @@
 import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
-import { DependencyList, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -12,14 +12,12 @@ interface UseParaSwapTransactionHandlerProps {
   handleGetApprovalTx: () => Promise<EthereumTransactionTypeExtended | undefined>;
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   skip?: boolean;
-  deps?: DependencyList;
 }
 
 export const useParaSwapTransactionHandler = ({
   handleGetApprovalTx,
   handleGetTxns,
   skip,
-  deps = [],
 }: UseParaSwapTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -129,78 +127,80 @@ export const useParaSwapTransactionHandler = ({
   };
 
   const action = async () => {
-    try {
-      setLoadingTxns(true);
-      const txs = await handleGetTxns();
-      const actionTx = txs.find((tx) =>
-        [
-          'DLP_ACTION',
-          'REWARD_ACTION',
-          'FAUCET_MINT',
-          'STAKE_ACTION',
-          'GOV_DELEGATION_ACTION',
-          'GOVERNANCE_ACTION',
-        ].includes(tx.txType)
-      );
-      if (actionTx) {
-        console.log(actionTx);
-        let gas: GasType | null = null;
-        try {
-          gas = await txs[txs.length - 1].gas();
-          console.log('ESTIMATING GAS');
-        } catch (error) {
-          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-          setTxError(parsedError);
-        }
-        setGasLimit(gas?.gasLimit || '');
-        setLoadingTxns(false);
-
-        setMainTxState({ ...mainTxState, loading: false });
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setMainTxState({
-        txHash: undefined,
-        loading: false,
-      });
-    }
-  };
-
-  // populate txns
-  useEffect(() => {
-    // good enough for now, but might need debounce or similar for swaps
-    if (!skip) {
-      setLoadingTxns(true);
-      const timeout = setTimeout(() => {
-        setLoadingTxns(true);
-        console.log('ESIMATING GAS??????');
-        return handleGetApprovalTx()
-          .then(async (data) => {
-            if (!mounted.current) return;
-            setApprovalTx(data);
-            setMainTxState({
-              txHash: undefined,
+    setMainTxState({ ...mainTxState, loading: true });
+    await handleGetTxns()
+      .then(async (data) => {
+        // Find actionTx (repay with collateral or swap)
+        const actionTx = data.find((tx) => ['DLP_ACTION'].includes(tx.txType));
+        if (actionTx) {
+          let gas: GasType | null = null;
+          // Estimate gas, if successful, send transaction
+          try {
+            gas = await actionTx.gas();
+            setGasLimit(gas?.gasLimit || '');
+            const params = await actionTx.tx();
+            delete params.gasPrice;
+            return processTx({
+              tx: () => sendTx(params),
+              successCallback: (txnResponse: TransactionResponse) => {
+                setMainTxState({
+                  txHash: txnResponse.hash,
+                  loading: false,
+                  success: true,
+                });
+                setTxError(undefined);
+              },
+              errorCallback: (error, hash) => {
+                const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+                setTxError(parsedError);
+                setMainTxState({
+                  txHash: hash,
+                  loading: false,
+                });
+              },
+              action: TxAction.MAIN_ACTION,
             });
-            setTxError(undefined);
-            setLoadingTxns(false);
-          })
-          .catch((error) => {
-            if (!mounted.current) return;
-            setMainTxState({
-              txHash: undefined,
-            });
+          } catch (error) {
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);
-            setLoadingTxns(false);
+          }
+        }
+      })
+      .catch((error) => {
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+      });
+    setMainTxState({
+      loading: false,
+    });
+  };
+
+  // populate approval transaction
+  useEffect(() => {
+    if (!skip) {
+      setLoadingTxns(true);
+      handleGetApprovalTx()
+        .then(async (data) => {
+          setApprovalTx(data);
+          setMainTxState({
+            txHash: undefined,
           });
-      }, 1000);
-      return () => clearTimeout(timeout);
+          setTxError(undefined);
+          setLoadingTxns(false);
+        })
+        .catch((error) => {
+          setMainTxState({
+            txHash: undefined,
+          });
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
+          setLoadingTxns(false);
+        });
     } else {
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps]);
+  }, [skip]);
 
   return {
     approval,
