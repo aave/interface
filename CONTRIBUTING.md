@@ -13,7 +13,7 @@ Given the nature of decentralized blockchain technology, the Aave Prococol can e
 The Aave team has certain responsibilities with respect to the Aave Interface. This includes the following:
 - Review all PRs that get created on any repositories that fall under Aave Interface;
   - aave/interface
-  - aave/utilities
+  - aave/aave-utilities
 - Determine the roadmap of features that will be included on the Aave Interface; and
 - Maintaining the security, usability, and style of the codebase, including any integrations with third party services
 
