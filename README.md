@@ -39,7 +39,6 @@ Also, contrbutors with at least one pull request that has been merged into the m
 
 <img src="https://www.gitpoap.io/_next/image?url=https%3A%2F%2Fassets.poap.xyz%2Fgitpoap3a-2022-aave-protocol-interface-contributor-2022-logo-1668012040505.png&w=2048&q=75" width="164">
 
-
 ## IPFS deployment
 
 Each commit gets deployed to IPFS automatically
@@ -73,5 +72,3 @@ Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
 ## Credits
 
 To all the Ethereum community
-
-
