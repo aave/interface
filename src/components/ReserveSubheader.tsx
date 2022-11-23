@@ -20,7 +20,7 @@ export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
       }}
     >
       {value === 'Disabled' ? (
-        <Typography component="span" sx={{ mr: 0.5 }} variant={'secondary12'} color={'text.muted'}>
+        <Typography component="span" sx={{ mr: 0.5 }} variant="secondary12" color="text.muted">
           (Disabled)
         </Typography>
       ) : (
