@@ -83,14 +83,6 @@ export const CollateralRepayActions = ({
         });
       },
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
-      deps: [
-        repayWithAmount,
-        repayAmount,
-        poolReserve.underlyingAsset,
-        fromAssetData.underlyingAsset,
-        repayAllDebt,
-        useFlashLoan,
-      ],
     });
 
   return (

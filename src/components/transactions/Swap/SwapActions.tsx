@@ -29,7 +29,6 @@ export interface SwapActionProps extends SwapBaseProps {
 
 export const SwapActions = ({
   amountToSwap,
-  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -83,14 +82,6 @@ export const SwapActions = ({
         });
       },
       skip: !amountToSwap || parseFloat(amountToSwap) === 0,
-      deps: [
-        amountToSwap,
-        amountToReceive,
-        poolReserve.underlyingAsset,
-        targetReserve.underlyingAsset,
-        isMaxSelected,
-        useFlashLoan,
-      ],
     });
 
   return (
