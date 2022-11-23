@@ -24,7 +24,7 @@ const checkNameOfNetwork = (networkName: string) => {
   });
 };
 
-describe.skip('Switching main markets', () => {
+describe('Switching main markets', () => {
   configEnvWithTenderlyMainnetFork({});
   Object.entries(markets.mainnet).forEach(([keyTo, valueTo]) => {
     describe(`Switching market to ${keyTo}`, () => {
