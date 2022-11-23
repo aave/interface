@@ -24,7 +24,7 @@ const checkNameOfNetwork = (networkName: string) => {
   });
 };
 
-describe('Switching main markets', () => {
+describe.skip('Switching main markets', () => {
   configEnvWithTenderlyMainnetFork({});
   Object.entries(markets.mainnet).forEach(([keyTo, valueTo]) => {
     describe(`Switching market to ${keyTo}`, () => {
@@ -34,7 +34,7 @@ describe('Switching main markets', () => {
   });
 });
 
-describe('Switching testnet markets', () => {
+describe.skip('Switching testnet markets', () => {
   configEnvWithTenderlyMainnetFork({});
   before(`Turn on testnet mode`, () => {
     switchToTestNet();

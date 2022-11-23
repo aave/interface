@@ -23,7 +23,7 @@ export const verifyTranslationOnMarketsPage = (totalBorrows: string, totalMarket
   });
 };
 
-describe('Manipulation on the language', () => {
+describe.skip('Manipulation on the language', () => {
   describe('CASE1:Changing the language from English to Spanish', () => {
     configEnvWithTenderlyMainnetFork({});
     switchLanguageStep('Language', 'Spanish');
