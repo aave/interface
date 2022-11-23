@@ -133,7 +133,7 @@ export const TxActionsWrapper = ({
         <Box sx={{ display: 'flex', pt: 4 }}>
           <Trans>
             <Typography variant="caption" color="text.secondary">
-              Approval doesn&apos;t work.{' '}
+              Approval doesn&apos;t work?{' '}
             </Typography>
             <Typography
               variant="subheader2"

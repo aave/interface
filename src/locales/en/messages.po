@@ -18,8 +18,8 @@ msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to 
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
 #: src/components/transactions/TxActionsWrapper.tsx
-msgid "<0>Approval doesn't work. </0><1>Submit a tx</1><2>to approve instead.</2>"
-msgstr "<0>Approval doesn't work. </0><1>Submit a tx</1><2>to approve instead.</2>"
+msgid "<0>Approval doesn't work? </0><1>Submit a tx</1><2>to approve instead.</2>"
+msgstr "<0>Approval doesn't work? </0><1>Submit a tx</1><2>to approve instead.</2>"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
