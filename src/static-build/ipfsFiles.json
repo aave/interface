@@ -1815,6 +1815,19 @@
       "ipfsHash": "QmdM14VMJxxc2MEY5sDFd1hA4Qqhu6ZmACJXg3rsinKWZt",
       "originalHash": "0xdef650b98b37aece779f9776f867858c1535cbd4d943f40f314d3e9047d040c7",
       "id": 124
+    },
+    {
+      "title": "Risk Parameter Updates for Aave v2 Ethereum Liquidty Pool",
+      "shortDescription": "In response to recent market events and the resulting discussion on the governance forum, Llama and Chaos Labs propose to make a series of parameter changes to the Ethereum Aave v2 Liquidity Pool",
+      "author": "Llamaxyz & Chaos Labs (defijesus, Matthew Graham, Omer Arie Goldberg)",
+      "discussions": "https://governance.aave.com/t/risk-parameter-updates-for-aave-v2-ethereum-liquidity-pool-2022-11-25/10824",
+      "created": "2022-11-25T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nIn response to recent market events and resulting …",
+      "basename": "RISK-PARAMS-UPDATE-AAVE-V2-ETH",
+      "description": "\n\n# Simple Summary\n\nIn response to recent market events and resulting discussion on the governance forum, Llama and Chaos Labs propose to make a series of parameter changes to the Ethereum Aave v2 Liquidity Pool.\n\n\n# Abstract\n\nThis proposal presents an alternative pathway forward to [AIP-121](https://app.aave.com/governance/proposal/?proposalId=121). The community can elect to Disable Borrowing whilst retaining the ability to Deposits assets across the majority of Reserves rather than Freezing as outlined in AIP-121.\n\nThis proposal is a collaborative effort between Llama and Chaos Labs and reflects the communities [governance forum discussion](https://governance.aave.com/t/arc-risk-parameter-recommendations-for-aave-v2-eth-2022-11-22/10757/35). \n\n# Motivation\n\nIn response to recent market events and the continued contraction of liquidity across markets, this proposal seeks to reduce the risk profile across many higher volatile assets. AIP-121 presents an opportunity to Freeze many Reserves, whereas this proposal intends to Disable Borrowing whilst retaining the ability to deposit assets. \n\nAIP-121 is a more conservative response relative to this proposal. It is likely, LTV and LT thresholds for highly liqudity assets will also require amending in the near future. This will be managed via a separate submission. \n\n\n# Specification\n\nThe following risk parameter proposal are presented below:\n\n![](../assets/RISK-PARAMS-UPDATE-AAVE-V2-ETH/table.png)\n\n\n# Implementation\n\nThis proposal will reconfigure the following asset Reserves:\n\n* YFI\n* CRV\n* ZRX\n* MANA\n* 1INCH\n* BAT\n* sUSD\n* ENJ\n* GUSD\n* AMPL\n* RAI\n* USDP\n* LUSD\n* xSUSHI\n* DPI\n* renFIL\n* MKR\n* ENS\n* LINK\n* UNI \n* SNX\n\nThis proposal is written in an atomic manner that will unfreeze reserves in case [AIP-121](https://app.aave.com/governance/proposal/?proposalId=121) gets executed before.\n\nTo achieve this, `freezeReserve(address asset)`, `unfreezeReserve(address asset)` and `disableBorrowingOnReserve(address asset)` will be performed via the PoolConfigurator for each asset respectively to ensure a predictable final state.\n\n\n`POOL_CONFIGURATOR.freezeReserve(address asset)`\n`POOL_CONFIGURATOR.unfreezeReserve(address asset)`\n`POOL_CONFIGURATOR.disableBorrowingOnReserve(address asset)`\n\nImplementation can be found [here](https://github.com/defijesus/risk-params-update-aave-eth-v2)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmSeoWPX2YMUchUqRwKdvA5TWFewLoBMm4oCtuG8yNAL7a",
+      "originalHash": "0x401526716b075f2f211f4309ab895e7ada1c6e9e00c17ee13a4980776457ab21",
+      "id": 125
     }
   ]
 }
