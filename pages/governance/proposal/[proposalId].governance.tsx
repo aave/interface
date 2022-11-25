@@ -240,6 +240,7 @@ export default function ProposalPage({
                       remarkPlugins={[remarkGfm]}
                       components={{
                         img({ src: _src, alt }) {
+                          if (!_src) return null;
                           const src = /^\.\.\//.test(_src)
                             ? _src.replace(
                                 '../',
