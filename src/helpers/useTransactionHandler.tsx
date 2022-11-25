@@ -56,7 +56,7 @@ export const useTransactionHandler = ({
     (state) => state.generatePermitPayloadForMigrationAsset
   );
 
-  const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const mounted = useRef(false);
 
@@ -112,7 +112,7 @@ export const useTransactionHandler = ({
   };
 
   const approval = async (approvals?: Approval[]) => {
-    if (approvalTx) {
+    if (approvalTxes) {
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
@@ -179,28 +179,60 @@ export const useTransactionHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
-          const params = await approvalTx.tx();
-          delete params.gasPrice;
-          await processTx({
-            tx: () => sendTx(params),
-            successCallback: (txnResponse: TransactionResponse) => {
-              setApprovalTxState({
-                txHash: txnResponse.hash,
-                loading: false,
-                success: true,
-              });
-              setTxError(undefined);
-            },
-            errorCallback: (error, hash) => {
-              const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-              setTxError(parsedError);
-              setApprovalTxState({
-                txHash: hash,
-                loading: false,
-              });
-            },
-            action: TxAction.APPROVAL,
+          const params = await Promise.all(approvalTxes.map((approvalTx) => approvalTx.tx()));
+          const approvalResponses = await Promise.all(
+            params.map(
+              (param) =>
+                new Promise<TransactionResponse>((resolve, reject) => {
+                  processTx({
+                    tx: () => sendTx(param),
+                    successCallback: (txnResponse: TransactionResponse) => {
+                      resolve(txnResponse);
+                    },
+                    errorCallback: (error, hash) => {
+                      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+                      setTxError(parsedError);
+                      setApprovalTxState({
+                        txHash: hash,
+                        loading: false,
+                      });
+                      reject();
+                    },
+                    // TODO: add error callback
+                    action: TxAction.APPROVAL,
+                  });
+                })
+            )
+          );
+
+          setApprovalTxState({
+            txHash: approvalResponses[0].hash,
+            loading: false,
+            success: true,
           });
+
+          // const params = await approvalTx.tx();
+          // delete params.gasPrice;
+          // await processTx({
+          //   tx: () => sendTx(params),
+          //   successCallback: (txnResponse: TransactionResponse) => {
+          //     setApprovalTxState({
+          //       txHash: txnResponse.hash,
+          //       loading: false,
+          //       success: true,
+          //     });
+          //     setTxError(undefined);
+          //   },
+          //   errorCallback: (error, hash) => {
+          //     const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+          //     setTxError(parsedError);
+          //     setApprovalTxState({
+          //       txHash: hash,
+          //       loading: false,
+          //     });
+          //   },
+          //   action: TxAction.APPROVAL,
+          // });
         } catch (error) {
           if (!mounted.current) return;
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -215,7 +247,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (approvalTx && usePermit && handleGetPermitTxns) {
+    if (approvalTxes && usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
@@ -251,7 +283,7 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTx) && actionTx) {
+    if ((!usePermit || !approvalTxes) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
@@ -297,7 +329,11 @@ export const useTransactionHandler = ({
         return handleGetTxns()
           .then(async (data) => {
             if (!mounted.current) return;
-            setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+            // setApprovalTxes(data.filte((tx) => tx.txType === 'ERC20_APPROVAL'));
+            const approvals = data.filter((tx) => tx.txType == 'ERC20_APPROVAL');
+            if (approvals.length > 0) {
+              setApprovalTxes(approvals);
+            }
             setActionTx(
               data.find((tx) =>
                 [
@@ -336,7 +372,7 @@ export const useTransactionHandler = ({
       }, 1000);
       return () => clearTimeout(timeout);
     } else {
-      setApprovalTx(undefined);
+      setApprovalTxes(undefined);
       setActionTx(undefined);
     }
   }, [skip, ...deps]);
@@ -346,11 +382,11 @@ export const useTransactionHandler = ({
     action,
     loadingTxns,
     setUsePermit,
-    requiresApproval: !!approvalTx,
+    requiresApproval: !!approvalTxes,
     approvalTxState,
     mainTxState,
     usePermit,
     actionTx,
-    approvalTx,
+    // approvalTx,
   };
 };

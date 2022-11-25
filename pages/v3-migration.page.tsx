@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -9,10 +10,11 @@ import { useRootStore } from 'src/store/root';
 export default function V3Migration() {
   const { user, borrowPositions } = useUserReserves();
   const toggleSelectedSupplyPosition = useRootStore((state) => state.toggleMigrationSelectedAsset);
-  const migrate = useRootStore((state) => state.migrateSelectedPositions);
-
+  const testMigration = useRootStore((state) => state._testMigration);
+  // const migrate = useRootStore((state) => state.migrateSelectedPositions);
   return (
     <div>
+      <div onClick={testMigration}>test migration</div>
       <div>supply</div>
       {user.userReservesData.map((reserve) => (
         <div
@@ -26,7 +28,7 @@ export default function V3Migration() {
       {borrowPositions.map((reserve) => (
         <div key={reserve.underlyingAsset}>{reserve.variableBorrowsUSD}</div>
       ))}
-      <button onClick={migrate}>Migrate positions</button>
+      {/* <button onClick={migrate}>Migrate positions</button> */}
     </div>
   );
 }
