@@ -239,7 +239,13 @@ export default function ProposalPage({
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        img({ src, alt }) {
+                        img({ src: _src, alt }) {
+                          const src = /^\.\.\//.test(_src)
+                            ? _src.replace(
+                                '../',
+                                'https://raw.githubusercontent.com/aave/aip/main/content/'
+                              )
+                            : _src;
                           return <CenterAlignedImage src={src} alt={alt} />;
                         },
                         a({ node, ...rest }) {
