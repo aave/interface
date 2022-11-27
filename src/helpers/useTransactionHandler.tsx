@@ -113,8 +113,10 @@ export const useTransactionHandler = ({
 
   const approval = async (approvals?: Approval[]) => {
     if (approvalTxes) {
+      console.log(approvalTxes, 'approvalTxes');
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
+        console.log('loading true', usePermit, approvals, approvalTxes);
         try {
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
@@ -179,11 +181,15 @@ export const useTransactionHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
+          console.log('no permit should call approval', approvalTxes);
           const params = await Promise.all(approvalTxes.map((approvalTx) => approvalTx.tx()));
+          console.log(params, 'params');
           const approvalResponses = await Promise.all(
             params.map(
               (param) =>
-                new Promise<TransactionResponse>((resolve, reject) => {
+                new Promise<TransactionResponse>(async (resolve, reject) => {
+                  delete param.gasPrice;
+                  console.log;
                   processTx({
                     tx: () => sendTx(param),
                     successCallback: (txnResponse: TransactionResponse) => {
@@ -210,29 +216,6 @@ export const useTransactionHandler = ({
             loading: false,
             success: true,
           });
-
-          // const params = await approvalTx.tx();
-          // delete params.gasPrice;
-          // await processTx({
-          //   tx: () => sendTx(params),
-          //   successCallback: (txnResponse: TransactionResponse) => {
-          //     setApprovalTxState({
-          //       txHash: txnResponse.hash,
-          //       loading: false,
-          //       success: true,
-          //     });
-          //     setTxError(undefined);
-          //   },
-          //   errorCallback: (error, hash) => {
-          //     const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-          //     setTxError(parsedError);
-          //     setApprovalTxState({
-          //       txHash: hash,
-          //       loading: false,
-          //     });
-          //   },
-          //   action: TxAction.APPROVAL,
-          // });
         } catch (error) {
           if (!mounted.current) return;
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -343,6 +326,7 @@ export const useTransactionHandler = ({
                   'STAKE_ACTION',
                   'GOV_DELEGATION_ACTION',
                   'GOVERNANCE_ACTION',
+                  'V3_MIGRATION_ACTION',
                 ].includes(tx.txType)
               )
             );

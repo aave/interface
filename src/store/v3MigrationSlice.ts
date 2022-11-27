@@ -7,7 +7,7 @@ import {
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { BigNumberish } from 'ethers';
+import { BigNumberish, constants } from 'ethers';
 import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { StateCreator } from 'zustand';
@@ -30,10 +30,11 @@ export type V3MigrationSlice = {
   toggleMigrationSelectedAsset: (assetName: string) => void;
   getMigratorAddress: () => string;
   getMigrationServiceInstance: () => V3MigrationHelperService;
-  migrate: (
+  migrateWithPermits: (
     signature: SignatureLike[],
     deadline: BigNumberish
   ) => EthereumTransactionTypeExtended[];
+  migrateWithoutPermits: () => EthereumTransactionTypeExtended[];
   _testMigration: () => void;
   // migrateSelectedPositions: () => void;
 };
@@ -110,7 +111,6 @@ export const createV3MigrationSlice: StateCreator<
       const timestamp = dayjs().unix();
       set({ timestamp });
       return selectedUserReservesForMigration(get(), timestamp).map(({ reserve }): Approval => {
-        reserve.name;
         return {
           // TODO: should we allow spending of exact ammount of the reserver?
           amount: reserve.totalLiquidity,
@@ -119,11 +119,31 @@ export const createV3MigrationSlice: StateCreator<
         };
       });
     },
-    migrate: (signatures: SignatureLike[], deadline: BigNumberish) => {
+    migrateWithoutPermits: () => {
+      const timestamp = dayjs().unix();
+      set({ timestamp });
+      const assets: {
+        aToken: string;
+        deadline: number;
+        amount: string;
+      }[] = selectedUserReservesForMigration(get(), timestamp).map(({ reserve }) => {
+        const deadline = Math.floor(Date.now() / 1000 + 3600);
+        return {
+          amount: reserve.totalLiquidity,
+          aToken: reserve.aTokenAddress,
+          // TODO: fow how long to approve?
+          deadline,
+        };
+      });
+      const user = get().account;
+      console.log(assets, user);
+      return get().getMigrationServiceInstance().migrateNoBorrow({ assets, user });
+    },
+    migrateWithPermits: (signatures: SignatureLike[], deadline: BigNumberish) => {
       const selectedReservers = selectedUserReservesForMigration(get(), get().timestamp);
       const permits = selectedReservers.map(({ reserve }, index) => ({
         aToken: reserve.aTokenAddress,
-        value: reserve.totalLiquidity + 1000,
+        value: constants.MaxUint256.toString(),
         deadline,
         signedPermit: signatures[index],
       }));
@@ -132,6 +152,7 @@ export const createV3MigrationSlice: StateCreator<
       const migratorHelperInstance = get().getMigrationServiceInstance();
       const user = get().account;
       const assets = permits.map((permit) => permit.aToken);
+      console.log('migrateNoBorrowWith permits');
       return migratorHelperInstance.migrateNoBorrowWithPermits({
         user,
         assets,

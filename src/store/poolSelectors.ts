@@ -76,6 +76,7 @@ export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestam
   const reserveIncentiveData = state.reserveIncentiveData;
   const userIncentiveData = state.userIncentiveData;
 
+  // TODO: why <any>
   return formatUserSummaryAndIncentives({
     currentTimestamp,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,

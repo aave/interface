@@ -2,23 +2,26 @@ import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
 
 export const MigrateV3Actions = () => {
-  const migrate = useRootStore((store) => store.migrate);
+  // const selectedAssets = useRootStore((store) => )
+  const migrateWithPermits = useRootStore((store) => store.migrateWithPermits);
+  const migrateWithoutPermits = useRootStore((store) => store.migrateWithoutPermits);
   const getApprovePermitsForSelectedAssets = useRootStore(
     (store) => store.getApprovePermitsForSelectedAssets
   );
   const { approval, action } = useTransactionHandler({
-    handleGetTxns: async () => {
-      return [];
-    },
-    handleGetPermitTxns: async (signatures, deadline) => migrate(signatures, deadline),
-    tryPermit: true,
+    handleGetTxns: async () => migrateWithoutPermits(),
+    handleGetPermitTxns: async (signatures, deadline) => migrateWithPermits(signatures, deadline),
+    tryPermit: false,
   });
+
+  const handleApproval = () => {
+    const approvePermitsForSelectedAssets = getApprovePermitsForSelectedAssets();
+    approval(approvePermitsForSelectedAssets);
+  };
 
   return (
     <div>
-      <button onClick={() => approval(getApprovePermitsForSelectedAssets())}>
-        Approve with permits
-      </button>
+      <button onClick={handleApproval}>Approve</button>
       {/* <button onClick={() => }></button> */}
       <button onClick={action}>Migrate</button>
     </div>
