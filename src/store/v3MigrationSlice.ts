@@ -1,5 +1,5 @@
 import {
-  // ERC20_2612Service,
+  ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
   V3MigrationHelperService,
@@ -18,6 +18,7 @@ import { selectedUserReservesForMigration } from './v3MigrationSelectors';
 export type V3MigrationSlice = {
   //STATE
   selectedMigrationAssets: Record<string, boolean>;
+  migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
   // ACTIONS
   generatePermitPayloadForMigrationAsset: (
@@ -45,6 +46,7 @@ export const createV3MigrationSlice: StateCreator<
 > = (set, get) => {
   return {
     selectedMigrationAssets: {},
+    migrationServiceInstances: {},
     timestamp: 0,
     generatePermitPayloadForMigrationAsset: async ({ amount, underlyingAsset, deadline }) => {
       const user = get().account;
@@ -121,7 +123,7 @@ export const createV3MigrationSlice: StateCreator<
       const selectedReservers = selectedUserReservesForMigration(get(), get().timestamp);
       const permits = selectedReservers.map(({ reserve }, index) => ({
         aToken: reserve.aTokenAddress,
-        value: reserve.totalLiquidity,
+        value: reserve.totalLiquidity + 1000,
         deadline,
         signedPermit: signatures[index],
       }));
@@ -141,7 +143,16 @@ export const createV3MigrationSlice: StateCreator<
       return '0x01ce9bbcc0418614a8bba983fe79cf77211996f2';
     },
     getMigrationServiceInstance: () => {
-      return new V3MigrationHelperService(get().jsonRpcProvider(), get().getMigratorAddress());
+      const address = get().getMigratorAddress();
+      const migratorInstance = get().migrationServiceInstances[address];
+      if (migratorInstance) {
+        return migratorInstance;
+      }
+      const provider = get().jsonRpcProvider();
+      const migratorAddress = get().getMigratorAddress();
+      const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress);
+      // TODO: don't forget to add maping here
+      return newMigratorInstance;
     },
     _testMigration: async () => {
       const someAddress = await get().getMigrationServiceInstance().testDeployment();

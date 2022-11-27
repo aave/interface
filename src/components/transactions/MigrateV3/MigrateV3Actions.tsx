@@ -16,7 +16,10 @@ export const MigrateV3Actions = () => {
 
   return (
     <div>
-      <button onClick={() => approval(getApprovePermitsForSelectedAssets())}>Approve</button>
+      <button onClick={() => approval(getApprovePermitsForSelectedAssets())}>
+        Approve with permits
+      </button>
+      {/* <button onClick={() => }></button> */}
       <button onClick={action}>Migrate</button>
     </div>
   );

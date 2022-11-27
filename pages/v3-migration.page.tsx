@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -14,7 +13,7 @@ export default function V3Migration() {
   // const migrate = useRootStore((state) => state.migrateSelectedPositions);
   return (
     <div>
-      <div onClick={testMigration}>test migration</div>
+      <button onClick={() => testMigration()}>test migration</button>
       <div>supply</div>
       {user.userReservesData.map((reserve) => (
         <div
