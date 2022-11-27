@@ -1828,6 +1828,19 @@
       "ipfsHash": "QmSeoWPX2YMUchUqRwKdvA5TWFewLoBMm4oCtuG8yNAL7a",
       "originalHash": "0x401526716b075f2f211f4309ab895e7ada1c6e9e00c17ee13a4980776457ab21",
       "id": 125
+    },
+    {
+      "title": "Risk Parameter Updates for Aave v2 Polygon",
+      "shortDescription": "Update Polygon v2 Risk Parameters",
+      "author": "Llamaxyz & Chaos Labs (defijesus, Matthew Graham, Omer Arie Goldberg, Yonatan Haimowitz)",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-recommendations-for-aave-v2-polygon-2022-11-25/10826",
+      "created": "2022-11-26T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nIn response to recent market events and the …",
+      "basename": "RISK-PARAMS-UPDATE-AAVE-V2-POLYGON",
+      "description": "\n\n# Simple Summary\n\nIn response to recent market events and the resulting discussion on the [Aave governance forum](https://governance.aave.com/t/arc-risk-parameter-recommendations-for-aave-v2-eth-2022-11-22/10757) regarding the Aave communities risk appetite, Llama and Chaos Labs proposes to make a series of parameter changes to the Polygon Aave v2 Liquidity Pool.\n\n# Abstract\n\nWe specifically recommend freezing for GHST, BAL and SUSHI as a risk-off approach as the community can utilise the asset on the Polygon v3 deployment with enhanced risk tooling, such as supply and borrow caps. Borrowing is to be disabled for LINK, DPI and CRV Reserves.\n\n# Motivation\n\nIn response to recent market events and the continued contraction of liquidity across markets, this proposal seeks to reduce the risk profile across many higher volatile assets.\n\nIt is likely, LTV and Liquidation Threshold (LT) for highly liquid assets will also require amending in the near future. This will be managed via a separate submission.\n\n# Specification\n\nThe following risk parameter proposal is presented below:\n\n![](../assets/RISK-PARAMS-UPDATE-AAVE-V2-POLYGON/table.png)\n\n# Implementation\n\nThis proposal will reconfigure the following asset Reserves:\n\n* BAL\n* CRV\n* GHST\n* LINK\n* SUSHI\n* DPI\n\n\nThis proposal is written in an atomic manner that will unfreeze reserves in case [AIP-124](https://app.aave.com/governance/proposal/?proposalId=124) gets executed before.\n\nTo achieve this, `freezeReserve(address asset)`, `unfreezeReserve(address asset)` and `disableBorrowingOnReserve(address asset)` will be performed via the PoolConfigurator for each asset respectively to ensure a predictable final state.\n\n\n`POOL_CONFIGURATOR.freezeReserve(address asset)`\n`POOL_CONFIGURATOR.unfreezeReserve(address asset)`\n`POOL_CONFIGURATOR.disableBorrowingOnReserve(address asset)`\n\n\nImplementation can be found [here](https://github.com/defijesus/risk-params-update-v2-polygon)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmdQvZP3gQGHmHDR4QU7QjU7JG9miRqA1wxTVatNrMQee3",
+      "originalHash": "0xdff78c5c3bbca49817d979701bb606c9779f290360755dd451d8e78c2f4444d0",
+      "id": 126
     }
   ]
 }
