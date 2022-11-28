@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -43,6 +44,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
+        {reserve.symbol === 'renFIL' && <RenFILToolTip />}
       </ListColumn>
 
       <ListColumn>
