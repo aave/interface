@@ -3,6 +3,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
+import { RenFILToolTip } from '../../../components/infoTooltips/RenFILToolTip';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
 interface ListMobileItemWrapperProps {
@@ -43,6 +44,8 @@ export const ListMobileItemWrapper = ({
           <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
         ) : symbol === 'AMPL' ? (
           <AMPLToolTip />
+        ) : symbol === 'renFIL' ? (
+          <RenFILToolTip />
         ) : undefined
       }
       loading={loading}
