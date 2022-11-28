@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
-import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
@@ -21,7 +20,6 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
   const theme = useTheme();
 
   const {
-    ghoDiscountRatePercent,
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
@@ -100,7 +98,6 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
               value={borrowAPYWithMaxDiscount}
               variant="secondary14"
             />
-            <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
           </Box>
         </Row>
         <Button

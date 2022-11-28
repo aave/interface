@@ -295,13 +295,10 @@ msgstr "Available rewards"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Available to borrow"
-
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-msgid "Available to mint"
-msgstr "Available to mint"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1340,7 +1337,6 @@ msgstr "Ok, I got it"
 msgid "Operation not supported"
 msgstr "Operation not supported"
 
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
 msgstr "Oracle price"
@@ -1399,6 +1395,7 @@ msgstr "Pool addresses provider is not registered"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Price"
 msgstr "Price"
 
@@ -1842,6 +1839,10 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
+msgstr "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
