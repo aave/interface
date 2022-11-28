@@ -268,11 +268,11 @@ export const useTransactionHandler = ({
       const timeout = setTimeout(() => {
         setLoadingTxns(true);
         return handleGetTxns()
-          .then(async (data) => {
+          .then(async (txs) => {
             if (!mounted.current) return;
-            setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+            setApprovalTx(txs.find((tx) => tx.txType === 'ERC20_APPROVAL'));
             setActionTx(
-              data.find((tx) =>
+              txs.find((tx) =>
                 [
                   'DLP_ACTION',
                   'REWARD_ACTION',
@@ -287,14 +287,20 @@ export const useTransactionHandler = ({
               txHash: undefined,
             });
             setTxError(undefined);
-            let gas: GasType | null = null;
+            let gasLimit = 0;
             try {
-              gas = await data[data.length - 1].gas();
+              for (const tx of txs) {
+                const txGas = await tx.gas();
+                // If permit is available, use regular action for estimation but exclude the approval tx
+                if (txGas && txGas.gasLimit && !(tryPermit && tx.txType === 'ERC20_APPROVAL')) {
+                  gasLimit = gasLimit + Number(txGas.gasLimit);
+                }
+              }
             } catch (error) {
               const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
               setTxError(parsedError);
             }
-            setGasLimit(gas?.gasLimit || '');
+            setGasLimit(gasLimit.toString() || '');
             setLoadingTxns(false);
           })
           .catch((error) => {
