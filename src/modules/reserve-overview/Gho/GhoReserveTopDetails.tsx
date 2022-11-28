@@ -16,11 +16,13 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { AddTokenDropdown } from '../AddTokenDropdown';
 import { TokenLinkDropdown } from '../TokenLinkDropdown';
@@ -36,6 +38,9 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
   const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const {
+    ghoDisplay: { facilitatorBucketLevel, maxAvailableFromFacilitator },
+  } = useRootStore();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -198,7 +203,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
       )}
       <TopInfoPanelItem title={<Trans>Market Cap</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value="4000000000"
+          value={facilitatorBucketLevel}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -206,9 +211,9 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Available to mint</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={3960000000}
+          value={maxAvailableFromFacilitator}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -216,7 +221,19 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Oracle price</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem
+        title={
+          <TextWithTooltip text={<Trans>Price</Trans>}>
+            <Trans>
+              The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is
+              different from using market pricing via oracles for other crypto assets. This creates
+              stabilizing arbitrage opportunities when the price of GHO fluctuates.
+            </Trans>
+          </TextWithTooltip>
+        }
+        loading={loading}
+        hideIcon
+      >
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <FormattedNumber
             value={1}
