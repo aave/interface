@@ -6,6 +6,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
+import { RenFILToolTip } from '../../../components/infoTooltips/RenFILToolTip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
@@ -56,7 +57,10 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
+        {frozen && symbol != 'renFIL' && (
+          <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
+        )}
+        {frozen && symbol == 'renFIL' && <RenFILToolTip />}
         {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
         {!borrowEnabled && <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
