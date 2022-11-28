@@ -100,7 +100,6 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
               value={borrowAPYWithMaxDiscount}
               variant="secondary14"
             />
-            <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
           </Box>
         </Row>
         <Button
