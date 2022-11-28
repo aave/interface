@@ -57,7 +57,7 @@ jobs:
 
   NotifyFailure:
     needs: [download-from-crowdin]
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     if: ${{ failure() }}
     steps:
       - id: text
