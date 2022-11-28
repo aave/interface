@@ -1,10 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { utils } from 'ethers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -28,15 +25,16 @@ export const SupplyActions = ({
   blocked,
   ...props
 }: SupplyActionProps) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const supply = useRootStore((state) => state.supply);
-  const supplyWithPermit = useRootStore((state) => state.supplyWithPermit);
-  const tryPermit =
-    currentMarketData.v3 &&
-    permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()];
+  const [supply, supplyWithPermit, tryPermit] = useRootStore((state) => [
+    state.supply,
+    state.supplyWithPermit,
+    state.tryPermit,
+  ]);
+  const usingPermit = tryPermit(poolAddress);
+
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit,
+      tryPermit: usingPermit,
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
@@ -79,7 +77,7 @@ export const SupplyActions = ({
       }
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit={tryPermit}
+      tryPermit={usingPermit}
       sx={sx}
       {...props}
     />
