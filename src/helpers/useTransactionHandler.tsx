@@ -47,7 +47,6 @@ export const useTransactionHandler = ({
   const { signTxData, sendTx, getTxError } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
-  const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const signERC20Approval = useRootStore((state) => state.signERC20Approval);
@@ -109,7 +108,7 @@ export const useTransactionHandler = ({
 
   const approval = async ({ amount, underlyingAsset, forceApprovalTx }: ApprovalProps) => {
     if (approvalTx) {
-      if (usePermit && amount && underlyingAsset && !forceApprovalTx) {
+      if (tryPermit && amount && underlyingAsset && !forceApprovalTx) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature
@@ -189,7 +188,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (approvalTx && usePermit && handleGetPermitTxns) {
+    if (approvalTx && tryPermit && handleGetPermitTxns) {
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
@@ -225,7 +224,7 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTx) && actionTx) {
+    if ((!tryPermit || !approvalTx) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
@@ -319,11 +318,10 @@ export const useTransactionHandler = ({
     approval,
     action,
     loadingTxns,
-    setUsePermit,
     requiresApproval: !!approvalTx,
     approvalTxState,
     mainTxState,
-    usePermit,
+    usePermit: tryPermit,
     actionTx,
     approvalTx,
   };
