@@ -259,7 +259,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           mb={3}
         >
           <FormattedNumber
-            value={canBorrow ? maxAmountToBorrow : '0'}
+            value={maxAmountToBorrow}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />
@@ -332,7 +332,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
         {canBorrow && (
           <Button
-            disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
+            disabled={user?.totalCollateralMarketReferenceCurrency === '0'}
             variant="contained"
             onClick={() => openBorrow(underlyingAsset)}
             fullWidth={downToXSM}
