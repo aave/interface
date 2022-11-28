@@ -296,3 +296,19 @@ jobs:
     with:
       PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
     secrets: inherit
+    
+  NotifyFailure:
+    needs: [update_domains_no_cypress,update_domains,cypress_app_functionality,cypress_additional_v3,cypress_additional_v2,cypress_full_v3,cypress_full_v2,deploy,next_js_analyze,cypress_smoke_v3,cypress_smoke_v2,build_staging,build]
+    runs-on: [self-hosted]
+    if: ${{ failure() }}
+    steps:
+      - id: text
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "out=${{ github.workflow }}:\t<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.run_id }}>\\n $(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq -c '.jobs | .[] | select( .conclusion | contains("failure"))' | jq -r '"- <\(.html_url)|\(.name)>\\n"' | tr '\n' ' ')" >> $GITHUB_OUTPUT
+    
+      - name: Webhook
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          body: '{"text": "${{ steps.text.outputs.out }}"}'
