@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -13,7 +14,7 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 
-export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
+export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
 
@@ -43,6 +44,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
+        {reserve.symbol === 'renFIL' && <RenFILToolTip />}
       </ListColumn>
 
       <ListColumn>
