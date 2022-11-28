@@ -18,3 +18,19 @@ jobs:
         uses: actions/checkout@v3
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v2
+        
+  NotifyFailure:
+    needs: [dependency-review]
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    steps:
+      - id: text
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "out=${{ github.workflow }}:\t<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.run_id }}>\\n $(gh api /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq -c '.jobs | .[] | select( .conclusion | contains("failure"))' | jq -r '"- <\(.html_url)|\(.name)>\\n"' | tr '\n' ' ')" >> $GITHUB_OUTPUT
+    
+      - name: Webhook
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          body: '{"text": "${{ steps.text.outputs.out }}"}'
