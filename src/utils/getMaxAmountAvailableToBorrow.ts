@@ -73,7 +73,6 @@ export function getMaxAmountAvailableToBorrow(
  * @param user
  */
 export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse) {
-  // TO-DO: Factor in facilitator cap
   const maxUserAmountToMint = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
 
   const shouldAddMargin =

@@ -17,10 +17,10 @@ type GhoReserveConfigurationProps = {
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
   const {
-    ghoFacilitatorBucketLevel,
-    ghoFacilitatorBucketCapacity,
-    ghoComputed: { percentageOfGhoMinted, maxAvailableFromFacilitator },
+    ghoComputed: { percentageOfGhoMinted },
+    ghoDisplay: { facilitatorBucketLevel, facilitatorBucketCapacity, maxAvailableFromFacilitator },
   } = useRootStore();
+
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
       <Box
@@ -141,7 +141,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               }
             >
               <Box>
-                <FormattedNumber value={ghoFacilitatorBucketLevel} variant="main16" compact />
+                <FormattedNumber value={facilitatorBucketLevel} variant="main16" compact />
                 <Typography
                   component="span"
                   color="text.primary"
@@ -150,10 +150,10 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={ghoFacilitatorBucketCapacity} variant="main16" />
+                <FormattedNumber value={facilitatorBucketCapacity} variant="main16" />
               </Box>
               <Box>
-                <ReserveSubheader value={ghoFacilitatorBucketLevel} />
+                <ReserveSubheader value={facilitatorBucketLevel} />
                 <Typography
                   component="span"
                   color="text.secondary"
@@ -162,7 +162,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <ReserveSubheader value={ghoFacilitatorBucketCapacity} />
+                <ReserveSubheader value={facilitatorBucketCapacity} />
               </Box>
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
