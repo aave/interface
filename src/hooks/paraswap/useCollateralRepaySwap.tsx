@@ -40,11 +40,11 @@ export const useCollateralRepaySwap = ({
 }: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [inputAmount, setInputAmount] = useState<string>('');
-  const [outputAmount, setOutputAmount] = useState<string>('');
-  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('');
-  const [inputAmountUSD, setInputAmountUSD] = useState<string>('');
-  const [route, setRoute] = useState<OptimalRate | undefined>(undefined);
+  const [inputAmount, setInputAmount] = useState<string>('0');
+  const [outputAmount, setOutputAmount] = useState<string>('0');
+  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('0');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
+  const [route, setRoute] = useState<OptimalRate>();
 
   const swapInData = useMemo(() => {
     const swapData: SwapData = {
