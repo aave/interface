@@ -145,7 +145,11 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
                     <Box sx={{ display: 'flex' }}>
-                      <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} />
+                      <TokenLinkDropdown
+                        poolReserve={reserve}
+                        downToSM={downToSM}
+                        hideAToken={true}
+                      />
                       {connected && (
                         <AddTokenDropdown
                           poolReserve={reserve}
@@ -154,6 +158,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                           addERC20Token={addERC20Token}
                           currentChainId={currentChainId}
                           connectedChainId={connectedChainId}
+                          hideAToken={true}
                         />
                       )}
                     </Box>
@@ -179,7 +184,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                 <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
               ) : (
                 <Box sx={{ display: 'flex' }}>
-                  <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} />
+                  <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} hideAToken={true} />
                   {connected && (
                     <AddTokenDropdown
                       poolReserve={reserve}
@@ -188,6 +193,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                       addERC20Token={addERC20Token}
                       currentChainId={currentChainId}
                       connectedChainId={connectedChainId}
+                      hideAToken={true}
                     />
                   )}
                 </Box>
