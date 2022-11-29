@@ -247,30 +247,24 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           symbol={poolReserve.symbol}
         />
       </Row>
-
-      <Row
-        caption={
-          <AvailableTooltip
-            variant="description"
-            text={<Trans>Available to borrow</Trans>}
-            capType={CapType.borrowCap}
-          />
-        }
-        mb={3}
-      >
-        {canBorrow ? (
+      {canBorrow && (
+        <Row
+          caption={
+            <AvailableTooltip
+              variant="description"
+              text={<Trans>Available to borrow</Trans>}
+              capType={CapType.borrowCap}
+            />
+          }
+          mb={3}
+        >
           <FormattedNumber
-            value={canBorrow ? maxAmountToBorrow : '0'}
+            value={maxAmountToBorrow}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />
-        ) : (
-          <Typography variant="secondary14" color="text.secondary">
-            <Trans>Unavailable</Trans>
-          </Typography>
-        )}
-      </Row>
-
+        </Row>
+      )}
       {balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
         <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
@@ -335,15 +329,18 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
-        <Button
-          disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
-          variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
-          fullWidth={downToXSM}
-          data-cy={'borrowButton'}
-        >
-          <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
-        </Button>
+
+        {canBorrow && (
+          <Button
+            disabled={user?.totalCollateralMarketReferenceCurrency === '0'}
+            variant="contained"
+            onClick={() => openBorrow(underlyingAsset)}
+            fullWidth={downToXSM}
+            data-cy={'borrowButton'}
+          >
+            <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
+          </Button>
+        )}
       </Stack>
       {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
       {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}

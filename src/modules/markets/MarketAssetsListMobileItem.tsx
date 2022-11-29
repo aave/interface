@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -63,8 +64,14 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
-          <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
+          {Number(reserve.totalDebt) > 0 ? (
+            <>
+              <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
+              <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
+            </>
+          ) : (
+            <NoData variant={'secondary14'} color="text.secondary" />
+          )}
         </Box>
       </Row>
       <Row
@@ -79,13 +86,16 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
-          incentives={reserve.vIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="secondary14"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
+            incentives={reserve.vIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="secondary14"
+          />
+          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+        </Box>
       </Row>
       <Row
         caption={
@@ -99,13 +109,16 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         mb={4}
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
-          incentives={reserve.sIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="secondary14"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
+            incentives={reserve.sIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="secondary14"
+          />
+          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+        </Box>
       </Row>
 
       <Button
