@@ -1,4 +1,4 @@
-import { ChainId, ERC20Service, EthereumTransactionTypeExtended } from '@aave/contract-helpers';
+import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
   constructBuildTx,
@@ -8,7 +8,6 @@ import {
   TransactionParams,
 } from '@paraswap/sdk';
 import { RateOptions } from '@paraswap/sdk/dist/rates';
-import { constants, ethers } from 'ethers';
 import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
@@ -39,44 +38,10 @@ type SwapRateParams = {
   outputAmountUSD: string;
 };
 
-type SwapTransactionParams = SwapRateParams & {
+export type SwapTransactionParams = SwapRateParams & {
   swapCallData: string;
   augustus: string;
 };
-
-type GetSwapCallDataProps = {
-  srcToken: string;
-  srcDecimals: number;
-  destToken: string;
-  destDecimals: number;
-  user: string;
-  route: OptimalRate;
-  max?: boolean;
-  chainId: ChainId;
-  maxSlippage: number;
-};
-
-type GetSwapAndRepayCallDataProps = {
-  srcToken: string;
-  srcDecimals: number;
-  destToken: string;
-  destDecimals: number;
-  user: string;
-  route: OptimalRate;
-  max?: boolean;
-  chainId: ChainId;
-  maxSlippage: number;
-};
-
-export interface ParaSwapParams {
-  swapInData: SwapData;
-  swapOutData: SwapData;
-  userAddress: string;
-  chainId: ChainId;
-  maxSlippage: number;
-  max: boolean;
-  swapVariant: SwapVariant;
-}
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -115,10 +80,8 @@ export const MESSAGE_MAP: { [key: string]: string } = {
 };
 
 /**
- * Uses the Paraswap SDK to fetch the transaction parameters for a 'Sell', or 'Exact In' swap.
- * This means that swap in amount is fixed, and the slippage will be applied to the amount received.
- * There are two steps in fetching the transaction parameters. First an optimal route is determined
- * using the Paraswap SDK. Then the transaction parameters are fetched using the optimal route.
+ * Uses the Paraswap SDK to build the transaction parameters for a 'Sell', or 'Exact In' swap.
+ * @param {OptimalRate} route
  * @param {SwapData} swapIn
  * @param {SwapData} swapOut
  * @param {ChainId} chainId
@@ -128,52 +91,14 @@ export const MESSAGE_MAP: { [key: string]: string } = {
  * @returns {Promise<SwapTransactionParams>}
  */
 export async function fetchExactInTxParams(
+  route: OptimalRate,
   swapIn: SwapData,
   swapOut: SwapData,
   chainId: ChainId,
   userAddress: string,
-  maxSlippage: number,
-  max?: boolean
+  maxSlippage: number
 ): Promise<SwapTransactionParams> {
-  if (!swapIn.amount || swapIn.amount === '0' || isNaN(+swapIn.amount)) {
-    return {
-      swapCallData: '',
-      augustus: '',
-      inputAmount: '0',
-      outputAmount: '0',
-      inputAmountUSD: '0',
-      outputAmountUSD: '0',
-    };
-  }
-
-  let swapInAmount = valueToBigNumber(swapIn.amount);
-  if (max && swapIn.supplyAPY !== '0') {
-    swapInAmount = swapInAmount.plus(
-      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
-    );
-  }
-
-  const amount = normalizeBN(swapInAmount, swapIn.decimals * -1);
-
-  const options: RateOptions = {
-    partner: 'aave',
-  };
-
-  if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleSwap];
-  }
-
   const swapper = ExactInSwapper(chainId);
-  const route = await swapper.getRate(
-    amount.toFixed(0),
-    swapIn.underlyingAsset,
-    swapIn.decimals,
-    swapOut.underlyingAsset,
-    swapOut.decimals,
-    userAddress,
-    options
-  );
-
   const { swapCallData, augustus, destAmountWithSlippage } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
@@ -195,33 +120,23 @@ export async function fetchExactInTxParams(
 }
 
 /**
- * Uses the Paraswap SDK to fetch the swap rate for a 'Sell', or 'Exact In' swap.
- * This means that swap in amount is fixed, and the slippage will be applied to the amount received.
+ * Uses the Paraswap SDK to fetch the route for a 'Sell', or 'Exact In' swap.
+ * The swap in amount is fixed, and the slippage will be applied to the amount received.
  * @param {SwapData} swapIn
  * @param {SwapData} swapOut
  * @param {ChainId} chainId
  * @param {string} userAddress
  * @param {number} maxSlippage
  * @param {boolean} [max]
- * @returns {Promise<SwapRateParams>}
+ * @returns {Promise<OptimalRate>}
  */
 export async function fetchExactInRate(
   swapIn: SwapData,
   swapOut: SwapData,
   chainId: ChainId,
   userAddress: string,
-  maxSlippage: number,
   max?: boolean
-): Promise<SwapRateParams> {
-  if (!swapIn.amount || swapIn.amount === '0' || isNaN(+swapIn.amount)) {
-    return {
-      inputAmount: '0',
-      outputAmount: '0',
-      inputAmountUSD: '0',
-      outputAmountUSD: '0',
-    };
-  }
-
+): Promise<OptimalRate> {
   let swapInAmount = valueToBigNumber(swapIn.amount);
   if (max && swapIn.supplyAPY !== '0') {
     swapInAmount = swapInAmount.plus(
@@ -240,7 +155,7 @@ export async function fetchExactInRate(
   }
 
   const swapper = ExactInSwapper(chainId);
-  const route = await swapper.getRate(
+  return await swapper.getRate(
     amount.toFixed(0),
     swapIn.underlyingAsset,
     swapIn.decimals,
@@ -249,79 +164,27 @@ export async function fetchExactInRate(
     userAddress,
     options
   );
-
-  let destAmount = Number(route.destAmount) / 10 ** swapOut.decimals;
-  destAmount = destAmount - destAmount * (Number(maxSlippage) / 100);
-
-  return {
-    inputAmount: normalize(route.srcAmount, swapIn.decimals),
-    outputAmount: destAmount.toString(),
-    inputAmountUSD: route.srcUSD,
-    outputAmountUSD: route.destUSD,
-  };
 }
 
 /**
- * Uses the Paraswap SDK to fetch the transaction parameters for a 'Buy', or 'Exact Out' swap.
- * This means that amount received is fixed, and positive slippage will be applied to the input amount.
- * There are two steps in fetching the transaction parameters. First an optimal route is determined
- * using the Paraswap SDK. Then the transaction parameters are fetched using the optimal route.
+ * Uses the Paraswap SDK to build the transaction parameters for a 'Buy', or 'Exact Out' swap.
+ * @param {OptimalRate} route
  * @param {SwapData} swapIn
  * @param {SwapData} swapOut
  * @param {ChainId} chainId
  * @param {string} userAddress
  * @param {number} maxSlippage
- * @param {boolean} max
  * @returns {Promise<SwapTransactionParams>}
  */
 export async function fetchExactOutTxParams(
+  route: OptimalRate,
   swapIn: SwapData,
   swapOut: SwapData,
   chainId: ChainId,
   userAddress: string,
-  maxSlippage: number,
-  max?: boolean
+  maxSlippage: number
 ): Promise<SwapTransactionParams> {
-  if (!swapOut.amount || swapOut.amount === '0' || isNaN(+swapOut.amount)) {
-    return {
-      swapCallData: '',
-      augustus: '',
-      inputAmount: '0',
-      outputAmount: '0',
-      inputAmountUSD: '0',
-      outputAmountUSD: '0',
-    };
-  }
-
-  let swapOutAmount = valueToBigNumber(swapOut.amount);
-  if (max) {
-    // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
-    swapOutAmount = swapOutAmount.plus(
-      swapOutAmount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24)
-    );
-  }
-  const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
-
-  const options: RateOptions = {
-    partner: 'aave',
-  };
-
-  if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleBuy];
-  }
-
   const swapper = ExactOutSwapper(chainId);
-
-  const route = await swapper.getRate(
-    amount.toFixed(0),
-    swapIn.underlyingAsset,
-    swapIn.decimals,
-    swapOut.underlyingAsset,
-    swapOut.decimals,
-    userAddress,
-    options
-  );
-
   const { swapCallData, augustus, srcAmountWithSlippage } = await swapper.getTransactionParams(
     swapIn.underlyingAsset,
     swapIn.decimals,
@@ -351,25 +214,15 @@ export async function fetchExactOutTxParams(
  * @param {string} userAddress
  * @param {number} maxSlippage
  * @param {boolean} max
- * @returns {Promise<SwapRateParams>}
+ * @returns {Promise<OptimalRate>}
  */
 export async function fetchExactOutRate(
   swapIn: SwapData,
   swapOut: SwapData,
   chainId: ChainId,
   userAddress: string,
-  maxSlippage: number,
   max: boolean
-): Promise<SwapRateParams> {
-  if (!swapOut.amount || swapOut.amount === '0' || isNaN(+swapOut.amount)) {
-    return {
-      inputAmount: '0',
-      outputAmount: '0',
-      inputAmountUSD: '0',
-      outputAmountUSD: '0',
-    };
-  }
-
+): Promise<OptimalRate> {
   let swapOutAmount = valueToBigNumber(swapOut.amount);
   if (max) {
     // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
@@ -389,7 +242,7 @@ export async function fetchExactOutRate(
 
   const swapper = ExactOutSwapper(chainId);
 
-  const route = await swapper.getRate(
+  return await swapper.getRate(
     amount.toFixed(0),
     swapIn.underlyingAsset,
     swapIn.decimals,
@@ -398,16 +251,6 @@ export async function fetchExactOutRate(
     userAddress,
     options
   );
-
-  let srcAmount = Number(route.srcAmount) / 10 ** swapOut.decimals;
-  srcAmount = srcAmount + srcAmount * (Number(maxSlippage) / 100);
-
-  return {
-    inputAmount: srcAmount.toString(),
-    outputAmount: normalize(route.destAmount, swapOut.decimals),
-    inputAmountUSD: route.srcUSD,
-    outputAmountUSD: route.destUSD,
-  };
 }
 
 const ExactInSwapper = (chainId: ChainId) => {
@@ -445,22 +288,36 @@ const ExactInSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const { swapCallData, augustus, destAmountWithSlippage } = await getSwapCallData({
-      srcToken,
-      srcDecimals,
-      destToken,
-      destDecimals,
-      user,
-      route,
-      chainId: chainId,
-      maxSlippage,
-    });
+    const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
+      .multipliedBy(100 - maxSlippage)
+      .dividedBy(100)
+      .toFixed(0);
 
-    return {
-      swapCallData,
-      augustus,
-      destAmountWithSlippage,
-    };
+    try {
+      const params = await paraSwap.buildTx(
+        {
+          srcToken,
+          srcDecimals,
+          srcAmount: route.srcAmount,
+          destToken,
+          destDecimals,
+          destAmount: destAmountWithSlippage,
+          priceRoute: route,
+          userAddress: user,
+          partner: 'aave',
+        },
+        { ignoreChecks: true }
+      );
+
+      return {
+        swapCallData: (params as TransactionParams).data,
+        augustus: (params as TransactionParams).to,
+        destAmountWithSlippage,
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error('Error building transaction parameters');
+    }
   };
 
   return {
@@ -504,128 +361,40 @@ const ExactOutSwapper = (chainId: ChainId) => {
     route: OptimalRate,
     maxSlippage: number
   ) => {
-    const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
-      srcToken,
-      srcDecimals,
-      destToken,
-      destDecimals,
-      user,
-      route,
-      chainId,
-      maxSlippage,
-    });
+    const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
+      .multipliedBy(100 + maxSlippage)
+      .dividedBy(100)
+      .toFixed(0);
 
-    return {
-      swapCallData,
-      augustus,
-      srcAmountWithSlippage,
-    };
+    try {
+      const params = await paraSwap.buildTx(
+        {
+          srcToken,
+          destToken,
+          srcAmount: srcAmountWithSlippage,
+          destAmount: route.destAmount,
+          priceRoute: route,
+          userAddress: user,
+          partner: 'aave',
+          srcDecimals,
+          destDecimals,
+        },
+        { ignoreChecks: true }
+      );
+
+      return {
+        swapCallData: (params as TransactionParams).data,
+        augustus: (params as TransactionParams).to,
+        srcAmountWithSlippage,
+      };
+    } catch (e) {
+      console.log(e);
+      throw new Error('Error building transaction parameters');
+    }
   };
 
   return {
     getRate,
     getTransactionParams,
   };
-};
-
-const getSwapCallData = async ({
-  srcToken,
-  srcDecimals,
-  destToken,
-  destDecimals,
-  user,
-  route,
-  chainId,
-  maxSlippage,
-}: GetSwapCallDataProps) => {
-  const paraSwap = getParaswap(chainId);
-  const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
-    .multipliedBy(100 - maxSlippage)
-    .dividedBy(100)
-    .toFixed(0);
-
-  try {
-    const params = await paraSwap.buildTx(
-      {
-        srcToken,
-        destToken,
-        srcAmount: route.srcAmount,
-        destAmount: destAmountWithSlippage,
-        priceRoute: route,
-        userAddress: user,
-        partner: 'aave',
-        srcDecimals,
-        destDecimals,
-      },
-      { ignoreChecks: true }
-    );
-
-    return {
-      swapCallData: (params as TransactionParams).data,
-      augustus: (params as TransactionParams).to,
-      destAmountWithSlippage,
-    };
-  } catch (e) {
-    console.log(e);
-    throw new Error('Error getting txParams');
-  }
-};
-
-const getRepayCallData = async ({
-  srcToken,
-  srcDecimals,
-  destToken,
-  destDecimals,
-  user,
-  route,
-  chainId,
-  maxSlippage,
-}: GetSwapAndRepayCallDataProps) => {
-  const paraSwap = getParaswap(chainId);
-  const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-    .multipliedBy(100 + maxSlippage)
-    .dividedBy(100)
-    .toFixed(0);
-
-  try {
-    const params = await paraSwap.buildTx(
-      {
-        srcToken,
-        destToken,
-        srcAmount: srcAmountWithSlippage,
-        destAmount: route.destAmount,
-        priceRoute: route,
-        userAddress: user,
-        partner: 'aave',
-        srcDecimals,
-        destDecimals,
-      },
-      { ignoreChecks: true }
-    );
-
-    return {
-      swapCallData: (params as TransactionParams).data,
-      augustus: (params as TransactionParams).to,
-      srcAmountWithSlippage,
-    };
-  } catch (e) {
-    console.log(e);
-    throw new Error('Error getting txParams');
-  }
-};
-
-export const fetchTxParams = async (
-  swapIn: SwapData,
-  swapOut: SwapData,
-  chainId: ChainId,
-  userAddress: string,
-  maxSlippage: number,
-  swapVariant: SwapVariant,
-  max?: boolean
-): Promise<SwapTransactionParams> => {
-  if (swapVariant === 'exactIn') {
-    return await fetchExactInTxParams(swapIn, swapOut, chainId, userAddress, maxSlippage, max);
-  } else {
-    return await fetchExactOutTxParams(swapIn, swapOut, chainId, userAddress, maxSlippage, max);
-  }
 };

@@ -101,7 +101,7 @@ export function CollateralRepayModalContent({
     isMaxSelected &&
     valueToBigNumber(tokenToRepayWithBalance).gte(collateralAmountRequiredToCoverDebt);
 
-  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, loading, paraswapParams } =
+  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, loading, buildTxFn } =
     useCollateralRepaySwap({
       chainId: currentNetworkConfig.underlyingChainId || currentChainId,
       userAddress: currentAccount,
@@ -302,7 +302,7 @@ export function CollateralRepayModalContent({
         rateMode={debtType}
         blocked={blockingError !== undefined}
         loading={loadingSkeleton}
-        paraswapParams={paraswapParams}
+        buildTxFn={buildTxFn}
       />
     </>
   );

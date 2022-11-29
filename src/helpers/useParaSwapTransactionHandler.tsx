@@ -1,6 +1,6 @@
 import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
-import { useEffect, useRef, useState } from 'react';
+import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -10,11 +10,13 @@ export const MOCK_SIGNED_HASH = 'Signed correctly';
 
 interface UseParaSwapTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
+  deps: DependencyList;
   skip?: boolean;
 }
 
 export const useParaSwapTransactionHandler = ({
   handleGetTxns,
+  deps,
   skip,
 }: UseParaSwapTransactionHandlerProps) => {
   const {
@@ -203,7 +205,7 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip]);
+  }, [skip, ...deps]);
 
   return {
     approval,

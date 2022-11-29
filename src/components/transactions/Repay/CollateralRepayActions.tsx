@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { fetchTxParams, ParaSwapParams } from 'src/hooks/paraswap/common';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -31,7 +31,6 @@ export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
 
 export const CollateralRepayActions = ({
   repayAmount,
-  repayWithAmount,
   poolReserve,
   fromAssetData,
   isWrongNetwork,
@@ -42,23 +41,15 @@ export const CollateralRepayActions = ({
   useFlashLoan,
   blocked,
   loading,
-  paraswapParams,
+  buildTxFn,
   ...props
-}: CollateralRepayBaseProps & { paraswapParams: ParaSwapParams }) => {
+}: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useParaSwapTransactionHandler({
       handleGetTxns: async () => {
-        const route = await fetchTxParams(
-          paraswapParams.swapInData,
-          paraswapParams.swapOutData,
-          paraswapParams.chainId,
-          paraswapParams.userAddress,
-          paraswapParams.maxSlippage,
-          paraswapParams.swapVariant,
-          paraswapParams.max
-        );
+        const route = await buildTxFn();
         return paraswapRepayWithCollateral({
           repayAllDebt,
           repayAmount: route.outputAmount,
@@ -74,6 +65,13 @@ export const CollateralRepayActions = ({
           augustus: route.augustus,
         });
       },
+      deps: [
+        repayAmount,
+        poolReserve.underlyingAsset,
+        fromAssetData.underlyingAsset,
+        repayAllDebt,
+        useFlashLoan,
+      ],
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
     });
 
