@@ -190,7 +190,14 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                  <GhoBorrowAssetsListMobileItem {...item} />
+                  <GhoBorrowAssetsListMobileItem
+                    {...item}
+                    userVariableBorrows={
+                      user.userReservesData.find(
+                        (userReserve) => userReserve.reserve.symbol === 'GHO'
+                      )?.variableBorrows || 0
+                    }
+                  />
                 ) : (
                   <BorrowAssetsListMobileItem {...item} />
                 )
@@ -198,7 +205,14 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                <GhoBorrowAssetsListItem {...item} />
+                <GhoBorrowAssetsListItem
+                  {...item}
+                  userVariableBorrows={
+                    user.userReservesData.find(
+                      (userReserve) => userReserve.reserve.symbol === 'GHO'
+                    )?.variableBorrows || 0
+                  }
+                />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}

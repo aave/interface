@@ -26,6 +26,7 @@ export const GhoBorrowAssetsListItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
+  userVariableBorrows,
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
@@ -50,7 +51,7 @@ export const GhoBorrowAssetsListItem = ({
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
     normalizedBaseVariableBorrowRate,
-    availableBorrows,
+    availableBorrows + Number(userVariableBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount
   );
