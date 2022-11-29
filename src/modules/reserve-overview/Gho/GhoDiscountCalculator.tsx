@@ -9,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -24,11 +24,6 @@ import {
 
 type GhoDiscountCalculatorProps = {
   baseVariableBorrowRate: string;
-};
-
-type GhoMetaHeaderProps = {
-  title: ReactNode;
-  value: ReactNode | string;
 };
 
 type GhoAmountDisplayComponentProps = {
@@ -131,8 +126,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   const {
     ghoDiscountRatePercent,
     ghoDiscountedPerToken,
-    ghoMinDebtTokenBalanceForEligibleDiscount,
-    ghoMinDiscountTokenBalanceForEligibleDiscount,
     ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
   const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
@@ -146,22 +139,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
    * @param borrowedGho - The hypothetical amount of GHO
    */
   const calculateDiscountRate = async (stakedAave: number, borrowedGho: number) => {
-    let newRate: number;
     const discountableAmount = stakedAave * discountedPerToken;
-
-    // Calculate what the new rate will be
-    if (
-      stakedAave < ghoMinDiscountTokenBalanceForEligibleDiscount ||
-      borrowedGho < ghoMinDebtTokenBalanceForEligibleDiscount
-    ) {
-      newRate = 0;
-    } else {
-      if (discountableAmount >= borrowedGho) {
-        newRate = ghoDiscountRatePercent;
-      } else {
-        newRate = (discountableAmount * ghoDiscountRatePercent) / borrowedGho;
-      }
-    }
 
     // Calculate the new borrow APY
     const newBorrowAPY = weightedAverageAPY(
