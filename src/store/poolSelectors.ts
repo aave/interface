@@ -104,7 +104,7 @@ export const selectUserNonEmtpySummaryAndIncentive = (
 };
 
 export const selectUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
-  const user = selectUserNonEmtpySummaryAndIncentive(state, currentTimestamp);
+  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
   const borrowedPositions = user.userReservesData.filter(
     (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
   );

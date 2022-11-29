@@ -1,37 +1,64 @@
+import { useEffect } from 'react';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
 import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useUserReserves } from 'src/hooks/useUserReserves';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { useRootStore } from 'src/store/root';
+import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
+import { selectCurrentMarketV2Reserves } from 'src/store/v3MigrationSelectors';
 
 export default function V3Migration() {
   const { user, borrowPositions } = useUserReserves();
   const { openV3Migration } = useModalContext();
 
-  const toggleSelectedSupplyPosition = useRootStore((state) => state.toggleMigrationSelectedAsset);
+  const toggleSelectedSupplyPosition = useRootStore(
+    (state) => state.toggleMigrationSelectedSupplyAsset
+  );
+  const selectedSupplyAssets = useRootStore((state) => state.selectedMigrationSupplyAssets);
+
+  const toggleSelectedBorrowPosition = useRootStore(
+    (state) => state.toggleMigrationSelectedBorrowAsset
+  );
+  const selectedBorrowAssets = useRootStore((state) => state.selectedMigrationBorrowAssets);
   const testMigration = useRootStore((state) => state._testMigration);
-  const selectedAssets = useRootStore((state) => state.selectedMigrationAssets);
+
+  const currentTimestamp = useCurrentTimestamp(5);
+  const currentV2SuppliedPositions = useRootStore((state) =>
+    selectCurrentMarketV2Reserves(state, currentTimestamp)
+  );
+
+  // start refreshing v3 market at the same time
+  usePoolDataV3Subscription();
+
+  // always switch to default v2 in that case for polygon fork
+  useEffect(() => {}, []);
 
   return (
     <div>
       <button onClick={() => testMigration()}>test migration</button>
       <div>supply</div>
       {user.userReservesData.map((reserve) => (
-        <div
+        <button
           key={reserve.underlyingAsset}
           onClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
-          style={{ color: selectedAssets[reserve.underlyingAsset] ? 'red' : 'black' }}
+          style={{ color: selectedSupplyAssets[reserve.underlyingAsset] ? 'red' : 'black' }}
         >
           {reserve.underlyingAsset}:<b>{reserve.underlyingBalanceUSD}</b>
-        </div>
+        </button>
       ))}
       <div>borrow</div>
       {borrowPositions.map((reserve) => (
-        <div key={reserve.underlyingAsset}>{reserve.variableBorrowsUSD}</div>
+        <button
+          key={reserve.underlyingAsset}
+          onClick={() => toggleSelectedBorrowPosition(reserve.underlyingAsset)}
+          style={{ color: selectedBorrowAssets[reserve.underlyingAsset] ? 'red' : 'black' }}
+        >
+          {reserve.variableBorrowsUSD}
+        </button>
       ))}
       <button onClick={openV3Migration}>Migrate</button>
     </div>

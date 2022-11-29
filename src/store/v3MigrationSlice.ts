@@ -17,7 +17,8 @@ import { selectedUserReservesForMigration } from './v3MigrationSelectors';
 
 export type V3MigrationSlice = {
   //STATE
-  selectedMigrationAssets: Record<string, boolean>;
+  selectedMigrationSupplyAssets: Record<string, boolean>;
+  selectedMigrationBorrowAssets: Record<string, boolean>;
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
   // ACTIONS
@@ -27,14 +28,15 @@ export type V3MigrationSlice = {
     }
   ) => Promise<string>;
   getApprovePermitsForSelectedAssets: () => Approval[];
-  toggleMigrationSelectedAsset: (assetName: string) => void;
+  toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
+  toggleMigrationSelectedBorrowAsset: (assetName: string) => void;
   getMigratorAddress: () => string;
   getMigrationServiceInstance: () => V3MigrationHelperService;
   migrateWithPermits: (
     signature: SignatureLike[],
     deadline: BigNumberish
   ) => EthereumTransactionTypeExtended[];
-  migrateWithoutPermits: () => EthereumTransactionTypeExtended[];
+  migrateWithoutPermits: () => Promise<EthereumTransactionTypeExtended[]>;
   _testMigration: () => void;
   // migrateSelectedPositions: () => void;
 };
@@ -46,7 +48,8 @@ export const createV3MigrationSlice: StateCreator<
   V3MigrationSlice
 > = (set, get) => {
   return {
-    selectedMigrationAssets: {},
+    selectedMigrationSupplyAssets: {},
+    selectedMigrationBorrowAssets: {},
     migrationServiceInstances: {},
     timestamp: 0,
     generatePermitPayloadForMigrationAsset: async ({ amount, underlyingAsset, deadline }) => {
@@ -96,13 +99,24 @@ export const createV3MigrationSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    toggleMigrationSelectedAsset: (assetName: string) => {
+    toggleMigrationSelectedSupplyAsset: (assetName: string) => {
       set((state) =>
         produce(state, (draft) => {
-          if (draft.selectedMigrationAssets[assetName]) {
-            delete draft.selectedMigrationAssets[assetName];
+          if (draft.selectedMigrationSupplyAssets[assetName]) {
+            delete draft.selectedMigrationSupplyAssets[assetName];
           } else {
-            draft.selectedMigrationAssets[assetName] = true;
+            draft.selectedMigrationSupplyAssets[assetName] = true;
+          }
+        })
+      );
+    },
+    toggleMigrationSelectedBorrowAsset: (assetName: string) => {
+      set((state) =>
+        produce(state, (draft) => {
+          if (draft.selectedMigrationBorrowAssets[assetName]) {
+            delete draft.selectedMigrationBorrowAssets[assetName];
+          } else {
+            draft.selectedMigrationBorrowAssets[assetName] = true;
           }
         })
       );
@@ -110,14 +124,16 @@ export const createV3MigrationSlice: StateCreator<
     getApprovePermitsForSelectedAssets: () => {
       const timestamp = dayjs().unix();
       set({ timestamp });
-      return selectedUserReservesForMigration(get(), timestamp).map(({ reserve }): Approval => {
-        return {
-          // TODO: should we allow spending of exact ammount of the reserver?
-          amount: reserve.totalLiquidity,
-          underlyingAsset: reserve.aTokenAddress,
-          permitType: 'MIGRATOR',
-        };
-      });
+      return selectedUserReservesForMigration(get(), timestamp).map(
+        ({ reserve, underlyingBalance }): Approval => {
+          return {
+            // TODO: should we allow spending of exact ammount of the reserver?
+            amount: underlyingBalance,
+            underlyingAsset: reserve.aTokenAddress,
+            permitType: 'MIGRATOR',
+          };
+        }
+      );
     },
     migrateWithoutPermits: () => {
       const timestamp = dayjs().unix();
@@ -126,17 +142,18 @@ export const createV3MigrationSlice: StateCreator<
         aToken: string;
         deadline: number;
         amount: string;
-      }[] = selectedUserReservesForMigration(get(), timestamp).map(({ reserve }) => {
-        const deadline = Math.floor(Date.now() / 1000 + 3600);
-        return {
-          amount: reserve.totalLiquidity,
-          aToken: reserve.aTokenAddress,
-          // TODO: fow how long to approve?
-          deadline,
-        };
-      });
+      }[] = selectedUserReservesForMigration(get(), timestamp).map(
+        ({ reserve, underlyingBalance }) => {
+          const deadline = Math.floor(Date.now() / 1000 + 3600);
+          return {
+            amount: underlyingBalance,
+            aToken: reserve.aTokenAddress,
+            // TODO: fow how long to approve?
+            deadline,
+          };
+        }
+      );
       const user = get().account;
-      console.log(assets, user);
       return get().getMigrationServiceInstance().migrateNoBorrow({ assets, user });
     },
     migrateWithPermits: (signatures: SignatureLike[], deadline: BigNumberish) => {
@@ -149,13 +166,14 @@ export const createV3MigrationSlice: StateCreator<
       }));
       // branch out into flashloan or migrate no borrow
       // move that to separate instance and save cache the Migrator instance
+      console.log(permits, 'permits');
       const migratorHelperInstance = get().getMigrationServiceInstance();
       const user = get().account;
       const assets = permits.map((permit) => permit.aToken);
-      console.log('migrateNoBorrowWith permits');
       return migratorHelperInstance.migrateNoBorrowWithPermits({
         user,
         assets,
+        deadline,
         signedPermits: permits,
       });
     },

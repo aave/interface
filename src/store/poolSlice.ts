@@ -34,6 +34,8 @@ import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
+import { MarketDataType, marketsData } from 'src/ui-config/marketsConfig';
+import { availableMarkets, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -54,7 +56,8 @@ export interface PoolSlice {
       }
     >
   >;
-  refreshPoolData: () => Promise<void>;
+  refreshPoolData: (marketData?: MarketDataType) => Promise<void>;
+  refreshPoolV3Data: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
@@ -119,10 +122,11 @@ export const createPoolSlice: StateCreator<
   }
   return {
     data: new Map(),
-    refreshPoolData: async () => {
+    refreshPoolData: async (marketData?: MarketDataType) => {
       const account = get().account;
-      const currentMarketData = get().currentMarketData;
       const currentChainId = get().currentChainId;
+      const currentMarketData = marketData || get().currentMarketData;
+      console.log(get().currentMarketData, 'currentMarketData');
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),
@@ -192,6 +196,12 @@ export const createPoolSlice: StateCreator<
       } catch (e) {
         console.log('error fetching pool data', e);
       }
+    },
+    refreshPoolV3Data: async () => {
+      // how to determine which v2 markets to pool? for now always fetch polygon fork
+      const v3MarketData = marketsData[availableMarkets[11]];
+      console.log(marketsData);
+      // get().refreshPoolData(availableMarkets);
     },
     mint: async (args) => {
       if (!get().currentMarketData.addresses.FAUCET)

@@ -11,7 +11,7 @@ export const MigrateV3Actions = () => {
   const { approval, action } = useTransactionHandler({
     handleGetTxns: async () => migrateWithoutPermits(),
     handleGetPermitTxns: async (signatures, deadline) => migrateWithPermits(signatures, deadline),
-    tryPermit: false,
+    tryPermit: true,
   });
 
   const handleApproval = () => {

@@ -112,6 +112,7 @@ export const useTransactionHandler = ({
   };
 
   const approval = async (approvals?: Approval[]) => {
+    console.log(approvalTxes, 'approvalTxes');
     if (approvalTxes) {
       console.log(approvalTxes, 'approvalTxes');
       if (usePermit && approvals && approvals?.length > 0) {
@@ -189,7 +190,7 @@ export const useTransactionHandler = ({
               (param) =>
                 new Promise<TransactionResponse>(async (resolve, reject) => {
                   delete param.gasPrice;
-                  console.log;
+                  console.log(params, 'params');
                   processTx({
                     tx: () => sendTx(param),
                     successCallback: (txnResponse: TransactionResponse) => {
@@ -269,8 +270,11 @@ export const useTransactionHandler = ({
     if ((!usePermit || !approvalTxes) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
+        console.log(actionTx, 'actionTx');
         const params = await actionTx.tx();
-        delete params.gasPrice;
+        console.log(params, 'actionTx');
+        // delete params.gasPrice;
+        console.log(params);
         return processTx({
           tx: () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {
@@ -293,6 +297,7 @@ export const useTransactionHandler = ({
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        console.log(error, parsedError);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
