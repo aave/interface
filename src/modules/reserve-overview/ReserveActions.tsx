@@ -142,7 +142,6 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   } else {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable);
   }
-
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const maxAmountToSupply = displayGho
@@ -273,7 +272,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           mb={3}
         >
           <FormattedNumber
-            value={maxAmountToBorrow}
+            value={formattedMaxAmountToBorrow}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />
