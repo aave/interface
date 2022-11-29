@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import {
-  Alert,
   Box,
   FilledInput,
   Grid,
@@ -14,6 +13,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
 import {
   displayDiscountableAmount,
@@ -29,40 +29,6 @@ type GhoDiscountCalculatorProps = {
 type GhoMetaHeaderProps = {
   title: ReactNode;
   value: ReactNode | string;
-};
-
-const GhoMetaHeader: React.FC<GhoMetaHeaderProps> = ({ title, value }) => {
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        '&:not(:last-child)': {
-          pr: 4,
-          mr: 4,
-        },
-        ...(mdUp
-          ? {
-              '&:not(:last-child):not(.borderless)::after': {
-                content: '""',
-                height: '32px',
-                position: 'absolute',
-                right: 4,
-                top: 'calc(50% - 17px)',
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }
-          : {}),
-      }}
-    >
-      <Typography variant="subheader2" color="text.secondary">
-        {title}
-      </Typography>
-      {value}
-    </Box>
-  );
 };
 
 type GhoAmountDisplayComponentProps = {
@@ -158,7 +124,6 @@ const GhoAmountMobileDisplayComponent = ({
 export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
   const [stkAave, setStkAave] = useState<number>(0);
   const [ghoBorrow, setGhoBorrow] = useState<number>(0);
-  const [calculatedDiscountRate, setCalculatedDiscountRate] = useState<number>(0);
   const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
   const { breakpoints } = useTheme();
@@ -208,7 +173,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
 
     // Update local state
     setDiscountableGhoAmount(discountableAmount);
-    setCalculatedDiscountRate(newRate);
     setCalculatedBorrowAPY(newBorrowAPY);
   };
 
@@ -218,62 +182,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
 
   return (
     <>
-      <Alert severity="info">
-        <Trans>
-          Safety Module participants receive a discount on the GHO borrow interest rate.
-        </Trans>{' '}
-        <Link href="" underline="always">
-          <Trans>Learn more</Trans>
-        </Link>
-      </Alert>
-      <Box
-        sx={{
-          mt: 3,
-          mb: 10,
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
-        <GhoMetaHeader
-          title={<Trans>Discount on borrow APY</Trans>}
-          value={
-            <>
-              <FormattedNumber
-                value={calculatedDiscountRate}
-                percent
-                variant="main16"
-                sx={{ mr: 1 }}
-              />
-              <Typography component="span" variant="secondary16" color="text.secondary">
-                <Trans>off</Trans>
-              </Typography>
-            </>
-          }
-        />
-        <GhoMetaHeader
-          title={<Trans>APY with max discount</Trans>}
-          value={<FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="main16" />}
-        />
-        <GhoMetaHeader
-          title={<Trans>Discountable amount</Trans>}
-          value={
-            <Typography variant="main16" display="flex" alignItems="center">
-              <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
-              {discountedPerToken}
-              <Typography
-                component="span"
-                variant="secondary16"
-                color="text.secondary"
-                sx={{ mx: 1 }}
-              >
-                <Trans>to</Trans>
-              </Typography>{' '}
-              <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
-            </Typography>
-          }
-        />
-      </Box>
       <Paper sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
         <Typography
           variant="subheader2"
@@ -380,6 +288,63 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           </Grid>
         </Grid>
       </Paper>
+      <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', py: '40px' }}>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+          <Typography variant="secondary14" color="text.secondary">
+            <Trans>Discount parameters</Trans>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            pt: '12px',
+          }}
+        >
+          <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
+            <Typography variant="main16" display="flex" alignItems="center">
+              <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
+              {discountedPerToken}
+              <Typography
+                component="span"
+                variant="secondary16"
+                color="text.secondary"
+                sx={{ mx: 1 }}
+              >
+                <Trans>to</Trans>
+              </Typography>{' '}
+              <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
+            </Typography>
+          </ReserveOverviewBox>
+          <ReserveOverviewBox title={<Trans>Max discount on borrow rate</Trans>}>
+            <FormattedNumber
+              value={ghoDiscountRatePercent}
+              percent
+              variant="main16"
+              sx={{ mr: 1 }}
+              visibleDecimals={0}
+            />
+          </ReserveOverviewBox>
+          <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
+            <FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="main16" />
+          </ReserveOverviewBox>
+        </Box>
+        <Typography variant="caption" color="text.secondary" paddingTop="24px">
+          <Trans>
+            All rates and discountables are decided by Aave community and may be changed over time.
+            Check Governance for updates and vote.
+            <Link
+              href=""
+              sx={{ textDecoration: 'underline' }}
+              variant="caption"
+              color="text.secondary"
+            >
+              Learn more
+            </Link>
+          </Trans>
+        </Typography>
+      </Box>
     </>
   );
 };
