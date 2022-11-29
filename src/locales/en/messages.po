@@ -162,6 +162,10 @@ msgstr "All done!"
 msgid "All proposals"
 msgstr "All proposals"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "All rates and discountables are decided by Aave community and may be changed over time. Check Governance for updates and vote.<0>Learn more</0>"
+msgstr "All rates and discountables are decided by Aave community and may be changed over time. Check Governance for updates and vote.<0>Learn more</0>"
+
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
 msgstr "Allowance required action"
@@ -750,11 +754,14 @@ msgstr "Discount and discountable amount are determined by AaveDao and may be ch
 msgid "Discount details"
 msgstr "Discount details"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount on borrow APY"
-msgstr "Discount on borrow APY"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Discount info"
+msgstr "Discount info"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount parameters"
+msgstr "Discount parameters"
+
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discount program"
 msgstr "Discount program"
@@ -1093,7 +1100,6 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1176,6 +1182,10 @@ msgstr "Max"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Max discount on borrow rate"
+msgstr "Max discount on borrow rate"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
@@ -1571,7 +1581,6 @@ msgstr "SEE CHARTS"
 msgid "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
 msgstr "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Safety Module participants receive a discount on the GHO borrow interest rate."
 msgstr "Safety Module participants receive a discount on the GHO borrow interest rate."
@@ -2492,10 +2501,6 @@ msgstr "is an asset affected by rebasing. Visit the"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
 msgstr "of"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "off"
-msgstr "off"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
