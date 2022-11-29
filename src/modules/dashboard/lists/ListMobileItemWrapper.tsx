@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
+import { RenFILToolTip } from '../../../components/infoTooltips/RenFILToolTip';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
 interface ListMobileItemWrapperProps {
@@ -42,7 +43,9 @@ export const ListMobileItemWrapper = ({
         frozen ? (
           <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
         ) : symbol === 'AMPL' ? (
-          <AMPLWarning />
+          <AMPLToolTip />
+        ) : symbol === 'renFIL' ? (
+          <RenFILToolTip />
         ) : undefined
       }
       loading={loading}

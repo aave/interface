@@ -166,7 +166,7 @@ export default function ProposalPage({
       <ContentContainer>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ px: 6, pt: 4, pb: 12 }}>
+            <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
@@ -239,7 +239,14 @@ export default function ProposalPage({
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        img({ src, alt }) {
+                        img({ src: _src, alt }) {
+                          if (!_src) return null;
+                          const src = /^\.\.\//.test(_src)
+                            ? _src.replace(
+                                '../',
+                                'https://raw.githubusercontent.com/aave/aip/main/content/'
+                              )
+                            : _src;
                           return <CenterAlignedImage src={src} alt={alt} />;
                         },
                         a({ node, ...rest }) {

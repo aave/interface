@@ -76129,6 +76129,39 @@ var getProvider = (chainId) => {
   }
   return providers[chainId];
 };
+var ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
+var ustDisableProposal = 'https://app.aave.com/governance/proposal/75';
+var kncDisableProposal = 'https://app.aave.com/governance/proposal/69';
+var v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/112';
+var v2MainnetDisableProposal = 'https://app.aave.com/governance/proposal/111';
+var frozenProposalMap = {
+  ['UST' + 'proto_mainnet' /* proto_mainnet */]: ustDisableProposal,
+  ['KNC' + 'proto_mainnet' /* proto_mainnet */]: kncDisableProposal,
+  ['UNIDAIUSDC' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIWBTCUSDC' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIDAIWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIUSDCWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIAAVEWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIBATWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNICRVWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNILINKWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIMKRWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIRENWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNISNXWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIUNIWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIWBTCWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['UNIYFIWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['BPTWBTCWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['BPTBALWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
+  ['GHST' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['DPI' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['BAL' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['BAT' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['CVX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['DPI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['REN' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['ZRX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+};
 
 // src/modules/governance/utils/governanceProvider.tsx
 var governanceContract = new import_contract_helpers5.AaveGovernanceService(
