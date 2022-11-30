@@ -11,6 +11,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
+import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -95,15 +96,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               {!reserve.borrowingEnabled && (
                 <Warning sx={{ mb: '40px' }} severity="error">
-                  <Trans>
-                    Borrowing is disabled due to an Aave community decision.{' '}
-                    <Link
-                      href={getFrozenProposalLink(reserve.symbol, currentMarket)}
-                      sx={{ textDecoration: 'underline' }}
-                    >
-                      <Trans>More details</Trans>
-                    </Link>
-                  </Trans>
+                  <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />
                 </Warning>
               )}
               <BorrowInfo

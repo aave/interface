@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-22 00:19\n"
+"PO-Revision-Date: 2022-11-29 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -344,7 +344,7 @@ msgstr "Prestado"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Tomar prestado no está disponible actualmente para {0}."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr "Tomar prestado está deshabilitado debido a una decisión de la comunidad de Aave. <0>Más información</0>"
 
@@ -1789,6 +1789,10 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "Este activo está congelado debido a una decisión del Gobierno del Protocolo Aave. <0>More información</0>"
 
+#: src/components/infoTooltips/RenFILToolTip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
+msgstr "Este activo está congelado debido a una decisión del Gobierno del Protocolo Aave. El 20 de diciembre de 2022, renFIL ya no será compatible y no se podrá conectar de nuevo a su red nativa. Se recomienda retirar las posiciones de suministro y pagar las posiciones de préstamo para que renFIL se pueda convertir de nuevo a FIL antes de la fecha límite. Después de esta fecha, ya no será posible convertir renFIL a FIL. <0>Más detalles</0>"
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "Este activo está congelado debido a una decisión de la comunidad de Aave. <0>Más información</0>"
@@ -1905,7 +1909,6 @@ msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "No disponible"
 

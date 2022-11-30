@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-22 00:19\n"
+"PO-Revision-Date: 2022-11-29 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -344,7 +344,7 @@ msgstr ""
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Ο δανεισμός δεν είναι επί του παρόντος διαθέσιμος για {0}."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr ""
 
@@ -1790,6 +1790,10 @@ msgstr "Αυτό το περιουσιακό στοιχείο έχει φτάσ�
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
+#: src/components/infoTooltips/RenFILToolTip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
@@ -1906,7 +1910,6 @@ msgid "UNSTAKING {symbol}"
 msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "Μη διαθέσιμο"
 
