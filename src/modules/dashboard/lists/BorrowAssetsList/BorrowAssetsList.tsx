@@ -192,7 +192,11 @@ export const BorrowAssetsList = () => {
                 }) ? (
                   <GhoBorrowAssetsListMobileItem
                     {...item}
-                    userAvailableBorrows={maxBorrowAmount.toString()}
+                    userVariableBorrows={
+                      user.userReservesData.find(
+                        (userReserve) => userReserve.reserve.symbol === 'GHO'
+                      )?.variableBorrows || 0
+                    }
                   />
                 ) : (
                   <BorrowAssetsListMobileItem {...item} />
@@ -203,7 +207,11 @@ export const BorrowAssetsList = () => {
                 }) ? (
                 <GhoBorrowAssetsListItem
                   {...item}
-                  userAvailableBorrows={maxBorrowAmount.toString()}
+                  userVariableBorrows={
+                    user.userReservesData.find(
+                      (userReserve) => userReserve.reserve.symbol === 'GHO'
+                    )?.variableBorrows || 0
+                  }
                 />
               ) : (
                 <BorrowAssetsListItem {...item} />

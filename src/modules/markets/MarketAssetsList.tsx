@@ -189,15 +189,17 @@ export default function MarketAssetsList() {
         </ListHeaderWrapper>
       )}
 
-      {loading && <TableSkeleton isTableChangedToCards={isTableChangedToCards} />}
-      {!loading &&
+      {loading ? (
+        <TableSkeleton isTableChangedToCards={isTableChangedToCards} />
+      ) : (
         filteredData.map((reserve) =>
           isTableChangedToCards ? (
             <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
           ) : (
             <MarketAssetsListItem {...reserve} key={reserve.id} />
           )
-        )}
+        )
+      )}
       {showNoResults && <NoSearchResults searchTerm={searchTerm} sm={sm} />}
     </ListWrapper>
   );
@@ -206,27 +208,23 @@ export default function MarketAssetsList() {
 interface TableSkeletonProps {
   isTableChangedToCards: boolean;
 }
-const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) => {
-  if (isTableChangedToCards) {
-    return (
-      <>
-        <MarketAssetsListMobileItemLoader />
-        <MarketAssetsListMobileItemLoader />
-        <MarketAssetsListMobileItemLoader />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-      </>
-    );
-  }
-};
+
+const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) =>
+  isTableChangedToCards ? (
+    <>
+      <MarketAssetsListMobileItemLoader />
+      <MarketAssetsListMobileItemLoader />
+      <MarketAssetsListMobileItemLoader />
+    </>
+  ) : (
+    <>
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+    </>
+  );
 
 interface NoSearchResultsProps {
   searchTerm: string;

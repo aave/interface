@@ -1,10 +1,12 @@
 import { Box, Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
+import { RenFILToolTip } from '../../../components/infoTooltips/RenFILToolTip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
@@ -18,6 +20,7 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
+  borrowEnabled?: boolean;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
@@ -32,6 +35,7 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
+  borrowEnabled = true,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
@@ -56,8 +60,14 @@ export const ListItemWrapper = ({
               </Typography>
             </Tooltip>
           </Link>
-          {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
-          {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+          {frozen && symbol !== 'renFIL' && (
+            <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
+          )}
+          {frozen && symbol === 'renFIL' && <RenFILToolTip />}
+          {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
+          {!borrowEnabled && (
+            <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
+          )}
           {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
           {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
           {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}

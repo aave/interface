@@ -7,12 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
-import {
-  displayDiscountableAmount,
-  displayNonDiscountableAmount,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 type GhoDiscountCalculatorProps = {
   baseVariableBorrowRate: string;
