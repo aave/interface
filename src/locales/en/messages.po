@@ -2132,6 +2132,10 @@ msgstr "Wrong Network"
 msgid "YAE"
 msgstr "YAE"
 
+#: src/modules/governance/ProposalListItem.tsx
+msgid "You Voted"
+msgstr "You Voted"
+
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
