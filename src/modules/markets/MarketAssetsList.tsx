@@ -16,7 +16,7 @@ import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
 import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
-import { AssetListTitle } from './MarketAssetListTitle';
+import { MarketAssetListTitle } from './MarketAssetListTitle';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
@@ -138,7 +138,7 @@ export default function MarketAssetsList() {
   return (
     <ListWrapper
       titleComponent={
-        <AssetListTitle
+        <MarketAssetListTitle
           onSearchTermChange={setSearchTerm}
           marketTitle={currentMarketData.marketTitle}
         />
@@ -189,15 +189,17 @@ export default function MarketAssetsList() {
         </ListHeaderWrapper>
       )}
 
-      {loading && <TableSkeleton isTableChangedToCards={isTableChangedToCards} />}
-      {!loading &&
+      {loading ? (
+        <TableSkeleton isTableChangedToCards={isTableChangedToCards} />
+      ) : (
         filteredData.map((reserve) =>
           isTableChangedToCards ? (
             <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
           ) : (
             <MarketAssetsListItem {...reserve} key={reserve.id} />
           )
-        )}
+        )
+      )}
       {showNoResults && <NoSearchResults searchTerm={searchTerm} sm={sm} />}
     </ListWrapper>
   );
@@ -206,27 +208,23 @@ export default function MarketAssetsList() {
 interface TableSkeletonProps {
   isTableChangedToCards: boolean;
 }
-const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) => {
-  if (isTableChangedToCards) {
-    return (
-      <>
-        <MarketAssetsListMobileItemLoader />
-        <MarketAssetsListMobileItemLoader />
-        <MarketAssetsListMobileItemLoader />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
-      </>
-    );
-  }
-};
+
+const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) =>
+  isTableChangedToCards ? (
+    <>
+      <MarketAssetsListMobileItemLoader />
+      <MarketAssetsListMobileItemLoader />
+      <MarketAssetsListMobileItemLoader />
+    </>
+  ) : (
+    <>
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+      <MarketAssetsListItemLoader />
+    </>
+  );
 
 interface NoSearchResultsProps {
   searchTerm: string;
