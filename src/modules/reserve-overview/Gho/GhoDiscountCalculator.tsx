@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, OutlinedInput, Slider, Typography } from '@mui/material';
+import { Box, Grid, OutlinedInput, Slider, SvgIcon, Typography } from '@mui/material';
+import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -79,6 +80,35 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     calculateDiscountRate(stkAave, ghoBorrow);
   }, [stkAave, ghoBorrow]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
+  const determineHelperText = () => {
+    // TODO: determine these values
+    const maxDiscountReached = false;
+    const maxDiscountNotReached = false;
+    const maxGhoNotBorrowed = false;
+    const discountNotAvailable = false;
+    if (maxDiscountReached) return null;
+    if (discountNotAvailable)
+      return (
+        <Typography variant="helperText" component="p" color="warning.dark">
+          <Trans>Add stkAAVE to see borrow APY with the discount</Trans>
+        </Typography>
+      );
+    if (maxDiscountNotReached)
+      return (
+        <Typography variant="helperText" component="p" sx={{ color: '#669AFF' }}>
+          <Trans>
+            <u>+Add xx stkAAVE</u> to borrow at 1.6% (max discount)
+          </Trans>
+        </Typography>
+      );
+    if (maxGhoNotBorrowed)
+      return (
+        <Typography variant="helperText" component="p" color="text.secondary">
+          <Trans>You may borrow up to xx GHO at 1.6% (max discount)</Trans>
+        </Typography>
+      );
+  };
+
   const GhoDiscountParametersComponent: React.FC = () => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -152,7 +182,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         </Trans>
       </Typography>
       <Grid container spacing={8}>
-        <Grid item xs={6}>
+        <Grid item sm={6}>
           <Box mb={4}>
             <Typography variant="subheader2" gutterBottom>
               <Trans>Borrow amount</Trans>
@@ -202,28 +232,34 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             />
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item sm={6}>
           <Typography variant="subheader2" mb={1.5}>
             <Trans>GHO borrow APY</Trans>
           </Typography>
-          <FormattedNumber
-            value={baseBorrowRate}
-            percent
-            variant="display1"
-            component="div"
-            color="text.muted"
-            symbolsColor="text.muted"
-            mr={1}
-            sx={{ textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }}
-          />
-          <FormattedNumber
-            value={calculatedBorrowAPY}
-            percent
-            variant="display1"
-            component="div"
-            symbolsColor="text.primary"
-            sx={{ '.MuiTypography-root': { ml: 0 } }}
-          />
+          <Box display="flex" alignItems="flex-end" mb={2}>
+            <FormattedNumber
+              value={baseBorrowRate}
+              percent
+              variant="display1"
+              component="div"
+              color="text.muted"
+              symbolsColor="text.muted"
+              mr={1}
+              sx={{ textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }}
+            />
+            <FormattedNumber
+              value={calculatedBorrowAPY}
+              percent
+              variant="display1"
+              component="div"
+              symbolsColor="text.primary"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />
+            <SvgIcon fontSize="large" sx={{ ml: 1, mb: '-2px' }}>
+              <PercentIcon />
+            </SvgIcon>
+          </Box>
+          {determineHelperText()}
         </Grid>
       </Grid>
       <GhoDiscountParametersComponent />

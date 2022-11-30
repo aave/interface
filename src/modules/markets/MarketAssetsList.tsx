@@ -16,7 +16,7 @@ import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
 import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
-import { AssetListTitle } from './MarketAssetListTitle';
+import { MarketAssetListTitle } from './MarketAssetListTitle';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
@@ -138,7 +138,7 @@ export default function MarketAssetsList() {
   return (
     <ListWrapper
       titleComponent={
-        <AssetListTitle
+        <MarketAssetListTitle
           onSearchTermChange={setSearchTerm}
           marketTitle={currentMarketData.marketTitle}
         />

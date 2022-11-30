@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "<0>+Add xx stkAAVE</0> to borrow at 1.6% (max discount)"
+msgstr "<0>+Add xx stkAAVE</0> to borrow at 1.6% (max discount)"
+
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
 msgstr "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
@@ -117,6 +121,10 @@ msgstr "Action cannot be performed because the reserve is paused"
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Add stkAAVE to see borrow APY with the discount"
+msgstr "Add stkAAVE to see borrow APY with the discount"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
@@ -2375,6 +2383,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "You may borrow up to xx GHO at 1.6% (max discount)"
+msgstr "You may borrow up to xx GHO at 1.6% (max discount)"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"

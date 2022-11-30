@@ -18,7 +18,10 @@ interface MarketAssetListTitleProps {
   onSearchTermChange: (value: string) => void;
 }
 
-export const AssetListTitle = ({ marketTitle, onSearchTermChange }: MarketAssetListTitleProps) => {
+export const MarketAssetListTitle = ({
+  marketTitle,
+  onSearchTermChange,
+}: MarketAssetListTitleProps) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
