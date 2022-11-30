@@ -50,6 +50,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsColor?: string;
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
+  component?: string;
 }
 
 export function FormattedNumber({
