@@ -260,7 +260,7 @@ export const useTransactionHandler = ({
           action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
-        console.log(error, 'error')
+        console.log(error, 'error');
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({

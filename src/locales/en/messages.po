@@ -182,6 +182,7 @@ msgstr "Array parameters that should be equal length are not"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Asset"
 msgstr "Asset"
 
@@ -274,6 +275,10 @@ msgstr "Balance"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Be mindful of the network congestion and gas prices."
+msgstr "Be mindful of the network congestion and gas prices."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -545,6 +550,10 @@ msgstr "Created"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Current balance"
+msgstr "Current balance"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
@@ -845,6 +854,10 @@ msgstr "Greek"
 msgid "Health factor"
 msgstr "Health factor"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Health factor changes after migration"
+msgstr "Health factor changes after migration"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is lesser than the liquidation threshold"
 msgstr "Health factor is lesser than the liquidation threshold"
@@ -861,6 +874,10 @@ msgstr "Hide"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "I fully understand the risks of migrating."
+msgstr "I fully understand the risks of migrating."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -1072,6 +1089,26 @@ msgstr "Maximum loan to value"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate"
+msgstr "Migrate"
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Migrate to V3"
+msgstr "Migrate to V3"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations. Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time."
+msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations. Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time."
+
+#: src/modules/migration/MigrationTopPanel.tsx
+msgid "Migration"
+msgstr "Migration"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migration & Health factor change"
+msgstr "Migration & Health factor change"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
@@ -1212,6 +1249,10 @@ msgstr "Pending..."
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the Fantom market has been frozen."
 msgstr "Per the community, the Fantom market has been frozen."
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Please always be aware of your Health Factor (HF) when partially migrating a position and that your rates will be updated to V3 rates."
+msgstr "Please always be aware of your Health Factor (HF) when partially migrating a position and that your rates will be updated to V3 rates."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
@@ -1427,6 +1468,10 @@ msgstr "Select"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Select all"
+msgstr "Select all"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
@@ -1651,6 +1696,10 @@ msgstr "Switching E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
+
+#: src/modules/migration/MigrationTopPanel.tsx
+msgid "TODO: text about migration"
+msgstr "TODO: text about migration"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -1985,9 +2034,17 @@ msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditi
 msgid "Version 2"
 msgstr "Version 2"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Version 2 HF change"
+msgstr "Version 2 HF change"
+
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
 msgstr "Version 3"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Version 3 HF change"
+msgstr "Version 3 HF change"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -2207,6 +2264,7 @@ msgstr "You {action} <0/> {symbol}"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/migration/MigrationLists.tsx
 msgid "Your borrows"
 msgstr "Your borrows"
 
@@ -2231,6 +2289,7 @@ msgstr "Your reward balance is 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/migration/MigrationLists.tsx
 msgid "Your supplies"
 msgstr "Your supplies"
 
