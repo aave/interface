@@ -14,8 +14,8 @@ export const MigrateV3Actions = () => {
     tryPermit: true,
   });
 
-  const handleApproval = () => {
-    const approvePermitsForSelectedAssets = getApprovePermitsForSelectedAssets();
+  const handleApproval = async () => {
+    const approvePermitsForSelectedAssets = await getApprovePermitsForSelectedAssets();
     approval(approvePermitsForSelectedAssets);
   };
 

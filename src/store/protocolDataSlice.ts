@@ -38,6 +38,7 @@ export const createProtocolDataSlice: StateCreator<
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];
+      console.log(marketsData['fork_proto_polygon_v3'], marketsData);
       localStorage.setItem('selectedMarket', market);
       if (!omitQueryParameterUpdate) {
         setQueryParameter('marketName', market);

@@ -21,13 +21,14 @@ export type V3MigrationSlice = {
   selectedMigrationBorrowAssets: Record<string, boolean>;
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
+  approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
   generatePermitPayloadForMigrationAsset: (
     approval: Approval & {
       deadline: string;
     }
   ) => Promise<string>;
-  getApprovePermitsForSelectedAssets: () => Approval[];
+  getApprovePermitsForSelectedAssets: () => Promise<Approval[]>;
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
   toggleMigrationSelectedBorrowAsset: (assetName: string) => void;
   getMigratorAddress: () => string;
@@ -35,7 +36,7 @@ export type V3MigrationSlice = {
   migrateWithPermits: (
     signature: SignatureLike[],
     deadline: BigNumberish
-  ) => EthereumTransactionTypeExtended[];
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   migrateWithoutPermits: () => Promise<EthereumTransactionTypeExtended[]>;
   _testMigration: () => void;
   // migrateSelectedPositions: () => void;
@@ -52,12 +53,14 @@ export const createV3MigrationSlice: StateCreator<
     selectedMigrationBorrowAssets: {},
     migrationServiceInstances: {},
     timestamp: 0,
+    approvalPermitsForMigrationAssets: [],
     generatePermitPayloadForMigrationAsset: async ({ amount, underlyingAsset, deadline }) => {
       const user = get().account;
       const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
-      const { name, decimals } = await getTokenData(underlyingAsset);
-      const convertedAmount = valueToWei(amount, decimals);
+
+      const { name } = await getTokenData(underlyingAsset);
       const chainId = get().currentChainId;
+      console.log(name, 'name');
 
       const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
 
@@ -68,12 +71,6 @@ export const createV3MigrationSlice: StateCreator<
 
       const typeData = {
         types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-          ],
           Permit: [
             { name: 'owner', type: 'address' },
             { name: 'spender', type: 'address' },
@@ -92,7 +89,7 @@ export const createV3MigrationSlice: StateCreator<
         message: {
           owner: user,
           spender: get().getMigratorAddress(),
-          value: convertedAmount,
+          value: amount,
           nonce,
           deadline,
         },
@@ -121,19 +118,26 @@ export const createV3MigrationSlice: StateCreator<
         })
       );
     },
-    getApprovePermitsForSelectedAssets: () => {
+    getApprovePermitsForSelectedAssets: async () => {
       const timestamp = dayjs().unix();
-      set({ timestamp });
-      return selectedUserReservesForMigration(get(), timestamp).map(
-        ({ reserve, underlyingBalance }): Approval => {
-          return {
-            // TODO: should we allow spending of exact ammount of the reserver?
-            amount: underlyingBalance,
-            underlyingAsset: reserve.aTokenAddress,
-            permitType: 'MIGRATOR',
-          };
-        }
+      const approvalPermitsForMigrationAssets = await Promise.all(
+        selectedUserReservesForMigration(get(), timestamp).map(
+          async ({ reserve, underlyingBalance }): Promise<Approval> => {
+            const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
+            const { name, decimals } = await getTokenData(reserve.aTokenAddress);
+            const amount = (Number(underlyingBalance) + 100).toString();
+            const convertedAmount = valueToWei(amount, decimals);
+            return {
+              // TODO: should we allow spending of exact ammount of the reserver?
+              amount: convertedAmount,
+              underlyingAsset: reserve.aTokenAddress,
+              permitType: 'MIGRATOR',
+            };
+          }
+        )
       );
+      set({ approvalPermitsForMigrationAssets });
+      return approvalPermitsForMigrationAssets;
     },
     migrateWithoutPermits: () => {
       const timestamp = dayjs().unix();
@@ -142,12 +146,14 @@ export const createV3MigrationSlice: StateCreator<
         aToken: string;
         deadline: number;
         amount: string;
+        underlyingAsset: string;
       }[] = selectedUserReservesForMigration(get(), timestamp).map(
-        ({ reserve, underlyingBalance }) => {
+        ({ underlyingAsset, underlyingBalance, reserve }) => {
           const deadline = Math.floor(Date.now() / 1000 + 3600);
           return {
-            amount: underlyingBalance,
+            amount: constants.MaxUint256.toString(),
             aToken: reserve.aTokenAddress,
+            underlyingAsset: underlyingAsset,
             // TODO: fow how long to approve?
             deadline,
           };
@@ -156,20 +162,26 @@ export const createV3MigrationSlice: StateCreator<
       const user = get().account;
       return get().getMigrationServiceInstance().migrateNoBorrow({ assets, user });
     },
-    migrateWithPermits: (signatures: SignatureLike[], deadline: BigNumberish) => {
-      const selectedReservers = selectedUserReservesForMigration(get(), get().timestamp);
-      const permits = selectedReservers.map(({ reserve }, index) => ({
-        aToken: reserve.aTokenAddress,
-        value: constants.MaxUint256.toString(),
-        deadline,
-        signedPermit: signatures[index],
-      }));
+    migrateWithPermits: async (signatures: SignatureLike[], deadline: BigNumberish) => {
+      const permits = await Promise.all(
+        get().approvalPermitsForMigrationAssets.map(async ({ amount, underlyingAsset }, index) => {
+          return {
+            signedPermit: signatures[index],
+            deadline,
+            aToken: underlyingAsset,
+            value: amount,
+          };
+        })
+      );
       // branch out into flashloan or migrate no borrow
       // move that to separate instance and save cache the Migrator instance
-      console.log(permits, 'permits');
       const migratorHelperInstance = get().getMigrationServiceInstance();
       const user = get().account;
-      const assets = permits.map((permit) => permit.aToken);
+      const assets = selectedUserReservesForMigration(get(), get().timestamp).map(
+        (reserve) => reserve.underlyingAsset
+      );
+      await get()._testMigration();
+      console.log(assets);
       return migratorHelperInstance.migrateNoBorrowWithPermits({
         user,
         assets,
@@ -194,8 +206,15 @@ export const createV3MigrationSlice: StateCreator<
       return newMigratorInstance;
     },
     _testMigration: async () => {
-      const someAddress = await get().getMigrationServiceInstance().testDeployment();
-      console.log(someAddress, 'someAddress');
+      const currentTimestamp = dayjs().unix();
+      const selectedReservers = selectedUserReservesForMigration(get(), currentTimestamp);
+      const mappedAddresses = await Promise.all(
+        selectedReservers.map((reserve) =>
+          get().getMigrationServiceInstance().testDeployment(reserve.underlyingAsset)
+        )
+      );
+
+      console.log(mappedAddresses);
     },
   };
 };

@@ -47,7 +47,7 @@ export default function V3Migration() {
           onClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
           style={{ color: selectedSupplyAssets[reserve.underlyingAsset] ? 'red' : 'black' }}
         >
-          {reserve.underlyingAsset}:<b>{reserve.underlyingBalanceUSD}</b>
+          {reserve.underlyingAsset}:<b>{reserve.scaledATokenBalance}</b>
         </button>
       ))}
       <div>borrow</div>

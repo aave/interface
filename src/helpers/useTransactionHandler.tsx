@@ -234,6 +234,7 @@ export const useTransactionHandler = ({
     if (approvalTxes && usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {
+        console.log(signatures, 'signatures');
         setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signatures, signatureDeadline);
         const params = await txns[0].tx();
@@ -259,6 +260,7 @@ export const useTransactionHandler = ({
           action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
+        console.log(error, 'error')
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({

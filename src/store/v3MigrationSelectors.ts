@@ -13,6 +13,3 @@ export const selectCurrentMarketV2Reserves = (store: RootStore, timestamp: numbe
   const currentChainId = store.currentChainId;
   return store.data.get(currentChainId);
 };
-// export const selectUserApprovalsReservesForMigration = (store: RootStore, timestamp: number) => {
-
-// };
