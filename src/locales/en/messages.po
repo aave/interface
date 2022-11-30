@@ -1121,8 +1121,8 @@ msgstr "New APY"
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsList.tsx
+#: pages/markets.page.tsx
+#: pages/markets.page.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -1752,6 +1752,10 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
+#: pages/markets.page.tsx
+msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2078,9 +2082,9 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
-#: src/modules/markets/MarketAssetsList.tsx
-msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+#: pages/markets.page.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
+msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
