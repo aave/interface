@@ -81,32 +81,56 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   }, [stkAave, ghoBorrow]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const determineHelperText = () => {
-    // TODO: determine these values
-    const maxDiscountReached = false;
-    const maxDiscountNotReached = false;
-    const maxGhoNotBorrowed = false;
-    const discountNotAvailable = false;
-    if (maxDiscountReached) return null;
+    const maxDiscountNotReached = ghoBorrow && discountableGhoAmount < ghoBorrow;
+    const additionalStkAaveToReachMax = !maxDiscountNotReached
+      ? 0
+      : (ghoBorrow - discountableGhoAmount) / Number(ghoDiscountedPerToken);
+    const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
+    const discountNotAvailable = !stkAave || !ghoBorrow;
+    const maxDiscountReached = calculatedBorrowAPY === borrowAPYWithMaxDiscount;
+
     if (discountNotAvailable)
       return (
         <Typography variant="helperText" component="p" color="warning.dark">
           <Trans>Add stkAAVE to see borrow APY with the discount</Trans>
         </Typography>
       );
+
     if (maxDiscountNotReached)
       return (
         <Typography variant="helperText" component="p" sx={{ color: '#669AFF' }}>
           <Trans>
-            <u>+Add xx stkAAVE</u> to borrow at 1.6% (max discount)
+            <u>+Add {additionalStkAaveToReachMax} stkAAVE</u> to borrow at{' '}
+            <FormattedNumber
+              value={borrowAPYWithMaxDiscount}
+              percent
+              variant="helperText"
+              symbolsColor="#669AFF"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />{' '}
+            (max discount)
           </Trans>
         </Typography>
       );
+
     if (maxGhoNotBorrowed)
       return (
         <Typography variant="helperText" component="p" color="text.secondary">
-          <Trans>You may borrow up to xx GHO at 1.6% (max discount)</Trans>
+          <Trans>
+            You may borrow up to {discountableGhoAmount} GHO at{' '}
+            <FormattedNumber
+              value={borrowAPYWithMaxDiscount}
+              percent
+              variant="helperText"
+              symbolsColor="text.secondary"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />{' '}
+            (max discount)
+          </Trans>
         </Typography>
       );
+
+    if (maxDiscountReached) return null;
   };
 
   const GhoDiscountParametersComponent: React.FC = () => (
@@ -189,7 +213,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             </Typography>
             <OutlinedInput
               fullWidth
-              value={ghoBorrow}
+              value={ghoBorrow ?? ''}
               placeholder="0"
               endAdornment={<TokenIcon symbol="GHO" />}
               inputProps={{ min: 0, sx: { py: 2, px: 3, fontSize: '21px' } }}
@@ -218,7 +242,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             </Typography>
             <OutlinedInput
               fullWidth
-              value={stkAave}
+              value={stkAave ?? ''}
               placeholder="0"
               endAdornment={<TokenIcon symbol="AAVE" />}
               inputProps={{ min: 0, sx: { py: 2, px: 3, fontSize: '21px' } }}
