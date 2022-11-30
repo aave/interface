@@ -94,7 +94,9 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             symbol={reserve.symbol}
             variant="secondary14"
           />
-          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+          {!reserve.borrowingEnabled && Number(reserve.totalVariableDebt) > 0 && (
+            <ReserveSubheader value={'Disabled'} />
+          )}
         </Box>
       </Row>
       <Row
@@ -117,7 +119,9 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             symbol={reserve.symbol}
             variant="secondary14"
           />
-          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+          {!reserve.borrowingEnabled && Number(reserve.totalVariableDebt) > 0 && (
+            <ReserveSubheader value={'Disabled'} />
+          )}
         </Box>
       </Row>
 
