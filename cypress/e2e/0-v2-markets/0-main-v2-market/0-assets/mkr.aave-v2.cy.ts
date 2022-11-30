@@ -98,7 +98,7 @@ const testData = {
   },
 };
 
-describe('MKR INTEGRATION SPEC, AAVE V2 MARKET', () => {
+describe.skip('MKR INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);
