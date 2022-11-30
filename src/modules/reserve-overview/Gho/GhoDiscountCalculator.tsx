@@ -41,8 +41,8 @@ const sliderStyles = {
 };
 
 export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
-  const [stkAave, setStkAave] = useState<number>(0);
-  const [ghoBorrow, setGhoBorrow] = useState<number>(0);
+  const [stkAave, setStkAave] = useState<number | null>(null);
+  const [ghoBorrow, setGhoBorrow] = useState<number | null>(null);
   const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
   const {
@@ -77,7 +77,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   };
 
   useEffect(() => {
-    calculateDiscountRate(stkAave, ghoBorrow);
+    calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
   }, [stkAave, ghoBorrow]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const determineHelperText = () => {
@@ -190,15 +190,20 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <OutlinedInput
               fullWidth
               value={ghoBorrow}
+              placeholder="0"
               endAdornment={<TokenIcon symbol="GHO" />}
-              inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
-              onChange={(e) => setGhoBorrow(Number(e.target.value))}
+              inputProps={{ min: 0, sx: { py: 2, px: 3, fontSize: '21px' } }}
+              onChange={(e) =>
+                e.target.value === '' ? setGhoBorrow(null) : setGhoBorrow(Number(e.target.value))
+              }
+              type="number"
             />
             <Slider
               size="small"
-              value={ghoBorrow}
+              value={ghoBorrow ?? 0}
               onChange={(_, val) => setGhoBorrow(Number(val))}
               step={1000}
+              min={0}
               max={100000}
               marks={[
                 { value: 0, label: '0' },
@@ -214,15 +219,20 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <OutlinedInput
               fullWidth
               value={stkAave}
+              placeholder="0"
               endAdornment={<TokenIcon symbol="AAVE" />}
-              onChange={(e) => setStkAave(Number(e.target.value))}
-              inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
+              inputProps={{ min: 0, sx: { py: 2, px: 3, fontSize: '21px' } }}
+              onChange={(e) =>
+                e.target.value === '' ? setStkAave(null) : setStkAave(Number(e.target.value))
+              }
+              type="number"
             />
             <Slider
               size="small"
-              value={stkAave}
+              value={stkAave ?? 0}
               onChange={(_, val) => setStkAave(Number(val))}
               step={5}
+              min={0}
               max={1000}
               marks={[
                 { value: 0, label: '0' },
