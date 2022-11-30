@@ -8,7 +8,7 @@ export const MigrateV3Actions = () => {
   const getApprovePermitsForSelectedAssets = useRootStore(
     (store) => store.getApprovePermitsForSelectedAssets
   );
-  const { approval, action } = useTransactionHandler({
+  const { approval, action, loadingTxns, approvalTxState } = useTransactionHandler({
     handleGetTxns: async () => migrateWithoutPermits(),
     handleGetPermitTxns: async (signatures, deadline) => migrateWithPermits(signatures, deadline),
     tryPermit: true,
@@ -21,6 +21,7 @@ export const MigrateV3Actions = () => {
 
   return (
     <div>
+      {(loadingTxns || approvalTxState.loading) && 'loading'}
       <button onClick={handleApproval}>Approve</button>
       {/* <button onClick={() => }></button> */}
       <button onClick={action}>Migrate</button>
