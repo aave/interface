@@ -56,8 +56,8 @@ const testData = {
     ],
   },
 };
-
-describe('LINK INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+//asset is not visible in the borrow list on Polygon V2
+describe.skip('LINK INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

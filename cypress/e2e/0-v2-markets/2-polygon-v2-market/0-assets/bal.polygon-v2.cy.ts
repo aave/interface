@@ -56,8 +56,8 @@ const testData = {
     ],
   },
 };
-
-describe('BAL INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+//asset is not visible in the borrow list on Polygon V2
+describe.skip('BAL INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
