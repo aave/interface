@@ -68,7 +68,7 @@ export const MarketAssetsListContainer = () => {
       {frozenReserves.length > 0 && (
         <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
           <Typography variant="h4" mb={4}>
-            Frozen assets
+            <Trans>Frozen assets</Trans>
           </Typography>
           <Warning severity="info">
             <Trans>

@@ -805,6 +805,10 @@ msgstr "Forum discussion"
 msgid "French"
 msgstr "French"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr "Frozen assets"
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
