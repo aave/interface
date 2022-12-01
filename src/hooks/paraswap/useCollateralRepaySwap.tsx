@@ -154,19 +154,15 @@ export const useCollateralRepaySwap = ({
     }, 400);
 
     // If there are no dependency changes, refresh every 15 seconds
-    const interval = setInterval(
-      () => {
-        fetchRoute();
-      },
-      error ? 3000 : 15000
-    );
+    const interval = setInterval(() => {
+      fetchRoute();
+    }, 15000);
 
     return () => {
       clearTimeout(timeout);
       clearInterval(interval);
     };
   }, [
-    error,
     skip,
     swapVariant,
     swapInData.underlyingAsset,
