@@ -1177,8 +1177,8 @@ msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Max discount on borrow rate"
-msgstr "Max discount on borrow rate"
+msgid "Max discount"
+msgstr "Max discount"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"

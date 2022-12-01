@@ -105,31 +105,32 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         }}
       >
         <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
-          <Typography variant="main16" display="flex" alignItems="center">
-            <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
+          <Typography variant="secondary14" display="flex" alignItems="center">
+            <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
             {discountedPerToken}
-            <Typography
-              component="span"
-              variant="secondary16"
-              color="text.secondary"
-              sx={{ mx: 1 }}
-            >
+            <Typography component="span" variant="secondary14" color="text.primary" sx={{ mx: 1 }}>
               <Trans>to</Trans>
             </Typography>{' '}
-            <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
+            <TokenIcon symbol="AAVE" sx={{ fontSize: '14px', mr: 1 }} />1
           </Typography>
         </ReserveOverviewBox>
-        <ReserveOverviewBox title={<Trans>Max discount on borrow rate</Trans>}>
+        <ReserveOverviewBox title={<Trans>Max discount</Trans>}>
           <FormattedNumber
-            value={ghoDiscountRatePercent}
+            value={ghoDiscountRatePercent * -1}
             percent
-            variant="main16"
+            variant="secondary14"
+            color="text.primary"
             sx={{ mr: 1 }}
             visibleDecimals={0}
           />
         </ReserveOverviewBox>
         <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
-          <FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="main16" />
+          <FormattedNumber
+            value={borrowAPYWithMaxDiscount}
+            percent
+            variant="secondary14"
+            color="text.primary"
+          />
         </ReserveOverviewBox>
       </Box>
       <Typography variant="caption" color="text.secondary">
