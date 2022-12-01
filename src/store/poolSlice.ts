@@ -31,7 +31,6 @@ import { CollateralRepayActionProps } from 'src/components/transactions/Repay/Co
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
-import { getApprovalTx } from 'src/hooks/paraswap/common';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 

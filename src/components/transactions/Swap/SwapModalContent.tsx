@@ -68,23 +68,16 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const {
-    inputAmountUSD,
-    inputAmount,
-    outputAmount,
-    outputAmountUSD,
-    error,
-    loading,
-    paraswapParams,
-  } = useCollateralSwap({
-    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-    userAddress: currentAccount,
-    swapIn: { ...poolReserve, amount: amountRef.current },
-    swapOut: { ...swapTarget.reserve, amount: '0' },
-    max: isMaxSelected,
-    skip: supplyTxState.loading,
-    maxSlippage: Number(maxSlippage),
-  });
+  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, error, loading, buildTxFn } =
+    useCollateralSwap({
+      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+      userAddress: currentAccount,
+      swapIn: { ...poolReserve, amount: amountRef.current },
+      swapOut: { ...swapTarget.reserve, amount: '0' },
+      max: isMaxSelected,
+      skip: supplyTxState.loading,
+      maxSlippage: Number(maxSlippage),
+    });
 
   const loadingSkeleton = loading && outputAmountUSD === '0';
 
@@ -253,7 +246,7 @@ export const SwapModalContent = ({
         blocked={blockingError !== undefined}
         useFlashLoan={shouldUseFlashloan}
         loading={loadingSkeleton}
-        paraswapParams={paraswapParams}
+        buildTxFn={buildTxFn}
       />
     </>
   );

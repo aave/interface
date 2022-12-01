@@ -1,6 +1,15 @@
+import { BigNumberZeroDecimal, normalize } from '@aave/math-utils';
+import { OptimalRate } from 'paraswap-core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { fetchExactInRate, MESSAGE_MAP, ParaSwapParams, SwapData, UseSwapProps } from './common';
+import {
+  fetchExactInRate,
+  fetchExactInTxParams,
+  MESSAGE_MAP,
+  SwapData,
+  SwapTransactionParams,
+  UseSwapProps,
+} from './common';
 
 interface UseSwapResponse {
   outputAmount: string;
@@ -9,7 +18,7 @@ interface UseSwapResponse {
   inputAmountUSD: string;
   loading: boolean;
   error: string;
-  paraswapParams: ParaSwapParams;
+  buildTxFn: () => Promise<SwapTransactionParams>;
 }
 
 export const useCollateralSwap = ({
@@ -23,10 +32,11 @@ export const useCollateralSwap = ({
 }: UseSwapProps): UseSwapResponse => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [inputAmount, setInputAmount] = useState<string>('');
-  const [outputAmount, setOutputAmount] = useState<string>('');
-  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('');
-  const [inputAmountUSD, setInputAmountUSD] = useState<string>('');
+  const [inputAmount, setInputAmount] = useState<string>('0');
+  const [outputAmount, setOutputAmount] = useState<string>('0');
+  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('0');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
+  const [route, setRoute] = useState<OptimalRate>();
 
   const swapInData = useMemo(() => {
     const swapData: SwapData = {
@@ -63,25 +73,43 @@ export const useCollateralSwap = ({
   ]);
 
   const exactInRate = useCallback(() => {
-    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, maxSlippage, max);
-  }, [chainId, maxSlippage, swapInData, swapOutData, userAddress, max]);
+    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, max);
+  }, [chainId, swapInData, swapOutData, userAddress, max]);
 
   useEffect(() => {
     if (skip) return;
 
     const fetchRoute = async () => {
-      if (!swapInData.underlyingAsset || !swapOutData.underlyingAsset) return;
+      if (
+        !swapInData.underlyingAsset ||
+        !swapOutData.underlyingAsset ||
+        !swapInData.amount ||
+        swapInData.amount === '0' ||
+        isNaN(+swapInData.amount)
+      ) {
+        setInputAmount('0');
+        setOutputAmount('0');
+        setOutputAmountUSD('0');
+        setInputAmountUSD('0');
+        setRoute(undefined);
+        return;
+      }
 
       setLoading(true);
 
       try {
         const route = await exactInRate();
-
         setError('');
-        setInputAmount(route.inputAmount);
-        setOutputAmount(route.outputAmount);
-        setInputAmountUSD(route.inputAmountUSD);
-        setOutputAmountUSD(route.outputAmountUSD);
+        setRoute(route);
+        setInputAmount(normalize(route.srcAmount, route.srcDecimals));
+
+        const minAmount = new BigNumberZeroDecimal(route.destAmount)
+          .multipliedBy(1 - maxSlippage / 100)
+          .toFixed(0);
+
+        setOutputAmount(normalize(minAmount, route.destDecimals));
+        setInputAmountUSD(route.srcUSD);
+        setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
         const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
@@ -108,7 +136,17 @@ export const useCollateralSwap = ({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [error, skip, swapInData.underlyingAsset, swapOutData.underlyingAsset, exactInRate]);
+  }, [
+    error,
+    skip,
+    swapInData.underlyingAsset,
+    swapOutData.underlyingAsset,
+    exactInRate,
+    maxSlippage,
+    swapInData.amount,
+    userAddress,
+    max,
+  ]);
 
   return {
     outputAmount,
@@ -117,14 +155,10 @@ export const useCollateralSwap = ({
     inputAmountUSD,
     loading,
     error,
-    paraswapParams: {
-      swapInData,
-      swapOutData,
-      chainId,
-      userAddress,
-      maxSlippage,
-      swapVariant: 'exactIn',
-      max,
-    }, // Used for calling paraswap buildTx as very last step in transaction
+    // Used for calling paraswap buildTx as very last step in transaction
+    buildTxFn: async () => {
+      if (!route) throw new Error('Route required to build transaction');
+      return fetchExactInTxParams(route, swapIn, swapOut, chainId, userAddress, maxSlippage);
+    },
   };
 };

@@ -1,11 +1,15 @@
+import { BigNumberZeroDecimal, normalize } from '@aave/math-utils';
+import { OptimalRate } from 'paraswap-core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   fetchExactInRate,
+  fetchExactInTxParams,
   fetchExactOutRate,
+  fetchExactOutTxParams,
   MESSAGE_MAP,
-  ParaSwapParams,
   SwapData,
+  SwapTransactionParams,
   SwapVariant,
   UseSwapProps,
 } from './common';
@@ -21,7 +25,7 @@ interface UseRepayWithCollateralResponse {
   inputAmountUSD: string;
   loading: boolean;
   error: string;
-  paraswapParams: ParaSwapParams;
+  buildTxFn: () => Promise<SwapTransactionParams>;
 }
 
 export const useCollateralRepaySwap = ({
@@ -36,10 +40,11 @@ export const useCollateralRepaySwap = ({
 }: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [inputAmount, setInputAmount] = useState<string>('');
-  const [outputAmount, setOutputAmount] = useState<string>('');
-  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('');
-  const [inputAmountUSD, setInputAmountUSD] = useState<string>('');
+  const [inputAmount, setInputAmount] = useState<string>('0');
+  const [outputAmount, setOutputAmount] = useState<string>('0');
+  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('0');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
+  const [route, setRoute] = useState<OptimalRate>();
 
   const swapInData = useMemo(() => {
     const swapData: SwapData = {
@@ -76,34 +81,63 @@ export const useCollateralRepaySwap = ({
   ]);
 
   const exactInRate = useCallback(() => {
-    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, maxSlippage);
-  }, [chainId, maxSlippage, swapInData, swapOutData, userAddress]);
+    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress);
+  }, [chainId, swapInData, swapOutData, userAddress]);
 
   const exactOutRate = useCallback(
-    () => fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, maxSlippage, max),
-    [chainId, max, maxSlippage, swapInData, swapOutData, userAddress]
+    () => fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max),
+    [chainId, max, swapInData, swapOutData, userAddress]
   );
 
   useEffect(() => {
     if (skip) return;
 
     const fetchRoute = async () => {
-      if (!swapInData.underlyingAsset || !swapOutData.underlyingAsset) return;
+      if (
+        !swapInData.underlyingAsset ||
+        !swapOutData.underlyingAsset ||
+        !swapOutData.amount ||
+        swapOutData.amount === '0' ||
+        isNaN(+swapOutData.amount)
+      ) {
+        setInputAmount('0');
+        setOutputAmount('0');
+        setOutputAmountUSD('0');
+        setInputAmountUSD('0');
+        setRoute(undefined);
+        return;
+      }
 
       setLoading(true);
 
       try {
-        let route;
+        let route: OptimalRate | undefined;
         if (swapVariant === 'exactIn') {
           route = await exactInRate();
         } else {
           route = await exactOutRate();
         }
+
         setError('');
-        setInputAmount(route.inputAmount);
-        setOutputAmount(route.outputAmount);
-        setInputAmountUSD(route.inputAmountUSD);
-        setOutputAmountUSD(route.outputAmountUSD);
+        setRoute(route);
+
+        if (swapVariant === 'exactIn') {
+          const minAmount = new BigNumberZeroDecimal(route.destAmount)
+            .multipliedBy(1 - maxSlippage / 100)
+            .toFixed(0);
+          setInputAmount(normalize(route.srcAmount, route.srcDecimals));
+          setOutputAmount(normalize(minAmount, route.destDecimals));
+        } else {
+          const srcAmount = new BigNumberZeroDecimal(route.srcAmount)
+            .multipliedBy(1 - maxSlippage / 100)
+            .toFixed(0);
+
+          setInputAmount(normalize(srcAmount, route.srcDecimals));
+          setOutputAmount(normalize(route.destAmount, route.destDecimals));
+        }
+
+        setInputAmountUSD(route.srcUSD);
+        setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
         const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
@@ -136,8 +170,10 @@ export const useCollateralRepaySwap = ({
     swapVariant,
     swapInData.underlyingAsset,
     swapOutData.underlyingAsset,
+    swapOutData.amount,
     exactInRate,
     exactOutRate,
+    maxSlippage,
   ]);
 
   return {
@@ -147,14 +183,14 @@ export const useCollateralRepaySwap = ({
     inputAmountUSD,
     loading,
     error,
-    paraswapParams: {
-      swapInData,
-      swapOutData,
-      chainId,
-      userAddress,
-      maxSlippage,
-      swapVariant,
-      max,
-    }, // Used for calling paraswap buildTx as very last step in transaction
+    // Used for calling paraswap buildTx as very last step in transaction
+    buildTxFn: async () => {
+      if (!route) throw new Error('Route required to build transaction');
+      if (swapVariant === 'exactIn') {
+        return fetchExactInTxParams(route, swapIn, swapOut, chainId, userAddress, maxSlippage);
+      } else {
+        return fetchExactOutTxParams(route, swapIn, swapOut, chainId, userAddress, maxSlippage);
+      }
+    },
   };
 };

@@ -1,9 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import BigNumber from 'bignumber.js';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { fetchTxParams, ParaSwapParams } from 'src/hooks/paraswap/common';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -29,6 +28,7 @@ export interface SwapActionProps extends SwapBaseProps {
 
 export const SwapActions = ({
   amountToSwap,
+  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -37,30 +37,19 @@ export const SwapActions = ({
   useFlashLoan,
   loading,
   symbol,
-  paraswapParams,
   blocked,
+  buildTxFn,
   ...props
-}: SwapBaseProps & { paraswapParams: ParaSwapParams }) => {
+}: SwapBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const swapCollateral = useRootStore((state) => state.swapCollateral);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useParaSwapTransactionHandler({
       handleGetTxns: async () => {
-        const route = await fetchTxParams(
-          paraswapParams.swapInData,
-          paraswapParams.swapOutData,
-          paraswapParams.chainId,
-          paraswapParams.userAddress,
-          paraswapParams.maxSlippage,
-          paraswapParams.swapVariant,
-          paraswapParams.max
-        );
-        const minimumReceived = new BigNumber(route.outputAmount || '0')
-          .multipliedBy(new BigNumber(100).minus(paraswapParams.maxSlippage).dividedBy(100))
-          .toString(10);
+        const route = await buildTxFn();
         return swapCollateral({
           amountToSwap: route.inputAmount,
-          amountToReceive: minimumReceived,
+          amountToReceive: route.outputAmount,
           poolReserve,
           targetReserve,
           isWrongNetwork,
@@ -90,6 +79,12 @@ export const SwapActions = ({
       actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
       fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: false,
+        content: <Trans>Swap</Trans>,
+        handleClick: action,
+      }}
       {...props}
     />
   );

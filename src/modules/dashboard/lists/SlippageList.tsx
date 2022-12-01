@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
+
 import Paraswap from '/public/icons/other/paraswap.svg';
 
 interface ListSlippageButtonProps {

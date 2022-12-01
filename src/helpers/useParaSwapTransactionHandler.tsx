@@ -126,6 +126,7 @@ export const useParaSwapTransactionHandler = ({
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
+    setTxError(undefined);
     await handleGetTxns()
       .then(async (data) => {
         // Find actionTx (repay with collateral or swap)
