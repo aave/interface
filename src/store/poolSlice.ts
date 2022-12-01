@@ -27,7 +27,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
-import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
+import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
@@ -66,7 +66,7 @@ export interface PoolSlice {
     args: Omit<LPSwapBorrowRateMode, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   paraswapRepayWithCollateral: (
-    args: ParaswapRepayActionProps
+    args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
   supplyWithPermit: (
     args: Omit<LPSupplyWithPermitType, 'user'>

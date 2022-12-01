@@ -24,6 +24,12 @@ interface TxActionsWrapperProps extends BoxProps {
   symbol?: string;
   blocked?: boolean;
   fetchingData?: boolean;
+  errorParams?: {
+    loading: boolean;
+    disabled: boolean;
+    content: ReactNode;
+    handleClick: () => Promise<void>;
+  };
 }
 
 export const TxActionsWrapper = ({
@@ -42,21 +48,26 @@ export const TxActionsWrapper = ({
   symbol,
   blocked,
   fetchingData = false,
+  errorParams,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
-    requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
+    requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
-    if (txError && txError.txAction === TxAction.GAS_ESTIMATION && txError.actionBlocked)
+    if (
+      (txError?.txAction === TxAction.GAS_ESTIMATION ||
+        txError?.txAction === TxAction.MAIN_ACTION) &&
+      txError?.actionBlocked
+    ) {
+      if (errorParams) return errorParams;
       return { loading: false, disabled: true, content: actionText };
-    if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.actionBlocked)
-      return { loading: false, disabled: true, content: actionText };
+    }
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };

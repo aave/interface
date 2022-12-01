@@ -1,13 +1,14 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface RepayActionProps extends BoxProps {
+interface CollateralRepayBaseProps extends BoxProps {
   rateMode: InterestRate;
   repayAmount: string;
   repayWithAmount: string;
@@ -19,14 +20,17 @@ export interface RepayActionProps extends BoxProps {
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
-  swapCallData: string;
-  augustus: string;
   loading?: boolean;
+}
+
+// Used in poolSlice
+export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
+  augustus: string;
+  swapCallData: string;
 }
 
 export const CollateralRepayActions = ({
   repayAmount,
-  repayWithAmount,
   poolReserve,
   fromAssetData,
   isWrongNetwork,
@@ -36,40 +40,32 @@ export const CollateralRepayActions = ({
   repayAllDebt,
   useFlashLoan,
   blocked,
-  swapCallData,
-  augustus,
   loading,
+  buildTxFn,
   ...props
-}: RepayActionProps) => {
+}: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useTransactionHandler({
+    useParaSwapTransactionHandler({
       handleGetTxns: async () => {
+        const route = await buildTxFn();
         return paraswapRepayWithCollateral({
           repayAllDebt,
-          repayAmount,
+          repayAmount: route.outputAmount,
           rateMode,
-          repayWithAmount,
+          repayWithAmount: route.inputAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
           symbol,
           useFlashLoan,
           blocked,
-          swapCallData,
-          augustus,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
         });
       },
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
-      deps: [
-        repayWithAmount,
-        repayAmount,
-        poolReserve.underlyingAsset,
-        fromAssetData.underlyingAsset,
-        repayAllDebt,
-        useFlashLoan,
-      ],
     });
 
   return (
@@ -89,6 +85,12 @@ export const CollateralRepayActions = ({
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: false,
+        content: <Trans>Repay {symbol}</Trans>,
+        handleClick: action,
+      }}
     />
   );
 };
