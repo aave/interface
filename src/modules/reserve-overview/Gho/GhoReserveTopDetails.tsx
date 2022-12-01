@@ -58,14 +58,6 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
     );
   };
 
-  const iconStyling = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: '#A5A8B6',
-    '&:hover': { color: '#F1F1F3' },
-    cursor: 'pointer',
-  };
-
   const ReserveName = () => {
     return loading ? (
       <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
