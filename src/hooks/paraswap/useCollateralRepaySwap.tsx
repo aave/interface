@@ -96,9 +96,10 @@ export const useCollateralRepaySwap = ({
       if (
         !swapInData.underlyingAsset ||
         !swapOutData.underlyingAsset ||
-        !swapOutData.amount ||
-        swapOutData.amount === '0' ||
-        isNaN(+swapOutData.amount)
+        (swapVariant === 'exactIn' &&
+          (!swapInData.amount || swapInData.amount === '0' || isNaN(+swapInData.amount))) ||
+        (swapVariant === 'exactOut' &&
+          (!swapOutData.amount || swapOutData.amount === '0' || isNaN(+swapOutData.amount)))
       ) {
         setInputAmount('0');
         setOutputAmount('0');
@@ -111,7 +112,7 @@ export const useCollateralRepaySwap = ({
       setLoading(true);
 
       try {
-        let route: OptimalRate | undefined;
+        let route: OptimalRate;
         if (swapVariant === 'exactIn') {
           route = await exactInRate();
         } else {
@@ -169,6 +170,7 @@ export const useCollateralRepaySwap = ({
     skip,
     swapVariant,
     swapInData.underlyingAsset,
+    swapInData.amount,
     swapOutData.underlyingAsset,
     swapOutData.amount,
     exactInRate,
