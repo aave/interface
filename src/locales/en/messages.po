@@ -635,6 +635,7 @@ msgstr "Disable testnet"
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
+#: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
@@ -1121,8 +1122,8 @@ msgstr "New APY"
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: pages/markets.page.tsx
-#: pages/markets.page.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -1752,7 +1753,7 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
-#: pages/markets.page.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 
@@ -2082,7 +2083,7 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
-#: pages/markets.page.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
