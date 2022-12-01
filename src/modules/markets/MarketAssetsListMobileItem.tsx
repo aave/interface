@@ -89,7 +89,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <IncentivesCard
             align="flex-end"
-            value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
+            value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
             incentives={reserve.vIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
@@ -114,13 +114,13 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <IncentivesCard
             align="flex-end"
-            value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
+            value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
             incentives={reserve.sIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"
           />
           {!reserve.borrowingEnabled &&
-            Number(reserve.totalVariableDebt) > 0 &&
+            Number(reserve.totalStableDebt) > 0 &&
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
       </Row>
