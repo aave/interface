@@ -1365,6 +1365,7 @@ msgid "Repay with"
 msgstr "Repay with"
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
@@ -1647,6 +1648,7 @@ msgstr "Supplying your"
 msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 
+#: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx

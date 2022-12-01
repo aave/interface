@@ -61,14 +61,6 @@ export const SwapActions = ({
           augustus: route.augustus,
         });
       },
-      deps: [
-        amountToSwap,
-        amountToReceive,
-        poolReserve.underlyingAsset,
-        targetReserve.underlyingAsset,
-        isMaxSelected,
-        useFlashLoan,
-      ],
       skip: !amountToSwap || parseFloat(amountToSwap) === 0,
     });
 
@@ -87,6 +79,12 @@ export const SwapActions = ({
       actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
       fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: false,
+        content: <Trans>Swap</Trans>,
+        handleClick: action,
+      }}
       {...props}
     />
   );

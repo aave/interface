@@ -100,6 +100,11 @@ export const useCollateralRepaySwap = ({
         swapOutData.amount === '0' ||
         isNaN(+swapOutData.amount)
       ) {
+        setInputAmount('0');
+        setOutputAmount('0');
+        setOutputAmountUSD('0');
+        setInputAmountUSD('0');
+        setRoute(undefined);
         return;
       }
 

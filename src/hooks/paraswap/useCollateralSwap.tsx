@@ -87,6 +87,11 @@ export const useCollateralSwap = ({
         swapInData.amount === '0' ||
         isNaN(+swapInData.amount)
       ) {
+        setInputAmount('0');
+        setOutputAmount('0');
+        setOutputAmountUSD('0');
+        setInputAmountUSD('0');
+        setRoute(undefined);
         return;
       }
 

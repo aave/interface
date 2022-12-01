@@ -65,13 +65,6 @@ export const CollateralRepayActions = ({
           augustus: route.augustus,
         });
       },
-      deps: [
-        repayAmount,
-        poolReserve.underlyingAsset,
-        fromAssetData.underlyingAsset,
-        repayAllDebt,
-        useFlashLoan,
-      ],
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
     });
 
@@ -92,6 +85,12 @@ export const CollateralRepayActions = ({
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: false,
+        content: <Trans>Repay {symbol}</Trans>,
+        handleClick: action,
+      }}
     />
   );
 };
