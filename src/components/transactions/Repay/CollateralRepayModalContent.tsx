@@ -101,19 +101,25 @@ export function CollateralRepayModalContent({
     isMaxSelected &&
     valueToBigNumber(tokenToRepayWithBalance).gte(collateralAmountRequiredToCoverDebt);
 
-  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, loading, buildTxFn } =
-    useCollateralRepaySwap({
-      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userAddress: currentAccount,
-      swapVariant: swapVariant,
-      swapIn,
-      swapOut,
-      max: repayAllDebt,
-      skip: mainTxState.loading,
-      maxSlippage: Number(maxSlippage),
-    });
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    loading: routeLoading,
+    buildTxFn,
+  } = useCollateralRepaySwap({
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+    userAddress: currentAccount,
+    swapVariant: swapVariant,
+    swapIn,
+    swapOut,
+    max: repayAllDebt,
+    skip: mainTxState.loading,
+    maxSlippage: Number(maxSlippage),
+  });
 
-  const loadingSkeleton = loading && inputAmountUSD === '0';
+  const loadingSkeleton = routeLoading && inputAmountUSD === '0';
 
   const handleRepayAmountChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -301,7 +307,7 @@ export function CollateralRepayModalContent({
         symbol={symbol}
         rateMode={debtType}
         blocked={blockingError !== undefined}
-        loading={loadingSkeleton}
+        loading={routeLoading}
         buildTxFn={buildTxFn}
       />
     </>

@@ -28,7 +28,6 @@ export interface SwapActionProps extends SwapBaseProps {
 
 export const SwapActions = ({
   amountToSwap,
-  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -61,7 +60,7 @@ export const SwapActions = ({
           augustus: route.augustus,
         });
       },
-      skip: !amountToSwap || parseFloat(amountToSwap) === 0,
+      skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
     });
 
   return (

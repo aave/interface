@@ -65,7 +65,7 @@ export const CollateralRepayActions = ({
           augustus: route.augustus,
         });
       },
-      skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
+      skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
     });
 
   return (

@@ -68,22 +68,25 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, error, loading, buildTxFn } =
-    useCollateralSwap({
-      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userAddress: currentAccount,
-      swapIn: { ...poolReserve, amount: amountRef.current },
-      swapOut: { ...swapTarget.reserve, amount: '0' },
-      max: isMaxSelected,
-      skip: supplyTxState.loading,
-      maxSlippage: Number(maxSlippage),
-    });
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    error,
+    loading: routeLoading,
+    buildTxFn,
+  } = useCollateralSwap({
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+    userAddress: currentAccount,
+    swapIn: { ...poolReserve, amount: amountRef.current },
+    swapOut: { ...swapTarget.reserve, amount: '0' },
+    max: isMaxSelected,
+    skip: supplyTxState.loading,
+    maxSlippage: Number(maxSlippage),
+  });
 
-  const loadingSkeleton = loading && outputAmountUSD === '0';
-
-  const minimumReceived = new BigNumber(outputAmount || '0')
-    .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
-    .toString(10);
+  const loadingSkeleton = routeLoading && outputAmountUSD === '0';
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -96,7 +99,7 @@ export const SwapModalContent = ({
     fromAssetData: poolReserve,
     fromAssetUserData: userReserve,
     user,
-    toAmountAfterSlippage: minimumReceived,
+    toAmountAfterSlippage: outputAmount,
     toAssetData: swapTarget.reserve,
   });
 
@@ -209,7 +212,7 @@ export const SwapModalContent = ({
           {error}
         </Typography>
       )}
-      {!error && blockingError !== undefined && !loadingSkeleton && (
+      {!error && blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
@@ -227,7 +230,7 @@ export const SwapModalContent = ({
           healthFactorAfterSwap={hfAfterSwap.toString(10)}
           swapSource={userReserve}
           swapTarget={swapTarget}
-          toAmount={minimumReceived}
+          toAmount={outputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
         />
@@ -239,13 +242,13 @@ export const SwapModalContent = ({
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={inputAmount}
-        amountToReceive={minimumReceived}
+        amountToReceive={outputAmount}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
         useFlashLoan={shouldUseFlashloan}
-        loading={loadingSkeleton}
+        loading={routeLoading}
         buildTxFn={buildTxFn}
       />
     </>
