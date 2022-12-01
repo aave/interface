@@ -236,13 +236,13 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             </Typography>
             {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
             <OutlinedInput
+              fullWidth
               value={ghoBorrow ?? ''}
               defaultValue={10000}
               placeholder="0"
               endAdornment={<TokenIcon symbol="GHO" />}
               inputProps={{
                 min: 0,
-                fullWidth: true,
                 sx: { py: 2, px: 3, fontSize: '21px' },
               }}
               onChange={(e) =>
@@ -273,13 +273,13 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             </Typography>
             {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
             <OutlinedInput
+              fullWidth
               value={stkAave ?? ''}
               defaultValue={100}
               placeholder="0"
               endAdornment={<TokenIcon symbol="AAVE" />}
               inputProps={{
                 min: 0,
-                fullWidth: true,
                 sx: { py: 2, px: 3, fontSize: '21px' },
               }}
               onChange={(e) =>
