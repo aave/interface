@@ -1,4 +1,5 @@
-import { Box, Checkbox, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { CheckIcon } from '@heroicons/react/solid';
+import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -25,17 +26,29 @@ export const MigrationListItem = ({
   onCheckboxClick,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
-  const downToXSM = useMediaQuery(breakpoints.down('xsm'));
+  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const isTablet = useMediaQuery(breakpoints.up('md'));
 
   return (
-    <ListItem px={downToXSM ? 4 : 6}>
-      <ListColumn align="center" maxWidth={100}>
-        <Box sx={{ ml: '-13px' }}>
-          <Checkbox
-            value={checked}
-            checked={checked} // TODO: need fix checked state
-            onChange={onCheckboxClick}
-          />
+    <ListItem>
+      <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>
+        <Box
+          sx={(theme) => ({
+            border: `2px solid ${theme.palette.text.secondary}`,
+            background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+            width: 16,
+            height: 16,
+            borderRadius: '2px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          })}
+          onClick={onCheckboxClick}
+        >
+          <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+            <CheckIcon />
+          </SvgIcon>
         </Box>
       </ListColumn>
 
@@ -44,9 +57,14 @@ export const MigrationListItem = ({
           <TokenIcon symbol={reserveIconSymbol} fontSize="large" />
           <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
             <Typography variant="h4" noWrap>
-              {reserveName}
+              {isDesktop ? reserveName : reserveSymbol}
             </Typography>
-            <Typography variant="subheader2" color="text.muted" noWrap>
+            <Typography
+              sx={{ display: { xs: 'none', lg: 'inline-flex' } }}
+              variant="subheader2"
+              color="text.muted"
+              noWrap
+            >
               {reserveSymbol}
             </Typography>
           </Box>

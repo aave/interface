@@ -12,6 +12,9 @@ interface MigrationListsProps {
   onSelectAllBorrows: () => void;
   suppliesPositions: ReactNode;
   borrowsPositions: ReactNode;
+  loading?: boolean;
+  isSupplyPositionsAvailable: boolean;
+  isBorrowPositionsAvailable: boolean;
 }
 
 export const MigrationLists = ({
@@ -21,9 +24,14 @@ export const MigrationLists = ({
   onSelectAllBorrows,
   suppliesPositions,
   borrowsPositions,
+  loading,
+  isSupplyPositionsAvailable,
+  isBorrowPositionsAvailable,
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
   const isTablet = useMediaQuery(breakpoints.up('md'));
+
+  const valueFontSize = isTablet ? 'h4' : 'subheader1';
 
   return (
     <Box
@@ -34,13 +42,22 @@ export const MigrationLists = ({
       }}
     >
       <MigrationList
+        loading={loading}
         onSelectAllClick={onSelectAllSupplies}
+        isAvailable={isSupplyPositionsAvailable}
         titleComponent={
           <Box sx={{ display: 'flex' }}>
-            <Typography variant="h2" sx={{ mr: 4 }}>
+            <Typography variant={isTablet ? 'h2' : 'h3'} sx={{ mr: 6 }}>
               <Trans>Your supplies</Trans>
             </Typography>
-            <FormattedNumber value={totalSuppliesUSD} symbol="USD" />
+            {!(loading || +totalSuppliesUSD <= 0) && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormattedNumber value={totalSuppliesUSD} variant={valueFontSize} />
+                <Typography variant={valueFontSize} color="text.secondary" sx={{ ml: 1 }}>
+                  USD
+                </Typography>
+              </Box>
+            )}
           </Box>
         }
       >
@@ -48,14 +65,23 @@ export const MigrationLists = ({
       </MigrationList>
 
       <MigrationList
+        loading={loading}
         onSelectAllClick={onSelectAllBorrows}
+        isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
         titleComponent={
           <Box sx={{ display: 'flex' }}>
-            <Typography variant="h2" sx={{ mr: 4 }}>
+            <Typography variant={isTablet ? 'h2' : 'h3'} sx={{ mr: 6 }}>
               <Trans>Your borrows</Trans>
             </Typography>
-            <FormattedNumber value={totalBorrowsUSD} symbol="USD" />
+            {!(loading || +totalBorrowsUSD <= 0) && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormattedNumber value={totalBorrowsUSD} variant={valueFontSize} />
+                <Typography variant={valueFontSize} color="text.secondary" sx={{ ml: 1 }}>
+                  USD
+                </Typography>
+              </Box>
+            )}
           </Box>
         }
       >

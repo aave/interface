@@ -11,6 +11,8 @@ interface MigrationListProps {
   isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
+  loading?: boolean;
+  isAvailable: boolean;
 }
 
 export const MigrationList = ({
@@ -18,6 +20,8 @@ export const MigrationList = ({
   isBottomOnMobile,
   children,
   onSelectAllClick,
+  loading,
+  isAvailable,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
   const isTablet = useMediaQuery(breakpoints.up('md'));
@@ -26,27 +30,29 @@ export const MigrationList = ({
   return (
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, md: 0 } }}>
       <ListWrapper titleComponent={titleComponent}>
-        <ListHeaderWrapper>
-          <ListColumn align="center" maxWidth={100}>
-            <ListHeaderTitle onClick={onSelectAllClick}>
-              <Typography variant="main12">
-                <Trans>Select all</Trans>
-              </Typography>
-            </ListHeaderTitle>
-          </ListColumn>
+        {(isAvailable || loading) && (
+          <ListHeaderWrapper>
+            <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>
+              <ListHeaderTitle onClick={onSelectAllClick}>
+                <Typography variant="main12" sx={{ fontWeight: 700 }}>
+                  <Trans>Select all</Trans>
+                </Typography>
+              </ListHeaderTitle>
+            </ListColumn>
 
-          <ListColumn isRow maxWidth={280}>
-            <ListHeaderTitle>
-              <Trans>Asset</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
+            <ListColumn isRow maxWidth={280}>
+              <ListHeaderTitle>
+                <Trans>Asset</Trans>
+              </ListHeaderTitle>
+            </ListColumn>
 
-          <ListColumn align="right">
-            <ListHeaderTitle>
-              <Trans>Current balance</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-        </ListHeaderWrapper>
+            <ListColumn align="right">
+              <ListHeaderTitle>
+                <Trans>Current balance</Trans>
+              </ListHeaderTitle>
+            </ListColumn>
+          </ListHeaderWrapper>
+        )}
 
         {children}
       </ListWrapper>
