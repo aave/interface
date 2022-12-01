@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { MigrationList } from './MigrationList';
 
@@ -31,8 +30,6 @@ export const MigrationLists = ({
   const { breakpoints } = useTheme();
   const isTablet = useMediaQuery(breakpoints.up('md'));
 
-  const valueFontSize = isTablet ? 'h4' : 'subheader1';
-
   return (
     <Box
       sx={{
@@ -45,21 +42,8 @@ export const MigrationLists = ({
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
         isAvailable={isSupplyPositionsAvailable}
-        titleComponent={
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant={isTablet ? 'h2' : 'h3'} sx={{ mr: 6 }}>
-              <Trans>Your supplies</Trans>
-            </Typography>
-            {!(loading || +totalSuppliesUSD <= 0) && (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FormattedNumber value={totalSuppliesUSD} variant={valueFontSize} />
-                <Typography variant={valueFontSize} color="text.secondary" sx={{ ml: 1 }}>
-                  USD
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        }
+        titleComponent={<Trans>Your supplies</Trans>}
+        totalAmount={totalSuppliesUSD}
       >
         {suppliesPositions}
       </MigrationList>
@@ -69,21 +53,8 @@ export const MigrationLists = ({
         onSelectAllClick={onSelectAllBorrows}
         isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
-        titleComponent={
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant={isTablet ? 'h2' : 'h3'} sx={{ mr: 6 }}>
-              <Trans>Your borrows</Trans>
-            </Typography>
-            {!(loading || +totalBorrowsUSD <= 0) && (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FormattedNumber value={totalBorrowsUSD} variant={valueFontSize} />
-                <Typography variant={valueFontSize} color="text.secondary" sx={{ ml: 1 }}>
-                  USD
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        }
+        titleComponent={<Trans>Your borrows</Trans>}
+        totalAmount={totalBorrowsUSD}
       >
         {borrowsPositions}
       </MigrationList>

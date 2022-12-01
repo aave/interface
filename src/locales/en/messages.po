@@ -269,6 +269,7 @@ msgstr "Back to Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -1089,6 +1090,7 @@ msgstr "Maximum loan to value"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrate"
 msgstr "Migrate"
@@ -1096,6 +1098,14 @@ msgstr "Migrate"
 #: src/ui-config/menu-items/index.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Migrated"
+msgstr "Migrated"
+
+#: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+msgid "Migrating"
+msgstr "Migrating"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
@@ -1490,6 +1500,14 @@ msgstr "Select token to add"
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Select token to view in block explorer"
 msgstr "Select token to view in block explorer"
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Selected borrow assets"
+msgstr "Selected borrow assets"
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Selected supply assets"
+msgstr "Selected supply assets"
 
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."

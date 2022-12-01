@@ -118,6 +118,9 @@ export default function V3Migration() {
             hfV2AfterChange={'2'} // TODO: need value
             hfV3Current={'1.2'} // TODO: need value
             hfV3AfterChange={'2'} // TODO: need value
+            disableButton={
+              !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
+            }
             loading={loading}
           />
         </ContentContainer>

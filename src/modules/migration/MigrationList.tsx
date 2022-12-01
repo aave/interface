@@ -5,9 +5,11 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
 
 interface MigrationListProps {
   titleComponent: ReactNode;
+  totalAmount: string;
   isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
@@ -17,6 +19,7 @@ interface MigrationListProps {
 
 export const MigrationList = ({
   titleComponent,
+  totalAmount,
   isBottomOnMobile,
   children,
   onSelectAllClick,
@@ -29,7 +32,18 @@ export const MigrationList = ({
 
   return (
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, md: 0 } }}>
-      <ListWrapper titleComponent={titleComponent}>
+      <ListWrapper
+        titleComponent={
+          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+            {titleComponent}
+          </Typography>
+        }
+        topInfo={
+          !(loading || +totalAmount <= 0) && (
+            <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />
+          )
+        }
+      >
         {(isAvailable || loading) && (
           <ListHeaderWrapper>
             <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>

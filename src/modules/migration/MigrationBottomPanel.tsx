@@ -22,6 +22,7 @@ interface MigrationBottomPanelProps {
   hfV2AfterChange: string;
   hfV3Current: string;
   hfV3AfterChange: string;
+  disableButton?: boolean;
   loading?: boolean;
 }
 
@@ -30,6 +31,7 @@ export const MigrationBottomPanel = ({
   hfV2AfterChange,
   hfV3Current,
   hfV3AfterChange,
+  disableButton,
   loading,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
@@ -89,7 +91,7 @@ export const MigrationBottomPanel = ({
         <Box>
           <Button
             onClick={openV3Migration}
-            disabled={!isChecked}
+            disabled={!isChecked || disableButton}
             sx={{ minWidth: 140 }}
             variant="contained"
             size="medium"
