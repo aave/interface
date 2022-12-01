@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, OutlinedInput, Slider, SvgIcon, TextField, Typography } from '@mui/material';
+import { Box, Grid, OutlinedInput, Slider, SvgIcon, Typography } from '@mui/material';
 import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
