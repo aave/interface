@@ -318,7 +318,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <CircularProgress size={24} sx={{ my: 2, color: '#669AFF' }} />
           ) : (
             <>
-              <Box display="flex" alignItems="flex-end" mb={2}>
+              <Box display="flex" alignItems="center" mb={2}>
                 <FormattedNumber
                   value={baseBorrowRate}
                   percent
@@ -343,7 +343,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                       symbolsColor="text.primary"
                       sx={{ '.MuiTypography-root': { ml: 0 } }}
                     />
-                    <SvgIcon fontSize="large" sx={{ ml: 1, mb: '-2px' }}>
+                    <SvgIcon fontSize="large" sx={{ ml: 1 }}>
                       <PercentIcon />
                     </SvgIcon>
                   </>
