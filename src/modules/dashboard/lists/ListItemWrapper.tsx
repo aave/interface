@@ -62,7 +62,9 @@ export const ListItemWrapper = ({
         )}
         {frozen && symbol == 'renFIL' && <RenFILToolTip />}
         {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
-        {!borrowEnabled && <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />}
+        {!borrowEnabled && !frozen && (
+          <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
+        )}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
         {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
