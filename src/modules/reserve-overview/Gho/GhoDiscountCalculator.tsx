@@ -1,5 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, OutlinedInput, Slider, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  OutlinedInput,
+  Slider,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
 import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -8,10 +16,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
 import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
-
-type GhoDiscountCalculatorProps = {
-  baseVariableBorrowRate: string;
-};
 
 const sliderStyles = {
   color: '#669AFF',
@@ -38,9 +42,15 @@ const sliderStyles = {
   },
 };
 
+type GhoDiscountCalculatorProps = {
+  baseVariableBorrowRate: string;
+};
+
 // We start this calculator off showing values to reach max discount
 export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
   const {
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoDiscountRatePercent,
     ghoDiscountedPerToken,
     ghoComputed: { borrowAPYWithMaxDiscount },
@@ -51,6 +61,10 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
   const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(borrowAPYWithMaxDiscount);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
+  const loadingGhoData = ghoLoadingData || ghoLoadingMarketData;
+  const showDiscountRate =
+    (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
+    calculatedBorrowAPY === borrowAPYWithMaxDiscount;
 
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
@@ -80,13 +94,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
   }, [stkAave, ghoBorrow, borrowAPYWithMaxDiscount]);
   /* eslint-enable react-hooks/exhaustive-deps */
-
-  // TODO: need to hide the discount rate when zustand is loading, how?
-  // This helps to hide UI elements until we get proper values from the zustand store, as well as hides it when users have zero amounts in the inputs
-  console.log(calculatedBorrowAPY, borrowAPYWithMaxDiscount);
-  const showDiscountRate =
-    (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
-    calculatedBorrowAPY === borrowAPYWithMaxDiscount;
 
   const GhoDiscountParametersComponent: React.FC = () => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
@@ -157,13 +164,10 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
       : (ghoBorrow - discountableGhoAmount) / Number(ghoDiscountedPerToken);
     const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
     const discountNotAvailable = !stkAave || !ghoBorrow;
-    const maxDiscountReached = calculatedBorrowAPY === borrowAPYWithMaxDiscount;
 
     const handleAddStkAaveForMaxDiscount = () => {
       if (stkAave) setStkAave(stkAave + additionalStkAaveToReachMax);
     };
-
-    if (maxDiscountReached) return <></>;
 
     if (discountNotAvailable)
       return (
@@ -214,6 +218,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         </Typography>
       );
 
+    // Return nothing if max discount has been reached with maximum borrowed, and also as a fallback
     return <></>;
   };
 
@@ -309,38 +314,44 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           <Typography variant="subheader2" mb={1.5}>
             <Trans>GHO borrow APY</Trans>
           </Typography>
-          <Box display="flex" alignItems="flex-end" mb={2}>
-            <FormattedNumber
-              value={baseBorrowRate}
-              percent
-              variant="display1"
-              component="div"
-              color={showDiscountRate ? 'text.muted' : 'text.primary'}
-              symbolsColor={showDiscountRate ? 'text.muted' : 'text.primary'}
-              mr={1}
-              sx={
-                showDiscountRate
-                  ? { textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }
-                  : { '.MuiTypography-root': { ml: 0 } }
-              }
-            />
-            {showDiscountRate && (
-              <>
+          {loadingGhoData ? (
+            <CircularProgress size={24} sx={{ my: 2, color: '#669AFF' }} />
+          ) : (
+            <>
+              <Box display="flex" alignItems="flex-end" mb={2}>
                 <FormattedNumber
-                  value={calculatedBorrowAPY}
+                  value={baseBorrowRate}
                   percent
                   variant="display1"
                   component="div"
-                  symbolsColor="text.primary"
-                  sx={{ '.MuiTypography-root': { ml: 0 } }}
+                  color={showDiscountRate ? 'text.muted' : 'text.primary'}
+                  symbolsColor={showDiscountRate ? 'text.muted' : 'text.primary'}
+                  mr={1}
+                  sx={
+                    showDiscountRate
+                      ? { textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }
+                      : { '.MuiTypography-root': { ml: 0 } }
+                  }
                 />
-                <SvgIcon fontSize="large" sx={{ ml: 1, mb: '-2px' }}>
-                  <PercentIcon />
-                </SvgIcon>
-              </>
-            )}
-          </Box>
-          <GhoDiscountCalculatorHelperText />
+                {showDiscountRate && (
+                  <>
+                    <FormattedNumber
+                      value={calculatedBorrowAPY}
+                      percent
+                      variant="display1"
+                      component="div"
+                      symbolsColor="text.primary"
+                      sx={{ '.MuiTypography-root': { ml: 0 } }}
+                    />
+                    <SvgIcon fontSize="large" sx={{ ml: 1, mb: '-2px' }}>
+                      <PercentIcon />
+                    </SvgIcon>
+                  </>
+                )}
+              </Box>
+              <GhoDiscountCalculatorHelperText />
+            </>
+          )}
         </Grid>
       </Grid>
       <GhoDiscountParametersComponent />
