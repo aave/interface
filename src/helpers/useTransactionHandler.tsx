@@ -270,6 +270,7 @@ export const useTransactionHandler = ({
       }
     }
     if ((!usePermit || !approvalTxes) && actionTx) {
+      console.log(action, 'no permit no approvals')
       try {
         setMainTxState({ ...mainTxState, loading: true });
         console.log(actionTx, 'actionTx');

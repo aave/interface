@@ -31,6 +31,8 @@ export default function V3Migration() {
     selectCurrentMarketV2Reserves(state, currentTimestamp)
   );
 
+  const migrateTest = useRootStore((state) => state.migrateBorrowWithoutPermits);
+
   // start refreshing v3 market at the same time
   usePoolDataV3Subscription();
 
@@ -57,10 +59,11 @@ export default function V3Migration() {
           onClick={() => toggleSelectedBorrowPosition(reserve.underlyingAsset)}
           style={{ color: selectedBorrowAssets[reserve.underlyingAsset] ? 'red' : 'black' }}
         >
-          {reserve.variableBorrowsUSD}
+          {reserve.variableBorrows}
         </button>
       ))}
       <button onClick={openV3Migration}>Migrate</button>
+      <button onClick={migrateTest}>Borrow positions test</button>
     </div>
   );
 }
