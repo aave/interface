@@ -34,8 +34,8 @@ import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
-import { MarketDataType, marketsData } from 'src/ui-config/marketsConfig';
-import { availableMarkets, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { availableMarkets, marketsData, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -199,9 +199,8 @@ export const createPoolSlice: StateCreator<
     },
     refreshPoolV3Data: async () => {
       // how to determine which v2 markets to pool? for now always fetch polygon fork
-      const v3MarketData = marketsData[availableMarkets[11]];
-      console.log(marketsData);
-      // get().refreshPoolData(availableMarkets);
+      const v3MarketData = marketsData['fork_proto_polygon_v3'];
+      get().refreshPoolData(v3MarketData);
     },
     mint: async (args) => {
       if (!get().currentMarketData.addresses.FAUCET)

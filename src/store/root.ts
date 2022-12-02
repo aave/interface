@@ -1,5 +1,6 @@
 import { enableMapSet } from 'immer';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 

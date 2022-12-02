@@ -272,11 +272,8 @@ export const useTransactionHandler = ({
     if ((!usePermit || !approvalTxes) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        console.log(actionTx, 'actionTx');
         const params = await actionTx.tx();
-        console.log(params, 'actionTx');
         // delete params.gasPrice;
-        console.log(params);
         return processTx({
           tx: () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {
@@ -319,7 +316,6 @@ export const useTransactionHandler = ({
         return handleGetTxns()
           .then(async (data) => {
             if (!mounted.current) return;
-            // setApprovalTxes(data.filte((tx) => tx.txType === 'ERC20_APPROVAL'));
             const approvals = data.filter((tx) => tx.txType == 'ERC20_APPROVAL');
             if (approvals.length > 0) {
               setApprovalTxes(approvals);

@@ -10,6 +10,8 @@ export const selectCurrentUserLendingPoolData = (state: RootStore) => {
     ?.get(state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
 };
 
+export const selectLendingPoolDataV2 = (state: RootStore) => {};
+
 export const selectCurrentUserEmodeCategoryId = (state: RootStore): number => {
   return selectCurrentUserLendingPoolData(state)?.userEmodeCategoryId || 0;
 };

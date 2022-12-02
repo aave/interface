@@ -4,16 +4,26 @@ import {
   EthereumTransactionTypeExtended,
   V3MigrationHelperService,
   valueToWei,
+  Pool,
+  InterestRate,
 } from '@aave/contract-helpers';
+import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
+import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { BigNumberish, constants } from 'ethers';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
-import { selectedUserReservesForMigration } from './v3MigrationSelectors';
+import {
+  selectedUserSupplyReservesForMigration,
+  selectUserBorrowReservesForMigration,
+  selectUserSupplyAssetsForMigrationNoPermit,
+  selectUserSupplyAssetsForMigrationWithPermits,
+  selectUserSupplyIncreasedReservesForMigrationPermits,
+} from './v3MigrationSelectors';
 
 export type V3MigrationSlice = {
   //STATE
@@ -38,6 +48,9 @@ export type V3MigrationSlice = {
     deadline: BigNumberish
   ) => Promise<EthereumTransactionTypeExtended[]>;
   migrateWithoutPermits: () => Promise<EthereumTransactionTypeExtended[]>;
+  migrateBorrow: (
+    signedPermits?: V3MigrationHelperSignedPermit[]
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   _testMigration: () => void;
   // migrateSelectedPositions: () => void;
 };
@@ -71,7 +84,14 @@ export const createV3MigrationSlice: StateCreator<
 
       const typeData = {
         types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
           Permit: [
+            // { name: 'PERMIT_TYPEHASH', type: 'string' },
             { name: 'owner', type: 'address' },
             { name: 'spender', type: 'address' },
             { name: 'value', type: 'uint256' },
@@ -121,12 +141,12 @@ export const createV3MigrationSlice: StateCreator<
     getApprovePermitsForSelectedAssets: async () => {
       const timestamp = dayjs().unix();
       const approvalPermitsForMigrationAssets = await Promise.all(
-        selectedUserReservesForMigration(get(), timestamp).map(
-          async ({ reserve, underlyingBalance }): Promise<Approval> => {
+        selectUserSupplyIncreasedReservesForMigrationPermits(get(), timestamp).map(
+          async ({ reserve, increasedAmount, underlyingBalance }): Promise<Approval> => {
+            console.log(underlyingBalance, 'underlyingBalance');
             const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
-            const { name, decimals } = await getTokenData(reserve.aTokenAddress);
-            const amount = (Number(underlyingBalance) + 100).toString();
-            const convertedAmount = valueToWei(amount, decimals);
+            const { decimals } = await getTokenData(reserve.aTokenAddress);
+            const convertedAmount = valueToWei(increasedAmount, decimals);
             return {
               // TODO: should we allow spending of exact ammount of the reserver?
               amount: convertedAmount,
@@ -140,53 +160,38 @@ export const createV3MigrationSlice: StateCreator<
       return approvalPermitsForMigrationAssets;
     },
     migrateWithoutPermits: () => {
+      console.log('should be called before gas');
       const timestamp = dayjs().unix();
       set({ timestamp });
-      const assets: {
-        aToken: string;
-        deadline: number;
-        amount: string;
-        underlyingAsset: string;
-      }[] = selectedUserReservesForMigration(get(), timestamp).map(
-        ({ underlyingAsset, underlyingBalance, reserve }) => {
-          const deadline = Math.floor(Date.now() / 1000 + 3600);
-          return {
-            amount: constants.MaxUint256.toString(),
-            aToken: reserve.aTokenAddress,
-            underlyingAsset: underlyingAsset,
-            // TODO: fow how long to approve?
-            deadline,
-          };
-        }
-      );
+      const borrowedPositions = selectUserBorrowReservesForMigration(get(), timestamp);
+      if (borrowedPositions.length > 0) {
+        return get().migrateBorrow();
+      }
+      const assets = selectUserSupplyAssetsForMigrationNoPermit(get(), timestamp);
       const user = get().account;
       return get().getMigrationServiceInstance().migrateNoBorrow({ assets, user });
     },
     migrateWithPermits: async (signatures: SignatureLike[], deadline: BigNumberish) => {
-      const permits = await Promise.all(
-        get().approvalPermitsForMigrationAssets.map(async ({ amount, underlyingAsset }, index) => {
-          return {
-            signedPermit: signatures[index],
-            deadline,
-            aToken: underlyingAsset,
-            value: amount,
-          };
-        })
+      const signedPermits = selectUserSupplyAssetsForMigrationWithPermits(
+        get(),
+        signatures,
+        deadline
       );
-      // branch out into flashloan or migrate no borrow
-      // move that to separate instance and save cache the Migrator instance
+      const borrowedPositions = selectUserBorrowReservesForMigration(get(), get().timestamp);
+      if (borrowedPositions.length > 0) {
+        return get().migrateBorrow(signedPermits);
+      }
+
       const migratorHelperInstance = get().getMigrationServiceInstance();
       const user = get().account;
-      const assets = selectedUserReservesForMigration(get(), get().timestamp).map(
+      const assets = selectedUserSupplyReservesForMigration(get(), get().timestamp).map(
         (reserve) => reserve.underlyingAsset
       );
-      await get()._testMigration();
-      console.log(assets);
       return migratorHelperInstance.migrateNoBorrowWithPermits({
         user,
         assets,
         deadline,
-        signedPermits: permits,
+        signedPermits,
       });
     },
     getMigratorAddress: () => {
@@ -201,20 +206,48 @@ export const createV3MigrationSlice: StateCreator<
       }
       const provider = get().jsonRpcProvider();
       const migratorAddress = get().getMigratorAddress();
-      const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress);
+      const currentMarketData = get().currentMarketData;
+      // TODO: make it dynamic when network switch will be there
+      const pool = new Pool(provider, {
+        POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
+        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+      });
+      const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress, pool);
       // TODO: don't forget to add maping here
       return newMigratorInstance;
     },
     _testMigration: async () => {
       const currentTimestamp = dayjs().unix();
-      const selectedReservers = selectedUserReservesForMigration(get(), currentTimestamp);
+      const selectedReservers = selectedUserSupplyReservesForMigration(get(), currentTimestamp);
       const mappedAddresses = await Promise.all(
         selectedReservers.map((reserve) =>
           get().getMigrationServiceInstance().testDeployment(reserve.underlyingAsset)
         )
       );
-
-      console.log(mappedAddresses);
+    },
+    migrateBorrow: async (signedPermits: V3MigrationHelperSignedPermit[] = []) => {
+      const currentTimestamp = dayjs().unix();
+      const user = get().account;
+      const suppliedPositions = selectUserSupplyAssetsForMigrationNoPermit(get(), currentTimestamp);
+      const borrowedPositions = selectUserBorrowReservesForMigration(get(), currentTimestamp);
+      const mappedBorrowPositions = borrowedPositions.map(
+        ({ increasedAmount, interestRate, underlyingAsset }) => {
+          return {
+            amount: increasedAmount,
+            interestRate,
+            address: underlyingAsset,
+          };
+        }
+      );
+      return get().getMigrationServiceInstance().migrateWithBorrow({
+        user,
+        borrowedPositions: mappedBorrowPositions,
+        suppliedPositions,
+        signedPermits,
+      });
     },
   };
 };
