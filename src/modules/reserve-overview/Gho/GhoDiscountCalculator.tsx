@@ -243,7 +243,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <OutlinedInput
               fullWidth
               value={ghoBorrow ?? ''}
-              defaultValue={10000}
               placeholder="0"
               endAdornment={<TokenIcon symbol="GHO" />}
               inputProps={{
@@ -260,7 +259,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <Slider
               size="small"
               value={ghoBorrow ?? 0}
-              defaultValue={10000}
               onChange={(_, val) => setGhoBorrow(Number(val))}
               step={1000}
               min={0}
@@ -280,7 +278,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <OutlinedInput
               fullWidth
               value={stkAave ?? ''}
-              defaultValue={100}
               placeholder="0"
               endAdornment={<TokenIcon symbol="AAVE" />}
               inputProps={{
@@ -297,7 +294,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <Slider
               size="small"
               value={stkAave ?? 0}
-              defaultValue={100}
               onChange={(_, val) => setStkAave(Number(val))}
               step={5}
               min={0}
