@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 import {
@@ -12,10 +11,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { CircleIcon } from 'src/components/CircleIcon';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
@@ -33,15 +30,16 @@ interface GhoReserveTopDetailsProps {
 
 export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => {
   const router = useRouter();
-  // const { loading } = useAppDataContext();
-  const loading = false;
-  const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
   const {
     ghoDisplay: { facilitatorBucketLevel, maxAvailableFromFacilitator },
+    ghoLoadingData,
+    ghoLoadingMarketData,
   } = useRootStore();
 
+  const loading = ghoLoadingData || ghoLoadingMarketData;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -58,14 +56,6 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         )}
       </Box>
     );
-  };
-
-  const iconStyling = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: '#A5A8B6',
-    '&:hover': { color: '#F1F1F3' },
-    cursor: 'pointer',
   };
 
   const ReserveName = () => {
@@ -248,22 +238,6 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
             symbolsVariant={symbolsTypographyVariant}
             symbolsColor="#A5A8B6"
           />
-          {loading ? (
-            <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
-          ) : (
-            <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
-              <Link
-                href={currentNetworkConfig.explorerLinkBuilder({
-                  address: reserve?.priceOracle,
-                })}
-                sx={iconStyling}
-              >
-                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Link>
-            </CircleIcon>
-          )}
         </Box>
       </TopInfoPanelItem>
     </TopInfoPanel>

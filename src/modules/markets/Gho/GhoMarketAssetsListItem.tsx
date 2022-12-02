@@ -117,7 +117,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
                   compact
                   percent
                   value={borrowAPYWithMaxDiscount}
-                  visibleDecimals={1}
+                  visibleDecimals={2}
                   variant="h3"
                   sx={{ mr: 0.5 }}
                 />
