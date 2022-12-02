@@ -339,7 +339,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                       symbolsColor="text.primary"
                       sx={{ '.MuiTypography-root': { ml: 0 } }}
                     />
-                    <SvgIcon fontSize="large" sx={{ ml: 1 }}>
+                    <SvgIcon fontSize="large">
                       <PercentIcon />
                     </SvgIcon>
                   </>
