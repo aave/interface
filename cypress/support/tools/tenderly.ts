@@ -89,14 +89,24 @@ export class TenderlyFork {
     return;
   }
 
-  async getERC20Token(walletAddress: string, tokenAddress: string) {
+  async getERC20Token(
+    walletAddress: string,
+    tokenAddress: string,
+    donorAddress?: string,
+    tokenCount?: string
+  ) {
+    let TOP_HOLDER_ADDRESS;
     const _url = this.get_rpc_url();
     const provider = getDefaultProvider(_url);
-    const TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
+    if (donorAddress) {
+      TOP_HOLDER_ADDRESS = donorAddress;
+    } else {
+      TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
+    }
     // @ts-ignore
     const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
     const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);
-    await token.transfer(walletAddress, utils.parseEther('1000'));
+    await token.transfer(walletAddress, utils.parseEther(tokenCount || '10'));
   }
 
   async getTopHolder(token: string) {

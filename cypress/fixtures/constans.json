@@ -22,7 +22,8 @@
     "borrow": "Borrow",
     "repay": "Repay",
     "withdraw": "Withdraw",
-    "switchApy": "Switch rate"
+    "switchApy": "Switch rate",
+    "faucet": "Faucet"
   },
   "apyType": {
     "stable": "Stable",

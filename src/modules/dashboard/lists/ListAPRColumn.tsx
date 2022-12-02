@@ -15,7 +15,7 @@ interface ListAPRColumnProps {
 export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRColumnProps) => {
   return (
     <ListColumn>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex' }} data-cy={`apr`}>
         <IncentivesCard value={value} incentives={incentives} symbol={symbol} data-cy={`apyType`} />
         {tooltip}
       </Box>

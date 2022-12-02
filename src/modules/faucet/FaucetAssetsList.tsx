@@ -95,7 +95,11 @@ export default function FaucetAssetsList() {
         )
       ) : (
         listData.map((reserve) => (
-          <ListItem px={downToXSM ? 4 : 6} key={reserve.symbol}>
+          <ListItem
+            px={downToXSM ? 4 : 6}
+            key={reserve.symbol}
+            data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
+          >
             <ListColumn isRow maxWidth={280}>
               <Link
                 href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
