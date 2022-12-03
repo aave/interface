@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-29 18:04\n"
+"PO-Revision-Date: 2022-12-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -640,6 +640,7 @@ msgstr "Deshabilitar testnet"
 msgid "Disable {symbol} as collateral"
 msgstr "Desactivar {symbol} como garantía"
 
+#: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
@@ -808,6 +809,10 @@ msgstr "Hilo de discusión del foro"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
 msgstr "Francés"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1126,8 +1131,8 @@ msgstr "Nuevo APY"
 msgid "No rewards to claim"
 msgstr "No hay recompensas para reclamar"
 
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "No search results for"
 msgstr "No hay resultados de búsqueda para"
 
@@ -1757,6 +1762,10 @@ msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar el error</1></0>"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr ""
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "Estos fondos se han tomado prestados y no están disponibles para su retirada en este momento."
@@ -2083,9 +2092,9 @@ msgstr "Modo de solo lectura."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Modo de solo lectura. Conéctate a tu cartera para realizar transacciones."
 
-#: src/modules/markets/MarketAssetsList.tsx
-msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
-msgstr "No hemos podido encontrar ningun activo que coincida con tu búsqueda. Vuelve a intentarlo con un nombre, simbolo, o dirección de activo diferente."
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
+msgstr ""
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
