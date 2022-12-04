@@ -76115,8 +76115,9 @@ var getProvider = (chainId) => {
 var ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
 var ustDisableProposal = 'https://app.aave.com/governance/proposal/75';
 var kncDisableProposal = 'https://app.aave.com/governance/proposal/69';
-var v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/112';
 var v2MainnetDisableProposal = 'https://app.aave.com/governance/proposal/111';
+var v2MainnetDisableProposal2 = 'https://app.aave.com/governance/proposal/125';
+var v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/124';
 var frozenProposalMap = {
   ['UST' + 'proto_mainnet' /* proto_mainnet */]: ustDisableProposal,
   ['KNC' + 'proto_mainnet' /* proto_mainnet */]: kncDisableProposal,
@@ -76136,14 +76137,36 @@ var frozenProposalMap = {
   ['UNIYFIWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
   ['BPTWBTCWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
   ['BPTBALWETH' + 'proto_mainnet' /* proto_mainnet */]: ammDisableProposal,
-  ['GHST' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
-  ['DPI' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
   ['BAL' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
-  ['BAT' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
   ['CVX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
-  ['DPI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
   ['REN' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
-  ['ZRX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal,
+  ['YFI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['CRV' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['ZRX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['MANA' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['1INCH' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['BAT' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['SUSD' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['ENJ' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['GUSD' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['AMPL' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['RAI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['USDP' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['LUSD' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['XSUSHI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['DPI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['RENFIL' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['MKR' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['ENS' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['LINK' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['UNI' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['SNX' + 'proto_mainnet' /* proto_mainnet */]: v2MainnetDisableProposal2,
+  ['BAL' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['CRV' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['DPI' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['GHST' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['LINK' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
+  ['XSUSHI' + 'proto_polygon' /* proto_polygon */]: v2PolygonDisableProposal,
 };
 
 // src/modules/governance/utils/governanceProvider.tsx
