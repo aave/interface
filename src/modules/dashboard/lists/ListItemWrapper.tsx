@@ -42,6 +42,11 @@ export const ListItemWrapper = ({
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
+  const showFrozenTooltip = frozen && symbol !== 'renFIL';
+  const showRenFilTooltip = frozen && symbol === 'renFIL';
+  const showAmplTooltip = !frozen && symbol === 'AMPL';
+  const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={160} isRow>
@@ -57,12 +62,12 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {frozen && symbol != 'renFIL' && (
-          <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
+        {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
+        {showRenFilTooltip && <RenFILToolTip />}
+        {showAmplTooltip && <AMPLToolTip />}
+        {showBorrowDisabledTooltip && (
+          <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
-        {frozen && symbol == 'renFIL' && <RenFILToolTip />}
-        {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
-        {!borrowEnabled && <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
         {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
