@@ -22,6 +22,7 @@ export enum ErrorType {}
 
 export const FaucetModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: faucetTxState, txError } = useModalContext();
+  const { currentMarketData } = useRootStore();
   const { account, currentMarket } = useRootStore();
   const defaultValue = valueToWei('1000', 18);
   const mintAmount = mintAmountsPerToken[poolReserve.symbol.toUpperCase()]
@@ -58,6 +59,7 @@ export const FaucetModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapper
           captchaToken,
           market: currentMarket,
           tokenAddress: poolReserve.underlyingAsset,
+          faucetAddress: currentMarketData.addresses.FAUCET,
         }),
       });
       const data = await response.json();
