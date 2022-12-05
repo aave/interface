@@ -27,7 +27,7 @@ import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
 import { GhoBorrowedPositionsListMobileItem } from './GhoBorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
-  const { user, loading } = useAppDataContext();
+  const { user, loading, eModes } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -81,6 +81,8 @@ export const BorrowedPositionsList = () => {
     <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
   ];
 
+  const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
+
   if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
   return (
     <ListWrapper
@@ -91,7 +93,7 @@ export const BorrowedPositionsList = () => {
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
-        currentMarketData.v3 ? (
+        showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
