@@ -1,6 +1,9 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import PercentIcon from 'public/icons/markets/percent-icon.svg';
+import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -8,7 +11,6 @@ import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/g
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -35,6 +37,9 @@ export const GhoBorrowedPositionsListItem = ({
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
+    stkAaveBalance,
+    ghoDiscountRatePercent,
+    ghoBorrowAPY,
   } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
@@ -57,6 +62,7 @@ export const GhoBorrowedPositionsListItem = ({
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      ghoBorder
     >
       <ListValueColumn
         symbol={reserve.symbol}
@@ -64,7 +70,23 @@ export const GhoBorrowedPositionsListItem = ({
         subValue={Number(variableBorrowsUSD)}
       />
 
-      <ListAPRColumn symbol={reserve.symbol} value={loading ? -1 : borrowRateAfterDiscount} />
+      <ListColumn>
+        <Box sx={{ display: 'flex' }}>
+          <GhoIncentivesCard
+            value={loading ? -1 : borrowRateAfterDiscount}
+            incentives={reserve.vIncentivesData}
+            symbol={reserve.symbol}
+            data-cy={`apyType`}
+            tooltip={<PercentIcon />}
+            borrowAmount={variableBorrows}
+            baseApy={ghoBorrowAPY}
+            discountPercent={ghoDiscountRatePercent * -1}
+            discountableAmount={discountableAmount}
+            stkAaveBalance={stkAaveBalance || 0}
+            ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+          />
+        </Box>
+      </ListColumn>
 
       <ListColumn>
         <ListItemAPYButton

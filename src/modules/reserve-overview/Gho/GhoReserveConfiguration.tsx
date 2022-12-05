@@ -172,7 +172,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         </Box>
       </PanelRow>
       <Divider sx={{ my: '40px' }} />
-      <PanelRow>
+      <PanelRow id="discount">
         <PanelTitle>
           <Trans>Discount info</Trans>
         </PanelTitle>

@@ -307,6 +307,10 @@ msgstr "Back to Dashboard"
 msgid "Balance"
 msgstr "Balance"
 
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "Base APY"
+msgstr "Base APY"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -364,6 +368,7 @@ msgstr "Borrow APY, stable"
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
+#: src/components/incentives/GhoIncentivesCard.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Borrow amount"
 msgstr "Borrow amount"
@@ -735,6 +740,14 @@ msgstr "Discount"
 msgid "Discount info"
 msgstr "Discount info"
 
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "Discount on base APY"
+msgstr "Discount on base APY"
+
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "Discount only applies to <0/> GHO, which equals discountable amount for staking <1/> AAVE."
+msgstr "Discount only applies to <0/> GHO, which equals discountable amount for staking <1/> AAVE."
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters"
 msgstr "Discount parameters"
@@ -851,6 +864,10 @@ msgstr "Enter an amount"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
+
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "Estimated compounding interest, including discount for staking AAVE:"
+msgstr "Estimated compounding interest, including discount for staking AAVE:"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
@@ -1212,6 +1229,10 @@ msgstr "Minimum received"
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
+
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "More details"
+msgstr "More details"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"

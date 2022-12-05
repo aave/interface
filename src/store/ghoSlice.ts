@@ -98,10 +98,9 @@ export const createGhoSlice: StateCreator<
       },
       get discountableAmount() {
         if (!get()) return 0;
-        const stakedAaveBalance = get().stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
-        const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
+        const stakedAaveBalance = get().stkAaveBalance ?? 0;
         const discountPerToken = get().ghoDiscountedPerToken;
-        return Number(stakedAaveBalanceNormalized) * Number(discountPerToken);
+        return stakedAaveBalance * Number(discountPerToken);
       },
       get percentageOfGhoMinted() {
         if (!get()) return 0;

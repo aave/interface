@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton, styled, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Skeleton, styled, Typography } from '@mui/material';
 import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
@@ -121,9 +121,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
                   variant="h3"
                   sx={{ mr: 0.5 }}
                 />
-                <SvgIcon sx={{ mt: 0.5 }}>
-                  <PercentIcon />
-                </SvgIcon>
+                <PercentIcon />
               </Box>
               <Typography variant="secondary12" color="text.secondary">
                 <Trans>Borrow APY with max discount</Trans>

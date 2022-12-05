@@ -25,6 +25,7 @@ interface ListItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   footerButton?: ReactNode;
+  ghoBorder?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -40,13 +41,14 @@ export const ListItemWrapper = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   footerButton,
+  ghoBorder,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   return (
     <>
-      <ListItem {...rest} hideBorder={footerButton ? true : false}>
+      <ListItem {...rest} hideBorder={footerButton ? true : false} ghoBorder={ghoBorder}>
         <ListColumn maxWidth={160} isRow>
           <Link
             href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
