@@ -143,10 +143,6 @@ msgstr "Address is not a contract"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "After transaction"
-msgstr "After transaction"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -340,11 +336,6 @@ msgstr "Blocked Address"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
-
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Borrow @ {0} APY"
-msgstr "Borrow @ {0} APY"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
@@ -740,10 +731,6 @@ msgstr "Discord channel"
 msgid "Discount"
 msgstr "Discount"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Discount details"
-msgstr "Discount details"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Discount info"
 msgstr "Discount info"
@@ -760,7 +747,6 @@ msgstr "Discount parameters are decided by the Aave community and may be changed
 msgid "Discount program"
 msgstr "Discount program"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
@@ -1275,10 +1261,6 @@ msgstr "No search results for"
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr "No voting power"
-
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Non-discountable amount"
-msgstr "Non-discountable amount"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -2028,10 +2010,6 @@ msgstr "Top 10 addresses"
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"
-
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Total borrow balance"
-msgstr "Total borrow balance"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
