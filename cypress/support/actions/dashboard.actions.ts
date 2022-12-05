@@ -1,6 +1,6 @@
 import constants from '../../fixtures/constans.json';
 
-export class Dashboard {
+export class DashboardActions {
   public static borrow({
     asset,
     amount,
@@ -45,23 +45,4 @@ export class Dashboard {
       cy.get('[data-cy=Modal]').should('not.exist');
     });
   }
-
-  public static getBorrowApy(){
-    cy.doSwitchToDashboardBorrowView();
-    return cy
-      .get(
-        borrowed
-          ? `[data-cy="dashboardBorrowedListItem_GHO_Variable"]`
-          : `[data-cy="dashboardBorrowListItem_GHO"]`
-      )
-      .find(`[data-cy="apr"]`)
-      .first()
-      .then(($val) => {
-        const _apy = parseFloat($val.text());
-        cy.log(`APY rate is ${_apy}%`)
-        return _apy;
-      });
-  }
 }
-
-
