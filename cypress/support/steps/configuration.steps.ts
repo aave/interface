@@ -26,9 +26,9 @@ export const configEnvWithTenderly = ({
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
-  let provider:JsonRpcProvider
-  let signer:Wallet
-  let auth: Cypress.AUTWindow
+  let provider: JsonRpcProvider;
+  let signer: Wallet;
+  let auth: Cypress.AUTWindow;
   before(async () => {
     await tenderly.init();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -73,18 +73,18 @@ export const configEnvWithTenderly = ({
       },
     });
   });
-  before('Save env variables', ()=>{
-    window.tenderly=tenderly;
-    window.address=walletAddress;
-    window.chainId=chainId.toString();
-    window.rpc=tenderly.get_rpc_url();
-    window.market=market
-    window.testnetsEnabled=enableTestnet.toString()
-    window.url=URL
-    window.privateKey = privateKey
-    window.provider = provider
-    window.signer = signer
-    window.auth = auth
+  before('Save env variables', () => {
+    window.tenderly = tenderly;
+    window.address = walletAddress;
+    window.chainId = chainId.toString();
+    window.rpc = tenderly.get_rpc_url();
+    window.market = market;
+    window.testnetsEnabled = enableTestnet.toString();
+    window.url = URL;
+    window.privateKey = privateKey;
+    window.provider = provider;
+    window.signer = signer;
+    window.auth = auth;
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {

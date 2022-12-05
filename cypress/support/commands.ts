@@ -1,5 +1,5 @@
 import 'cypress-wait-until';
-import { CustomizedBridge } from "./tools/bridge";
+import { CustomizedBridge } from './tools/bridge';
 
 declare global {
   namespace Cypress {
@@ -124,7 +124,7 @@ Cypress.Commands.add('refresh', () => {
   cy.wait(1000);
   cy.visit(window.url, {
     onBeforeLoad(win) {
-// eslint-disable-next-line
+      // eslint-disable-next-line
       (win as any).ethereum = new CustomizedBridge(window.signer, window.provider);
       win.localStorage.setItem('forkEnabled', 'true');
       win.localStorage.setItem('forkNetworkId', '3030');
@@ -137,7 +137,7 @@ Cypress.Commands.add('refresh', () => {
     },
   });
   cy.wait(1000);
-  cy.log('-------------------------')
+  cy.log('-------------------------');
 });
 
 export {};

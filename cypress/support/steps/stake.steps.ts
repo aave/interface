@@ -3,11 +3,11 @@ import { doCloseModal } from './main.steps';
 const timeout = 10000;
 
 export const stake = ({
-                        assetName,
-                        amount,
-                        checkAmount,
-                        tabValue,
-                      }: {
+  assetName,
+  amount,
+  checkAmount,
+  tabValue,
+}: {
   assetName: { fullName: string; shortName: string; address: string };
   amount: number;
   checkAmount: string;
@@ -49,8 +49,8 @@ export const stake = ({
 };
 
 export const claimReward = ({
-                              assetName,
-                            }: {
+  assetName,
+}: {
   assetName: { fullName: string; shortName: string; address: string };
 }) => {
   return describe(`Claim reward`, () => {
@@ -65,8 +65,8 @@ export const claimReward = ({
 };
 
 export const activateCooldown = ({
-                                   assetName,
-                                 }: {
+  assetName,
+}: {
   assetName: { fullName: string; shortName: string; address: string };
 }) => {
   return describe(`Activate cooldown`, () => {
