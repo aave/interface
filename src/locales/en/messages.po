@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "<0>+Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <1/> (max discount)"
+msgstr "<0>+Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <1/> (max discount)"
+
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -58,18 +62,8 @@ msgid "APY type"
 msgstr "APY type"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "APY with discount"
-msgstr "APY with discount"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "APY with max discount"
 msgstr "APY with max discount"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "APY without discount"
-msgstr "APY without discount"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -128,6 +122,10 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Add stkAAVE to see borrow APY with the discount"
+msgstr "Add stkAAVE to see borrow APY with the discount"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
@@ -161,10 +159,6 @@ msgstr "All done!"
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
 msgstr "All proposals"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "All rates and discountables are decided by Aave community and may be changed over time. Check Governance for updates and vote.<0>Learn more</0>"
-msgstr "All rates and discountables are decided by Aave community and may be changed over time. Check Governance for updates and vote.<0>Learn more</0>"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
@@ -379,6 +373,10 @@ msgstr "Borrow APY, stable"
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Borrow amount"
+msgstr "Borrow amount"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
@@ -466,10 +464,6 @@ msgstr "CLAIM {symbol}"
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Calculate GHO borrow interest rate with discount"
-msgstr "Calculate GHO borrow interest rate with discount"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -746,10 +740,6 @@ msgstr "Discord channel"
 msgid "Discount"
 msgstr "Discount"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
-msgstr "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
-
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount details"
 msgstr "Discount details"
@@ -762,13 +752,15 @@ msgstr "Discount info"
 msgid "Discount parameters"
 msgstr "Discount parameters"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
+msgstr "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
+
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discount program"
 msgstr "Discount program"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
@@ -907,6 +899,10 @@ msgstr "Faucet {0}"
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
 msgstr "Filter"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
+msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
@@ -1181,8 +1177,8 @@ msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Max discount on borrow rate"
-msgstr "Max discount on borrow rate"
+msgid "Max discount"
+msgstr "Max discount"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
@@ -1281,8 +1277,6 @@ msgid "No voting power"
 msgstr "No voting power"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Non-discountable amount"
 msgstr "Non-discountable amount"
 
@@ -1695,6 +1689,10 @@ msgstr "Stake"
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Stake AAVE to borrow GHO at a discount"
+msgstr "Stake AAVE to borrow GHO at a discount"
+
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
@@ -1707,6 +1705,10 @@ msgstr "Stake cooldown activated"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Staked"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Staked AAVE amount"
+msgstr "Staked AAVE amount"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
@@ -2330,10 +2332,6 @@ msgstr "YAE"
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You borrow (GHO)"
-msgstr "You borrow (GHO)"
-
 #: src/components/transactions/Borrow/BorrowModal.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
@@ -2387,8 +2385,8 @@ msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You stake (stkAAVE)"
-msgstr "You stake (stkAAVE)"
+msgid "You may borrow up to {discountableGhoAmount} GHO at <0/> (max discount)"
+msgstr "You may borrow up to {discountableGhoAmount} GHO at <0/> (max discount)"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"

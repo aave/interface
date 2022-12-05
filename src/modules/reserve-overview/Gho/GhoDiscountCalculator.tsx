@@ -1,135 +1,70 @@
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  FilledInput,
+  CircularProgress,
   Grid,
-  Paper,
+  OutlinedInput,
   Slider,
+  SvgIcon,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
+import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
-import {
-  displayDiscountableAmount,
-  displayNonDiscountableAmount,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+
+const sliderStyles = {
+  color: '#669AFF',
+  '.MuiSlider-rail': {
+    color: 'text.disabled',
+  },
+  '.MuiSlider-thumb': {
+    boxShadow:
+      '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)',
+  },
+  '.MuiSlider-mark': {
+    display: 'none',
+  },
+  '.MuiSlider-markLabel': {
+    top: '24px',
+    fontSize: '10px',
+    color: 'text.secondary',
+    '&[data-index="1"]': {
+      transform: 'translateX(-100%)',
+    },
+    '@media (pointer: coarse)': {
+      top: '30px',
+    },
+  },
+};
 
 type GhoDiscountCalculatorProps = {
   baseVariableBorrowRate: string;
 };
 
-type GhoAmountDisplayComponentProps = {
-  isDiscountableAmount: boolean;
-  value: number;
-  rate: number;
-};
-
-const GhoAmountDisplayComponent = ({
-  isDiscountableAmount,
-  value,
-  rate,
-}: GhoAmountDisplayComponentProps): JSX.Element => (
-  <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
-    <Box
-      sx={{
-        width: 10,
-        height: 10,
-        border: isDiscountableAmount ? '2px solid #B6519F' : '2px solid #2EBAC6',
-        borderRadius: '50%',
-        mr: 3,
-      }}
-    />
-    <Box flexGrow={1}>
-      <Typography>
-        {isDiscountableAmount ? (
-          <Trans>Discountable amount</Trans>
-        ) : (
-          <Trans>Non-discountable amount</Trans>
-        )}
-      </Typography>
-      <Typography variant="secondary12" color="text.secondary">
-        {isDiscountableAmount ? (
-          <Trans>APY with discount</Trans>
-        ) : (
-          <Trans>APY without discount</Trans>
-        )}
-      </Typography>
-    </Box>
-    <Box textAlign="right">
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
-        <FormattedNumber value={value} visibleDecimals={0} />
-      </Box>
-      <FormattedNumber value={rate} percent />
-    </Box>
-  </Box>
-);
-
-const GhoAmountMobileDisplayComponent = ({
-  isDiscountableAmount,
-  value,
-  rate,
-}: GhoAmountDisplayComponentProps): JSX.Element => (
-  <Box mb={4} sx={{ '&:last-child': { mb: 0 } }}>
-    <Box display="flex" alignItems="center" mb={2}>
-      <Box
-        sx={{
-          width: 10,
-          height: 10,
-          border: isDiscountableAmount ? '2px solid #B6519F' : '2px solid #2EBAC6',
-          borderRadius: '50%',
-          mr: 3,
-        }}
-      />
-      <Box flexGrow={1}>
-        <Typography>
-          {isDiscountableAmount ? (
-            <Trans>Discountable amount</Trans>
-          ) : (
-            <Trans>Non-discountable amount</Trans>
-          )}
-        </Typography>
-        <Typography variant="secondary12" color="text.secondary">
-          {isDiscountableAmount ? (
-            <Trans>APY with discount</Trans>
-          ) : (
-            <Trans>APY without discount</Trans>
-          )}
-        </Typography>
-      </Box>
-    </Box>
-    <Box display="flex" alignItems="center">
-      <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 2 }} />
-      <Box display="flex" flexDirection="column">
-        <FormattedNumber value={value} visibleDecimals={0} />
-        <FormattedNumber value={rate} percent />
-      </Box>
-    </Box>
-  </Box>
-);
-
+// We start this calculator off showing values to reach max discount
 export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
-  const [stkAave, setStkAave] = useState<number>(0);
-  const [ghoBorrow, setGhoBorrow] = useState<number>(0);
-  const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
-  const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
-  const { breakpoints } = useTheme();
-  const mobileScreens = useMediaQuery(breakpoints.down('sm'));
   const {
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoDiscountRatePercent,
     ghoDiscountedPerToken,
     ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
   const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const discountedPerToken = Number(ghoDiscountedPerToken);
+  const [stkAave, setStkAave] = useState<number | null>(100);
+  const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
+  const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(borrowAPYWithMaxDiscount);
+  const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
+  const loadingGhoData = ghoLoadingData || ghoLoadingMarketData;
+  const showDiscountRate =
+    (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
+    calculatedBorrowAPY === borrowAPYWithMaxDiscount;
 
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
@@ -154,175 +89,268 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     setCalculatedBorrowAPY(newBorrowAPY);
   };
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    calculateDiscountRate(stkAave, ghoBorrow);
-  }, [stkAave, ghoBorrow]); /* eslint-disable-line react-hooks/exhaustive-deps */
+    calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
+  }, [stkAave, ghoBorrow, borrowAPYWithMaxDiscount]);
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const GhoDiscountParametersComponent: React.FC = () => (
+    <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
+      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+        <Typography variant="secondary14" color="text.secondary">
+          <Trans>Discount parameters</Trans>
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          mt: 3,
+          mb: 2,
+        }}
+      >
+        <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
+          <Typography variant="secondary14" display="flex" alignItems="center">
+            <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
+            {discountedPerToken}
+            <Typography component="span" variant="secondary14" color="text.primary" sx={{ mx: 1 }}>
+              <Trans>to</Trans>
+            </Typography>{' '}
+            <TokenIcon symbol="AAVE" sx={{ fontSize: '14px', mr: 1 }} />1
+          </Typography>
+        </ReserveOverviewBox>
+        <ReserveOverviewBox title={<Trans>Max discount</Trans>}>
+          <FormattedNumber
+            value={ghoDiscountRatePercent * -1}
+            percent
+            variant="secondary14"
+            color="text.primary"
+            sx={{ mr: 1 }}
+            visibleDecimals={0}
+          />
+        </ReserveOverviewBox>
+        <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
+          <FormattedNumber
+            value={borrowAPYWithMaxDiscount}
+            percent
+            variant="secondary14"
+            color="text.primary"
+          />
+        </ReserveOverviewBox>
+      </Box>
+      <Typography variant="caption" color="text.secondary">
+        <Trans>
+          Discount parameters are decided by the Aave community and may be changed over time. Check
+          Governance for updates and vote to participate.{' '}
+          <Link
+            href="https://governance.aave.com"
+            sx={{ textDecoration: 'underline' }}
+            variant="caption"
+            color="text.secondary"
+          >
+            Learn more
+          </Link>
+        </Trans>
+      </Typography>
+    </Box>
+  );
+
+  const GhoDiscountCalculatorHelperText: React.FC = () => {
+    const maxDiscountNotReached = ghoBorrow && discountableGhoAmount < ghoBorrow;
+    const additionalStkAaveToReachMax = !maxDiscountNotReached
+      ? 0
+      : (ghoBorrow - discountableGhoAmount) / Number(ghoDiscountedPerToken);
+    const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
+    const discountNotAvailable = !stkAave || !ghoBorrow;
+
+    const handleAddStkAaveForMaxDiscount = () => {
+      if (stkAave) setStkAave(stkAave + additionalStkAaveToReachMax);
+    };
+
+    if (discountNotAvailable)
+      return (
+        <Typography variant="helperText" component="p" color="warning.dark">
+          <Trans>Add stkAAVE to see borrow APY with the discount</Trans>
+        </Typography>
+      );
+
+    if (maxDiscountNotReached)
+      return (
+        <Typography variant="helperText" component="p" sx={{ color: '#669AFF' }}>
+          <Trans>
+            <Typography
+              component="span"
+              variant="helperText"
+              onClick={handleAddStkAaveForMaxDiscount}
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              +Add {additionalStkAaveToReachMax} stkAAVE
+            </Typography>{' '}
+            to borrow at{' '}
+            <FormattedNumber
+              value={borrowAPYWithMaxDiscount}
+              percent
+              variant="helperText"
+              symbolsColor="#669AFF"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />{' '}
+            (max discount)
+          </Trans>
+        </Typography>
+      );
+
+    if (maxGhoNotBorrowed)
+      return (
+        <Typography variant="helperText" component="p" color="text.secondary">
+          <Trans>
+            You may borrow up to {discountableGhoAmount} GHO at{' '}
+            <FormattedNumber
+              value={borrowAPYWithMaxDiscount}
+              percent
+              variant="helperText"
+              symbolsColor="text.secondary"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />{' '}
+            (max discount)
+          </Trans>
+        </Typography>
+      );
+
+    // Return nothing if max discount has been reached with maximum borrowed, and also as a fallback
+    return <></>;
+  };
 
   return (
     <>
-      <Paper sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
-        <Typography
-          variant="subheader2"
-          color="info.dark"
-          px={4}
-          py={2}
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          <Trans>Calculate GHO borrow interest rate with discount</Trans>
-        </Typography>
-        <Grid container spacing={0}>
-          <Grid item xs={6} sx={{ backgroundColor: 'background.surface' }}>
-            <Box px={6} pt={8} pb={6}>
-              <Typography color="text.secondary" gutterBottom>
-                <Trans>You stake (stkAAVE)</Trans>
-              </Typography>
-              <FilledInput
-                fullWidth
-                value={stkAave}
-                endAdornment={<TokenIcon symbol="AAVE" />}
-                onChange={(e) => setStkAave(Number(e.target.value))}
-                inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
-              />
-              <Slider
-                size="small"
-                value={stkAave}
-                sx={{ mt: 1, mb: 4, color: '#CE64B6' }}
-                onChange={(_, val) => setStkAave(Number(val))}
-                step={5}
-                max={1000}
-              />
-              <Typography color="text.secondary" gutterBottom>
-                <Trans>You borrow (GHO)</Trans>
-              </Typography>
-              <FilledInput
-                fullWidth
-                value={ghoBorrow}
-                endAdornment={<TokenIcon symbol="GHO" />}
-                inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
-                onChange={(e) => setGhoBorrow(Number(e.target.value))}
-              />
-              <Slider
-                size="small"
-                value={ghoBorrow}
-                sx={{ mt: 1, mb: 4, color: '#2EBAC6' }}
-                onChange={(_, val) => setGhoBorrow(Number(val))}
-                step={1000}
-                max={100000}
-              />
-              <Typography variant="helperText" color="text.secondary" sx={{ mt: 16 }} component="p">
-                <Trans>
-                  Discount and discountable amount are determined by AaveDao and may be changed over
-                  time. Participate in Governance to vote.
-                </Trans>
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
-              px={6}
-              pt={8}
-              pb={6}
-              sx={{ height: '100%' }}
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-            >
-              <Box mt={12} textAlign="center">
-                <FormattedNumber value={calculatedBorrowAPY} percent variant="display1" />
-                <Typography variant="caption" color="text.secondary">
-                  <Trans>GHO borrow APY</Trans>
-                </Typography>
-              </Box>
-              <Box>
-                {mobileScreens ? (
+      <Typography variant="subheader1" gutterBottom>
+        <Trans>Stake AAVE to borrow GHO at a discount</Trans>
+      </Typography>
+      <Typography variant="caption" color="text.secondary" mb={6}>
+        <Trans>
+          For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate.
+          Use the calculator below to see different borrow rates with the discount applied.
+        </Trans>
+      </Typography>
+      <Grid container spacing={8}>
+        <Grid item xs={12} sm={6}>
+          <Box mb={4}>
+            <Typography variant="subheader2" gutterBottom>
+              <Trans>Borrow amount</Trans>
+            </Typography>
+            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+            <OutlinedInput
+              fullWidth
+              value={ghoBorrow ?? ''}
+              placeholder="0"
+              endAdornment={<TokenIcon symbol="GHO" />}
+              inputProps={{
+                min: 0,
+                sx: { py: 2, px: 3, fontSize: '21px' },
+              }}
+              onChange={(e) =>
+                e.target.value === '' || Number(e.target.value) <= 0
+                  ? setGhoBorrow(null)
+                  : setGhoBorrow(Number(e.target.value))
+              }
+              type="number"
+            />
+            <Slider
+              size="small"
+              value={ghoBorrow ?? 0}
+              onChange={(_, val) => setGhoBorrow(Number(val))}
+              step={1000}
+              min={0}
+              max={100000}
+              marks={[
+                { value: 0, label: '0' },
+                { value: 100000, label: '100,000' },
+              ]}
+              sx={sliderStyles}
+            />
+          </Box>
+          <Box>
+            <Typography variant="subheader2" gutterBottom>
+              <Trans>Staked AAVE amount</Trans>
+            </Typography>
+            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+            <OutlinedInput
+              fullWidth
+              value={stkAave ?? ''}
+              placeholder="0"
+              endAdornment={<TokenIcon symbol="AAVE" />}
+              inputProps={{
+                min: 0,
+                sx: { py: 2, px: 3, fontSize: '21px' },
+              }}
+              onChange={(e) =>
+                e.target.value === '' || Number(e.target.value) <= 0
+                  ? setStkAave(null)
+                  : setStkAave(Number(e.target.value))
+              }
+              type="number"
+            />
+            <Slider
+              size="small"
+              value={stkAave ?? 0}
+              onChange={(_, val) => setStkAave(Number(val))}
+              step={5}
+              min={0}
+              max={1000}
+              marks={[
+                { value: 0, label: '0' },
+                { value: 1000, label: '1,000' },
+              ]}
+              sx={sliderStyles}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subheader2" mb={1.5}>
+            <Trans>GHO borrow APY</Trans>
+          </Typography>
+          {loadingGhoData ? (
+            <CircularProgress size={24} sx={{ my: 2, color: '#669AFF' }} />
+          ) : (
+            <>
+              <Box display="flex" alignItems="center" mb={2}>
+                <FormattedNumber
+                  value={baseBorrowRate}
+                  percent
+                  variant="display1"
+                  component="div"
+                  color={showDiscountRate ? 'text.muted' : 'text.primary'}
+                  symbolsColor={showDiscountRate ? 'text.muted' : 'text.primary'}
+                  mr={1}
+                  sx={
+                    showDiscountRate
+                      ? { textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }
+                      : { '.MuiTypography-root': { ml: 0 } }
+                  }
+                />
+                {showDiscountRate && (
                   <>
-                    <GhoAmountMobileDisplayComponent
-                      isDiscountableAmount
-                      value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                      rate={borrowAPYWithMaxDiscount}
+                    <FormattedNumber
+                      value={calculatedBorrowAPY}
+                      percent
+                      variant="display1"
+                      component="div"
+                      symbolsColor="text.primary"
+                      sx={{ '.MuiTypography-root': { ml: 0 } }}
                     />
-                    <GhoAmountMobileDisplayComponent
-                      isDiscountableAmount={false}
-                      value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                      rate={baseBorrowRate}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <GhoAmountDisplayComponent
-                      isDiscountableAmount
-                      value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                      rate={borrowAPYWithMaxDiscount}
-                    />
-                    <GhoAmountDisplayComponent
-                      isDiscountableAmount={false}
-                      value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
-                      rate={baseBorrowRate}
-                    />
+                    <SvgIcon fontSize="large">
+                      <PercentIcon />
+                    </SvgIcon>
                   </>
                 )}
               </Box>
-            </Box>
-          </Grid>
+              <GhoDiscountCalculatorHelperText />
+            </>
+          )}
         </Grid>
-      </Paper>
-      <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', py: '40px' }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="secondary14" color="text.secondary">
-            <Trans>Discount parameters</Trans>
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            pt: '12px',
-          }}
-        >
-          <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
-            <Typography variant="main16" display="flex" alignItems="center">
-              <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
-              {discountedPerToken}
-              <Typography
-                component="span"
-                variant="secondary16"
-                color="text.secondary"
-                sx={{ mx: 1 }}
-              >
-                <Trans>to</Trans>
-              </Typography>{' '}
-              <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
-            </Typography>
-          </ReserveOverviewBox>
-          <ReserveOverviewBox title={<Trans>Max discount on borrow rate</Trans>}>
-            <FormattedNumber
-              value={ghoDiscountRatePercent}
-              percent
-              variant="main16"
-              sx={{ mr: 1 }}
-              visibleDecimals={0}
-            />
-          </ReserveOverviewBox>
-          <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
-            <FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="main16" />
-          </ReserveOverviewBox>
-        </Box>
-        <Typography variant="caption" color="text.secondary" paddingTop="24px">
-          <Trans>
-            All rates and discountables are decided by Aave community and may be changed over time.
-            Check Governance for updates and vote.
-            <Link
-              href=""
-              sx={{ textDecoration: 'underline' }}
-              variant="caption"
-              color="text.secondary"
-            >
-              Learn more
-            </Link>
-          </Trans>
-        </Typography>
-      </Box>
+      </Grid>
+      <GhoDiscountParametersComponent />
     </>
   );
 };
