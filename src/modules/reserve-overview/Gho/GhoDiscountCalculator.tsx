@@ -368,7 +368,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           )}
         </Grid>
       </Grid>
-      <GhoDiscountParametersComponent loading={true} />
+      <GhoDiscountParametersComponent loading={loadingGhoData} />
     </>
   );
 };
