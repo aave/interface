@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-01 00:24\n"
+"PO-Revision-Date: 2022-11-28 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,9 +18,9 @@ msgstr ""
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
 
-#: src/components/infoTooltips/AMPLWarning.tsx
-msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr "Το<0>Ampleforth</0> είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε την <1>τεκμηρίωση</1> ή τις <2>Συχνές Ερωτήσεις του Ampleforth </2> για να μάθετε περισσότερα."
+#: src/components/Warnings/AMPLWarning.tsx
+msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
@@ -46,7 +46,7 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
 
@@ -58,14 +58,14 @@ msgstr "Τύπος APY"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, σταθερό"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, variable"
 msgstr "APY, μεταβλητό"
 
@@ -157,10 +157,6 @@ msgstr "Ποσό"
 msgid "Amount must be greater than 0"
 msgstr "Το ποσό πρέπει να είναι μεγαλύτερο από 0"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "Ampleforth FAQ"
-msgstr "Συχνές ερωτήσεις του Ampleforth"
-
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr ""
@@ -190,15 +186,15 @@ msgid "Array parameters that should be equal length are not"
 msgstr "Οι παράμετροι της συστοιχίας που θα έπρεπε να είναι ίσου μήκους δεν είναι"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Περιουσιακό στοιχείο"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "To περιουσιακό στοιχείο μπορεί να χρησιμοποιηθεί ως εγγύηση μόνο σε λειτουργία απομόνωσης."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Το περιουσιακό στοιχείο δεν μπορεί να χρησιμοποιηθεί ως εγγύηση."
 
@@ -215,7 +211,7 @@ msgstr "Το περιουσιακό στοιχείο δεν είναι δανε�
 msgid "Asset is not listed"
 msgstr "Το περιουσιακό στοιχείο δεν περιλαμβάνεται στον κατάλογο"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr ""
 
@@ -310,13 +306,13 @@ msgstr "Δανεισμός"
 msgid "Borrow APY rate"
 msgstr "Επιτόκιο δανεισμού APY"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "Δανεισμός APY, σταθερό"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Δανεισμός APY, μεταβλητό"
 
@@ -324,7 +320,7 @@ msgstr "Δανεισμός APY, μεταβλητό"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Δεν επιτρέπεται ο δανεισμός και η αποπληρωμή στο ίδιο block"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Ανώτατο όριο δανεισμού"
 
@@ -348,6 +344,10 @@ msgstr ""
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Ο δανεισμός δεν είναι επί του παρόντος διαθέσιμος για {0}."
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Ο δανεισμός δεν είναι ενεργοποιημένος"
@@ -364,7 +364,7 @@ msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδ�
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδή έχετε ενεργοποιήσει τη λειτουργία Αποδοτικότητας (E-Mode) για την κατηγορία {0}. Για να διαχειριστείτε τις κατηγορίες E-Mode επισκεφθείτε τον <0>Πίνακα ελέγχου</0>."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr ""
 
@@ -402,7 +402,7 @@ msgstr "ΔΙΕΚΔΙΚΗΣΗ {symbol}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
 msgstr "Μπορεί να αποτελέσει εγγύηση"
 
@@ -410,7 +410,7 @@ msgstr "Μπορεί να αποτελέσει εγγύηση"
 msgid "Can be executed"
 msgstr "Μπορεί να εκτελεστεί"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "Cancel"
 msgstr ""
 
@@ -479,9 +479,9 @@ msgstr "Ποσό εγγύησης προς αποπληρωμή με"
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Η εγγύηση είναι (ως επί το πλείστον) το ίδιο νόμισμα που δανείζεται"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Χρησιμοποίηση εγγυήσεων"
 
@@ -501,7 +501,7 @@ msgstr "Εξασφάλιση"
 msgid "Collector Contract"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
@@ -827,13 +827,10 @@ msgstr "Github"
 msgid "Global settings"
 msgstr "Γενικές ρυθμίσεις"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Πηγαίνετε Πίσω"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "Go back"
-msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
@@ -968,9 +965,9 @@ msgstr "Γλώσσα"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Learn more"
 msgstr "Μάθετε περισσότερα"
 
@@ -995,7 +992,7 @@ msgid "Liquidation at"
 msgstr "Ρευστοποίηση στο"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
 msgstr "Ποινή ρευστοποίησης"
 
@@ -1008,7 +1005,7 @@ msgid "Liquidation risk parameters"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Κατώτατο όριο ρευστοποίησης"
 
@@ -1042,7 +1039,7 @@ msgid "Max"
 msgstr "Μεγιστο"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Μέγιστο LTV"
 
@@ -1063,8 +1060,8 @@ msgstr ""
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr ""
 
@@ -1129,8 +1126,8 @@ msgstr "Νέο APY"
 msgid "No rewards to claim"
 msgstr "Δεν υπάρχουν ανταμοιβές για διεκδίκηση"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "No search results for"
 msgstr ""
 
@@ -1553,7 +1550,7 @@ msgstr "Κλείδωμα"
 msgid "Staking APR"
 msgstr "Κλείδωμα APR"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Staking Rewards"
 msgstr ""
 
@@ -1582,8 +1579,8 @@ msgstr "Προσφορά"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Supply APY"
 msgstr "Προσφορά APY"
 
@@ -1793,6 +1790,10 @@ msgstr "Αυτό το περιουσιακό στοιχείο έχει φτάσ�
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
+#: src/components/infoTooltips/RenFILToolTip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
@@ -1854,10 +1855,10 @@ msgstr ""
 msgid "Total available"
 msgstr "Σύνολο διαθέσιμων"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Total borrowed"
 msgstr "Σύνολο δανεικών"
 
@@ -1873,10 +1874,10 @@ msgstr "Συνολικές εκπομπές ανά ημέρα"
 msgid "Total market size"
 msgstr "Συνολικό μέγεθος της αγοράς"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Σύνολο παρεχόμενων"
 
@@ -1913,7 +1914,7 @@ msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 msgid "Unavailable"
 msgstr "Μη διαθέσιμο"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
 msgstr "Μη υποστηριζόμενο"
 
@@ -2006,7 +2007,7 @@ msgstr ""
 msgid "View contract"
 msgstr ""
 
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "Προβολή λεπτομερειών"
 
@@ -2084,7 +2085,7 @@ msgstr ""
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 msgstr ""
 
@@ -2267,7 +2268,7 @@ msgstr ""
 msgid "Zero address not valid"
 msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "assets"
 msgstr "περιουσιακά στοιχεία"
 
@@ -2279,10 +2280,6 @@ msgstr ""
 msgid "copy the error"
 msgstr "αντιγράψτε το σφάλμα"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "documentation"
-msgstr "τεκμηρίωση"
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "τελειώνει"
@@ -2291,25 +2288,17 @@ msgstr "τελειώνει"
 msgid "here."
 msgstr "εδώ."
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "is an asset affected by rebasing. Visit the"
-msgstr "είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε το"
-
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
 msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
 msgstr "ενεργοποίηση"
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "or"
-msgstr "ή"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
@@ -2320,7 +2309,7 @@ msgstr "παρακαλούμε ελέγξτε ότι το ποσό που θέλ
 msgid "repaid"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 msgstr ""
 
@@ -2331,10 +2320,6 @@ msgstr "προβολή κλειδώματος"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "to learn more."
-msgstr "για να μάθετε περισσότερα."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"

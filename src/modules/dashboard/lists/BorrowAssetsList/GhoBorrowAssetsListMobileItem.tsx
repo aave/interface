@@ -2,8 +2,10 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import {
   getAvailableBorrows,
   normalizeBaseVariableBorrowRate,
@@ -26,9 +28,10 @@ export const GhoBorrowAssetsListMobileItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
-  userAvailableBorrows,
+  userVariableBorrows,
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
+  const { user } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
   const {
     ghoFacilitatorBucketLevel,
@@ -39,8 +42,9 @@ export const GhoBorrowAssetsListMobileItem = ({
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
+  const maxAmountUserCanMint = getMaxGhoMintAmount(user).toNumber();
   const availableBorrows = getAvailableBorrows(
-    Number(userAvailableBorrows),
+    maxAmountUserCanMint,
     Number(ghoFacilitatorBucketCapacity),
     Number(ghoFacilitatorBucketLevel)
   );
@@ -49,7 +53,7 @@ export const GhoBorrowAssetsListMobileItem = ({
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
     normalizedBaseVariableBorrowRate,
-    availableBorrows,
+    availableBorrows + Number(userVariableBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount
   );

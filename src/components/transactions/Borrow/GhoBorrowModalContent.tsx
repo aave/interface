@@ -1,8 +1,7 @@
 import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Link, Typography } from '@mui/material';
-import { formatUnits } from 'ethers/lib/utils';
+import { Box, Button, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -10,21 +9,12 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import usePreviousState from 'src/hooks/usePreviousState';
 import { useRootStore } from 'src/store/root';
-import {
-  displayDiscountableAmount,
-  displayNonDiscountableAmount,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
-import {
-  DetailsGhoApyLine,
-  DiscountDetailsGhoLine,
-  TxModalDetails,
-} from '../FlowCommons/TxModalDetails';
+import { DetailsGhoApyLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 import { BorrowModalContentSharedProps } from './BorrowModal';
 
@@ -70,7 +60,7 @@ export const GhoBorrowModalContent = ({
   const prevAmount = usePreviousState(amount);
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
   const [apyDiffers, setApyDiffers] = useState(false);
-  const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
+  // const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
 
   const currentBorrowAPY = weightedAverageAPY(
     baseBorrowRate,
@@ -88,7 +78,7 @@ export const GhoBorrowModalContent = ({
       // Input is cleared, use initial values
       setCalculatedFutureBorrowAPY(0);
       setApyDiffers(false);
-      setTotalBorrowedGho(Number(userReserve.totalBorrows));
+      // setTotalBorrowedGho(Number(userReserve.totalBorrows));
     } else {
       // Calculate new rates and check if they differ
       const totalBorrowAmount = valueToWei(
@@ -101,7 +91,7 @@ export const GhoBorrowModalContent = ({
 
       setApyDiffers(currentBorrowAPY !== newRate);
       setCalculatedFutureBorrowAPY(newRate);
-      setTotalBorrowedGho(Number(formatUnits(totalBorrowAmount, poolReserve.decimals)));
+      // setTotalBorrowedGho(Number(formatUnits(totalBorrowAmount, poolReserve.decimals)));
     }
   };
 
@@ -196,7 +186,14 @@ export const GhoBorrowModalContent = ({
       )}
       <TxModalDetails gasLimit={gasLimit}>
         {healthFactorComponent}
-        {discountAvailable && (
+        <DetailsGhoApyLine
+          hasGhoBorrowPositions={hasGhoBorrowPositions}
+          inputAmount={amount}
+          borrowApy={currentBorrowAPY}
+          futureBorrowApy={calculatedFutureBorrowAPY}
+          showApyDifference={apyDiffers}
+        />
+        {/* {discountAvailable && (
           <>
             <DetailsGhoApyLine
               hasGhoBorrowPositions={hasGhoBorrowPositions}
@@ -241,7 +238,7 @@ export const GhoBorrowModalContent = ({
               </>
             )}
           </>
-        )}
+        )} */}
       </TxModalDetails>
       {txError && <GasEstimationError txError={txError} />}
       {displayRiskCheckbox && riskCheckboxComponent}

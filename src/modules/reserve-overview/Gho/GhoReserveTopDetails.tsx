@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 import {
@@ -12,15 +11,15 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { CircleIcon } from 'src/components/CircleIcon';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { AddTokenDropdown } from '../AddTokenDropdown';
 import { TokenLinkDropdown } from '../TokenLinkDropdown';
@@ -31,12 +30,16 @@ interface GhoReserveTopDetailsProps {
 
 export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => {
   const router = useRouter();
-  // const { loading } = useAppDataContext();
-  const loading = false;
-  const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const {
+    ghoDisplay: { facilitatorBucketLevel, maxAvailableFromFacilitator },
+    ghoLoadingData,
+    ghoLoadingMarketData,
+  } = useRootStore();
 
+  const loading = ghoLoadingData || ghoLoadingMarketData;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -53,14 +56,6 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         )}
       </Box>
     );
-  };
-
-  const iconStyling = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: '#A5A8B6',
-    '&:hover': { color: '#F1F1F3' },
-    cursor: 'pointer',
   };
 
   const ReserveName = () => {
@@ -140,7 +135,11 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
                     <Box sx={{ display: 'flex' }}>
-                      <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} />
+                      <TokenLinkDropdown
+                        poolReserve={reserve}
+                        downToSM={downToSM}
+                        hideAToken={true}
+                      />
                       {connected && (
                         <AddTokenDropdown
                           poolReserve={reserve}
@@ -149,6 +148,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                           addERC20Token={addERC20Token}
                           currentChainId={currentChainId}
                           connectedChainId={connectedChainId}
+                          hideAToken={true}
                         />
                       )}
                     </Box>
@@ -174,7 +174,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                 <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
               ) : (
                 <Box sx={{ display: 'flex' }}>
-                  <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} />
+                  <TokenLinkDropdown poolReserve={reserve} downToSM={downToSM} hideAToken={true} />
                   {connected && (
                     <AddTokenDropdown
                       poolReserve={reserve}
@@ -183,6 +183,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
                       addERC20Token={addERC20Token}
                       currentChainId={currentChainId}
                       connectedChainId={connectedChainId}
+                      hideAToken={true}
                     />
                   )}
                 </Box>
@@ -198,7 +199,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
       )}
       <TopInfoPanelItem title={<Trans>Market Cap</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value="4000000000"
+          value={facilitatorBucketLevel}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -206,9 +207,9 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Available to mint</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={3960000000}
+          value={maxAvailableFromFacilitator}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -216,7 +217,19 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Oracle price</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem
+        title={
+          <TextWithTooltip text={<Trans>Price</Trans>}>
+            <Trans>
+              The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is
+              different from using market pricing via oracles for other crypto assets. This creates
+              stabilizing arbitrage opportunities when the price of GHO fluctuates.
+            </Trans>
+          </TextWithTooltip>
+        }
+        loading={loading}
+        hideIcon
+      >
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <FormattedNumber
             value={1}
@@ -225,22 +238,6 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
             symbolsVariant={symbolsTypographyVariant}
             symbolsColor="#A5A8B6"
           />
-          {loading ? (
-            <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
-          ) : (
-            <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
-              <Link
-                href={currentNetworkConfig.explorerLinkBuilder({
-                  address: reserve?.priceOracle,
-                })}
-                sx={iconStyling}
-              >
-                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Link>
-            </CircleIcon>
-          )}
         </Box>
       </TopInfoPanelItem>
     </TopInfoPanel>

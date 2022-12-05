@@ -34,5 +34,5 @@ export type GhoBorrowAssetsItem = {
   isFreezed?: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];
   vIncentivesData?: ReserveIncentiveResponse[];
-  userAvailableBorrows: string;
+  userVariableBorrows: number | string;
 };

@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, styled, Typography } from '@mui/material';
-import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
+import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -35,11 +35,10 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
   const { currentMarket } = useProtocolDataContext();
 
   const {
-    ghoDiscountRatePercent,
-    ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
+    ghoDisplay: { facilitatorBucketLevel },
   } = useRootStore();
 
   return (
@@ -53,10 +52,16 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
         ) : (
           <ListItem sx={{ marginTop: -2, p: 0 }}>
             <ListColumn isRow maxWidth={190}>
-              <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
-              <Box sx={{ px: 3 }}>
-                <Typography variant="h3">GHO</Typography>
-              </Box>
+              <Link
+                href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+                noWrap
+                sx={{ display: 'inline-flex', alignItems: 'center' }}
+              >
+                <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
+                <Box sx={{ px: 3 }}>
+                  <Typography variant="h3">GHO</Typography>
+                </Box>
+              </Link>
             </ListColumn>
             <ListColumn>
               <FormattedNumber compact symbol="usd" value="1" visibleDecimals={2} variant="h3" />
@@ -68,7 +73,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               <FormattedNumber
                 compact
                 symbol="usd"
-                value={ghoFacilitatorBucketLevel}
+                value={facilitatorBucketLevel}
                 visibleDecimals={2}
                 variant="h3"
               />
@@ -89,15 +94,34 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               </Typography>
             </ListColumn>
             <ListColumn minWidth={195}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box sx={{ mr: 2, position: 'relative', color: 'text.muted' }}>
+                  <FormattedNumber
+                    compact
+                    percent
+                    value={reserve.variableBorrowAPR}
+                    visibleDecimals={2}
+                    variant="h3"
+                    symbolsColor="text.muted"
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      width: '100%',
+                      top: '48%',
+                      borderBottom: '1px solid',
+                    }}
+                  />
+                </Box>
                 <FormattedNumber
                   compact
                   percent
                   value={borrowAPYWithMaxDiscount}
-                  visibleDecimals={1}
+                  visibleDecimals={2}
                   variant="h3"
+                  sx={{ mr: 0.5 }}
                 />
-                <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
+                <PercentIcon />
               </Box>
               <Typography variant="secondary12" color="text.secondary">
                 <Trans>Borrow APY with max discount</Trans>

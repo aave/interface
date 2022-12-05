@@ -31,7 +31,9 @@ export default function FaucetAssetsList() {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
-    .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
+    .filter(
+      (reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen && reserve.symbol !== 'GHO'
+    )
     .map((reserve) => {
       const walletBalance = valueToBigNumber(
         walletBalances[reserve.underlyingAsset]?.amount || '0'

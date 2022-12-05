@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import React, { ReactNode } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -28,6 +29,7 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
+import { useRootStore } from 'src/store/root';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
@@ -73,6 +75,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const {
+    ghoComputed: { maxAvailableFromFacilitator },
+  } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -130,9 +135,13 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
   const displayGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
 
-  const maxAmountToBorrow = displayGho
-    ? getMaxGhoMintAmount(user)
-    : getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable).toString();
+  let maxAmountToBorrow: BigNumber;
+  if (displayGho) {
+    const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
+    maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+  } else {
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable);
+  }
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const maxAmountToSupply = displayGho
@@ -251,30 +260,24 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           symbol={poolReserve.symbol}
         />
       </Row>
-
-      <Row
-        caption={
-          <AvailableTooltip
-            variant="description"
-            text={<Trans>Available to borrow</Trans>}
-            capType={CapType.borrowCap}
-          />
-        }
-        mb={3}
-      >
-        {canBorrow ? (
+      {canBorrow && (
+        <Row
+          caption={
+            <AvailableTooltip
+              variant="description"
+              text={<Trans>Available to borrow</Trans>}
+              capType={CapType.borrowCap}
+            />
+          }
+          mb={3}
+        >
           <FormattedNumber
-            value={canBorrow ? formattedMaxAmountToBorrow : '0'}
+            value={formattedMaxAmountToBorrow}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />
-        ) : (
-          <Typography variant="secondary14" color="text.secondary">
-            <Trans>Unavailable</Trans>
-          </Typography>
-        )}
-      </Row>
-
+        </Row>
+      )}
       {balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
         <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
@@ -339,18 +342,22 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
-        <Button
-          disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
-          variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
-          fullWidth={downToXSM}
-          data-cy={'borrowButton'}
-        >
-          <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
-        </Button>
+
+        {canBorrow && (
+          <Button
+            disabled={user?.totalCollateralMarketReferenceCurrency === '0'}
+            variant="contained"
+            onClick={() => openBorrow(underlyingAsset)}
+            fullWidth={downToXSM}
+            data-cy={'borrowButton'}
+          >
+            <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
+          </Button>
+        )}
       </Stack>
       {maxAmountToSupply === '0' && supplyCap?.determineWarningDisplay({ supplyCap, icon: false })}
-      {maxAmountToBorrow === '0' && borrowCap?.determineWarningDisplay({ borrowCap, icon: false })}
+      {formattedMaxAmountToBorrow === '0' &&
+        borrowCap?.determineWarningDisplay({ borrowCap, icon: false })}
       {poolReserve.isIsolated &&
         balance?.amount !== '0' &&
         user?.totalCollateralUSD !== '0' &&

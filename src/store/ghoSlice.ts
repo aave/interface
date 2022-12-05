@@ -4,7 +4,8 @@ import {
   GhoVariableDebtTokenService,
   Pool,
 } from '@aave/contract-helpers';
-import { BigNumber, BigNumberish } from 'ethers';
+import BigNumber from 'bignumber.js';
+import { BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import {
   convertBpsToPercentage,
@@ -52,8 +53,8 @@ export interface GhoSlice {
   ghoDiscountRatePercent: number;
   ghoDiscountLockPeriod: BigNumber;
   ghoFacilitators: string[];
-  ghoFacilitatorBucketLevel: string;
-  ghoFacilitatorBucketCapacity: string;
+  ghoFacilitatorBucketLevel: BigNumber;
+  ghoFacilitatorBucketCapacity: BigNumber;
   ghoMinDebtTokenBalanceForEligibleDiscount: number;
   ghoMinDiscountTokenBalanceForEligibleDiscount: number;
   ghoBorrowAPY: number;
@@ -63,7 +64,12 @@ export interface GhoSlice {
     borrowAPYWithMaxDiscount: number;
     discountableAmount: number;
     percentageOfGhoMinted: number;
-    maxAvailableFromFacilitator: number;
+    maxAvailableFromFacilitator: BigNumber;
+  };
+  ghoDisplay: {
+    facilitatorBucketLevel: string;
+    facilitatorBucketCapacity: string;
+    maxAvailableFromFacilitator: string;
   };
   ghoMarketConfig: () => GhoMarketConfig;
   ghoCalculateDiscountRate: (
@@ -92,37 +98,54 @@ export const createGhoSlice: StateCreator<
       },
       get discountableAmount() {
         if (!get()) return 0;
-        const stakedAaveBalance = get().stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
-        const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
+        const stakedAaveBalance = get().stkAaveBalance ?? 0;
         const discountPerToken = get().ghoDiscountedPerToken;
-        return Number(stakedAaveBalanceNormalized) * Number(discountPerToken);
+        return stakedAaveBalance * Number(discountPerToken);
       },
       get percentageOfGhoMinted() {
         if (!get()) return 0;
         const { ghoFacilitatorBucketCapacity, ghoFacilitatorBucketLevel } = { ...get() };
-        const capacity = Number(ghoFacilitatorBucketCapacity);
-        const level = Number(ghoFacilitatorBucketLevel);
-        if (capacity === 0) return 0;
 
-        return (level / capacity) * 100;
+        if (ghoFacilitatorBucketCapacity.isZero()) return 0;
+
+        return ghoFacilitatorBucketLevel
+          .multipliedBy(100)
+          .dividedBy(ghoFacilitatorBucketCapacity)
+          .toNumber();
       },
       get maxAvailableFromFacilitator() {
-        if (!get()) return 0;
+        if (!get()) return new BigNumber(0);
         const { ghoFacilitatorBucketCapacity, ghoFacilitatorBucketLevel } = { ...get() };
-        const capacity = Number(ghoFacilitatorBucketCapacity);
-        const level = Number(ghoFacilitatorBucketLevel);
-        if (capacity === 0) return 0;
+        if (ghoFacilitatorBucketCapacity.isZero()) return new BigNumber(0);
 
-        return capacity - level;
+        return ghoFacilitatorBucketCapacity.minus(ghoFacilitatorBucketLevel);
+      },
+    },
+    ghoDisplay: {
+      // These 'display' getters are helpers for components to retrieve the friendly display values of the state.
+      get facilitatorBucketLevel() {
+        if (!get()) return '0';
+        const { ghoFacilitatorBucketLevel } = { ...get() };
+        return ghoFacilitatorBucketLevel.shiftedBy(-18).toString();
+      },
+      get facilitatorBucketCapacity() {
+        if (!get()) return '0';
+        const { ghoFacilitatorBucketCapacity } = { ...get() };
+        return ghoFacilitatorBucketCapacity.shiftedBy(-18).toString();
+      },
+      get maxAvailableFromFacilitator() {
+        if (!get()) return '0';
+        const { ghoComputed } = { ...get() };
+        return ghoComputed.maxAvailableFromFacilitator.shiftedBy(-18).toString();
       },
     },
     ghoFacilitators: [],
     ghoDiscountedPerToken: '0',
-    ghoUserDiscountRate: BigNumber.from(0),
+    ghoUserDiscountRate: new BigNumber(0),
     ghoDiscountRatePercent: 0,
-    ghoDiscountLockPeriod: BigNumber.from(0),
-    ghoFacilitatorBucketLevel: '0',
-    ghoFacilitatorBucketCapacity: '0',
+    ghoDiscountLockPeriod: new BigNumber(0),
+    ghoFacilitatorBucketLevel: new BigNumber(0),
+    ghoFacilitatorBucketCapacity: new BigNumber(0),
     ghoMinDebtTokenBalanceForEligibleDiscount: 1,
     ghoMinDiscountTokenBalanceForEligibleDiscount: 1,
     ghoBorrowAPY: 0,
@@ -179,22 +202,19 @@ export const createGhoSlice: StateCreator<
         ghoDebtTokenService.getUserDiscountPercent(account),
       ]);
 
-      const bucketLevel = facilitatorInfo.level as BigNumber; // TODO: typings aren't being pulled through here from utils
-      const maxCapacity = facilitatorInfo.maxCapacity as BigNumber; // TODO: typings aren't being pulled through here from utils
-
       set({
-        ghoFacilitatorBucketLevel: formatUnits(bucketLevel, 18),
-        ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
+        ghoFacilitatorBucketLevel: new BigNumber(facilitatorInfo.level.toString()), // TODO: typings aren't being pulled through here from utils
+        ghoFacilitatorBucketCapacity: new BigNumber(facilitatorInfo.maxCapacity.toString()), // TODO: typings aren't being pulled through here from utils
         ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: convertBpsToPercentage(ghoDiscountRate), // discount rate is in bps, convert to percentage
-        ghoDiscountLockPeriod,
+        ghoDiscountLockPeriod: new BigNumber(ghoDiscountLockPeriod.toString()),
         ghoMinDebtTokenBalanceForEligibleDiscount: Number(
           formatUnits(ghoMinDebtTokenBalanceForEligibleDiscount, 18)
         ),
         ghoMinDiscountTokenBalanceForEligibleDiscount: Number(
           formatUnits(ghoMinDiscountTokenBalanceForEligibleDiscount, 18)
         ),
-        ghoUserDiscountRate: discountRate,
+        ghoUserDiscountRate: new BigNumber(discountRate.toString()),
       });
 
       set({ ghoLoadingData: false });

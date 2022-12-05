@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
-import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
@@ -21,11 +20,10 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
   const theme = useTheme();
 
   const {
-    ghoDiscountRatePercent,
-    ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
+    ghoDisplay: { facilitatorBucketLevel },
   } = useRootStore();
 
   if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
@@ -73,11 +71,11 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
           >
             <FormattedNumber
               compact
-              value={ghoFacilitatorBucketLevel}
+              value={facilitatorBucketLevel}
               visibleDecimals={2}
               variant="secondary14"
             />
-            <ReserveSubheader value={ghoFacilitatorBucketLevel} rightAlign={true} />
+            <ReserveSubheader value={facilitatorBucketLevel} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
@@ -100,7 +98,6 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
               value={borrowAPYWithMaxDiscount}
               variant="secondary14"
             />
-            <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
           </Box>
         </Row>
         <Button

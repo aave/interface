@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
-import _omit from 'lodash/omit';
+import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import {
@@ -16,6 +16,7 @@ import {
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import {
   getMaxAmountAvailableToBorrow,
   getMaxGhoMintAmount,
@@ -66,15 +67,24 @@ const BorrowModalContentContainer = (props: BorrowModalContentContainerProps): J
     props;
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
+  const {
+    ghoComputed: { maxAvailableFromFacilitator },
+  } = useRootStore();
   const displayGho: boolean = isGhoAndSupported({ symbol, currentMarket });
 
   // Amount calculations
   const amountRef = useRef<string>('');
   const [_amount, setAmount] = useState('');
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const maxAmountToBorrow = displayGho
-    ? getMaxGhoMintAmount(user)
-    : getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+
+  let maxAmountToBorrow: BigNumber;
+  if (displayGho) {
+    const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
+    maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+  } else {
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+  }
+
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? formattedMaxAmountToBorrow : _amount;
