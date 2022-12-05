@@ -8,7 +8,7 @@ export class DashboardActions {
     apyType,
     isRisk = false,
     isMaxAmount = false,
-  }:{
+  }: {
     asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;

@@ -1,4 +1,4 @@
-import { Wallet } from "ethers";
+import { Wallet } from 'ethers';
 
 export type TokenRequest = {
   tokenAddress: string;
@@ -7,7 +7,7 @@ export type TokenRequest = {
 };
 
 export class TenderlyActions {
-  public static tenderlyTokenRequest(tokens: TokenRequest[], addressFrom?: string){
+  public static tenderlyTokenRequest(tokens: TokenRequest[], addressFrom?: string) {
     return it(`Token request `, () => {
       Promise.all(
         tokens.map((token) => {
@@ -24,7 +24,7 @@ export class TenderlyActions {
     });
   }
 
-  public static tenderlyTokenWithdraw(tokens: TokenRequest[], addressTo?: string){
+  public static tenderlyTokenWithdraw(tokens: TokenRequest[], addressTo?: string) {
     return it(`Token withdraw `, () => {
       Promise.all(
         tokens.map((token) => {
