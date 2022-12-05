@@ -10128,6 +10128,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-turnstile@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-turnstile/-/react-turnstile-1.0.6.tgz#c1106d084d005972cfd1aed27ef2d299889e2846"
+  integrity sha512-4HD11+b5eVswNvDPbTSBSFsCD/fTYiWaKui737Ze+8DSciZbqvXzk6ffmjJKXlVuOELqvzLw91BhUQLkS59vRw==
+
 react-use-measure@^2.0.4:
   version "2.1.1"
   resolved "https://registry.npmjs.org/react-use-measure/-/react-use-measure-2.1.1.tgz"
