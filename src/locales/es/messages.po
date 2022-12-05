@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-02 18:04\n"
+"PO-Revision-Date: 2022-12-05 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -812,7 +812,7 @@ msgstr "Francés"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "Frozen assets"
-msgstr ""
+msgstr "Activos congelados"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1764,7 +1764,7 @@ msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar 
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-msgstr ""
+msgstr "Estos activos están congelados temporalmente por decisión de la comunidad de Aave, lo que significa que suministrar / tomar prestado o intercambiar tasas de estos activos adicional no está disponible. Se permiten la retirada y pagos de deuda. Sigue el <0>foro de gobierno de Aave</0> para más actualizaciones."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2094,7 +2094,7 @@ msgstr "Modo de solo lectura. Conéctate a tu cartera para realizar transaccione
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr ""
+msgstr "No hemos podido encontrar ningún activo relacionado con tu búsqueda. Vuelve a intentarlo con un nombre de activo diferente, símbolo o dirección."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
