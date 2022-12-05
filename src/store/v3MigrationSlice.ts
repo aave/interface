@@ -14,7 +14,14 @@ import dayjs from 'dayjs';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
+import {
+  selectCurrentChainIdV2MarketData,
+  selectCurrentChainIdV2MarketKey,
+  selectCurrentChainIdV3MarketKey,
+} from './poolSelectors';
 
 import { RootStore } from './root';
 import {
@@ -51,8 +58,7 @@ export type V3MigrationSlice = {
   migrateBorrow: (
     signedPermits?: V3MigrationHelperSignedPermit[]
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  _testMigration: () => void;
-  // migrateSelectedPositions: () => void;
+  setCurrentMarketForMigration: () => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -142,13 +148,11 @@ export const createV3MigrationSlice: StateCreator<
       const timestamp = dayjs().unix();
       const approvalPermitsForMigrationAssets = await Promise.all(
         selectUserSupplyIncreasedReservesForMigrationPermits(get(), timestamp).map(
-          async ({ reserve, increasedAmount, underlyingBalance }): Promise<Approval> => {
-            console.log(underlyingBalance, 'underlyingBalance');
+          async ({ reserve, increasedAmount }): Promise<Approval> => {
             const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
             const { decimals } = await getTokenData(reserve.aTokenAddress);
             const convertedAmount = valueToWei(increasedAmount, decimals);
             return {
-              // TODO: should we allow spending of exact ammount of the reserver?
               amount: convertedAmount,
               underlyingAsset: reserve.aTokenAddress,
               permitType: 'MIGRATOR',
@@ -160,7 +164,6 @@ export const createV3MigrationSlice: StateCreator<
       return approvalPermitsForMigrationAssets;
     },
     migrateWithoutPermits: () => {
-      console.log('should be called before gas');
       const timestamp = dayjs().unix();
       set({ timestamp });
       const borrowedPositions = selectUserBorrowReservesForMigration(get(), timestamp);
@@ -206,27 +209,20 @@ export const createV3MigrationSlice: StateCreator<
       }
       const provider = get().jsonRpcProvider();
       const migratorAddress = get().getMigratorAddress();
-      const currentMarketData = get().currentMarketData;
+
       // TODO: make it dynamic when network switch will be there
+      const v3MarketKey = selectCurrentChainIdV3MarketKey(get());
+      const currentMarketV3Data = marketsData[v3MarketKey];
       const pool = new Pool(provider, {
-        POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
-        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
-        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
-        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+        POOL: currentMarketV3Data.addresses.LENDING_POOL,
+        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+        SWAP_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.SWAP_COLLATERAL_ADAPTER,
+        WETH_GATEWAY: currentMarketV3Data.addresses.WETH_GATEWAY,
+        L2_ENCODER: currentMarketV3Data.addresses.L2_ENCODER,
       });
       const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress, pool);
       // TODO: don't forget to add maping here
       return newMigratorInstance;
-    },
-    _testMigration: async () => {
-      const currentTimestamp = dayjs().unix();
-      const selectedReservers = selectedUserSupplyReservesForMigration(get(), currentTimestamp);
-      const mappedAddresses = await Promise.all(
-        selectedReservers.map((reserve) =>
-          get().getMigrationServiceInstance().testDeployment(reserve.underlyingAsset)
-        )
-      );
     },
     migrateBorrow: async (signedPermits: V3MigrationHelperSignedPermit[] = []) => {
       const currentTimestamp = dayjs().unix();
@@ -248,6 +244,11 @@ export const createV3MigrationSlice: StateCreator<
         suppliedPositions,
         signedPermits,
       });
+    },
+    setCurrentMarketForMigration: () => {
+      const newMarketData = selectCurrentChainIdV2MarketKey(get());
+      // TOOD: fallback to mainnet if newMarketData do not support v2 and v3
+      get().setCurrentMarket(newMarketData);
     },
   };
 };

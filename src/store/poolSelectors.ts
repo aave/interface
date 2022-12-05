@@ -1,16 +1,33 @@
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
+import { CustomMarket, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { RootStore } from './root';
+
+export const selectCurrentChainIdV2MarketKey = (state: RootStore): CustomMarket => {
+  // TODO: make it dynamic
+  return 'fork_proto_polygon' as CustomMarket;
+};
+
+export const selectCurrentChainIdV3MarketKey = (state: RootStore): CustomMarket => {
+  // TODO: make it dynamic
+  return 'fork_proto_polygon_v3' as CustomMarket;
+};
+
+export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
+  const v2MarketKey = selectCurrentChainIdV2MarketKey(state);
+  const marketData = marketsData[v2MarketKey];
+  return state.data
+    .get(state.currentChainId)
+    ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
+};
 
 export const selectCurrentUserLendingPoolData = (state: RootStore) => {
   return state.data
     .get(state.currentChainId)
     ?.get(state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
 };
-
-export const selectLendingPoolDataV2 = (state: RootStore) => {};
 
 export const selectCurrentUserEmodeCategoryId = (state: RootStore): number => {
   return selectCurrentUserLendingPoolData(state)?.userEmodeCategoryId || 0;

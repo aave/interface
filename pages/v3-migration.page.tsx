@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Divider } from '@mui/material';
+import { useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
@@ -20,6 +21,7 @@ export default function V3Migration() {
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
+  const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
 
   const { user, borrowPositions } = useUserReserves();
 
@@ -30,7 +32,12 @@ export default function V3Migration() {
     selectedMigrationBorrowAssets: selectedBorrowAssets,
   } = useRootStore();
 
-  // start refreshing v3 market at the same time
+  useEffect(() => {
+    if (setCurrentMarketForMigration) {
+      setCurrentMarketForMigration();
+    }
+  }, [setCurrentMarketForMigration]);
+
   usePoolDataV3Subscription();
 
   return (
