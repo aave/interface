@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Grid,
   OutlinedInput,
+  Skeleton,
   Slider,
   SvgIcon,
   Typography,
@@ -95,7 +96,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   }, [stkAave, ghoBorrow, borrowAPYWithMaxDiscount]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const GhoDiscountParametersComponent: React.FC = () => (
+  const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         <Typography variant="secondary14" color="text.secondary">
@@ -112,32 +113,49 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         }}
       >
         <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
-          <Typography variant="secondary14" display="flex" alignItems="center">
-            <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
-            {discountedPerToken}
-            <Typography component="span" variant="secondary14" color="text.primary" sx={{ mx: 1 }}>
-              <Trans>to</Trans>
-            </Typography>{' '}
-            <TokenIcon symbol="AAVE" sx={{ fontSize: '14px', mr: 1 }} />1
-          </Typography>
+          {loading ? (
+            <Skeleton variant="text" width={75} />
+          ) : (
+            <Typography variant="secondary14" display="flex" alignItems="center">
+              <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
+              {discountedPerToken}
+              <Typography
+                component="span"
+                variant="secondary14"
+                color="text.primary"
+                sx={{ mx: 1 }}
+              >
+                <Trans>to</Trans>
+              </Typography>{' '}
+              <TokenIcon symbol="AAVE" sx={{ fontSize: '14px', mr: 1 }} />1
+            </Typography>
+          )}
         </ReserveOverviewBox>
         <ReserveOverviewBox title={<Trans>Max discount</Trans>}>
-          <FormattedNumber
-            value={ghoDiscountRatePercent * -1}
-            percent
-            variant="secondary14"
-            color="text.primary"
-            sx={{ mr: 1 }}
-            visibleDecimals={0}
-          />
+          {loading ? (
+            <Skeleton variant="text" width={50} />
+          ) : (
+            <FormattedNumber
+              value={ghoDiscountRatePercent * -1}
+              percent
+              variant="secondary14"
+              color="text.primary"
+              sx={{ mr: 1 }}
+              visibleDecimals={0}
+            />
+          )}
         </ReserveOverviewBox>
         <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
-          <FormattedNumber
-            value={borrowAPYWithMaxDiscount}
-            percent
-            variant="secondary14"
-            color="text.primary"
-          />
+          {loading ? (
+            <Skeleton variant="text" width={50} />
+          ) : (
+            <FormattedNumber
+              value={borrowAPYWithMaxDiscount}
+              percent
+              variant="secondary14"
+              color="text.primary"
+            />
+          )}
         </ReserveOverviewBox>
       </Box>
       <Typography variant="caption" color="text.secondary">
@@ -350,7 +368,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           )}
         </Grid>
       </Grid>
-      <GhoDiscountParametersComponent />
+      <GhoDiscountParametersComponent loading={loadingGhoData} />
     </>
   );
 };
