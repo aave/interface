@@ -136,7 +136,7 @@ Cypress.Commands.add('refresh', () => {
       win.localStorage.setItem('testnetsEnabled', window.testnetsEnabled);
     },
   });
-  cy.wait(6000);
+  cy.wait(1000);
 });
 
 export {};

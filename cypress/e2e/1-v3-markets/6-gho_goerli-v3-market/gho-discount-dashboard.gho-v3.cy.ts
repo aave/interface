@@ -77,6 +77,7 @@ describe(`GHO discount integrating testing`, () => {
     });
     it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
       DashboardHelpers.waitLoadingGHODashboard();
+      cy.wait(10000);
       DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(minGHOApy);
       });
