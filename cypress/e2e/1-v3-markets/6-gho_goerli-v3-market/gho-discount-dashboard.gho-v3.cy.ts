@@ -94,7 +94,7 @@ describe(`GHO discount integrating testing`, () => {
     });
     TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 3 }));
     it(`Check that APY rate grow till max ${maxGHOApy}% after unstake`, () => {
-      cy.wait(5000);
+      cy.wait(1000);
       DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(maxGHOApy);
       });
@@ -124,7 +124,7 @@ describe(`GHO discount integrating testing`, () => {
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
     DashboardActions.borrow(testData.borrow2);
     it(`Check that borrowed APY was grow`, () => {
-      cy.wait(4000);
+      cy.wait(1000);
       DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.greaterThan(minGHOApy);
       });
