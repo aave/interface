@@ -2,6 +2,7 @@ import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aa
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
 import { CustomMarket, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { PoolReserve } from './poolSlice';
 
 import { RootStore } from './root';
 
@@ -23,33 +24,57 @@ export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
     ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
 };
 
+export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
+  const v2MarketKey = selectCurrentChainIdV3MarketKey(state);
+  const marketData = marketsData[v2MarketKey];
+  return state.data
+    .get(state.currentChainId)
+    ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
+};
+
 export const selectCurrentUserLendingPoolData = (state: RootStore) => {
   return state.data
     .get(state.currentChainId)
     ?.get(state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
 };
 
+export const selectFormatUserEmodeCategoryId = (reserve?: PoolReserve) => {
+  return reserve?.userEmodeCategoryId || 0;
+};
+
 export const selectCurrentUserEmodeCategoryId = (state: RootStore): number => {
-  return selectCurrentUserLendingPoolData(state)?.userEmodeCategoryId || 0;
+  return selectFormatUserEmodeCategoryId(selectCurrentUserLendingPoolData(state));
+};
+
+export const selectFormatUserReserves = (reserve?: PoolReserve) => {
+  return reserve?.userReserves || [];
 };
 
 export const selectCurrentUserReserves = (state: RootStore) => {
-  return selectCurrentUserLendingPoolData(state)?.userReserves || [];
+  return selectFormatUserReserves(selectCurrentUserLendingPoolData(state));
+};
+
+export const selectFormatReserves = (reserve?: PoolReserve) => {
+  return reserve?.reserves || [];
 };
 
 export const selectCurrentReserves = (state: RootStore) => {
-  return selectCurrentUserLendingPoolData(state)?.reserves || [];
+  return selectFormatReserves(selectCurrentUserLendingPoolData(state));
 };
 
-export const selectCurrentBaseCurrencyData = (state: RootStore) => {
+export const selectFormatBaseCurrencyData = (reserve?: PoolReserve) => {
   return (
-    selectCurrentUserLendingPoolData(state)?.baseCurrencyData || {
+    reserve?.baseCurrencyData || {
       marketReferenceCurrencyDecimals: 0,
       marketReferenceCurrencyPriceInUsd: '0',
       networkBaseTokenPriceInUsd: '0',
       networkBaseTokenPriceDecimals: 0,
     }
   );
+};
+
+export const selectCurrentBaseCurrencyData = (state: RootStore) => {
+  return selectFormatBaseCurrencyData(selectCurrentUserLendingPoolData(state));
 };
 
 export const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {

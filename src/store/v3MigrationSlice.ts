@@ -79,7 +79,6 @@ export const createV3MigrationSlice: StateCreator<
 
       const { name } = await getTokenData(underlyingAsset);
       const chainId = get().currentChainId;
-      console.log(name, 'name');
 
       const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
 

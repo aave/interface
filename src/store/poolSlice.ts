@@ -39,26 +39,20 @@ import { availableMarkets, marketsData, networkConfigs } from 'src/utils/markets
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import {
-  selectCurrentChainIdV3MarketKey,
-  selectFormattedReserves,
-} from './poolSelectors';
+import { selectCurrentChainIdV3MarketKey, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
+
+// TODO: what is the better name for this type?
+export type PoolReserve = {
+  reserves?: ReserveDataHumanized[];
+  baseCurrencyData?: PoolBaseCurrencyHumanized;
+  userEmodeCategoryId?: number;
+  userReserves?: UserReserveDataHumanized[];
+};
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
-  data: Map<
-    number,
-    Map<
-      string,
-      {
-        reserves?: ReserveDataHumanized[];
-        baseCurrencyData?: PoolBaseCurrencyHumanized;
-        userEmodeCategoryId?: number;
-        userReserves?: UserReserveDataHumanized[];
-      }
-    >
-  >;
+  data: Map<number, Map<string, PoolReserve>>;
   refreshPoolData: (marketData?: MarketDataType) => Promise<void>;
   refreshPoolV3Data: () => Promise<void>;
   // methods
@@ -129,7 +123,6 @@ export const createPoolSlice: StateCreator<
       const account = get().account;
       const currentChainId = get().currentChainId;
       const currentMarketData = marketData || get().currentMarketData;
-      console.log(get().currentMarketData, 'currentMarketData');
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),

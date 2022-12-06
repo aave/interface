@@ -5,6 +5,7 @@ import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { useUserReserves } from 'src/hooks/useUserReserves';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -16,12 +17,31 @@ import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItem
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
+import {
+  selectV2UserSummaryAfterMigration,
+  selectV3UserSummary,
+  selectV3UserSummaryAfterMigration,
+} from 'src/store/v3MigrationSelectors';
 
 export default function V3Migration() {
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
+
+  const currentTimeStamp = useCurrentTimestamp(5);
+
+  const v2UserSummaryAfterMigration = useRootStore((state) =>
+    selectV2UserSummaryAfterMigration(state, currentTimeStamp)
+  );
+
+  const v3UserSummaryAfterMigration = useRootStore((state) =>
+    selectV3UserSummaryAfterMigration(state, currentTimeStamp)
+  );
+
+  const v3UserSummaryBeforeMigration = useRootStore((state) =>
+    selectV3UserSummary(state, currentTimeStamp)
+  );
 
   const { user, borrowPositions } = useUserReserves();
 
@@ -43,7 +63,6 @@ export default function V3Migration() {
   return (
     <>
       <MigrationTopPanel />
-
       {currentAccount && !isPermissionsLoading ? (
         <ContentContainer>
           <MigrationLists
@@ -121,10 +140,10 @@ export default function V3Migration() {
           <Divider sx={{ my: 10 }} />
 
           <MigrationBottomPanel
-            hfV2Current={'1.2'} // TODO: need value
-            hfV2AfterChange={'2'} // TODO: need value
-            hfV3Current={'1.2'} // TODO: need value
-            hfV3AfterChange={'2'} // TODO: need value
+            hfV2Current={user.healthFactor} // TODO: need value
+            hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor} // TODO: need value
+            hfV3Current={v3UserSummaryBeforeMigration.healthFactor} // TODO: need value
+            hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor} // TODO: need value
             disableButton={
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }

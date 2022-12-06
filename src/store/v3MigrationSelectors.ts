@@ -1,9 +1,19 @@
-import { InterestRate } from '@aave/contract-helpers';
-import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
-import { valueToBigNumber } from '@aave/math-utils';
-import { SignatureLike } from '@ethersproject/bytes';
-import { BigNumber, BigNumberish, constants } from 'ethers';
 import {
+  InterestRate,
+  PoolBaseCurrencyHumanized,
+  ReserveDataHumanized,
+  UserReserveDataHumanized,
+} from '@aave/contract-helpers';
+import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
+import { formatReserves, formatUserSummary, valueToBigNumber } from '@aave/math-utils';
+import { SignatureLike } from '@ethersproject/bytes';
+import { BigNumberish, constants } from 'ethers';
+
+import {
+  selectCurrentChainIdV2MarketData,
+  selectCurrentChainIdV3MarketData,
+  selectFormatBaseCurrencyData,
+  selectFormatUserEmodeCategoryId,
   selectUserNonEmtpySummaryAndIncentive,
   selectUserSummaryAndIncentives,
 } from './poolSelectors';
@@ -21,7 +31,6 @@ export const selectUserSupplyIncreasedReservesForMigrationPermits = (
   store: RootStore,
   timestamp: number
 ) => {
-  console.log('selectUserSupplyIncreasedReservesForMigrationPermits')
   return selectedUserSupplyReservesForMigration(store, timestamp).map((userReserve) => {
     const increasedAmount = addPercent(userReserve.underlyingBalance);
     return { ...userReserve, increasedAmount };
@@ -84,7 +93,122 @@ export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp
   return selectedUserReserves;
 };
 
-export const selectCurrentMarketV2Reserves = (store: RootStore, timestamp: number) => {
-  const currentChainId = store.currentChainId;
-  return store.data.get(currentChainId);
+export const selectFormatUserSummaryForMigration = (
+  reserves: ReserveDataHumanized[] = [],
+  userReserves: UserReserveDataHumanized[] = [],
+  baseCurrencyData: PoolBaseCurrencyHumanized,
+  userEmodeCategoryId: number,
+  currentTimestamp: number
+) => {
+  const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
+  const formattedReserves = formatReserves({
+    reserves: reserves,
+    currentTimestamp,
+    marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
+    marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
+  });
+
+  const formattedSummary = formatUserSummary({
+    currentTimestamp,
+    formattedReserves,
+    marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
+    marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
+    userReserves,
+    userEmodeCategoryId: 0,
+  });
+
+  return formattedSummary;
+};
+
+export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
+  const poolReserve = selectCurrentChainIdV2MarketData(store);
+
+  const userReserves =
+    poolReserve?.userReserves?.filter((userReserve) => {
+      if (
+        store.selectedMigrationSupplyAssets[userReserve.underlyingAsset] ||
+        store.selectedMigrationBorrowAssets[userReserve.underlyingAsset]
+      ) {
+        return false;
+      }
+      return true;
+    }) || [];
+
+  const baseCurrencyData = selectFormatBaseCurrencyData(poolReserve);
+  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserve);
+
+  return selectFormatUserSummaryForMigration(
+    poolReserve?.reserves,
+    userReserves,
+    baseCurrencyData,
+    userEmodeCategoryId,
+    currentTimestamp
+  );
+};
+
+const combine = (a: string, b: string): string => {
+  return valueToBigNumber(a).plus(valueToBigNumber(b)).toString();
+};
+
+export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
+  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+
+  const supplies = selectedUserSupplyReservesForMigration(store, currentTimestamp);
+  const borrows = selectUserBorrowReservesForMigration(store, currentTimestamp);
+
+  //TODO: refactor that to be more efficient
+  const suppliesMap = supplies.concat(borrows).reduce((obj, item) => {
+    obj[item.underlyingAsset] = item;
+    return obj;
+  }, {} as Record<string, typeof supplies[0]>);
+
+  const userReserves =
+    poolReserveV3?.userReserves?.map((userReserve) => {
+      const suppliedAsset = suppliesMap[userReserve.underlyingAsset];
+      if (suppliedAsset) {
+        const combinedScaledATokenBalance = combine(
+          userReserve.scaledATokenBalance,
+          suppliedAsset.scaledATokenBalance
+        );
+        //TODO: merge only if emode categories are the same?
+        return {
+          ...userReserve,
+          scaledATokenBalance: combinedScaledATokenBalance,
+          scaledVariableDebt: combine(
+            userReserve.scaledVariableDebt,
+            suppliedAsset.scaledVariableDebt
+          ),
+          principalStableDebt: combine(
+            userReserve.principalStableDebt,
+            suppliedAsset.principalStableDebt
+          ),
+        };
+      }
+      return userReserve;
+    }) || [];
+
+  const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
+  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserveV3);
+
+  return selectFormatUserSummaryForMigration(
+    poolReserveV3?.reserves,
+    userReserves,
+    baseCurrencyData,
+    userEmodeCategoryId,
+    currentTimestamp
+  );
+};
+
+export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
+  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+  const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
+  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserveV3);
+
+  return selectFormatUserSummaryForMigration(
+    poolReserveV3?.reserves,
+    poolReserveV3?.userReserves,
+    baseCurrencyData,
+    userEmodeCategoryId,
+    timestamp
+  );
 };
