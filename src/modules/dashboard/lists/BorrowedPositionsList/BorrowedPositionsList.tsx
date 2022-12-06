@@ -6,7 +6,7 @@ import { Fragment } from 'react';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -32,7 +32,7 @@ export const BorrowedPositionsList = () => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const borrowPositions =
+  let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       if (userReserve.variableBorrows !== '0') {
         acc.push({
@@ -66,6 +66,14 @@ export const BorrowedPositionsList = () => {
       }
       return acc;
     }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
+
+  // Move GHO to top of borrowed positions list
+  const ghoReserve = borrowPositions.filter((pos) => pos.reserve.symbol === GHO_SYMBOL);
+  if (ghoReserve.length > 0) {
+    borrowPositions = borrowPositions.filter((pos) => pos.reserve.symbol !== GHO_SYMBOL);
+    borrowPositions.unshift(ghoReserve[0]);
+  }
+
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
