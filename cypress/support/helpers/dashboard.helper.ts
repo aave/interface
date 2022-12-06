@@ -32,17 +32,30 @@ export class DashboardHelpers {
       });
   }
 
-  public static waitLoadingGHODashboard = () => {
+  public static waitLoadingGHODashboard = (value?:number) => {
     cy.waitUntil(
       () => {
         let res = false;
         return DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-          if (!isNaN($val)) res = true;
+          if (!isNaN($val)) res = true
+          if(value){
+            if($val == value)
+              res = true
+            else
+              res = false
+          }else{
+            if (!isNaN($val)) res = true
+          }
           return res;
         });
+        // let res = false;
+        // return DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
+        //   if (!isNaN($val)) res = true;
+        //   return res;
+        // });
       },
       {
-        timeout: 5000,
+        timeout: 20000,
         interval: 500,
       }
     );
