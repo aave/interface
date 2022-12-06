@@ -49,6 +49,7 @@ export const GhoIncentivesCard = ({
         justifyContent: 'center',
         textAlign: 'center',
       }}
+      data-cy={'apr'}
     >
       {value.toString() !== '-1' ? (
         discountableAmount === 0 ? (

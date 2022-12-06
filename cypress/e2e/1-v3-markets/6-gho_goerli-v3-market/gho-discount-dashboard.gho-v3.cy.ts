@@ -40,6 +40,7 @@ const tokenSet = ({ stkAave = 0, aAAVE = 0 }) => {
   return tokenRequest;
 };
 
+
 describe(`GHO discount integrating testing`, () => {
   const maxGHOApy = 2;
   const minGHOApy = 1.6;

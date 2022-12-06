@@ -137,7 +137,6 @@ Cypress.Commands.add('refresh', () => {
     },
   });
   cy.wait(1000);
-  cy.log('-------------------------');
 });
 
 export {};

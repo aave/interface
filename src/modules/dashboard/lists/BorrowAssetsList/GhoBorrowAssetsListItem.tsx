@@ -87,7 +87,6 @@ export const GhoBorrowAssetsListItem = ({
             value={loading ? -1 : borrowRateAfterDiscount}
             incentives={vIncentivesData}
             symbol={symbol}
-            data-cy={`apyType`}
             tooltip={<PercentIcon />}
             borrowAmount={debtBalanceAfterMaxBorrow}
             baseApy={ghoBorrowAPY}
