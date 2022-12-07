@@ -1,6 +1,9 @@
 import { Box, Button } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';
+import Gho from 'public/icons/tokens/gho.svg';
 import { ReactNode } from 'react';
+
+import LoveGhost from '/public/loveGhost.svg';
 
 export const Unauthorized = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
@@ -15,11 +18,15 @@ export const Unauthorized = ({ children }: { children: ReactNode }) => {
         width: '100vw',
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        gap: 4,
       }}
     >
-      <Button sx={{ mt: 12 }} variant="outlined" onClick={() => signIn('okta')}>
-        Sign in
+      <Button sx={{ mt: 14 }} variant="outlined" onClick={() => signIn('okta')} endIcon={<Gho />}>
+        Let&apos;s GHOOO
       </Button>
+      <LoveGhost style={{ marginBottom: '16px' }} />
     </Box>
   );
 };
