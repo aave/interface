@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
+import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -43,6 +45,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
+        {reserve.symbol === 'renFIL' && <RenFILToolTip />}
       </ListColumn>
 
       <ListColumn>
@@ -61,37 +64,40 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
-        <ReserveSubheader value={reserve.totalDebtUSD} />
+        {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
+          <>
+            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
+            <ReserveSubheader value={reserve.totalDebtUSD} />
+          </>
+        ) : (
+          <NoData variant={'secondary14'} color="text.secondary" />
+        )}
       </ListColumn>
 
       <ListColumn>
         <IncentivesCard
-          value={
-            reserve.borrowingEnabled || Number(reserve.totalVariableDebtUSD) > 0
-              ? reserve.variableBorrowAPY
-              : '-1'
-          }
+          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {!reserve.borrowingEnabled &&
+          Number(reserve.totalVariableDebt) > 0 &&
+          !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
       <ListColumn>
         <IncentivesCard
-          value={
-            (reserve.borrowingEnabled && reserve.stableBorrowRateEnabled) ||
-            Number(reserve.totalStableDebtUSD) > 0
-              ? reserve.stableBorrowAPY
-              : -1
-          }
+          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && !reserve.isFrozen && (
+          <ReserveSubheader value={'Disabled'} />
+        )}
       </ListColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">
