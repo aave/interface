@@ -393,6 +393,10 @@ msgstr "Borrow info"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Borrow term"
+msgstr "Borrow term"
+
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
@@ -928,8 +932,8 @@ msgid "GHO"
 msgstr "GHO"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrow APY"
-msgstr "GHO borrow APY"
+msgid "GHO borrow rate"
+msgstr "GHO borrow rate"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"
@@ -1021,10 +1025,6 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Includes discount"
-msgstr "Includes discount"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"

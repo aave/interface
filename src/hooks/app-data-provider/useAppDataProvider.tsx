@@ -12,11 +12,7 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import {
-  isGhoAndSupported,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { isGhoAndSupported, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -89,6 +85,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     userIncentiveData,
     eModes,
     ghoComputed,
+    ghoBorrowAPY,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -98,6 +95,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.userIncentiveData,
     selectEmodes(state),
     state.ghoComputed,
+    state.ghoBorrowAPY,
   ]);
 
   const formattedPoolReserves = formatReservesAndIncentives({
@@ -150,11 +148,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
           // TODO: Export to unified helper function
           if (isGhoAndSupported({ symbol: reserve.symbol, currentMarket: currentMarket })) {
             const discountableAmount = ghoComputed.discountableAmount;
-            const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(
-              reserve.baseVariableBorrowRate
-            );
             const borrowRateAfterDiscount = weightedAverageAPY(
-              normalizedBaseVariableBorrowRate,
+              ghoBorrowAPY,
               Number(value.variableBorrows),
               discountableAmount,
               ghoComputed.borrowAPYWithMaxDiscount

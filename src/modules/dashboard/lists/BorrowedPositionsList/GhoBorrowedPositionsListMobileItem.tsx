@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -34,17 +34,16 @@ export const GhoBorrowedPositionsListMobileItem = ({
     stableBorrowRateEnabled,
     variableBorrowAPY,
     underlyingAsset,
-    baseVariableBorrowRate,
   } = reserve;
   const {
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
+    ghoBorrowAPY,
   } = useRootStore();
 
-  const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
-    normalizedBaseVariableBorrowRate,
+    ghoBorrowAPY,
     Number(variableBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount

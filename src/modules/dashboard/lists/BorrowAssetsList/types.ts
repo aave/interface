@@ -29,7 +29,6 @@ export type GhoBorrowAssetsItem = {
   name: string;
   underlyingAsset: string;
   iconSymbol: string;
-  baseVariableBorrowRate: number | string;
   availableBorrows: number | string;
   isFreezed?: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];

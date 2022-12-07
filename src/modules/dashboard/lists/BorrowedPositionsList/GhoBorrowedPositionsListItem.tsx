@@ -7,7 +7,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -25,14 +25,8 @@ export const GhoBorrowedPositionsListItem = ({
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const {
-    isActive,
-    isFrozen,
-    borrowingEnabled,
-    stableBorrowRateEnabled,
-    variableBorrowAPY,
-    baseVariableBorrowRate,
-  } = reserve;
+  const { isActive, isFrozen, borrowingEnabled, stableBorrowRateEnabled, variableBorrowAPY } =
+    reserve;
   const {
     ghoLoadingData,
     ghoLoadingMarketData,
@@ -42,9 +36,8 @@ export const GhoBorrowedPositionsListItem = ({
     ghoBorrowAPY,
   } = useRootStore();
 
-  const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
-    normalizedBaseVariableBorrowRate,
+    ghoBorrowAPY,
     Number(variableBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount

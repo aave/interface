@@ -4,14 +4,11 @@ import {
   GhoVariableDebtTokenService,
   Pool,
 } from '@aave/contract-helpers';
+import { calculateCompoundedRate, RAY_DECIMALS, SECONDS_PER_YEAR } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import {
-  convertBpsToPercentage,
-  GHO_SUPPORTED_MARKETS,
-  normalizeBaseVariableBorrowRate,
-} from 'src/utils/ghoUtilities';
+import { convertBpsToPercentage, GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
   ENABLE_TESTNET,
@@ -58,6 +55,7 @@ export interface GhoSlice {
   ghoMinDebtTokenBalanceForEligibleDiscount: number;
   ghoMinDiscountTokenBalanceForEligibleDiscount: number;
   ghoBorrowAPY: number;
+  ghoBaseBorrowRate: number;
   ghoLoadingMarketData: boolean;
   ghoLoadingData: boolean;
   ghoLoadingUserData: boolean;
@@ -150,6 +148,7 @@ export const createGhoSlice: StateCreator<
     ghoFacilitatorBucketCapacity: new BigNumber(0),
     ghoMinDebtTokenBalanceForEligibleDiscount: 1,
     ghoMinDiscountTokenBalanceForEligibleDiscount: 1,
+    ghoBaseBorrowRate: 0,
     ghoBorrowAPY: 0,
     ghoLoadingMarketData: true,
     ghoLoadingData: true,
@@ -242,8 +241,13 @@ export const createGhoSlice: StateCreator<
       });
 
       const reserve = await poolContract.getReserveData(config.ghoTokenAddress);
+      const borrowAPY = calculateCompoundedRate({
+        rate: reserve.currentVariableBorrowRate.toString(),
+        duration: SECONDS_PER_YEAR,
+      }).shiftedBy(-RAY_DECIMALS);
       set({
-        ghoBorrowAPY: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
+        ghoBaseBorrowRate: Number(formatUnits(reserve.currentVariableBorrowRate, 27)),
+        ghoBorrowAPY: borrowAPY.toNumber(),
         ghoLoadingMarketData: false,
       });
     },

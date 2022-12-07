@@ -326,9 +326,6 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
           <Typography>
             <Trans>Borrow APY</Trans>
           </Typography>
-          <Typography variant="helperText" color="text.secondary">
-            <Trans>Includes discount</Trans>
-          </Typography>
         </Box>
       }
       captionVariant="description"

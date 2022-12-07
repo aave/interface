@@ -9,7 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import usePreviousState from 'src/hooks/usePreviousState';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -47,6 +47,7 @@ export const GhoBorrowModalContent = ({
     stakeUserResult,
     ghoDiscountRatePercent,
     ghoCalculateDiscountRate,
+    ghoBorrowAPY,
   } = useRootStore();
 
   // Check if user has any open borrow positions on GHO
@@ -54,7 +55,6 @@ export const GhoBorrowModalContent = ({
   const hasGhoBorrowPositions = userReserve.totalBorrows !== '0';
   const userStakedAaveBalance: string = stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
   const discountAvailable = userStakedAaveBalance !== '0';
-  const baseBorrowRate = normalizeBaseVariableBorrowRate(poolReserve.baseVariableBorrowRate);
 
   // Calculate new borrow APY based on borrow amounts
   const prevAmount = usePreviousState(amount);
@@ -63,7 +63,7 @@ export const GhoBorrowModalContent = ({
   // const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
 
   const currentBorrowAPY = weightedAverageAPY(
-    baseBorrowRate,
+    ghoBorrowAPY,
     Number(userReserve.totalBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount
@@ -87,7 +87,7 @@ export const GhoBorrowModalContent = ({
       );
 
       const discountRate = await ghoCalculateDiscountRate(totalBorrowAmount, userStakedAaveBalance);
-      const newRate = baseBorrowRate * (1 - discountRate);
+      const newRate = ghoBorrowAPY * (1 - discountRate);
 
       setApyDiffers(currentBorrowAPY !== newRate);
       setCalculatedFutureBorrowAPY(newRate);
