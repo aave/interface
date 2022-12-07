@@ -59,6 +59,7 @@ export const FaucetModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapper
           captchaToken,
           market: currentMarket,
           tokenAddress: poolReserve.underlyingAsset,
+          tokenSymbol: poolReserve.symbol,
           faucetAddress: currentMarketData.addresses.FAUCET,
         }),
       });
