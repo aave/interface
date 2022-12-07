@@ -8,6 +8,7 @@ export const authOptions = {
       clientId: process.env.OKTA_CLIENTID as string,
       clientSecret: process.env.OKTA_CLIENTSECRET as string,
       issuer: process.env.OKTA_DOMAIN as string,
+      idToken: true,
     }),
   ],
 };
