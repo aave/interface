@@ -19,7 +19,7 @@ export type UseSwapProps = {
   swapIn: SwapReserveData;
   swapOut: SwapReserveData;
   userAddress: string;
-  skip?: boolean;
+  skip: boolean;
 };
 
 export type SwapReserveData = ComputedReserveData & { amount: string };

@@ -22,21 +22,21 @@ interface UseSwapResponse {
 }
 
 export const useCollateralSwap = ({
+  chainId,
+  max,
+  maxSlippage,
   swapIn,
   swapOut,
   userAddress,
-  max,
-  chainId,
   skip,
-  maxSlippage,
 }: UseSwapProps): UseSwapResponse => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [inputAmount, setInputAmount] = useState<string>('0');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
   const [outputAmount, setOutputAmount] = useState<string>('0');
   const [outputAmountUSD, setOutputAmountUSD] = useState<string>('0');
-  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
   const [route, setRoute] = useState<OptimalRate>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const swapInData = useMemo(() => {
     const swapData: SwapData = {
@@ -101,14 +101,15 @@ export const useCollateralSwap = ({
         const route = await exactInRate();
         setError('');
         setRoute(route);
+
         setInputAmount(normalize(route.srcAmount, route.srcDecimals));
+        setInputAmountUSD(route.srcUSD);
 
         const minAmount = new BigNumberZeroDecimal(route.destAmount)
           .multipliedBy(1 - maxSlippage / 100)
           .toFixed(0);
 
         setOutputAmount(normalize(minAmount, route.destDecimals));
-        setInputAmountUSD(route.srcUSD);
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);

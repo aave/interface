@@ -82,7 +82,7 @@ export const SwapModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected,
-    skip: supplyTxState.loading,
+    skip: supplyTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 

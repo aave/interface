@@ -38,13 +38,13 @@ export const useCollateralRepaySwap = ({
   userAddress,
   swapVariant,
 }: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [inputAmount, setInputAmount] = useState<string>('0');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
   const [outputAmount, setOutputAmount] = useState<string>('0');
   const [outputAmountUSD, setOutputAmountUSD] = useState<string>('0');
-  const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
   const [route, setRoute] = useState<OptimalRate>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const swapInData = useMemo(() => {
     const swapData: SwapData = {
@@ -102,9 +102,9 @@ export const useCollateralRepaySwap = ({
           (!swapOutData.amount || swapOutData.amount === '0' || isNaN(+swapOutData.amount)))
       ) {
         setInputAmount('0');
+        setInputAmountUSD('0');
         setOutputAmount('0');
         setOutputAmountUSD('0');
-        setInputAmountUSD('0');
         setRoute(undefined);
         return;
       }

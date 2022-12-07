@@ -115,7 +115,7 @@ export function CollateralRepayModalContent({
     swapIn,
     swapOut,
     max: repayAllDebt,
-    skip: mainTxState.loading,
+    skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
