@@ -41,8 +41,8 @@ const tokenSet = ({ stkAave = 0, aAAVE = 0 }) => {
 };
 
 describe(`GHO discount integrating testing`, () => {
-  const maxGHOApy = 2;
-  const minGHOApy = 1.6;
+  const maxGHOApy = 2.02;
+  const minGHOApy = 1.62;
   let baseApy: number;
 
   describe(`Verify default APY for GHO`, () => {
@@ -72,10 +72,10 @@ describe(`GHO discount integrating testing`, () => {
   describe(`Check APY with discount and unstake`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aAAVE: 1, stkAave: 3 }),
+      tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
     });
     it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
-      DashboardHelpers.waitLoadingGHODashboard(1.6);
+      DashboardHelpers.waitLoadingGHODashboard(minGHOApy);
       DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(minGHOApy);
       });
@@ -105,10 +105,10 @@ describe(`GHO discount integrating testing`, () => {
   describe(`Check borrowed APY updating`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aAAVE: 1, stkAave: 3 }),
+      tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
     });
     it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
-      DashboardHelpers.waitLoadingGHODashboard(1.6);
+      DashboardHelpers.waitLoadingGHODashboard(minGHOApy);
       DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(minGHOApy);
       });
