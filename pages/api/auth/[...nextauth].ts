@@ -5,9 +5,9 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     Okta({
-      clientId: process.env.OKTA_CLIENTID || '',
-      clientSecret: process.env.OKTA_CLIENTSECRET || '',
-      issuer: process.env.OKTA_DOMAIN || '',
+      clientId: process.env.OKTA_CLIENTID as string,
+      clientSecret: process.env.OKTA_CLIENTSECRET as string,
+      issuer: process.env.OKTA_DOMAIN as string,
     }),
   ],
 };
