@@ -65,10 +65,3 @@ runs:
       with:
         name: cypress-fail-screenshots-${{ github.job }}-${{ matrix.market }}
         path: cypress/screenshots
-
-    - name: upload video
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
-      if: failure()
-      with:
-        name: cypress-fail-videos-${{ github.job }}-${{ matrix.market }}
-        path: cypress/videos

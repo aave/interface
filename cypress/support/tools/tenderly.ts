@@ -103,8 +103,6 @@ export class TenderlyFork {
     } else {
       TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
     }
-    cy.log('tokenAddress' + tokenAddress);
-    cy.log('tokenAddress' + tokenCount);
     // @ts-ignore
     const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
     const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);

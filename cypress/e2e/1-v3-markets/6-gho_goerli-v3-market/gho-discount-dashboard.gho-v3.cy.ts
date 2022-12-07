@@ -45,7 +45,7 @@ describe(`GHO discount integrating testing`, () => {
   const minGHOApy = 1.62;
   let baseApy: number;
 
-  describe.skip(`Verify default APY for GHO`, () => {
+  describe(`Verify default APY for GHO`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
     });
