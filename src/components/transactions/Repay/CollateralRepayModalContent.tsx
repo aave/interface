@@ -107,6 +107,7 @@ export function CollateralRepayModalContent({
     outputAmount,
     outputAmountUSD,
     loading: routeLoading,
+    error,
     buildTxFn,
   } = useCollateralRepaySwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
@@ -258,6 +259,11 @@ export function CollateralRepayModalContent({
         balanceText="Collateral balance"
         loading={loadingSkeleton}
       />
+      {error && !loadingSkeleton && (
+        <Typography variant="helperText" color="error.main">
+          {error}
+        </Typography>
+      )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
