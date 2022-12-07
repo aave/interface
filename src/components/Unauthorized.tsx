@@ -1,3 +1,4 @@
+import { Box, Button } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';
 import { ReactNode } from 'react';
 
@@ -9,9 +10,16 @@ export const Unauthorized = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn('okta')}>Sign in</button>
-    </>
+    <Box
+      sx={{
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Button sx={{ mt: 12 }} variant="outlined" onClick={() => signIn('okta')}>
+        Sign in
+      </Button>
+    </Box>
   );
 };
