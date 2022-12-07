@@ -21,7 +21,7 @@ jobs:
       - name: Build App
         uses: ./.github/actions/build
         with:
-          NEXT_PUBLIC_ENV: 'prod'
+          NEXT_PUBLIC_ENV: 'staging'
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
