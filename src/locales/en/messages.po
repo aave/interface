@@ -393,6 +393,10 @@ msgstr "Borrow info"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Borrow term"
+msgstr "Borrow term"
+
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
@@ -928,8 +932,8 @@ msgid "GHO"
 msgstr "GHO"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrow APY"
-msgstr "GHO borrow APY"
+msgid "GHO borrow rate"
+msgstr "GHO borrow rate"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"

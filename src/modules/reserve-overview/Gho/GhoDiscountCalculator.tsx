@@ -1,3 +1,5 @@
+// import { calculateCompoundedRate } from '@aave/math-utils';
+import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -16,7 +18,14 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+
+import { ESupportedTimeRanges } from '../TimeRangeSelector';
+import {
+  getSecondsForGhoBorrowTermDuration,
+  GhoBorrowTermRange,
+  GhoTimeRangeSelector,
+} from './GhoTimeRangeSelector';
 
 const sliderStyles = {
   color: '#669AFF',
@@ -43,32 +52,42 @@ const sliderStyles = {
   },
 };
 
-type GhoDiscountCalculatorProps = {
-  baseVariableBorrowRate: string;
-};
+interface CalculatedRateSelection {
+  baseRate: number;
+  rateAfterDiscount: number;
+  rateAfterMaxDiscount: number;
+}
 
 // We start this calculator off showing values to reach max discount
-export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCalculatorProps) => {
+export const GhoDiscountCalculator = () => {
   const {
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoDiscountRatePercent,
     ghoDiscountedPerToken,
+    ghoBaseBorrowRate,
+    ghoBorrowAPY,
     ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
-  const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const discountedPerToken = Number(ghoDiscountedPerToken);
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
-  const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(borrowAPYWithMaxDiscount);
+  const [selectedTimeRange, setSelectedTimeRange] = useState<GhoBorrowTermRange>(
+    ESupportedTimeRanges.OneYear
+  );
+  const [rateSelection, setRateSelection] = useState<CalculatedRateSelection>({
+    baseRate: ghoBorrowAPY,
+    rateAfterDiscount: borrowAPYWithMaxDiscount, // Initialize with max discount
+    rateAfterMaxDiscount: borrowAPYWithMaxDiscount,
+  });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
   const loadingGhoData = ghoLoadingData || ghoLoadingMarketData;
   const showDiscountRate =
     (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
-    calculatedBorrowAPY === borrowAPYWithMaxDiscount;
+    rateSelection.rateAfterDiscount === rateSelection.rateAfterMaxDiscount;
 
   /**
-   * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
+   * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds and a given term length
    * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
    * NOTE: if the discount rate strategy changes on-chain, then this creates a maintenance issue and we'll have to update this.
    * @param stakedAave - The hypothectical amount of stkAAVE
@@ -77,23 +96,35 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
   const calculateDiscountRate = async (stakedAave: number, borrowedGho: number) => {
     const discountableAmount = stakedAave * discountedPerToken;
 
-    // Calculate the new borrow APY
-    const newBorrowAPY = weightedAverageAPY(
-      baseBorrowRate,
+    // Factor in time for compounding for a final rate, using base variable rate
+    const termDuration = getSecondsForGhoBorrowTermDuration(selectedTimeRange);
+    const ratePayload = {
+      rate: valueToBigNumber(ghoBaseBorrowRate).shiftedBy(RAY_DECIMALS),
+      duration: termDuration,
+    };
+    const newRate = calculateCompoundedRate(ratePayload).shiftedBy(-RAY_DECIMALS).toNumber();
+    const borrowRateWithMaxDiscount = newRate * (1 - ghoDiscountRatePercent);
+    // Apply discount to the newly compounded rate
+    const newBorrowRate = weightedAverageAPY(
+      newRate,
       borrowedGho,
       discountableAmount,
-      borrowAPYWithMaxDiscount
+      borrowRateWithMaxDiscount
     );
 
     // Update local state
     setDiscountableGhoAmount(discountableAmount);
-    setCalculatedBorrowAPY(newBorrowAPY);
+    setRateSelection({
+      baseRate: newRate,
+      rateAfterDiscount: newBorrowRate,
+      rateAfterMaxDiscount: borrowRateWithMaxDiscount,
+    });
   };
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
-  }, [stkAave, ghoBorrow, borrowAPYWithMaxDiscount]);
+  }, [stkAave, ghoBorrow, selectedTimeRange]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
@@ -208,7 +239,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             </Typography>{' '}
             to borrow at{' '}
             <FormattedNumber
-              value={borrowAPYWithMaxDiscount}
+              value={rateSelection.rateAfterMaxDiscount}
               percent
               variant="helperText"
               symbolsColor="#669AFF"
@@ -225,7 +256,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           <Trans>
             You may borrow up to {discountableGhoAmount} GHO at{' '}
             <FormattedNumber
-              value={borrowAPYWithMaxDiscount}
+              value={rateSelection.rateAfterMaxDiscount}
               percent
               variant="helperText"
               symbolsColor="text.secondary"
@@ -253,12 +284,13 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
       </Typography>
       <Grid container spacing={8}>
         <Grid item xs={12} sm={6}>
-          <Box mb={4}>
+          <Box mb={2}>
             <Typography variant="subheader2" gutterBottom>
               <Trans>Borrow amount</Trans>
             </Typography>
             {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
             <OutlinedInput
+              disabled={loadingGhoData}
               fullWidth
               value={ghoBorrow ?? ''}
               placeholder="0"
@@ -275,6 +307,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               type="number"
             />
             <Slider
+              disabled={loadingGhoData}
               size="small"
               value={ghoBorrow ?? 0}
               onChange={(_, val) => setGhoBorrow(Number(val))}
@@ -288,12 +321,23 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               sx={sliderStyles}
             />
           </Box>
+          <Box mb={8}>
+            <Typography variant="subheader2" gutterBottom>
+              <Trans>Borrow term</Trans>
+            </Typography>
+            <GhoTimeRangeSelector
+              disabled={loadingGhoData}
+              timeRange={selectedTimeRange}
+              onTimeRangeChanged={setSelectedTimeRange}
+            />
+          </Box>
           <Box>
             <Typography variant="subheader2" gutterBottom>
               <Trans>Staked AAVE amount</Trans>
             </Typography>
             {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
             <OutlinedInput
+              disabled={loadingGhoData}
               fullWidth
               value={stkAave ?? ''}
               placeholder="0"
@@ -310,6 +354,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               type="number"
             />
             <Slider
+              disabled={loadingGhoData}
               size="small"
               value={stkAave ?? 0}
               onChange={(_, val) => setStkAave(Number(val))}
@@ -326,7 +371,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="subheader2" mb={1.5}>
-            <Trans>GHO borrow APY</Trans>
+            <Trans>GHO borrow rate</Trans>
           </Typography>
           {loadingGhoData ? (
             <CircularProgress size={24} sx={{ my: 2, color: '#669AFF' }} />
@@ -334,7 +379,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
             <>
               <Box display="flex" alignItems="center" mb={2}>
                 <FormattedNumber
-                  value={baseBorrowRate}
+                  value={rateSelection.baseRate}
                   percent
                   variant="display1"
                   component="div"
@@ -350,7 +395,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 {showDiscountRate && (
                   <>
                     <FormattedNumber
-                      value={calculatedBorrowAPY}
+                      value={rateSelection.rateAfterDiscount}
                       percent
                       variant="display1"
                       component="div"

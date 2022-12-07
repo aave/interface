@@ -6,11 +6,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import {
-  getAvailableBorrows,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { getAvailableBorrows, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -24,7 +20,6 @@ export const GhoBorrowAssetsListMobileItem = ({
   symbol,
   iconSymbol,
   name,
-  baseVariableBorrowRate,
   vIncentivesData,
   underlyingAsset,
   isFreezed,
@@ -39,6 +34,7 @@ export const GhoBorrowAssetsListMobileItem = ({
     ghoLoadingData,
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
+    ghoBorrowAPY,
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
@@ -50,9 +46,8 @@ export const GhoBorrowAssetsListMobileItem = ({
   );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
-  const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
-    normalizedBaseVariableBorrowRate,
+    ghoBorrowAPY,
     availableBorrows + Number(userVariableBorrows),
     discountableAmount,
     borrowAPYWithMaxDiscount

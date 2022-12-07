@@ -39,6 +39,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
     ghoLoadingMarketData,
     ghoComputed: { borrowAPYWithMaxDiscount },
     ghoDisplay: { facilitatorBucketLevel },
+    ghoBorrowAPY,
   } = useRootStore();
 
   return (
@@ -85,7 +86,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               <FormattedNumber
                 compact
                 percent
-                value={reserve.variableBorrowAPR}
+                value={ghoBorrowAPY}
                 visibleDecimals={2}
                 variant="h3"
               />
@@ -99,7 +100,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
                   <FormattedNumber
                     compact
                     percent
-                    value={reserve.variableBorrowAPR}
+                    value={ghoBorrowAPY}
                     visibleDecimals={2}
                     variant="h3"
                     symbolsColor="text.muted"

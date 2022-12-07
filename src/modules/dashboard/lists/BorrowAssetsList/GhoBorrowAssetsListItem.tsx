@@ -8,11 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import {
-  getAvailableBorrows,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from 'src/utils/ghoUtilities';
+import { getAvailableBorrows, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -25,7 +21,6 @@ export const GhoBorrowAssetsListItem = ({
   symbol,
   iconSymbol,
   name,
-  baseVariableBorrowRate,
   vIncentivesData,
   underlyingAsset,
   isFreezed,
@@ -54,9 +49,8 @@ export const GhoBorrowAssetsListItem = ({
   );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
   const debtBalanceAfterMaxBorrow = availableBorrows + Number(userVariableBorrows);
-  const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const borrowRateAfterDiscount = weightedAverageAPY(
-    normalizedBaseVariableBorrowRate,
+    ghoBorrowAPY,
     debtBalanceAfterMaxBorrow,
     discountableAmount,
     borrowAPYWithMaxDiscount

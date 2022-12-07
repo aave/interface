@@ -177,7 +177,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <Trans>Discount info</Trans>
         </PanelTitle>
         <Box sx={{ width: '100%' }}>
-          <GhoDiscountCalculator baseVariableBorrowRate={reserve.baseVariableBorrowRate} />
+          <GhoDiscountCalculator />
         </Box>
       </PanelRow>
     </Paper>
