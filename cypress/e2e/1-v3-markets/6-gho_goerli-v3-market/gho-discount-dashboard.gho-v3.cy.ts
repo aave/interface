@@ -45,7 +45,7 @@ describe(`GHO discount integrating testing`, () => {
   const minGHOApy = 1.62;
   let baseApy: number;
 
-  describe(`Verify default APY for GHO`, () => {
+  describe.skip(`Verify default APY for GHO`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
     });
@@ -75,6 +75,7 @@ describe(`GHO discount integrating testing`, () => {
       tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
     });
     it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
+      x;
       DashboardHelpers.waitLoadingGHODashboard(minGHOApy);
       DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(minGHOApy);

@@ -53,7 +53,7 @@ export class DashboardHelpers {
         // });
       },
       {
-        timeout: 20000,
+        timeout: 30000,
         interval: 500,
       }
     );
