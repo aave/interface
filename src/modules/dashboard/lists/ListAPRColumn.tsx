@@ -16,7 +16,7 @@ export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRCol
   return (
     <ListColumn>
       <Box sx={{ display: 'flex' }} data-cy={`apr`}>
-        <IncentivesCard value={value} incentives={incentives} symbol={symbol}/>
+        <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
         {tooltip}
       </Box>
     </ListColumn>

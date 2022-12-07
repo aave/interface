@@ -40,13 +40,12 @@ const tokenSet = ({ stkAave = 0, aAAVE = 0 }) => {
   return tokenRequest;
 };
 
-
 describe(`GHO discount integrating testing`, () => {
   const maxGHOApy = 2;
   const minGHOApy = 1.6;
   let baseApy: number;
 
-  describe.skip(`Verify default APY for GHO`, () => {
+  describe(`Verify default APY for GHO`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
     });
