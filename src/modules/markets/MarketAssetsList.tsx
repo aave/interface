@@ -7,7 +7,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { getGhoReserve } from 'src/utils/ghoUtilities';
 
 import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
 import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
@@ -58,19 +57,13 @@ const listHeaders = [
 type MarketAssetsListProps = {
   reserves: ComputedReserveData[];
   loading: boolean;
-  shouldDisplayGho: boolean;
 };
 
-export default function MarketAssetsList({
-  reserves,
-  loading,
-  shouldDisplayGho,
-}: MarketAssetsListProps) {
+export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
-  const ghoReserve = getGhoReserve(reserves);
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
@@ -134,16 +127,6 @@ export default function MarketAssetsList({
           ))}
           <ListColumn maxWidth={95} minWidth={95} />
         </ListHeaderWrapper>
-      )}
-
-      {shouldDisplayGho && (
-        <Box>
-          {isTableChangedToCards ? (
-            <GhoMarketAssetsListMobileItem reserve={ghoReserve} />
-          ) : (
-            <GhoMarketAssetsListItem reserve={ghoReserve} />
-          )}
-        </Box>
       )}
 
       {reserves.map((reserve) =>
