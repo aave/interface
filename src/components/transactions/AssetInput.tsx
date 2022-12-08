@@ -74,6 +74,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   maxValue?: string;
   isMaxSelected?: boolean;
   inputTitle?: ReactNode;
+  balanceText?: ReactNode; // Support translated text
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -87,8 +88,9 @@ export const AssetInput = <T extends Asset = Asset>({
   assets,
   capType,
   maxValue,
-  inputTitle,
   isMaxSelected,
+  inputTitle,
+  balanceText,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -256,7 +258,7 @@ export const AssetInput = <T extends Asset = Asset>({
           {asset.balance && onChange && (
             <>
               <Typography component="div" variant="secondary12" color="text.secondary">
-                <Trans>Balance</Trans>{' '}
+                {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
