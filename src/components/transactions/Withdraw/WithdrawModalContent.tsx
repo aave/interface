@@ -184,7 +184,7 @@ export const WithdrawModalContent = ({
         disabled={withdrawTxState.loading}
         maxValue={maxAmountToWithdraw.toString(10)}
         balanceText={
-          unborrowedLiquidity < underlyingBalance ? (
+          unborrowedLiquidity.lt(underlyingBalance) ? (
             <Trans>Available</Trans>
           ) : (
             <Trans>Supply balance</Trans>
