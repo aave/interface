@@ -183,6 +183,13 @@ export const WithdrawModalContent = ({
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
         maxValue={maxAmountToWithdraw.toString(10)}
+        balanceText={
+          unborrowedLiquidity.lt(underlyingBalance) ? (
+            <Trans>Available</Trans>
+          ) : (
+            <Trans>Supply balance</Trans>
+          )
+        }
       />
 
       {blockingError !== undefined && (

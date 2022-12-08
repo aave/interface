@@ -219,6 +219,7 @@ export const RepayModalContent = ({
         onSelect={setTokenToRepayWith}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToRepay.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
       />
 
       {maxRepayWithDustRemaining && (

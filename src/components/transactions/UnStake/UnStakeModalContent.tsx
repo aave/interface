@@ -115,6 +115,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         ]}
         isMaxSelected={isMaxSelected}
         maxValue={walletBalance}
+        balanceText={<Trans>Staking balance</Trans>}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
