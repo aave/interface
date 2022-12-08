@@ -36,7 +36,8 @@ export const SupplyActions = ({
     useTransactionHandler({
       // TODO: move tryPermit
       tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+        currentMarketData.v3 &&
+        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
       handleGetTxns: async () => {
         return supply({
           amountToSupply,

@@ -6,6 +6,7 @@ import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppData
 import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
+import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
@@ -34,7 +35,9 @@ export const ApyGraphContainer = ({
   reserve,
   currentMarketData,
 }: ApyGraphContainerProps): JSX.Element => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
+  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>(
+    ESupportedTimeRanges.OneMonth
+  );
 
   const CHART_HEIGHT = 155;
   const CHART_HEIGHT_LOADING_FIX = 3.5;
@@ -129,7 +132,7 @@ export const ApyGraphContainer = ({
         <GraphTimeRangeSelector
           disabled={loading || error}
           timeRange={selectedTimeRange}
-          handleTimeRangeChanged={setSelectedTimeRange}
+          onTimeRangeChanged={setSelectedTimeRange}
         />
       </Box>
       {loading && graphLoading}

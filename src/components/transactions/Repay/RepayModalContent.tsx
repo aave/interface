@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -43,7 +44,7 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -148,8 +149,8 @@ export const RepayModalContent = ({
       iconSymbol: poolReserve.iconSymbol,
       balance: maxReserveTokenForRepay.toString(10),
     });
-    // push reserve atoken
-    if (currentMarketData.v3) {
+    // push reserve aToken
+    if (currentMarketData.v3 && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket })) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,

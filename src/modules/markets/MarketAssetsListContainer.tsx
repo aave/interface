@@ -11,6 +11,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MarketAssetListTitle } from 'src/modules/markets/MarketAssetListTitle';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
@@ -19,8 +20,11 @@ export const MarketAssetsListContainer = () => {
   const sm = useMediaQuery(breakpoints.down('sm'));
   const [searchTerm, setSearchTerm] = useState('');
 
+  const ghoReserve = getGhoReserve(reserves);
+
   const filteredData = reserves
     .filter((res) => res.isActive)
+    .filter((res) => res !== ghoReserve) // Filter out all GHO
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -46,6 +50,21 @@ export const MarketAssetsListContainer = () => {
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen);
   const frozenReserves = filteredData.filter((r) => r.isFrozen);
 
+  const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
+    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
+      return false;
+    }
+
+    if (!searchTerm) {
+      return true;
+    }
+
+    const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+    return (
+      normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
+    );
+  };
+
   return (
     <ListWrapper
       titleComponent={
@@ -62,7 +81,11 @@ export const MarketAssetsListContainer = () => {
       )}
 
       {/* Unfrozen assets list */}
-      <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
+      <MarketAssetsList
+        reserves={unfrozenReserves}
+        loading={loading}
+        shouldDisplayGho={shouldDisplayGho(currentMarketData.marketTitle, searchTerm)}
+      />
 
       {/* Frozen assets list */}
       {frozenReserves.length > 0 && (
@@ -83,7 +106,11 @@ export const MarketAssetsListContainer = () => {
           </Warning>
         </Box>
       )}
-      <MarketAssetsList reserves={frozenReserves} loading={loading} />
+      <MarketAssetsList
+        reserves={frozenReserves}
+        loading={loading}
+        shouldDisplayGho={shouldDisplayGho(currentMarketData.marketTitle, searchTerm)}
+      />
 
       {/* Show no search results message if nothing hits in either list */}
       {!loading && filteredData.length === 0 && (

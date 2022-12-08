@@ -75266,6 +75266,23 @@ var marketsData = {
       marketName: 'aaveavalanche',
     },
   },
+  ['proto_goerli_gho_v3' /* proto_goerli_gho_v3 */]: {
+    marketTitle: 'Ethereum G\xF6rli GHO',
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x3c1095AC5c30042453a07414bAFB2501dE30A8fe'.toLowerCase(),
+      LENDING_POOL: '0xd84f166e81f53eDd9B689779B6f4022cF73A2BdF',
+      WETH_GATEWAY: '0xaba1AC875611E6BEF8a9F6e9166C35C07A56E90b',
+      FAUCET: '0xD7974dCc0a0Bd2d4eeBF00B270634E40b9f8f967',
+      WALLET_BALANCE_PROVIDER: '0x11De99932D5B08E8A680B80e4eC7Bd68851fD64b',
+      UI_POOL_DATA_PROVIDER: '0xC576539371a2f425545B7BF4eb2a14Eee1944a1C',
+      UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
+    },
+  },
   ['proto_goerli_v3' /* proto_goerli_v3 */]: {
     marketTitle: 'Ethereum G\xF6rli',
     v3: true,

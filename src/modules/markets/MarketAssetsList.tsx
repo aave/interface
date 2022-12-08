@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -7,16 +7,14 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { getGhoReserve } from 'src/utils/ghoUtilities';
 
+import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
+import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
 import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLoader';
-
-type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
-  loading: boolean;
-};
 
 const listHeaders = [
   {
@@ -57,11 +55,22 @@ const listHeaders = [
   },
 ];
 
-export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
+type MarketAssetsListProps = {
+  reserves: ComputedReserveData[];
+  loading: boolean;
+  shouldDisplayGho: boolean;
+};
+
+export default function MarketAssetsList({
+  reserves,
+  loading,
+  shouldDisplayGho,
+}: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
+  const ghoReserve = getGhoReserve(reserves);
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
@@ -98,6 +107,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       </>
     );
   }
+
   // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
   if (reserves.length === 0) return null;
 
@@ -125,6 +135,17 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
           <ListColumn maxWidth={95} minWidth={95} />
         </ListHeaderWrapper>
       )}
+
+      {shouldDisplayGho && (
+        <Box>
+          {isTableChangedToCards ? (
+            <GhoMarketAssetsListMobileItem reserve={ghoReserve} />
+          ) : (
+            <GhoMarketAssetsListItem reserve={ghoReserve} />
+          )}
+        </Box>
+      )}
+
       {reserves.map((reserve) =>
         isTableChangedToCards ? (
           <MarketAssetsListMobileItem {...reserve} key={reserve.id} />

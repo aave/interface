@@ -12,6 +12,7 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { isGhoAndSupported, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -74,7 +75,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const [
     reserves,
     baseCurrencyData,
@@ -83,6 +84,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
     eModes,
+    ghoComputed,
+    ghoBorrowAPY,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -91,6 +94,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.reserveIncentiveData,
     state.userIncentiveData,
     selectEmodes(state),
+    state.ghoComputed,
+    state.ghoBorrowAPY,
   ]);
 
   const formattedPoolReserves = formatReservesAndIncentives({
@@ -140,9 +145,23 @@ export const AppDataProvider: React.FC = ({ children }) => {
           }
         }
         if (value.variableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-          );
+          // TODO: Export to unified helper function
+          if (isGhoAndSupported({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+            const discountableAmount = ghoComputed.discountableAmount;
+            const borrowRateAfterDiscount = weightedAverageAPY(
+              ghoBorrowAPY,
+              Number(value.variableBorrows),
+              discountableAmount,
+              ghoComputed.borrowAPYWithMaxDiscount
+            );
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(borrowRateAfterDiscount).multipliedBy(value.variableBorrowsUSD)
+            );
+          } else {
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
+            );
+          }
           if (reserve.vIncentivesData) {
             reserve.vIncentivesData.forEach((incentive) => {
               acc.positiveProportion = acc.positiveProportion.plus(

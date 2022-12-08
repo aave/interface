@@ -10,6 +10,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
+import { GhoDiscountProgram } from './GhoDiscountProgram';
 import { StakeActionBox } from './StakeActionBox';
 
 function secondsToDHMS(seconds: number) {
@@ -55,13 +56,13 @@ export interface StakingPanelProps {
   onUnstakeAction?: () => void;
   stakeData?: StakeGeneralUiData['aave'];
   stakeUserData?: StakeUserUiData['aave'];
-  description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethUsdPrice?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
+  hasDiscountProgram?: boolean;
 }
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
@@ -71,13 +72,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onUnstakeAction,
   stakeTitle,
   stakedToken,
-  description,
   headerAction,
   icon,
   stakeData,
   stakeUserData,
   ethUsdPrice,
   maxSlash,
+  hasDiscountProgram,
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
@@ -371,8 +372,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           </Button>
         </StakeActionBox>
       </Stack>
-
-      {!!description && description}
+      {hasDiscountProgram && <GhoDiscountProgram />}
     </Paper>
   );
 };

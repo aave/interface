@@ -9,6 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -27,9 +28,11 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
+import { GhoBorrowAssetsListMobileItem } from './GhoBorrowAssetsListMobileItem';
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -78,14 +81,24 @@ export const BorrowAssetsList = () => {
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
         .div(maxBorrowAmount)
         .toFixed();
-
-  const borrowReserves =
+  let borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
-            availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
+          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
+            (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
+            isGhoAndSupported({
+              symbol,
+              currentMarket,
+            })
         );
+
+  // Move GHO to top of assets to borrow list
+  const ghoReserve = borrowReserves.filter((reserve) => reserve.symbol === GHO_SYMBOL);
+  if (ghoReserve.length > 0) {
+    borrowReserves = borrowReserves.filter((reserve) => reserve.symbol !== GHO_SYMBOL);
+    borrowReserves.unshift(ghoReserve[0]);
+  }
 
   const head = [
     <AvailableTooltip
@@ -173,7 +186,33 @@ export const BorrowAssetsList = () => {
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                <BorrowAssetsListMobileItem {...item} />
+                isGhoAndSupported({
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
+                  <GhoBorrowAssetsListMobileItem
+                    {...item}
+                    userVariableBorrows={
+                      user.userReservesData.find(
+                        (userReserve) => userReserve.reserve.symbol === 'GHO'
+                      )?.variableBorrows || 0
+                    }
+                  />
+                ) : (
+                  <BorrowAssetsListMobileItem {...item} />
+                )
+              ) : isGhoAndSupported({
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
+                <GhoBorrowAssetsListItem
+                  {...item}
+                  userVariableBorrows={
+                    user.userReservesData.find(
+                      (userReserve) => userReserve.reserve.symbol === 'GHO'
+                    )?.variableBorrows || 0
+                  }
+                />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}

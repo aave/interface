@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import React, { ReactNode } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -28,11 +29,14 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
+import { useRootStore } from 'src/store/root';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
+  getMaxGhoMintAmount,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -71,6 +75,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const {
+    ghoComputed: { maxAvailableFromFacilitator },
+  } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -123,17 +130,23 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   ) as ComputedReserveData;
 
   const balance = walletBalances[underlyingAsset];
+  const canSupply =
+    balance?.amount !== '0' && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    poolReserve,
-    user,
-    InterestRate.Variable
-  ).toString();
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance.amount,
-    poolReserve,
-    underlyingAsset
-  ).toString();
+  const displayGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
+
+  let maxAmountToBorrow: BigNumber;
+  if (displayGho) {
+    const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
+    maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+  } else {
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable);
+  }
+  const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
+
+  const maxAmountToSupply = displayGho
+    ? '0'
+    : getMaxAmountAvailableToSupply(balance.amount, poolReserve, underlyingAsset).toString();
 
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
   const eModeBorrowDisabled =
@@ -259,7 +272,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           mb={3}
         >
           <FormattedNumber
-            value={maxAmountToBorrow}
+            value={formattedMaxAmountToBorrow}
             variant="secondary14"
             symbol={poolReserve.symbol}
           />
@@ -322,7 +335,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
-          disabled={balance?.amount === '0'}
+          disabled={!canSupply}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
           data-cy={'supplyButton'}
@@ -342,8 +355,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           </Button>
         )}
       </Stack>
-      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
-      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {maxAmountToSupply === '0' && supplyCap?.determineWarningDisplay({ supplyCap, icon: false })}
+      {formattedMaxAmountToBorrow === '0' &&
+        borrowCap?.determineWarningDisplay({ borrowCap, icon: false })}
       {poolReserve.isIsolated &&
         balance?.amount !== '0' &&
         user?.totalCollateralUSD !== '0' &&

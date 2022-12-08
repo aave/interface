@@ -1,5 +1,6 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box } from '@mui/material';
+import { ReactNode } from 'react';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -12,6 +13,7 @@ interface IncentivesCardProps {
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
   align?: 'center' | 'flex-end';
+  tooltip?: ReactNode;
 }
 
 export const IncentivesCard = ({
@@ -21,6 +23,7 @@ export const IncentivesCard = ({
   variant = 'secondary14',
   symbolsVariant,
   align,
+  tooltip,
 }: IncentivesCardProps) => {
   return (
     <Box
@@ -33,7 +36,15 @@ export const IncentivesCard = ({
       }}
     >
       {value.toString() !== '-1' ? (
-        <FormattedNumber value={value} percent variant={variant} symbolsVariant={symbolsVariant} />
+        <Box sx={{ display: 'flex' }}>
+          <FormattedNumber
+            value={value}
+            percent
+            variant={variant}
+            symbolsVariant={symbolsVariant}
+          />
+          {tooltip}
+        </Box>
       ) : (
         <NoData variant={variant} color="text.secondary" />
       )}

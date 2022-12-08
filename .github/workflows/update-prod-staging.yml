@@ -15,23 +15,13 @@ jobs:
       name: Production
       url: 'https://app.aave.com'
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
 
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
         with:
           name: out
           path: out
-
-      - name: Pin to sefl-hosted cluster
-        uses: ./.github/actions/private-ipfs-pin
-        with:
-          DOMAIN: app.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          BUILD_PATH: 'out'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
 
       - name: crust
         uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
@@ -52,13 +42,14 @@ jobs:
         run: |
           cp .github/release-template.md ./release-notes.md
           sed -i 's|<ipfs-hash>|${{ inputs.PINATA_HASH }}|g' ./release-notes.md
+          tar -czf app-build.tar.gz out/
           echo "TAG=release-$(date '+%Y-%m-%d_%H-%M')" >> ${GITHUB_ENV}
 
       - name: Create GH release
         uses: ncipollo/release-action@4c75f0f2e4ae5f3c807cf0904605408e319dcaac # v1.10.0
         with:
           name: Production release
-          artifacts: app.tar.gz
+          artifacts: app-build.tar.gz
           bodyFile: release-notes.md
           commit: '${{ github.sha }}'
           tag: '${{ env.TAG }}'
@@ -69,38 +60,8 @@ jobs:
       name: Staging
       url: 'https://staging.aave.com'
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
         with:
           name: out_staging
           path: out_staging
-
-      - name: pinata
-        id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
-        with:
-          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
-          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
-          PIN_ALIAS: 'app-aave-staging'
-          BUILD_LOCATION: './out_staging'
-          CID_VERSION: 1
-
-      - name: Pin to sefl-hosted cluster
-        uses: ./.github/actions/private-ipfs-pin
-        continue-on-error: true
-        with:
-          DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
-
-      - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
-        with:
-          CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
-          CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
-          HASH: '${{ steps.pinata.outputs.hash }}'
-          CF_DEPLOYMENT_DOMAIN: staging.aave.com

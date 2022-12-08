@@ -894,5 +894,25 @@
       "collateral": true,
       "wrapped": false
     }
+  },
+  "ghoV3Market": {
+    "ETH": {
+      "fullName": "Ethereum",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": true
+    },
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "GHO": {
+      "fullName": "GHO",
+      "shortName": "GHO",
+      "collateral": true,
+      "wrapped": false
+    }
   }
 }

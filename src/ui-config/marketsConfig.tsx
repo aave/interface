@@ -51,6 +51,7 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  proto_goerli_gho_v3 = 'proto_goerli_gho_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -183,6 +184,27 @@ export const marketsData: {
     },
   },
   // v3
+  [CustomMarket.proto_goerli_gho_v3]: {
+    marketTitle: 'Ethereum Görli GHO',
+    v3: true,
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
+      faucet: true,
+      // governance: true,
+      staking: true,
+      // incentives: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x3c1095AC5c30042453a07414bAFB2501dE30A8fe'.toLowerCase(),
+      LENDING_POOL: '0xd84f166e81f53eDd9B689779B6f4022cF73A2BdF',
+      WETH_GATEWAY: '0xaba1AC875611E6BEF8a9F6e9166C35C07A56E90b',
+      FAUCET: '0xD7974dCc0a0Bd2d4eeBF00B270634E40b9f8f967',
+      WALLET_BALANCE_PROVIDER: '0x11De99932D5B08E8A680B80e4eC7Bd68851fD64b',
+      UI_POOL_DATA_PROVIDER: '0xC576539371a2f425545B7BF4eb2a14Eee1944a1C',
+      UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
+    },
+  },
   [CustomMarket.proto_goerli_v3]: {
     marketTitle: 'Ethereum Görli',
     v3: true,
@@ -441,7 +463,6 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
     },
-
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5E52dEc931FFb32f609681B8438A51c675cc232d'.toLowerCase(),
       LENDING_POOL: '0x4bd5643ac6f66a5237E18bfA7d47cF22f1c9F210',

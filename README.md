@@ -31,6 +31,58 @@ yarn
 yarn dev
 ```
 
+## Syncing this repository with `aave/interface`
+
+This repository is based off of [aave/interface](https://github.com/aave/interface), but is kept private to guard GHO feature development from the general public until launch. Due to this scenario, it is important that this repository is kept up to date with the active changes happening on the `aave/interface` public repo. To get _this private repo_ up to date with _those public changes_, follow these steps:
+
+1. Add a local upstream remote if you haven't already, and point it to the `aave/interface` repo. You'll only need to do this once, initially.
+
+   `git remote add upstream https://github.com/aave/interface.git`
+
+2. Doublecheck your local remotes with `git remote -v`. This should yield the following:
+
+   ```sh
+   origin      https://github.com/aave/interface-gho.git (fetch)
+   origin      https://github.com/aave/interface-gho.git (push)
+   upstream    https://github.com/aave/interface.git (fetch)
+   upstream    https://github.com/aave/interface.git (push)
+   ```
+
+3.) Download all remote commits to your local repositories by running `git fetch --all`
+
+4. Checkout `main` and ensure there are no pending changes and that your working tree is clean. Doublecheck with `git status`. It should yield the following:
+
+   ```txt
+   git checkout main
+   git status
+
+   On branch main
+   Your branch is up to date with 'origin/main'.
+   nothing to commit, working tree clean
+   ```
+
+5. Pull the latest version of the upstream interface repo into the `main` branch by setting the `HEAD` to that of the upstream remote.
+
+   `git reset --hard upstream/main`
+
+6. Now that your local `main` branch mirrors the latest from `aave/interface`, checkout the `chore/sync` branch. This is so we can prep the changes into a new PR.
+
+   `git checkout chore/sync`
+
+7. Merge in your local `main` into this branch. If there are conflicts, fix them locally and `add` then to the merge commit.
+
+   `git merge main`
+
+8. You should now have a pending commit to push up. Push it up to this private repo.
+
+   `git push origin chore/sync`
+
+9. Next, open up a new PR to merge `chore/sync` into `main` on the remote. This will ensure that we can vet the pending changes and not break anything in our GHO production app.
+
+10. That's it! Once reviewed and merged in, ensure the `chore/sync` branch is not deleted so we can continue to use it in step 6 without issue. Then get latest on your local `main` branch again, which should ideally pull one new commit but not have any changes since you already pulled them in step 5.
+
+    `git checkout main && git pull`
+
 ## Contribution
 
 For instructions on local development, deployment, configurations & feature proposals, see [Contributing](./CONTRIBUTING.md)
