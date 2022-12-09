@@ -51,9 +51,15 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
+
+let didInit = false;
+
 export default function MyApp(props: MyAppProps) {
   useEffect(() => {
+    if (didInit) return;
+
     FullStory.init({ orgId: 'VBTDS' });
+    didInit = true;
   });
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
