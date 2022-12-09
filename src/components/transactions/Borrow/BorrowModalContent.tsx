@@ -83,6 +83,7 @@ export const BorrowModalContent = ({
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow}
+        balanceText={<Trans>Available</Trans>}
       />
       {error !== undefined && errorComponent}
       {poolReserve.stableBorrowRateEnabled && (

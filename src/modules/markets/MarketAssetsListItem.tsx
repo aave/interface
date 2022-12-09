@@ -66,7 +66,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
           <>
-            <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />{' '}
+            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
             <ReserveSubheader value={reserve.totalDebtUSD} />
           </>
         ) : (
@@ -82,9 +82,9 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
-        {!reserve.borrowingEnabled && Number(reserve.totalVariableDebt) > 0 && (
-          <ReserveSubheader value={'Disabled'} />
-        )}
+        {!reserve.borrowingEnabled &&
+          Number(reserve.totalVariableDebt) > 0 &&
+          !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
       <ListColumn>
@@ -95,7 +95,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
-        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && (
+        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && !reserve.isFrozen && (
           <ReserveSubheader value={'Disabled'} />
         )}
       </ListColumn>
