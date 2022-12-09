@@ -1,18 +1,22 @@
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
-import { CustomMarket, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
-import { PoolReserve } from './poolSlice';
+import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
+import { PoolReserve } from './poolSlice';
 import { RootStore } from './root';
 
 export const selectCurrentChainIdV2MarketKey = (state: RootStore): CustomMarket => {
-  // TODO: make it dynamic
+  if (state.currentChainId) {
+    // TODO: make it dynamic
+  }
   return 'fork_proto_polygon' as CustomMarket;
 };
 
 export const selectCurrentChainIdV3MarketKey = (state: RootStore): CustomMarket => {
-  // TODO: make it dynamic
+  if (state.currentChainId) {
+    // TODO: make it dynamic
+  }
   return 'fork_proto_polygon_v3' as CustomMarket;
 };
 
@@ -147,7 +151,7 @@ export const selectUserNonEmtpySummaryAndIncentive = (
   };
 };
 
-export const selectUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
+export const selectNonEmptyUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
   const user = selectUserSummaryAndIncentives(state, currentTimestamp);
   const borrowedPositions = user.userReservesData.filter(
     (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'

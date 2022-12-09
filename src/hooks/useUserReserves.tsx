@@ -1,5 +1,5 @@
 import {
-  selectUserBorrowPositions,
+  selectNonEmptyUserBorrowPositions,
   selectUserNonEmtpySummaryAndIncentive,
 } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
@@ -13,7 +13,7 @@ export const useUserReserves = () => {
     selectUserNonEmtpySummaryAndIncentive(state, currentTimestamp)
   );
   const borrowPositions = useRootStore((state) =>
-    selectUserBorrowPositions(state, currentTimestamp)
+    selectNonEmptyUserBorrowPositions(state, currentTimestamp)
   );
 
   return { user, borrowPositions };

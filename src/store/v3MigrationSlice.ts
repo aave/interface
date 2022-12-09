@@ -2,27 +2,20 @@ import {
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
+  Pool,
   V3MigrationHelperService,
   valueToWei,
-  Pool,
-  InterestRate,
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
-import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
-import {
-  selectCurrentChainIdV2MarketData,
-  selectCurrentChainIdV2MarketKey,
-  selectCurrentChainIdV3MarketKey,
-} from './poolSelectors';
 
+import { selectCurrentChainIdV2MarketKey, selectCurrentChainIdV3MarketKey } from './poolSelectors';
 import { RootStore } from './root';
 import {
   selectedUserSupplyReservesForMigration,
@@ -197,8 +190,7 @@ export const createV3MigrationSlice: StateCreator<
       });
     },
     getMigratorAddress: () => {
-      // TODO: map migrator addresses for each chain after deployment
-      return '0x01ce9bbcc0418614a8bba983fe79cf77211996f2';
+      return get().currentMarketData.addresses.V3_MIGRATOR || '';
     },
     getMigrationServiceInstance: () => {
       const address = get().getMigratorAddress();
@@ -219,8 +211,11 @@ export const createV3MigrationSlice: StateCreator<
         WETH_GATEWAY: currentMarketV3Data.addresses.WETH_GATEWAY,
         L2_ENCODER: currentMarketV3Data.addresses.L2_ENCODER,
       });
+      const migrationServiceInstances = get().migrationServiceInstances;
       const newMigratorInstance = new V3MigrationHelperService(provider, migratorAddress, pool);
-      // TODO: don't forget to add maping here
+      set({
+        migrationServiceInstances: { ...migrationServiceInstances, [address]: newMigratorInstance },
+      });
       return newMigratorInstance;
     },
     migrateBorrow: async (signedPermits: V3MigrationHelperSignedPermit[] = []) => {

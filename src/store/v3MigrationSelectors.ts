@@ -13,7 +13,6 @@ import {
   selectCurrentChainIdV2MarketData,
   selectCurrentChainIdV3MarketData,
   selectFormatBaseCurrencyData,
-  selectFormatUserEmodeCategoryId,
   selectUserNonEmtpySummaryAndIncentive,
   selectUserSummaryAndIncentives,
 } from './poolSelectors';
@@ -97,7 +96,6 @@ export const selectFormatUserSummaryForMigration = (
   reserves: ReserveDataHumanized[] = [],
   userReserves: UserReserveDataHumanized[] = [],
   baseCurrencyData: PoolBaseCurrencyHumanized,
-  userEmodeCategoryId: number,
   currentTimestamp: number
 ) => {
   const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
@@ -135,13 +133,11 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
     }) || [];
 
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserve);
-  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserve);
 
   return selectFormatUserSummaryForMigration(
     poolReserve?.reserves,
     userReserves,
     baseCurrencyData,
-    userEmodeCategoryId,
     currentTimestamp
   );
 };
@@ -170,7 +166,6 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
           userReserve.scaledATokenBalance,
           suppliedAsset.scaledATokenBalance
         );
-        //TODO: merge only if emode categories are the same?
         return {
           ...userReserve,
           scaledATokenBalance: combinedScaledATokenBalance,
@@ -188,13 +183,11 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     }) || [];
 
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
-  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserveV3);
 
   return selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
     userReserves,
     baseCurrencyData,
-    userEmodeCategoryId,
     currentTimestamp
   );
 };
@@ -202,13 +195,15 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
   const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
-  const userEmodeCategoryId = selectFormatUserEmodeCategoryId(poolReserveV3);
 
   return selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
     poolReserveV3?.userReserves,
     baseCurrencyData,
-    userEmodeCategoryId,
     timestamp
   );
+};
+
+export const selectIsMigrationAvailable = (store: RootStore) => {
+  return Boolean(store.currentMarketData.addresses.V3_MIGRATOR);
 };

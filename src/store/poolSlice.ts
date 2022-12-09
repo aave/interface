@@ -35,7 +35,7 @@ import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActi
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { availableMarkets, marketsData, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 

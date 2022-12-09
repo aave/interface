@@ -31,6 +31,7 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
+    V3_MIGRATOR?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -152,6 +153,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x0d24b23DBaB0dc1A6F58029bA94F94Ff0D5382c2',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
       COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
+      V3_MIGRATOR: '0x01ce9bbcc0418614a8bba983fe79cf77211996f2',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
