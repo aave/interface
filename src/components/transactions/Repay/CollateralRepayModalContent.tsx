@@ -289,6 +289,7 @@ export function CollateralRepayModalContent({
           symbol={symbol}
           tokenIcon={poolReserve.iconSymbol}
           loading={loadingSkeleton}
+          hideSymbolSuffix
         />
         <DetailsNumberLineWithSub
           description={<Trans>Collateral balance after repay</Trans>}
@@ -297,6 +298,7 @@ export function CollateralRepayModalContent({
           symbol={tokenToRepayWith.symbol}
           tokenIcon={tokenToRepayWith.iconSymbol}
           loading={loadingSkeleton}
+          hideSymbolSuffix
         />
       </TxModalDetails>
 

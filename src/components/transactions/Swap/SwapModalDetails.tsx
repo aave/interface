@@ -144,9 +144,6 @@ export const SwapModalDetails = ({
                   variant="secondary14"
                   compact
                 />
-                <Typography variant="secondary14" ml={1}>
-                  {swapSource.reserve.symbol}
-                </Typography>
               </Box>
             )}
             {loading ? (
@@ -197,9 +194,6 @@ export const SwapModalDetails = ({
                   variant="secondary14"
                   compact
                 />
-                <Typography variant="secondary14" ml={1}>
-                  {swapTarget.reserve.symbol}
-                </Typography>
               </Box>
             )}
             {loading ? (
