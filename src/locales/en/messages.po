@@ -1099,7 +1099,7 @@ msgstr "Migrate"
 msgid "Migrate from {0} V2 to {1} V3"
 msgstr "Migrate from {0} V2 to {1} V3"
 
-#: src/ui-config/menu-items/index.tsx
+#: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
 

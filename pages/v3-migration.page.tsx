@@ -140,10 +140,10 @@ export default function V3Migration() {
           <Divider sx={{ my: 10 }} />
 
           <MigrationBottomPanel
-            hfV2Current={user.healthFactor} // TODO: need value
-            hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor} // TODO: need value
-            hfV3Current={v3UserSummaryBeforeMigration.healthFactor} // TODO: need value
-            hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor} // TODO: need value
+            hfV2Current={user.healthFactor}
+            hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
+            hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
+            hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor}
             disableButton={
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }

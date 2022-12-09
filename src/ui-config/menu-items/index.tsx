@@ -46,11 +46,6 @@ export const navigation: Navigation[] = [
       !ENABLE_TESTNET,
   },
   {
-    link: ROUTES.migrationTool,
-    title: t`Migrate to V3`,
-    isVisible: () => true, // TODO: maybe need fix
-  },
-  {
     link: ROUTES.faucet,
     title: t`Faucet`,
     isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
