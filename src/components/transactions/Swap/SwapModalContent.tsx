@@ -190,6 +190,7 @@ export const SwapModalContent = ({
         ]}
         maxValue={maxAmountToSwap}
         isMaxSelected={isMaxSelected}
+        balanceText={<Trans>Supply balance</Trans>}
       />
       <AssetInput
         value={outputAmount}
@@ -197,6 +198,7 @@ export const SwapModalContent = ({
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
+        balanceText={<Trans>Supply balance</Trans>}
         disableInput
       />
       <Box

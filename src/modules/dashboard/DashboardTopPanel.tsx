@@ -122,7 +122,7 @@ export const DashboardTopPanel = () => {
           }
           loading={loading}
         >
-          {currentAccount ? (
+          {currentAccount && Number(user?.netWorthUSD) > 0 ? (
             <FormattedNumber
               value={user.netAPY}
               variant={valueTypographyVariant}
