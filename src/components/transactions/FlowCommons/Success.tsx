@@ -12,6 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 export type SuccessTxViewProps = {
+  txHash: string;
   action?: ReactNode;
   amount?: string;
   symbol?: string;
@@ -27,6 +28,7 @@ const ExtLinkIcon = () => (
 );
 
 export const TxSuccessView = ({
+  txHash,
   action,
   amount,
   symbol,
@@ -34,7 +36,7 @@ export const TxSuccessView = ({
   rate,
   addToken,
 }: SuccessTxViewProps) => {
-  const { close, mainTxState } = useModalContext();
+  const { close } = useModalContext();
   const { addERC20Token } = useWeb3Context();
   const { currentNetworkConfig } = useProtocolDataContext();
   const [base64, setBase64] = useState('');
@@ -168,7 +170,7 @@ export const TxSuccessView = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Link
           variant="helperText"
-          href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
+          href={currentNetworkConfig.explorerLinkBuilder({ tx: txHash })}
           sx={{
             display: 'inline-flex',
             alignItems: 'center',

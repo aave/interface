@@ -82,6 +82,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   if (txState.success)
     return (
       <TxSuccessView
+        txHash={txState.txHash || ''}
         action={<Trans>Claimed</Trans>}
         amount={maxAmountToClaim}
         symbol={rewardsSymbol}

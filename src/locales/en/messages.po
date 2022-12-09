@@ -148,6 +148,7 @@ msgstr "Already on cooldown"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
@@ -794,6 +795,7 @@ msgid "Faucet"
 msgstr "Faucet"
 
 #: src/components/transactions/Faucet/FaucetActions.tsx
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
@@ -1323,6 +1325,7 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"

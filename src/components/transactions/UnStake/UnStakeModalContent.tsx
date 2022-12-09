@@ -93,7 +93,12 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Unstaked</Trans>} amount={amountRef.current} symbol={icon} />
+      <TxSuccessView
+        txHash={txState.txHash || ''}
+        action={<Trans>Unstaked</Trans>}
+        amount={amountRef.current}
+        symbol={icon}
+      />
     );
 
   return (

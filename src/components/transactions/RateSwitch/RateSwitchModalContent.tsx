@@ -81,7 +81,8 @@ export const RateSwitchModalContent = ({
     }
   };
 
-  if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
+  if (rateSwitchTxState.success)
+    return <TxSuccessView txHash={rateSwitchTxState.txHash || ''} rate={rateModeAfterSwitch} />;
 
   return (
     <>

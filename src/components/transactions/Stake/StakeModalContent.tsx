@@ -93,7 +93,12 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Staked</Trans>} amount={amountRef.current} symbol={icon} />
+      <TxSuccessView
+        txHash={txState.txHash || ''}
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={icon}
+      />
     );
 
   return (

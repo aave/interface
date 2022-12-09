@@ -201,6 +201,7 @@ export const RepayModalContent = ({
   if (repayTxState.success)
     return (
       <TxSuccessView
+        txHash={repayTxState.txHash || ''}
         action={<Trans>repaid</Trans>}
         amount={amountRef.current}
         symbol={tokenToRepayWith.symbol}

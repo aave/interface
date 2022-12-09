@@ -174,7 +174,8 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (emodeTxState.success) return <TxSuccessView action={<Trans>Emode</Trans>} />;
+  if (emodeTxState.success)
+    return <TxSuccessView txHash={emodeTxState.txHash || ''} action={<Trans>Emode</Trans>} />;
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />

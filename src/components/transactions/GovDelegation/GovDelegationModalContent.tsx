@@ -97,7 +97,8 @@ export const GovDelegationModalContent = () => {
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action={<Trans>Delegation</Trans>} />;
+  if (txState.success)
+    return <TxSuccessView txHash={txState.txHash || ''} action={<Trans>Delegation</Trans>} />;
   return (
     <>
       <TxModalTitle title="Delegate your power" />
