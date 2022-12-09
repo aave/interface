@@ -1095,6 +1095,10 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/modules/migration/MigrationTopPanel.tsx
+msgid "Migrate from {0} V2 to {1} V3"
+msgstr "Migrate from {0} V2 to {1} V3"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1110,10 +1114,6 @@ msgstr "Migrating"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
-
-#: src/modules/migration/MigrationTopPanel.tsx
-msgid "Migration"
-msgstr "Migration"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migration & Health factor change"
@@ -1720,10 +1720,6 @@ msgstr "Switching E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
-
-#: src/modules/migration/MigrationTopPanel.tsx
-msgid "TODO: text about migration"
-msgstr "TODO: text about migration"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
