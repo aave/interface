@@ -1,14 +1,54 @@
-# Contributing
+# Objective of the Aave Interface
 
-We use Github issues for tracking new features, bug fixes, and enhancements related to the Aave Interface. We are currently working on a UI/UX Integrations framework for integrating third-party services and entities within the Aave Interface. Please stay tuned for new information around this.
+The website-hosted user interface at app.aave.com (the “Interface”) is provided by the Aave Companies, a group of software development companies that build open source, blockchain-based software. The Interface is hosted on the Interplanetary File System (“IPFS”), is open source and provides information to users regarding the (a) the Aave Protocol, a decentralized, non-custodial liquidity protocol on the Ethereum blockchain that allows users to supply or borrow cryptoassets and earn interest on supplied assets (the “Aave Protocol”); (b) the Aave Safety Module, the primary mechanism for securing the Aave Protocol (the “Aave Safety Module”); and (c) Aave Governance, the mechanism through which AAVE token holders collectively discuss, propose, and vote on upgrades to the Aave Protocol (“Aave Governance”).
 
-## Pre-Requisites
+The Interface serves as an informational gateway, which allows users to:
+- Monitor their positions on the Aave Protocol;
+- Monitor their positions on the Aave Safety Module; and
+- Monitor and coordinate participation in Aave Governance.
+
+Given the nature of decentralized blockchain technology, the Aave Prococol can either be accessed though the Interface, directly through smart contracts, or through third party protocol integrators. The Interface is a public good, along with the hundreds of other, unaffiliated on-ramps into the Aave Protocol.  Our aim, in the interest of decentralization, is transparency and contributions from all community members only enhance the Aave Protocol ecosystem. This document and the below guidelines will constantly evolve – including with input from the community – but will endeavor to provide you with information about navigating the Interface smoothly.
+
+# Aave Team Responsibilities on the Aave Interface
+The Aave team has certain responsibilities with respect to the Aave Interface. This includes the following:
+- Review all PRs that get created on any repositories that fall under Aave Interface;
+  - aave/interface
+  - aave/aave-utilities
+- Determine the roadmap of features that will be included on the Aave Interface; and
+- Maintaining the security, usability, and style of the codebase, including any integrations with third party services
+
+# Reporting New Features, Improvements & Bugs
+The “Issues List” in GitHub keeps track of all work on the Interface. If you would like to report a bug or an improvement to the Interface, please use the existing templates after making sure that the discovered bug doesn’t already exist. To report a new issue, follow these steps:
+1. Go to https://github.com/aave/interface/issues/new/choose;
+2. Choose the category for the issue - Bug Report or Feature Request;
+3. If reporting a bug, include as much information as possible in your PR, and follow the steps in the template, as they are pretty self-explanatory;
+4. If reporting a new feature, do the same; and
+5. Once the issue is created, it will get a “New Issue” label, which is a helpful indication for the Interface Team to triage the new request.
+
+# Picking up an issue for work
+Whether you’re a first time or existing contributor to the Interface and/or the Aave ecosystem, you may engage by picking up any issue that is labelled “Looking for Help,” as this will be the right place to start. These issues will have been triaged already by the Interface Team.
+Once you’ve identified an issue that you want to pick up, you should:
+  1. Comment on the issue expressing interest. A member of the Interface Team will assign it to you.
+      <aside> 💡 In order to mitigate issues from becoming stale, we may reassign or un-assign an issue after an extended period of time if we see that no commits are occurring on it. We will reach out to the original assignee in these instances
+      </aside>
+  2. Fork the repo if you haven’t done so already.
+  3. Create a branch for the issue by clicking Create a branch in the Development section on the Issue page. We follow Conventional Commits and follow the branch naming convention of [verb]/[issue number]-[branch name]. Some examples of branch names are:
+      - fix/123-squashed-bug
+      - feat/321-my-new-feature
+  4. Please add a comment on the issue so other people know it is being worked on.
+  5. Commit work using conventional commit formatting. There is a pre-commit hook with Husky that will enforce this. See the Running the UI Locally section for how to get the project running locally.
+  6. Create a pull request by using the single PR template. Fill out the list of major changes that are happening in the codebase. These bullet points should be a high-level overview / at-a-glance of the major changes to ease reviews. Go over the `Author Checklist` items in the template, and ensure all of them have been met before opening for review.
+  7. Code review. We might request you to make changes and iterate until we feel the code is ready.
+  8. QA and design review. If anything comes up during testing, or if there are any UI/UX items that need to be addressed, we’ll let you know.
+  9. Once there are two approvals, the Pull Request can be merged.
+
+## Develoment Prerequisites
 
 ### Install Node
 
 We are using a Next.js application, which relies on Node. You must have Node installed and set to use the specified version in `.nvmrc`. You can potentially use other versions, but we don’t recommend differing here.
 
-You can download from the [NodeJS website](https://nodejs.org/en/download/), but we recommend installing nvm and running the following command at root, after cloning or downloading the repo.
+You can download it from the [NodeJS website](https://nodejs.org/en/download/), but we recommend installing nvm and running the following command at root, after cloning or downloading the repo.
 
 ```bash
 nvm use
@@ -32,7 +72,7 @@ cp .env.example .env.local
 
 ## Get Up & Running Locally
 
-Once you’ve completed the pre-requisites above, you should be able to start running the interface locally. There are several variations of running locally.
+Once you’ve completed the prerequisites above, you should be able to start running the interface locally. There are several variations of running locally.
 
 ### Development Mode
 
@@ -90,7 +130,7 @@ yarn test:headless
 
 ## Environment Variables
 
-Some environment variables can be adjusted to suite your needs during development, depending on the scenarios you want to test or build in.
+Some environment variables can be adjusted to suit your needs during development, depending on the scenarios you want to test or build in.
 
 ```bash
 # setting the environment to 'staging' will enable testnet markets, disabling governance, staking, and production markets
@@ -116,7 +156,7 @@ localStorage.setItem('forkNetworkId', '3030'); // the ID of the new forked netwo
 localStorage.setItem('forkRPCUrl', <rpcUrl>);
 ```
 
-Since `localStorage` changes are not not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
+Since `localStorage` changes are not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
 
 If you are using MetaMask, make sure to configure the Tenderly fork RPC URL into a new network configuration. Give it a network name, and you'll want to use the same values that you copied into `localStorage` for the other fields. See below as an example:
 
@@ -128,7 +168,7 @@ Next, reload the page. The new forked network should appear in the dropdown list
 
 Finally, switch to the market pertaining to the fork in the dropdown list. Now you are able to interact with the Aave Protocol via the UI without spending any real funds!
 
-__NOTE:__ _Always double check the selected network in your wallet provider to make sure transactions are executed only on the fork network_.
+__NOTE:__ _Always double-check the selected network in your wallet provider to make sure transactions are executed only on the fork network_.
 
 
 ## Token Additions

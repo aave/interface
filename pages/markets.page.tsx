@@ -1,5 +1,5 @@
 import { MainLayout } from 'src/layouts/MainLayout';
-import AssetsList from 'src/modules/markets/AssetsList';
+import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -9,7 +9,7 @@ export default function Markets() {
     <>
       <MarketsTopPanel />
       <ContentContainer>
-        <AssetsList />
+        <MarketAssetsList />
       </ContentContainer>
     </>
   );

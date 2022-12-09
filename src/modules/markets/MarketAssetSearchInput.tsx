@@ -4,11 +4,11 @@ import { Box, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/materi
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 
-export interface AssetSearchInputProps {
+interface MarketAssetSearchInputProps {
   onSearchTermChange: (value: string) => void;
 }
 
-export const AssetSearchInput = ({ onSearchTermChange }: AssetSearchInputProps) => {
+export const MarketAssetSearchInput = ({ onSearchTermChange }: MarketAssetSearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
