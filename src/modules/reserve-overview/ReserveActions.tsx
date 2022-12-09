@@ -60,17 +60,26 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const { openBorrow, openFaucet, openSupply } = useModalContext();
+  const { openBorrow, openFaucet, openCaptchaFaucet, openSupply } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-  const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarket, currentMarketData } =
+    useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
   const {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+
+  const openFaucetModal = (underlyingAsset: string) => {
+    if (currentMarketData.v3) {
+      openCaptchaFaucet(underlyingAsset);
+    } else {
+      openFaucet(underlyingAsset);
+    }
+  };
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -188,7 +197,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
               <Button
                 variant="text"
                 sx={{ verticalAlign: 'top' }}
-                onClick={() => openFaucet(underlyingAsset)}
+                onClick={() => openFaucetModal(underlyingAsset)}
                 disableRipple
               >
                 <Typography variant="caption">

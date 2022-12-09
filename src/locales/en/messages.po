@@ -147,7 +147,7 @@ msgid "Already on cooldown"
 msgstr "Already on cooldown"
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
@@ -785,6 +785,7 @@ msgstr "FAQ"
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -794,8 +795,8 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 msgid "Faucet"
 msgstr "Faucet"
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
-#: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
@@ -1325,7 +1326,7 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
-#: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
