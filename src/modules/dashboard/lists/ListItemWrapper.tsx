@@ -41,14 +41,18 @@ export const ListItemWrapper = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   footerButton,
-  ghoBorder,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
+  const showFrozenTooltip = frozen && symbol !== 'renFIL';
+  const showRenFilTooltip = frozen && symbol === 'renFIL';
+  const showAmplTooltip = !frozen && symbol === 'AMPL';
+  const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+
   return (
     <>
-      <ListItem {...rest} hideBorder={footerButton ? true : false} ghoBorder={ghoBorder}>
+      <ListItem {...rest}>
         <ListColumn maxWidth={160} isRow>
           <Link
             href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
@@ -62,12 +66,10 @@ export const ListItemWrapper = ({
               </Typography>
             </Tooltip>
           </Link>
-          {frozen && symbol !== 'renFIL' && (
-            <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
-          )}
-          {frozen && symbol === 'renFIL' && <RenFILToolTip />}
-          {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
-          {!borrowEnabled && (
+          {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
+          {showRenFilTooltip && <RenFILToolTip />}
+          {showAmplTooltip && <AMPLToolTip />}
+          {showBorrowDisabledTooltip && (
             <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
           )}
           {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
