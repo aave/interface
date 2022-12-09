@@ -237,7 +237,7 @@ export function CollateralRepayModalContent({
         isMaxSelected={isMaxSelected}
         maxValue={debt}
         inputTitle={<Trans>Expected amount to repay</Trans>}
-        balanceText="Borrow balance"
+        balanceText={<Trans>Borrow balance</Trans>}
       />
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
         <SvgIcon sx={{ fontSize: '18px !important' }}>
@@ -254,10 +254,10 @@ export function CollateralRepayModalContent({
         onSelect={setTokenToRepayWith}
         onChange={handleRepayAmountChange}
         inputTitle={<Trans>Collateral to repay with</Trans>}
+        balanceText={<Trans>Borrow balance</Trans>}
         maxValue={tokenToRepayWithBalance}
-        disableInput
-        balanceText="Collateral balance"
         loading={loadingSkeleton}
+        disableInput
       />
       {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
