@@ -64,7 +64,7 @@
     "@web3-react/walletlink-connector": "^6.2.14",
     "d3-array": "^3.2.0",
     "d3-time-format": "^4.1.0",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.7",
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.5.4",
