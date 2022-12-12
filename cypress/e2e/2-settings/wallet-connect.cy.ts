@@ -11,21 +11,22 @@ export const closeModal = (selector: string) => {
   cy.get(selector).click();
 };
 
+const walletButtonlocator = '#wallet-button';
+
 describe('Manipulation on the wallet connect', () => {
   describe('CASE1: Disconnect and connect wallet using Wallet connect option', () => {
     configEnvWithTenderlyMainnetFork({});
-    const walletButton = '#wallet-button';
 
     it('step1:Disconnect wallet', () => {
       cy.wait(1000);
-      cy.get(walletButton).click();
-      cy.wait(6000);
+      cy.get(walletButtonlocator).click();
+      cy.wait(3000);
       cy.contains('Disconnect').click();
       cy.contains('Please, connect your wallet').should('be.visible');
     });
 
     it('step2:Connect wallet using wallet connect', () => {
-      cy.get(walletButton).click();
+      cy.get(walletButtonlocator).click();
       optionOnConnectionModal('WalletConnect');
       checkElementsOnModal(
         '#walletconnect-qrcode-text',
@@ -39,6 +40,9 @@ describe('Manipulation on the wallet connect', () => {
 
 describe('CASE2:Connect and disconnect wallet over Coinbase', () => {
   it('step1:Connect wallet over Coinbase', () => {
+    cy.wait(1000);
+    cy.get(walletButtonlocator).click();
+    cy.wait(3000);
     optionOnConnectionModal('Coinbase');
     checkElementsOnModal('.-cbwsdk-extension-dialog-box', 'Try the Coinbase Wallet extension');
     closeModal('.-cbwsdk-extension-dialog-box-cancel');

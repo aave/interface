@@ -6,8 +6,9 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { AddressBlockedModal } from './AddressBlockedModal';
 
 export const AddressBlocked = ({ children }: { children: ReactNode }) => {
-  const { currentAccount, disconnectWallet } = useWeb3Context();
-  const { isAllowed } = useAddressAllowed(currentAccount);
+  const { currentAccount, disconnectWallet, watchModeOnly } = useWeb3Context();
+  const screenAddress = watchModeOnly ? '' : currentAccount;
+  const { isAllowed } = useAddressAllowed(screenAddress);
 
   if (!isAllowed) {
     return (
