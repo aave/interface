@@ -310,7 +310,7 @@ export function CollateralRepayModalContent({
         repayAmount={outputAmount}
         repayWithAmount={inputAmount}
         repayAllDebt={repayAllDebt}
-        useFlashLoan={false}
+        useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
