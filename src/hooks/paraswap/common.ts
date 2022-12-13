@@ -12,6 +12,8 @@ import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
+const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
+
 export type UseSwapProps = {
   chainId: ChainId;
   max: boolean;
@@ -305,7 +307,7 @@ const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
-          partnerAddress: '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
         },
         { ignoreChecks: true }
       );
@@ -379,7 +381,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
-          partnerAddress: '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
         },
         { ignoreChecks: true }
       );
