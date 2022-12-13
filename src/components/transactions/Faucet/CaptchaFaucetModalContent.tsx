@@ -22,6 +22,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
   const [loading, setLoading] = useState<boolean>(false);
   const [captchaLoading, setCaptchaLoading] = useState<boolean>(true);
   const [txHash, setTxHash] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
@@ -47,6 +48,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
     try {
       setTxHash('');
       setLoading(true);
+      setError('');
       const response = await fetch(faucetUrl, {
         method: 'POST',
         headers: {
@@ -62,10 +64,18 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
           faucetAddress: currentMarketData.addresses.FAUCET,
         }),
       });
+      if (!response.ok) {
+        console.log(response);
+        throw new Error(response.statusText);
+      }
       const data = await response.json();
       setTxHash(data.msg);
-    } catch (e) {
-      console.error(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('An error occurred trying to send the transaction');
+      }
     } finally {
       setLoading(false);
     }
@@ -105,6 +115,9 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
           value={normalizedAmount}
         />
       </Box>
+      <Typography variant="helperText" color="error.main">
+        {error}
+      </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
         <Button
           variant="contained"
