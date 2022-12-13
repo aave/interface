@@ -2,14 +2,14 @@ import { Trans } from '@lingui/macro';
 import { Box, Skeleton } from '@mui/material';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { TextWithTooltip } from '../TextWithTooltip';
+import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
-interface PriceImpactTooltipProps {
+interface PriceImpactTooltipProps extends TextWithTooltipProps {
   loading: boolean;
   priceImpact: string;
 }
 
-export const PriceImpactTooltip = ({ loading, priceImpact }: PriceImpactTooltipProps) => {
+export const PriceImpactTooltip = ({ loading, priceImpact, ...rest }: PriceImpactTooltipProps) => {
   return (
     <TextWithTooltip
       variant="secondary12"
@@ -38,6 +38,7 @@ export const PriceImpactTooltip = ({ loading, priceImpact }: PriceImpactTooltipP
           </Trans>
         </Box>
       }
+      {...rest}
     >
       <Trans>
         Price impact is the spread between the total value of the entry tokens swapped and the

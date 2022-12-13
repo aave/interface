@@ -19,6 +19,12 @@ export interface TxModalDetailsProps {
   slippageSelector?: ReactNode;
 }
 
+const ArrowRightIcon = (
+  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+    <ArrowNarrowRightIcon />
+  </SvgIcon>
+);
+
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   gasLimit,
   slippageSelector,
@@ -80,9 +86,7 @@ export const DetailsNumberLine = ({
             <FormattedNumber value={value} variant="secondary14" {...rest} />
             {futureValue && (
               <>
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
+                {ArrowRightIcon}
                 <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
               </>
             )}
@@ -133,9 +137,7 @@ export const DetailsNumberLineWithSub = ({
                     {symbol}
                   </Typography>
                 )}
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
+                {ArrowRightIcon}
               </>
             )}
             {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
@@ -159,9 +161,7 @@ export const DetailsNumberLineWithSub = ({
             {valueUSD && (
               <>
                 <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
+                {ArrowRightIcon}
               </>
             )}
             <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
@@ -252,9 +252,7 @@ export const DetailsIncentivesLine = ({
             <IncentivesButton incentives={incentives} symbol={symbol} />
             {futureSymbol && (
               <>
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
+                {ArrowRightIcon}
                 <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
                 {futureIncentives && futureIncentives.length === 0 && (
                   <Typography variant="secondary14">
@@ -301,9 +299,7 @@ export const DetailsHFLine = ({
 
               {visibleHfChange && (
                 <>
-                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                    <ArrowNarrowRightIcon />
-                  </SvgIcon>
+                  {ArrowRightIcon}
 
                   <HealthFactorNumber
                     value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
