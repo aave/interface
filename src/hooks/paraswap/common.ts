@@ -7,7 +7,7 @@ import {
   constructPartialSDK,
   TransactionParams,
 } from '@paraswap/sdk';
-import { RateOptions } from '@paraswap/sdk/dist/rates';
+import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
@@ -47,7 +47,7 @@ const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
   return constructPartialSDK(
     {
-      network: chainId,
+      chainId,
       fetcher,
     },
     constructBuildTx,
@@ -305,6 +305,7 @@ const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
+          partnerAddress: '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60',
         },
         { ignoreChecks: true }
       );
@@ -370,14 +371,15 @@ const ExactOutSwapper = (chainId: ChainId) => {
       const params = await paraSwap.buildTx(
         {
           srcToken,
-          destToken,
+          srcDecimals,
           srcAmount: srcAmountWithSlippage,
+          destToken,
+          destDecimals,
           destAmount: route.destAmount,
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
-          srcDecimals,
-          destDecimals,
+          partnerAddress: '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60',
         },
         { ignoreChecks: true }
       );
