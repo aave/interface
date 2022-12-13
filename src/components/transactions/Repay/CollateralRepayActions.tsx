@@ -1,4 +1,9 @@
-import { InterestRate } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  InterestRate,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
@@ -41,6 +46,7 @@ export const CollateralRepayActions = ({
   useFlashLoan,
   blocked,
   loading,
+  repayWithAmount,
   buildTxFn,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
@@ -65,6 +71,23 @@ export const CollateralRepayActions = ({
           augustus: route.augustus,
         });
       },
+      handleGetApprovalTxns: async () => {
+        return paraswapRepayWithCollateral({
+          repayAllDebt,
+          repayAmount,
+          rateMode,
+          repayWithAmount,
+          fromAssetData,
+          poolReserve,
+          isWrongNetwork,
+          symbol,
+          useFlashLoan,
+          blocked,
+          swapCallData: '0x',
+          augustus: API_ETH_MOCK_ADDRESS,
+        });
+      },
+      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.repayCollateral].limit,
       skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
     });
 
@@ -87,7 +110,7 @@ export const CollateralRepayActions = ({
       fetchingData={loading}
       errorParams={{
         loading: false,
-        disabled: false,
+        disabled: blocked,
         content: <Trans>Repay {symbol}</Trans>,
         handleClick: action,
       }}

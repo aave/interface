@@ -1,4 +1,4 @@
-import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
@@ -6,15 +6,32 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
-export const MOCK_SIGNED_HASH = 'Signed correctly';
-
 interface UseParaSwapTransactionHandlerProps {
+  /**
+   * This function is called when the user clicks the action button in the modal and should return the transaction for the swap or repay.
+   * The paraswap API should be called in the implementation to get the required transaction parameters.
+   */
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
+  /**
+   * This function is only called once on initial load, and should return a transaction for the swap or repay,
+   * but the paraswap API should not be called in the implementation. This is to determine if an approval is needed and
+   * to get the gas limit for the swap or repay.
+   */
+  handleGetApprovalTxns: () => Promise<EthereumTransactionTypeExtended[]>;
+  /**
+   * The gas limit recommendation to use for the swap or repay. This is used in the case where there is no approval needed.
+   */
+  gasLimitRecommendation: string;
+  /**
+   * If true, handleGetApprovalTxns will not be called. Can be used if the route information is still loading.
+   */
   skip?: boolean;
 }
 
 export const useParaSwapTransactionHandler = ({
   handleGetTxns,
+  handleGetApprovalTxns,
+  gasLimitRecommendation,
   skip,
 }: UseParaSwapTransactionHandlerProps) => {
   const {
@@ -132,11 +149,7 @@ export const useParaSwapTransactionHandler = ({
         // Find actionTx (repay with collateral or swap)
         const actionTx = data.find((tx) => ['DLP_ACTION'].includes(tx.txType));
         if (actionTx) {
-          let gas: GasType | null = null;
-          // Estimate gas, if successful, send transaction
           try {
-            gas = await actionTx.gas();
-            setGasLimit(gas?.gasLimit || '');
             const params = await actionTx.tx();
             delete params.gasPrice;
             return processTx({
@@ -179,25 +192,19 @@ export const useParaSwapTransactionHandler = ({
       });
   };
 
-  // populate approval transaction
+  // Populates the approval transaction and sets the default gas estimation.
   useEffect(() => {
     if (!skip) {
       setLoadingTxns(true);
-      handleGetTxns()
+      handleGetApprovalTxns()
         .then(async (data) => {
           setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
-          setMainTxState({
-            txHash: undefined,
-          });
-          setTxError(undefined);
-          setLoadingTxns(false);
         })
-        .catch((error) => {
+        .finally(() => {
           setMainTxState({
             txHash: undefined,
           });
-          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-          setTxError(parsedError);
+          setGasLimit(gasLimitRecommendation);
           setLoadingTxns(false);
         });
     } else {

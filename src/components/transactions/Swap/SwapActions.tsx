@@ -1,3 +1,8 @@
+import {
+  API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
@@ -28,6 +33,7 @@ export interface SwapActionProps extends SwapBaseProps {
 
 export const SwapActions = ({
   amountToSwap,
+  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -60,6 +66,22 @@ export const SwapActions = ({
           augustus: route.augustus,
         });
       },
+      handleGetApprovalTxns: async () => {
+        return swapCollateral({
+          amountToSwap,
+          amountToReceive,
+          poolReserve,
+          targetReserve,
+          isWrongNetwork,
+          symbol,
+          blocked,
+          isMaxSelected,
+          useFlashLoan,
+          swapCallData: '0x',
+          augustus: API_ETH_MOCK_ADDRESS,
+        });
+      },
+      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
       skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
     });
 
@@ -80,7 +102,7 @@ export const SwapActions = ({
       fetchingData={loading}
       errorParams={{
         loading: false,
-        disabled: false,
+        disabled: blocked,
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}

@@ -314,7 +314,7 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
         buildTxFn={buildTxFn}
       />

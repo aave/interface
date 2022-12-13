@@ -247,7 +247,7 @@ export const SwapModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || error !== ''}
         useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}
         buildTxFn={buildTxFn}
