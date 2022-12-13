@@ -42,8 +42,6 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
     setCaptchaLoading(false);
   };
 
-  console.log(poolReserve.underlyingAsset);
-
   const faucet = async () => {
     try {
       setTxHash('');
@@ -94,7 +92,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
 
   return (
     <>
-      <Turnstile sitekey={siteKey} onVerify={captchaVerify} />
+      <Turnstile sitekey={siteKey} onVerify={captchaVerify} autoResetOnExpire />
       <Typography variant="h2" sx={{ mb: 6 }}>
         <Trans>Faucet</Trans> {poolReserve.symbol}
       </Typography>
