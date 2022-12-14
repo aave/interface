@@ -5,9 +5,12 @@ import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { ApprovalMethod } from 'src/store/walletSlice';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
+import { ApprovalMethodToggleButton } from './FlowCommons/ApprovalMethodToggleButton';
 import { RightHelperText } from './FlowCommons/RightHelperText';
 
 interface TxActionsWrapperProps extends BoxProps {
@@ -24,6 +27,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -41,10 +45,14 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
+  const [walletApprovalMethodPreference, setWalletApprovalMethodPreference] = useRootStore(
+    (state) => [state.walletApprovalMethodPreference, state.setWalletApprovalMethodPreference]
+  );
 
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
@@ -112,7 +120,16 @@ export const TxActionsWrapper = ({
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
-          <RightHelperText approvalHash={approvalTxState?.txHash} />
+          <RightHelperText
+            approvalHash={approvalTxState?.txHash}
+            tryPermit={tryPermit}
+            approvalMethodToggleButton={
+              <ApprovalMethodToggleButton
+                currentMethod={walletApprovalMethodPreference}
+                setMethod={(method: ApprovalMethod) => setWalletApprovalMethodPreference(method)}
+              />
+            }
+          />
         </Box>
       )}
 
