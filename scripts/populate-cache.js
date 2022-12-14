@@ -35725,6 +35725,8 @@ var require_types2 = __commonJS({
       ProtocolAction2['repayCollateral'] = 'repayCollateral';
       ProtocolAction2['withdrawETH'] = 'withdrawETH';
       ProtocolAction2['borrowETH'] = 'borrwoETH';
+      ProtocolAction2['supplyWithPermit'] = 'supplyWithPermit';
+      ProtocolAction2['repayWithPermit'] = 'repayWithPermit';
     })((ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {})));
     var GovernanceVote;
     (function (GovernanceVote2) {
@@ -37478,6 +37480,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.repayCollateral]: {
         limit: '700000',
         recommended: '700000',
+      },
+      [types_1.ProtocolAction.supplyWithPermit]: {
+        limit: '350000',
+        recommended: '350000',
+      },
+      [types_1.ProtocolAction.repayWithPermit]: {
+        limit: '350000',
+        recommended: '350000',
       },
     };
     exports2.mintAmountsPerToken = {
