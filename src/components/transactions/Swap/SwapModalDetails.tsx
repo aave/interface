@@ -61,6 +61,18 @@ export const SwapModalDetails = ({
     valueToBigNumber(toAmount)
   );
 
+  const skeleton: JSX.Element = (
+    <>
+      <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+      <Skeleton
+        variant="rectangular"
+        height={15}
+        width={80}
+        sx={{ borderRadius: '4px', marginTop: '4px' }}
+      />
+    </>
+  );
+
   return (
     <>
       {healthFactorAfterSwap && (
@@ -127,43 +139,31 @@ export const SwapModalDetails = ({
             }}
           >
             {loading ? (
-              <Skeleton
-                variant="rectangular"
-                height={20}
-                width={100}
-                sx={{ borderRadius: '4px' }}
-              />
+              { skeleton }
             ) : (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TokenIcon
-                  symbol={swapSource.reserve.iconSymbol}
-                  sx={{ mr: 2, ml: 4, fontSize: '16px' }}
-                />
+              <>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TokenIcon
+                    symbol={swapSource.reserve.iconSymbol}
+                    sx={{ mr: 2, ml: 4, fontSize: '16px' }}
+                  />
+                  <FormattedNumber
+                    value={sourceAmountAfterSwap.toString()}
+                    variant="secondary14"
+                    compact
+                  />
+                </Box>
                 <FormattedNumber
-                  value={sourceAmountAfterSwap.toString()}
-                  variant="secondary14"
+                  value={sourceAmountAfterSwap
+                    .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
+                    .toString()}
+                  variant="helperText"
                   compact
+                  symbol="USD"
+                  symbolsColor="text.secondary"
+                  color="text.secondary"
                 />
-              </Box>
-            )}
-            {loading ? (
-              <Skeleton
-                variant="rectangular"
-                height={15}
-                width={80}
-                sx={{ borderRadius: '4px', marginTop: '4px' }}
-              />
-            ) : (
-              <FormattedNumber
-                value={sourceAmountAfterSwap
-                  .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
-                  .toString()}
-                variant="helperText"
-                compact
-                symbol="USD"
-                symbolsColor="text.secondary"
-                color="text.secondary"
-              />
+              </>
             )}
           </Box>
 
@@ -177,43 +177,31 @@ export const SwapModalDetails = ({
             mt={2}
           >
             {loading ? (
-              <Skeleton
-                variant="rectangular"
-                height={20}
-                width={100}
-                sx={{ borderRadius: '4px' }}
-              />
+              { skeleton }
             ) : (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TokenIcon
-                  symbol={swapTarget.reserve.iconSymbol}
-                  sx={{ mr: 2, ml: 4, fontSize: '16px' }}
-                />
+              <>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TokenIcon
+                    symbol={swapTarget.reserve.iconSymbol}
+                    sx={{ mr: 2, ml: 4, fontSize: '16px' }}
+                  />
+                  <FormattedNumber
+                    value={targetAmountAfterSwap.toString()}
+                    variant="secondary14"
+                    compact
+                  />
+                </Box>
                 <FormattedNumber
-                  value={targetAmountAfterSwap.toString()}
-                  variant="secondary14"
+                  value={targetAmountAfterSwap
+                    .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
+                    .toString()}
+                  variant="helperText"
                   compact
+                  symbol="USD"
+                  symbolsColor="text.secondary"
+                  color="text.secondary"
                 />
-              </Box>
-            )}
-            {loading ? (
-              <Skeleton
-                variant="rectangular"
-                height={15}
-                width={80}
-                sx={{ borderRadius: '4px', marginTop: '4px' }}
-              />
-            ) : (
-              <FormattedNumber
-                value={targetAmountAfterSwap
-                  .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
-                  .toString()}
-                variant="helperText"
-                compact
-                symbol="USD"
-                symbolsColor="text.secondary"
-                color="text.secondary"
-              />
+              </>
             )}
           </Box>
         </Box>

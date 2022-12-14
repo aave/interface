@@ -126,46 +126,47 @@ export const DetailsNumberLineWithSub = ({
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         {loading ? (
-          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+          <>
+            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+            <Skeleton
+              variant="rectangular"
+              height={15}
+              width={80}
+              sx={{ borderRadius: '4px', marginTop: '4px' }}
+            />
+          </>
         ) : (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {value && (
-              <>
-                <FormattedNumber value={value} variant="secondary14" color={color} />
-                {!hideSymbolSuffix && (
-                  <Typography ml={1} variant="secondary14">
-                    {symbol}
-                  </Typography>
-                )}
-                {ArrowRightIcon}
-              </>
-            )}
-            {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-            <FormattedNumber value={futureValue} variant="secondary14" color={color} />
-            {!hideSymbolSuffix && (
-              <Typography ml={1} variant="secondary14">
-                {symbol}
-              </Typography>
-            )}
-          </Box>
-        )}
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            height={15}
-            width={80}
-            sx={{ borderRadius: '4px', marginTop: '4px' }}
-          />
-        ) : (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {valueUSD && (
-              <>
-                <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
-                {ArrowRightIcon}
-              </>
-            )}
-            <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
-          </Box>
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {value && (
+                <>
+                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  {!hideSymbolSuffix && (
+                    <Typography ml={1} variant="secondary14">
+                      {symbol}
+                    </Typography>
+                  )}
+                  {ArrowRightIcon}
+                </>
+              )}
+              {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
+              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+              {!hideSymbolSuffix && (
+                <Typography ml={1} variant="secondary14">
+                  {symbol}
+                </Typography>
+              )}
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {valueUSD && (
+                <>
+                  <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
+                  {ArrowRightIcon}
+                </>
+              )}
+              <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
+            </Box>
+          </>
         )}
       </Box>
     </Row>
