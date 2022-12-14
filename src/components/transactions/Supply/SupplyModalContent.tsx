@@ -93,9 +93,9 @@ export const SupplyModalContent = ({
 
   const liquidationThresholdAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-      .multipliedBy(user.currentLiquidationThreshold)
-      .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-      .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
