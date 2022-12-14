@@ -27,7 +27,7 @@ export interface WalletSlice {
 }
 
 const getWalletPreferences = () => {
-  const walletPreference = localStorage.getItem('walletApprovalMethodPreferences');
+  const walletPreference = localStorage.getItem('walletApprovalPreferences');
   if (walletPreference) {
     return JSON.parse(walletPreference);
   } else {
