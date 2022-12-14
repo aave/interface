@@ -59,7 +59,7 @@ export const useTransactionHandler = ({
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
-  const [usingPermit, setUsingPermit] = useState(false);
+  const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const walletApprovalMethodPreference = useRootStore(
     (state) => state.walletApprovalMethodPreference
@@ -117,7 +117,7 @@ export const useTransactionHandler = ({
   };
 
   const approval = async ({ amount, underlyingAsset }: ApprovalProps) => {
-    if (usingPermit && amount && underlyingAsset) {
+    if (usePermit && amount && underlyingAsset) {
       setApprovalTxState({ ...approvalTxState, loading: true });
       try {
         // deadline is an hour after signature
@@ -195,7 +195,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (usingPermit && handleGetPermitTxns) {
+    if (usePermit && handleGetPermitTxns) {
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
@@ -231,7 +231,7 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usingPermit || !approvalTx) && actionTx) {
+    if ((!usePermit || !approvalTx) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
@@ -285,7 +285,7 @@ export const useTransactionHandler = ({
               permitAction;
             if (approvalTransaction && preferPermit) {
               // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
-              setUsingPermit(true);
+              setUsePermit(true);
               const gas = gasLimitRecommendations[permitAction];
               setGasLimit(gas.limit || '');
               setMainTxState({
@@ -294,7 +294,7 @@ export const useTransactionHandler = ({
               setTxError(undefined);
               setLoadingTxns(false);
             } else {
-              setUsingPermit(false);
+              setUsePermit(false);
               // For approval flow, set approval/action status and gas limit accordingly
               setApprovalTx(approvalTransaction);
               setActionTx(
@@ -351,9 +351,9 @@ export const useTransactionHandler = ({
     approval,
     action,
     loadingTxns,
-    requiresApproval: !!approvalTx || usingPermit,
+    requiresApproval: !!approvalTx || usePermit,
     approvalTxState,
     mainTxState,
-    usePermit: usingPermit,
+    usePermit,
   };
 };
