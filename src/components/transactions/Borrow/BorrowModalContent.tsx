@@ -242,6 +242,7 @@ export const BorrowModalContent = ({
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow.toString(10)}
+        balanceText={<Trans>Available</Trans>}
       />
 
       {blockingError !== undefined && (

@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-29 18:04\n"
+"PO-Revision-Date: 2022-12-08 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -237,6 +237,8 @@ msgstr "Actifs à déposer"
 msgid "Author"
 msgstr "Auteur"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Disponible"
@@ -319,6 +321,11 @@ msgstr "Prêt APY, variable"
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Emprunter et rembourser dans le même bloc n'est pas autorisé"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Borrow balance"
+msgstr ""
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -640,6 +647,7 @@ msgstr ""
 msgid "Disable {symbol} as collateral"
 msgstr "Désactiver {symbol} comme garantie"
 
+#: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
@@ -808,6 +816,10 @@ msgstr "Discussion de forum"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
 msgstr "Français"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1126,8 +1138,8 @@ msgstr "Nouveau APY"
 msgid "No rewards to claim"
 msgstr "Aucune récompense à réclamer"
 
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "No search results for"
 msgstr ""
 
@@ -1554,6 +1566,10 @@ msgstr "APR staké"
 msgid "Staking Rewards"
 msgstr ""
 
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+msgid "Staking balance"
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr "Commencé"
@@ -1589,6 +1605,9 @@ msgid "Supply apy"
 msgstr "Fournir apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
@@ -1756,6 +1775,10 @@ msgstr "Il n'y a pas assez de collatéral pour couvrir un nouvel emprunt"
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou <0><1>copier l'erreur</1></0>"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2055,7 +2078,10 @@ msgstr "Résultats du vote"
 msgid "Wallet Balance"
 msgstr ""
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2083,8 +2109,8 @@ msgstr ""
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
-#: src/modules/markets/MarketAssetsList.tsx
-msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 msgstr ""
 
 #: pages/staking.staking.tsx

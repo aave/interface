@@ -241,6 +241,7 @@ export const SupplyModalContent = ({
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
         maxValue={maxAmountToSupply.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
       />
 
       {blockingError !== undefined && (

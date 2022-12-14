@@ -200,6 +200,7 @@ export function CollateralRepayModalContent({
         isMaxSelected={isMaxSelected}
         maxValue={debt}
         inputTitle={<Trans>Debt amount to repay</Trans>}
+        balanceText={<Trans>Borrow balance</Trans>}
       />
       <AssetInput
         value={inputAmount}
@@ -208,6 +209,7 @@ export function CollateralRepayModalContent({
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
         inputTitle={<Trans>Collateral amount to repay with</Trans>}
+        balanceText={<Trans>Borrow balance</Trans>}
         disableInput
       />
       {blockingError !== undefined && (

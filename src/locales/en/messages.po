@@ -17,10 +17,6 @@ msgstr ""
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "<0>Approval doesn't work? </0><1>Submit a tx</1><2>to approve instead.</2>"
-msgstr "<0>Approval doesn't work? </0><1>Submit a tx</1><2>to approve instead.</2>"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
@@ -164,9 +160,9 @@ msgstr "An error has occurred fetching the proposal metadata from IPFS."
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
 
-#: src/components/transactions/FlowCommons/LeftHelperText.tsx
-msgid "Approve confirmed"
-msgstr "Approve confirmed"
+#: src/components/transactions/FlowCommons/RightHelperText.tsx
+msgid "Approve with"
+msgstr "Approve with"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve {symbol} to continue"
@@ -232,6 +228,8 @@ msgstr "Assets to supply"
 msgid "Author"
 msgstr "Author"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Available"
@@ -310,6 +308,11 @@ msgstr "Borrow APY, variable"
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Borrow balance"
+msgstr "Borrow balance"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -627,6 +630,7 @@ msgstr "Disable testnet"
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
+#: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
@@ -795,6 +799,10 @@ msgstr "Forum discussion"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
 msgstr "French"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr "Frozen assets"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1113,8 +1121,8 @@ msgstr "New APY"
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -1529,6 +1537,10 @@ msgstr "Staking APR"
 msgid "Staking Rewards"
 msgstr "Staking Rewards"
 
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+msgid "Staking balance"
+msgstr "Staking balance"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr "Started"
@@ -1564,6 +1576,9 @@ msgid "Supply apy"
 msgstr "Supply apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
@@ -1732,6 +1747,10 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1810,8 +1829,8 @@ msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
-msgid "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgid "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgstr "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
@@ -2034,7 +2053,10 @@ msgstr "Voting results"
 msgid "Wallet Balance"
 msgstr "Wallet Balance"
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2062,9 +2084,9 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
-#: src/modules/markets/MarketAssetsList.tsx
-msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
+msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2077,10 +2099,6 @@ msgstr "We suggest you go back to the Dashboard."
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
-
-#: src/components/transactions/FlowCommons/LeftHelperText.tsx
-msgid "Why do I need to approve?"
-msgstr "Why do I need to approve?"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -2311,6 +2329,8 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2334,6 +2354,10 @@ msgstr "{0} on-ramp service is provided by External Provider and by selecting yo
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0}{name}"
 msgstr "{0}{name}"
+
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "{currentMethod}"
+msgstr "{currentMethod}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
