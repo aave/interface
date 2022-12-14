@@ -1,4 +1,5 @@
-import { providers } from 'ethers';
+import { providers, utils } from 'ethers';
+import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import {
   availableMarkets,
   getNetworkConfig,
@@ -19,6 +20,7 @@ export interface ProtocolDataSlice {
   currentNetworkConfig: NetworkConfig;
   jsonRpcProvider: () => providers.Provider;
   setCurrentMarket: (market: CustomMarket, omitQueryParameterUpdate?: boolean) => void;
+  tryPermit: (reserveAddress: string) => boolean;
 }
 
 export const createProtocolDataSlice: StateCreator<
@@ -48,6 +50,18 @@ export const createProtocolDataSlice: StateCreator<
         currentChainId: nextMarketData.chainId,
         currentNetworkConfig: getNetworkConfig(nextMarketData.chainId),
       });
+    },
+    tryPermit: (reserveAddress: string) => {
+      const currentNetworkConfig = get().currentNetworkConfig;
+      const currentMarketData = get().currentMarketData;
+      const underlyingChainId = currentNetworkConfig.isFork
+        ? currentNetworkConfig.underlyingChainId
+        : currentMarketData.chainId;
+      const tryPermit =
+        currentMarketData.v3 &&
+        underlyingChainId &&
+        permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()];
+      return Boolean(tryPermit);
     },
   };
 };

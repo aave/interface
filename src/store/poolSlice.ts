@@ -440,5 +440,3 @@ export const createPoolSlice: StateCreator<
     },
   };
 };
-
-// TODO: move somewhere else

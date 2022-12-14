@@ -47,7 +47,7 @@ export const StakeActions = ({
       isWrongNetwork={isWrongNetwork}
       amount={amountToStake}
       handleAction={action}
-      handleApproval={approval}
+      handleApproval={() => approval({ amount: amountToStake, underlyingAsset: selectedToken })}
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}

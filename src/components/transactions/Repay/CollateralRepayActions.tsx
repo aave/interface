@@ -85,7 +85,9 @@ export const CollateralRepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval()}
+      handleApproval={() =>
+        approval({ amount: repayWithAmount, underlyingAsset: poolReserve.aTokenAddress })
+      }
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
