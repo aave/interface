@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-08 18:04\n"
+"PO-Revision-Date: 2022-12-12 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -325,7 +325,7 @@ msgstr "Tomar prestado y pagar en el mismo bloque no está permitido"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance"
-msgstr ""
+msgstr "Balance tomado prestado"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -1580,7 +1580,7 @@ msgstr "Recompensas de Staking"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Staking balance"
-msgstr ""
+msgstr "Balance stakeado"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"

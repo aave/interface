@@ -1,12 +1,13 @@
+import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxAction } from 'src/ui-config/errorMapping';
 
-import { LeftHelperText } from './FlowCommons/LeftHelperText';
+import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
 import { RightHelperText } from './FlowCommons/RightHelperText';
 
 interface TxActionsWrapperProps extends BoxProps {
@@ -30,6 +31,7 @@ interface TxActionsWrapperProps extends BoxProps {
     content: ReactNode;
     handleClick: () => Promise<void>;
   };
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -49,9 +51,10 @@ export const TxActionsWrapper = ({
   blocked,
   fetchingData = false,
   errorParams,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError, retryWithApproval } = useModalContext();
+  const { txError } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
@@ -92,21 +95,40 @@ export const TxActionsWrapper = ({
       return null;
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
-    if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
-    if (retryWithApproval)
-      return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
-    return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
+    if (approvalTxState?.success)
+      return {
+        disabled: true,
+        content: (
+          <>
+            <Trans>Approve Confirmed</Trans>
+            <SvgIcon sx={{ fontSize: 20, ml: 2 }}>
+              <CheckIcon />
+            </SvgIcon>
+          </>
+        ),
+      };
+
+    return {
+      content: (
+        <ApprovalTooltip
+          variant="buttonL"
+          iconSize={20}
+          iconMargin={2}
+          color="white"
+          text={<Trans>Approve {symbol} to continue</Trans>}
+        />
+      ),
+      handleClick: handleApproval,
+    };
   }
 
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {requiresApproval && !watchModeOnlyAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
-          <RightHelperText approvalHash={approvalTxState?.txHash} />
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+          <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
 
@@ -114,7 +136,7 @@ export const TxActionsWrapper = ({
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
-          onClick={approvalParams.handleClick}
+          onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
           sx={{ minHeight: '44px' }}
           data-cy="approvalButton"
