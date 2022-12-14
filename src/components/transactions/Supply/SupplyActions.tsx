@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -35,6 +36,7 @@ export const SupplyActions = ({
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: usingPermit,
+      permitAction: ProtocolAction.supplyWithPermit,
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
@@ -68,11 +70,10 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={(forceApproval) =>
+      handleApproval={() =>
         approval({
           amount: amountToSupply,
           underlyingAsset: poolAddress,
-          forceApprovalTx: forceApproval,
         })
       }
       handleAction={action}

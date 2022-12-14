@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -41,6 +41,7 @@ export const RepayActions = ({
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: usingPermit,
+      permitAction: ProtocolAction.repayWithPermit,
       handleGetTxns: async () => {
         return repay({
           amountToRepay,
@@ -83,11 +84,10 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={(forceApproval) =>
+      handleApproval={() =>
         approval({
           amount: amountToRepay,
           underlyingAsset: poolAddress,
-          forceApprovalTx: forceApproval,
         })
       }
       actionText={<Trans>Repay {symbol}</Trans>}

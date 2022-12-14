@@ -22,10 +22,11 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
   const [walletApprovalMethodPreference, setWalletApprovalMethodPreference] = useRootStore(
     (state) => [state.walletApprovalMethodPreference, state.setWalletApprovalMethodPreference]
   );
+  const usingPermit = tryPermit && walletApprovalMethodPreference;
   const { currentNetworkConfig } = useProtocolDataContext();
   const isSigned = approvalHash === MOCK_SIGNED_HASH;
   // a signature is not submitted on-chain so there is no link to review
-  if (!approvalHash || (isSigned && tryPermit))
+  if (!approvalHash && !isSigned && tryPermit)
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
         <Typography variant="subheader2" color="text.secondary">
@@ -37,14 +38,14 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
         />
       </Box>
     );
-
-  if (approvalHash)
+  if (approvalHash && !usingPermit)
     return (
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'center',
+          pb: 1,
         }}
       >
         {approvalHash && (

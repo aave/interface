@@ -15,7 +15,7 @@ interface TxActionsWrapperProps extends BoxProps {
   actionText: ReactNode;
   amount?: string;
   approvalTxState?: TxStateType;
-  handleApproval?: (forceApproval?: boolean) => Promise<void>;
+  handleApproval?: () => Promise<void>;
   handleAction: () => Promise<void>;
   isWrongNetwork: boolean;
   mainTxState: TxStateType;
