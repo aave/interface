@@ -1829,8 +1829,8 @@ msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
-msgid "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr "To continue you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgid "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgstr "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."

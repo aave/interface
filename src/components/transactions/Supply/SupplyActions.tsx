@@ -26,11 +26,7 @@ export const SupplyActions = ({
   blocked,
   ...props
 }: SupplyActionProps) => {
-  const [supply, supplyWithPermit, tryPermit] = useRootStore((state) => [
-    state.supply,
-    state.supplyWithPermit,
-    state.tryPermit,
-  ]);
+  const { supply, supplyWithPermit, tryPermit } = useRootStore();
   const usingPermit = tryPermit(poolAddress);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =

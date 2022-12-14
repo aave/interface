@@ -31,11 +31,7 @@ export const RepayActions = ({
   blocked,
   ...props
 }: RepayActionProps) => {
-  const [repay, repayWithPermit, tryPermit] = useRootStore((state) => [
-    state.repay,
-    state.repayWithPermit,
-    state.tryPermit,
-  ]);
+  const { repay, repayWithPermit, tryPermit } = useRootStore();
 
   const usingPermit = tryPermit(poolAddress);
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =

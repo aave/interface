@@ -19,9 +19,7 @@ const ExtLinkIcon = () => (
 );
 
 export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProps) => {
-  const [walletApprovalMethodPreference, setWalletApprovalMethodPreference] = useRootStore(
-    (state) => [state.walletApprovalMethodPreference, state.setWalletApprovalMethodPreference]
-  );
+  const { walletApprovalMethodPreference, setWalletApprovalMethodPreference } = useRootStore();
   const usingPermit = tryPermit && walletApprovalMethodPreference;
   const { currentNetworkConfig } = useProtocolDataContext();
   const isSigned = approvalHash === MOCK_SIGNED_HASH;
