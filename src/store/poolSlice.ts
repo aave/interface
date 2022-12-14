@@ -89,7 +89,9 @@ export interface PoolSlice {
   supply: (
     args: Omit<SupplyActionProps, 'poolReserve'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  minRemainingBaseTokenBalance: string;
+  poolComputed: {
+    minRemainingBaseTokenBalance: string;
+  };
 }
 
 export const createPoolSlice: StateCreator<
@@ -439,12 +441,14 @@ export const createPoolSlice: StateCreator<
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
     },
-    get minRemainingBaseTokenBalance() {
-      if (!get()) return '0.001';
-      const { currentNetworkConfig, currentChainId } = { ...get() };
-      const chainId = currentNetworkConfig.underlyingChainId || currentChainId;
-      const min = minBaseTokenRemainingByNetwork[chainId];
-      return min || '0.001';
+    poolComputed: {
+      get minRemainingBaseTokenBalance() {
+        if (!get()) return '0.001';
+        const { currentNetworkConfig, currentChainId } = { ...get() };
+        const chainId = currentNetworkConfig.underlyingChainId || currentChainId;
+        const min = minBaseTokenRemainingByNetwork[chainId];
+        return min || '0.001';
+      },
     },
   };
 };

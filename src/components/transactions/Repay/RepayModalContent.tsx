@@ -45,7 +45,7 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
-  const { minRemainingBaseTokenBalance } = useRootStore();
+  const { poolComputed } = useRootStore();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -85,7 +85,7 @@ export const RepayModalContent = ({
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
-        ? minRemainingBaseTokenBalance
+        ? poolComputed.minRemainingBaseTokenBalance
         : '0'
     );
     balance = normalizedWalletBalance.toString(10);
@@ -104,7 +104,7 @@ export const RepayModalContent = ({
         tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
         (synthetixProxyByChainId[currentChainId] &&
           synthetixProxyByChainId[currentChainId].toLowerCase() ===
-            reserve.underlyingAsset.toLowerCase())
+          reserve.underlyingAsset.toLowerCase())
       ) {
         // for native token and synthetix (only mainnet) we can't send -1 as
         // contract does not accept max unit256
@@ -187,17 +187,17 @@ export const RepayModalContent = ({
   // we use usd values instead of MarketreferenceCurrency so it has same precision
   const newHF = amount
     ? calculateHealthFactorFromBalancesBigUnits({
-        collateralBalanceMarketReferenceCurrency:
-          repayWithATokens && usageAsCollateralEnabledOnUser
-            ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
-                valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-              )
-            : user?.totalCollateralUSD || '0',
-        borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
-          valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-        ),
-        currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
-      }).toString(10)
+      collateralBalanceMarketReferenceCurrency:
+        repayWithATokens && usageAsCollateralEnabledOnUser
+          ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
+            valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+          )
+          : user?.totalCollateralUSD || '0',
+      borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
+        valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+      ),
+      currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
+    }).toString(10)
     : user?.healthFactor;
 
   // calculating input usd value

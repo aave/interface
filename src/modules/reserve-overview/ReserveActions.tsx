@@ -72,7 +72,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { minRemainingBaseTokenBalance } = useRootStore();
+  const { poolComputed } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -135,7 +135,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     balance.amount,
     poolReserve,
     underlyingAsset,
-    minRemainingBaseTokenBalance
+    poolComputed.minRemainingBaseTokenBalance
   ).toString();
 
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
