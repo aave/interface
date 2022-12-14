@@ -55,15 +55,12 @@ export const useTransactionHandler = ({
     useBackgroundDataProvider();
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const signERC20Approval = useRootStore((state) => state.signERC20Approval);
+  const { signERC20Approval, walletApprovalMethodPreference } = useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
-  const walletApprovalMethodPreference = useRootStore(
-    (state) => state.walletApprovalMethodPreference
-  );
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
