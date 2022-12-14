@@ -268,33 +268,35 @@ export const useTransactionHandler = ({
   };
 
   // populate txns
+  // fetches standard txs (optional aproval + action), then based off availability and user preference, set tx flow and gas estimation to permit or approve
   useEffect(() => {
     if (!skip) {
       setLoadingTxns(true);
       const timeout = setTimeout(() => {
         setLoadingTxns(true);
-        if (
-          tryPermit &&
-          walletApprovalMethodPreference === ApprovalMethod.PERMIT &&
-          handleGetPermitTxns &&
-          permitAction
-        ) {
-          // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
-          setUsingPermit(true);
-          const gas = gasLimitRecommendations[permitAction];
-          setGasLimit(gas.limit || '');
-          setMainTxState({
-            txHash: undefined,
-          });
-          setTxError(undefined);
-          setLoadingTxns(false);
-        } else {
-          // For approval flow, fetch optional approval tx and action tx, then set approval/action status and gas limit accordingly
-          setUsingPermit(false);
-          return handleGetTxns()
-            .then(async (txs) => {
-              if (!mounted.current) return;
-              setApprovalTx(txs.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+        return handleGetTxns()
+          .then(async (txs) => {
+            if (!mounted.current) return;
+            const approvalTransaction = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
+            const preferPermit =
+              tryPermit &&
+              walletApprovalMethodPreference === ApprovalMethod.PERMIT &&
+              handleGetPermitTxns &&
+              permitAction;
+            if (approvalTransaction && preferPermit) {
+              // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
+              setUsingPermit(true);
+              const gas = gasLimitRecommendations[permitAction];
+              setGasLimit(gas.limit || '');
+              setMainTxState({
+                txHash: undefined,
+              });
+              setTxError(undefined);
+              setLoadingTxns(false);
+            } else {
+              setUsingPermit(false);
+              // For approval flow, set approval/action status and gas limit accordingly
+              setApprovalTx(approvalTransaction);
               setActionTx(
                 txs.find((tx) =>
                   [
@@ -326,17 +328,17 @@ export const useTransactionHandler = ({
               }
               setGasLimit(gasLimit.toString() || '');
               setLoadingTxns(false);
-            })
-            .catch((error) => {
-              if (!mounted.current) return;
-              setMainTxState({
-                txHash: undefined,
-              });
-              const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-              setTxError(parsedError);
-              setLoadingTxns(false);
+            }
+          })
+          .catch((error) => {
+            if (!mounted.current) return;
+            setMainTxState({
+              txHash: undefined,
             });
-        }
+            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+            setTxError(parsedError);
+            setLoadingTxns(false);
+          });
       }, 1000);
       return () => clearTimeout(timeout);
     } else {
