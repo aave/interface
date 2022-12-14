@@ -70,6 +70,13 @@ const testData = {
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
+      {
+        asset: assets.avalancheV3Market.USDT,
+        apyType: constants.apyType.stable,
+        amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
     ],
     withdraw: {
       asset: assets.avalancheV3Market.USDT,
@@ -94,7 +101,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheV3Market.USDT.shortName,
-        amount: 16.0,
+        amount: 14.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],

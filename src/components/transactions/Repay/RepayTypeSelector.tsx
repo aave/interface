@@ -28,7 +28,7 @@ export function RepayTypeSelector({
         value={repayType}
         exclusive
         onChange={(_, value) => setRepayType(value)}
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', height: '36px', p: '2px' }}
       >
         <StyledToggleButton value={RepayType.BALANCE} disabled={repayType === RepayType.BALANCE}>
           <Typography variant="subheader1" sx={{ mr: 1 }}>

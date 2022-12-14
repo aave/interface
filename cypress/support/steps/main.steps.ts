@@ -176,6 +176,7 @@ export const repay = (
     repayOption,
     hasApproval = false,
     repayableAsset,
+    assetForCollateralRepay,
     isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
@@ -184,6 +185,7 @@ export const repay = (
     repayOption: string;
     hasApproval: boolean;
     repayableAsset?: { shortName: string };
+    assetForCollateralRepay?: { shortName: string };
     isMaxAmount?: boolean;
   },
   skip: SkipType,
@@ -192,8 +194,15 @@ export const repay = (
   const _shortName = asset.shortName;
   const _actionName = constants.actionTypes.repay;
 
-  return describe(`Repay by ${repayOption} process for ${_shortName} by ${
-    repayableAsset ? repayableAsset.shortName : _shortName
+  return describe(`Repay by ${repayOption} process for ${_shortName} by
+  ${
+    repayOption == constants.repayType.collateral
+      ? assetForCollateralRepay
+        ? assetForCollateralRepay.shortName
+        : 'default asset'
+      : repayableAsset
+      ? repayableAsset.shortName
+      : _shortName
   }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {

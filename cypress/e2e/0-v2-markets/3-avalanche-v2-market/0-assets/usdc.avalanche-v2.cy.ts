@@ -25,13 +25,22 @@ const testData = {
       amount: 10,
       hasApproval: false,
     },
-    repay: {
-      asset: assets.avalancheMarket.USDC,
-      apyType: constants.apyType.variable,
-      amount: 2,
-      hasApproval: true,
-      repayOption: constants.repayType.default,
-    },
+    repay: [
+      {
+        asset: assets.avalancheMarket.USDC,
+        apyType: constants.apyType.variable,
+        amount: 2,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
+      },
+      {
+        asset: assets.avalancheMarket.USDC,
+        apyType: constants.apyType.variable,
+        amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
+    ],
     withdraw: {
       asset: assets.avalancheMarket.USDC,
       isCollateral: true,
@@ -57,7 +66,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheMarket.USDC.shortName,
         wrapped: assets.avalancheMarket.USDC.wrapped,
-        amount: 23.0,
+        amount: 21.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
@@ -71,7 +80,9 @@ describe('USDC INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
-  repay(testData.testCases.repay, skipTestState, false);
+  testData.testCases.repay.forEach((repayCase) => {
+    repay(repayCase, skipTestState, false);
+  });
   withdraw(testData.testCases.withdraw, skipTestState, false);
   switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
