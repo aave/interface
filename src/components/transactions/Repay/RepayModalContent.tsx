@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -44,6 +45,7 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { minRemainingBaseTokenBalance } = useRootStore();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -82,7 +84,9 @@ export const RepayModalContent = ({
     balance = underlyingBalance;
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
-      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
+      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
+        ? minRemainingBaseTokenBalance
+        : '0'
     );
     balance = normalizedWalletBalance.toString(10);
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);

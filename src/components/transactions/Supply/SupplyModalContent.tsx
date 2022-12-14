@@ -15,6 +15,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
@@ -53,6 +54,7 @@ export const SupplyModalContent = ({
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { supplyCap, debtCeiling } = useAssetCaps();
+  const { minRemainingBaseTokenBalance } = useRootStore();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -67,7 +69,8 @@ export const SupplyModalContent = ({
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     walletBalance,
     poolReserve,
-    underlyingAsset
+    underlyingAsset,
+    minRemainingBaseTokenBalance
   );
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
@@ -90,9 +93,9 @@ export const SupplyModalContent = ({
 
   const liquidationThresholdAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-        .multipliedBy(user.currentLiquidationThreshold)
-        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+      .multipliedBy(user.currentLiquidationThreshold)
+      .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+      .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
