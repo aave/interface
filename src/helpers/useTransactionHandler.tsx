@@ -112,7 +112,7 @@ export const useTransactionHandler = ({
   };
 
   const approval = async (approvals?: Approval[]) => {
-    console.log(approvalTxes, 'approvalTxes');
+    console.log(approvalTxes, 'approvalTxes', approvals);
     if (approvalTxes) {
       console.log(approvalTxes, 'approvalTxes');
       if (usePermit && approvals && approvals?.length > 0) {
@@ -182,9 +182,7 @@ export const useTransactionHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
-          console.log('no permit should call approval', approvalTxes);
           const params = await Promise.all(approvalTxes.map((approvalTx) => approvalTx.tx()));
-          console.log(params, 'params');
           const approvalResponses = await Promise.all(
             params.map(
               (param) =>
@@ -234,7 +232,6 @@ export const useTransactionHandler = ({
     if (approvalTxes && usePermit && handleGetPermitTxns) {
       if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {
-        console.log(signatures, 'signatures');
         setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signatures, signatureDeadline);
         const params = await txns[0].tx();
@@ -260,7 +257,6 @@ export const useTransactionHandler = ({
           action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
-        console.log(error, 'error');
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
@@ -273,7 +269,7 @@ export const useTransactionHandler = ({
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
-        // delete params.gasPrice;
+        delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {

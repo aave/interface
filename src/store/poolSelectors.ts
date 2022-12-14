@@ -29,8 +29,8 @@ export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
 };
 
 export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
-  const v2MarketKey = selectCurrentChainIdV3MarketKey(state);
-  const marketData = marketsData[v2MarketKey];
+  const v3MarketKey = selectCurrentChainIdV3MarketKey(state);
+  const marketData = marketsData[v3MarketKey];
   return state.data
     .get(state.currentChainId)
     ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
