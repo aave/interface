@@ -139,7 +139,7 @@ export const SwapModalDetails = ({
             }}
           >
             {loading ? (
-              { skeleton }
+              skeleton
             ) : (
               <>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -177,7 +177,7 @@ export const SwapModalDetails = ({
             mt={2}
           >
             {loading ? (
-              { skeleton }
+              skeleton
             ) : (
               <>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
