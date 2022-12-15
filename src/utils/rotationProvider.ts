@@ -1,11 +1,11 @@
 import { BaseProvider, Network, StaticJsonRpcProvider } from '@ethersproject/providers';
 import { logger } from 'ethers';
 
-const DEFAULT_ROTATION_DELAY = 5000;
 const DEFAULT_FALL_FORWARD_DELAY = 60000;
+const MAX_RETRIES = 1;
 
 interface RotationProviderConfig {
-  rotationDelay?: number;
+  maxRetries?: number;
   fallFowardDelay?: number;
 }
 
@@ -66,8 +66,9 @@ export class RotationProvider extends BaseProvider {
   readonly providers: StaticJsonRpcProvider[];
   private currentProviderIndex = 0;
   private firstRotationTimestamp = 0;
-  // after completing a full rotation of the RotationProvider, delay to avoid spamming rpcs with requests
-  private rotationDelay: number;
+  // number of full loops through provider array before throwing an error
+  private maxRetries = 0;
+  private retries = 0;
   // if we rotate away from first rpc, return back after this delay
   private fallForwardDelay: number;
 
@@ -75,7 +76,7 @@ export class RotationProvider extends BaseProvider {
     super(chainId);
     this.providers = urls.map((url) => new StaticJsonRpcProvider(url, chainId));
 
-    this.rotationDelay = config?.rotationDelay || DEFAULT_ROTATION_DELAY;
+    this.maxRetries = config?.maxRetries || MAX_RETRIES;
     this.fallForwardDelay = config?.fallFowardDelay || DEFAULT_FALL_FORWARD_DELAY;
   }
 
@@ -104,7 +105,11 @@ export class RotationProvider extends BaseProvider {
       this.firstRotationTimestamp = new Date().getTime();
       this.fallForwardRotation();
     } else if (this.currentProviderIndex === this.providers.length - 1) {
-      await sleep(this.rotationDelay);
+      this.retries += 1;
+      if (this.retries > this.maxRetries) {
+        this.retries = 0;
+        throw new Error('RotationProvider exceeded max number of retries');
+      }
       this.currentProviderIndex = 0;
     } else {
       this.currentProviderIndex += 1;
