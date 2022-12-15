@@ -54,7 +54,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     publicJsonRPCUrl: [
-      'https://eth-goerli.public.blastapi.io',
       'https://rpc.ankr.com/eth_goerli',
       'https://goerli.prylabs.net',
     ],
