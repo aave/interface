@@ -1,19 +1,14 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  gasLimitRecommendations,
-  InterestRate,
-  ProtocolAction,
-} from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
+import { OptimalRate } from 'paraswap-core';
+import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-interface CollateralRepayBaseProps extends BoxProps {
+export interface RepayActionProps extends BoxProps {
   rateMode: InterestRate;
   repayAmount: string;
   repayWithAmount: string;
@@ -22,79 +17,65 @@ interface CollateralRepayBaseProps extends BoxProps {
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
+  priceRoute: OptimalRate | null;
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
-  loading?: boolean;
-}
-
-// Used in poolSlice
-export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
-  augustus: string;
-  swapCallData: string;
+  maxSlippage: number;
 }
 
 export const CollateralRepayActions = ({
   repayAmount,
+  repayWithAmount,
   poolReserve,
   fromAssetData,
   isWrongNetwork,
   sx,
   symbol,
   rateMode,
+  priceRoute,
   repayAllDebt,
   useFlashLoan,
   blocked,
-  loading,
-  repayWithAmount,
-  buildTxFn,
+  maxSlippage,
   ...props
-}: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
+}: RepayActionProps) => {
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useParaSwapTransactionHandler({
+    useTransactionHandler({
       handleGetTxns: async () => {
-        const route = await buildTxFn();
-        return paraswapRepayWithCollateral({
-          repayAllDebt,
-          repayAmount: route.outputAmount,
-          rateMode,
-          repayWithAmount: route.inputAmount,
-          fromAssetData,
-          poolReserve,
-          isWrongNetwork,
-          symbol,
-          useFlashLoan,
-          blocked,
-          swapCallData: route.swapCallData,
-          augustus: route.augustus,
-        });
-      },
-      handleGetApprovalTxns: async () => {
         return paraswapRepayWithCollateral({
           repayAllDebt,
           repayAmount,
+          maxSlippage,
           rateMode,
           repayWithAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
           symbol,
+          priceRoute,
           useFlashLoan,
           blocked,
-          swapCallData: '0x',
-          augustus: API_ETH_MOCK_ADDRESS,
         });
       },
-      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.repayCollateral].limit,
-      skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
+      skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
+      deps: [
+        repayWithAmount,
+        repayAmount,
+        priceRoute,
+        poolReserve.underlyingAsset,
+        fromAssetData.underlyingAsset,
+        repayAllDebt,
+        useFlashLoan,
+      ],
     });
 
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
-      symbol={fromAssetData.symbol}
+      symbol={poolReserve.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
@@ -104,16 +85,11 @@ export const CollateralRepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval()}
+      handleApproval={() =>
+        approval({ amount: repayWithAmount, underlyingAsset: poolReserve.aTokenAddress })
+      }
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
-      fetchingData={loading}
-      errorParams={{
-        loading: false,
-        disabled: blocked,
-        content: <Trans>Repay {symbol}</Trans>,
-        handleClick: action,
-      }}
     />
   );
 };

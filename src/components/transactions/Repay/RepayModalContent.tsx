@@ -171,12 +171,13 @@ export const RepayModalContent = ({
   const amountAfterRepay = valueToBigNumber(debt)
     .minus(amount || '0')
     .toString(10);
-  const amountAfterRepayInUsd = new BigNumber(amountAfterRepay)
+  const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
+  const displayAmountAfterRepayInUsd = displayAmountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const maxRepayWithDustRemaining = isMaxSelected && amountAfterRepayInUsd.toNumber() > 0;
+  const maxRepayWithDustRemaining = isMaxSelected && displayAmountAfterRepayInUsd.toNumber() > 0;
 
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
@@ -235,7 +236,7 @@ export const RepayModalContent = ({
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
           futureValue={amountAfterRepay}
-          futureValueUSD={amountAfterRepayInUsd.toString(10)}
+          futureValueUSD={displayAmountAfterRepayInUsd.toString(10)}
           value={debt}
           valueUSD={debtUSD.toString()}
           symbol={

@@ -56,15 +56,8 @@ const testData = {
         asset: assets.avalancheV3Market.USDC,
         apyType: constants.apyType.stable,
         amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.avalancheV3Market.USDC,
-        apyType: constants.apyType.stable,
-        amount: 2,
         hasApproval: true,
-        repayOption: constants.repayType.wallet,
+        repayOption: constants.repayType.default,
       },
       {
         asset: assets.avalancheV3Market.USDC,
@@ -94,7 +87,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheV3Market.USDC.shortName,
-        amount: 44.0,
+        amount: 46.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],

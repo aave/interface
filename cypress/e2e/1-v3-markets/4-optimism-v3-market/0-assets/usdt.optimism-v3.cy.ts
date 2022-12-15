@@ -59,15 +59,8 @@ const testData = {
         asset: assets.optimismMarket.USDT,
         apyType: constants.apyType.stable,
         amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.optimismMarket.USDT,
-        apyType: constants.apyType.stable,
-        amount: 2,
         hasApproval: true,
-        repayOption: constants.repayType.wallet,
+        repayOption: constants.repayType.default,
       },
       {
         asset: assets.optimismMarket.USDT,
@@ -101,7 +94,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.optimismMarket.USDT.shortName,
-        amount: 44.0,
+        amount: 46.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],

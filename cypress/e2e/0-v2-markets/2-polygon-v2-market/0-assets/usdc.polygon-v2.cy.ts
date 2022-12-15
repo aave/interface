@@ -22,22 +22,13 @@ const testData = {
       amount: 10,
       hasApproval: false,
     },
-    repay: [
-      {
-        asset: assets.polygonMarket.USDC,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: true,
-        repayOption: constants.repayType.default,
-      },
-      {
-        asset: assets.polygonMarket.USDC,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-    ],
+    repay: {
+      asset: assets.polygonMarket.USDC,
+      apyType: constants.apyType.variable,
+      amount: 2,
+      hasApproval: true,
+      repayOption: constants.repayType.default,
+    },
     withdraw: {
       asset: assets.polygonMarket.USDC,
       isCollateral: true,
@@ -59,7 +50,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.polygonMarket.USDC.shortName,
         wrapped: assets.polygonMarket.USDC.wrapped,
-        amount: 21.0,
+        amount: 23.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
@@ -73,9 +64,7 @@ describe('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
-  testData.testCases.repay.forEach((repayCase) => {
-    repay(repayCase, skipTestState, false);
-  });
+  repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

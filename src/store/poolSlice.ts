@@ -23,14 +23,17 @@ import {
   LPSignERC20ApprovalType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import { normalize } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
+import { OptimalRate } from 'paraswap-core';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
-import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
+import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -66,7 +69,7 @@ export interface PoolSlice {
     args: Omit<LPSwapBorrowRateMode, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   paraswapRepayWithCollateral: (
-    args: CollateralRepayActionProps
+    args: ParaswapRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
   supplyWithPermit: (
     args: Omit<LPSupplyWithPermitType, 'user'>
@@ -231,23 +234,34 @@ export const createPoolSlice: StateCreator<
     paraswapRepayWithCollateral: async ({
       fromAssetData,
       poolReserve,
+      priceRoute,
+      maxSlippage,
       repayAmount,
-      repayWithAmount,
       repayAllDebt,
       useFlashLoan,
       rateMode,
-      augustus,
-      swapCallData,
     }) => {
       const user = get().account;
       const pool = getCorrectPool();
+      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
+
+      const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
+        srcToken: fromAssetData.underlyingAsset,
+        srcDecimals: fromAssetData.decimals,
+        destToken: poolReserve.underlyingAsset,
+        destDecimals: poolReserve.decimals,
+        user,
+        route: priceRoute as OptimalRate,
+        chainId,
+        maxSlippage,
+      });
 
       return pool.paraswapRepayWithCollateral({
         user,
         fromAsset: fromAssetData.underlyingAsset,
         fromAToken: fromAssetData.aTokenAddress,
         assetToRepay: poolReserve.underlyingAsset,
-        repayWithAmount,
+        repayWithAmount: normalize(srcAmountWithSlippage, fromAssetData.decimals),
         repayAmount,
         repayAllDebt,
         rateMode,
@@ -322,15 +336,25 @@ export const createPoolSlice: StateCreator<
     swapCollateral: async ({
       poolReserve,
       targetReserve,
+      priceRoute,
       isMaxSelected,
       amountToSwap,
       amountToReceive,
       useFlashLoan,
-      augustus,
-      swapCallData,
     }) => {
       const pool = getCorrectPool();
       const user = get().account;
+      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
+
+      const { swapCallData, augustus } = await getSwapCallData({
+        srcToken: poolReserve.underlyingAsset,
+        srcDecimals: poolReserve.decimals,
+        destToken: targetReserve.underlyingAsset,
+        destDecimals: targetReserve.decimals,
+        user,
+        route: priceRoute as OptimalRate,
+        chainId,
+      });
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,

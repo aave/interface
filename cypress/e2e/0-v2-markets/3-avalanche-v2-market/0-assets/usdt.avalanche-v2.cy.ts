@@ -26,22 +26,13 @@ const testData = {
       amount: 10,
       hasApproval: false,
     },
-    repay: [
-      {
-        asset: assets.avalancheMarket.USDT,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: true,
-        repayOption: constants.repayType.default,
-      },
-      {
-        asset: assets.avalancheMarket.USDT,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-    ],
+    repay: {
+      asset: assets.avalancheMarket.USDT,
+      apyType: constants.apyType.variable,
+      amount: 2,
+      hasApproval: true,
+      repayOption: constants.repayType.default,
+    },
     withdraw: {
       asset: assets.avalancheMarket.USDT,
       isCollateral: false,
@@ -71,7 +62,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheMarket.USDT.shortName,
         wrapped: assets.avalancheMarket.USDT.wrapped,
-        amount: 21.0,
+        amount: 23.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
@@ -85,9 +76,7 @@ describe('USDT INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
   supply(testData.testCases.deposit, skipTestState, true);
-  testData.testCases.repay.forEach((repayCase) => {
-    repay(repayCase, skipTestState, false);
-  });
+  repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);

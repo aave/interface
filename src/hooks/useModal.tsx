@@ -32,7 +32,6 @@ export interface ModalArgsType {
   stakeAssetName?: string;
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
-  isFrozen?: boolean;
 }
 
 export type TxStateType = {
@@ -46,7 +45,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (underlyingAsset: string) => void;
   openWithdraw: (underlyingAsset: string) => void;
   openBorrow: (underlyingAsset: string) => void;
-  openRepay: (underlyingAsset: string, currentRateMode: InterestRate, isFrozen: boolean) => void;
+  openRepay: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openCollateralChange: (underlyingAsset: string) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
@@ -105,9 +104,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
         },
-        openRepay: (underlyingAsset, currentRateMode, isFrozen) => {
+        openRepay: (underlyingAsset, currentRateMode) => {
           setType(ModalType.Repay);
-          setArgs({ underlyingAsset, currentRateMode, isFrozen });
+          setArgs({ underlyingAsset, currentRateMode });
         },
         openCollateralChange: (underlyingAsset) => {
           setType(ModalType.CollateralChange);

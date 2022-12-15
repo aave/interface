@@ -16,7 +16,6 @@ export const RepayModal = () => {
   const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
     currentRateMode: InterestRate;
-    isFrozen: boolean;
   }>;
   const { userReserves } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
@@ -26,14 +25,12 @@ export const RepayModal = () => {
   // 1. on chains with paraswap deployed
   // 2. when you have a different supplied(not necessarily collateral) asset then the one your debt is in
   // For repaying your debt with the same assets aToken you can use repayWithAToken on aave protocol v3
-  // 3. the supplied asset is not frozen
   const collateralRepayPossible =
     isFeatureEnabled.collateralRepay(currentMarketData) &&
     userReserves.some(
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
-        userReserve.underlyingAsset !== args.underlyingAsset &&
-        !args.isFrozen
+        userReserve.underlyingAsset !== args.underlyingAsset
     );
 
   return (
