@@ -88,7 +88,7 @@
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@commitlint/cli": "^17.1.2",
+    "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.1.0",
     "@ethersproject/experimental": "^5.5.0",
     "@ethersproject/providers": "^5.5.3",
