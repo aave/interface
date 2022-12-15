@@ -59,8 +59,15 @@ const testData = {
         asset: assets.polygonV3Market.USDT,
         apyType: constants.apyType.stable,
         amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
+      {
+        asset: assets.polygonV3Market.USDT,
+        apyType: constants.apyType.stable,
+        amount: 2,
         hasApproval: true,
-        repayOption: constants.repayType.default,
+        repayOption: constants.repayType.wallet,
       },
       {
         asset: assets.polygonV3Market.USDT,
@@ -94,7 +101,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.polygonV3Market.USDT.shortName,
-        amount: 46.0,
+        amount: 44.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],
