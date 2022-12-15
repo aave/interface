@@ -2,7 +2,7 @@ import { BaseProvider, Network, StaticJsonRpcProvider } from '@ethersproject/pro
 import { logger } from 'ethers';
 
 const DEFAULT_FALL_FORWARD_DELAY = 60000;
-const MAX_RETRIES = 2;
+const MAX_RETRIES = 1;
 
 interface RotationProviderConfig {
   maxRetries?: number;
@@ -106,7 +106,7 @@ export class RotationProvider extends BaseProvider {
       this.fallForwardRotation();
     } else if (this.currentProviderIndex === this.providers.length - 1) {
       this.retries += 1;
-      if (this.retries >= this.maxRetries) {
+      if (this.retries > this.maxRetries) {
         this.retries = 0;
         throw new Error('RotationProvider exceeded max number of retries');
       }
