@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   IconButton,
   InputBase,
@@ -74,7 +75,8 @@ export interface AssetInputProps<T extends Asset = Asset> {
   maxValue?: string;
   isMaxSelected?: boolean;
   inputTitle?: ReactNode;
-  balanceText?: ReactNode; // Support translated text
+  balanceText?: ReactNode;
+  loading?: boolean;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -91,6 +93,7 @@ export const AssetInput = <T extends Asset = Asset>({
   isMaxSelected,
   inputTitle,
   balanceText,
+  loading = false,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -121,35 +124,41 @@ export const AssetInput = <T extends Asset = Asset>({
         })}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-          <InputBase
-            sx={{ flex: 1 }}
-            placeholder="0.00"
-            disabled={disabled || disableInput}
-            value={value}
-            autoFocus
-            onChange={(e) => {
-              if (!onChange) return;
-              if (Number(e.target.value) > Number(maxValue)) {
-                onChange('-1');
-              } else {
-                onChange(e.target.value);
-              }
-            }}
-            inputProps={{
-              'aria-label': 'amount input',
-              style: {
-                fontSize: '21px',
-                lineHeight: '28,01px',
-                padding: 0,
-                height: '28px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              },
-            }}
-            // eslint-disable-next-line
-            inputComponent={NumberFormatCustom as any}
-          />
+          {loading ? (
+            <Box sx={{ flex: 1 }}>
+              <CircularProgress color="inherit" size="16px" />
+            </Box>
+          ) : (
+            <InputBase
+              sx={{ flex: 1 }}
+              placeholder="0.00"
+              disabled={disabled || disableInput}
+              value={value}
+              autoFocus
+              onChange={(e) => {
+                if (!onChange) return;
+                if (Number(e.target.value) > Number(maxValue)) {
+                  onChange('-1');
+                } else {
+                  onChange(e.target.value);
+                }
+              }}
+              inputProps={{
+                'aria-label': 'amount input',
+                style: {
+                  fontSize: '21px',
+                  lineHeight: '28,01px',
+                  padding: 0,
+                  height: '28px',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                },
+              }}
+              // eslint-disable-next-line
+              inputComponent={NumberFormatCustom as any}
+            />
+          )}
           {value !== '' && !disableInput && (
             <IconButton
               sx={{
@@ -200,6 +209,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
                   '&.AssetInput__select .MuiSelect-icon': {
                     color: 'text.primary',
+                    right: '0%',
                   },
                 }}
                 renderValue={(symbol) => {
@@ -245,15 +255,19 @@ export const AssetInput = <T extends Asset = Asset>({
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', height: '16px' }}>
-          <FormattedNumber
-            value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
-            compact
-            symbol="USD"
-            variant="secondary12"
-            color="text.disabled"
-            symbolsColor="text.disabled"
-            flexGrow={1}
-          />
+          {loading ? (
+            <Box sx={{ flex: 1 }} />
+          ) : (
+            <FormattedNumber
+              value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
+              compact
+              symbol="USD"
+              variant="secondary12"
+              color="text.muted"
+              symbolsColor="text.muted"
+              flexGrow={1}
+            />
+          )}
 
           {asset.balance && onChange && (
             <>
@@ -267,14 +281,16 @@ export const AssetInput = <T extends Asset = Asset>({
                   symbolsColor="text.disabled"
                 />
               </Typography>
-              <Button
-                size="small"
-                sx={{ minWidth: 0, ml: '7px', p: 0 }}
-                onClick={() => onChange('-1')}
-                disabled={disabled || isMaxSelected}
-              >
-                <Trans>Max</Trans>
-              </Button>
+              {!disableInput && (
+                <Button
+                  size="small"
+                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  onClick={() => onChange('-1')}
+                  disabled={disabled || isMaxSelected}
+                >
+                  <Trans>Max</Trans>
+                </Button>
+              )}
             </>
           )}
         </Box>
