@@ -1,5 +1,3 @@
-import { mintAmountsPerToken, valueToWei } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -11,12 +9,12 @@ import { useRootStore } from 'src/store/root';
 
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine } from '../FlowCommons/TxModalDetails';
+import { getNormalizedMintAmount } from './utils';
 
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
+  const { watchModeOnlyAddress } = useWeb3Context();
   const { account, currentMarket, currentMarketData } = useRootStore();
   const reserves = useRootStore((state) => selectCurrentReserves(state));
-
-  const { watchModeOnlyAddress } = useWeb3Context();
 
   const [captchaToken, setCaptchaToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,11 +29,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const defaultValue = valueToWei('1000', 18);
-  const mintAmount = mintAmountsPerToken[poolReserve.symbol.toUpperCase()]
-    ? mintAmountsPerToken[poolReserve.symbol.toUpperCase()]
-    : defaultValue;
-  const normalizedAmount = normalize(mintAmount, poolReserve.decimals);
+  const normalizedAmount = getNormalizedMintAmount(poolReserve.symbol, poolReserve.decimals);
 
   const captchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -63,7 +57,6 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
         }),
       });
       if (!response.ok) {
-        console.log(response);
         throw new Error(response.statusText);
       }
       const data = await response.json();
