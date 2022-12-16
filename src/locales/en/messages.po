@@ -25,10 +25,6 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "@ {0} APY"
-msgstr "@ {0} APY"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -185,10 +181,6 @@ msgstr "Amount must be greater than 0"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
-
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Apply"
-msgstr "Apply"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
@@ -744,10 +736,6 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Discount"
-msgstr "Discount"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Discount info"
 msgstr "Discount info"
@@ -952,8 +940,8 @@ msgid "GHO discount program"
 msgstr "GHO discount program"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user’s GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
-msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user’s GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
+msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
+msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
@@ -1172,10 +1160,6 @@ msgstr "MAX"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
 msgstr "Market"
-
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-msgid "Market Cap"
-msgstr "Market Cap"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -2062,6 +2046,7 @@ msgstr "Total available"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
