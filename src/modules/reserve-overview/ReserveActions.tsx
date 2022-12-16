@@ -67,6 +67,7 @@ interface NewReserveActionsProps {
 
 export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
+  const { openBorrow, openFaucet, openSupply } = useModalContext();
 
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { user } = useAppDataContext();
@@ -120,12 +121,14 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
                 value={maxAmountToSupply}
                 symbol={selectedAsset}
                 disable={balance?.amount === '0'}
+                onActionClicked={() => openSupply(reserve.underlyingAsset)}
               />
               {reserve.borrowingEnabled && (
                 <BorrowAction
                   value={maxAmountToBorrow}
                   symbol={selectedAsset}
                   disable={disableBorrowButton}
+                  onActionClicked={() => openBorrow(reserve.underlyingAsset)}
                 />
               )}
               <ActionAlerts
@@ -202,9 +205,10 @@ interface ActionProps {
   value: string;
   symbol: string;
   disable: boolean;
+  onActionClicked: () => void;
 }
 
-const SupplyAction = ({ value, symbol }: ActionProps) => {
+const SupplyAction = ({ value, symbol, disable, onActionClicked }: ActionProps) => {
   return (
     <Stack
       sx={{ height: '44px' }}
@@ -222,9 +226,10 @@ const SupplyAction = ({ value, symbol }: ActionProps) => {
       </Box>
       <Button
         sx={{ height: '36px' }}
-        disabled={value === '0'}
+        disabled={disable}
         variant="contained"
         fullWidth={false}
+        onClick={onActionClicked}
         data-cy="supplyButton"
       >
         <Trans>Supply</Trans>
@@ -233,7 +238,7 @@ const SupplyAction = ({ value, symbol }: ActionProps) => {
   );
 };
 
-const BorrowAction = ({ value, symbol, disable }: ActionProps) => {
+const BorrowAction = ({ value, symbol, disable, onActionClicked }: ActionProps) => {
   return (
     <Stack
       sx={{ height: '44px' }}
@@ -254,6 +259,7 @@ const BorrowAction = ({ value, symbol, disable }: ActionProps) => {
         disabled={disable}
         variant="contained"
         fullWidth={false}
+        onClick={onActionClicked}
         data-cy="borrowButton"
       >
         <Trans>Borrow</Trans>
