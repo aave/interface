@@ -6,7 +6,13 @@ import {
   valueToWei,
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
-import { formatReserves, formatUserSummary, valueToBigNumber } from '@aave/math-utils';
+import {
+  formatReserves,
+  formatUserSummary,
+  rayDiv,
+  rayMul,
+  valueToBigNumber,
+} from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
 
@@ -97,26 +103,32 @@ export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp
           userReserve.stableBorrows,
           reserve.stableBorrowAPY
         );
-        const increasedAmountInWei = valueToWei(increasedAmount, reserve.decimals);
+        const increasedScaledBalance = add1HourBorrowAPY(
+          userReserve.principalStableDebt,
+          reserve.stableBorrowAPY
+        );
         return {
           ...userReserve,
           reserve,
           increasedAmount,
-          increasedAmountInWei,
           interestRate: InterestRate.Stable,
+          increasedScaledBalance,
         };
       }
       const increasedAmount = add1HourBorrowAPY(
         userReserve.variableBorrows,
         reserve.variableBorrowAPY
       );
-      const increasedAmountInWei = valueToWei(increasedAmount, reserve.decimals);
+      const increasedScaledBalance = add1HourBorrowAPY(
+        userReserve.scaledVariableDebt,
+        reserve.variableBorrowAPY
+      );
       return {
         ...userReserve,
         reserve,
         increasedAmount,
-        increasedAmountInWei,
         interestRate: InterestRate.Variable,
+        increasedScaledBalance,
       };
     });
 
@@ -185,11 +197,8 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
   );
 };
 
-const combine = (a: string, b: string): string => {
-  return valueToBigNumber(a).plus(valueToBigNumber(b)).toString();
-};
-
 export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
+  const poolReserveV3Summary = selectV3UserSummary(store, currentTimestamp);
   const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
 
   const supplies = selectedUserSupplyReservesForMigration(store, currentTimestamp);
@@ -206,33 +215,44 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     return obj;
   }, {} as Record<string, typeof borrows[0]>);
 
-  const userReserves = poolReserveV3?.userReserves?.map((userReserve) => {
-    let scaledATokenBalance = userReserve.scaledATokenBalance;
-    let scaledVariableDebt = userReserve.scaledVariableDebt;
-    let principalStableDebt = userReserve.principalStableDebt;
-    const reserve = poolReserveV3.reserves?.filter(
-      (reserve) => reserve.underlyingAsset == userReserve.underlyingAsset
-    );
-    const suppliedAsset = suppliesMap[userReserve.underlyingAsset];
-    if (suppliedAsset) {
-      scaledATokenBalance = combine(scaledATokenBalance, suppliedAsset.scaledATokenBalance);
+  const userReserves = poolReserveV3Summary.userReservesData.map((userReserveData) => {
+    const borrowAsset = borrowsMap[userReserveData.underlyingAsset];
+    const supplyAsset = suppliesMap[userReserveData.underlyingAsset];
+
+    let combinedScaledVariableDebt = userReserveData.scaledVariableDebt;
+    let combinedScaledATokenBalance = userReserveData.scaledATokenBalance;
+    if (borrowAsset) {
+      const scaledVariableDebt = valueToBigNumber(userReserveData.scaledVariableDebt);
+      const variableBorrowIndex = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
+      const scaledDownBalance = rayDiv(scaledVariableDebt, variableBorrowIndex);
+      const scaledDownV2Balance = rayDiv(
+        valueToBigNumber(borrowAsset.increasedScaledBalance),
+        variableBorrowIndex
+      );
+      const combinedScaledDownBalance = scaledDownBalance.plus(scaledDownV2Balance);
+      combinedScaledVariableDebt = rayMul(
+        combinedScaledDownBalance,
+        variableBorrowIndex
+      ).toString();
     }
-    const borrowedAsset = borrowsMap[userReserve.underlyingAsset];
-    if (borrowedAsset) {
-      scaledVariableDebt = combine(scaledVariableDebt, borrowedAsset.increasedAmountInWei);
-      principalStableDebt = combine(principalStableDebt, borrowedAsset.increasedAmountInWei);
-    }
-    let usageAsCollateralEnabledOnUser = false;
-    if (reserve && reserve[0]) {
-      usageAsCollateralEnabledOnUser = reserve[0].usageAsCollateralEnabled;
+
+    if (supplyAsset) {
+      const scaledATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
+      const liquidityIndex = valueToBigNumber(userReserveData.reserve.liquidityIndex);
+      const scaledDownBalance = rayDiv(scaledATokenBalance, liquidityIndex);
+      const scaledDownBalanceV2 = rayDiv(
+        valueToBigNumber(supplyAsset.scaledATokenBalance),
+        liquidityIndex
+      );
+      const combinedScaledDownBalance = scaledDownBalance.plus(scaledDownBalanceV2);
+      combinedScaledATokenBalance = rayMul(combinedScaledDownBalance, liquidityIndex).toString();
     }
 
     return {
-      ...userReserve,
-      scaledATokenBalance,
-      usageAsCollateralEnabledOnUser,
-      scaledVariableDebt,
-      principalStableDebt,
+      ...userReserveData,
+      id: userReserveData.reserve.id,
+      scaledVariableDebt: combinedScaledVariableDebt,
+      scaledATokenBalance: combinedScaledATokenBalance,
     };
   });
 
@@ -250,12 +270,14 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
   const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
 
-  return selectFormatUserSummaryForMigration(
+  const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
     poolReserveV3?.userReserves,
     baseCurrencyData,
     timestamp
   );
+
+  return formattedUserSummary;
 };
 
 export const selectIsMigrationAvailable = (store: RootStore) => {

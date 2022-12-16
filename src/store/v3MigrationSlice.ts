@@ -52,6 +52,7 @@ export type V3MigrationSlice = {
     signedPermits?: V3MigrationHelperSignedPermit[]
   ) => Promise<EthereumTransactionTypeExtended[]>;
   setCurrentMarketForMigration: () => void;
+  resetMigrationSelectedAssets: () => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -136,16 +137,19 @@ export const createV3MigrationSlice: StateCreator<
         })
       );
     },
+    resetMigrationSelectedAssets: () => {
+      set({
+        selectedMigrationBorrowAssets: {},
+        selectedMigrationSupplyAssets: {},
+      });
+    },
     getApprovePermitsForSelectedAssets: async () => {
       const timestamp = dayjs().unix();
       const approvalPermitsForMigrationAssets = await Promise.all(
         selectUserSupplyIncreasedReservesForMigrationPermits(get(), timestamp).map(
           async ({ reserve, increasedAmount }): Promise<Approval> => {
-            const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
-            const { decimals } = await getTokenData(reserve.aTokenAddress);
-            const convertedAmount = valueToWei(increasedAmount, decimals);
             return {
-              amount: convertedAmount,
+              amount: increasedAmount,
               underlyingAsset: reserve.aTokenAddress,
               permitType: 'MIGRATOR',
             };
