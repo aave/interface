@@ -76,7 +76,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
     return (
       <TxSuccessView
         txHash={txHash}
-        action={<Trans>Received</Trans>}
+        action={<Trans>will receive</Trans>}
         symbol={poolReserve.symbol}
         amount={normalizedAmount}
       />

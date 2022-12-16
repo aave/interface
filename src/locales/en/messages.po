@@ -1326,7 +1326,6 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
@@ -2375,6 +2374,10 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
+
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+msgid "will receive"
+msgstr "will receive"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
