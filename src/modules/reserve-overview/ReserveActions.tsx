@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -68,17 +68,19 @@ interface NewReserveActionsProps {
 export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
   const { openBorrow, openSupply } = useModalContext();
-
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { user } = useAppDataContext();
+  const { walletBalances } = useWalletBalances();
+
   const {
     market: { marketTitle },
   } = getMarketInfoById(currentMarket);
 
-  const { walletBalances } = useWalletBalances();
-  const balance = walletBalances[reserve.underlyingAsset];
-
   const { baseAssetSymbol } = currentNetworkConfig;
+  let balance = walletBalances[reserve.underlyingAsset];
+  if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
+    balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
+  }
 
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
     reserve,
