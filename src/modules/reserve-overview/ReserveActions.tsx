@@ -104,21 +104,40 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
         </Box>
       )}
       <WalletBalance balance={balance.amount} symbol={reserve.symbol} marketTitle={marketTitle} />
-      <Divider sx={{ my: 8 }} />
-      <Box>
-        <Stack gap={3}>
-          <SupplyAction value={maxAmountToSupply} symbol={selectedAsset} />
-          <BorrowAction value={maxAmountToBorrow} symbol={selectedAsset} />
-          <ActionAlerts
-            balance={balance.amount}
-            user={user}
-            maxAmountToSupply={maxAmountToSupply}
-            maxAmountToBorrow={maxAmountToBorrow}
-            reserve={reserve}
-          />
-        </Stack>
-      </Box>
+      {reserve.isFrozen ? (
+        <Box sx={{ mt: 3 }}>
+          <FrozenWarning />
+        </Box>
+      ) : (
+        <>
+          <Divider sx={{ my: 8 }} />
+          <Box>
+            <Stack gap={3}>
+              <SupplyAction value={maxAmountToSupply} symbol={selectedAsset} />
+              <BorrowAction value={maxAmountToBorrow} symbol={selectedAsset} />
+              <ActionAlerts
+                balance={balance.amount}
+                user={user}
+                maxAmountToSupply={maxAmountToSupply}
+                maxAmountToBorrow={maxAmountToBorrow}
+                reserve={reserve}
+              />
+            </Stack>
+          </Box>
+        </>
+      )}
     </PaperWrapper>
+  );
+};
+
+const FrozenWarning = () => {
+  return (
+    <Warning severity="error" icon={true}>
+      <Trans>
+        Since this asset is frozen, the only available actions are withdraw and repay which can be
+        accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
+      </Trans>
+    </Warning>
   );
 };
 
