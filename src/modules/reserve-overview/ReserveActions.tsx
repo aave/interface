@@ -91,6 +91,9 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     reserve.underlyingAsset
   ).toString();
 
+  const disableBorrowButton =
+    balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0';
+
   return (
     <PaperWrapper>
       {reserve.isWrappedBaseAsset && (
@@ -113,8 +116,18 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
           <Divider sx={{ my: 8 }} />
           <Box>
             <Stack gap={3}>
-              <SupplyAction value={maxAmountToSupply} symbol={selectedAsset} />
-              <BorrowAction value={maxAmountToBorrow} symbol={selectedAsset} />
+              <SupplyAction
+                value={maxAmountToSupply}
+                symbol={selectedAsset}
+                disable={balance?.amount === '0'}
+              />
+              {reserve.borrowingEnabled && (
+                <BorrowAction
+                  value={maxAmountToBorrow}
+                  symbol={selectedAsset}
+                  disable={disableBorrowButton}
+                />
+              )}
               <ActionAlerts
                 balance={balance.amount}
                 user={user}
@@ -185,7 +198,13 @@ const ActionAlerts = ({
   );
 };
 
-const SupplyAction = ({ value, symbol }: { value: string; symbol: string }) => {
+interface ActionProps {
+  value: string;
+  symbol: string;
+  disable: boolean;
+}
+
+const SupplyAction = ({ value, symbol }: ActionProps) => {
   return (
     <Stack
       sx={{ height: '44px' }}
@@ -206,7 +225,7 @@ const SupplyAction = ({ value, symbol }: { value: string; symbol: string }) => {
         disabled={value === '0'}
         variant="contained"
         fullWidth={false}
-        data-cy={'borrowButton'}
+        data-cy="supplyButton"
       >
         <Trans>Supply</Trans>
       </Button>
@@ -214,7 +233,7 @@ const SupplyAction = ({ value, symbol }: { value: string; symbol: string }) => {
   );
 };
 
-const BorrowAction = ({ value, symbol }: { value: string; symbol: string }) => {
+const BorrowAction = ({ value, symbol, disable }: ActionProps) => {
   return (
     <Stack
       sx={{ height: '44px' }}
@@ -232,10 +251,10 @@ const BorrowAction = ({ value, symbol }: { value: string; symbol: string }) => {
       </Box>
       <Button
         sx={{ height: '36px' }}
-        disabled={false}
+        disabled={disable}
         variant="contained"
         fullWidth={false}
-        data-cy={'borrowButton'}
+        data-cy="borrowButton"
       >
         <Trans>Borrow</Trans>
       </Button>
@@ -277,15 +296,13 @@ const WrappedBaseAssetSelector = ({
   );
 };
 
-const ValueWithSymbol = ({
-  value,
-  symbol,
-  children,
-}: {
+interface ValueWithSymbolProps {
   value: string;
   symbol: string;
   children?: ReactNode;
-}) => {
+}
+
+const ValueWithSymbol = ({ value, symbol, children }: ValueWithSymbolProps) => {
   return (
     <Stack direction="row" alignItems="center" gap={1}>
       <FormattedNumber value={value} variant="h4" color="text.primary" />
@@ -297,15 +314,12 @@ const ValueWithSymbol = ({
   );
 };
 
-const WalletBalance = ({
-  balance,
-  symbol,
-  marketTitle,
-}: {
+interface WalletBalanceProps {
   balance: string;
   symbol: string;
   marketTitle: string;
-}) => {
+}
+const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
   return (
     <Stack direction="row" gap={3}>
       <Box
