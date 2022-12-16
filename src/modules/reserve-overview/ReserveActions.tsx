@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Divider,
   Paper,
   Skeleton,
   Stack,
@@ -11,14 +12,17 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
@@ -56,6 +60,270 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
 interface ReserveActionsProps {
   underlyingAsset: string;
 }
+
+interface NewReserveActionsProps {
+  reserve: ComputedReserveData;
+}
+
+export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
+  const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
+
+  const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
+  const { user } = useAppDataContext();
+  const {
+    market: { marketTitle },
+  } = getMarketInfoById(currentMarket);
+
+  const { walletBalances, loading: loadingBalance } = useWalletBalances();
+  const balance = walletBalances[reserve.underlyingAsset];
+
+  const { baseAssetSymbol } = currentNetworkConfig;
+
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    reserve,
+    user,
+    InterestRate.Variable
+  ).toString();
+
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    balance.amount,
+    reserve,
+    reserve.underlyingAsset
+  ).toString();
+
+  return (
+    <PaperWrapper>
+      {reserve.isWrappedBaseAsset && (
+        <Box>
+          <WrappedBaseAssetSelector
+            assetSymbol={reserve.symbol}
+            baseAssetSymbol={baseAssetSymbol}
+            selectedAsset={selectedAsset}
+            setSelectedAsset={setSelectedAsset}
+          />
+        </Box>
+      )}
+      <WalletBalance balance={balance.amount} symbol={reserve.symbol} marketTitle={marketTitle} />
+      <Divider sx={{ my: 8 }} />
+      <Box>
+        <Stack gap={3}>
+          <SupplyAction value={maxAmountToSupply} symbol={selectedAsset} />
+          <BorrowAction value={maxAmountToBorrow} symbol={selectedAsset} />
+          <ActionAlerts
+            balance={balance.amount}
+            user={user}
+            maxAmountToSupply={maxAmountToSupply}
+            maxAmountToBorrow={maxAmountToBorrow}
+            reserve={reserve}
+          />
+        </Stack>
+      </Box>
+    </PaperWrapper>
+  );
+};
+
+const ActionAlerts = ({
+  balance,
+  user,
+  maxAmountToSupply,
+  maxAmountToBorrow,
+  reserve,
+}: {
+  balance: string;
+  user: ExtendedFormattedUser;
+  maxAmountToSupply: string;
+  maxAmountToBorrow: string;
+  reserve: ComputedReserveData;
+}) => {
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { bridge, name: networkName } = currentNetworkConfig;
+
+  if (balance === '0') {
+    // TODO: testnet message, link to faucet
+    return (
+      <WalletEmptyInfo name={networkName} bridge={bridge} icon={false} chainId={currentChainId} />
+    );
+  }
+
+  if (balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0') {
+    return (
+      <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
+        <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+      </Warning>
+    );
+  }
+
+  return (
+    <>
+      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {reserve.isIsolated &&
+        balance !== '0' &&
+        user?.totalCollateralUSD !== '0' &&
+        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
+    </>
+  );
+};
+
+const SupplyAction = ({ value, symbol }: { value: string; symbol: string }) => {
+  return (
+    <Stack
+      sx={{ height: '44px' }}
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Box>
+        <AvailableTooltip
+          variant="description"
+          text={<Trans>Available to supply</Trans>}
+          capType={CapType.supplyCap}
+        />
+        <ValueWithSymbol value={value} symbol={symbol} />
+      </Box>
+      <Button
+        sx={{ height: '36px' }}
+        disabled={value === '0'}
+        variant="contained"
+        fullWidth={false}
+        data-cy={'borrowButton'}
+      >
+        <Trans>Supply</Trans>
+      </Button>
+    </Stack>
+  );
+};
+
+const BorrowAction = ({ value, symbol }: { value: string; symbol: string }) => {
+  return (
+    <Stack
+      sx={{ height: '44px' }}
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Box>
+        <AvailableTooltip
+          variant="description"
+          text={<Trans>Available to borrow</Trans>}
+          capType={CapType.borrowCap}
+        />
+        <ValueWithSymbol value={value} symbol={symbol} />
+      </Box>
+      <Button
+        sx={{ height: '36px' }}
+        disabled={false}
+        variant="contained"
+        fullWidth={false}
+        data-cy={'borrowButton'}
+      >
+        <Trans>Borrow</Trans>
+      </Button>
+    </Stack>
+  );
+};
+
+const WrappedBaseAssetSelector = ({
+  assetSymbol,
+  baseAssetSymbol,
+  selectedAsset,
+  setSelectedAsset,
+}: {
+  assetSymbol: string;
+  baseAssetSymbol: string;
+  selectedAsset: string;
+  setSelectedAsset: (value: string) => void;
+}) => {
+  return (
+    <StyledToggleButtonGroup
+      color="primary"
+      value={selectedAsset}
+      exclusive
+      onChange={(_, value) => setSelectedAsset(value)}
+      sx={{ width: '100%', mb: 4 }}
+    >
+      <StyledToggleButton value={assetSymbol}>
+        <Typography variant="subheader1" sx={{ mr: 1 }}>
+          {assetSymbol}
+        </Typography>
+      </StyledToggleButton>
+
+      <StyledToggleButton value={baseAssetSymbol}>
+        <Typography variant="subheader1" sx={{ mr: 1 }}>
+          {baseAssetSymbol}
+        </Typography>
+      </StyledToggleButton>
+    </StyledToggleButtonGroup>
+  );
+};
+
+const ValueWithSymbol = ({
+  value,
+  symbol,
+  children,
+}: {
+  value: string;
+  symbol: string;
+  children?: ReactNode;
+}) => {
+  return (
+    <Stack direction="row" alignItems="center" gap={1}>
+      <FormattedNumber value={value} variant="h4" color="text.primary" />
+      <Typography variant="buttonL" color="text.secondary">
+        {symbol}
+      </Typography>
+      {children}
+    </Stack>
+  );
+};
+
+const WalletBalance = ({
+  balance,
+  symbol,
+  marketTitle,
+}: {
+  balance: string;
+  symbol: string;
+  marketTitle: string;
+}) => {
+  return (
+    <Stack direction="row" gap={3}>
+      <Box
+        sx={(theme) => ({
+          width: '42px',
+          height: '42px',
+          background: theme.palette.background.surface,
+          border: `0.5px solid ${theme.palette.background.disabled}`,
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        })}
+      >
+        <img
+          src="/icons/wallets/walletIcon.svg"
+          width="20px"
+          height="20px"
+          alt="wallet icon"
+          className="Wallet__icon"
+          style={{
+            opacity: 1,
+            position: 'relative',
+          }}
+        />
+      </Box>
+      <Box>
+        <Typography variant="description" color="text.secondary">
+          Wallet balance
+        </Typography>
+        <ValueWithSymbol value={balance} symbol={symbol}>
+          <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
+        </ValueWithSymbol>
+      </Box>
+    </Stack>
+  );
+};
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();

@@ -10,7 +10,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
+import { NewReserveActions, ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
 
@@ -87,7 +87,8 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={underlyingAsset} />
+            <NewReserveActions reserve={reserve} />
+            {/* <ReserveActions underlyingAsset={underlyingAsset} /> */}
           </Box>
         </Box>
       </ContentContainer>
