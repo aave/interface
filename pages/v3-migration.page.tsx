@@ -28,6 +28,7 @@ export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
+  const resetMigrationSelectedAssets = useRootStore((state) => state.resetMigrationSelectedAssets);
 
   const currentTimeStamp = useCurrentTimestamp(5);
 
@@ -57,6 +58,12 @@ export default function V3Migration() {
       setCurrentMarketForMigration();
     }
   }, [setCurrentMarketForMigration]);
+
+  useEffect(() => {
+    if (resetMigrationSelectedAssets) {
+      resetMigrationSelectedAssets();
+    }
+  }, [resetMigrationSelectedAssets]);
 
   usePoolDataV3Subscription();
 
