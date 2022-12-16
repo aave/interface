@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-15 00:17\n"
+"PO-Revision-Date: 2022-12-15 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -28,7 +28,7 @@ msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza 
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
-msgstr ""
+msgstr "<0>Tolerancia de deslizamiento </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -83,7 +83,7 @@ msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Aave es un protocolo completamente descentralizado, gobernado por la comunidad de los poseedores de token AAVE. Los poseedores de token AAVE discuten, proponen y votan colectivamente sobre las actualizaciones del protocolo. Los poseedores de token AAVE (solo en la red Ethereum) pueden votar ellos mismos en nuevas propuestas o delegar su voto a una dirección de su elección. Para obtener más información, consulta la documentación de Gobierno"
+msgstr "Aave es un protocolo completamente descentralizado, gobernado por la comunidad de los poseedores de token AAVE. Los poseedores de token AAVE discuten, proponen y votan colectivamente sobre las actualizaciones del protocolo. Los poseedores de token AAVE (solo en la red Ethereum) pueden votar ellos mismos en nuevas propuestas o delegar su voto a una dirección de su elección. Para aprender más, consulta la documentación de Gobierno"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -163,19 +163,19 @@ msgstr "La cantidad debe ser mayor que 0"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
-msgstr "Se ha producido un error al buscar los metadatos de la propuesta de IPFS."
+msgstr "Se ha producido un error al recuperar los metadatos de la propuesta de IPFS."
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
-msgstr ""
+msgstr "Aprobación confirmada"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Approve with"
-msgstr ""
+msgstr "Aprobar con"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve {symbol} to continue"
-msgstr ""
+msgstr "Aprueba {symbol} para continuar"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
@@ -325,7 +325,7 @@ msgstr "Balance tomado prestado"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
-msgstr ""
+msgstr "Balance tomado prestado tras pagar"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -481,7 +481,7 @@ msgstr "Garantía"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral balance after repay"
-msgstr ""
+msgstr "Balance de la garantía tras pagar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -489,7 +489,7 @@ msgstr "La garantía es (en su mayoría) el mismo activo que se está tomando pr
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral to repay with"
-msgstr ""
+msgstr "Garantía a pagar con"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -503,7 +503,7 @@ msgstr "El uso de garantías está limitado debido al Isolation mode."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
-msgstr "El uso como garantía está limitado debido al isolation mode. <0>Más información</0>"
+msgstr "El uso como garantía está limitado debido al isolation mode. <0>Aprende más</0>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
@@ -775,7 +775,7 @@ msgstr "Ejecutado"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
-msgstr ""
+msgstr "Cantidad esperada a pagar"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
@@ -804,7 +804,7 @@ msgstr "Faucet {0}"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
-msgstr ""
+msgstr "Recuperando datos..."
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
@@ -986,15 +986,15 @@ msgstr "Idioma"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Learn more"
-msgstr "Más información"
+msgstr "Aprende más"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Learn more about risks involved"
-msgstr "Más información sobre los riesgos involucrados"
+msgstr "Aprende más sobre los riesgos involucrados"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
-msgstr "Más información en nuestra guía <0>Preguntas frecuentes</0>"
+msgstr "Aprende más en nuestra guía <0>Preguntas frecuentes</0>"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -1132,7 +1132,7 @@ msgstr "Nuevo APY"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -1263,15 +1263,15 @@ msgstr "La dirección del proveedor del pool no esta registrada"
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Powered by"
-msgstr ""
+msgstr "Powered by"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-msgstr ""
+msgstr "El impacto en el precio es la diferencia entre el valor total de los tokens de entrada intercambiados y el de los tokens de destino obtenidos (en USD), que resulta de la liquidez limitada del par del intercambio."
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
-msgstr ""
+msgstr "Impacto en el precio {0}%"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
@@ -1358,7 +1358,7 @@ msgstr "Suministro restante"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Repaid"
-msgstr ""
+msgstr "Pagado"
 
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -1451,7 +1451,7 @@ msgstr "Seleccionar idioma"
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
-msgstr ""
+msgstr "Seleccionar tolerancia de deslizamiento"
 
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 msgid "Select token to add"
@@ -1487,7 +1487,7 @@ msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los 
 
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
-msgstr ""
+msgstr "El deslizamiento es la diferencia entre las cantidades calculadas y las recibidas debido a las condiciones cambiantes del mercado entre el momento en que se envía la transacción y su verificación."
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
@@ -1592,7 +1592,7 @@ msgstr "Suministrado"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
-msgstr ""
+msgstr "Cantidad de activos suministrados"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1627,7 +1627,7 @@ msgstr "Balance de suministro"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply balance after swap"
-msgstr ""
+msgstr "Balance de suministro tras el intercambio"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1659,7 +1659,7 @@ msgstr "Intercambiar"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swap to"
-msgstr ""
+msgstr "Intercambiar a"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swapped"
@@ -1880,7 +1880,7 @@ msgstr "Para tomar prestado, necesitas suministrar cualquier activo para ser uti
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr ""
+msgstr "Para continuar, necesitas otorgar permiso a los contratos inteligentes de Aave para mover tus fondos de tu cartera. Según el activo y la cartera que uses, se hace firmando el mensaje de permiso (sin coste de gas), o enviando una transacción de aprobación (requiere coste de gas). <0>Aprende más</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
@@ -2156,7 +2156,7 @@ msgstr "Con un poder de votación de <0/>"
 
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Protocolo Aave. Asegúrate de cambiar tu proveedor de cartera a la red de testnet adecuada, selecciona el activo deseado y haz clic en \"Faucet\" para obtener tokens transferidos a tu cartera. Los activos de una testnet no son \"reales\", lo que significada que no tienen valor monetario. <0>Más información</0>"
+msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Protocolo Aave. Asegúrate de cambiar tu proveedor de cartera a la red de testnet adecuada, selecciona el activo deseado y haz clic en \"Faucet\" para obtener tokens transferidos a tu cartera. Los activos de una testnet no son \"reales\", lo que significada que no tienen valor monetario. <0>Aprende más</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2186,7 +2186,7 @@ msgstr "YAE"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2410,7 +2410,7 @@ msgstr "{0}{name}"
 
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 msgid "{currentMethod}"
-msgstr ""
+msgstr "{currentMethod}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
