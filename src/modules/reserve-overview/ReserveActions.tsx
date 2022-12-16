@@ -67,7 +67,7 @@ interface NewReserveActionsProps {
 
 export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
-  const { openBorrow, openFaucet, openSupply } = useModalContext();
+  const { openBorrow, openSupply } = useModalContext();
 
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { user } = useAppDataContext();
@@ -75,7 +75,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     market: { marketTitle },
   } = getMarketInfoById(currentMarket);
 
-  const { walletBalances, loading: loadingBalance } = useWalletBalances();
+  const { walletBalances } = useWalletBalances();
   const balance = walletBalances[reserve.underlyingAsset];
 
   const { baseAssetSymbol } = currentNetworkConfig;
