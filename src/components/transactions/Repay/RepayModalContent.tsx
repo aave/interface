@@ -45,7 +45,9 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
-  const { poolComputed } = useRootStore();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -85,7 +87,7 @@ export const RepayModalContent = ({
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
-        ? poolComputed.minRemainingBaseTokenBalance
+        ? minRemainingBaseTokenBalance
         : '0'
     );
     balance = normalizedWalletBalance.toString(10);

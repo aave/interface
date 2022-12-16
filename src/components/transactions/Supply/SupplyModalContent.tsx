@@ -54,7 +54,9 @@ export const SupplyModalContent = ({
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { supplyCap, debtCeiling } = useAssetCaps();
-  const { poolComputed } = useRootStore();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -70,7 +72,7 @@ export const SupplyModalContent = ({
     walletBalance,
     poolReserve,
     underlyingAsset,
-    poolComputed.minRemainingBaseTokenBalance
+    minRemainingBaseTokenBalance
   );
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
