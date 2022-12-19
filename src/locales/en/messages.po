@@ -1230,6 +1230,7 @@ msgid "Per the community, the Fantom market has been frozen."
 msgstr "Per the community, the Fantom market has been frozen."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
@@ -2280,6 +2281,7 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 
 #: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"

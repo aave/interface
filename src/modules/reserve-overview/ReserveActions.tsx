@@ -50,7 +50,7 @@ import { WalletEmptyInfo } from '../dashboard/lists/SupplyAssetsList/WalletEmpty
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
-      <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+      <Typography variant="h3" sx={{ mb: 6 }}>
         <Trans>Your info</Trans>
       </Typography>
 
@@ -69,10 +69,24 @@ interface NewReserveActionsProps {
 
 export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
+
+  const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
+  const { isPermissionsLoading } = usePermissions();
   const { openBorrow, openSupply } = useModalContext();
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
-  const { user } = useAppDataContext();
-  const { walletBalances } = useWalletBalances();
+  const { user, loading: loadingReserves } = useAppDataContext();
+  const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
+
+  if (!currentAccount && !isPermissionsLoading) {
+    return <ConnectWallet loading={loadingWeb3Context} />;
+  }
+
+  if (loadingReserves || loadingWalletBalance) {
+    return <ActionsSkeleton />;
+  }
 
   const {
     market: { marketTitle },
@@ -93,7 +107,8 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance.amount,
     reserve,
-    reserve.underlyingAsset
+    reserve.underlyingAsset,
+    minRemainingBaseTokenBalance
   ).toString();
 
   const disableBorrowButton =
@@ -118,7 +133,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
         </Box>
       ) : (
         <>
-          <Divider sx={{ my: 8 }} />
+          <Divider sx={{ my: 6 }} />
           <Box>
             <Stack gap={3}>
               <SupplyAction
@@ -135,7 +150,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
                   onActionClicked={() => openBorrow(reserve.underlyingAsset)}
                 />
               )}
-              <ActionAlerts
+              <ActionAlert
                 balance={balance.amount}
                 user={user}
                 maxAmountToSupply={maxAmountToSupply}
@@ -161,19 +176,77 @@ const FrozenWarning = () => {
   );
 };
 
-const ActionAlerts = ({
-  balance,
-  user,
-  maxAmountToSupply,
-  maxAmountToBorrow,
-  reserve,
-}: {
+const ActionsSkeleton = () => {
+  const RowSkeleton = (
+    <Stack
+      sx={{ height: '44px' }}
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Box>
+        <Skeleton width={150} height={12} sx={{ mt: 1, mb: 2 }} />
+        <Skeleton width={100} height={14} />
+      </Box>
+      <Skeleton height={36} width={96} />
+    </Stack>
+  );
+
+  return (
+    <PaperWrapper>
+      <Stack direction="row" gap={3}>
+        <Skeleton width={42} height={42} sx={{ borderRadius: '12px' }} />
+        <Box>
+          <Skeleton width={100} height={12} sx={{ mt: 1, mb: 2 }} />
+          <Skeleton width={100} height={14} />
+        </Box>
+      </Stack>
+      <Divider sx={{ my: 6 }} />
+      <Box>
+        <Stack gap={3}>
+          {RowSkeleton}
+          {RowSkeleton}
+        </Stack>
+      </Box>
+    </PaperWrapper>
+  );
+};
+
+const ConnectWallet = ({ loading }: { loading: boolean }) => {
+  return (
+    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+            <Trans>Your info</Trans>
+          </Typography>
+          <Typography sx={{ mb: 6 }} color="text.secondary">
+            <Trans>Please connect a wallet to view your personal information here.</Trans>
+          </Typography>
+          <ConnectWalletButton />
+        </>
+      )}
+    </Paper>
+  );
+};
+
+interface ActionAlertProps {
   balance: string;
   user: ExtendedFormattedUser;
   maxAmountToSupply: string;
   maxAmountToBorrow: string;
   reserve: ComputedReserveData;
-}) => {
+}
+
+const ActionAlert = ({
+  balance,
+  user,
+  maxAmountToSupply,
+  maxAmountToBorrow,
+  reserve,
+}: ActionAlertProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
@@ -229,11 +302,11 @@ const SupplyAction = ({ value, symbol, disable, onActionClicked }: ActionProps) 
         <ValueWithSymbol value={value} symbol={symbol} />
       </Box>
       <Button
-        sx={{ height: '36px' }}
-        disabled={disable}
-        variant="contained"
-        fullWidth={false}
+        sx={{ height: '36px', width: '96px' }}
         onClick={onActionClicked}
+        disabled={disable}
+        fullWidth={false}
+        variant="contained"
         data-cy="supplyButton"
       >
         <Trans>Supply</Trans>
@@ -259,11 +332,11 @@ const BorrowAction = ({ value, symbol, disable, onActionClicked }: ActionProps) 
         <ValueWithSymbol value={value} symbol={symbol} />
       </Box>
       <Button
-        sx={{ height: '36px' }}
-        disabled={disable}
-        variant="contained"
-        fullWidth={false}
+        sx={{ height: '36px', width: '96px' }}
         onClick={onActionClicked}
+        disabled={disable}
+        fullWidth={false}
+        variant="contained"
         data-cy="borrowButton"
       >
         <Trans>Borrow</Trans>
