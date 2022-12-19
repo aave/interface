@@ -157,13 +157,13 @@ export const SupplyModalContent = ({
   };
 
   // collateralization state
-  let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
-    ? CollateralType.ENABLED
-    : CollateralType.DISABLED;
+  let willBeUsedAsCollateral: CollateralType = CollateralType.ENABLED;
   const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
-  if (poolReserve.isIsolated) {
+  if (!poolReserve.usageAsCollateralEnabled) {
+    willBeUsedAsCollateral = CollateralType.DISABLED;
+  } else if (poolReserve.isIsolated) {
     // Note: is debt ceiling only used for isolated assets?
     if (debtCeiling.isMaxed) {
       willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
