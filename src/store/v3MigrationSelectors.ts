@@ -234,7 +234,9 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         liquidityIndexV3
       );
       combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
-      usageAsCollateralEnabledOnUser = true;
+      if (userReserveData.underlyingBalance == '0') {
+        usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUser;
+      }
     }
 
     return {
