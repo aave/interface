@@ -4,6 +4,9 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { Fragment, useState } from 'react';
+import { ListColumn } from 'src/components/lists/ListColumn';
+import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
+import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
@@ -18,7 +21,6 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
@@ -35,6 +37,9 @@ export const SupplyAssetsList = () => {
   const { walletBalances, loading } = useWalletBalances();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
 
   const { bridge, isTestnet, baseAssetSymbol, name: networkName } = currentNetworkConfig;
 
@@ -149,15 +154,78 @@ export const SupplyAssetsList = () => {
     : sortedSupplyReserves;
 
   const head = [
-    <Trans key="Wallet balance">Wallet balance</Trans>,
-    <Trans key="APY">APY</Trans>,
-    <Trans key="Can be collateral">Can be collateral</Trans>,
+    { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
+
+    { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
+    { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
+    {
+      title: <Trans key="Can be collateral">Can be collateral</Trans>,
+      sortKey: 'usageAsCollateralEnabled',
+    },
   ];
 
+  if (sortDesc) {
+    if (sortName === 'symbol') {
+      supplyReserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+    } else if (sortName === 'usageAsCollateralEnabled') {
+      supplyReserves.sort(
+        (a, b) => Number(a.usageAsCollateralEnabled) - Number(b.usageAsCollateralEnabled)
+      );
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      supplyReserves.sort((a, b) => a[sortName] - b[sortName]);
+    }
+  } else {
+    if (sortName === 'symbol') {
+      supplyReserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+    } else if (sortName === 'usageAsCollateralEnabled') {
+      supplyReserves.sort(
+        (a, b) => Number(b.usageAsCollateralEnabled) - Number(a.usageAsCollateralEnabled)
+      );
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      supplyReserves.sort((a, b) => b[sortName] - a[sortName]);
+    }
+  }
+
+  const renderHeader = () => {
+    return (
+      <ListHeaderWrapper>
+        {head.map((col) => (
+          <ListColumn
+            isRow={col.sortKey === 'symbol'}
+            maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
+            key={col.sortKey}
+          >
+            <ListHeaderTitle
+              sortName={sortName}
+              sortDesc={sortDesc}
+              setSortName={setSortName}
+              setSortDesc={setSortDesc}
+              sortKey={col.sortKey}
+            >
+              {col.title}
+            </ListHeaderTitle>
+          </ListColumn>
+        ))}
+        <ListColumn maxWidth={170} minWidth={170} />
+      </ListHeaderWrapper>
+    );
+  };
+
   if (loadingReserves || loading)
-    return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
+    return (
+      <ListLoader
+        head={head.map((col) => col.title)}
+        title={<Trans>Assets to supply</Trans>}
+        withTopMargin
+      />
+    );
 
   const supplyDisabled = !tokensToSupply.length;
+
   return (
     <ListWrapper
       titleComponent={
@@ -211,7 +279,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
+        {!downToXSM && !!supplyReserves && !supplyDisabled && renderHeader()}
         {supplyReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

@@ -1,7 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+import { ListColumn } from 'src/components/lists/ListColumn';
+import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
+import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -23,6 +26,8 @@ export const SuppliedPositionsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
 
   const suppliedPosition =
     user?.userReservesData
@@ -40,17 +45,69 @@ export const SuppliedPositionsList = () => {
         },
       })) || [];
 
+  // const head = [
+  //   <Trans key="Balance">Balance</Trans>,
+  //   <Trans key="APY">APY</Trans>,
+  //   <CollateralSwitchTooltip
+  //     text={<Trans>Collateral</Trans>}
+  //     key="Collateral"
+  //     variant="subheader2"
+  //   />,
+  // ];
+
   const head = [
-    <Trans key="Balance">Balance</Trans>,
-    <Trans key="APY">APY</Trans>,
-    <CollateralSwitchTooltip
-      text={<Trans>Collateral</Trans>}
-      key="Collateral"
-      variant="subheader2"
-    />,
+    {
+      title: <Trans>Asset</Trans>,
+      sortKey: 'symbol',
+    },
+    {
+      title: <Trans key="Balance">Balance</Trans>,
+      sortKey: 'balance',
+    },
+
+    {
+      title: <Trans key="APY">APY</Trans>,
+      sortKey: 'apy',
+    },
+    {
+      title: (
+        <CollateralSwitchTooltip
+          text={<Trans>Collateral</Trans>}
+          key="Collateral"
+          variant="subheader2"
+        />
+      ),
+      sortKey: 'collateral',
+    },
   ];
 
-  if (loading) return <ListLoader title={<Trans>Your supplies</Trans>} head={head} />;
+  const renderHeader = () => {
+    return (
+      <ListHeaderWrapper>
+        {head.map((col) => (
+          <ListColumn
+            isRow={col.sortKey === 'symbol'}
+            maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
+            key={col.sortKey}
+          >
+            <ListHeaderTitle
+              sortName={sortName}
+              sortDesc={sortDesc}
+              setSortName={setSortName}
+              setSortDesc={setSortDesc}
+              sortKey={col.sortKey}
+            >
+              {col.title}
+            </ListHeaderTitle>
+          </ListColumn>
+        ))}
+        <ListColumn maxWidth={170} minWidth={170} />
+      </ListHeaderWrapper>
+    );
+  };
+
+  if (loading)
+    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((col) => col.title)} />;
 
   return (
     <ListWrapper
@@ -87,7 +144,7 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
-          {!downToXSM && <ListHeader head={head} />}
+          {!downToXSM && renderHeader()}
           {suppliedPosition.map((item) => (
             <Fragment key={item.underlyingAsset}>
               <AssetCapsProvider asset={item.reserve}>
