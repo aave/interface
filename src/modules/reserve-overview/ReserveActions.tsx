@@ -13,6 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
@@ -329,6 +330,8 @@ interface WalletBalanceProps {
   marketTitle: string;
 }
 const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
+  const theme = useTheme();
+
   return (
     <Stack direction="row" gap={3}>
       <Box
@@ -343,17 +346,7 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           justifyContent: 'center',
         })}
       >
-        <img
-          src="/icons/wallets/walletIcon.svg"
-          width="20px"
-          height="20px"
-          alt="wallet icon"
-          className="Wallet__icon"
-          style={{
-            opacity: 1,
-            position: 'relative',
-          }}
-        />
+        <WalletIcon sx={{ stroke: `${theme.palette.text.secondary}` }} />
       </Box>
       <Box>
         <Typography variant="description" color="text.secondary">
@@ -381,7 +374,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { poolComputed: { minRemainingBaseTokenBalance } } = useRootStore();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
