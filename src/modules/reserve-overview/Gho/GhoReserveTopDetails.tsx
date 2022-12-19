@@ -197,7 +197,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
           />
         </>
       )}
-      <TopInfoPanelItem title={<Trans>Market Cap</Trans>} loading={loading} hideIcon>
+      <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={facilitatorBucketLevel}
           symbol="USD"

@@ -1,10 +1,10 @@
 import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, Typography } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
+// import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import usePreviousState from 'src/hooks/usePreviousState';
@@ -100,10 +100,10 @@ export const GhoBorrowModalContent = ({
    * There are some cases when the amount discountable (based off of stkAAVE balance) is larger than the amount able to be borrowed (based off of collateral supplied).
    * In the latter case, we only want to borrow the maximum amount to be borrowed. In the former case, we want to borrow the maximum discountable amount.
    */
-  const handleApplyBorrowMaxDiscountable = () => {
-    const minimumMaxBorrowableAtADiscount = Math.min(discountableAmount, Number(maxAmountToBorrow));
-    onAmountChange(minimumMaxBorrowableAtADiscount.toString());
-  };
+  // const handleApplyBorrowMaxDiscountable = () => {
+  //   const minimumMaxBorrowableAtADiscount = Math.min(discountableAmount, Number(maxAmountToBorrow));
+  //   onAmountChange(minimumMaxBorrowableAtADiscount.toString());
+  // };
 
   // Calculate the APYs and other information based off of each input change
   useEffect(() => {
@@ -155,7 +155,7 @@ export const GhoBorrowModalContent = ({
         maxValue={maxAmountToBorrow}
       />
       {error !== undefined && errorComponent}
-      {discountAvailable && !hasGhoBorrowPositions && (
+      {/* {discountAvailable && !hasGhoBorrowPositions && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography sx={{ mr: 1 }}>
             <Trans>Discount</Trans>
@@ -183,7 +183,7 @@ export const GhoBorrowModalContent = ({
             </Button>
           </Box>
         </Box>
-      )}
+      )} */}
       <TxModalDetails gasLimit={gasLimit}>
         {healthFactorComponent}
         <DetailsGhoApyLine
