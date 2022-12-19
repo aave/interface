@@ -59,12 +59,15 @@ interface MyAppProps extends AppProps {
 let didInit = false;
 
 export default function MyApp(props: MyAppProps) {
+  // Load FullStory for production
   useEffect(() => {
-    if (didInit) return;
+    if (process.env.NEXT_PUBLIC_ENABLE_2FA) {
+      if (didInit) return;
 
-    FullStory.init({ orgId: 'VBTDS' });
-    didInit = true;
-  });
+      FullStory.init({ orgId: 'VBTDS' });
+      didInit = true;
+    }
+  }, []);
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
