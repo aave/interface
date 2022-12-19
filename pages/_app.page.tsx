@@ -1,13 +1,17 @@
 import '/public/fonts/inter/inter.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import * as FullStory from '@fullstory/browser';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
@@ -21,6 +25,7 @@ import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
+import { Unauthorized } from 'src/components/Unauthorized';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
@@ -48,53 +53,69 @@ function getWeb3Library(provider: any): providers.Web3Provider {
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
+  session: Session;
 }
+
+let didInit = false;
+
 export default function MyApp(props: MyAppProps) {
+  useEffect(() => {
+    if (didInit) return;
+
+    FullStory.init({ orgId: 'VBTDS' });
+    didInit = true;
+  });
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
+
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <Meta
-        title={'Open Source Liquidity Protocol'}
-        description={
-          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
-        }
-        imageUrl={AaveMetaImage.src}
-      />
-      <LanguageProvider>
-        <Web3ReactProvider getLibrary={getWeb3Library}>
-          <Web3ContextProvider>
-            <AppGlobalStyles>
-              <AddressBlocked>
-                <PermissionProvider>
-                  <ModalContextProvider>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </ModalContextProvider>
-                </PermissionProvider>
-              </AddressBlocked>
-            </AppGlobalStyles>
-          </Web3ContextProvider>
-        </Web3ReactProvider>
-      </LanguageProvider>
-    </CacheProvider>
+    <SessionProvider session={props.session}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <Meta
+          title={'Open Source Liquidity Protocol'}
+          description={
+            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+          }
+          imageUrl={AaveMetaImage.src}
+        />
+        <Unauthorized>
+          <LanguageProvider>
+            <Web3ReactProvider getLibrary={getWeb3Library}>
+              <Web3ContextProvider>
+                <AppGlobalStyles>
+                  <AddressBlocked>
+                    <PermissionProvider>
+                      <ModalContextProvider>
+                        <BackgroundDataProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </BackgroundDataProvider>
+                      </ModalContextProvider>
+                    </PermissionProvider>
+                  </AddressBlocked>
+                </AppGlobalStyles>
+              </Web3ContextProvider>
+            </Web3ReactProvider>
+          </LanguageProvider>
+        </Unauthorized>
+      </CacheProvider>
+    </SessionProvider>
   );
 }

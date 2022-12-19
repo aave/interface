@@ -46,7 +46,7 @@ jobs:
           echo "TAG=release-$(date '+%Y-%m-%d_%H-%M')" >> ${GITHUB_ENV}
 
       - name: Create GH release
-        uses: ncipollo/release-action@4c75f0f2e4ae5f3c807cf0904605408e319dcaac # v1.10.0
+        uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1.10.0
         with:
           name: Production release
           artifacts: app-build.tar.gz
