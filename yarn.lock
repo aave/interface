@@ -2845,11 +2845,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@paraswap/sdk@5.6.0-alpha.3":
-  version "5.6.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-5.6.0-alpha.3.tgz#923d901aaa16a4607bd2c0c4472b2f20d7c2ae5e"
-  integrity sha512-QsnTMufR4UG22sVB685GDgkA2jb1K/Hdj3JnwHGwAEIOZ7paZvhKyhJ883ctmgbsC/lu//Dgh/wVnRsK7efmEQ==
+"@paraswap/sdk@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.1.0.tgz#d27728b0fb27c063cb7c8c3b01ae4039d2205430"
+  integrity sha512-/WYE0wAIw361MM415dPXtS7hKGmPzR/zSwIaRIG1Dp55aErYcU0kOTT1y+JBldZKT5DS5pvMIfVEL02mPasLyQ==
   dependencies:
+    bignumber.js "^9.0.2"
     paraswap-core "^1.0.2"
     ts-essentials "^9.1.2"
 
@@ -4543,6 +4544,11 @@ bignumber.js@^9.0.0, bignumber.js@^9.0.1:
   version "9.0.2"
   resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.2.tgz"
   integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
+
+bignumber.js@^9.0.2:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
+  integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
 
 binary-extensions@^2.0.0:
   version "2.2.0"
