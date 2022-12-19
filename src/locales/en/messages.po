@@ -335,7 +335,7 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
