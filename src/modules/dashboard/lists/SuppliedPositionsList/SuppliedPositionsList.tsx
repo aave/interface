@@ -34,6 +34,7 @@ export const SuppliedPositionsList = () => {
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
       .map((userReserve) => ({
         ...userReserve,
+        supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
         reserve: {
           ...userReserve.reserve,
           ...(userReserve.reserve.isWrappedBaseAsset
@@ -55,6 +56,8 @@ export const SuppliedPositionsList = () => {
   //   />,
   // ];
 
+  console.log('suppliedPosition', suppliedPosition);
+
   const head = [
     {
       title: <Trans>Asset</Trans>,
@@ -62,12 +65,12 @@ export const SuppliedPositionsList = () => {
     },
     {
       title: <Trans key="Balance">Balance</Trans>,
-      sortKey: 'balance',
+      sortKey: 'underlyingBalance',
     },
 
     {
       title: <Trans key="APY">APY</Trans>,
-      sortKey: 'apy',
+      sortKey: 'supplyAPY',
     },
     {
       title: (
@@ -77,9 +80,30 @@ export const SuppliedPositionsList = () => {
           variant="subheader2"
         />
       ),
-      sortKey: 'collateral',
     },
   ];
+
+  if (sortDesc) {
+    if (sortName === 'symbol') {
+      suppliedPosition.sort((a, b) =>
+        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
+      );
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      suppliedPosition.sort((a, b) => a[sortName] - b[sortName]);
+    }
+  } else {
+    if (sortName === 'symbol') {
+      suppliedPosition.sort((a, b) =>
+        b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
+      );
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      suppliedPosition.sort((a, b) => b[sortName] - a[sortName]);
+    }
+  }
 
   const renderHeader = () => {
     return (

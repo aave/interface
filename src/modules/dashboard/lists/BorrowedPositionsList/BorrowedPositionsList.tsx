@@ -20,7 +20,6 @@ import {
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
-import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
@@ -39,6 +38,9 @@ export const BorrowedPositionsList = () => {
       if (userReserve.variableBorrows !== '0') {
         acc.push({
           ...userReserve,
+          borrowAPY: userReserve.reserve.variableBorrowAPY,
+          debt: userReserve.variableBorrows,
+
           borrowRateMode: InterestRate.Variable,
           reserve: {
             ...userReserve.reserve,
@@ -55,6 +57,9 @@ export const BorrowedPositionsList = () => {
         acc.push({
           ...userReserve,
           borrowRateMode: InterestRate.Stable,
+          borrowAPY: userReserve.reserve.stableBorrowAPY,
+          debt: userReserve.stableBorrows,
+
           reserve: {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
@@ -77,15 +82,11 @@ export const BorrowedPositionsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  // const head = [
-  //   <Trans key="Debt">Debt</Trans>,
-  //   <Trans key="APY">APY</Trans>,
-  //   <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-  // ];
-
   if (sortDesc) {
     if (sortName === 'symbol') {
-      borrowPositions.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+      borrowPositions.sort((a, b) =>
+        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
+      );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -93,15 +94,15 @@ export const BorrowedPositionsList = () => {
     }
   } else {
     if (sortName === 'symbol') {
-      borrowPositions.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+      borrowPositions.sort((a, b) =>
+        b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
+      );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       borrowPositions.sort((a, b) => b[sortName] - a[sortName]);
     }
   }
-
-  console.log('borrowPositions', borrowPositions);
 
   const head = [
     {
@@ -114,11 +115,10 @@ export const BorrowedPositionsList = () => {
     },
     {
       title: <Trans key="APY">APY</Trans>,
-      sortKey: 'apy',
+      sortKey: 'borrowAPY',
     },
     {
       title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-      sortKey: 'apyType',
     },
   ];
 
