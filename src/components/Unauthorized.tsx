@@ -8,7 +8,7 @@ import LoveGhost from '/public/loveGhost.svg';
 export const Unauthorized = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
 
-  if (session) {
+  if (session || process.env.ENABLE_2FA) {
     return <>{children}</>;
   }
 
