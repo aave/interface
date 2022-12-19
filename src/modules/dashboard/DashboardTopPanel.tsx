@@ -1,10 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
+import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -91,10 +92,44 @@ export const DashboardTopPanel = () => {
 
   return (
     <>
+      {isMigrateToV3Available && downToSM && (
+        <Box sx={{ width: '100%' }}>
+          <Link href={ROUTES.migrationTool}>
+            <Button
+              variant="gradient"
+              sx={{
+                height: '40px',
+                width: '100%',
+              }}
+            >
+              <Typography variant="buttonM">
+                <Trans>Migrate to V3</Trans>
+              </Typography>
+            </Button>
+          </Link>
+        </Box>
+      )}
       <TopInfoPanel
-        pageTitle={<Trans>Dashboard</Trans>}
-        withMarketSwitcher
-        bridge={currentNetworkConfig.bridge}
+        titleComponent={
+          <Box sx={{ display: downToSM ? 'block' : 'flex', alignItems: 'center' }}>
+            <PageTitle
+              pageTitle={<Trans>Dashboard</Trans>}
+              withMarketSwitcher={true}
+              bridge={currentNetworkConfig.bridge}
+            />
+            {isMigrateToV3Available && !downToSM && (
+              <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
+                <Link href={ROUTES.migrationTool}>
+                  <Button variant="gradient" sx={{ height: '20px' }}>
+                    <Typography variant="buttonS">
+                      <Trans>Migrate to V3</Trans>
+                    </Typography>
+                  </Button>
+                </Link>
+              </Box>
+            )}
+          </Box>
+        }
       >
         <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
@@ -209,16 +244,6 @@ export const DashboardTopPanel = () => {
               </Button>
             </Box>
           </TopInfoPanelItem>
-        )}
-
-        {isMigrateToV3Available && (
-          <Box sx={{ alignSelf: 'center' }}>
-            <Link href={ROUTES.migrationTool}>
-              <Button variant="gradient">
-                <Trans>Migrate to V3</Trans>
-              </Button>
-            </Link>
-          </Box>
         )}
       </TopInfoPanel>
 
