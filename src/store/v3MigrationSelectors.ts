@@ -39,7 +39,8 @@ export const selectUserSupplyIncreasedReservesForMigrationPermits = (
 ) => {
   return selectedUserSupplyReservesForMigration(store, timestamp).map((userReserve) => {
     const increasedAmount = addPercent(userReserve.underlyingBalance);
-    return { ...userReserve, increasedAmount };
+    const valueInWei = valueToWei(increasedAmount, userReserve.reserve.decimals);
+    return { ...userReserve, increasedAmount: valueInWei };
   });
 };
 
@@ -82,7 +83,7 @@ const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
   const convertedBorrowAPY = valueToBigNumber(borrowAPY);
   return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 * 24))
+    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 * 48))
     .toString();
 };
 
@@ -103,24 +104,15 @@ export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp
           userReserve.stableBorrows,
           reserve.stableBorrowAPY
         );
-        const increasedScaledBalance = add1HourBorrowAPY(
-          userReserve.principalStableDebt,
-          reserve.stableBorrowAPY
-        );
         return {
           ...userReserve,
           reserve,
           increasedAmount,
           interestRate: InterestRate.Stable,
-          increasedScaledBalance,
         };
       }
       const increasedAmount = add1HourBorrowAPY(
         userReserve.variableBorrows,
-        reserve.variableBorrowAPY
-      );
-      const increasedScaledBalance = add1HourBorrowAPY(
-        userReserve.scaledVariableDebt,
         reserve.variableBorrowAPY
       );
       return {
@@ -128,7 +120,6 @@ export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp
         reserve,
         increasedAmount,
         interestRate: InterestRate.Variable,
-        increasedScaledBalance,
       };
     });
 
@@ -219,51 +210,52 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     const borrowAsset = borrowsMap[userReserveData.underlyingAsset];
     const supplyAsset = suppliesMap[userReserveData.underlyingAsset];
 
-    let combinedScaledVariableDebt = userReserveData.scaledVariableDebt;
-    let combinedScaledATokenBalance = userReserveData.scaledATokenBalance;
-    if (borrowAsset) {
-      const scaledVariableDebt = valueToBigNumber(userReserveData.scaledVariableDebt);
-      const variableBorrowIndex = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
-      const scaledDownBalance = rayDiv(scaledVariableDebt, variableBorrowIndex);
-      const scaledDownV2Balance = rayDiv(
-        valueToBigNumber(borrowAsset.increasedScaledBalance),
-        variableBorrowIndex
+    let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
+    let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
+    let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
+    // TODO: combine stable borrow amount as well
+    if (borrowAsset && borrowAsset.interestRate == InterestRate.Variable) {
+      const scaledDownVariableDebtV3 = valueToBigNumber(userReserveData.scaledVariableDebt);
+      const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
+      const scaledDownVariableDebtV2Balance = rayDiv(
+        valueToWei(borrowAsset.increasedAmount, userReserveData.reserve.decimals),
+        variableBorrowIndexV3
       );
-      const combinedScaledDownBalance = scaledDownBalance.plus(scaledDownV2Balance);
-      combinedScaledVariableDebt = rayMul(
-        combinedScaledDownBalance,
-        variableBorrowIndex
-      ).toString();
+      combinedScaledDownVariableDebtV3 = scaledDownVariableDebtV3
+        .plus(scaledDownVariableDebtV2Balance)
+        .toString();
     }
 
     if (supplyAsset) {
-      const scaledATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
-      const liquidityIndex = valueToBigNumber(userReserveData.reserve.liquidityIndex);
-      const scaledDownBalance = rayDiv(scaledATokenBalance, liquidityIndex);
+      const scaledDownATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
+      const liquidityIndexV3 = valueToBigNumber(userReserveData.reserve.liquidityIndex);
       const scaledDownBalanceV2 = rayDiv(
-        valueToBigNumber(supplyAsset.scaledATokenBalance),
-        liquidityIndex
+        valueToWei(supplyAsset.underlyingBalance, userReserveData.reserve.decimals),
+        liquidityIndexV3
       );
-      const combinedScaledDownBalance = scaledDownBalance.plus(scaledDownBalanceV2);
-      combinedScaledATokenBalance = rayMul(combinedScaledDownBalance, liquidityIndex).toString();
+      combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
+      usageAsCollateralEnabledOnUser = true;
     }
 
     return {
       ...userReserveData,
       id: userReserveData.reserve.id,
-      scaledVariableDebt: combinedScaledVariableDebt,
-      scaledATokenBalance: combinedScaledATokenBalance,
+      scaledVariableDebt: combinedScaledDownVariableDebtV3,
+      scaledATokenBalance: combinedScaledDownABalance,
+      usageAsCollateralEnabledOnUser,
     };
   });
 
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
 
-  return selectFormatUserSummaryForMigration(
+  const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
     userReserves,
     baseCurrencyData,
     currentTimestamp
   );
+
+  return formattedUserSummary;
 };
 
 export const selectV3UserSummary = (store: RootStore, timestamp: number) => {

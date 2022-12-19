@@ -112,12 +112,9 @@ export const useTransactionHandler = ({
   };
 
   const approval = async (approvals?: Approval[]) => {
-    console.log(approvalTxes, 'approvalTxes', approvals);
     if (approvalTxes) {
-      console.log(approvalTxes, 'approvalTxes');
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
-        console.log('loading true', usePermit, approvals, approvalTxes);
         try {
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
@@ -257,6 +254,7 @@ export const useTransactionHandler = ({
           action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
+        console.log(error, 'error');
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
