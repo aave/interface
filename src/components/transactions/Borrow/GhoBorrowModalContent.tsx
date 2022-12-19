@@ -156,6 +156,7 @@ export const GhoBorrowModalContent = ({
         symbol="GHO"
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow}
+        balanceText={<Trans>Available</Trans>}
       />
       {error !== undefined && errorComponent}
       {/* {discountAvailable && !hasGhoBorrowPositions && <ApplyBorrowForMaxDiscount /> */}
@@ -178,34 +179,44 @@ export const GhoBorrowModalContent = ({
               {showNoAPYData && <NoData variant="secondary14" color="text.muted" />}
               {showBorrowAPY && (
                 <>
-                  <GhoIncentivesCard
-                    value={loading ? -1 : currentBorrowAPY}
-                    incentives={userReserve.reserve.vIncentivesData}
-                    symbol={userReserve.reserve.symbol}
-                    data-cy={`apyType`}
-                    tooltip={apyDiffers ? undefined : <PercentIcon />}
-                    borrowAmount={amount}
-                    baseApy={ghoBorrowAPY}
-                    discountPercent={ghoDiscountRatePercent * -1}
-                    discountableAmount={discountableAmount}
-                    stkAaveBalance={stkAaveBalance || 0}
-                    ghoRoute={
-                      ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
-                      '/#discount'
-                    }
-                  />
+                  {hasGhoBorrowPositions && (
+                    <GhoIncentivesCard
+                      value={loading ? -1 : currentBorrowAPY}
+                      incentives={userReserve.reserve.vIncentivesData}
+                      symbol={userReserve.reserve.symbol}
+                      data-cy={`apyType`}
+                      tooltip={apyDiffers ? undefined : <PercentIcon />}
+                      borrowAmount={
+                        apyDiffers
+                          ? userReserve.totalBorrows
+                          : amount !== ''
+                          ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
+                          : userReserve.totalBorrows
+                      }
+                      baseApy={ghoBorrowAPY}
+                      discountPercent={ghoDiscountRatePercent * -1}
+                      discountableAmount={discountableAmount}
+                      stkAaveBalance={stkAaveBalance || 0}
+                      ghoRoute={
+                        ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
+                        '/#discount'
+                      }
+                    />
+                  )}
                   {apyDiffers && (
                     <>
-                      <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                        <ArrowNarrowRightIcon />
-                      </SvgIcon>
+                      {hasGhoBorrowPositions && (
+                        <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                          <ArrowNarrowRightIcon />
+                        </SvgIcon>
+                      )}
                       <GhoIncentivesCard
                         value={loading ? -1 : calculatedFutureBorrowAPY}
                         incentives={userReserve.reserve.vIncentivesData}
                         symbol={userReserve.reserve.symbol}
                         data-cy={`apyType`}
                         tooltip={<PercentIcon />}
-                        borrowAmount={amount}
+                        borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
                         baseApy={ghoBorrowAPY}
                         discountPercent={ghoDiscountRatePercent * -1}
                         discountableAmount={discountableAmount}

@@ -113,14 +113,18 @@ export const GhoIncentivesCard = ({
                     </li>
                   </ul>
                   <Trans>
-                    Discount only applies to{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      color="text.secondary"
-                      visibleDecimals={0}
-                      value={discountableAmount}
-                    />{' '}
-                    GHO, which equals discountable amount for staking{' '}
+                    <strong>
+                      Discount only applies to{' '}
+                      <FormattedNumber
+                        variant="caption"
+                        color="text.secondary"
+                        visibleDecimals={0}
+                        value={discountableAmount}
+                        sx={{ fontWeight: 'bold' }}
+                      />{' '}
+                      GHO,
+                    </strong>{' '}
+                    which equals discountable amount for staking{' '}
                     <FormattedNumber
                       value={stkAaveBalance}
                       variant="caption"
@@ -145,6 +149,7 @@ export const GhoIncentivesCard = ({
                 textDecoration: 'underline dashed',
                 textDecorationColor: theme.palette.text.muted,
                 textUnderlineOffset: '4px',
+                cursor: 'pointer',
               })}
             >
               <FormattedNumber
