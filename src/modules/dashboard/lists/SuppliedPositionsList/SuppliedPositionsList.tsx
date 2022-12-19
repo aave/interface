@@ -16,7 +16,6 @@ import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
-import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
@@ -45,18 +44,6 @@ export const SuppliedPositionsList = () => {
             : {}),
         },
       })) || [];
-
-  // const head = [
-  //   <Trans key="Balance">Balance</Trans>,
-  //   <Trans key="APY">APY</Trans>,
-  //   <CollateralSwitchTooltip
-  //     text={<Trans>Collateral</Trans>}
-  //     key="Collateral"
-  //     variant="subheader2"
-  //   />,
-  // ];
-
-  console.log('suppliedPosition', suppliedPosition);
 
   const head = [
     {

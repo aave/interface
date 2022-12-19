@@ -38,9 +38,6 @@ export const BorrowedPositionsList = () => {
       if (userReserve.variableBorrows !== '0') {
         acc.push({
           ...userReserve,
-          borrowAPY: userReserve.reserve.variableBorrowAPY,
-          debt: userReserve.variableBorrows,
-
           borrowRateMode: InterestRate.Variable,
           reserve: {
             ...userReserve.reserve,
@@ -57,9 +54,6 @@ export const BorrowedPositionsList = () => {
         acc.push({
           ...userReserve,
           borrowRateMode: InterestRate.Stable,
-          borrowAPY: userReserve.reserve.stableBorrowAPY,
-          debt: userReserve.stableBorrows,
-
           reserve: {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
@@ -87,23 +81,35 @@ export const BorrowedPositionsList = () => {
       borrowPositions.sort((a, b) =>
         a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
       );
+    } else if (sortName === 'debt') {
+      borrowPositions.sort((a, b) => Number(a.variableBorrows) - Number(b.variableBorrows));
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      borrowPositions.sort((a, b) => a[sortName] - b[sortName]);
+      borrowPositions.sort((a, b) =>
+        a.borrowRateMode === 'Variable'
+          ? Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY)
+          : Number(a.reserve.stableBorrowAPY) - Number(b.reserve.stableBorrowAPY)
+      );
     }
   } else {
     if (sortName === 'symbol') {
       borrowPositions.sort((a, b) =>
         b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
       );
+    } else if (sortName === 'debt') {
+      borrowPositions.sort((a, b) => Number(b.variableBorrows) - Number(a.variableBorrows));
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      borrowPositions.sort((a, b) => b[sortName] - a[sortName]);
+      // borrowPositions.sort((a, b) => b[sortName] - a[sortName]);
+      borrowPositions.sort((a, b) =>
+        a.borrowRateMode === 'Variable'
+          ? Number(b.reserve.variableBorrowAPY) - Number(a.reserve.variableBorrowAPY)
+          : Number(b.reserve.stableBorrowAPY) - Number(a.reserve.stableBorrowAPY)
+      );
     }
   }
-
   const head = [
     {
       title: <Trans>Asset</Trans>,
