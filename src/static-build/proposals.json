@@ -5360,22 +5360,22 @@
       ],
       "startBlock": 16176459,
       "endBlock": 16195659,
-      "executionTime": 0,
-      "forVotes": "468862021871416014825125",
-      "againstVotes": "325956885561522300",
-      "executed": false,
+      "executionTime": 1671287675,
+      "forVotes": "548867775466468281175126",
+      "againstVotes": "445913153828952719",
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1671719675,
       "proposalCreated": 16169259,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x780a2b877ea3b13c924a30d2959ea0b8f0257799f1d4d743ed58f8783f529954",
       "startTimestamp": 1670942759,
       "creationTimestamp": 1670855735,
-      "expirationTimestamp": 1671174251
+      "expirationTimestamp": 1671173159
     },
     {
       "id": 131,
@@ -5395,22 +5395,57 @@
       ],
       "startBlock": 16183841,
       "endBlock": 16203041,
-      "executionTime": 0,
-      "forVotes": "213120308590336853829522",
-      "againstVotes": "100000000000000000",
-      "executed": false,
+      "executionTime": 1671377735,
+      "forVotes": "461943419810633808168641",
+      "againstVotes": "319448050925676190",
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1671809735,
       "proposalCreated": 16176641,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x78ce0d63ca0c186ca3f58e712d3f1861ced3dad15ce3ad4f0e005d1663b49caf",
       "startTimestamp": 1671031859,
       "creationTimestamp": 1670944979,
-      "expirationTimestamp": 1671262835
+      "expirationTimestamp": 1671262259
+    },
+    {
+      "id": 132,
+      "creator": "0xf71fc92e2949ccF6A5Fd369a0b402ba80Bc61E02",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x6f02253c80A041a773efa35c98D4bc14A0f6EF9e"
+      ],
+      "signatures": [
+        "execute()"
+      ],
+      "calldatas": [
+        "0x"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 16225891,
+      "endBlock": 16245091,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 16218691,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x02e04de8258c1dca9c4c6099d8ac2142f1f2833bad5a7ca4154a12aa8f4dd548",
+      "creationTimestamp": 1671452303,
+      "startTimestamp": 1671538763,
+      "expirationTimestamp": 1671769163
     }
   ]
 }

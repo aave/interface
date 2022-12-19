@@ -31,7 +31,7 @@ import { CollateralRepayActionProps } from 'src/components/transactions/Repay/Co
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
-import { optimizedPath } from 'src/utils/utils';
+import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
 import { selectFormattedReserves } from './poolSelectors';
@@ -86,6 +86,9 @@ export interface PoolSlice {
   supply: (
     args: Omit<SupplyActionProps, 'poolReserve'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  poolComputed: {
+    minRemainingBaseTokenBalance: string;
+  };
 }
 
 export const createPoolSlice: StateCreator<
@@ -413,6 +416,15 @@ export const createPoolSlice: StateCreator<
     },
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
+    },
+    poolComputed: {
+      get minRemainingBaseTokenBalance() {
+        if (!get()) return '0.001';
+        const { currentNetworkConfig, currentChainId } = { ...get() };
+        const chainId = currentNetworkConfig.underlyingChainId || currentChainId;
+        const min = minBaseTokenRemainingByNetwork[chainId];
+        return min || '0.001';
+      },
     },
   };
 };
