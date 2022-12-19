@@ -77,6 +77,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const {
     ghoComputed: { maxAvailableFromFacilitator },
+    poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
@@ -136,17 +137,21 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const displayGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
 
   let maxAmountToBorrow: BigNumber;
+  let maxAmountToSupply: string;
   if (displayGho) {
     const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
     maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+    maxAmountToSupply = '0';
   } else {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable);
+    maxAmountToSupply = getMaxAmountAvailableToSupply(
+      balance.amount,
+      poolReserve,
+      underlyingAsset,
+      minRemainingBaseTokenBalance
+    ).toString();
   }
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
-
-  const maxAmountToSupply = displayGho
-    ? '0'
-    : getMaxAmountAvailableToSupply(balance.amount, poolReserve, underlyingAsset).toString();
 
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
   const eModeBorrowDisabled =
