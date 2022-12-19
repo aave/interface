@@ -1,4 +1,3 @@
-// import { calculateCompoundedRate } from '@aave/math-utils';
 import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import AddIcon from '@mui/icons-material/Add';
@@ -86,6 +85,7 @@ export const GhoDiscountCalculator = () => {
   const showDiscountRate =
     (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
     rateSelection.rateAfterDiscount === rateSelection.rateAfterMaxDiscount;
+  const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
 
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds and a given term length
@@ -131,7 +131,7 @@ export const GhoDiscountCalculator = () => {
   const GhoInterestOwedLineComponent: React.FC = () => (
     <Box my={4} display="flex" alignItems="center">
       <TokenIcon symbol="GHO" fontSize="small" />
-      <FormattedNumber value={198} visibleDecimals={2} variant="main12" sx={{ mx: 1 }} />
+      <FormattedNumber value={interestOwed} visibleDecimals={2} variant="main12" sx={{ mx: 1 }} />
       <Typography variant="caption" color="text.secondary">
         <Trans>Interest owed</Trans>
       </Typography>
