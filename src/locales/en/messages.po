@@ -357,14 +357,17 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
@@ -495,6 +498,7 @@ msgstr "Collateral to repay with"
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
@@ -1874,8 +1878,8 @@ msgstr "Time left to unstake"
 msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."

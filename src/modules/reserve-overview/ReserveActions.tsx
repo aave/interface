@@ -24,7 +24,6 @@ import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarnin
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
-  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
@@ -46,6 +45,7 @@ import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
+import { useReserveActionState } from '../../hooks/useReserveActionState';
 import { WalletEmptyInfo } from '../dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 
 interface ReserveActionsProps {
@@ -68,18 +68,6 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
-
-  if (!currentAccount && !isPermissionsLoading) {
-    return <ConnectWallet loading={loadingWeb3Context} />;
-  }
-
-  if (loadingReserves || loadingWalletBalance) {
-    return <ActionsSkeleton />;
-  }
-
-  const {
-    market: { marketTitle },
-  } = getMarketInfoById(currentMarket);
 
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
@@ -112,8 +100,22 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     .shiftedBy(-USD_DECIMALS)
     .toString();
 
-  const disableBorrowButton =
-    balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0';
+  const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
+    balance: balance.amount,
+    maxAmountToSupply: '0',
+    maxAmountToBorrow: '0',
+    reserve,
+  });
+
+  if (!currentAccount && !isPermissionsLoading) {
+    return <ConnectWallet loading={loadingWeb3Context} />;
+  }
+
+  if (loadingReserves || loadingWalletBalance) {
+    return <ActionsSkeleton />;
+  }
+
+  const { market } = getMarketInfoById(currentMarket);
 
   return (
     <PaperWrapper>
@@ -127,7 +129,11 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
           />
         </Box>
       )}
-      <WalletBalance balance={balance.amount} symbol={reserve.symbol} marketTitle={marketTitle} />
+      <WalletBalance
+        balance={balance.amount}
+        symbol={reserve.symbol}
+        marketTitle={market.marketTitle}
+      />
       {reserve.isFrozen ? (
         <Box sx={{ mt: 3 }}>
           <FrozenWarning />
@@ -141,25 +147,17 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
                 value={maxAmountToSupply}
                 usdValue={maxAmountToSupplyUSD}
                 symbol={selectedAsset}
-                disable={balance?.amount === '0'}
+                disable={disableSupplyButton}
                 onActionClicked={() => openSupply(reserve.underlyingAsset)}
               />
-              {reserve.borrowingEnabled && (
-                <BorrowAction
-                  value={maxAmountToBorrow}
-                  usdValue={maxAmountToBorrowUSD}
-                  symbol={selectedAsset}
-                  disable={disableBorrowButton}
-                  onActionClicked={() => openBorrow(reserve.underlyingAsset)}
-                />
-              )}
-              <ActionAlert
-                balance={balance.amount}
-                user={user}
-                maxAmountToSupply={maxAmountToSupply}
-                maxAmountToBorrow={maxAmountToBorrow}
-                reserve={reserve}
+              <BorrowAction
+                value={maxAmountToBorrow}
+                usdValue={maxAmountToBorrowUSD}
+                symbol={selectedAsset}
+                disable={disableBorrowButton}
+                onActionClicked={() => openBorrow(reserve.underlyingAsset)}
               />
+              {alerts}
             </Stack>
           </Box>
         </>
@@ -170,7 +168,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
 
 const FrozenWarning = () => {
   return (
-    <Warning severity="error" icon={true}>
+    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
       <Trans>
         Since this asset is frozen, the only available actions are withdraw and repay which can be
         accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
@@ -247,58 +245,6 @@ const ConnectWallet = ({ loading }: { loading: boolean }) => {
         </>
       )}
     </Paper>
-  );
-};
-
-interface ActionAlertProps {
-  balance: string;
-  user: ExtendedFormattedUser;
-  maxAmountToSupply: string;
-  maxAmountToBorrow: string;
-  reserve: ComputedReserveData;
-}
-
-const ActionAlert = ({
-  balance,
-  user,
-  maxAmountToSupply,
-  maxAmountToBorrow,
-  reserve,
-}: ActionAlertProps) => {
-  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const { bridge, name: networkName } = currentNetworkConfig;
-
-  if (balance === '0') {
-    // TODO: testnet message, link to faucet
-    return (
-      <WalletEmptyInfo
-        sx={{ mb: 0 }}
-        name={networkName}
-        bridge={bridge}
-        icon={false}
-        chainId={currentChainId}
-      />
-    );
-  }
-
-  if (balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0') {
-    return (
-      <Warning severity="info" icon={false}>
-        <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-      </Warning>
-    );
-  }
-
-  return (
-    <>
-      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
-      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
-      {reserve.isIsolated &&
-        balance !== '0' &&
-        user?.totalCollateralUSD !== '0' &&
-        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
-    </>
   );
 };
 
