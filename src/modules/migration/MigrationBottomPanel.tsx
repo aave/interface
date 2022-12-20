@@ -76,23 +76,38 @@ export const MigrationBottomPanel = ({
           loading={loading}
         />
 
-        <FormControlLabel
-          sx={{ mb: { xs: 4, lg: 6 } }}
-          control={
-            <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} size="small" />
-          }
-          label={
-            <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
-              <Trans>I fully understand the risks of migrating.</Trans>
-            </Typography>
-          }
-        />
+        <Box
+          sx={{
+            height: '44px',
+            backgroundColor: 'background.surface',
+            borderRadius: '4px',
+            display: 'flex',
+            justifyContent: 'center',
+            mb: 4,
+          }}
+        >
+          <FormControlLabel
+            sx={{ margin: 0 }}
+            control={
+              <Checkbox
+                checked={isChecked}
+                onChange={() => setIsChecked(!isChecked)}
+                size="small"
+              />
+            }
+            label={
+              <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+                <Trans>I fully understand the risks of migrating.</Trans>
+              </Typography>
+            }
+          />
+        </Box>
 
         <Box>
           <Button
             onClick={openV3Migration}
             disabled={!isChecked || disableButton}
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', height: '44px' }}
             variant={!isChecked || disableButton ? 'contained' : 'gradient'}
             size="medium"
           >
