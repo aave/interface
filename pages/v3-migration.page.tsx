@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -29,6 +29,8 @@ export default function V3Migration() {
   const { isPermissionsLoading } = usePermissions();
   const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
   const resetMigrationSelectedAssets = useRootStore((state) => state.resetMigrationSelectedAssets);
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const currentTimeStamp = useCurrentTimestamp(5);
 
@@ -144,7 +146,7 @@ export default function V3Migration() {
             }
           />
 
-          <Divider sx={{ my: 10 }} />
+          {!downToSM && <Divider sx={{ my: 10 }} />}
 
           <MigrationBottomPanel
             hfV2Current={user.healthFactor}

@@ -1,4 +1,4 @@
-import { ExclamationIcon } from '@heroicons/react/solid';
+import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -35,7 +35,7 @@ export const MigrationBottomPanel = ({
   loading,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const downToSM = useMediaQuery(breakpoints.down('sm'));
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
@@ -49,12 +49,68 @@ export const MigrationBottomPanel = ({
         justifyContent: 'space-between',
       }}
     >
-      <Box sx={{ width: { xs: '100%', md: '50%', lg: '60%' } }}>
+      <Paper
+        sx={{
+          p: { xs: '20px', lg: '20px 30px' },
+          mb: { xs: 6, md: 0 },
+          width: { xs: '100%', md: '45%', lg: '35%' },
+        }}
+      >
+        <Row
+          caption={<Trans>Review changes to continue</Trans>}
+          captionVariant="h3"
+          sx={{ mb: 6 }}
+        />
+
+        <HFChange
+          caption={<Trans>Version 2 HF change</Trans>}
+          hfCurrent={hfV2Current}
+          hfAfter={hfV2AfterChange}
+          loading={loading}
+        />
+
+        <HFChange
+          caption={<Trans>Version 3 HF change</Trans>}
+          hfCurrent={hfV3Current}
+          hfAfter={hfV3AfterChange}
+          loading={loading}
+        />
+
+        <FormControlLabel
+          sx={{ mb: { xs: 4, lg: 6 } }}
+          control={
+            <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} size="small" />
+          }
+          label={
+            <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+              <Trans>I fully understand the risks of migrating.</Trans>
+            </Typography>
+          }
+        />
+
+        <Box>
+          <Button
+            onClick={openV3Migration}
+            disabled={!isChecked || disableButton}
+            sx={{ width: '100%' }}
+            variant={!isChecked || disableButton ? 'contained' : 'gradient'}
+            size="medium"
+          >
+            <Trans>Preview tx and migrate</Trans>
+          </Button>
+        </Box>
+      </Paper>
+      <Box
+        sx={{ width: { xs: '100%', md: '50%', lg: '60%' }, padding: '24px', mt: downToSM ? 4 : 0 }}
+      >
         <Typography
-          variant={isDesktop ? 'h2' : 'h3'}
-          sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 } }}
+          variant="h3"
+          sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
         >
-          <Trans>Migration & Health factor change</Trans>
+          <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
+            <ExclamationIcon />
+          </SvgIcon>
+          <Trans>Migration risks</Trans>
         </Typography>
         <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
           <Trans>
@@ -75,63 +131,7 @@ export const MigrationBottomPanel = ({
         <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
           <Trans>Be mindful of the network congestion and gas prices.</Trans>
         </Typography>
-
-        <FormControlLabel
-          sx={{ mb: { xs: 4, lg: 6 } }}
-          control={
-            <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} size="small" />
-          }
-          label={
-            <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
-              <Trans>I fully understand the risks of migrating.</Trans>
-            </Typography>
-          }
-        />
-
-        <Box>
-          <Button
-            onClick={openV3Migration}
-            disabled={!isChecked || disableButton}
-            sx={{ minWidth: 140 }}
-            variant="contained"
-            size="medium"
-          >
-            <Trans>Migrate</Trans>
-          </Button>
-        </Box>
       </Box>
-
-      <Paper
-        sx={{
-          p: { xs: '20px', lg: '20px 30px' },
-          mb: { xs: 6, md: 0 },
-          width: { xs: '100%', md: '45%', lg: '35%' },
-        }}
-      >
-        <Row
-          caption={<Trans>Health factor changes after migration</Trans>}
-          captionVariant={isDesktop ? 'h3' : 'secondary16'}
-          sx={{ mb: 6 }}
-        >
-          <SvgIcon sx={{ fontSize: '24px', color: 'warning.main' }}>
-            <ExclamationIcon />
-          </SvgIcon>
-        </Row>
-
-        <HFChange
-          caption={<Trans>Version 2 HF change</Trans>}
-          hfCurrent={hfV2Current}
-          hfAfter={hfV2AfterChange}
-          loading={loading}
-        />
-
-        <HFChange
-          caption={<Trans>Version 3 HF change</Trans>}
-          hfCurrent={hfV3Current}
-          hfAfter={hfV3AfterChange}
-          loading={loading}
-        />
-      </Paper>
     </Box>
   );
 };
