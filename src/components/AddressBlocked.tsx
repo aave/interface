@@ -9,7 +9,7 @@ export const AddressBlocked = ({ children }: { children: ReactNode }) => {
   const { currentAccount, disconnectWallet, watchModeOnly } = useWeb3Context();
   const screenAddress = watchModeOnly ? '' : currentAccount;
   const { isAllowed } = useAddressAllowed(screenAddress);
-  console.log('isAllowed', isAllowed);
+
   if (!isAllowed) {
     return (
       <MainLayout>
