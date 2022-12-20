@@ -440,8 +440,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          watchModeOnlyAddress:
-            connector instanceof WatchModeOnlyConnector ? account?.toLowerCase() : undefined,
+          watchModeOnlyAddress: watchModeOnly ? account?.toLowerCase() : undefined,
           watchModeOnly,
         },
       }}
