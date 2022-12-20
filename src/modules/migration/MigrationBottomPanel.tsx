@@ -98,7 +98,7 @@ export const MigrationBottomPanel = ({
     >
       <Paper
         sx={{
-          p: { xs: '20px', lg: '20px 30px' },
+          p: '20px 30px',
           mb: { xs: 6, md: 0 },
           width: { xs: '100%', md: '45%', lg: '35%' },
         }}
