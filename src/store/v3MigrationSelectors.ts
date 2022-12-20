@@ -130,7 +130,8 @@ export const selectFormatUserSummaryForMigration = (
   reserves: ReserveDataHumanized[] = [],
   userReserves: UserReserveDataHumanized[] = [],
   baseCurrencyData: PoolBaseCurrencyHumanized,
-  currentTimestamp: number
+  currentTimestamp: number,
+  userEmodeCategoryId = 0
 ) => {
   const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
   const formattedReserves = formatReserves({
@@ -146,7 +147,7 @@ export const selectFormatUserSummaryForMigration = (
     marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
     userReserves,
-    userEmodeCategoryId: 0,
+    userEmodeCategoryId,
   });
 
   return formattedSummary;
@@ -184,7 +185,8 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
     poolReserve?.reserves,
     userReserves,
     baseCurrencyData,
-    currentTimestamp
+    currentTimestamp,
+    poolReserve?.userEmodeCategoryId
   );
 };
 
@@ -235,7 +237,9 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
       );
       combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
       if (userReserveData.underlyingBalance == '0') {
-        usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUser;
+        usageAsCollateralEnabledOnUser = userReserveData.reserve.isIsolated
+          ? false
+          : supplyAsset.usageAsCollateralEnabledOnUser;
       }
     }
 
@@ -254,7 +258,8 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     poolReserveV3?.reserves,
     userReserves,
     baseCurrencyData,
-    currentTimestamp
+    currentTimestamp,
+    poolReserveV3?.userEmodeCategoryId
   );
 
   return formattedUserSummary;
@@ -268,9 +273,9 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
     poolReserveV3?.reserves,
     poolReserveV3?.userReserves,
     baseCurrencyData,
-    timestamp
+    timestamp,
+    poolReserveV3?.userEmodeCategoryId
   );
-
   return formattedUserSummary;
 };
 
