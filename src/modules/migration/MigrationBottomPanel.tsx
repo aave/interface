@@ -12,8 +12,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { HFChange } from './HFChange';
 
@@ -36,6 +38,8 @@ export const MigrationBottomPanel = ({
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
   const downToSM = useMediaQuery(breakpoints.down('sm'));
+  const { currentMarket } = useProtocolDataContext();
+  const { market } = getMarketInfoById(currentMarket);
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
@@ -63,14 +67,14 @@ export const MigrationBottomPanel = ({
         />
 
         <HFChange
-          caption={<Trans>Version 2 HF change</Trans>}
+          caption={<Trans>Health Factor ({market.marketTitle} v2)</Trans>}
           hfCurrent={hfV2Current}
           hfAfter={hfV2AfterChange}
           loading={loading}
         />
 
         <HFChange
-          caption={<Trans>Version 3 HF change</Trans>}
+          caption={<Trans>Health Factor ({market.marketTitle} v3)</Trans>}
           hfCurrent={hfV3Current}
           hfAfter={hfV3AfterChange}
           loading={loading}
