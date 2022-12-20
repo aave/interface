@@ -25,7 +25,7 @@ export const MigrationTopPanel = () => {
               display: 'flex',
               alignItems: downToSM ? 'flex-start' : 'center',
               alignSelf: downToSM ? 'flex-start' : 'center',
-              mb: 8,
+              mb: 4,
               minHeight: '40px',
               flexDirection: downToSM ? 'column' : 'row',
             }}
