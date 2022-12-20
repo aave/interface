@@ -69,7 +69,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
-  // const [watchModeOnly, setWatchModeOnly] = useState(false);
+  const [watchModeOnly, setWatchModeOnly] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
@@ -128,20 +128,23 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     async (wallet: WalletType) => {
       setLoading(true);
       try {
+        console.log('connecting wallet', wallet);
         const connector: AbstractConnector = getWallet(wallet, chainId);
 
-        // if (connector instanceof WatchModeOnlyConnector) {
-        //   setWatchModeOnly(true);
-        // } else {
-        //   setAccount('');
-        //   setWatchModeOnly(false);
-        // }
+        if (connector instanceof WatchModeOnlyConnector) {
+          setWatchModeOnly(true);
+        } else {
+          console.log('setting account to empty string');
+          setAccount('');
+          setWatchModeOnly(false);
+        }
 
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
         }
 
         await activate(connector, undefined, true);
+        console.log('activated', connector);
         setConnector(connector);
         setSwitchNetworkError(undefined);
         localStorage.setItem('walletProvider', wallet.toString());
@@ -441,9 +444,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          watchModeOnlyAddress:
-            connector instanceof WatchModeOnlyConnector ? account?.toLowerCase() : undefined,
-          watchModeOnly: false,
+          watchModeOnlyAddress: watchModeOnly ? account?.toLowerCase() : undefined,
+          watchModeOnly,
         },
       }}
     >
