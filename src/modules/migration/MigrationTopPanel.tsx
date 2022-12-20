@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
+import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
@@ -42,7 +43,7 @@ export const MigrationTopPanel = () => {
               onClick={() => {
                 // https://github.com/vercel/next.js/discussions/34980
                 if (history.state.idx !== 0) router.back();
-                else router.push('/markets');
+                else router.push(ROUTES.dashboard);
               }}
               sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
             >
