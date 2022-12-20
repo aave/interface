@@ -69,7 +69,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
-  const [watchModeOnly, setWatchModeOnly] = useState(false);
+  // const [watchModeOnly, setWatchModeOnly] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
@@ -130,12 +130,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId);
 
-        if (connector instanceof WatchModeOnlyConnector) {
-          setWatchModeOnly(true);
-        } else {
-          setAccount('');
-          setWatchModeOnly(false);
-        }
+        // if (connector instanceof WatchModeOnlyConnector) {
+        //   setWatchModeOnly(true);
+        // } else {
+        //   setAccount('');
+        //   setWatchModeOnly(false);
+        // }
 
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
@@ -441,8 +441,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          watchModeOnlyAddress: watchModeOnly ? account?.toLowerCase() : undefined,
-          watchModeOnly,
+          watchModeOnlyAddress:
+            connector instanceof WatchModeOnlyConnector ? account?.toLowerCase() : undefined,
+          watchModeOnly: false,
         },
       }}
     >
