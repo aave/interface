@@ -14,6 +14,7 @@ import {
 import { useState } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -26,6 +27,12 @@ interface MigrationBottomPanelProps {
   hfV3AfterChange: string;
   disableButton?: boolean;
   loading?: boolean;
+}
+
+enum ErrorType {
+  NO_SELECTION,
+  V2_HF_TOO_LOW,
+  V3_HF_TOO_LOW,
 }
 
 export const MigrationBottomPanel = ({
@@ -43,6 +50,42 @@ export const MigrationBottomPanel = ({
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
+
+  // error types handling
+  let blockingError: ErrorType | undefined = undefined;
+  if (disableButton && isChecked) {
+    blockingError = ErrorType.NO_SELECTION;
+  } else if (Number(hfV2AfterChange) < 1.005 && hfV2AfterChange !== '-1') {
+    blockingError = ErrorType.V2_HF_TOO_LOW;
+  } else if (Number(hfV3AfterChange) < 1.005 && hfV3AfterChange !== '-1') {
+    blockingError = ErrorType.V3_HF_TOO_LOW;
+  }
+
+  // error render handling
+  const Blocked = () => {
+    switch (blockingError) {
+      case ErrorType.NO_SELECTION:
+        return <Trans>No assets selected to migrate.</Trans>;
+      case ErrorType.V2_HF_TOO_LOW:
+        return (
+          <Trans>
+            This action will reduce V2 health factor below liquidation threshold. retain collateral
+            or migrate borrow position to continue.
+          </Trans>
+        );
+      case ErrorType.V3_HF_TOO_LOW:
+        return (
+          <>
+            <Trans>
+              This action will reduce health factor of V3 below liquidation threshold. Increase
+              migrated collateral or reduce migrated borrow to continue.
+            </Trans>
+          </>
+        );
+      default:
+        return <></>;
+    }
+  };
 
   return (
     <Box
@@ -80,6 +123,12 @@ export const MigrationBottomPanel = ({
           loading={loading}
         />
 
+        {blockingError !== undefined && (
+          <Warning severity="warning">
+            <Blocked />
+          </Warning>
+        )}
+
         <Box
           sx={{
             height: '44px',
@@ -110,9 +159,9 @@ export const MigrationBottomPanel = ({
         <Box>
           <Button
             onClick={openV3Migration}
-            disabled={!isChecked || disableButton}
+            disabled={!isChecked || blockingError !== undefined}
             sx={{ width: '100%', height: '44px' }}
-            variant={!isChecked || disableButton ? 'contained' : 'gradient'}
+            variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}
             size="medium"
           >
             <Trans>Preview tx and migrate</Trans>
