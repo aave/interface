@@ -88,7 +88,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     .toString();
 
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance.amount,
+    balance?.amount || '0',
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
@@ -101,9 +101,9 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     .toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
-    balance: balance.amount,
-    maxAmountToSupply: '0',
-    maxAmountToBorrow: '0',
+    balance: balance?.amount || '0',
+    maxAmountToSupply,
+    maxAmountToBorrow,
     reserve,
   });
 
@@ -415,7 +415,9 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>
-          <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
+          <Box sx={{ ml: 2 }}>
+            <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
+          </Box>
         </ValueWithSymbol>
       </Box>
     </Stack>
