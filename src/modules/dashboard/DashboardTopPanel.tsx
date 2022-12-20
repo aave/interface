@@ -5,6 +5,7 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -32,7 +33,8 @@ import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { market } = getMarketInfoById(currentMarket);
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
@@ -103,7 +105,7 @@ export const DashboardTopPanel = () => {
               }}
             >
               <Typography variant="buttonM">
-                <Trans>Migrate to V3</Trans>
+                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
               </Typography>
             </Button>
           </Link>
@@ -111,7 +113,7 @@ export const DashboardTopPanel = () => {
       )}
       <TopInfoPanel
         titleComponent={
-          <Box sx={{ display: downToSM ? 'block' : 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <PageTitle
               pageTitle={<Trans>Dashboard</Trans>}
               withMarketSwitcher={true}
@@ -122,7 +124,7 @@ export const DashboardTopPanel = () => {
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
                     <Typography variant="buttonS">
-                      <Trans>Migrate to V3</Trans>
+                      <Trans>Migrate to v3</Trans>
                     </Typography>
                   </Button>
                 </Link>
