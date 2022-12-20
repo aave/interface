@@ -101,7 +101,11 @@ export const MigrationBottomPanel = ({
         </Box>
       </Paper>
       <Box
-        sx={{ width: { xs: '100%', md: '50%', lg: '60%' }, padding: '24px', mt: downToSM ? 4 : 0 }}
+        sx={{
+          width: { xs: '100%', md: '50%', lg: '60%' },
+          padding: '20px 30px',
+          mt: downToSM ? 4 : 0,
+        }}
       >
         <Typography
           variant="h3"
