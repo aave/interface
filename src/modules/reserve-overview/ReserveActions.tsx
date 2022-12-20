@@ -1,4 +1,5 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -62,7 +63,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
   const { isPermissionsLoading } = usePermissions();
   const { openBorrow, openSupply } = useModalContext();
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
-  const { user, loading: loadingReserves } = useAppDataContext();
+  const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
@@ -92,12 +93,24 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
     InterestRate.Variable
   ).toString();
 
+  const maxAmountToBorrowUSD = valueToBigNumber(maxAmountToBorrow)
+    .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS)
+    .toString();
+
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance.amount,
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
   ).toString();
+
+  const maxAmountToSupplyUSD = valueToBigNumber(maxAmountToSupply)
+    .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS)
+    .toString();
 
   const disableBorrowButton =
     balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0';
@@ -126,6 +139,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
             <Stack gap={3}>
               <SupplyAction
                 value={maxAmountToSupply}
+                usdValue={maxAmountToSupplyUSD}
                 symbol={selectedAsset}
                 disable={balance?.amount === '0'}
                 onActionClicked={() => openSupply(reserve.underlyingAsset)}
@@ -133,6 +147,7 @@ export const NewReserveActions = ({ reserve }: NewReserveActionsProps) => {
               {reserve.borrowingEnabled && (
                 <BorrowAction
                   value={maxAmountToBorrow}
+                  usdValue={maxAmountToBorrowUSD}
                   symbol={selectedAsset}
                   disable={disableBorrowButton}
                   onActionClicked={() => openBorrow(reserve.underlyingAsset)}
@@ -166,17 +181,20 @@ const FrozenWarning = () => {
 
 const ActionsSkeleton = () => {
   const RowSkeleton = (
-    <Stack
-      sx={{ height: '44px' }}
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Box>
-        <Skeleton width={150} height={12} sx={{ mt: 1, mb: 2 }} />
-        <Skeleton width={100} height={14} />
-      </Box>
-      <Skeleton height={36} width={96} />
+    <Stack>
+      <Skeleton width={150} height={14} />
+      <Stack
+        sx={{ height: '44px' }}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Box>
+          <Skeleton width={100} height={14} sx={{ mt: 1, mb: 2 }} />
+          <Skeleton width={75} height={12} />
+        </Box>
+        <Skeleton height={36} width={96} />
+      </Stack>
     </Stack>
   );
 
@@ -254,13 +272,19 @@ const ActionAlert = ({
   if (balance === '0') {
     // TODO: testnet message, link to faucet
     return (
-      <WalletEmptyInfo name={networkName} bridge={bridge} icon={false} chainId={currentChainId} />
+      <WalletEmptyInfo
+        sx={{ mb: 0 }}
+        name={networkName}
+        bridge={bridge}
+        icon={false}
+        chainId={currentChainId}
+      />
     );
   }
 
   if (balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0') {
     return (
-      <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
+      <Warning severity="info" icon={false}>
         <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
       </Warning>
     );
@@ -280,67 +304,86 @@ const ActionAlert = ({
 
 interface ActionProps {
   value: string;
+  usdValue: string;
   symbol: string;
   disable: boolean;
   onActionClicked: () => void;
 }
 
-const SupplyAction = ({ value, symbol, disable, onActionClicked }: ActionProps) => {
+const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
   return (
-    <Stack
-      sx={{ height: '44px' }}
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Box>
-        <AvailableTooltip
-          variant="description"
-          text={<Trans>Available to supply</Trans>}
-          capType={CapType.supplyCap}
-        />
-        <ValueWithSymbol value={value} symbol={symbol} />
-      </Box>
-      <Button
-        sx={{ height: '36px', width: '96px' }}
-        onClick={onActionClicked}
-        disabled={disable}
-        fullWidth={false}
-        variant="contained"
-        data-cy="supplyButton"
+    <Stack>
+      <AvailableTooltip
+        variant="description"
+        text={<Trans>Available to supply</Trans>}
+        capType={CapType.supplyCap}
+      />
+      <Stack
+        sx={{ height: '44px' }}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Trans>Supply</Trans>
-      </Button>
+        <Box>
+          <ValueWithSymbol value={value} symbol={symbol} />
+          <FormattedNumber
+            value={usdValue}
+            variant="subheader2"
+            color="text.muted"
+            symbolsColor="text.muted"
+            symbol="USD"
+          />
+        </Box>
+        <Button
+          sx={{ height: '36px', width: '96px' }}
+          onClick={onActionClicked}
+          disabled={disable}
+          fullWidth={false}
+          variant="contained"
+          data-cy="supplyButton"
+        >
+          <Trans>Supply</Trans>
+        </Button>
+      </Stack>
     </Stack>
   );
 };
 
-const BorrowAction = ({ value, symbol, disable, onActionClicked }: ActionProps) => {
+const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
   return (
-    <Stack
-      sx={{ height: '44px' }}
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Box>
-        <AvailableTooltip
-          variant="description"
-          text={<Trans>Available to borrow</Trans>}
-          capType={CapType.borrowCap}
-        />
-        <ValueWithSymbol value={value} symbol={symbol} />
-      </Box>
-      <Button
-        sx={{ height: '36px', width: '96px' }}
-        onClick={onActionClicked}
-        disabled={disable}
-        fullWidth={false}
-        variant="contained"
-        data-cy="borrowButton"
+    <Stack>
+      <AvailableTooltip
+        variant="description"
+        text={<Trans>Available to borrow</Trans>}
+        capType={CapType.borrowCap}
+      />
+      <Stack
+        sx={{ height: '44px' }}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Trans>Borrow</Trans>
-      </Button>
+        <Box>
+          <ValueWithSymbol value={value} symbol={symbol} />
+          <FormattedNumber
+            value={usdValue}
+            variant="subheader2"
+            color="text.muted"
+            symbolsColor="text.muted"
+            symbol="USD"
+          />
+        </Box>
+        <Button
+          sx={{ height: '36px', width: '96px' }}
+          onClick={onActionClicked}
+          disabled={disable}
+          fullWidth={false}
+          variant="contained"
+          data-cy="borrowButton"
+        >
+          <Trans>Borrow</Trans>
+        </Button>
+      </Stack>
     </Stack>
   );
 };
@@ -362,7 +405,7 @@ const WrappedBaseAssetSelector = ({
       value={selectedAsset}
       exclusive
       onChange={(_, value) => setSelectedAsset(value)}
-      sx={{ width: '100%', mb: 4 }}
+      sx={{ width: '100%', height: '36px', p: 0.5, mb: 4 }}
     >
       <StyledToggleButton value={assetSymbol}>
         <Typography variant="subheader1" sx={{ mr: 1 }}>

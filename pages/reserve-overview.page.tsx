@@ -10,7 +10,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { NewReserveActions } from 'src/modules/reserve-overview/ReserveActions';
+import { NewReserveActions, ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
 
