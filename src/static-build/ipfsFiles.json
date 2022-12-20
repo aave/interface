@@ -1919,6 +1919,21 @@
       "ipfsHash": "QmNXsuCbJNvfJBiRHg9P9snhCeWXZ9bAPVzvHPG7LBggUP",
       "originalHash": "0x02e04de8258c1dca9c4c6099d8ac2142f1f2833bad5a7ca4154a12aa8f4dd548",
       "id": 132
+    },
+    {
+      "aip": 133,
+      "title": "Gauntlet <> Aave Renewal",
+      "status": "Proposed",
+      "author": "Paul Lei, Deepa Talwar, Jesse Kao, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Sarah Chen",
+      "shortDescription": "Gauntlet <> Aave Renewal",
+      "discussions": "https://governance.aave.com/t/arc-updated-gauntlet-aave-renewal/11013",
+      "created": "2022-12-19T00:00:00.000Z",
+      "preview": "## Summary\n\n A proposal to renew Gauntlet's 12-month engagement with Aave …",
+      "basename": "AIP-133",
+      "description": "## Summary\n\nA proposal to renew Gauntlet’s 12-month engagement with Aave on continuous market risk management to maximize capital efficiency while minimizing the risk of insolvency and liquidations to create long-term sustainable growth. Full details of the proposal can be found in our [forum post](https://governance.aave.com/t/arc-updated-gauntlet-aave-renewal/11013). The engagement was pre-approved by the Aave community via [Snapshot](https://snapshot.org/#/aave.eth/proposal/0xd096f98237c642614fe154844c5037a85c1f287f3323c4b003a83bd3f4ea658a).\n\n\n## Proposal\n\nGauntlet’s Risk Management platform quantifies risk, optimizes risk parameters, runs economic stress tests, and calibrates parameters dynamically. Gauntlet uses agent-based simulation models tuned to actual market data to model tail market events and interactions between different users within DeFi protocols.\n\nThe engagement runs from Dec 28, 2022 to Dec 28, 2023 and includes risk management coverage of all Aave v2 and v3 markets. The total annual fee is $2,000,000 - 70% is paid in aUSDC (1,400,000) and 30% in AAVE (9,919 AAVE tokens).\n\nFull details of the engagement scope, integration timeline, and KPIs are covered in our [forum post](https://governance.aave.com/t/arc-updated-gauntlet-aave-renewal/11013).\n\n\n## Specification\n\nA full specification of the payload contract and tests enabling this proposal can be found on Gauntlet's Github [here](https://github.com/GauntletNetworks/aave-gauntlet-renewal).\n\nThe Proposal Payload does the following:\n\n* 30% of the total annual fee (600,000 in USDC) will be deposited in a vault for the insolvency refund.\n* The remaining 800,000 in aUSDC and 9,919 AAVE tokens will be streamed linearly over 1 year.\n\n#### Implementation\n\nThe Proposal Payload has been tested and peer-reviewed by [Bored Ghost Developing](https://twitter.com/bgdlabs), including simulations on mainnet of the whole proposal lifecycle.\n\nLink to Test Cases: [ProposalPayloadE2E.t.sol](https://github.com/GauntletNetworks/aave-gauntlet-renewal/blob/main/src/test/ProposalPayloadE2E.t.sol)\n\nLink to Payload implementation: [ProposalPayload.sol](https://github.com/GauntletNetworks/aave-gauntlet-renewal/blob/main/src/ProposalPayload.sol) \n\nDeployed Contracts: ProposalPayload = [`0x03232b5ee80369a88620615f8328beec1884b731`](https://etherscan.io/address/0x03232b5ee80369a88620615f8328beec1884b731)\n\nThank you to the [Llama](https://llama.xyz/) team for providing open source governance tooling that we used to prepare this proposal.\n\n## Copyright\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.*",
+      "ipfsHash": "QmYdk1dZYQki9Nf5hfhtPbWVaTHtzY5cpSfgSoXTXxRz1t",
+      "originalHash": "0x98f5bcf905c773dbb9d5336b52f8f6aea62254c092de928fd45b1a4cef5129a7",
+      "id": 133
     }
   ]
 }
