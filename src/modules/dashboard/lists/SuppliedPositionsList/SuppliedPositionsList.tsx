@@ -67,6 +67,7 @@ export const SuppliedPositionsList = () => {
           variant="subheader2"
         />
       ),
+      sortKey: 'usageAsCollateralEnabledOnUser',
     },
   ];
 
@@ -74,6 +75,11 @@ export const SuppliedPositionsList = () => {
     if (sortName === 'symbol') {
       suppliedPosition.sort((a, b) =>
         a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
+      );
+    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
+      suppliedPosition.sort(
+        (a, b) =>
+          Number(a.usageAsCollateralEnabledOnUser) - Number(b.usageAsCollateralEnabledOnUser)
       );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -84,6 +90,11 @@ export const SuppliedPositionsList = () => {
     if (sortName === 'symbol') {
       suppliedPosition.sort((a, b) =>
         b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
+      );
+    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
+      suppliedPosition.sort(
+        (a, b) =>
+          Number(b.usageAsCollateralEnabledOnUser) - Number(a.usageAsCollateralEnabledOnUser)
       );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
