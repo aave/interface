@@ -133,7 +133,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         if (connector instanceof WatchModeOnlyConnector) {
           setWatchModeOnly(true);
         } else {
-          setAccount('');
           setWatchModeOnly(false);
         }
 
