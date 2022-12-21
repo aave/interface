@@ -160,16 +160,17 @@ export const SupplyAssetsList = () => {
     { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
     {
       title: <Trans key="Can be collateral">Can be collateral</Trans>,
-      sortKey: 'usageAsCollateralEnabled',
+      sortKey: 'usageAsCollateralEnabledOnUser',
     },
   ];
 
   if (sortDesc) {
     if (sortName === 'symbol') {
       supplyReserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-    } else if (sortName === 'usageAsCollateralEnabled') {
+    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
       supplyReserves.sort(
-        (a, b) => Number(a.usageAsCollateralEnabled) - Number(b.usageAsCollateralEnabled)
+        (a, b) =>
+          Number(a.usageAsCollateralEnabledOnUser) - Number(b.usageAsCollateralEnabledOnUser)
       );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -179,9 +180,10 @@ export const SupplyAssetsList = () => {
   } else {
     if (sortName === 'symbol') {
       supplyReserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-    } else if (sortName === 'usageAsCollateralEnabled') {
+    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
       supplyReserves.sort(
-        (a, b) => Number(b.usageAsCollateralEnabled) - Number(a.usageAsCollateralEnabled)
+        (a, b) =>
+          Number(b.usageAsCollateralEnabledOnUser) - Number(a.usageAsCollateralEnabledOnUser)
       );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
