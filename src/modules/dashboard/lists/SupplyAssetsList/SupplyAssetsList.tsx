@@ -198,6 +198,7 @@ export const SupplyAssetsList = () => {
             isRow={col.sortKey === 'symbol'}
             maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
             key={col.sortKey}
+            overFlow={col.sortKey === 'usageAsCollateralEnabled' ? 'none' : 'hidden'}
           >
             <ListHeaderTitle
               sortName={sortName}

@@ -7,6 +7,7 @@ interface ListColumnProps {
   minWidth?: number;
   isRow?: boolean;
   align?: 'left' | 'center' | 'right';
+  overFlow?: 'hidden' | 'none';
 }
 
 export const ListColumn = ({
@@ -15,6 +16,7 @@ export const ListColumn = ({
   minWidth,
   maxWidth,
   align = 'center',
+  overFlow = 'hidden',
 }: ListColumnProps) => {
   return (
     <Box
@@ -32,7 +34,7 @@ export const ListColumn = ({
         flex: 1,
         minWidth: minWidth || '70px',
         maxWidth,
-        overflow: 'hidden',
+        overflow: overFlow,
         p: 1,
       }}
     >
