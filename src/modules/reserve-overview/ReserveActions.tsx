@@ -140,25 +140,23 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       ) : (
         <>
           <Divider sx={{ my: 6 }} />
-          <Box>
-            <Stack gap={3}>
-              <SupplyAction
-                value={maxAmountToSupply}
-                usdValue={maxAmountToSupplyUSD}
-                symbol={selectedAsset}
-                disable={disableSupplyButton}
-                onActionClicked={() => openSupply(reserve.underlyingAsset)}
-              />
-              <BorrowAction
-                value={maxAmountToBorrow}
-                usdValue={maxAmountToBorrowUSD}
-                symbol={selectedAsset}
-                disable={disableBorrowButton}
-                onActionClicked={() => openBorrow(reserve.underlyingAsset)}
-              />
-              {alerts}
-            </Stack>
-          </Box>
+          <Stack gap={3}>
+            <SupplyAction
+              value={maxAmountToSupply}
+              usdValue={maxAmountToSupplyUSD}
+              symbol={selectedAsset}
+              disable={disableSupplyButton}
+              onActionClicked={() => openSupply(reserve.underlyingAsset)}
+            />
+            <BorrowAction
+              value={maxAmountToBorrow}
+              usdValue={maxAmountToBorrowUSD}
+              symbol={selectedAsset}
+              disable={disableBorrowButton}
+              onActionClicked={() => openBorrow(reserve.underlyingAsset)}
+            />
+            {alerts}
+          </Stack>
         </>
       )}
     </PaperWrapper>
