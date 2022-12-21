@@ -72,7 +72,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { poolComputed: { minRemainingBaseTokenBalance } } = useRootStore();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
