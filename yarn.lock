@@ -2,20 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0":
-  version "1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0.tgz#dced2ef435556e32f50c9894aa2f353e5f84a6b1"
-  integrity sha512-c3tyL3xHEtbvQDu0hhXQ9coNyd5wsWV8qoqW7ViiSoQzyTVESApbRtduAH1oBc4NRIseIdv2nkyw43tDe1yFlg==
+"@aave/contract-helpers@1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0":
+  version "1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0.tgz#fed4fc66a752eb9419ca5b7a449dca75b9dbd6f6"
+  integrity sha512-5imyZxAHhrq0gXkLCTFODnP8gg/0mHSAzojpEnaYSYZbAHJBc7LKiNgIxRCku1lqLQnswZHGlH5NRjnfBMtTlQ==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0":
-  version "1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.9.1-42b7bbe6451401b67cb0a608803588125f6f4cc4.0.tgz#6b929d5ac4f549e60ef7949c51194c7220e82332"
-  integrity sha512-mk80efUVMaWGcwE/YCZvc2bBMQr4p17p4YQ3RvgICGdg+qWDjuYc5M3gpkgb1OS3bvQCf28EgORcdknlwR00BQ==
-  dependencies:
-    bignumber.js "^9.0.1"
-    tslib "^2.4.0"
+"@aave/math-utils@1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0":
+  version "1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.11.2-72d7db21a5c5e983247a12b1bb0281e2f82b1b27.0.tgz#e80f45bc95568ab06327dd176c4a9db68bf15b05"
+  integrity sha512-j8yVXWk4/ns9MGPvMhU+meBZfvAmXrTg80t3myxoLbFKVJBP796CmD5GSTnP2ter8gytOwwzC/YOzABIakgung==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -4489,7 +4486,7 @@ big.js@^5.2.2:
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
-bignumber.js@^9.0.0, bignumber.js@^9.0.1:
+bignumber.js@^9.0.0:
   version "9.0.2"
   resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.2.tgz"
   integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
