@@ -75883,6 +75883,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
     this.firstRotationTimestamp = 0;
     this.maxRetries = 0;
     this.retries = 0;
+    this.lastError = '';
     this.providers = urls.map((url) => new import_providers.StaticJsonRpcProvider(url, chainId));
     this.maxRetries = (config == null ? void 0 : config.maxRetries) || MAX_RETRIES;
     this.fallForwardDelay =
@@ -75909,7 +75910,9 @@ var RotationProvider = class extends import_providers.BaseProvider {
         this.retries += 1;
         if (this.retries > this.maxRetries) {
           this.retries = 0;
-          throw new Error('RotationProvider exceeded max number of retries');
+          throw new Error(
+            `RotationProvider exceeded max number of retries. Last error: ${this.lastError}`
+          );
         }
         this.currentProviderIndex = 0;
       } else {
@@ -75930,6 +75933,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
         return yield this.providers[index].perform(method, params);
       } catch (e) {
         console.error(e.message);
+        this.lastError = e.message;
         this.emit('debug', {
           action: 'perform',
           provider: this.providers[index],
