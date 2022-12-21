@@ -2121,6 +2121,10 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Watch address"
+msgstr "Watch address"
+
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
 msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
