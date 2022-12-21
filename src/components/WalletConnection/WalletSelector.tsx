@@ -223,7 +223,7 @@ export const WalletSelector = () => {
           }
           aria-label="watch mode only address"
         >
-          Watch address
+          <Trans>Watch address</Trans>
         </Button>
       </form>
       {validAddressError && (
