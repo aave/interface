@@ -39,6 +39,18 @@ import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
 
+const amountToUSD = (
+  amount: string,
+  formattedPriceInMarketReferenceCurrency: string,
+  marketReferencePriceInUsd: string
+) => {
+  return valueToBigNumber(amount)
+    .multipliedBy(formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS)
+    .toString();
+};
+
 interface ReserveActionsProps {
   reserve: ComputedReserveData;
 }
@@ -68,11 +80,11 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     InterestRate.Variable
   ).toString();
 
-  const maxAmountToBorrowUSD = valueToBigNumber(maxAmountToBorrow)
-    .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS)
-    .toString();
+  const maxAmountToBorrowUSD = amountToUSD(
+    maxAmountToBorrow,
+    reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
 
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance?.amount || '0',
@@ -81,11 +93,11 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     minRemainingBaseTokenBalance
   ).toString();
 
-  const maxAmountToSupplyUSD = valueToBigNumber(maxAmountToSupply)
-    .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS)
-    .toString();
+  const maxAmountToSupplyUSD = amountToUSD(
+    maxAmountToSupply,
+    reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
     balance: balance?.amount || '0',
