@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-15 00:17\n"
+"PO-Revision-Date: 2022-12-21 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2120,6 +2120,10 @@ msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Watch address"
 msgstr ""
 
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
