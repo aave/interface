@@ -28,6 +28,7 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
+import { useRootStore } from 'src/store/root';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
@@ -71,6 +72,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     market: { marketTitle: networkMarketName },
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -132,7 +136,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance.amount,
     poolReserve,
-    underlyingAsset
+    underlyingAsset,
+    minRemainingBaseTokenBalance
   ).toString();
 
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
