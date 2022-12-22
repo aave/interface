@@ -7,7 +7,7 @@ interface ListColumnProps {
   minWidth?: number;
   isRow?: boolean;
   align?: 'left' | 'center' | 'right';
-  overFlow?: 'hidden' | 'none';
+  overFlow?: 'hidden' | 'visible';
 }
 
 export const ListColumn = ({
