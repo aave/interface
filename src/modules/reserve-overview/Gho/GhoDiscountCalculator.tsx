@@ -1,6 +1,6 @@
-// import { calculateCompoundedRate } from '@aave/math-utils';
 import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Box,
   CircularProgress,
@@ -85,6 +85,7 @@ export const GhoDiscountCalculator = () => {
   const showDiscountRate =
     (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
     rateSelection.rateAfterDiscount === rateSelection.rateAfterMaxDiscount;
+  const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
 
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds and a given term length
@@ -126,6 +127,16 @@ export const GhoDiscountCalculator = () => {
     calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
   }, [stkAave, ghoBorrow, selectedTimeRange]);
   /* eslint-enable react-hooks/exhaustive-deps */
+
+  const GhoInterestOwedLineComponent: React.FC = () => (
+    <Box my={4} display="flex" alignItems="center">
+      <TokenIcon symbol="GHO" fontSize="small" />
+      <FormattedNumber value={interestOwed} visibleDecimals={2} variant="main12" sx={{ mx: 1 }} />
+      <Typography variant="caption" color="text.secondary">
+        <Trans>Interest owed</Trans>
+      </Typography>
+    </Box>
+  );
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
@@ -227,22 +238,28 @@ export const GhoDiscountCalculator = () => {
 
     if (maxDiscountNotReached)
       return (
-        <Typography variant="helperText" component="p" sx={{ color: '#669AFF' }}>
+        <Typography variant="caption" component="p" color="text.secondary">
           <Trans>
             <Typography
               component="span"
-              variant="helperText"
+              variant="subheader2"
               onClick={handleAddStkAaveForMaxDiscount}
-              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              sx={{
+                color: '#669AFF',
+                '&:hover': { textDecoration: 'underline', cursor: 'pointer' },
+              }}
             >
-              +Add {additionalStkAaveToReachMax} stkAAVE
+              <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
+                <AddIcon />
+              </SvgIcon>
+              Add {additionalStkAaveToReachMax} stkAAVE
             </Typography>{' '}
             to borrow at{' '}
             <FormattedNumber
               value={rateSelection.rateAfterMaxDiscount}
               percent
-              variant="helperText"
-              symbolsColor="#669AFF"
+              variant="caption"
+              symbolsColor="text.secondary"
               sx={{ '.MuiTypography-root': { ml: 0 } }}
             />{' '}
             (max discount)
@@ -252,13 +269,13 @@ export const GhoDiscountCalculator = () => {
 
     if (maxGhoNotBorrowed)
       return (
-        <Typography variant="helperText" component="p" color="text.secondary">
+        <Typography variant="caption" component="p" color="text.secondary">
           <Trans>
             You may borrow up to {discountableGhoAmount} GHO at{' '}
             <FormattedNumber
               value={rateSelection.rateAfterMaxDiscount}
               percent
-              variant="helperText"
+              variant="caption"
               symbolsColor="text.secondary"
               sx={{ '.MuiTypography-root': { ml: 0 } }}
             />{' '}
@@ -408,6 +425,7 @@ export const GhoDiscountCalculator = () => {
                   </>
                 )}
               </Box>
+              <GhoInterestOwedLineComponent />
               <GhoDiscountCalculatorHelperText />
             </>
           )}
