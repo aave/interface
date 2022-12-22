@@ -7,7 +7,6 @@ import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3M
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
-import { useUserReserves } from 'src/hooks/useUserReserves';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { DashboardContentNoData } from 'src/modules/dashboard/DashboardContentNoData';
@@ -18,6 +17,7 @@ import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
+  selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
   selectV3UserSummary,
   selectV3UserSummaryAfterMigration,
@@ -27,30 +27,33 @@ export default function V3Migration() {
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
-  const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
-  const resetMigrationSelectedAssets = useRootStore((state) => state.resetMigrationSelectedAssets);
 
   const currentTimeStamp = useCurrentTimestamp(5);
 
-  const v2UserSummaryAfterMigration = useRootStore((state) =>
-    selectV2UserSummaryAfterMigration(state, currentTimeStamp)
-  );
+  const {
+    totalCollateralUSD,
+    totalBorrowsUSD,
+    supplyReserves,
+    borrowReserves,
+    healthFactor: v2HealthFactorBeforeMigration,
+  } = useRootStore((state) => selectUserReservesForMigration(state, currentTimeStamp));
 
-  const v3UserSummaryAfterMigration = useRootStore((state) =>
-    selectV3UserSummaryAfterMigration(state, currentTimeStamp)
-  );
+  // health factor calculation
+  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, v3UserSummaryAfterMigration } =
+    useRootStore((state) => ({
+      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
+      v3UserSummaryAfterMigration: selectV3UserSummaryAfterMigration(state, currentTimeStamp),
+      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
+    }));
 
-  const v3UserSummaryBeforeMigration = useRootStore((state) =>
-    selectV3UserSummary(state, currentTimeStamp)
-  );
-
-  const { user, borrowPositions } = useUserReserves();
-
+  // actions
   const {
     toggleMigrationSelectedSupplyAsset: toggleSelectedSupplyPosition,
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
+    setCurrentMarketForMigration,
+    resetMigrationSelectedAssets,
   } = useRootStore();
 
   useEffect(() => {
@@ -74,20 +77,16 @@ export default function V3Migration() {
         <ContentContainer>
           <MigrationLists
             loading={loading}
-            totalSuppliesUSD={user.totalCollateralUSD}
-            totalBorrowsUSD={user.totalBorrowsUSD}
-            isSupplyPositionsAvailable={!!user.userReservesData.length}
-            isBorrowPositionsAvailable={!!borrowPositions.length}
-            onSelectAllSupplies={() =>
-              user.userReservesData.map((reserve) =>
-                toggleSelectedSupplyPosition(reserve.underlyingAsset)
-              )
-            }
-            onSelectAllBorrows={() =>
-              borrowPositions.map((reserve) =>
-                toggleSelectedBorrowPosition(reserve.underlyingAsset)
-              )
-            }
+            totalSuppliesUSD={totalCollateralUSD}
+            totalBorrowsUSD={totalBorrowsUSD}
+            isSupplyPositionsAvailable={supplyReserves.length > 0}
+            isBorrowPositionsAvailable={borrowReserves.length > 0}
+            onSelectAllSupplies={() => {
+              console.log('s');
+            }}
+            onSelectAllBorrows={() => {
+              console.log('s');
+            }}
             suppliesPositions={
               <>
                 {loading ? (
@@ -95,8 +94,8 @@ export default function V3Migration() {
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
                   </>
-                ) : !!user.userReservesData.length ? (
-                  user.userReservesData.map((reserve) => (
+                ) : supplyReserves.length > 0 ? (
+                  supplyReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
                       checked={selectedSupplyAssets[reserve.underlyingAsset]}
@@ -106,6 +105,7 @@ export default function V3Migration() {
                       amount={reserve.underlyingBalance}
                       amountInUSD={reserve.underlyingBalanceUSD}
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
+                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
                     />
                   ))
                 ) : (
@@ -122,8 +122,8 @@ export default function V3Migration() {
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
                   </>
-                ) : !!borrowPositions.length ? (
-                  borrowPositions.map((reserve) => (
+                ) : borrowReserves.length > 0 ? (
+                  borrowReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
                       checked={selectedBorrowAssets[reserve.underlyingAsset]}
@@ -133,6 +133,8 @@ export default function V3Migration() {
                       amount={reserve.totalBorrows}
                       amountInUSD={reserve.totalBorrowsUSD}
                       onCheckboxClick={() => toggleSelectedBorrowPosition(reserve.underlyingAsset)}
+                      disabled={reserve.disabledForMigration}
+                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
                     />
                   ))
                 ) : (
@@ -147,7 +149,7 @@ export default function V3Migration() {
           <Divider sx={{ my: 10 }} />
 
           <MigrationBottomPanel
-            hfV2Current={user.healthFactor}
+            hfV2Current={v2HealthFactorBeforeMigration}
             hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
             hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
             hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor}

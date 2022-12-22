@@ -14,6 +14,8 @@ interface MigrationListItemProps {
   amount: string;
   amountInUSD: string;
   onCheckboxClick: () => void;
+  disabled?: boolean;
+  enabledAsCollateral?: boolean;
 }
 
 export const MigrationListItem = ({
@@ -24,6 +26,8 @@ export const MigrationListItem = ({
   amount,
   amountInUSD,
   onCheckboxClick,
+  enabledAsCollateral,
+  disabled,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -32,24 +36,26 @@ export const MigrationListItem = ({
   return (
     <ListItem>
       <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>
-        <Box
-          sx={(theme) => ({
-            border: `2px solid ${theme.palette.text.secondary}`,
-            background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
-            width: 16,
-            height: 16,
-            borderRadius: '2px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          })}
-          onClick={onCheckboxClick}
-        >
-          <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-            <CheckIcon />
-          </SvgIcon>
-        </Box>
+        {Boolean(disabled) != true && (
+          <Box
+            sx={(theme) => ({
+              border: `2px solid ${theme.palette.text.secondary}`,
+              background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+              width: 16,
+              height: 16,
+              borderRadius: '2px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+            onClick={onCheckboxClick}
+          >
+            <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+              <CheckIcon />
+            </SvgIcon>
+          </Box>
+        )}
       </ListColumn>
 
       <ListColumn align="left" maxWidth={280}>
@@ -69,6 +75,10 @@ export const MigrationListItem = ({
             </Typography>
           </Box>
         </Row>
+      </ListColumn>
+
+      <ListColumn>
+        <Row>{enabledAsCollateral ? 'Enabled' : 'Disabled'}</Row>
       </ListColumn>
 
       <ListColumn align="right">

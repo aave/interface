@@ -8,7 +8,9 @@ import {
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   formatReserves,
+  FormatReserveUSDResponse,
   formatUserSummary,
+  FormatUserSummaryResponse,
   rayDiv,
   rayMul,
   valueToBigNumber,
@@ -20,10 +22,97 @@ import {
   selectCurrentChainIdV2MarketData,
   selectCurrentChainIdV3MarketData,
   selectFormatBaseCurrencyData,
+  selectNonEmptyUserBorrowPositions,
   selectUserNonEmtpySummaryAndIncentive,
   selectUserSummaryAndIncentives,
 } from './poolSelectors';
 import { RootStore } from './root';
+
+export const selectIsolationModeForMigration = (
+  store: RootStore,
+  poolReserveV3Summary: Pick<
+    FormatUserSummaryResponse<ReserveDataHumanized & FormatReserveUSDResponse>,
+    'totalCollateralMarketReferenceCurrency' | 'isolatedReserve'
+  >
+) => {
+  if (poolReserveV3Summary.totalCollateralMarketReferenceCurrency !== '0') {
+    return poolReserveV3Summary.isolatedReserve;
+  }
+  return undefined;
+};
+
+export const selectMappedBorrowPositionsForMigration = (store: RootStore, timestamp: number) => {
+  const borrowPositions = selectNonEmptyUserBorrowPositions(store, timestamp);
+  const mappedBorrowPositions = borrowPositions.map((borrow) => {
+    return {
+      ...borrow,
+      // TODO: make mapping for isolated borrowing here
+      disabled: false,
+    };
+  });
+
+  return mappedBorrowPositions;
+};
+
+export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
+  const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = selectV3UserSummary(
+    store,
+    timestamp
+  );
+
+  const { userReservesData: userReservesV2Data, ...v2ReservesUserSummary } =
+    selectUserSummaryAndIncentives(store, timestamp);
+
+  const isolatedReserveV3 = selectIsolationModeForMigration(store, v3ReservesUserSummary);
+
+  const v3ReservesMap = userReserveV3Data.reduce((obj, item) => {
+    obj[item.underlyingAsset] = item;
+    return obj;
+  }, {} as Record<string, typeof userReserveV3Data[0]>);
+
+  const supplyReserves = userReservesV2Data.filter(
+    (userReserve) => userReserve.underlyingBalance !== '0'
+  );
+
+  const borrowReserves = userReservesV2Data.filter(
+    (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
+  );
+
+  const mappedSupplyReserves = supplyReserves.map((userReserve) => {
+    // TODO: make dynamic mapping for enabled as collateral
+    let usageAsCollateralEnabledOnUser = true;
+    if (isolatedReserveV3) {
+      usageAsCollateralEnabledOnUser =
+        userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
+    } else {
+      usageAsCollateralEnabledOnUser =
+        !v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
+    }
+    return {
+      ...userReserve,
+      usageAsCollateralEnabledOnUser,
+    };
+  });
+
+  const mappedBorrowReserves = borrowReserves.map((userReserve) => {
+    // TOOD: make mapping for liquidity
+    let disabledForMigration = false;
+    if (isolatedReserveV3) {
+      disabledForMigration =
+        !v3ReservesMap[userReserve.underlyingAsset].reserve.borrowableInIsolation;
+    }
+    return {
+      ...userReserve,
+      disabledForMigration,
+    };
+  });
+
+  return {
+    ...v2ReservesUserSummary,
+    borrowReserves: mappedBorrowReserves,
+    supplyReserves: mappedSupplyReserves,
+  };
+};
 
 export const selectedUserSupplyReservesForMigration = (store: RootStore, timestamp: number) => {
   const user = selectUserNonEmtpySummaryAndIncentive(store, timestamp);
@@ -77,7 +166,7 @@ const addPercent = (amount: string) => {
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
 };
 
-// adding 1 hour of variable or either stable or variable debt APY similar to swap
+// adding  30 min of variable or either stable or variable debt APY similar to swap
 // https://github.com/aave/interface/blob/main/src/hooks/useSwap.ts#L72-L78
 const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
