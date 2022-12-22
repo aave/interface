@@ -41,9 +41,7 @@ export const MigrationTopPanel = () => {
                 </SvgIcon>
               }
               onClick={() => {
-                // https://github.com/vercel/next.js/discussions/34980
-                if (history.state.idx !== 0) router.back();
-                else router.push(ROUTES.dashboard);
+                router.push(ROUTES.dashboard);
               }}
               sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
             >
