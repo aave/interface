@@ -1,14 +1,19 @@
-import { InterestRate } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  InterestRate,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { OptimalRate } from 'paraswap-core';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface RepayActionProps extends BoxProps {
+interface CollateralRepayBaseProps extends BoxProps {
   rateMode: InterestRate;
   repayAmount: string;
   repayWithAmount: string;
@@ -17,65 +22,79 @@ export interface RepayActionProps extends BoxProps {
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
-  priceRoute: OptimalRate | null;
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
-  maxSlippage: number;
+  loading?: boolean;
+}
+
+// Used in poolSlice
+export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
+  augustus: string;
+  swapCallData: string;
 }
 
 export const CollateralRepayActions = ({
   repayAmount,
-  repayWithAmount,
   poolReserve,
   fromAssetData,
   isWrongNetwork,
   sx,
   symbol,
   rateMode,
-  priceRoute,
   repayAllDebt,
   useFlashLoan,
   blocked,
-  maxSlippage,
+  loading,
+  repayWithAmount,
+  buildTxFn,
   ...props
-}: RepayActionProps) => {
+}: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useTransactionHandler({
+    useParaSwapTransactionHandler({
       handleGetTxns: async () => {
+        const route = await buildTxFn();
+        return paraswapRepayWithCollateral({
+          repayAllDebt,
+          repayAmount: route.outputAmount,
+          rateMode,
+          repayWithAmount: route.inputAmount,
+          fromAssetData,
+          poolReserve,
+          isWrongNetwork,
+          symbol,
+          useFlashLoan,
+          blocked,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
+        });
+      },
+      handleGetApprovalTxns: async () => {
         return paraswapRepayWithCollateral({
           repayAllDebt,
           repayAmount,
-          maxSlippage,
           rateMode,
           repayWithAmount,
           fromAssetData,
           poolReserve,
           isWrongNetwork,
           symbol,
-          priceRoute,
           useFlashLoan,
           blocked,
+          swapCallData: '0x',
+          augustus: API_ETH_MOCK_ADDRESS,
         });
       },
-      skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
-      deps: [
-        repayWithAmount,
-        repayAmount,
-        priceRoute,
-        poolReserve.underlyingAsset,
-        fromAssetData.underlyingAsset,
-        repayAllDebt,
-        useFlashLoan,
-      ],
+      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.repayCollateral].limit,
+      skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
     });
 
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
-      symbol={poolReserve.symbol}
+      symbol={fromAssetData.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
@@ -88,6 +107,13 @@ export const CollateralRepayActions = ({
       handleApproval={() => approval()}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+      fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: blocked,
+        content: <Trans>Repay {symbol}</Trans>,
+        handleClick: action,
+      }}
     />
   );
 };

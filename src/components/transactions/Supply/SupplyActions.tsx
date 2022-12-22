@@ -1,10 +1,8 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { utils } from 'ethers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -28,16 +26,13 @@ export const SupplyActions = ({
   blocked,
   ...props
 }: SupplyActionProps) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const supply = useRootStore((state) => state.supply);
-  const supplyWithPermit = useRootStore((state) => state.supplyWithPermit);
+  const { supply, supplyWithPermit, tryPermit } = useRootStore();
+  const usingPermit = tryPermit(poolAddress);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      // TODO: move tryPermit
-      tryPermit:
-        currentMarketData.v3 &&
-        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
+      tryPermit: usingPermit,
+      permitAction: ProtocolAction.supplyWithPermit,
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
@@ -67,12 +62,19 @@ export const SupplyActions = ({
       isWrongNetwork={isWrongNetwork}
       requiresAmount
       amount={amountToSupply}
+      symbol={symbol}
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval(amountToSupply, poolAddress)}
+      handleApproval={() =>
+        approval({
+          amount: amountToSupply,
+          underlyingAsset: poolAddress,
+        })
+      }
       handleAction={action}
       requiresApproval={requiresApproval}
+      tryPermit={usingPermit}
       sx={sx}
       {...props}
     />
