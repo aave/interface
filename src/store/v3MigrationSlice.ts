@@ -25,10 +25,15 @@ import {
   selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
 
+type MigrationSelectedAsset = {
+  underlyingAsset: string;
+  enforced: boolean;
+};
+
 export type V3MigrationSlice = {
   //STATE
-  selectedMigrationSupplyAssets: Record<string, boolean>;
-  selectedMigrationBorrowAssets: Record<string, boolean>;
+  selectedMigrationSupplyAssets: MigrationSelectedAsset[];
+  selectedMigrationBorrowAssets: MigrationSelectedAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
@@ -62,8 +67,8 @@ export const createV3MigrationSlice: StateCreator<
   V3MigrationSlice
 > = (set, get) => {
   return {
-    selectedMigrationSupplyAssets: {},
-    selectedMigrationBorrowAssets: {},
+    selectedMigrationSupplyAssets: [],
+    selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
     timestamp: 0,
     approvalPermitsForMigrationAssets: [],
@@ -115,32 +120,46 @@ export const createV3MigrationSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    toggleMigrationSelectedSupplyAsset: (assetName: string) => {
+    toggleMigrationSelectedSupplyAsset: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          if (draft.selectedMigrationSupplyAssets[assetName]) {
-            delete draft.selectedMigrationSupplyAssets[assetName];
+          const activeAssetIndex = draft.selectedMigrationSupplyAssets.findIndex(
+            (asset) => asset.underlyingAsset == underlyingAsset
+          );
+
+          if (activeAssetIndex >= 0) {
+            draft.selectedMigrationSupplyAssets.splice(activeAssetIndex, 1);
           } else {
-            draft.selectedMigrationSupplyAssets[assetName] = true;
+            draft.selectedMigrationSupplyAssets.push({
+              underlyingAsset,
+              enforced: false,
+            });
           }
         })
       );
     },
-    toggleMigrationSelectedBorrowAsset: (assetName: string) => {
+    toggleMigrationSelectedBorrowAsset: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          if (draft.selectedMigrationBorrowAssets[assetName]) {
-            delete draft.selectedMigrationBorrowAssets[assetName];
+          const activeAssetIndex = draft.selectedMigrationBorrowAssets.findIndex(
+            (asset) => asset.underlyingAsset == underlyingAsset
+          );
+
+          if (activeAssetIndex >= 0) {
+            draft.selectedMigrationBorrowAssets.splice(activeAssetIndex, 1);
           } else {
-            draft.selectedMigrationBorrowAssets[assetName] = true;
+            draft.selectedMigrationBorrowAssets.push({
+              underlyingAsset,
+              enforced: false,
+            });
           }
         })
       );
     },
     resetMigrationSelectedAssets: () => {
       set({
-        selectedMigrationBorrowAssets: {},
-        selectedMigrationSupplyAssets: {},
+        selectedMigrationBorrowAssets: [],
+        selectedMigrationSupplyAssets: [],
       });
     },
     getApprovePermitsForSelectedAssets: async () => {

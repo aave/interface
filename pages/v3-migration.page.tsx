@@ -98,7 +98,12 @@ export default function V3Migration() {
                   supplyReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
-                      checked={selectedSupplyAssets[reserve.underlyingAsset]}
+                      checked={
+                        selectedSupplyAssets.findIndex(
+                          (selectedAsset) =>
+                            selectedAsset.underlyingAsset == reserve.underlyingAsset
+                        ) >= 0
+                      }
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}
@@ -126,7 +131,12 @@ export default function V3Migration() {
                   borrowReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
-                      checked={selectedBorrowAssets[reserve.underlyingAsset]}
+                      checked={
+                        selectedBorrowAssets.findIndex(
+                          (selectedAsset) =>
+                            selectedAsset.underlyingAsset == reserve.underlyingAsset
+                        ) >= 0
+                      }
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}
