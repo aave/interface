@@ -93,11 +93,7 @@ export const CollateralChangeModalContent = ({
 
   if (collateralChangeTxState.success)
     return (
-      <TxSuccessView
-        txHash={collateralChangeTxState.txHash || ''}
-        collateral={usageAsCollateralModeAfterSwitch}
-        symbol={poolReserve.symbol}
-      />
+      <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
     );
 
   return (

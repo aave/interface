@@ -149,7 +149,6 @@ export const SwapModalContent = ({
   if (supplyTxState.success)
     return (
       <TxSuccessView
-        txHash={supplyTxState.txHash || ''}
         action={<Trans>Swapped</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}

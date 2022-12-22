@@ -136,13 +136,7 @@ export const ClaimRewardsModalContent = () => {
     return <TxErrorView txError={txError} />;
   }
   if (claimRewardsTxState.success)
-    return (
-      <TxSuccessView
-        txHash={claimRewardsTxState.txHash || ''}
-        action={<Trans>Claimed</Trans>}
-        amount={selectedReward?.balanceUsd}
-      />
-    );
+    return <TxSuccessView action={<Trans>Claimed</Trans>} amount={selectedReward?.balanceUsd} />;
 
   return (
     <>

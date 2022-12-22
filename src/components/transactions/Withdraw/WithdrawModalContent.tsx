@@ -153,7 +153,6 @@ export const WithdrawModalContent = ({
   if (withdrawTxState.success)
     return (
       <TxSuccessView
-        txHash={withdrawTxState.txHash || ''}
         action={<Trans>withdrew</Trans>}
         amount={amountRef.current}
         symbol={

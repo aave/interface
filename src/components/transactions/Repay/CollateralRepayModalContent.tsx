@@ -214,7 +214,6 @@ export function CollateralRepayModalContent({
   if (mainTxState.success)
     return (
       <TxSuccessView
-        txHash={mainTxState.txHash || ''}
         action={<Trans>Repaid</Trans>}
         amount={swapVariant === 'exactIn' ? outputAmount : repayAmount}
         symbol={poolReserve.symbol}

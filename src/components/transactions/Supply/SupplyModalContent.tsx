@@ -201,7 +201,6 @@ export const SupplyModalContent = ({
   if (supplyTxState.success)
     return (
       <TxSuccessView
-        txHash={supplyTxState.txHash || ''}
         action={<Trans>Supplied</Trans>}
         amount={amountRef.current}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}

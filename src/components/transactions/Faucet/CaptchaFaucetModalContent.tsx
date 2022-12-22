@@ -22,7 +22,9 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
   const [txHash, setTxHash] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
+  // TODO: just for testing
+  // const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
+  const faucetUrl = 'https://api-v2-feat-faucet-relay.aave.com/faucet';
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
 
   const poolReserve = reserves.find(
