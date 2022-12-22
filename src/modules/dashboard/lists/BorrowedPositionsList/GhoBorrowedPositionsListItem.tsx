@@ -98,7 +98,7 @@ export const GhoBorrowedPositionsListItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode)}
+          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode, false)}
         >
           <Trans>Repay</Trans>
         </Button>

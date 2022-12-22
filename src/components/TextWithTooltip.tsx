@@ -10,6 +10,7 @@ export interface TextWithTooltipProps extends TypographyProps {
   icon?: ReactNode;
   iconSize?: number;
   iconColor?: string;
+  iconMargin?: number;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
 }
@@ -19,6 +20,7 @@ export const TextWithTooltip = ({
   icon,
   iconSize = 14,
   iconColor,
+  iconMargin,
   children,
   ...rest
 }: TextWithTooltipProps) => {
@@ -39,7 +41,7 @@ export const TextWithTooltip = ({
             borderRadius: '50%',
             p: 0,
             minWidth: 0,
-            ml: 0.5,
+            ml: iconMargin || 0.5,
           }}
         >
           <SvgIcon
