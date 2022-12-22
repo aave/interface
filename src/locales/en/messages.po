@@ -2036,6 +2036,10 @@ msgstr "Unbacked"
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
 
+#: src/modules/migration/MigrationList.tsx
+msgid "Unselect all"
+msgstr "Unselect all"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"

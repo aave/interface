@@ -15,6 +15,7 @@ interface MigrationListProps {
   onSelectAllClick: () => void;
   loading?: boolean;
   isAvailable: boolean;
+  allSelected: boolean;
 }
 
 export const MigrationList = ({
@@ -25,6 +26,7 @@ export const MigrationList = ({
   onSelectAllClick,
   loading,
   isAvailable,
+  allSelected,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
   const isTablet = useMediaQuery(breakpoints.up('md'));
@@ -49,7 +51,7 @@ export const MigrationList = ({
             <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>
               <ListHeaderTitle onClick={onSelectAllClick}>
                 <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  <Trans>Select all</Trans>
+                  {allSelected ? <Trans>Unselect all</Trans> : <Trans>Select all</Trans>}
                 </Typography>
               </ListHeaderTitle>
             </ListColumn>
