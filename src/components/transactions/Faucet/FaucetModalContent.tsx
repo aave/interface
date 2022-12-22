@@ -22,7 +22,6 @@ export const FaucetModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapper
   if (faucetTxState.success)
     return (
       <TxSuccessView
-        txHash={faucetTxState.txHash || ''}
         action={<Trans>Received</Trans>}
         symbol={poolReserve.symbol}
         amount={normalizedAmount}
