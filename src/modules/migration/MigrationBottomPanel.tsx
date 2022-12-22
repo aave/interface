@@ -98,7 +98,7 @@ export const MigrationBottomPanel = ({
     >
       <Paper
         sx={{
-          p: '20px 30px',
+          p: downToSM ? '20px 16px' : '20px 30px',
           mb: { xs: 6, md: 0 },
           width: { xs: '100%', md: '45%', lg: '35%' },
         }}
@@ -171,7 +171,7 @@ export const MigrationBottomPanel = ({
       <Box
         sx={{
           width: { xs: '100%', md: '50%', lg: '60%' },
-          padding: '20px 30px',
+          p: downToSM ? '20px 16px' : '20px 30px',
           mt: downToSM ? 4 : 0,
         }}
       >
