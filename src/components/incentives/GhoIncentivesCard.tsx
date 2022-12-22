@@ -23,6 +23,7 @@ interface GhoIncentivesCardProps {
   discountableAmount: string | number;
   stkAaveBalance: string | number;
   ghoRoute: string;
+  onMoreDetailsClick?: () => void;
 }
 
 export const GhoIncentivesCard = ({
@@ -39,6 +40,7 @@ export const GhoIncentivesCard = ({
   discountableAmount,
   stkAaveBalance,
   ghoRoute,
+  onMoreDetailsClick,
 }: GhoIncentivesCardProps) => {
   return (
     <Box
@@ -133,7 +135,7 @@ export const GhoIncentivesCard = ({
                     />{' '}
                     AAVE.
                   </Trans>{' '}
-                  <Link href={ghoRoute} underline="always">
+                  <Link onClick={onMoreDetailsClick} href={ghoRoute} underline="always">
                     <Trans>More details</Trans>
                   </Link>
                 </Typography>

@@ -47,7 +47,7 @@ export const GhoBorrowModalContent = ({
   error,
   errorComponent,
 }: GhoBorrowModalContentProps) => {
-  const { gasLimit, txError } = useModalContext();
+  const { gasLimit, txError, close } = useModalContext();
   const { currentMarket: customMarket } = useProtocolDataContext();
   const {
     ghoLoadingData,
@@ -197,6 +197,7 @@ export const GhoBorrowModalContent = ({
                   ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
                   '/#discount'
                 }
+                onMoreDetailsClick={() => close()}
               />
               {apyDiffers && (
                 <>
