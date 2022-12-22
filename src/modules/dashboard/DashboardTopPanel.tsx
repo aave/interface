@@ -41,7 +41,7 @@ export const DashboardTopPanel = () => {
   const { openClaimRewards } = useModalContext();
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-
+  const showMigrateButton = isMigrateToV3Available && Number(user.totalLiquidityUSD) > 0;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -86,15 +86,15 @@ export const DashboardTopPanel = () => {
     user?.totalCollateralMarketReferenceCurrency === '0'
       ? '0'
       : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-          .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
-          .toFixed();
+        .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
+        .toFixed();
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
     <>
-      {isMigrateToV3Available && downToSM && (
+      {showMigrateButton && downToSM && (
         <Box sx={{ width: '100%' }}>
           <Link href={ROUTES.migrationTool}>
             <Button
@@ -119,7 +119,7 @@ export const DashboardTopPanel = () => {
               withMarketSwitcher={true}
               bridge={currentNetworkConfig.bridge}
             />
-            {isMigrateToV3Available && !downToSM && (
+            {showMigrateButton && !downToSM && (
               <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
