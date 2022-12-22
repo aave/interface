@@ -7,6 +7,7 @@ import {
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
+  ComputedUserReserve,
   formatReserves,
   FormatReserveUSDResponse,
   formatUserSummary,
@@ -66,9 +67,33 @@ export const selectMappedBorrowPositionsForMigration = (store: RootStore, timest
   return mappedBorrowPositions;
 };
 
-export const selectDefinitiveSupplyAssetForMigration = (store: RootStore) => {
-  const lastIndex = store.selectedMigrationSupplyAssets.length - 1;
-  return store.selectedMigrationSupplyAssets[lastIndex]?.underlyingAsset;
+export const selectDefinitiveSupplyAssetForMigration = (
+  store: RootStore,
+  userReservesV3: ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[],
+  newIndex?: number
+): ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[] => {
+  const lastIndex =
+    typeof newIndex == 'number' ? newIndex : store.selectedMigrationSupplyAssets.length - 1;
+  const selectedUnderlyingAsset = store.selectedMigrationSupplyAssets[lastIndex]?.underlyingAsset;
+
+  const definitiveAsset = userReservesV3.filter(
+    (userReserve) => userReserve.underlyingAsset == selectedUnderlyingAsset
+  );
+
+  if (definitiveAsset.length > 0) {
+    if (
+      definitiveAsset[0].underlyingBalanceMarketReferenceCurrency !== '0' &&
+      !definitiveAsset[0].usageAsCollateralEnabledOnUser
+    ) {
+      const newIndex = lastIndex - 1;
+      if (newIndex >= 0) {
+        return selectDefinitiveSupplyAssetForMigration(store, userReservesV3, newIndex);
+      }
+      return [];
+    }
+    return definitiveAsset;
+  }
+  return [];
 };
 
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
@@ -83,10 +108,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   let isolatedReserveV3 = selectIsolationModeForMigration(store, v3ReservesUserSummary);
 
   if (v3ReservesUserSummary.totalCollateralMarketReferenceCurrency == '0') {
-    const definitiveMigrationSupplyUnderlyingAsset = selectDefinitiveSupplyAssetForMigration(store);
-    const definitiveAsset = userReserveV3Data.filter(
-      (userReserve) => userReserve.underlyingAsset == definitiveMigrationSupplyUnderlyingAsset
-    );
+    const definitiveAsset = selectDefinitiveSupplyAssetForMigration(store, userReserveV3Data);
     if (definitiveAsset.length > 0) {
       // TODO: select the next asset if the definitive asset is not enabled as collateral
       if (
