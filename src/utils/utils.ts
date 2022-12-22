@@ -41,3 +41,9 @@ export const optimizedPath = (currentChainId: ChainId) => {
     // currentChainId === ChainId.optimism_kovan
   );
 };
+
+// Overrides for minimum base token remaining after performing an action
+export const minBaseTokenRemainingByNetwork: Record<number, string> = {
+  [ChainId.optimism]: '0.0001',
+  [ChainId.arbitrum_one]: '0.0001',
+};
