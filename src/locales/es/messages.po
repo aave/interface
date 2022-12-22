@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-15 18:04\n"
+"PO-Revision-Date: 2022-12-21 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2121,6 +2121,10 @@ msgstr "Cartera no detectada. Conecta o instala la cartera y vuelve a intentarlo
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Las carteras son proporcionadas por proveedores externos y al seleccionarla, aceptas los términos de dichos proveedores. Tu acceso a la cartera podría depender de que el proveedor externo esté operativo."
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Watch address"
+msgstr ""
 
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
 msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."

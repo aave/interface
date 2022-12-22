@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-15 00:17\n"
+"PO-Revision-Date: 2022-12-21 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -2121,6 +2121,10 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Watch address"
+msgstr ""
 
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
 msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
