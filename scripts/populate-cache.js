@@ -75883,6 +75883,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
     this.firstRotationTimestamp = 0;
     this.maxRetries = 0;
     this.retries = 0;
+    this.lastError = '';
     this.providers = urls.map((url) => new import_providers.StaticJsonRpcProvider(url, chainId));
     this.maxRetries = (config == null ? void 0 : config.maxRetries) || MAX_RETRIES;
     this.fallForwardDelay =
@@ -75909,7 +75910,9 @@ var RotationProvider = class extends import_providers.BaseProvider {
         this.retries += 1;
         if (this.retries > this.maxRetries) {
           this.retries = 0;
-          throw new Error('RotationProvider exceeded max number of retries');
+          throw new Error(
+            `RotationProvider exceeded max number of retries. Last error: ${this.lastError}`
+          );
         }
         this.currentProviderIndex = 0;
       } else {
@@ -75930,6 +75933,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
         return yield this.providers[index].perform(method, params);
       } catch (e) {
         console.error(e.message);
+        this.lastError = e.message;
         this.emit('debug', {
           action: 'perform',
           provider: this.providers[index],
@@ -76607,3 +76611,73 @@ populateCache().then(() => console.log('finished'));
   (module.exports = {
     populateCache,
   });
+/*! Bundled license information:
+
+tslib/tslib.es6.js:
+  (*! *****************************************************************************
+  Copyright (c) Microsoft Corporation.
+  
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
+  
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+  ***************************************************************************** *)
+
+js-sha3/src/sha3.js:
+  (**
+   * [js-sha3]{@link https://github.com/emn178/js-sha3}
+   *
+   * @version 0.8.0
+   * @author Chen, Yi-Cyuan [emn178@gmail.com]
+   * @copyright Chen, Yi-Cyuan 2015-2018
+   * @license MIT
+   *)
+
+reflect-metadata/Reflect.js:
+  (*! *****************************************************************************
+  Copyright (C) Microsoft. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at http://www.apache.org/licenses/LICENSE-2.0
+  
+  THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+  WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+  MERCHANTABLITY OR NON-INFRINGEMENT.
+  
+  See the Apache Version 2.0 License for specific language governing permissions
+  and limitations under the License.
+  ***************************************************************************** *)
+
+lodash/lodash.js:
+  (**
+   * @license
+   * Lodash <https://lodash.com/>
+   * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+   * Released under MIT license <https://lodash.com/license>
+   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+   *)
+
+is-extendable/index.js:
+  (*!
+   * is-extendable <https://github.com/jonschlinkert/is-extendable>
+   *
+   * Copyright (c) 2015, Jon Schlinkert.
+   * Licensed under the MIT License.
+   *)
+
+strip-bom-string/index.js:
+  (*!
+   * strip-bom-string <https://github.com/jonschlinkert/strip-bom-string>
+   *
+   * Copyright (c) 2015, 2017, Jon Schlinkert.
+   * Released under the MIT License.
+   *)
+*/
