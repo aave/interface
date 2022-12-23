@@ -3,6 +3,7 @@ import { Box, Menu, MenuItem, Typography } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
@@ -89,30 +90,7 @@ export const AddTokenDropdown = ({
               cursor: 'pointer',
             }}
           >
-            <img
-              src="/icons/wallets/walletIcon.svg"
-              width="16px"
-              height="16px"
-              alt="wallet icon"
-              className="Wallet__icon"
-              style={{
-                opacity: 1,
-                position: 'relative',
-                left: '8px',
-              }}
-            />
-            <img
-              src="/icons/wallets/walletIconHover.svg"
-              width="16px"
-              height="16px"
-              alt="wallet hover icon"
-              className="Wallet__iconHover"
-              style={{
-                opacity: 0,
-                position: 'relative',
-                left: '-8px',
-              }}
-            />
+            <WalletIcon sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }} />
           </Box>
         </CircleIcon>
       </Box>

@@ -1,4 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { SxProps, Theme } from '@mui/system';
 import { createContext, ReactNode, useContext } from 'react';
 import { BorrowCapMaxedTooltip } from 'src/components/infoTooltips/BorrowCapMaxedTooltip';
 import { DebtCeilingMaxedTooltip } from 'src/components/infoTooltips/DebtCeilingMaxedTooltip';
@@ -14,6 +15,7 @@ type WarningDisplayProps = {
   borrowCap?: AssetCapData;
   debtCeiling?: AssetCapData;
   icon?: boolean;
+  sx?: SxProps<Theme>;
 };
 
 export type AssetCapData = {
@@ -77,8 +79,8 @@ const getAssetCapData = (asset: ComputedReserveData): AssetCapUsageData => {
       isMaxed: supplyCapReached,
       // percentUsed: 99.9,
       // isMaxed: true,
-      determineWarningDisplay: ({ supplyCap, icon }) =>
-        supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} /> : null,
+      determineWarningDisplay: ({ supplyCap, icon, ...rest }) =>
+        supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} {...rest} /> : null,
       displayMaxedTooltip: ({ supplyCap }) =>
         supplyCap ? <SupplyCapMaxedTooltip supplyCap={supplyCap} /> : null,
     },
@@ -87,8 +89,8 @@ const getAssetCapData = (asset: ComputedReserveData): AssetCapUsageData => {
       isMaxed: borrowCapReached,
       // percentUsed: 98.5,
       // isMaxed: false,
-      determineWarningDisplay: ({ borrowCap, icon }) =>
-        borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} /> : null,
+      determineWarningDisplay: ({ borrowCap, icon, ...rest }) =>
+        borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} {...rest} /> : null,
       displayMaxedTooltip: ({ borrowCap }) =>
         borrowCap ? <BorrowCapMaxedTooltip borrowCap={borrowCap} /> : null,
     },
@@ -97,8 +99,8 @@ const getAssetCapData = (asset: ComputedReserveData): AssetCapUsageData => {
       isMaxed: debtCeilingReached,
       // percentUsed: 99.994,
       // isMaxed: true,
-      determineWarningDisplay: ({ debtCeiling, icon }) =>
-        debtCeiling ? <DebtCeilingWarning debtCeiling={debtCeiling} icon={icon} /> : null,
+      determineWarningDisplay: ({ debtCeiling, icon, ...rest }) =>
+        debtCeiling ? <DebtCeilingWarning debtCeiling={debtCeiling} icon={icon} {...rest} /> : null,
       displayMaxedTooltip: ({ debtCeiling }) =>
         debtCeiling ? <DebtCeilingMaxedTooltip debtCeiling={debtCeiling} /> : null,
     },
