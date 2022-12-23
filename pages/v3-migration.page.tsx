@@ -132,6 +132,7 @@ export default function V3Migration() {
                       amountInUSD={reserve.underlyingBalanceUSD}
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
                       enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
+                      isIsolated={reserve.isolatedOnV3}
                     />
                   ))
                 ) : (

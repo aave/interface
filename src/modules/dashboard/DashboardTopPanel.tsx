@@ -21,13 +21,10 @@ import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 import HALLink from '../../components/HALLink';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
-import { Link, ROUTES } from '../../components/primitives/Link';
 import { NoData } from '../../components/primitives/NoData';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
-import { useRootStore } from '../../store/root';
-import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
@@ -36,8 +33,6 @@ export const DashboardTopPanel = () => {
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
-
-  const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -94,6 +89,7 @@ export const DashboardTopPanel = () => {
       <TopInfoPanel
         pageTitle={<Trans>Dashboard</Trans>}
         withMarketSwitcher
+        withMigrateButton
         bridge={currentNetworkConfig.bridge}
       >
         <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
@@ -209,16 +205,6 @@ export const DashboardTopPanel = () => {
               </Button>
             </Box>
           </TopInfoPanelItem>
-        )}
-
-        {isMigrateToV3Available && (
-          <Box sx={{ alignSelf: 'center' }}>
-            <Link href={ROUTES.migrationTool}>
-              <Button variant="gradient">
-                <Trans>Migrate to V3</Trans>
-              </Button>
-            </Link>
-          </Box>
         )}
       </TopInfoPanel>
 

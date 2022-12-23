@@ -476,6 +476,7 @@ msgstr "Close"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Collateral"
 msgstr "Collateral"
 
@@ -688,6 +689,7 @@ msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network 
 msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/migration/EmodeInfo.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
 
@@ -1111,7 +1113,7 @@ msgstr "Migrate"
 msgid "Migrate from {0} V2 to {1} V3"
 msgstr "Migrate from {0} V2 to {1} V3"
 
-#: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
 
@@ -2435,6 +2437,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/migration/EmodeInfo.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"

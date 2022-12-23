@@ -6,6 +6,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
+import { ListItemUsedAsCollateral } from '../dashboard/lists/ListItemUsedAsCollateral';
+
 interface MigrationListItemProps {
   checked: boolean;
   reserveIconSymbol: string;
@@ -18,6 +20,7 @@ interface MigrationListItemProps {
   enabledAsCollateral?: boolean;
   canBeEnforced?: boolean;
   enableAsCollateral?: () => void;
+  isIsolated?: boolean;
 }
 
 export const MigrationListItem = ({
@@ -31,40 +34,47 @@ export const MigrationListItem = ({
   enabledAsCollateral,
   disabled,
   enableAsCollateral,
+  canBeEnforced,
+  isIsolated,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
-  const isTablet = useMediaQuery(breakpoints.up('md'));
+  const isTablet = useMediaQuery(breakpoints.up('xsm'));
+  const isMobile = useMediaQuery(breakpoints.up('xs'));
+
+  const assetColumnWidth =
+    isMobile && !isTablet ? 75 : isTablet && !isDesktop ? 140 : isDesktop ? 240 : 140;
 
   return (
     <ListItem>
-      <ListColumn align="center" maxWidth={isTablet ? 100 : 60}>
-        {Boolean(disabled) != true && (
-          <Box
-            sx={(theme) => ({
-              border: `2px solid ${theme.palette.text.secondary}`,
-              background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
-              width: 16,
-              height: 16,
-              borderRadius: '2px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            })}
-            onClick={onCheckboxClick}
-          >
-            <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-              <CheckIcon />
-            </SvgIcon>
-          </Box>
-        )}
+      <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
+        <Box
+          sx={(theme) => ({
+            border: `2px solid ${
+              Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+            }`,
+            background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+            width: 16,
+            height: 16,
+            borderRadius: '2px',
+            cursor: Boolean(disabled) ? 'default' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          })}
+          onClick={Boolean(disabled) ? undefined : onCheckboxClick}
+        >
+          <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+            <CheckIcon />
+          </SvgIcon>
+        </Box>
       </ListColumn>
 
-      <ListColumn align="left" maxWidth={280}>
+      <ListColumn align="left" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
         <Row>
-          <TokenIcon symbol={reserveIconSymbol} fontSize="large" />
-          <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+          {isTablet && <TokenIcon symbol={reserveIconSymbol} fontSize="large" />}
+
+          <Box sx={{ pl: isTablet ? 3.5 : 0, overflow: 'hidden' }}>
             <Typography variant="h4" noWrap>
               {isDesktop ? reserveName : reserveSymbol}
             </Typography>
@@ -80,9 +90,16 @@ export const MigrationListItem = ({
         </Row>
       </ListColumn>
 
-      <ListColumn>
-        <Row onClick={enableAsCollateral}>{enabledAsCollateral ? 'Enabled' : 'Disabled'}</Row>
-      </ListColumn>
+      {!!enableAsCollateral && (
+        <ListColumn>
+          <ListItemUsedAsCollateral
+            canBeEnabledAsCollateral={canBeEnforced || false}
+            usageAsCollateralEnabledOnUser={enabledAsCollateral || false}
+            isIsolated={isIsolated || false}
+            onToggleSwitch={enableAsCollateral}
+          />
+        </ListColumn>
+      )}
 
       <ListColumn align="right">
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>

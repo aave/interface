@@ -28,12 +28,12 @@ export const MigrationLists = ({
   isBorrowPositionsAvailable,
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
-  const isTablet = useMediaQuery(breakpoints.up('md'));
+  const isDesktop = useMediaQuery(breakpoints.up('lg'));
 
   return (
     <Box
       sx={{
-        display: isTablet ? 'flex' : 'block',
+        display: isDesktop ? 'flex' : 'block',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
       }}
@@ -44,6 +44,7 @@ export const MigrationLists = ({
         isAvailable={isSupplyPositionsAvailable}
         titleComponent={<Trans>Your supplies</Trans>}
         totalAmount={totalSuppliesUSD}
+        withCollateral
       >
         {suppliesPositions}
       </MigrationList>
@@ -55,6 +56,7 @@ export const MigrationLists = ({
         isBottomOnMobile
         titleComponent={<Trans>Your borrows</Trans>}
         totalAmount={totalBorrowsUSD}
+        // withEmode TODO: uncomment when emode logic for migration will fix
       >
         {borrowsPositions}
       </MigrationList>
