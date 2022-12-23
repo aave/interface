@@ -1,10 +1,10 @@
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { DashboardActions } from '../../../support/actions/dashboard.actions';
-import { TenderlyActions, TokenRequest } from '../../../support/actions/tenderly.actions';
+import { TenderlyActions } from '../../../support/actions/tenderly.actions';
 import { DashboardHelpers } from '../../../support/helpers/dashboard.helper';
 import { configEnvWithTenderlyGoerliGhoFork } from '../../../support/steps/configuration.steps';
-import donors from './fixtures/donors.json';
+import { tokenSet } from './helpers/token.helper';
 
 const testData = {
   borrow: {
@@ -19,25 +19,6 @@ const testData = {
     apyType: constants.borrowAPYType.default,
     hasApproval: true,
   },
-};
-
-const tokenSet = ({ stkAave = 0, aAAVE = 0 }) => {
-  const tokenRequest: TokenRequest[] = [];
-  if (stkAave != 0) {
-    tokenRequest.push({
-      tokenAddress: donors.stkAAVE.tokenAddress,
-      donorAddress: donors.stkAAVE.donorWalletAddress,
-      tokenCount: stkAave.toString(),
-    });
-  }
-  if (aAAVE != 0) {
-    tokenRequest.push({
-      tokenAddress: donors.aAAVE.tokenAddress,
-      donorAddress: donors.aAAVE.donorWalletAddress,
-      tokenCount: aAAVE.toString(),
-    });
-  }
-  return tokenRequest;
 };
 
 describe(`GHO discount integrating testing`, () => {
@@ -93,7 +74,7 @@ describe(`GHO discount integrating testing`, () => {
     });
     TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 3 }));
     it(`Check that APY rate grow till max ${maxGHOApy}% after unstake`, () => {
-      cy.wait(1000);
+      cy.wait(1000); //wait update of dashboard
       DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.eql(maxGHOApy);
       });
@@ -123,7 +104,7 @@ describe(`GHO discount integrating testing`, () => {
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
     DashboardActions.borrow(testData.borrow2);
     it(`Check that borrowed APY was grow`, () => {
-      cy.wait(1000);
+      cy.wait(1000); //wait update of dashboard
       DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
         expect($val).to.be.greaterThan(minGHOApy);
       });
