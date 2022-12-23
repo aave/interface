@@ -2,6 +2,9 @@ import { XIcon } from '@heroicons/react/outline';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 import React from 'react';
 
+import { useModalContext } from 'src/hooks/useModal';
+import { useHelpContext } from 'src/hooks/useHelp';
+
 export interface BasicModalProps {
   open: boolean;
   children: React.ReactNode;
@@ -18,7 +21,23 @@ export const BasicModal = ({
   children,
   ...props
 }: BasicModalProps) => {
-  const handleClose = () => setOpen(false);
+  const { openConfirmationHelp } = useModalContext();
+  const { tourInProgress } = useHelpContext();
+
+  const handleClose = () => {
+    if (localStorage.getItem(`${tourInProgress}`) !== 'false') {
+      setOpen(false);
+    } else {
+      openConfirmationHelp();
+    }
+  };
+
+  const handleCloseXIcon = () => {
+    setOpen(false);
+    if (localStorage.getItem(`${tourInProgress}`) === 'false') {
+      localStorage.setItem(`${tourInProgress}`, 'true');
+    }
+  };
 
   return (
     <Modal
@@ -62,7 +81,7 @@ export const BasicModal = ({
                 position: 'absolute',
                 bgcolor: 'background.paper',
               }}
-              onClick={handleClose}
+              onClick={handleCloseXIcon}
               data-cy={'close-button'}
             >
               <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>

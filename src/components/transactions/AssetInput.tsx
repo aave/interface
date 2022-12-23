@@ -12,14 +12,19 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
+import { useHelpContext } from 'src/hooks/useHelp';
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
+
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -100,7 +105,9 @@ export const AssetInput = <T extends Asset = Asset>({
     onSelect && onSelect(newAsset);
     onChange && onChange('');
   };
-
+  const { breakpoints } = useTheme();
+  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
+  const { pagination } = useHelpContext();
   const asset =
     assets.length === 1
       ? assets[0]
@@ -108,6 +115,17 @@ export const AssetInput = <T extends Asset = Asset>({
 
   return (
     <Box>
+      {pagination['SupplyTour'] === 2 && (
+        <HelpTooltip
+          title={'Supply an asset'}
+          description={"Select the amount you'd like to supply."}
+          pagination={pagination['SupplyTour']}
+          placement={'left'}
+          top={'135px'}
+          right={xsmUp ? '390px' : '330px'}
+          offset={xsmUp ? [0, 15] : [window.innerHeight - window.innerHeight / 3, -25]}
+        />
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Typography color="text.secondary">
           {inputTitle ? inputTitle : <Trans>Amount</Trans>}

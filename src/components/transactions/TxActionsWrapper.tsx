@@ -1,14 +1,19 @@
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
+import { InformationCircleIcon } from '@heroicons/react/outline';
+import { Box, BoxProps, Button, SvgIcon, CircularProgress, Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
+import { uiConfig } from '../../uiConfig';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
 import { RightHelperText } from './FlowCommons/RightHelperText';
+
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -124,6 +129,8 @@ export const TxActionsWrapper = ({
 
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
+  const { pagination } = useHelpContext();
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {requiresApproval && !watchModeOnlyAddress && (
@@ -131,7 +138,47 @@ export const TxActionsWrapper = ({
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
+      {pagination['SupplyTour'] === 6 && (
+        <HelpTooltip
+          title={'Approval for first supply'}
+          description={
+            <Box>
+              <Box>
+                The first supply of one asset will require an additional approval transaction on
+                your wallet.
+              </Box>
+              <Box sx={{ objectFit: 'cover', mt: 2 }}>
+                <img
+                  src={uiConfig.approveButtonImage}
+                  alt="SVG of approve and supply button"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </Box>
 
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <SvgIcon
+                  sx={{
+                    color: '#0A91FF',
+                    fontSize: { xs: '15px', xsm: '15px' },
+                    mb: '6px',
+                    mr: '10px',
+                  }}
+                >
+                  <InformationCircleIcon />
+                </SvgIcon>
+                <Typography sx={{ mt: 4 }}>
+                  You can entern an amount on the input feel to see it working.
+                </Typography>
+              </Box>
+            </Box>
+          }
+          pagination={pagination['SupplyTour']}
+          top={approvalParams && !watchModeOnlyAddress ? '400px' : '340px'}
+          right={'15px'}
+          placement={'top-start'}
+          offset={[400, -5]}
+        />
+      )}
       {approvalParams && !watchModeOnlyAddress && (
         <Button
           variant="contained"
@@ -147,7 +194,33 @@ export const TxActionsWrapper = ({
           {approvalParams.content}
         </Button>
       )}
+      {pagination['SupplyTour'] === 7 && (
+        <HelpTooltip
+          title={'Approval for first supply'}
+          description={
+            <Box>
+              <Box>
+                <img
+                  src={uiConfig.metamaskSupply}
+                  alt="SVG of approve and supply button"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </Box>
 
+              <Typography sx={{ mt: 1 }}>
+                Submit your transaction. Once the transaction is confirmed, your supply is
+                successfully registered and you begin earning interest.
+                <Typography sx={{ mt: 4 }}>You can use different Wallets.</Typography>
+              </Typography>
+            </Box>
+          }
+          pagination={pagination['SupplyTour']}
+          top={approvalParams && !watchModeOnlyAddress ? '455px' : '375px'}
+          right={'15px'}
+          placement={'top-start'}
+          offset={[400, -50]}
+        />
+      )}
       <Button
         variant="contained"
         disabled={disabled || blocked || watchModeOnlyAddress !== undefined}

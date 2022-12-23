@@ -18,4 +18,5 @@ export type SupplyAssetsItem = {
   isActive?: boolean;
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
+  index: number;
 };

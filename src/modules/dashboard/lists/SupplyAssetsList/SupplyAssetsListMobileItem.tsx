@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useHelpContext } from 'src/hooks/useHelp';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -13,6 +14,7 @@ import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 import { SupplyAssetsItem } from './types';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,
@@ -30,9 +32,11 @@ export const SupplyAssetsListMobileItem = ({
   isFreezed,
   underlyingAsset,
   detailsAddress,
+  index,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
+  const { pagination } = useHelpContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -61,7 +65,6 @@ export const SupplyAssetsListMobileItem = ({
           />
         }
       />
-
       <Row
         caption={<Trans>Supply APY</Trans>}
         align="flex-start"
@@ -75,7 +78,6 @@ export const SupplyAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
-
       <Row
         caption={<Trans>Can be collateral</Trans>}
         align="flex-start"
@@ -89,15 +91,38 @@ export const SupplyAssetsListMobileItem = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
-          variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Supply</Trans>
-        </Button>
+        {index === 0 &&
+        localStorage.getItem('SupplyTour') === 'false' &&
+        pagination['SupplyTour'] === 1 ? (
+          <Button
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            sx={{ mr: 1.5 }}
+            fullWidth
+          >
+            <HelpTooltip
+              title={'Supply to AAVE'}
+              description={"Select the amount you'd like to supply and submit your transaction."}
+              pagination={pagination['SupplyTour']}
+              placement={'top-start'}
+              top={'-8px'}
+              right={'-10px'}
+              offset={[-7, 14]}
+            />
+            <Trans>Supply</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset)}
+            sx={{ mr: 1.5 }}
+            fullWidth
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
+
         <Button
           variant="outlined"
           component={Link}

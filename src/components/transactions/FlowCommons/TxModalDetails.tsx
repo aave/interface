@@ -2,10 +2,12 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import { Link } from '../../primitives/Link';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { CollateralType } from 'src/helpers/types';
+import { useHelpContext } from 'src/hooks/useHelp';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -13,6 +15,7 @@ import { FormattedNumber, FormattedNumberProps } from '../../primitives/Formatte
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export interface TxModalDetailsProps {
   gasLimit?: string;
@@ -35,7 +38,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       <Typography sx={{ mb: 1 }} color="text.secondary">
         <Trans>Transaction overview</Trans>
       </Typography>
-
       <Box
         sx={(theme) => ({
           p: 3,
@@ -74,8 +76,38 @@ export const DetailsNumberLine = ({
   loading = false,
   ...rest
 }: DetailsNumberLineProps) => {
+  const { pagination } = useHelpContext();
+
   return (
     <Row caption={description} captionVariant="description" mb={4}>
+      {pagination['SupplyTour'] === 3 && (
+        <HelpTooltip
+          title={'How much will I earn?'}
+          description={
+            <Box>
+              <Typography sx={{ mt: 1 }}>
+                aTokens holders receive continuous earnings that evolve with market conditions based
+                on:
+              </Typography>
+              <Typography sx={{ mt: 2, mb: 3 }}>
+                Each asset has its own market of supply and demand with its own APY (Annual
+                Percentage Yield) which evolves with time.
+              </Typography>
+              <Link
+                href="https://docs.aave.com/faq/depositing-and-earning"
+                sx={{ textDecoration: 'none', color: '#F148D3' }}
+              >
+                <Typography>Learn more</Typography>
+              </Link>
+            </Box>
+          }
+          pagination={pagination['SupplyTour']}
+          top={'225px'}
+          placement={'left'}
+          right={'390px'}
+          offset={[0, 225]}
+        />
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
@@ -178,8 +210,24 @@ export interface DetailsCollateralLine {
 }
 
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
+  const { pagination } = useHelpContext();
+
   return (
     <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+      {pagination['SupplyTour'] === 4 && (
+        <HelpTooltip
+          title={'Collateralization'}
+          description={`After supplying your assets, you are able to unselect the asset so that it will not be
+              used as collateral. The opt-out is available in the "Supply" section within your
+              dashboard. Simply switch the "use as collateral" button on the asset you would prefer
+              to opt-out from being used as a collateral.`}
+          pagination={pagination['SupplyTour']}
+          top={'260px'}
+          placement={'left'}
+          right={'390px'}
+          offset={[0, 225]}
+        />
+      )}
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         {collateralType === CollateralType.UNAVAILABLE && (
           <>
