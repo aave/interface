@@ -161,7 +161,7 @@ export const TxActionsWrapper = ({
       </Button>
       {watchModeOnlyAddress && (
         <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
-          <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
+          <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}
     </Box>

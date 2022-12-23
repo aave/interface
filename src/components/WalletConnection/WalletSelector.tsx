@@ -183,7 +183,7 @@ export const WalletSelector = () => {
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
-          <Trans>Enter an address to track in watch-only mode</Trans>
+          <Trans>Track wallet balance in read-only mode</Trans>
         </Typography>
         <WatchOnlyModeTooltip />
       </Box>
@@ -198,7 +198,7 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or ENS name"
+          placeholder="Ethereum address or ENS name"
           fullWidth
           autoFocus
           value={inputMockWalletAddress}
@@ -223,7 +223,7 @@ export const WalletSelector = () => {
           }
           aria-label="watch mode only address"
         >
-          <Trans>Watch address</Trans>
+          <Trans>Track wallet</Trans>
         </Button>
       </form>
       {validAddressError && (

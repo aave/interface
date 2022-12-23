@@ -236,7 +236,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               severity="warning"
               sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
             >
-              <Trans>Watch-only mode.</Trans>
+              <Trans>Read-only mode.</Trans>
             </Warning>
           )}
         </Box>
