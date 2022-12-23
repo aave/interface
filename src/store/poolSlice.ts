@@ -12,6 +12,7 @@ import {
   ReserveDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
+  V3FaucetService,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -198,14 +199,21 @@ export const createPoolSlice: StateCreator<
     isFaucetPermissioned: true,
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
-      if (!get().currentMarketData.addresses.FAUCET)
+      const { jsonRpcProvider, currentMarketData, account: userAddress } = get();
+
+      if (!currentMarketData.addresses.FAUCET)
         throw Error('currently selected market does not have a faucet attached');
-      const userAddress = get().account;
-      const service = new FaucetService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.FAUCET
-      );
-      return service.mint({ ...args, userAddress });
+
+      if (currentMarketData.v3) {
+        const v3Service = new V3FaucetService(
+          jsonRpcProvider(),
+          currentMarketData.addresses.FAUCET
+        );
+        return v3Service.mint({ ...args, userAddress });
+      } else {
+        const service = new FaucetService(jsonRpcProvider(), currentMarketData.addresses.FAUCET);
+        return service.mint({ ...args, userAddress });
+      }
     },
     withdraw: (args) => {
       const pool = getCorrectPool();
