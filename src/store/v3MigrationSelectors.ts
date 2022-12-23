@@ -396,7 +396,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 
     let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
-    const usageAsCollateralEnabledOnUser = supplyAsset?.usageAsCollateralEnabledOnUser;
+    let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
     // TODO: combine stable borrow amount as well
     if (borrowAsset && borrowAsset.interestRate == InterestRate.Variable) {
       const scaledDownVariableDebtV3 = valueToBigNumber(userReserveData.scaledVariableDebt);
@@ -418,6 +418,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         liquidityIndexV3
       );
       combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
+      usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUser;
     }
 
     return {
