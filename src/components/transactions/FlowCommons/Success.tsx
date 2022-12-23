@@ -4,6 +4,7 @@ import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -152,12 +153,7 @@ export const TxSuccessView = ({
                     aToken={addToken.aToken}
                   />
                 )}
-                <img
-                  src="/icons/wallets/walletIcon.svg"
-                  width="24px"
-                  height="24px"
-                  alt="wallet icon"
-                />
+                <WalletIcon sx={{ width: '20px', height: '20px' }} />
                 <Typography variant="buttonM" color="white" ml="4px">
                   <Trans>Add to wallet</Trans>
                 </Typography>
