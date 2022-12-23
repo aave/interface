@@ -143,6 +143,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
     // TODO: make dynamic mapping for enabled as collateral
     let usageAsCollateralEnabledOnUser = true;
+    const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
     if (isolatedReserveV3) {
       usageAsCollateralEnabledOnUser =
@@ -152,13 +153,13 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       if (v3SupplyAsset?.underlyingBalance !== '0') {
         usageAsCollateralEnabledOnUser = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
       } else {
-        usageAsCollateralEnabledOnUser =
-          !v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
+        usageAsCollateralEnabledOnUser = !isolatedOnV3;
       }
     }
     return {
       ...userReserve,
       usageAsCollateralEnabledOnUser,
+      isolatedOnV3,
       canBeEnforced,
     };
   });
@@ -191,17 +192,22 @@ export const selectedUserSupplyReservesForMigration = (store: RootStore, timesta
   const selectedUserReserves = supplyReserves.filter(
     (userReserve) => selectMigrationSelectedSupplyIndex(store, userReserve.underlyingAsset) >= 0
   );
-  return selectedUserReserves.sort((userReserve) => {
+  selectedUserReserves.sort((userReserve) => {
     if (!isolatedReserveV3) {
-      return 0;
+      if (userReserve.isolatedOnV3) {
+        return 1;
+      }
+      return -1;
     } else {
       if (isolatedReserveV3.underlyingAsset == userReserve.underlyingAsset) {
-        return 1;
-      } else {
         return -1;
+      } else {
+        return 1;
       }
     }
   });
+
+  return selectedUserReserves;
 };
 
 export const selectUserSupplyIncreasedReservesForMigrationPermits = (
@@ -259,15 +265,17 @@ const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
 };
 
 export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
-  const user = selectUserSummaryAndIncentives(store, timestamp);
-  const selectedUserReserves = user.userReservesData
-    // should filter for empty positions?
+  const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
+  const selectedUserReserves = borrowReserves
     .filter(
       (userReserve) =>
         valueToBigNumber(userReserve.stableBorrows).isGreaterThan(0) ||
         valueToBigNumber(userReserve.variableBorrows).isGreaterThan(0)
     )
-    .filter((userReserve) => selectMigrationSelectedBorrowIndex(store, userReserve.underlyingAsset))
+    .filter(
+      (userReserve) => selectMigrationSelectedBorrowIndex(store, userReserve.underlyingAsset) >= 0
+    )
+    .filter((userReserve) => !userReserve.disabledForMigration)
     .map(({ reserve, ...userReserve }) => {
       const stableBorrows = valueToBigNumber(userReserve.stableBorrows);
       if (stableBorrows.isGreaterThan(0)) {
@@ -388,7 +396,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 
     let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
-    let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
+    const usageAsCollateralEnabledOnUser = supplyAsset?.usageAsCollateralEnabledOnUser;
     // TODO: combine stable borrow amount as well
     if (borrowAsset && borrowAsset.interestRate == InterestRate.Variable) {
       const scaledDownVariableDebtV3 = valueToBigNumber(userReserveData.scaledVariableDebt);
@@ -410,11 +418,6 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         liquidityIndexV3
       );
       combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
-      if (userReserveData.underlyingBalance == '0') {
-        usageAsCollateralEnabledOnUser = userReserveData.reserve.isIsolated
-          ? false
-          : supplyAsset.usageAsCollateralEnabledOnUser;
-      }
     }
 
     return {
