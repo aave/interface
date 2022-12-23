@@ -45,6 +45,7 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
+  proto_goerli_v301 = 'proto_goerli_v301',
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
@@ -202,6 +203,23 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x960c2557476cb0362f037fddB2A2014222673ef9',
       UI_POOL_DATA_PROVIDER: '0x93548773C72a2790D190ba712eFABa648684Dcd9',
       UI_INCENTIVE_DATA_PROVIDER: '0x58417945032e004a909e59051D8fBAa0a8D93B44',
+    },
+  },
+  [CustomMarket.proto_goerli_v301]: {
+    marketTitle: 'Ethereum Görli Aave 3.0.1',
+    v3: true,
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x8ccF2C4C6f899Fd62C9aC40d7154dC758dd0F0Df'.toLowerCase(),
+      LENDING_POOL: '0x6E259318Bb5A7D91F8d319D3f1CCCf8eec77d1f7',
+      WETH_GATEWAY: '0xDb5872053c5540c63762883957c2c71A066C4289',
+      FAUCET: '0x2425F015e440785642709eC7A22853eC3e3Caa3d',
+      WALLET_BALANCE_PROVIDER: '0xe4df2325Fa5237a553E99040848634c7e9733451',
+      UI_POOL_DATA_PROVIDER: '0x5c800C16457EE68CcC64618674fB5e5eF0Bf8e0f',
+      UI_INCENTIVE_DATA_PROVIDER: '0x20bdECF799C71100dc95576485F81EfCb71D9855',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {

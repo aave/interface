@@ -54,6 +54,8 @@ export interface PoolSlice {
   refreshPoolData: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
+  isFaucetPermissioned: boolean;
+  setIsFaucetPermissioned: (isPermissioned: boolean) => void;
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   withdraw: (
     args: Omit<LPWithdrawParamsType, 'user'>
@@ -93,7 +95,7 @@ export interface PoolSlice {
 
 export const createPoolSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   PoolSlice
 > = (set, get) => {
@@ -193,6 +195,8 @@ export const createPoolSlice: StateCreator<
         console.log('error fetching pool data', e);
       }
     },
+    isFaucetPermissioned: true,
+    setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
       if (!get().currentMarketData.addresses.FAUCET)
         throw Error('currently selected market does not have a faucet attached');

@@ -2,20 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.10.0.tgz#0780ea2c14d9c384df014a2ed590b2cb380bd784"
-  integrity sha512-epWEZAgmpJNI8Li6iTs4hHxhExbY4ChhvALh1pLr7XpOxo92gMyOfidhT/4zsXhrKcFc8X88/Z/hcc/OooMgDQ==
+"@aave/contract-helpers@1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0":
+  version "1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0.tgz#cc31330912a85cb5cfa89571257044f5a0ff1029"
+  integrity sha512-4AMniPM7X1E6kfcZtuHjAyuyem0UnSxHvo7fHIzHaiHBLJYv4nu+KNQ3Pbxej/v3WUA/u8kOYy9POhqBAw52Sg==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.10.0.tgz#c39c3da4a4cc1bac6eb11d85370efab2e5ee569e"
-  integrity sha512-/0vmWqyhy3XWdwYz697SxifgcWuJb+AXggonULId/zpBawRD76GislKh7WkaxgfcMTM9GQjYTrIlSZgl7K4R7g==
-  dependencies:
-    bignumber.js "^9.0.1"
-    tslib "^2.4.0"
+"@aave/math-utils@1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0":
+  version "1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.11.2-431ac9e44aa411fc9e636603bca999c9fe8279a8.0.tgz#94cdb17bd1f105d5fdef9272b03f3c7f4328d5dc"
+  integrity sha512-N6tKD8euNk1x5EEZ3CbgNF4pum6skSJxtl6hsCBw441X+PF+JLsOgmv8NCe5A8ZeIyK0nGCdgeBv66ItBYHxHg==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -4539,7 +4536,7 @@ big.js@^5.2.2:
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
-bignumber.js@^9.0.0, bignumber.js@^9.0.1:
+bignumber.js@^9.0.0:
   version "9.0.2"
   resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.2.tgz"
   integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
@@ -11314,11 +11311,6 @@ tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
-
-tslib@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
-  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tsutils@^3.21.0:
   version "3.21.0"

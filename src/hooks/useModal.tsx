@@ -18,7 +18,6 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
-  CaptchaFaucet,
   Swap,
   GovDelegation,
   GovVote,
@@ -57,7 +56,6 @@ export interface ModalContextType<T extends ModalArgsType> {
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
-  openCaptchaFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
@@ -144,10 +142,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openFaucet: (underlyingAsset) => {
           setType(ModalType.Faucet);
-          setArgs({ underlyingAsset });
-        },
-        openCaptchaFaucet: (underlyingAsset) => {
-          setType(ModalType.CaptchaFaucet);
           setArgs({ underlyingAsset });
         },
         openSwap: (underlyingAsset) => {

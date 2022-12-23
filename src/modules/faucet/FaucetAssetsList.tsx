@@ -23,20 +23,12 @@ import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
-  const { openFaucet, openCaptchaFaucet } = useModalContext();
+  const { openFaucet } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const { currentMarket } = useProtocolDataContext();
 
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
-  const openFaucetModal = (underlyingAsset: string) => {
-    if (currentMarketData.v3) {
-      openCaptchaFaucet(underlyingAsset);
-    } else {
-      openFaucet(underlyingAsset);
-    }
-  };
 
   const listData = reserves
     .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
@@ -133,7 +125,7 @@ export default function FaucetAssetsList() {
             )}
 
             <ListColumn maxWidth={280} align="right">
-              <Button variant="contained" onClick={() => openFaucetModal(reserve.underlyingAsset)}>
+              <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
                 <Trans>Faucet</Trans>
               </Button>
             </ListColumn>
