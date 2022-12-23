@@ -1,12 +1,14 @@
 import { Box, ClickAwayListener, experimental_sx, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
-interface ContentWithTooltipProps {
+import { useHelpContext } from 'src/hooks/useHelp';
+import { useModalContext } from 'src/hooks/useModal';
+
+interface HelpWithTooltipProps {
   children: ReactNode;
   // eslint-disable-next-line
   tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
-  placement?: 'top' | 'bottom' | 'left';
-  withoutHover?: boolean;
+  placement?: 'top-start' | 'bottom' | 'left-end' | 'left';
   open?: boolean;
   setOpen?: (value: boolean) => void;
   offset?: [number, number];
@@ -15,38 +17,52 @@ interface ContentWithTooltipProps {
 const PopperComponent = styled(Popper)(
   experimental_sx({
     '.MuiTooltip-tooltip': {
-      color: 'text.primary',
       backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '280px',
-    },
-    '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      color: 'text.primary',
+      fontSize: 11,
+      '@media only screen and (min-width: 960px)': {
+        maxWidth: 260,
       },
+      '@media only screen and (min-width: 1280px)': {
+        maxWidth: 380,
+      },
+      marginBottom: 10,
+      maxWidth: 384,
+      maxHeight: 600,
+      padding: '24px 36px',
+      borderRadius: '10px',
+      filter:
+        'drop-shadow(0px 33px 43px rgba(0, 0, 0, 0.1)) drop-shadow(0px 9.94853px 12.9632px rgba(0, 0, 0, 0.0651589)) drop-shadow(0px 4.13211px 5.38427px rgba(0, 0, 0, 0.05)) drop-shadow(0px 1.4945px 1.94738px rgba(0, 0, 0, 0.0348411))',
     },
   })
 );
 
-export const ContentWithTooltip = ({
+export const HelpWithTooltip = ({
   children,
   tooltipContent,
-  placement = 'top',
-  withoutHover,
+  placement = 'top-start',
   open,
   setOpen,
-  offset,
-}: ContentWithTooltipProps) => {
-  const [openTooltip, setOpenTooltip] = useState(false);
+  offset = [-7, 14],
+}: HelpWithTooltipProps) => {
+  const [openTooltip, setOpenTooltip] = useState(true);
+  const { openConfirmationHelp } = useModalContext();
+  const { pagination, setPagination, setClickAway } = useHelpContext();
 
   const formattedOpen = typeof open !== 'undefined' ? open : openTooltip;
   const toggleOpen = () =>
     typeof setOpen !== 'undefined' ? setOpen(!formattedOpen) : setOpenTooltip(!formattedOpen);
-  const handleClose = () =>
-    typeof setOpen !== 'undefined' ? setOpen(false) : setOpenTooltip(false);
+
+  const handleClose = () => {
+    if (typeof setOpen !== 'undefined') {
+      setOpen(false);
+    } else {
+      setOpenTooltip(false);
+    }
+    if (pagination['SupplyTour'] === 1 || pagination['SupplyTour'] === 8) setPagination(9);
+    openConfirmationHelp();
+    setClickAway(false);
+  };
 
   return (
     <Tooltip
@@ -80,8 +96,6 @@ export const ContentWithTooltip = ({
         >
           <Box
             sx={{
-              py: 4,
-              px: 6,
               fontSize: '12px',
               lineHeight: '16px',
               a: {
@@ -96,15 +110,9 @@ export const ContentWithTooltip = ({
           </Box>
         </ClickAwayListener>
       }
-      arrow
     >
       <Box
-        sx={{
-          display: 'inline-flex',
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          '&:hover': { opacity: withoutHover ? 1 : formattedOpen ? 1 : 0.5 },
-        }}
+        sx={{ display: 'inline-flex', cursor: 'pointer' }}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

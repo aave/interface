@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import { NoData } from 'src/components/primitives/NoData';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -15,6 +16,7 @@ import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SupplyAssetsItem } from './types';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SupplyAssetsListItem = ({
   symbol,
@@ -32,10 +34,11 @@ export const SupplyAssetsListItem = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
+  index,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
-
+  const { pagination } = useHelpContext();
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   if (supplyCapUsage.isMaxed) return null;
@@ -80,13 +83,36 @@ export const SupplyAssetsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
-          variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
-        >
-          <Trans>Supply</Trans>
-        </Button>
+        {index === 0 &&
+        localStorage.getItem('SupplyTour') === 'false' &&
+        pagination['SupplyTour'] === 1 ? (
+          <Button
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            sx={{ position: 'relative' }}
+            onClick={() => openSupply(underlyingAsset)}
+          >
+            <HelpTooltip
+              title={'Supply to AAVE'}
+              description={"Select the amount you'd like to supply and submit your transaction."}
+              pagination={pagination['SupplyTour']}
+              placement={'top-start'}
+              top={'-8px'}
+              right={'57px'}
+              offset={[-7, 14]}
+            />
+            <Trans>Supply</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            sx={{ position: 'relative' }}
+            onClick={() => openSupply(underlyingAsset)}
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
         <Button
           variant="outlined"
           component={Link}

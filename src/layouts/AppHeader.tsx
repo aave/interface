@@ -12,7 +12,9 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -20,6 +22,8 @@ import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
+
+import TourWidget from './TourWidget';
 import WalletWidget from './WalletWidget';
 
 interface Props {
@@ -40,9 +44,13 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const xsm = useMediaQuery(breakpoints.down('xsm'));
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
+  const [tourWidgetOpen, setTourWidgetOpen] = useState(false);
+
+  const { pagination } = useHelpContext();
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {
@@ -50,6 +58,9 @@ export function AppHeader() {
     }
     if (walletWidgetOpen) {
       setWalletWidgetOpen(false);
+    }
+    if (tourWidgetOpen) {
+      setTourWidgetOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
@@ -139,14 +150,49 @@ export function AppHeader() {
             </ContentWithTooltip>
           )}
         </Box>
-
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <NavItems />
         </Box>
-
         <Box sx={{ flexGrow: 1 }} />
+        {pagination['SupplyTour'] === 8 && (
+          <HelpTooltip
+            title={'Restart the any of our Tour at any time.'}
+            description={
+              <Box>
+                Check our other tours to learn more about how to interact with AAVE Protocol.
+              </Box>
+            }
+            pagination={pagination['SupplyTour']}
+            placement={'bottom'}
+            top={'40px'}
+            right={xsm ? '188px' : md ? '198px' : '222px'}
+            offset={[20, 30]}
+          />
+        )}
 
-        {!mobileMenuOpen && (
+        {!md && (
+          <TourWidget
+            open={tourWidgetOpen}
+            setOpen={setTourWidgetOpen}
+            headerHeight={headerHeight}
+          />
+        )}
+        {!mobileMenuOpen && !walletWidgetOpen && md && (
+          <TourWidget
+            open={tourWidgetOpen}
+            setOpen={setTourWidgetOpen}
+            headerHeight={headerHeight}
+          />
+        )}
+
+        {!md && (
+          <WalletWidget
+            open={walletWidgetOpen}
+            setOpen={setWalletWidgetOpen}
+            headerHeight={headerHeight}
+          />
+        )}
+        {!mobileMenuOpen && !tourWidgetOpen && md && (
           <WalletWidget
             open={walletWidgetOpen}
             setOpen={setWalletWidgetOpen}
@@ -157,8 +203,7 @@ export function AppHeader() {
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <SettingsMenu />
         </Box>
-
-        {!walletWidgetOpen && (
+        {!walletWidgetOpen && !tourWidgetOpen && (
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <MobileMenu
               open={mobileMenuOpen}

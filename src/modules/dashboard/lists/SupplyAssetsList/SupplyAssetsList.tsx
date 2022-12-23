@@ -7,7 +7,10 @@ import { Fragment, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useModalContext } from 'src/hooks/useModal';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { HelpModal } from 'src/components/helpTours/HelpModal';
+import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -35,13 +38,17 @@ export const SupplyAssetsList = () => {
   const { walletBalances, loading } = useWalletBalances();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
+  const { openHelp } = useModalContext();
   const { bridge, isTestnet, baseAssetSymbol, name: networkName } = currentNetworkConfig;
 
   const localStorageName = 'showSupplyZeroAssets';
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
     localStorage.getItem(localStorageName) === 'true'
   );
+
+  if (!localStorage.getItem('SupplyTour')) {
+    openHelp();
+  }
 
   const tokensToSupply = reserves
     .filter((reserve: ComputedReserveData) => !reserve.isFrozen)
@@ -211,14 +218,16 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
+        <HelpModal />
+        <ConfirmationHelpModal />
         {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
-        {supplyReserves.map((item) => (
+        {supplyReserves.map((item, index) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                <SupplyAssetsListMobileItem {...item} key={item.id} />
+                <SupplyAssetsListMobileItem {...item} key={item.id} index={index} />
               ) : (
-                <SupplyAssetsListItem {...item} key={item.id} />
+                <SupplyAssetsListItem {...item} key={item.id} index={index} />
               )}
             </AssetCapsProvider>
           </Fragment>

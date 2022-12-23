@@ -21,9 +21,11 @@ import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
+import { HelpSupplyModal } from 'src/components/helpTours/HelpSupplyModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
+import { HelpContextProvider } from 'src/hooks/useHelp';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 
@@ -71,23 +73,26 @@ export default function MyApp(props: MyAppProps) {
               <AddressBlocked>
                 <PermissionProvider>
                   <ModalContextProvider>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
+                    <HelpContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <HelpSupplyModal />
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </HelpContextProvider>
                   </ModalContextProvider>
                 </PermissionProvider>
               </AddressBlocked>

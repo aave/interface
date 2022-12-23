@@ -1,4 +1,10 @@
 export const uiConfig = {
-  // appLogo: '/aaveLogo.svg' // TODO: Remove after holidays height 20
   appLogo: '/aave_santa.svg',
+  helpImage: '/helpSettingsHeaderImage.jpg',
+  helpModalSupplyImageLight: '/helpModalSupplyImageLight.jpg',
+  helpModalSupplyImageDark: '/helpModalSupplyImageDark.jpg',
+  gasEstationImageLight: '/gasEstationImageLight.jpg',
+  gasEstationImageDark: '/gasEstationImageDark.jpg',
+  approveButtonImage: '/approveButtonImage.jpg',
+  metamaskSupply: '/metamaskSupplyImage.jpg',
 };
