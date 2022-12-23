@@ -4,7 +4,6 @@ import {
   EthereumTransactionTypeExtended,
   Pool,
   V3MigrationHelperService,
-  valueToWei,
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { SignatureLike } from '@ethersproject/bytes';
@@ -19,6 +18,7 @@ import { selectCurrentChainIdV2MarketKey, selectCurrentChainIdV3MarketKey } from
 import { RootStore } from './root';
 import {
   selectedUserSupplyReservesForMigration,
+  selectMigrationSelectedSupplyIndex,
   selectUserBorrowReservesForMigration,
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyAssetsForMigrationWithPermits,
@@ -58,6 +58,7 @@ export type V3MigrationSlice = {
   ) => Promise<EthereumTransactionTypeExtended[]>;
   setCurrentMarketForMigration: () => void;
   resetMigrationSelectedAssets: () => void;
+  enforceAsCollateral: (underlyingAsset: string) => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -155,6 +156,22 @@ export const createV3MigrationSlice: StateCreator<
           }
         })
       );
+    },
+    enforceAsCollateral: (underlyingAsset: string) => {
+      set((state) =>
+        produce(state, (draft) => {
+          const assetIndex = selectMigrationSelectedSupplyIndex(get(), underlyingAsset);
+          const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex].enforced;
+          if (assetIndex >= 0) {
+            draft.selectedMigrationSupplyAssets.forEach((asset) => {
+              asset.enforced = false;
+            });
+            draft.selectedMigrationSupplyAssets[assetIndex].enforced = !assetEnforced;
+          }
+        })
+      );
+
+      console.log(get().selectedMigrationSupplyAssets, 'supplyAssets');
     },
     resetMigrationSelectedAssets: () => {
       set({

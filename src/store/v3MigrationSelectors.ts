@@ -13,7 +13,6 @@ import {
   formatUserSummary,
   FormatUserSummaryResponse,
   rayDiv,
-  rayMul,
   valueToBigNumber,
 } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
@@ -69,31 +68,45 @@ export const selectMappedBorrowPositionsForMigration = (store: RootStore, timest
 
 export const selectDefinitiveSupplyAssetForMigration = (
   store: RootStore,
-  userReservesV3: ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[],
-  newIndex?: number
-): ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[] => {
-  const lastIndex =
-    typeof newIndex == 'number' ? newIndex : store.selectedMigrationSupplyAssets.length - 1;
-  const selectedUnderlyingAsset = store.selectedMigrationSupplyAssets[lastIndex]?.underlyingAsset;
-
-  const definitiveAsset = userReservesV3.filter(
-    (userReserve) => userReserve.underlyingAsset == selectedUnderlyingAsset
+  userReservesV3Map: Record<
+    string,
+    ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>
+  >
+) => {
+  const enforcedAssets = store.selectedMigrationSupplyAssets.filter(
+    (supplyAsset) => supplyAsset.enforced
   );
 
-  if (definitiveAsset.length > 0) {
-    if (
-      definitiveAsset[0].underlyingBalanceMarketReferenceCurrency !== '0' &&
-      !definitiveAsset[0].usageAsCollateralEnabledOnUser
-    ) {
-      const newIndex = lastIndex - 1;
-      if (newIndex >= 0) {
-        return selectDefinitiveSupplyAssetForMigration(store, userReservesV3, newIndex);
-      }
-      return [];
-    }
-    return definitiveAsset;
+  if (enforcedAssets.length > 0) {
+    return enforcedAssets;
   }
-  return [];
+
+  const nonIsolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
+    const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
+    return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+  });
+
+  if (nonIsolatedAssets.length > 0) {
+    return nonIsolatedAssets;
+  }
+
+  const isolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
+    const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
+    return v3UserReserve.underlyingBalance == '0' && v3UserReserve.reserve.isIsolated;
+  });
+
+  return isolatedAssets;
+};
+
+export const selectUserReservesMapFromUserReserves = (
+  userReservesData: ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[]
+) => {
+  const v3ReservesMap = userReservesData.reduce((obj, item) => {
+    obj[item.underlyingAsset] = item;
+    return obj;
+  }, {} as Record<string, ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>>);
+
+  return v3ReservesMap;
 };
 
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
@@ -107,23 +120,17 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
 
   let isolatedReserveV3 = selectIsolationModeForMigration(store, v3ReservesUserSummary);
 
+  const v3ReservesMap = selectUserReservesMapFromUserReserves(userReserveV3Data);
+
   if (v3ReservesUserSummary.totalCollateralMarketReferenceCurrency == '0') {
-    const definitiveAsset = selectDefinitiveSupplyAssetForMigration(store, userReserveV3Data);
-    if (definitiveAsset.length > 0) {
-      // TODO: select the next asset if the definitive asset is not enabled as collateral
-      if (
-        definitiveAsset[0].reserve.usageAsCollateralEnabled &&
-        definitiveAsset[0].reserve.isIsolated
-      ) {
-        isolatedReserveV3 = definitiveAsset[0].reserve;
+    const definitiveAssets = selectDefinitiveSupplyAssetForMigration(store, v3ReservesMap);
+    if (definitiveAssets.length > 0) {
+      const definitiveAsset = v3ReservesMap[definitiveAssets[0].underlyingAsset];
+      if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
+        isolatedReserveV3 = definitiveAsset.reserve;
       }
     }
   }
-
-  const v3ReservesMap = userReserveV3Data.reduce((obj, item) => {
-    obj[item.underlyingAsset] = item;
-    return obj;
-  }, {} as Record<string, typeof userReserveV3Data[0]>);
 
   const supplyReserves = userReservesV2Data.filter(
     (userReserve) => userReserve.underlyingBalance !== '0'
@@ -136,6 +143,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
     // TODO: make dynamic mapping for enabled as collateral
     let usageAsCollateralEnabledOnUser = true;
+    const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
     if (isolatedReserveV3) {
       usageAsCollateralEnabledOnUser =
         userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
@@ -151,6 +159,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     return {
       ...userReserve,
       usageAsCollateralEnabledOnUser,
+      canBeEnforced,
     };
   });
 
@@ -168,18 +177,31 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   });
 
   return {
-    ...v2ReservesUserSummary,
+    totalCollateralUSD: v2ReservesUserSummary.totalCollateralUSD,
+    totalBorrowsUSD: v2ReservesUserSummary.totalBorrowsUSD,
+    healthFactor: v2ReservesUserSummary.healthFactor,
     borrowReserves: mappedBorrowReserves,
     supplyReserves: mappedSupplyReserves,
+    isolatedReserveV3,
   };
 };
 
 export const selectedUserSupplyReservesForMigration = (store: RootStore, timestamp: number) => {
-  const user = selectUserNonEmtpySummaryAndIncentive(store, timestamp);
-  const selectedUserReserves = user.userReservesData.filter(
+  const { supplyReserves, isolatedReserveV3 } = selectUserReservesForMigration(store, timestamp);
+  const selectedUserReserves = supplyReserves.filter(
     (userReserve) => selectMigrationSelectedSupplyIndex(store, userReserve.underlyingAsset) >= 0
   );
-  return selectedUserReserves;
+  return selectedUserReserves.sort((userReserve) => {
+    if (!isolatedReserveV3) {
+      return 0;
+    } else {
+      if (isolatedReserveV3.underlyingAsset == userReserve.underlyingAsset) {
+        return 1;
+      } else {
+        return -1;
+      }
+    }
+  });
 };
 
 export const selectUserSupplyIncreasedReservesForMigrationPermits = (
@@ -414,7 +436,10 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     poolReserveV3?.userEmodeCategoryId
   );
 
-  return formattedUserSummary;
+  // return the smallest object possible for migration page
+  return {
+    healthFactor: formattedUserSummary.healthFactor,
+  };
 };
 
 export const selectV3UserSummary = (store: RootStore, timestamp: number) => {

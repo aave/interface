@@ -16,6 +16,8 @@ interface MigrationListItemProps {
   onCheckboxClick: () => void;
   disabled?: boolean;
   enabledAsCollateral?: boolean;
+  canBeEnforced?: boolean;
+  enableAsCollateral?: () => void;
 }
 
 export const MigrationListItem = ({
@@ -28,6 +30,7 @@ export const MigrationListItem = ({
   onCheckboxClick,
   enabledAsCollateral,
   disabled,
+  enableAsCollateral,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -78,7 +81,7 @@ export const MigrationListItem = ({
       </ListColumn>
 
       <ListColumn>
-        <Row>{enabledAsCollateral ? 'Enabled' : 'Disabled'}</Row>
+        <Row onClick={enableAsCollateral}>{enabledAsCollateral ? 'Enabled' : 'Disabled'}</Row>
       </ListColumn>
 
       <ListColumn align="right">

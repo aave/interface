@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Divider } from '@mui/material';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
@@ -28,7 +28,7 @@ export default function V3Migration() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
 
-  const currentTimeStamp = useCurrentTimestamp(5);
+  const currentTimeStamp = useCurrentTimestamp(10);
 
   const {
     totalCollateralUSD,
@@ -36,15 +36,25 @@ export default function V3Migration() {
     supplyReserves,
     borrowReserves,
     healthFactor: v2HealthFactorBeforeMigration,
-  } = useRootStore((state) => selectUserReservesForMigration(state, currentTimeStamp));
+  } = useRootStore(
+    useCallback(
+      (state) => selectUserReservesForMigration(state, currentTimeStamp),
+      [currentTimeStamp]
+    )
+  );
 
   // health factor calculation
-  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, v3UserSummaryAfterMigration } =
-    useRootStore((state) => ({
-      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
-      v3UserSummaryAfterMigration: selectV3UserSummaryAfterMigration(state, currentTimeStamp),
-      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-    }));
+  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration } = useRootStore((state) => ({
+    v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
+    v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
+  }));
+
+  const v3UserSummaryAfterMigration = useRootStore(
+    useCallback(
+      (state) => selectV3UserSummaryAfterMigration(state, currentTimeStamp),
+      [currentTimeStamp]
+    )
+  );
 
   // actions
   const {
@@ -54,6 +64,7 @@ export default function V3Migration() {
     selectedMigrationBorrowAssets: selectedBorrowAssets,
     setCurrentMarketForMigration,
     resetMigrationSelectedAssets,
+    enforceAsCollateral,
   } = useRootStore();
 
   useEffect(() => {
@@ -69,6 +80,12 @@ export default function V3Migration() {
   }, [resetMigrationSelectedAssets]);
 
   usePoolDataV3Subscription();
+
+  const enabledAsCollateral = (canBeEnforced: boolean, underlyingAsset: string) => {
+    if (canBeEnforced) {
+      enforceAsCollateral(underlyingAsset);
+    }
+  };
 
   return (
     <>
@@ -104,6 +121,10 @@ export default function V3Migration() {
                             selectedAsset.underlyingAsset == reserve.underlyingAsset
                         ) >= 0
                       }
+                      enableAsCollateral={() =>
+                        enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
+                      }
+                      canBeEnforced={reserve.canBeEnforced}
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}
