@@ -58,6 +58,8 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  // v3.0.1 fork
+  proto_fork_v3 = 'proto_fork_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -484,6 +486,31 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x3f5A507B33260a3869878B31FB90F04F451d28e3',
       UI_POOL_DATA_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C',
       UI_INCENTIVE_DATA_PROVIDER: '0x9842E5B7b7C6cEDfB1952a388e050582Ff95645b',
+    },
+  },
+  [CustomMarket.proto_fork_v3]: {
+    marketTitle: '3.0.1 Main Fork',
+    v3: true,
+    chainId: ChainId.mainnet,
+    enabledFeatures: {
+      incentives: false,
+      liquiditySwap: false,
+      collateralRepay: false,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e'.toLowerCase(),
+      LENDING_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+      WETH_GATEWAY: '0x694d4cFdaeE639239df949b6E24Ff8576A00d1f2',
+      WALLET_BALANCE_PROVIDER: '0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2',
+      UI_POOL_DATA_PROVIDER: '0xc2C1617F0B0c0829b39B4c4a10f76b48E68Aa115',
+      UI_INCENTIVE_DATA_PROVIDER: '0xF36A41F286b1A70C6a0DCDCd61e89dCC3Da26DBD',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
+      SWAP_COLLATERAL_ADAPTER: '0x872fBcb1B582e8Cd0D0DD4327fBFa0B4C2730995',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x1809f186D680f239420B56948C58F8DbbCdf1E18',
+    },
+    halIntegration: {
+      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+      marketName: 'arbitrum',
     },
   },
 } as const;
