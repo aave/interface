@@ -48,6 +48,6 @@ runs:
         NEXT_PUBLIC_TRANSAK_APP_URL: 'https://global.transak.com'
         NEXT_PUBLIC_TRANSAK_API_URL: 'https://api.transak.com'
         NEXT_PUBLIC_TRANSAK_API_KEY: '799087ea-c2be-44b8-a0fe-56d96b37ee3c'
-        NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.number)] }}
-        NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.number)]  }}
-        NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.number)]    }}
+        NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.pull_request.number )] }}
+        NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.pull_request.number)]  }}
+        NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.pull_request.number)]  }}
