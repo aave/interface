@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-21 18:05\n"
+"PO-Revision-Date: 2022-12-23 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -359,15 +359,15 @@ msgstr "Tomar prestado está deshabilitado debido a una decisión de la comunida
 msgid "Borrowing is not enabled"
 msgstr "Tomar prestado no está habilitado"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Tomar prestado no está disponible porque estás usando el Isolation mode. Para administrar el Isolation mode, visita tu <0>Panel de control</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "Tomar prestado no está disponible porque has habilitado el Efficiency Mode (E-Mode) en el Isolation mode. Para administrar el E-Mode y el Isolation Mode, visita tu <0>Panel de control</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Tomar prestado no está disponible porque has habilitado el Efficieny Mode (E-Mode) para la categoría {0}. Para manejar las categorías del E-Mode visita tu <0>Panel de control</0>."
 
@@ -497,7 +497,7 @@ msgstr "Garantía a pagar con"
 msgid "Collateral usage"
 msgstr "Uso de la garantía"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "El uso de garantías está limitado debido al Isolation mode."
 
@@ -1873,8 +1873,8 @@ msgstr "Tempo restante para unstakear"
 msgid "Time left until the withdrawal window closes."
 msgstr "Tiempo restante hasta que se cierre la ventana de retiro."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Para tomar prestado, necesitas suministrar cualquier activo para ser utilizado como garantía."
 
@@ -2109,8 +2109,6 @@ msgstr "Balance de la cartera"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Balance de la cartera"
 
@@ -2124,7 +2122,7 @@ msgstr "Las carteras son proporcionadas por proveedores externos y al selecciona
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Watch address"
-msgstr ""
+msgstr "Ver dirección"
 
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
 msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2313,7 +2311,7 @@ msgstr "Tu cartera de {name} está vacía. Compra o transfiere activos."
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Tu cartera de {networkName} está vacía. Consigue activos de prueba gratis en"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr "Tu cartera de {networkName} está vacía. Consigue {0} de prueba gratis en"
 
@@ -2428,8 +2426,8 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr "Faucet {networkName}"
 

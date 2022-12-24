@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-21 18:05\n"
+"PO-Revision-Date: 2022-12-23 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -359,15 +359,15 @@ msgstr ""
 msgid "Borrowing is not enabled"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 msgid "Collateral usage"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr ""
 
@@ -1873,8 +1873,8 @@ msgstr ""
 msgid "Time left until the withdrawal window closes."
 msgstr ""
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr ""
 
@@ -2109,8 +2109,6 @@ msgstr ""
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr ""
 
@@ -2313,7 +2311,7 @@ msgstr ""
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr ""
 
@@ -2428,8 +2426,8 @@ msgstr ""
 msgid "{m}m"
 msgstr ""
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr ""
 
