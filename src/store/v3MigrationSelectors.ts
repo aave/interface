@@ -23,7 +23,6 @@ import {
   selectCurrentChainIdV3MarketData,
   selectFormatBaseCurrencyData,
   selectNonEmptyUserBorrowPositions,
-  selectUserNonEmtpySummaryAndIncentive,
   selectUserSummaryAndIncentives,
 } from './poolSelectors';
 import { RootStore } from './root';
@@ -118,6 +117,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const { userReservesData: userReservesV2Data, ...v2ReservesUserSummary } =
     selectUserSummaryAndIncentives(store, timestamp);
 
+  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+  const userEmodeCategoryId = poolReserveV3?.userEmodeCategoryId;
+
   let isolatedReserveV3 = selectIsolationModeForMigration(store, v3ReservesUserSummary);
 
   const v3ReservesMap = selectUserReservesMapFromUserReserves(userReserveV3Data);
@@ -166,9 +168,12 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const mappedBorrowReserves = borrowReserves.map((userReserve) => {
     // TOOD: make mapping for liquidity
     let disabledForMigration = false;
+    const selectedReserve = v3ReservesMap[userReserve.underlyingAsset]?.reserve;
+
     if (isolatedReserveV3) {
-      disabledForMigration =
-        !v3ReservesMap[userReserve.underlyingAsset].reserve.borrowableInIsolation;
+      disabledForMigration = selectedReserve.borrowableInIsolation;
+    } else if (typeof userEmodeCategoryId !== 'undefined') {
+      disabledForMigration = selectedReserve?.eModeCategoryId !== userEmodeCategoryId;
     }
     return {
       ...userReserve,

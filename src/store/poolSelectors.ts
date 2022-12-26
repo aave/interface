@@ -1,3 +1,4 @@
+import { ReserveDataHumanized, ReservesDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
@@ -159,9 +160,7 @@ export const selectNonEmptyUserBorrowPositions = (state: RootStore, currentTimes
   return borrowedPositions;
 };
 
-export const selectEmodes = (state: RootStore) => {
-  const reserves = selectCurrentReserves(state);
-
+export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
   const eModes = reserves?.reduce((acc, r) => {
     if (!acc[r.eModeCategoryId])
       acc[r.eModeCategoryId] = {
@@ -178,4 +177,14 @@ export const selectEmodes = (state: RootStore) => {
   }, {} as Record<number, EmodeCategory>);
 
   return eModes;
+};
+
+export const selectEmodes = (state: RootStore) => {
+  const reserves = selectCurrentReserves(state);
+  return formatEmodes(reserves);
+};
+
+export const selectEmodesV3 = (state: RootStore) => {
+  const reserves = selectFormatReserves(selectCurrentChainIdV3MarketData(state));
+  return formatEmodes(reserves);
 };

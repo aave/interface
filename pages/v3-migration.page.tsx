@@ -15,6 +15,7 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
+import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
   selectUserReservesForMigration,
@@ -44,10 +45,13 @@ export default function V3Migration() {
   );
 
   // health factor calculation
-  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration } = useRootStore((state) => ({
-    v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
-    v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-  }));
+  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, poolReserveV3 } = useRootStore(
+    (state) => ({
+      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
+      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
+      poolReserveV3: selectCurrentChainIdV3MarketData(state),
+    })
+  );
 
   const v3UserSummaryAfterMigration = useRootStore(
     useCallback(
@@ -110,6 +114,7 @@ export default function V3Migration() {
             isBorrowPositionsAvailable={borrowReserves.length > 0}
             onSelectAllSupplies={handleToggleAllSupply}
             onSelectAllBorrows={handleToggleAllBorrow}
+            emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
             suppliesPositions={
               <>
                 {loading ? (

@@ -19,7 +19,7 @@ interface MigrationListProps {
   loading?: boolean;
   isAvailable: boolean;
   withCollateral?: boolean;
-  withEmode?: boolean;
+  emodeCategoryId?: number;
 }
 
 export const MigrationList = ({
@@ -31,7 +31,7 @@ export const MigrationList = ({
   loading,
   isAvailable,
   withCollateral,
-  withEmode,
+  emodeCategoryId,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -51,7 +51,11 @@ export const MigrationList = ({
             {titleComponent}
           </Typography>
         }
-        subTitleComponent={withEmode ? <EmodeInfo userEmodeCategoryId={0} /> : undefined} // TODO: need change userEmodeCategoryId
+        subTitleComponent={
+          typeof emodeCategoryId !== 'undefined' ? (
+            <EmodeInfo userEmodeCategoryId={emodeCategoryId} />
+          ) : undefined
+        }
         topInfo={
           !(loading || +totalAmount <= 0) && (
             <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />

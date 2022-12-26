@@ -14,6 +14,7 @@ interface MigrationListsProps {
   loading?: boolean;
   isSupplyPositionsAvailable: boolean;
   isBorrowPositionsAvailable: boolean;
+  emodeCategoryId?: number;
 }
 
 export const MigrationLists = ({
@@ -26,6 +27,7 @@ export const MigrationLists = ({
   loading,
   isSupplyPositionsAvailable,
   isBorrowPositionsAvailable,
+  emodeCategoryId,
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -45,6 +47,7 @@ export const MigrationLists = ({
         titleComponent={<Trans>Your supplies</Trans>}
         totalAmount={totalSuppliesUSD}
         withCollateral
+        emodeCategoryId={emodeCategoryId}
       >
         {suppliesPositions}
       </MigrationList>

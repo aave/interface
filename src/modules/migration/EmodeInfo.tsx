@@ -5,6 +5,8 @@ import React from 'react';
 import { TypographyGradient } from 'src/components/primitives/TypographyGradient';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { selectEmodesV3 } from 'src/store/poolSelectors';
+import { useRootStore } from 'src/store/root';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -13,13 +15,13 @@ interface EmodeInfoProps {
 }
 
 export const EmodeInfo = ({ userEmodeCategoryId }: EmodeInfoProps) => {
-  const { eModes: _eModes } = useAppDataContext(); // TODO: should be e-modes from migration v3 market
+  const eModesV3 = useRootStore(selectEmodesV3);
   const iconButtonSize = 12;
 
   const isEModeDisabled = userEmodeCategoryId === 0;
 
   const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
+    <Trans>{getEmodeMessage(eModesV3[userEmodeCategoryId]?.label)}</Trans>
   );
 
   return (
