@@ -20,6 +20,7 @@ interface MigrationListProps {
   isAvailable: boolean;
   withCollateral?: boolean;
   emodeCategoryId?: number;
+  allSelected: boolean;
 }
 
 export const MigrationList = ({
@@ -32,6 +33,7 @@ export const MigrationList = ({
   isAvailable,
   withCollateral,
   emodeCategoryId,
+  allSelected,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -67,7 +69,7 @@ export const MigrationList = ({
             <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
               <ListHeaderTitle onClick={onSelectAllClick}>
                 <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  <Trans>Select all</Trans>
+                  {allSelected ? <Trans>Unselect all</Trans> : <Trans>Select all</Trans>}
                 </Typography>
               </ListHeaderTitle>
             </ListColumn>

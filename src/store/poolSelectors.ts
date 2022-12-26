@@ -24,23 +24,38 @@ export const selectCurrentChainIdV3MarketKey = (state: RootStore): CustomMarket 
 export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
   const v2MarketKey = selectCurrentChainIdV2MarketKey(state);
   const marketData = marketsData[v2MarketKey];
-  return state.data
-    .get(state.currentChainId)
-    ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
+  const v2MarketAddressProvider = marketData
+    ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+    : undefined;
+  const currentChainId = state.currentChainId;
+  if (v2MarketAddressProvider && currentChainId) {
+    return state.data.get(state.currentChainId)?.get(v2MarketAddressProvider);
+  }
+  return undefined;
 };
 
 export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
   const v3MarketKey = selectCurrentChainIdV3MarketKey(state);
   const marketData = marketsData[v3MarketKey];
-  return state.data
-    .get(state.currentChainId)
-    ?.get(marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
+  const v3MarketAddressProvider = marketData
+    ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+    : undefined;
+  const currentChainId = state.currentChainId;
+  if (v3MarketAddressProvider && currentChainId) {
+    return state.data.get(state.currentChainId)?.get(v3MarketAddressProvider);
+  }
+  return undefined;
 };
 
 export const selectCurrentUserLendingPoolData = (state: RootStore) => {
-  return state.data
-    .get(state.currentChainId)
-    ?.get(state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER);
+  const marketAddressProvider = state.currentMarketData
+    ? state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+    : undefined;
+  const currentChainId = state.currentChainId;
+  if (marketAddressProvider && currentChainId) {
+    return state.data.get(state.currentChainId)?.get(marketAddressProvider);
+  }
+  return undefined;
 };
 
 export const selectFormatUserEmodeCategoryId = (reserve?: PoolReserve) => {

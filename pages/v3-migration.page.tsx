@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -28,6 +28,8 @@ export default function V3Migration() {
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const currentTimeStamp = useCurrentTimestamp(10);
 
@@ -100,6 +102,8 @@ export default function V3Migration() {
   const handleToggleAllBorrow = () => {
     selectAllBorrow(currentTimeStamp);
   };
+
+  console.log(poolReserveV3, 'poolReserve');
 
   return (
     <>
@@ -192,7 +196,7 @@ export default function V3Migration() {
             }
           />
 
-          <Divider sx={{ my: 10 }} />
+          {!downToSM && <Divider sx={{ my: 10 }} />}
 
           <MigrationBottomPanel
             hfV2Current={v2HealthFactorBeforeMigration}

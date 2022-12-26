@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { useUserReserves } from 'src/hooks/useUserReserves';
+import { useRootStore } from 'src/store/root';
 
 import { MigrationList } from './MigrationList';
 
@@ -32,6 +34,16 @@ export const MigrationLists = ({
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
 
+  const { user, borrowPositions } = useUserReserves();
+
+  const {
+    selectedMigrationSupplyAssets: selectedSupplyAssets,
+    selectedMigrationBorrowAssets: selectedBorrowAssets,
+  } = useRootStore();
+
+  const allSuppliesSelected =
+    Object.keys(selectedSupplyAssets).length === user.userReservesData.length;
+  const allBorrowsSelected = Object.keys(selectedBorrowAssets).length === borrowPositions.length;
   return (
     <Box
       sx={{
@@ -43,6 +55,7 @@ export const MigrationLists = ({
       <MigrationList
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
+        allSelected={allSuppliesSelected}
         isAvailable={isSupplyPositionsAvailable}
         titleComponent={<Trans>Your supplies</Trans>}
         totalAmount={totalSuppliesUSD}
@@ -55,6 +68,7 @@ export const MigrationLists = ({
       <MigrationList
         loading={loading}
         onSelectAllClick={onSelectAllBorrows}
+        allSelected={allBorrowsSelected}
         isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
         titleComponent={<Trans>Your borrows</Trans>}
