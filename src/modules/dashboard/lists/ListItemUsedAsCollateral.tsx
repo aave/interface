@@ -8,6 +8,8 @@ interface ListItemUsedAsCollateralProps {
   usageAsCollateralEnabledOnUser: boolean;
   canBeEnabledAsCollateral: boolean;
   onToggleSwitch: () => void;
+  // directly disable without additional canBeEnabledAsCollateral check for migration page
+  disabled?: boolean;
 }
 
 export const ListItemUsedAsCollateral = ({
@@ -15,7 +17,9 @@ export const ListItemUsedAsCollateral = ({
   usageAsCollateralEnabledOnUser,
   canBeEnabledAsCollateral,
   onToggleSwitch,
+  disabled,
 }: ListItemUsedAsCollateralProps) => {
+  // TODO: fix this for migration
   const isEnabled = usageAsCollateralEnabledOnUser && canBeEnabledAsCollateral;
   return (
     <>
@@ -24,7 +28,7 @@ export const ListItemUsedAsCollateral = ({
           onClick={onToggleSwitch}
           disableRipple
           checked={isEnabled}
-          disabled={!canBeEnabledAsCollateral}
+          disabled={!canBeEnabledAsCollateral || disabled}
         />
       ) : (
         <ListItemIsolationBadge>
@@ -32,7 +36,7 @@ export const ListItemUsedAsCollateral = ({
             onClick={onToggleSwitch}
             disableRipple
             checked={isEnabled}
-            disabled={!canBeEnabledAsCollateral}
+            disabled={!canBeEnabledAsCollateral || disabled}
           />
         </ListItemIsolationBadge>
       )}

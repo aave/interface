@@ -93,7 +93,8 @@ export const MigrationListItem = ({
       {!!enableAsCollateral && (
         <ListColumn>
           <ListItemUsedAsCollateral
-            canBeEnabledAsCollateral={canBeEnforced || false}
+            canBeEnabledAsCollateral={true}
+            disabled={!canBeEnforced}
             usageAsCollateralEnabledOnUser={enabledAsCollateral || false}
             isIsolated={isIsolated || false}
             onToggleSwitch={enableAsCollateral}

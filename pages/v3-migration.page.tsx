@@ -58,6 +58,8 @@ export default function V3Migration() {
 
   // actions
   const {
+    selectAllSupply,
+    selectAllBorrow,
     toggleMigrationSelectedSupplyAsset: toggleSelectedSupplyPosition,
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
@@ -87,6 +89,14 @@ export default function V3Migration() {
     }
   };
 
+  const handleToggleAllSupply = () => {
+    selectAllSupply(currentTimeStamp);
+  };
+
+  const handleToggleAllBorrow = () => {
+    selectAllBorrow(currentTimeStamp);
+  };
+
   return (
     <>
       <MigrationTopPanel />
@@ -98,12 +108,8 @@ export default function V3Migration() {
             totalBorrowsUSD={totalBorrowsUSD}
             isSupplyPositionsAvailable={supplyReserves.length > 0}
             isBorrowPositionsAvailable={borrowReserves.length > 0}
-            onSelectAllSupplies={() => {
-              console.log('s');
-            }}
-            onSelectAllBorrows={() => {
-              console.log('s');
-            }}
+            onSelectAllSupplies={handleToggleAllSupply}
+            onSelectAllBorrows={handleToggleAllBorrow}
             suppliesPositions={
               <>
                 {loading ? (
@@ -124,7 +130,10 @@ export default function V3Migration() {
                       enableAsCollateral={() =>
                         enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
                       }
-                      canBeEnforced={reserve.canBeEnforced}
+                      canBeEnforced={
+                        v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
+                          '0' && reserve.canBeEnforced
+                      }
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}

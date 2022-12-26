@@ -18,8 +18,10 @@ import { selectCurrentChainIdV2MarketKey, selectCurrentChainIdV3MarketKey } from
 import { RootStore } from './root';
 import {
   selectedUserSupplyReservesForMigration,
+  selectMigrationSelectedBorrowIndex,
   selectMigrationSelectedSupplyIndex,
   selectUserBorrowReservesForMigration,
+  selectUserReservesForMigration,
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyAssetsForMigrationWithPermits,
   selectUserSupplyIncreasedReservesForMigrationPermits,
@@ -59,6 +61,8 @@ export type V3MigrationSlice = {
   setCurrentMarketForMigration: () => void;
   resetMigrationSelectedAssets: () => void;
   enforceAsCollateral: (underlyingAsset: string) => void;
+  selectAllBorrow: (timestamp: number) => void;
+  selectAllSupply: (timestamp: number) => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -161,7 +165,7 @@ export const createV3MigrationSlice: StateCreator<
       set((state) =>
         produce(state, (draft) => {
           const assetIndex = selectMigrationSelectedSupplyIndex(get(), underlyingAsset);
-          const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex].enforced;
+          const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex]?.enforced;
           if (assetIndex >= 0) {
             draft.selectedMigrationSupplyAssets.forEach((asset) => {
               asset.enforced = false;
@@ -170,14 +174,50 @@ export const createV3MigrationSlice: StateCreator<
           }
         })
       );
-
-      console.log(get().selectedMigrationSupplyAssets, 'supplyAssets');
     },
     resetMigrationSelectedAssets: () => {
       set({
         selectedMigrationBorrowAssets: [],
         selectedMigrationSupplyAssets: [],
       });
+    },
+    selectAllSupply: (currentTimestamp: number) => {
+      const { supplyReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+      if (get().selectedMigrationSupplyAssets.length == supplyReserves.length) {
+        set({ selectedMigrationSupplyAssets: [] });
+      } else {
+        const nonSelectedSupplies = supplyReserves
+          .filter(
+            ({ underlyingAsset }) => selectMigrationSelectedSupplyIndex(get(), underlyingAsset) < 0
+          )
+          .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
+
+        set({
+          selectedMigrationSupplyAssets: [
+            ...get().selectedMigrationSupplyAssets,
+            ...nonSelectedSupplies,
+          ],
+        });
+      }
+    },
+    selectAllBorrow: (currentTimestamp: number) => {
+      const { borrowReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+      if (get().selectedMigrationBorrowAssets.length == borrowReserves.length) {
+        set({ selectedMigrationBorrowAssets: [] });
+      } else {
+        const nonSelectedSupplies = borrowReserves
+          .filter(
+            ({ underlyingAsset }) => selectMigrationSelectedBorrowIndex(get(), underlyingAsset) < 0
+          )
+          .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
+
+        set({
+          selectedMigrationBorrowAssets: [
+            ...get().selectedMigrationBorrowAssets,
+            ...nonSelectedSupplies,
+          ],
+        });
+      }
     },
     getApprovePermitsForSelectedAssets: async () => {
       const timestamp = dayjs().unix();

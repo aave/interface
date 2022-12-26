@@ -141,7 +141,6 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   );
 
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
-    // TODO: make dynamic mapping for enabled as collateral
     let usageAsCollateralEnabledOnUser = true;
     const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
