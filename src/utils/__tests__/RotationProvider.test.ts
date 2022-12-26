@@ -24,28 +24,24 @@ it('rotates through providers on error', async () => {
   expect(errors).toEqual([...badUrls]);
 });
 
-it('waits for the rotation delay time after all providers have failed', (done) => {
+it('loops through provider array for maxRetries', async () => {
   const badUrls = ['http://some-fake-url-1', 'http://some-fake-url-2', 'http://some-fake-url-3'];
-  const rotationProvider = new RotationProvider(badUrls, ChainId.mainnet, { rotationDelay: 1000 });
+  const rotationProvider = new RotationProvider(badUrls, ChainId.mainnet, { maxRetries: 7 });
 
   const errors: string[] = [];
-  let start: number;
+  let retries = 0;
   rotationProvider.on('debug', (error: { action: string; provider: StaticJsonRpcProvider }) => {
     errors.push(error.provider.connection.url);
-    if (start) {
-      expect(Date.now() - start).toBeGreaterThan(1000);
-      done();
-    }
-
-    // Once we've seen errors on all providers, start the timer.
-    // We should see another error after the rotation delay time.
-    if (errors.length === badUrls.length) {
-      start = Date.now();
+    // Once we've seen errors on all providers, update retry count
+    if (errors.length % badUrls.length === 0) {
+      retries += 1;
     }
   });
 
   // We don't care about the result, we just need to fire off a request
-  rotationProvider.getBlock(15741825);
+  await rotationProvider.getBlock(15741825).catch(() => {
+    expect(retries).toBe(7);
+  });
 });
 
 it('rotates back to first provider after delay', (done) => {

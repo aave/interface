@@ -35725,6 +35725,8 @@ var require_types2 = __commonJS({
       ProtocolAction2['repayCollateral'] = 'repayCollateral';
       ProtocolAction2['withdrawETH'] = 'withdrawETH';
       ProtocolAction2['borrowETH'] = 'borrwoETH';
+      ProtocolAction2['supplyWithPermit'] = 'supplyWithPermit';
+      ProtocolAction2['repayWithPermit'] = 'repayWithPermit';
     })((ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {})));
     var GovernanceVote;
     (function (GovernanceVote2) {
@@ -37478,6 +37480,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.repayCollateral]: {
         limit: '700000',
         recommended: '700000',
+      },
+      [types_1.ProtocolAction.supplyWithPermit]: {
+        limit: '350000',
+        recommended: '350000',
+      },
+      [types_1.ProtocolAction.repayWithPermit]: {
+        limit: '350000',
+        recommended: '350000',
       },
     };
     exports2.mintAmountsPerToken = {
@@ -75846,8 +75856,8 @@ var networkConfigs = {
 // src/utils/rotationProvider.ts
 var import_providers = __toESM(require_lib30());
 var import_ethers = __toESM(require_lib31());
-var DEFAULT_ROTATION_DELAY = 5e3;
 var DEFAULT_FALL_FORWARD_DELAY = 6e4;
+var MAX_RETRIES = 1;
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -75888,8 +75898,10 @@ var RotationProvider = class extends import_providers.BaseProvider {
     super(chainId);
     this.currentProviderIndex = 0;
     this.firstRotationTimestamp = 0;
+    this.maxRetries = 0;
+    this.retries = 0;
     this.providers = urls.map((url) => new import_providers.StaticJsonRpcProvider(url, chainId));
-    this.rotationDelay = (config == null ? void 0 : config.rotationDelay) || DEFAULT_ROTATION_DELAY;
+    this.maxRetries = (config == null ? void 0 : config.maxRetries) || MAX_RETRIES;
     this.fallForwardDelay =
       (config == null ? void 0 : config.fallFowardDelay) || DEFAULT_FALL_FORWARD_DELAY;
   }
@@ -75911,7 +75923,11 @@ var RotationProvider = class extends import_providers.BaseProvider {
         this.firstRotationTimestamp = new Date().getTime();
         this.fallForwardRotation();
       } else if (this.currentProviderIndex === this.providers.length - 1) {
-        yield sleep(this.rotationDelay);
+        this.retries += 1;
+        if (this.retries > this.maxRetries) {
+          this.retries = 0;
+          throw new Error('RotationProvider exceeded max number of retries');
+        }
         this.currentProviderIndex = 0;
       } else {
         this.currentProviderIndex += 1;

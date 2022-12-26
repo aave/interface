@@ -23,6 +23,7 @@ interface GhoIncentivesCardProps {
   discountableAmount: string | number;
   stkAaveBalance: string | number;
   ghoRoute: string;
+  onMoreDetailsClick?: () => void;
 }
 
 export const GhoIncentivesCard = ({
@@ -39,6 +40,7 @@ export const GhoIncentivesCard = ({
   discountableAmount,
   stkAaveBalance,
   ghoRoute,
+  onMoreDetailsClick,
 }: GhoIncentivesCardProps) => {
   return (
     <Box
@@ -114,14 +116,18 @@ export const GhoIncentivesCard = ({
                     </li>
                   </ul>
                   <Trans>
-                    Discount only applies to{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      color="text.secondary"
-                      visibleDecimals={0}
-                      value={discountableAmount}
-                    />{' '}
-                    GHO, which equals discountable amount for staking{' '}
+                    <strong>
+                      Discount only applies to{' '}
+                      <FormattedNumber
+                        variant="caption"
+                        color="text.secondary"
+                        visibleDecimals={0}
+                        value={discountableAmount}
+                        sx={{ fontWeight: 'bold' }}
+                      />{' '}
+                      GHO,
+                    </strong>{' '}
+                    which equals discountable amount for staking{' '}
                     <FormattedNumber
                       value={stkAaveBalance}
                       variant="caption"
@@ -130,7 +136,7 @@ export const GhoIncentivesCard = ({
                     />{' '}
                     AAVE.
                   </Trans>{' '}
-                  <Link href={ghoRoute} underline="always">
+                  <Link onClick={onMoreDetailsClick} href={ghoRoute} underline="always">
                     <Trans>More details</Trans>
                   </Link>
                 </Typography>
@@ -146,6 +152,7 @@ export const GhoIncentivesCard = ({
                 textDecoration: 'underline dashed',
                 textDecorationColor: theme.palette.text.muted,
                 textUnderlineOffset: '4px',
+                cursor: 'pointer',
               })}
             >
               <FormattedNumber
