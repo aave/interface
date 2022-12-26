@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
@@ -20,6 +21,7 @@ export const MigrateV3Actions = ({ isWrongNetwork, blocked }: MigrateV3ActionsPr
       handleGetTxns: async () => migrateWithoutPermits(),
       handleGetPermitTxns: async (signatures, deadline) => migrateWithPermits(signatures, deadline),
       tryPermit: true,
+      permitAction: ProtocolAction.migrateV3,
     });
 
   const handleApproval = async () => {
@@ -39,6 +41,7 @@ export const MigrateV3Actions = ({ isWrongNetwork, blocked }: MigrateV3ActionsPr
       blocked={blocked}
       actionText={<Trans>Migrate</Trans>}
       actionInProgressText={<Trans>Migrating</Trans>}
+      tryPermit
     />
   );
 };

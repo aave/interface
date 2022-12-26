@@ -1,12 +1,9 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { utils } from 'ethers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -34,15 +31,13 @@ export const RepayActions = ({
   blocked,
   ...props
 }: RepayActionProps) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const repay = useRootStore((state) => state.repay);
-  const repayWithPermit = useRootStore((state) => state.repayWithPermit);
+  const { repay, repayWithPermit, tryPermit } = useRootStore();
 
+  const usingPermit = tryPermit(poolAddress);
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      // move tryPermit to store
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit: usingPermit,
+      permitAction: ProtocolAction.repayWithPermit,
       handleGetTxns: async () => {
         return repay({
           amountToRepay,
@@ -88,6 +83,7 @@ export const RepayActions = ({
       handleApproval={() => approval([{ amount: amountToRepay, underlyingAsset: poolAddress }])}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+      tryPermit={usingPermit}
     />
   );
 };
