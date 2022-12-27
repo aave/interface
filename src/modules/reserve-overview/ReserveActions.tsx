@@ -302,40 +302,42 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
 
 const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
   return (
-    <Stack>
-      <AvailableTooltip
-        variant="description"
-        text={<Trans>Available to borrow</Trans>}
-        capType={CapType.borrowCap}
-      />
-      <Stack
-        sx={{ height: '44px' }}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box>
-          <ValueWithSymbol value={value} symbol={symbol} />
-          <FormattedNumber
-            value={usdValue}
-            variant="subheader2"
-            color="text.muted"
-            symbolsColor="text.muted"
-            symbol="USD"
-          />
-        </Box>
-        <Button
-          sx={{ height: '36px', width: '96px' }}
-          onClick={onActionClicked}
-          disabled={disable}
-          fullWidth={false}
-          variant="contained"
-          data-cy="borrowButton"
+    !disable && (
+      <Stack>
+        <AvailableTooltip
+          variant="description"
+          text={<Trans>Available to borrow</Trans>}
+          capType={CapType.borrowCap}
+        />
+        <Stack
+          sx={{ height: '44px' }}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Trans>Borrow</Trans>
-        </Button>
+          <Box>
+            <ValueWithSymbol value={value} symbol={symbol} />
+            <FormattedNumber
+              value={usdValue}
+              variant="subheader2"
+              color="text.muted"
+              symbolsColor="text.muted"
+              symbol="USD"
+            />
+          </Box>
+          <Button
+            sx={{ height: '36px', width: '96px' }}
+            onClick={onActionClicked}
+            disabled={disable}
+            fullWidth={false}
+            variant="contained"
+            data-cy="borrowButton"
+          >
+            <Trans>Borrow</Trans>
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
+    )
   );
 };
 
