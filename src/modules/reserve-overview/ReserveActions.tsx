@@ -301,7 +301,7 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
 };
 
 const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
-  return (
+  return !disable ? (
     <Stack>
       <AvailableTooltip
         variant="description"
@@ -336,7 +336,7 @@ const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
         </Button>
       </Stack>
     </Stack>
-  );
+  ) : null;
 };
 
 const WrappedBaseAssetSelector = ({
