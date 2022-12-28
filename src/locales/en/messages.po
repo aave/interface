@@ -658,12 +658,17 @@ msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
 #: src/ui-config/menu-items/index.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
 
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Docs"
+msgstr "Docs"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
@@ -797,6 +802,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Feedback"
+msgstr "Feedback"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Fetching data..."
 msgstr "Fetching data..."
@@ -830,6 +839,7 @@ msgstr "Funds in the Safety Module"
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
+#: src/ui-config/menu-items/index.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
@@ -1268,6 +1278,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Privacy"
+msgstr "Privacy"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -1692,6 +1706,10 @@ msgstr "Switching E-Mode"
 msgid "Switching rate"
 msgstr "Switching rate"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Terms"
+msgstr "Terms"
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Test Assets"
@@ -1938,6 +1956,10 @@ msgstr "Transaction failed"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Transaction overview"
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Twitter"
+msgstr "Twitter"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Type of delegation"

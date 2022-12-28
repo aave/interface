@@ -6,6 +6,7 @@ import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import DiscordIcon from '/public/icons/discord.svg';
 import GithubIcon from '/public/icons/github.svg';
+import TwitterIcon from '/public/icons/twitter.svg';
 
 import { MarketDataType } from '../marketsConfig';
 
@@ -84,6 +85,48 @@ const moreMenuItems: MoreMenuItem[] = [
       `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
     title: t`Buy Crypto With Fiat`,
     icon: <CreditCardIcon />,
+  },
+];
+interface FooterSocial extends Navigation {
+  icon: ReactNode;
+  makeLink?: (walletAddress: string) => string;
+}
+
+export const footerSocial: FooterSocial[] = [
+  {
+    link: 'https://discord.gg/7kHKnkDEUf',
+    title: t`Discord`,
+    icon: <DiscordIcon />,
+  },
+  {
+    link: 'https://github.com/aave/interface',
+    title: t`Github`,
+    icon: <GithubIcon />,
+  },
+  {
+    link: 'https://twitter.com/AaveAave',
+    title: t`Twitter`,
+    icon: <TwitterIcon />,
+  },
+];
+
+export const footerNavigation: Navigation[] = [
+  {
+    link: ROUTES.termsAndConditions,
+    title: t`Terms`,
+  },
+  {
+    link: ROUTES.privacy,
+    title: t`Privacy`,
+  },
+  {
+    link: ROUTES.docs,
+    title: t`Docs`,
+  },
+  {
+    link: ROUTES.feedback,
+    title: t`Feedback`,
+    dataCy: 'menuGovernance',
   },
 ];
 
