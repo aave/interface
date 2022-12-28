@@ -40,7 +40,7 @@ export class ReadOnlyModeConnector extends AbstractConnector {
   activate(): Promise<ConnectorUpdate<string | number>> {
     const address = localStorage.getItem('readOnlyModeAddress');
     if (!address || address === 'undefined') {
-      throw new Error('No address found in local storage for read mode');
+      throw new Error('No address found in local storage for read-only mode');
     }
 
     this.readAddress = address;
