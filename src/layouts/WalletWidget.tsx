@@ -44,7 +44,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading, watchModeOnlyAddress } =
+  const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
@@ -84,7 +84,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!connected && !watchModeOnlyAddress) {
+    if (!connected && !readOnlyModeAddress) {
       setWalletModalOpen(true);
     } else {
       setOpen(true);
@@ -109,7 +109,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     handleClose();
   };
 
-  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || watchModeOnlyAddress);
+  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
 
   const accountAvatar = (
     <Box
@@ -128,7 +128,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         alt=""
         onError={() => setUseBlockie(true)}
       />
-      {watchModeOnlyAddress && (
+      {readOnlyModeAddress && (
         <SvgIcon
           color="warning"
           sx={{
@@ -185,7 +185,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 img: { width: '100%', height: '100%', borderRadius: '50%' },
               }}
             >
-              {watchModeOnlyAddress && (
+              {readOnlyModeAddress && (
                 <SvgIcon
                   color="warning"
                   sx={{
@@ -230,7 +230,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               </Typography>
             </Box>
           </Box>
-          {watchModeOnlyAddress && (
+          {readOnlyModeAddress && (
             <Warning
               icon={false}
               severity="warning"
@@ -389,13 +389,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && (connected || watchModeOnlyAddress) && open ? (
+      {md && (connected || readOnlyModeAddress) && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
-          variant={connected || watchModeOnlyAddress ? 'surface' : 'gradient'}
+          variant={connected || readOnlyModeAddress ? 'surface' : 'gradient'}
           aria-label="wallet"
           id="wallet-button"
           aria-controls={open ? 'wallet-button' : undefined}
@@ -403,12 +403,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected || watchModeOnlyAddress ? '5px 8px' : undefined,
+            p: connected || readOnlyModeAddress ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
-          startIcon={(connected || watchModeOnlyAddress) && !hideWalletAccountText && accountAvatar}
+          startIcon={(connected || readOnlyModeAddress) && !hideWalletAccountText && accountAvatar}
           endIcon={
-            (connected || watchModeOnlyAddress) &&
+            (connected || readOnlyModeAddress) &&
             !hideWalletAccountText &&
             !md && (
               <SvgIcon

@@ -19,7 +19,7 @@ export enum WalletType {
   FRAME = 'frame',
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
-  WATCH_MODE_ONLY = 'watch_mode_only',
+  READ_ONLY_MODE = 'read_only_mode',
 }
 
 const APP_NAME = 'Aave';
@@ -30,25 +30,25 @@ const mockProvider = {
 };
 
 /**
- *  This is a connector to be used in watch mode only.
- *  On activate, the connector expects a local storage item called `watchModeOnlyAddress` to be set, otherwise an error is thrown.
+ *  This is a connector to be used in read-only mode.
+ *  On activate, the connector expects a local storage item called `readOnlyModeAddress` to be set, otherwise an error is thrown.
  *  When the connector is deactivated (i.e. on disconnect, switching wallets), the local storage item is removed.
  */
-export class WatchModeOnlyConnector extends AbstractConnector {
-  watchAddress = '';
+export class ReadOnlyModeConnector extends AbstractConnector {
+  readAddress = '';
 
   activate(): Promise<ConnectorUpdate<string | number>> {
-    const address = localStorage.getItem('watchModeOnlyAddress');
+    const address = localStorage.getItem('readOnlyModeAddress');
     if (!address || address === 'undefined') {
-      throw new Error('No address found in local storage for watch mode');
+      throw new Error('No address found in local storage for read mode');
     }
 
-    this.watchAddress = address;
+    this.readAddress = address;
 
     return Promise.resolve({
       provider: mockProvider,
       chainId: ChainId.mainnet,
-      account: this.watchAddress,
+      account: this.readAddress,
     });
   }
   getProvider(): Promise<unknown> {
@@ -58,15 +58,15 @@ export class WatchModeOnlyConnector extends AbstractConnector {
     return Promise.resolve(ChainId.mainnet);
   }
   getAccount(): Promise<string | null> {
-    return Promise.resolve(this.watchAddress);
+    return Promise.resolve(this.readAddress);
   }
   deactivate(): void {
-    const storedWatchAddress = localStorage.getItem('watchModeOnlyAddress');
-    if (storedWatchAddress === this.watchAddress) {
+    const storedReadAddress = localStorage.getItem('readOnlyModeAddress');
+    if (storedReadAddress === this.readAddress) {
       // Only update local storage if the address is the same as the one this connector stored.
-      // This will be different if the user switches to another account to watch because
-      // the new connector gets iniatialzed before this one is deactivated.
-      localStorage.removeItem('watchModeOnlyAddress');
+      // This will be different if the user switches to another account to observe because
+      // the new connector gets initialized before this one is deactivated.
+      localStorage.removeItem('readOnlyModeAddress');
     }
   }
 }
@@ -78,8 +78,8 @@ export const getWallet = (
   const supportedChainIds = getSupportedChainIds();
 
   switch (wallet) {
-    case WalletType.WATCH_MODE_ONLY:
-      return new WatchModeOnlyConnector();
+    case WalletType.READ_ONLY_MODE:
+      return new ReadOnlyModeConnector();
     case WalletType.LEDGER:
       return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:

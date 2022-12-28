@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
-export const WatchOnlyModeTooltip = ({ ...rest }: TextWithTooltipProps) => {
+export const ReadOnlyModeTooltip = ({ ...rest }: TextWithTooltipProps) => {
   return (
     <TextWithTooltip {...rest}>
       <Trans>
