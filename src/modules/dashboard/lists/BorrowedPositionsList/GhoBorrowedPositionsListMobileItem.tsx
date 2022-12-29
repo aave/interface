@@ -99,7 +99,7 @@ export const GhoBorrowedPositionsListMobileItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(underlyingAsset, borrowRateMode)}
+          onClick={() => openRepay(underlyingAsset, borrowRateMode, false)}
           sx={{ mr: 1.5 }}
           fullWidth
         >
