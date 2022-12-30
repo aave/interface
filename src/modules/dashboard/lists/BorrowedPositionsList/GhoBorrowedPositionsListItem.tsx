@@ -40,8 +40,6 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  console.log(variableBorrows);
-
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
