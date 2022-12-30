@@ -5,9 +5,11 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 
 import { MarketAssetsListMobileItemLoader } from '../MarketAssetsListMobileItemLoader';
 
@@ -17,16 +19,10 @@ interface GhoMarketAssetsListMobileItemProps {
 
 export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
+  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const theme = useTheme();
 
-  const {
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount },
-    ghoDisplay: { facilitatorBucketLevel },
-  } = useRootStore();
-
-  if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
+  if (!reserve || ghoLoadingData) {
     return <MarketAssetsListMobileItemLoader />;
   }
 
@@ -71,11 +67,14 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
           >
             <FormattedNumber
               compact
-              value={facilitatorBucketLevel}
+              value={ghoReserveData.aaveFacilitatorBucketLevel}
               visibleDecimals={2}
               variant="secondary14"
             />
-            <ReserveSubheader value={facilitatorBucketLevel} rightAlign={true} />
+            <ReserveSubheader
+              value={ghoReserveData.aaveFacilitatorBucketLevel.toString()}
+              rightAlign={true}
+            />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
@@ -95,7 +94,7 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
             <FormattedNumber
               compact
               percent
-              value={borrowAPYWithMaxDiscount}
+              value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
               variant="secondary14"
             />
           </Box>

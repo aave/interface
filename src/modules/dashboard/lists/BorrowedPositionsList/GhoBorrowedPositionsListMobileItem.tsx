@@ -2,13 +2,15 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
@@ -16,11 +18,8 @@ import { ListValueRow } from '../ListValueRow';
 
 export const GhoBorrowedPositionsListMobileItem = ({
   reserve,
-  totalBorrows,
-  totalBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
-  variableBorrows,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
@@ -35,21 +34,14 @@ export const GhoBorrowedPositionsListMobileItem = ({
     variableBorrowAPY,
     underlyingAsset,
   } = reserve;
-  const {
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
-    ghoBorrowAPY,
-  } = useRootStore();
+  const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
 
   const borrowRateAfterDiscount = weightedAverageAPY(
-    ghoBorrowAPY,
-    Number(variableBorrows),
-    discountableAmount,
-    borrowAPYWithMaxDiscount
+    ghoReserveData.ghoVariableBorrowAPY,
+    ghoUserData.userGhoBorrowBalance,
+    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-
-  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListMobileItemWrapper
@@ -63,14 +55,14 @@ export const GhoBorrowedPositionsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
-        value={Number(totalBorrows)}
-        subValue={Number(totalBorrowsUSD)}
-        disabled={Number(totalBorrows) === 0}
+        value={ghoUserData.userGhoBorrowBalance}
+        subValue={ghoUserData.userGhoBorrowBalance}
+        disabled={ghoUserData.userGhoBorrowBalance === 0}
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={loading ? -1 : borrowRateAfterDiscount}
+          value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
           symbol={symbol}
           variant="secondary14"
         />

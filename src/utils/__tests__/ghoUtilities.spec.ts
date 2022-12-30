@@ -1,11 +1,4 @@
-import { BigNumber } from 'ethers';
-
-import {
-  convertBpsToPercentage,
-  getAvailableBorrows,
-  normalizeBaseVariableBorrowRate,
-  weightedAverageAPY,
-} from '../ghoUtilities';
+import { getAvailableBorrows, weightedAverageAPY } from '../ghoUtilities';
 
 describe('gho utilities', () => {
   it('returns the correct amount available to borrow when user available borrow is less than facilitator level', () => {
@@ -34,12 +27,6 @@ describe('gho utilities', () => {
     );
 
     expect(available).toEqual(ghoFacilitatorCapacity - ghoFacilitatorLevel);
-  });
-
-  it('normalizes the base variable borrow rate correctly', () => {
-    // base variable rates are in units of Ray (10^27)
-    const normalized = normalizeBaseVariableBorrowRate('1000000000000000000000000000');
-    expect(normalized).toEqual(1);
   });
 
   it('calculates the weighted average APY correctly', () => {
@@ -87,10 +74,5 @@ describe('gho utilities', () => {
     );
 
     expect(apy.toPrecision(3)).toEqual('0.0160');
-  });
-  it('converts bps to percentage', () => {
-    const bps = 2000;
-    const percentage = convertBpsToPercentage(BigNumber.from(bps));
-    expect(percentage).toEqual(0.2);
   });
 });

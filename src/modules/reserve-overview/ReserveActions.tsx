@@ -1,4 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -66,7 +67,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { openBorrow, openFaucet, openSupply } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
+  const { user, reserves, loading: loadingReserves, eModes, ghoReserveData } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
   const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
@@ -76,7 +77,6 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const {
-    ghoComputed: { maxAvailableFromFacilitator },
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
 
@@ -140,7 +140,10 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   let maxAmountToSupply: string;
   if (displayGho) {
     const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
-    maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+    maxAmountToBorrow = BigNumber.min(
+      maxAmountUserCanBorrow,
+      valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
+    );
     maxAmountToSupply = '0';
   } else {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, InterestRate.Variable);
