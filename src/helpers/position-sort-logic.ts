@@ -1,9 +1,17 @@
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+} from '../hooks/app-data-provider/useAppDataProvider';
+
+interface Positions extends ComputedUserReserveData, ComputedReserveData {
+  borrowRateMode: string;
+}
+
 export const positionSortLogic = (
   sortDesc: boolean,
   sortName: string,
   sortPosition: string,
-  // eslint-disable-next-line
-  positions: Array<any>, // Note: due to different objects on positions vs assets
+  positions: Array<Positions>, // Note: due to different objects on positions vs assets
   isBorrowedPosition?: boolean
 ) => {
   if (sortDesc) {
@@ -16,8 +24,7 @@ export const positionSortLogic = (
 const handleSortDesc = (
   sortName: string,
   sortPosition: string,
-  // eslint-disable-next-line
-  positions: Array<any>,
+  positions: Array<Positions>,
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
@@ -43,8 +50,7 @@ const handleSortDesc = (
 const sortAsc = (
   sortName: string,
   sortPosition: string,
-  // eslint-disable-next-line
-  positions: Array<any>,
+  positions: Array<Positions>,
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
@@ -67,8 +73,7 @@ const sortAsc = (
   }
 };
 
-// eslint-disable-next-line
-const handleSymbolSort = (sortDesc: boolean, sortPosition: string, positions: Array<any>) => {
+const handleSymbolSort = (sortDesc: boolean, sortPosition: string, positions: Array<Positions>) => {
   if (sortDesc) {
     if (sortPosition === 'position') {
       return positions.sort((a, b) =>
