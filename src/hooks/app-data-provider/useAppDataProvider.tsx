@@ -145,6 +145,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     ghoUserData,
     currentTimestamp,
   });
+  console.log({ formattedGhoUserData });
 
   // Factor discounted GHO interest into cumulative user fields
   if (formattedGhoUserData.userDiscountedGhoInterest > 0) {

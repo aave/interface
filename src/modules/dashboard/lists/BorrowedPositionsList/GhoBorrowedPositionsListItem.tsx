@@ -36,6 +36,8 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
+  console.log({ ghoUserData });
+
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
@@ -71,7 +73,6 @@ export const GhoBorrowedPositionsListItem = ({
           />
         </Box>
       </ListColumn>
-
       <ListColumn>
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
@@ -84,7 +85,6 @@ export const GhoBorrowedPositionsListItem = ({
           currentMarket={currentMarket}
         />
       </ListColumn>
-
       <ListButtonsColumn>
         <Button
           disabled={!isActive}
