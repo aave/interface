@@ -16,10 +16,12 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 
 import { AddTokenDropdown } from '../AddTokenDropdown';
 import { TokenLinkDropdown } from '../TokenLinkDropdown';
@@ -33,13 +35,9 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
   const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
-  const {
-    ghoDisplay: { facilitatorBucketLevel, maxAvailableFromFacilitator },
-    ghoLoadingData,
-    ghoLoadingMarketData,
-  } = useRootStore();
+  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
-  const loading = ghoLoadingData || ghoLoadingMarketData;
+  const loading = ghoLoadingData;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -199,7 +197,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
       )}
       <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={facilitatorBucketLevel}
+          value={ghoReserveData.aaveFacilitatorBucketLevel}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -209,7 +207,7 @@ export const GhoReserveTopDetails = ({ reserve }: GhoReserveTopDetailsProps) => 
 
       <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={maxAvailableFromFacilitator}
+          value={ghoReserveData.aaveFacilitatorRemainingCapacity}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

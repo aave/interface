@@ -3,7 +3,6 @@ import {
   StakingService,
   UiStakeDataProvider,
 } from '@aave/contract-helpers';
-import { formatUnits } from 'ethers/lib/utils';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
@@ -56,7 +55,6 @@ export interface StakeSlice {
   refetchStakeData: () => Promise<void>;
   stakeDataLoading: boolean;
   stakeUserResult?: StakeUserUiData;
-  stkAaveBalance?: number;
   stakeGeneralResult?: StakeGeneralUiData;
   stake: (args: {
     token: string;
@@ -106,11 +104,8 @@ export const createStakeSlice: StateCreator<
                 user: get().account,
               })
               .then((userStakeData) => {
-                const stakedAaveBalance = userStakeData.aave.stakeTokenUserBalance;
-                const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
                 set({
                   stakeUserResult: userStakeData,
-                  stkAaveBalance: Number(stakedAaveBalanceNormalized),
                 });
               })
           );

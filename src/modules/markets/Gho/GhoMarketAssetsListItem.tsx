@@ -6,9 +6,11 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   height: '103px',
@@ -33,14 +35,7 @@ interface GhoMarketAssetsListItemProps {
 
 export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
-
-  const {
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount },
-    ghoDisplay: { facilitatorBucketLevel },
-    ghoBorrowAPY,
-  } = useRootStore();
+  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
   return (
     <Box sx={{ px: 6, mt: 1, mb: 6 }}>
@@ -48,7 +43,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
         <Legend>
           <Trans>Aave Protocol native asset</Trans>
         </Legend>
-        {!reserve || ghoLoadingData || ghoLoadingMarketData ? (
+        {!reserve || ghoLoadingData ? (
           <GhoSkeleton />
         ) : (
           <ListItem sx={{ marginTop: -2, p: 0 }}>
@@ -74,7 +69,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               <FormattedNumber
                 compact
                 symbol="usd"
-                value={facilitatorBucketLevel}
+                value={ghoReserveData.aaveFacilitatorBucketLevel}
                 visibleDecimals={2}
                 variant="h3"
               />
@@ -86,7 +81,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
               <FormattedNumber
                 compact
                 percent
-                value={ghoBorrowAPY}
+                value={ghoReserveData.ghoVariableBorrowAPY}
                 visibleDecimals={2}
                 variant="h3"
               />
@@ -100,7 +95,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
                   <FormattedNumber
                     compact
                     percent
-                    value={ghoBorrowAPY}
+                    value={ghoReserveData.ghoVariableBorrowAPY}
                     visibleDecimals={2}
                     variant="h3"
                     symbolsColor="text.muted"
@@ -117,7 +112,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
                 <FormattedNumber
                   compact
                   percent
-                  value={borrowAPYWithMaxDiscount}
+                  value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                   visibleDecimals={2}
                   variant="h3"
                   sx={{ mr: 0.5 }}
