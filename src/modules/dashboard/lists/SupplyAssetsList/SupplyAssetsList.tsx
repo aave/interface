@@ -192,7 +192,7 @@ export const SupplyAssetsList = () => {
     }
   }
 
-  const renderHeader = () => {
+  const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
         {head.map((col) => (
@@ -282,7 +282,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!supplyReserves && !supplyDisabled && renderHeader()}
+        {!downToXSM && !!supplyReserves && !supplyDisabled && <RenderHeader />}
         {supplyReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

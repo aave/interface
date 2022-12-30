@@ -103,7 +103,7 @@ export const SuppliedPositionsList = () => {
     }
   }
 
-  const renderHeader = () => {
+  const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
         {head.map((col) => (
@@ -166,7 +166,7 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
-          {!downToXSM && renderHeader()}
+          {!downToXSM && <RenderHeader />}
           {suppliedPosition.map((item) => (
             <Fragment key={item.underlyingAsset}>
               <AssetCapsProvider asset={item.reserve}>

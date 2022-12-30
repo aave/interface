@@ -148,7 +148,7 @@ export const BorrowAssetsList = () => {
     },
   ];
 
-  const renderHeader = () => {
+  const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
         {head.map((col) => (
@@ -241,7 +241,7 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && renderHeader()}
+        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
         {borrowReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

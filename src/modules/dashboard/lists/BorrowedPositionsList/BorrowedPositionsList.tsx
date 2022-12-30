@@ -128,7 +128,7 @@ export const BorrowedPositionsList = () => {
     },
   ];
 
-  const renderHeader = () => {
+  const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
         {head.map((col) => (
@@ -194,7 +194,7 @@ export const BorrowedPositionsList = () => {
     >
       {borrowPositions.length ? (
         <>
-          {!downToXSM && renderHeader()}
+          {!downToXSM && <RenderHeader />}
           {borrowPositions.map((item) => (
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
