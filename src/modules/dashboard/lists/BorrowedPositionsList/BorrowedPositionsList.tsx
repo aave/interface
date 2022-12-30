@@ -14,6 +14,7 @@ import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeToolt
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
+import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedUserReserveData,
   useAppDataContext,
@@ -76,40 +77,8 @@ export const BorrowedPositionsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      borrowPositions.sort((a, b) =>
-        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
-      );
-    } else if (sortName === 'debt') {
-      borrowPositions.sort((a, b) => Number(a.variableBorrows) - Number(b.variableBorrows));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      borrowPositions.sort((a, b) =>
-        a.borrowRateMode === 'Variable'
-          ? Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY)
-          : Number(a.reserve.stableBorrowAPY) - Number(b.reserve.stableBorrowAPY)
-      );
-    }
-  } else {
-    if (sortName === 'symbol') {
-      borrowPositions.sort((a, b) =>
-        b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
-      );
-    } else if (sortName === 'debt') {
-      borrowPositions.sort((a, b) => Number(b.variableBorrows) - Number(a.variableBorrows));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // borrowPositions.sort((a, b) => b[sortName] - a[sortName]);
-      borrowPositions.sort((a, b) =>
-        a.borrowRateMode === 'Variable'
-          ? Number(b.reserve.variableBorrowAPY) - Number(a.reserve.variableBorrowAPY)
-          : Number(b.reserve.stableBorrowAPY) - Number(a.reserve.stableBorrowAPY)
-      );
-    }
-  }
+  positionSortLogic(sortDesc, sortName, 'position', borrowPositions, true);
+
   const head = [
     {
       title: <Trans>Asset</Trans>,
@@ -117,7 +86,7 @@ export const BorrowedPositionsList = () => {
     },
     {
       title: <Trans key="Debt">Debt</Trans>,
-      sortKey: 'debt',
+      sortKey: 'variableBorrows',
     },
     {
       title: <Trans key="APY">APY</Trans>,

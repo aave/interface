@@ -17,6 +17,7 @@ import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
+import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -91,23 +92,7 @@ export const BorrowAssetsList = () => {
             availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
         );
 
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      borrowReserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      borrowReserves.sort((a, b) => a[sortName] - b[sortName]);
-    }
-  } else {
-    if (sortName === 'symbol') {
-      borrowReserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      borrowReserves.sort((a, b) => b[sortName] - a[sortName]);
-    }
-  }
+  positionSortLogic(sortDesc, sortName, 'position', borrowReserves);
 
   const head = [
     {

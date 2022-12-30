@@ -14,6 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
+import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -164,33 +165,7 @@ export const SupplyAssetsList = () => {
     },
   ];
 
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      supplyReserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
-      supplyReserves.sort(
-        (a, b) =>
-          Number(a.usageAsCollateralEnabledOnUser) - Number(b.usageAsCollateralEnabledOnUser)
-      );
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      supplyReserves.sort((a, b) => a[sortName] - b[sortName]);
-    }
-  } else {
-    if (sortName === 'symbol') {
-      supplyReserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
-      supplyReserves.sort(
-        (a, b) =>
-          Number(b.usageAsCollateralEnabledOnUser) - Number(a.usageAsCollateralEnabledOnUser)
-      );
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      supplyReserves.sort((a, b) => b[sortName] - a[sortName]);
-    }
-  }
+  positionSortLogic(sortDesc, sortName, 'assets', supplyReserves);
 
   const RenderHeader: React.FC = () => {
     return (

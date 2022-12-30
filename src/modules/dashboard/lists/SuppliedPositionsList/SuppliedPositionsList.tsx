@@ -13,6 +13,7 @@ import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/Col
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
+import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
@@ -71,37 +72,7 @@ export const SuppliedPositionsList = () => {
     },
   ];
 
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      suppliedPosition.sort((a, b) =>
-        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
-      );
-    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
-      suppliedPosition.sort(
-        (a, b) =>
-          Number(a.usageAsCollateralEnabledOnUser) - Number(b.usageAsCollateralEnabledOnUser)
-      );
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      suppliedPosition.sort((a, b) => a[sortName] - b[sortName]);
-    }
-  } else {
-    if (sortName === 'symbol') {
-      suppliedPosition.sort((a, b) =>
-        b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
-      );
-    } else if (sortName === 'usageAsCollateralEnabledOnUser') {
-      suppliedPosition.sort(
-        (a, b) =>
-          Number(b.usageAsCollateralEnabledOnUser) - Number(a.usageAsCollateralEnabledOnUser)
-      );
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      suppliedPosition.sort((a, b) => b[sortName] - a[sortName]);
-    }
-  }
+  positionSortLogic(sortDesc, sortName, 'position', suppliedPosition);
 
   const RenderHeader: React.FC = () => {
     return (
