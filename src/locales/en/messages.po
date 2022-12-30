@@ -477,6 +477,7 @@ msgstr "Close"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Collateral"
 msgstr "Collateral"
 
@@ -685,6 +686,7 @@ msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network 
 msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/migration/EmodeInfo.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
 
@@ -850,6 +852,7 @@ msgid "Global settings"
 msgstr "Global settings"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Go Back"
@@ -866,15 +869,19 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Health Factor ({0} v2)"
+msgstr "Health Factor ({0} v2)"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Health Factor ({0} v3)"
+msgstr "Health Factor ({0} v3)"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Health factor"
 msgstr "Health factor"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health factor changes after migration"
-msgstr "Health factor changes after migration"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is lesser than the liquidation threshold"
@@ -1018,6 +1025,7 @@ msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/modules/migration/HFChange.tsx
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
@@ -1104,7 +1112,6 @@ msgid "Menu"
 msgstr "Menu"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
-#: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrate"
 msgstr "Migrate"
 
@@ -1112,9 +1119,17 @@ msgstr "Migrate"
 msgid "Migrate from {0} V2 to {1} V3"
 msgstr "Migrate from {0} V2 to {1} V3"
 
-#: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+msgid "Migrate to v3"
+msgstr "Migrate to v3"
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+msgid "Migrate to {0} v3 Market"
+msgstr "Migrate to {0} v3 Market"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Migrated"
@@ -1129,8 +1144,8 @@ msgid "Migrating multiple collaterals and borrowed assets at the same time can b
 msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Migration & Health factor change"
-msgstr "Migration & Health factor change"
+msgid "Migration risks"
+msgstr "Migration risks"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1175,6 +1190,10 @@ msgstr "New APY"
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "No"
 msgstr "No"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "No assets selected to migrate."
+msgstr "No assets selected to migrate."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -1317,6 +1336,10 @@ msgstr "Pool addresses provider is not registered"
 msgid "Powered by"
 msgstr "Powered by"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Preview tx and migrate"
+msgstr "Preview tx and migrate"
+
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -1452,6 +1475,10 @@ msgstr "Reserve status & configuration"
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Review changes to continue"
+msgstr "Review changes to continue"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
@@ -1869,6 +1896,14 @@ msgstr "These assets are temporarily frozen by Aave community decisions, meaning
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
+msgstr "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
+msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
 msgstr "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
@@ -2032,6 +2067,10 @@ msgstr "Unbacked"
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
 
+#: src/modules/migration/MigrationList.tsx
+msgid "Unselect all"
+msgstr "Unselect all"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"
@@ -2105,17 +2144,9 @@ msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditi
 msgid "Version 2"
 msgstr "Version 2"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Version 2 HF change"
-msgstr "Version 2 HF change"
-
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
 msgstr "Version 3"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Version 3 HF change"
-msgstr "Version 3 HF change"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -2461,6 +2492,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/migration/EmodeInfo.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"

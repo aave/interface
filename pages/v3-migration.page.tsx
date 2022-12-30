@@ -1,13 +1,12 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider } from '@mui/material';
-import { useEffect } from 'react';
+import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
+import { useCallback, useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
-import { useUserReserves } from 'src/hooks/useUserReserves';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { DashboardContentNoData } from 'src/modules/dashboard/DashboardContentNoData';
@@ -16,8 +15,10 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
+import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
+  selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
   selectV3UserSummary,
   selectV3UserSummaryAfterMigration,
@@ -27,30 +28,51 @@ export default function V3Migration() {
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
-  const setCurrentMarketForMigration = useRootStore((state) => state.setCurrentMarketForMigration);
-  const resetMigrationSelectedAssets = useRootStore((state) => state.resetMigrationSelectedAssets);
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const currentTimeStamp = useCurrentTimestamp(5);
-
-  const v2UserSummaryAfterMigration = useRootStore((state) =>
-    selectV2UserSummaryAfterMigration(state, currentTimeStamp)
-  );
-
-  const v3UserSummaryAfterMigration = useRootStore((state) =>
-    selectV3UserSummaryAfterMigration(state, currentTimeStamp)
-  );
-
-  const v3UserSummaryBeforeMigration = useRootStore((state) =>
-    selectV3UserSummary(state, currentTimeStamp)
-  );
-
-  const { user, borrowPositions } = useUserReserves();
+  const currentTimeStamp = useCurrentTimestamp(10);
 
   const {
+    totalCollateralUSD,
+    totalBorrowsUSD,
+    supplyReserves,
+    borrowReserves,
+    healthFactor: v2HealthFactorBeforeMigration,
+  } = useRootStore(
+    useCallback(
+      (state) => selectUserReservesForMigration(state, currentTimeStamp),
+      [currentTimeStamp]
+    )
+  );
+
+  // health factor calculation
+  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, poolReserveV3 } = useRootStore(
+    (state) => ({
+      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
+      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
+      poolReserveV3: selectCurrentChainIdV3MarketData(state),
+    })
+  );
+
+  const v3UserSummaryAfterMigration = useRootStore(
+    useCallback(
+      (state) => selectV3UserSummaryAfterMigration(state, currentTimeStamp),
+      [currentTimeStamp]
+    )
+  );
+
+  // actions
+  const {
+    selectAllSupply,
+    selectAllBorrow,
     toggleMigrationSelectedSupplyAsset: toggleSelectedSupplyPosition,
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
+    setCurrentMarketForMigration,
+    resetMigrationSelectedAssets,
+    enforceAsCollateral,
   } = useRootStore();
 
   useEffect(() => {
@@ -67,6 +89,20 @@ export default function V3Migration() {
 
   usePoolDataV3Subscription();
 
+  const enabledAsCollateral = (canBeEnforced: boolean, underlyingAsset: string) => {
+    if (canBeEnforced) {
+      enforceAsCollateral(underlyingAsset);
+    }
+  };
+
+  const handleToggleAllSupply = () => {
+    selectAllSupply(currentTimeStamp);
+  };
+
+  const handleToggleAllBorrow = () => {
+    selectAllBorrow(currentTimeStamp);
+  };
+
   return (
     <>
       <MigrationTopPanel />
@@ -74,20 +110,13 @@ export default function V3Migration() {
         <ContentContainer>
           <MigrationLists
             loading={loading}
-            totalSuppliesUSD={user.totalCollateralUSD}
-            totalBorrowsUSD={user.totalBorrowsUSD}
-            isSupplyPositionsAvailable={!!user.userReservesData.length}
-            isBorrowPositionsAvailable={!!borrowPositions.length}
-            onSelectAllSupplies={() =>
-              user.userReservesData.map((reserve) =>
-                toggleSelectedSupplyPosition(reserve.underlyingAsset)
-              )
-            }
-            onSelectAllBorrows={() =>
-              borrowPositions.map((reserve) =>
-                toggleSelectedBorrowPosition(reserve.underlyingAsset)
-              )
-            }
+            totalSuppliesUSD={totalCollateralUSD}
+            totalBorrowsUSD={totalBorrowsUSD}
+            isSupplyPositionsAvailable={supplyReserves.length > 0}
+            isBorrowPositionsAvailable={borrowReserves.length > 0}
+            onSelectAllSupplies={handleToggleAllSupply}
+            onSelectAllBorrows={handleToggleAllBorrow}
+            emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
             suppliesPositions={
               <>
                 {loading ? (
@@ -95,17 +124,31 @@ export default function V3Migration() {
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
                   </>
-                ) : !!user.userReservesData.length ? (
-                  user.userReservesData.map((reserve) => (
+                ) : supplyReserves.length > 0 ? (
+                  supplyReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
-                      checked={selectedSupplyAssets[reserve.underlyingAsset]}
+                      checked={
+                        selectedSupplyAssets.findIndex(
+                          (selectedAsset) =>
+                            selectedAsset.underlyingAsset == reserve.underlyingAsset
+                        ) >= 0
+                      }
+                      enableAsCollateral={() =>
+                        enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
+                      }
+                      canBeEnforced={
+                        v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
+                          '0' && reserve.canBeEnforced
+                      }
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}
                       amount={reserve.underlyingBalance}
                       amountInUSD={reserve.underlyingBalanceUSD}
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
+                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
+                      isIsolated={reserve.isolatedOnV3}
                     />
                   ))
                 ) : (
@@ -122,17 +165,25 @@ export default function V3Migration() {
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
                   </>
-                ) : !!borrowPositions.length ? (
-                  borrowPositions.map((reserve) => (
+                ) : borrowReserves.length > 0 ? (
+                  borrowReserves.map((reserve) => (
                     <MigrationListItem
                       key={reserve.underlyingAsset}
-                      checked={selectedBorrowAssets[reserve.underlyingAsset]}
+                      checked={
+                        !reserve.disabledForMigration &&
+                        selectedBorrowAssets.findIndex(
+                          (selectedAsset) =>
+                            selectedAsset.underlyingAsset == reserve.underlyingAsset
+                        ) >= 0
+                      }
                       reserveIconSymbol={reserve.reserve.iconSymbol}
                       reserveName={reserve.reserve.name}
                       reserveSymbol={reserve.reserve.symbol}
                       amount={reserve.totalBorrows}
                       amountInUSD={reserve.totalBorrowsUSD}
                       onCheckboxClick={() => toggleSelectedBorrowPosition(reserve.underlyingAsset)}
+                      disabled={reserve.disabledForMigration}
+                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
                     />
                   ))
                 ) : (
@@ -144,10 +195,10 @@ export default function V3Migration() {
             }
           />
 
-          <Divider sx={{ my: 10 }} />
+          {!downToSM && <Divider sx={{ my: 10 }} />}
 
           <MigrationBottomPanel
-            hfV2Current={user.healthFactor}
+            hfV2Current={v2HealthFactorBeforeMigration}
             hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
             hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
             hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor}

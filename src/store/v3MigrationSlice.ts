@@ -4,7 +4,6 @@ import {
   EthereumTransactionTypeExtended,
   Pool,
   V3MigrationHelperService,
-  valueToWei,
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { SignatureLike } from '@ethersproject/bytes';
@@ -19,16 +18,24 @@ import { selectCurrentChainIdV2MarketKey, selectCurrentChainIdV3MarketKey } from
 import { RootStore } from './root';
 import {
   selectedUserSupplyReservesForMigration,
+  selectMigrationSelectedBorrowIndex,
+  selectMigrationSelectedSupplyIndex,
   selectUserBorrowReservesForMigration,
+  selectUserReservesForMigration,
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyAssetsForMigrationWithPermits,
   selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
 
+type MigrationSelectedAsset = {
+  underlyingAsset: string;
+  enforced: boolean;
+};
+
 export type V3MigrationSlice = {
   //STATE
-  selectedMigrationSupplyAssets: Record<string, boolean>;
-  selectedMigrationBorrowAssets: Record<string, boolean>;
+  selectedMigrationSupplyAssets: MigrationSelectedAsset[];
+  selectedMigrationBorrowAssets: MigrationSelectedAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
@@ -53,6 +60,9 @@ export type V3MigrationSlice = {
   ) => Promise<EthereumTransactionTypeExtended[]>;
   setCurrentMarketForMigration: () => void;
   resetMigrationSelectedAssets: () => void;
+  enforceAsCollateral: (underlyingAsset: string) => void;
+  selectAllBorrow: (timestamp: number) => void;
+  selectAllSupply: (timestamp: number) => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -62,8 +72,8 @@ export const createV3MigrationSlice: StateCreator<
   V3MigrationSlice
 > = (set, get) => {
   return {
-    selectedMigrationSupplyAssets: {},
-    selectedMigrationBorrowAssets: {},
+    selectedMigrationSupplyAssets: [],
+    selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
     timestamp: 0,
     approvalPermitsForMigrationAssets: [],
@@ -115,33 +125,99 @@ export const createV3MigrationSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    toggleMigrationSelectedSupplyAsset: (assetName: string) => {
+    toggleMigrationSelectedSupplyAsset: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          if (draft.selectedMigrationSupplyAssets[assetName]) {
-            delete draft.selectedMigrationSupplyAssets[assetName];
+          const activeAssetIndex = draft.selectedMigrationSupplyAssets.findIndex(
+            (asset) => asset.underlyingAsset == underlyingAsset
+          );
+
+          if (activeAssetIndex >= 0) {
+            draft.selectedMigrationSupplyAssets.splice(activeAssetIndex, 1);
           } else {
-            draft.selectedMigrationSupplyAssets[assetName] = true;
+            draft.selectedMigrationSupplyAssets.push({
+              underlyingAsset,
+              enforced: false,
+            });
           }
         })
       );
     },
-    toggleMigrationSelectedBorrowAsset: (assetName: string) => {
+    toggleMigrationSelectedBorrowAsset: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          if (draft.selectedMigrationBorrowAssets[assetName]) {
-            delete draft.selectedMigrationBorrowAssets[assetName];
+          const activeAssetIndex = draft.selectedMigrationBorrowAssets.findIndex(
+            (asset) => asset.underlyingAsset == underlyingAsset
+          );
+
+          if (activeAssetIndex >= 0) {
+            draft.selectedMigrationBorrowAssets.splice(activeAssetIndex, 1);
           } else {
-            draft.selectedMigrationBorrowAssets[assetName] = true;
+            draft.selectedMigrationBorrowAssets.push({
+              underlyingAsset,
+              enforced: false,
+            });
+          }
+        })
+      );
+    },
+    enforceAsCollateral: (underlyingAsset: string) => {
+      set((state) =>
+        produce(state, (draft) => {
+          const assetIndex = selectMigrationSelectedSupplyIndex(get(), underlyingAsset);
+          const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex]?.enforced;
+          if (assetIndex >= 0) {
+            draft.selectedMigrationSupplyAssets.forEach((asset) => {
+              asset.enforced = false;
+            });
+            draft.selectedMigrationSupplyAssets[assetIndex].enforced = !assetEnforced;
           }
         })
       );
     },
     resetMigrationSelectedAssets: () => {
       set({
-        selectedMigrationBorrowAssets: {},
-        selectedMigrationSupplyAssets: {},
+        selectedMigrationBorrowAssets: [],
+        selectedMigrationSupplyAssets: [],
       });
+    },
+    selectAllSupply: (currentTimestamp: number) => {
+      const { supplyReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+      if (get().selectedMigrationSupplyAssets.length == supplyReserves.length) {
+        set({ selectedMigrationSupplyAssets: [] });
+      } else {
+        const nonSelectedSupplies = supplyReserves
+          .filter(
+            ({ underlyingAsset }) => selectMigrationSelectedSupplyIndex(get(), underlyingAsset) < 0
+          )
+          .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
+
+        set({
+          selectedMigrationSupplyAssets: [
+            ...get().selectedMigrationSupplyAssets,
+            ...nonSelectedSupplies,
+          ],
+        });
+      }
+    },
+    selectAllBorrow: (currentTimestamp: number) => {
+      const { borrowReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+      if (get().selectedMigrationBorrowAssets.length == borrowReserves.length) {
+        set({ selectedMigrationBorrowAssets: [] });
+      } else {
+        const nonSelectedSupplies = borrowReserves
+          .filter(
+            ({ underlyingAsset }) => selectMigrationSelectedBorrowIndex(get(), underlyingAsset) < 0
+          )
+          .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
+
+        set({
+          selectedMigrationBorrowAssets: [
+            ...get().selectedMigrationBorrowAssets,
+            ...nonSelectedSupplies,
+          ],
+        });
+      }
     },
     getApprovePermitsForSelectedAssets: async () => {
       const timestamp = dayjs().unix();

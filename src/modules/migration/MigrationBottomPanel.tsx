@@ -1,4 +1,4 @@
-import { ExclamationIcon } from '@heroicons/react/solid';
+import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -12,8 +12,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { HFChange } from './HFChange';
 
@@ -26,6 +29,12 @@ interface MigrationBottomPanelProps {
   loading?: boolean;
 }
 
+enum ErrorType {
+  NO_SELECTION,
+  V2_HF_TOO_LOW,
+  V3_HF_TOO_LOW,
+}
+
 export const MigrationBottomPanel = ({
   hfV2Current,
   hfV2AfterChange,
@@ -35,10 +44,48 @@ export const MigrationBottomPanel = ({
   loading,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const downToSM = useMediaQuery(breakpoints.down('sm'));
+  const { currentMarket } = useProtocolDataContext();
+  const { market } = getMarketInfoById(currentMarket);
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
+
+  // error types handling
+  let blockingError: ErrorType | undefined = undefined;
+  if (disableButton && isChecked) {
+    blockingError = ErrorType.NO_SELECTION;
+  } else if (Number(hfV2AfterChange) < 1.005 && hfV2AfterChange !== '-1') {
+    blockingError = ErrorType.V2_HF_TOO_LOW;
+  } else if (Number(hfV3AfterChange) < 1.005 && hfV3AfterChange !== '-1') {
+    blockingError = ErrorType.V3_HF_TOO_LOW;
+  }
+
+  // error render handling
+  const Blocked = () => {
+    switch (blockingError) {
+      case ErrorType.NO_SELECTION:
+        return <Trans>No assets selected to migrate.</Trans>;
+      case ErrorType.V2_HF_TOO_LOW:
+        return (
+          <Trans>
+            This action will reduce V2 health factor below liquidation threshold. retain collateral
+            or migrate borrow position to continue.
+          </Trans>
+        );
+      case ErrorType.V3_HF_TOO_LOW:
+        return (
+          <>
+            <Trans>
+              This action will reduce health factor of V3 below liquidation threshold. Increase
+              migrated collateral or reduce migrated borrow to continue.
+            </Trans>
+          </>
+        );
+      default:
+        return <></>;
+    }
+  };
 
   return (
     <Box
@@ -49,12 +96,93 @@ export const MigrationBottomPanel = ({
         justifyContent: 'space-between',
       }}
     >
-      <Box sx={{ width: { xs: '100%', md: '50%', lg: '60%' } }}>
-        <Typography
-          variant={isDesktop ? 'h2' : 'h3'}
-          sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 } }}
+      <Paper
+        sx={{
+          p: downToSM ? '20px 16px' : '20px 30px',
+          mb: { xs: 6, md: 0 },
+          width: { xs: '100%', md: '45%', lg: '35%' },
+        }}
+      >
+        <Row
+          caption={<Trans>Review changes to continue</Trans>}
+          captionVariant="h3"
+          sx={{ mb: 6 }}
+        />
+
+        <HFChange
+          caption={<Trans>Health Factor ({market.marketTitle} v2)</Trans>}
+          hfCurrent={hfV2Current}
+          hfAfter={hfV2AfterChange}
+          loading={loading}
+        />
+
+        <HFChange
+          caption={<Trans>Health Factor ({market.marketTitle} v3)</Trans>}
+          hfCurrent={hfV3Current}
+          hfAfter={hfV3AfterChange}
+          loading={loading}
+        />
+
+        {blockingError !== undefined && (
+          <Warning severity="warning">
+            <Blocked />
+          </Warning>
+        )}
+
+        <Box
+          sx={{
+            height: '44px',
+            backgroundColor: 'background.surface',
+            borderRadius: '4px',
+            display: 'flex',
+            justifyContent: 'center',
+            mb: 4,
+          }}
         >
-          <Trans>Migration & Health factor change</Trans>
+          <FormControlLabel
+            sx={{ margin: 0 }}
+            control={
+              <Checkbox
+                checked={isChecked}
+                onChange={() => setIsChecked(!isChecked)}
+                size="small"
+              />
+            }
+            label={
+              <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+                <Trans>I fully understand the risks of migrating.</Trans>
+              </Typography>
+            }
+          />
+        </Box>
+
+        <Box>
+          <Button
+            onClick={openV3Migration}
+            disabled={!isChecked || blockingError !== undefined}
+            sx={{ width: '100%', height: '44px' }}
+            variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}
+            size="medium"
+          >
+            <Trans>Preview tx and migrate</Trans>
+          </Button>
+        </Box>
+      </Paper>
+      <Box
+        sx={{
+          width: { xs: '100%', md: '50%', lg: '60%' },
+          p: downToSM ? '20px 16px' : '20px 30px',
+          mt: downToSM ? 4 : 0,
+        }}
+      >
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: 700, mb: { xs: 4, lg: 6 }, display: 'flex', alignItems: 'center' }}
+        >
+          <SvgIcon sx={{ fontSize: '24px', color: 'warning.main', mr: 2 }}>
+            <ExclamationIcon />
+          </SvgIcon>
+          <Trans>Migration risks</Trans>
         </Typography>
         <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
           <Trans>
@@ -75,63 +203,7 @@ export const MigrationBottomPanel = ({
         <Typography sx={{ mb: { xs: 4, lg: 6 } }}>
           <Trans>Be mindful of the network congestion and gas prices.</Trans>
         </Typography>
-
-        <FormControlLabel
-          sx={{ mb: { xs: 4, lg: 6 } }}
-          control={
-            <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} size="small" />
-          }
-          label={
-            <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
-              <Trans>I fully understand the risks of migrating.</Trans>
-            </Typography>
-          }
-        />
-
-        <Box>
-          <Button
-            onClick={openV3Migration}
-            disabled={!isChecked || disableButton}
-            sx={{ minWidth: 140 }}
-            variant="contained"
-            size="medium"
-          >
-            <Trans>Migrate</Trans>
-          </Button>
-        </Box>
       </Box>
-
-      <Paper
-        sx={{
-          p: { xs: '20px', lg: '20px 30px' },
-          mb: { xs: 6, md: 0 },
-          width: { xs: '100%', md: '45%', lg: '35%' },
-        }}
-      >
-        <Row
-          caption={<Trans>Health factor changes after migration</Trans>}
-          captionVariant={isDesktop ? 'h3' : 'secondary16'}
-          sx={{ mb: 6 }}
-        >
-          <SvgIcon sx={{ fontSize: '24px', color: 'warning.main' }}>
-            <ExclamationIcon />
-          </SvgIcon>
-        </Row>
-
-        <HFChange
-          caption={<Trans>Version 2 HF change</Trans>}
-          hfCurrent={hfV2Current}
-          hfAfter={hfV2AfterChange}
-          loading={loading}
-        />
-
-        <HFChange
-          caption={<Trans>Version 3 HF change</Trans>}
-          hfCurrent={hfV3Current}
-          hfAfter={hfV3AfterChange}
-          loading={loading}
-        />
-      </Paper>
     </Box>
   );
 };

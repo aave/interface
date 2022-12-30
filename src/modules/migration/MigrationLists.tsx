@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { useUserReserves } from 'src/hooks/useUserReserves';
+import { useRootStore } from 'src/store/root';
 
 import { MigrationList } from './MigrationList';
 
@@ -14,6 +16,7 @@ interface MigrationListsProps {
   loading?: boolean;
   isSupplyPositionsAvailable: boolean;
   isBorrowPositionsAvailable: boolean;
+  emodeCategoryId?: number;
 }
 
 export const MigrationLists = ({
@@ -26,14 +29,25 @@ export const MigrationLists = ({
   loading,
   isSupplyPositionsAvailable,
   isBorrowPositionsAvailable,
+  emodeCategoryId,
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
-  const isTablet = useMediaQuery(breakpoints.up('md'));
+  const isDesktop = useMediaQuery(breakpoints.up('lg'));
 
+  const { user, borrowPositions } = useUserReserves();
+
+  const {
+    selectedMigrationSupplyAssets: selectedSupplyAssets,
+    selectedMigrationBorrowAssets: selectedBorrowAssets,
+  } = useRootStore();
+
+  const allSuppliesSelected =
+    Object.keys(selectedSupplyAssets).length === user.userReservesData.length;
+  const allBorrowsSelected = Object.keys(selectedBorrowAssets).length === borrowPositions.length;
   return (
     <Box
       sx={{
-        display: isTablet ? 'flex' : 'block',
+        display: isDesktop ? 'flex' : 'block',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
       }}
@@ -41,9 +55,12 @@ export const MigrationLists = ({
       <MigrationList
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
+        allSelected={allSuppliesSelected}
         isAvailable={isSupplyPositionsAvailable}
         titleComponent={<Trans>Your supplies</Trans>}
         totalAmount={totalSuppliesUSD}
+        withCollateral
+        emodeCategoryId={emodeCategoryId}
       >
         {suppliesPositions}
       </MigrationList>
@@ -51,10 +68,12 @@ export const MigrationLists = ({
       <MigrationList
         loading={loading}
         onSelectAllClick={onSelectAllBorrows}
+        allSelected={allBorrowsSelected}
         isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
         titleComponent={<Trans>Your borrows</Trans>}
         totalAmount={totalBorrowsUSD}
+        // withEmode TODO: uncomment when emode logic for migration will fix
       >
         {borrowsPositions}
       </MigrationList>

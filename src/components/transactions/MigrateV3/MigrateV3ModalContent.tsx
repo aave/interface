@@ -1,9 +1,14 @@
 import { Trans } from '@lingui/macro';
+import { useCallback } from 'react';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useUserReserves } from 'src/hooks/useUserReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import {
+  selectedUserSupplyReservesForMigration,
+  selectUserBorrowReservesForMigration,
+} from 'src/store/v3MigrationSelectors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -16,48 +21,40 @@ import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 export const MigrateV3ModalContent = () => {
-  const {
-    selectedMigrationSupplyAssets: selectedSupplyAssets,
-    selectedMigrationBorrowAssets: selectedBorrowAssets,
-  } = useRootStore();
-
-  const { user, borrowPositions } = useUserReserves();
+  const currentTimeStamp = useCurrentTimestamp(10);
+  const { supplyPositions, borrowPositions } = useRootStore(
+    useCallback(
+      (state) => ({
+        supplyPositions: selectedUserSupplyReservesForMigration(state, currentTimeStamp),
+        borrowPositions: selectUserBorrowReservesForMigration(state, currentTimeStamp),
+      }),
+      [currentTimeStamp]
+    )
+  );
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const supplyAssets = Object.keys(selectedSupplyAssets).map((asset) => {
-    const reserve = user.userReservesData.find(
-      (reserve) => reserve.underlyingAsset.toLowerCase() === asset.toLowerCase()
-    );
-
-    if (reserve) {
-      return {
-        underlyingAsset: asset,
-        iconSymbol: reserve.reserve.iconSymbol,
-        symbol: reserve.reserve.symbol,
-        amount: reserve.underlyingBalance,
-        amountInUSD: reserve.underlyingBalanceUSD,
-      };
-    }
+  const supplyAssets = supplyPositions.map((supplyAsset) => {
+    return {
+      underlyingAsset: supplyAsset.underlyingAsset,
+      iconSymbol: supplyAsset.reserve.iconSymbol,
+      symbol: supplyAsset.reserve.symbol,
+      amount: supplyAsset.underlyingBalance,
+      amountInUSD: supplyAsset.underlyingBalanceUSD,
+    };
   });
 
-  const borrowsAssets = Object.keys(selectedBorrowAssets).map((asset) => {
-    const reserve = borrowPositions.find(
-      (reserve) => reserve.underlyingAsset.toLowerCase() === asset.toLowerCase()
-    );
-
-    if (reserve) {
-      return {
-        underlyingAsset: asset,
-        iconSymbol: reserve.reserve.iconSymbol,
-        symbol: reserve.reserve.symbol,
-        amount: reserve.totalBorrows,
-        amountInUSD: reserve.totalBorrowsUSD,
-      };
-    }
+  const borrowsAssets = borrowPositions.map((asset) => {
+    return {
+      underlyingAsset: asset.underlyingAsset,
+      iconSymbol: asset.reserve.iconSymbol,
+      symbol: asset.reserve.symbol,
+      amount: asset.totalBorrows,
+      amountInUSD: asset.totalBorrowsUSD,
+    };
   });
 
   // is Network mismatched
