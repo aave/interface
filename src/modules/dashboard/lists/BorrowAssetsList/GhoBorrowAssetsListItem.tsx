@@ -6,7 +6,6 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getAvailableBorrows, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
@@ -24,39 +23,27 @@ export const GhoBorrowAssetsListItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
-  userVariableBorrows,
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
-  const {
-    ghoFacilitatorBucketLevel,
-    ghoFacilitatorBucketCapacity,
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
-    stkAaveBalance,
-    ghoDiscountRatePercent,
-    ghoBorrowAPY,
-  } = useRootStore();
+  const { ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
 
   // Available borrows is min of user available borrows and remaining facilitator capacity
   const maxAmountUserCanMint = getMaxGhoMintAmount(user).toNumber();
   const availableBorrows = getAvailableBorrows(
     maxAmountUserCanMint,
-    Number(ghoFacilitatorBucketCapacity),
-    Number(ghoFacilitatorBucketLevel)
+    ghoReserveData.aaveFacilitatorBucketMaxCapacity,
+    ghoReserveData.aaveFacilitatorBucketLevel
   );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
-  const debtBalanceAfterMaxBorrow = availableBorrows + Number(userVariableBorrows);
+  const debtBalanceAfterMaxBorrow = availableBorrows + ghoUserData.userGhoBorrowBalance;
   const borrowRateAfterDiscount = weightedAverageAPY(
-    ghoBorrowAPY,
+    ghoReserveData.ghoVariableBorrowAPY,
     debtBalanceAfterMaxBorrow,
-    discountableAmount,
-    borrowAPYWithMaxDiscount
+    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-
-  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListItemWrapper
@@ -78,15 +65,15 @@ export const GhoBorrowAssetsListItem = ({
       <ListColumn>
         <Box sx={{ display: 'flex' }}>
           <GhoIncentivesCard
-            value={loading ? -1 : borrowRateAfterDiscount}
+            value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
             incentives={vIncentivesData}
             symbol={symbol}
             tooltip={<PercentIcon />}
             borrowAmount={debtBalanceAfterMaxBorrow}
-            baseApy={ghoBorrowAPY}
-            discountPercent={ghoDiscountRatePercent * -1}
-            discountableAmount={discountableAmount}
-            stkAaveBalance={stkAaveBalance || 0}
+            baseApy={ghoReserveData.ghoVariableBorrowAPY}
+            discountPercent={ghoReserveData.ghoDiscountRate * -1}
+            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+            stkAaveBalance={ghoUserData.userDiscountTokenBalance}
             ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
           />
         </Box>

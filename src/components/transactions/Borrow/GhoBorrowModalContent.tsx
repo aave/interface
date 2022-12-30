@@ -1,4 +1,4 @@
-import { InterestRate, valueToWei } from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -10,10 +10,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import usePreviousState from 'src/hooks/usePreviousState';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
@@ -46,37 +46,26 @@ export const GhoBorrowModalContent = ({
   error,
   errorComponent,
 }: GhoBorrowModalContentProps) => {
-  const { gasLimit, txError, close } = useModalContext();
+  const { gasLimit, txError } = useModalContext();
+  const { ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
   const { currentMarket: customMarket } = useProtocolDataContext();
-  const {
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
-    stakeUserResult,
-    ghoDiscountRatePercent,
-    ghoCalculateDiscountRate,
-    ghoBorrowAPY,
-    stkAaveBalance,
-  } = useRootStore();
-  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   // Check if user has any open borrow positions on GHO
   // Check if user can borrow at a discount
-  const hasGhoBorrowPositions = userReserve.totalBorrows !== '0';
-  const userStakedAaveBalance: string = stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
-  const discountAvailable = userStakedAaveBalance !== '0';
+  const hasGhoBorrowPositions = ghoUserData.userGhoBorrowBalance > 0;
+  const userStakedAaveBalance: number = ghoUserData.userDiscountTokenBalance;
+  const discountAvailable = userStakedAaveBalance > 0;
 
   // Calculate new borrow APY based on borrow amounts
   const prevAmount = usePreviousState(amount);
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
   const [apyDiffers, setApyDiffers] = useState(false);
-  // const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
 
   const currentBorrowAPY = weightedAverageAPY(
-    ghoBorrowAPY,
-    Number(userReserve.totalBorrows),
-    discountableAmount,
-    borrowAPYWithMaxDiscount
+    ghoReserveData.ghoVariableBorrowAPY,
+    ghoUserData.userGhoBorrowBalance,
+    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
   const showNoAPYData = !hasGhoBorrowPositions && discountAvailable && amount === '';
 
@@ -89,21 +78,18 @@ export const GhoBorrowModalContent = ({
       // Input is cleared, use initial values
       setCalculatedFutureBorrowAPY(0);
       setApyDiffers(false);
-      // setTotalBorrowedGho(Number(userReserve.totalBorrows));
     } else {
       // Calculate new rates and check if they differ
-      const totalBorrowAmount = valueToWei(
-        (Number(userReserve.totalBorrows) + Number(borrowingAmount)).toString(),
-        poolReserve.decimals
+      const newRate = weightedAverageAPY(
+        ghoReserveData.ghoVariableBorrowAPY,
+        ghoUserData.userGhoBorrowBalance + Number(borrowingAmount), // total borrows
+        ghoUserData.userDiscountTokenBalance * ghoReserveData.ghoDiscountedPerToken, // discountable amount
+        ghoReserveData.ghoBorrowAPYWithMaxDiscount
       );
-
-      const discountRate = await ghoCalculateDiscountRate(totalBorrowAmount, userStakedAaveBalance);
-      const newRate = ghoBorrowAPY * (1 - discountRate);
 
       // compare rounded values for differing apy since we only show 2 decimal places for percentage
       setApyDiffers(currentBorrowAPY.toFixed(4) !== newRate.toFixed(4));
       setCalculatedFutureBorrowAPY(newRate);
-      // setTotalBorrowedGho(Number(formatUnits(totalBorrowAmount, poolReserve.decimals)));
     }
   };
 
@@ -125,7 +111,7 @@ export const GhoBorrowModalContent = ({
             <Trans>
               Safety Module participants (i.e., stkAAVE holders) receive{' '}
               <FormattedNumber
-                value={ghoDiscountRatePercent}
+                value={ghoReserveData.ghoDiscountRate}
                 percent
                 visibleDecimals={0}
                 variant="caption"
@@ -176,7 +162,7 @@ export const GhoBorrowModalContent = ({
           <Box sx={{ textAlign: 'right' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
               <GhoIncentivesCard
-                value={loading || showNoAPYData ? -1 : currentBorrowAPY}
+                value={ghoLoadingData || showNoAPYData ? -1 : currentBorrowAPY}
                 incentives={userReserve.reserve.vIncentivesData}
                 symbol={userReserve.reserve.symbol}
                 data-cy={`apyType`}
@@ -188,10 +174,10 @@ export const GhoBorrowModalContent = ({
                     ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
                     : userReserve.totalBorrows
                 }
-                baseApy={ghoBorrowAPY}
-                discountPercent={ghoDiscountRatePercent * -1}
-                discountableAmount={discountableAmount}
-                stkAaveBalance={stkAaveBalance || 0}
+                baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
+                discountPercent={ghoReserveData.ghoDiscountRate * -1}
+                discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+                stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
                 ghoRoute={
                   ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
                   '/#discount'
@@ -206,16 +192,16 @@ export const GhoBorrowModalContent = ({
                     </SvgIcon>
                   )}
                   <GhoIncentivesCard
-                    value={loading ? -1 : calculatedFutureBorrowAPY}
+                    value={ghoLoadingData ? -1 : calculatedFutureBorrowAPY}
                     incentives={userReserve.reserve.vIncentivesData}
                     symbol={userReserve.reserve.symbol}
                     data-cy={`apyType`}
                     tooltip={<PercentIcon />}
                     borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
-                    baseApy={ghoBorrowAPY}
-                    discountPercent={ghoDiscountRatePercent * -1}
-                    discountableAmount={discountableAmount}
-                    stkAaveBalance={stkAaveBalance || 0}
+                    baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
+                    discountPercent={ghoReserveData.ghoDiscountRate * -1}
+                    discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+                    stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
                     ghoRoute={
                       ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
                       '/#discount'

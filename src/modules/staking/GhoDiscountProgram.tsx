@@ -8,6 +8,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
@@ -29,10 +30,7 @@ const Legend = styled('legend')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const {
-    ghoDiscountRatePercent,
-    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
-  } = useRootStore();
+  const { ghoUserData, ghoReserveData } = useAppDataContext();
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -49,15 +47,15 @@ export const GhoDiscountProgram = () => {
         </Box>
         {downToXsm ? (
           <GhoDiscountProgramMobile
-            discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPYWithMaxDiscount}
-            ghoDiscountRatePercent={ghoDiscountRatePercent}
+            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+            aprWithDiscount={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
+            ghoDiscountRatePercent={ghoReserveData.ghoDiscountRate}
           />
         ) : (
           <GhoDiscountProgramDesktop
-            discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPYWithMaxDiscount}
-            ghoDiscountRatePercent={ghoDiscountRatePercent}
+            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+            aprWithDiscount={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
+            ghoDiscountRatePercent={ghoReserveData.ghoDiscountRate}
           />
         )}
       </FieldSet>
@@ -76,8 +74,8 @@ const GhoDiscountProgramDesktop = ({
   aprWithDiscount,
   ghoDiscountRatePercent,
 }: GhoDiscountProgramProps) => {
-  const { currentMarket, ghoMarketConfig, ghoLoadingData, ghoLoadingMarketData } = useRootStore();
-  const loading = ghoLoadingData || ghoLoadingMarketData;
+  const { currentMarket, ghoMarketConfig, ghoLoadingData } = useRootStore();
+  const loading = ghoLoadingData;
 
   return (
     <ListItem sx={{ px: 0, minHeight: 'unset' }}>
@@ -157,8 +155,8 @@ const GhoDiscountProgramMobile = ({
   aprWithDiscount,
   ghoDiscountRatePercent,
 }: GhoDiscountProgramProps) => {
-  const { currentMarket, ghoMarketConfig, ghoLoadingData, ghoLoadingMarketData } = useRootStore();
-  const loading = ghoLoadingData || ghoLoadingMarketData;
+  const { currentMarket, ghoMarketConfig, ghoLoadingData } = useRootStore();
+  const loading = ghoLoadingData;
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', my: 4 }}>

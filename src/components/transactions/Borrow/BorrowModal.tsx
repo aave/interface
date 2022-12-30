@@ -16,7 +16,6 @@ import {
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import {
   getMaxAmountAvailableToBorrow,
   getMaxGhoMintAmount,
@@ -65,11 +64,8 @@ export type BorrowModalContentSharedProps = {
 const BorrowModalContentContainer = (props: BorrowModalContentContainerProps): JSX.Element => {
   const { poolReserve, symbol, txState, underlyingAsset, userReserve, unwrapped, setUnwrapped } =
     props;
-  const { user, marketReferencePriceInUsd } = useAppDataContext();
+  const { user, marketReferencePriceInUsd, ghoReserveData } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
-  const {
-    ghoComputed: { maxAvailableFromFacilitator },
-  } = useRootStore();
   const displayGho: boolean = isGhoAndSupported({ symbol, currentMarket });
 
   // Amount calculations
@@ -80,7 +76,10 @@ const BorrowModalContentContainer = (props: BorrowModalContentContainerProps): J
   let maxAmountToBorrow: BigNumber;
   if (displayGho) {
     const maxAmountUserCanBorrow = getMaxGhoMintAmount(user);
-    maxAmountToBorrow = BigNumber.min(maxAmountUserCanBorrow, maxAvailableFromFacilitator);
+    maxAmountToBorrow = BigNumber.min(
+      maxAmountUserCanBorrow,
+      valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
+    );
   } else {
     maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
   }

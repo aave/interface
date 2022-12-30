@@ -5,8 +5,10 @@ import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useRootStore } from 'src/store/root';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
@@ -16,10 +18,7 @@ type GhoReserveConfigurationProps = {
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
-  const {
-    ghoComputed: { percentageOfGhoMinted },
-    ghoDisplay: { facilitatorBucketLevel, facilitatorBucketCapacity, maxAvailableFromFacilitator },
-  } = useRootStore();
+  const { ghoReserveData } = useAppDataContext();
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -116,15 +115,18 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
             }}
           >
             <CapsCircularStatus
-              value={percentageOfGhoMinted}
+              value={ghoReserveData.aaveFacilitatorMintedPercent}
               tooltipContent={
                 <>
                   <Trans>
                     Maximum amount available to borrow is{' '}
-                    <FormattedNumber value={maxAvailableFromFacilitator} variant="secondary12" />{' '}
+                    <FormattedNumber
+                      value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                      variant="secondary12"
+                    />{' '}
                     {reserve.symbol} (
                     <FormattedNumber
-                      value={maxAvailableFromFacilitator}
+                      value={ghoReserveData.aaveFacilitatorRemainingCapacity}
                       variant="secondary12"
                       symbol="USD"
                     />
@@ -141,7 +143,11 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               }
             >
               <Box>
-                <FormattedNumber value={facilitatorBucketLevel} variant="main16" compact />
+                <FormattedNumber
+                  value={ghoReserveData.aaveFacilitatorBucketLevel}
+                  variant="main16"
+                  compact
+                />
                 <Typography
                   component="span"
                   color="text.primary"
@@ -150,10 +156,13 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={facilitatorBucketCapacity} variant="main16" />
+                <FormattedNumber
+                  value={ghoReserveData.aaveFacilitatorBucketMaxCapacity}
+                  variant="main16"
+                />
               </Box>
               <Box>
-                <ReserveSubheader value={facilitatorBucketLevel} />
+                <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketLevel.toString()} />
                 <Typography
                   component="span"
                   color="text.secondary"
@@ -162,7 +171,9 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <ReserveSubheader value={facilitatorBucketCapacity} />
+                <ReserveSubheader
+                  value={ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString()}
+                />
               </Box>
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
