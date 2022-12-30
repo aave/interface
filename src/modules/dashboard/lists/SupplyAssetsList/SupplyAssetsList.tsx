@@ -14,18 +14,31 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
-import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
+import {
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
+
+const head = [
+  { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
+  { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
+  { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
+  {
+    title: <Trans key="Can be collateral">Can be collateral</Trans>,
+    sortKey: 'usageAsCollateralEnabledOnUser',
+  },
+];
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -148,24 +161,21 @@ export const SupplyAssetsList = () => {
     (reserve) => reserve.availableToDepositUSD !== '0'
   );
 
-  const supplyReserves = isShowZeroAssets
+  // Filter out reserves
+  const supplyReserves: unknown = isShowZeroAssets
     ? sortedSupplyReserves
     : filteredSupplyReserves.length >= 1
     ? filteredSupplyReserves
     : sortedSupplyReserves;
 
-  const head = [
-    { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
-
-    { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
-    { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
-    {
-      title: <Trans key="Can be collateral">Can be collateral</Trans>,
-      sortKey: 'usageAsCollateralEnabledOnUser',
-    },
-  ];
-
-  positionSortLogic(sortDesc, sortName, 'assets', supplyReserves);
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const sortedReserves =
+    handleSortDashboardReserves(
+      sortDesc,
+      sortName,
+      'assets',
+      supplyReserves as DashboardReserve[]
+    ) ?? [];
 
   const RenderHeader: React.FC = () => {
     return (
@@ -257,8 +267,8 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!supplyReserves && !supplyDisabled && <RenderHeader />}
-        {supplyReserves.map((item) => (
+        {!downToXSM && !!sortedReserves && !supplyDisabled && <RenderHeader />}
+        {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (

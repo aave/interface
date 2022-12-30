@@ -13,13 +13,42 @@ import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/Col
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
+
+const head = [
+  {
+    title: <Trans>Asset</Trans>,
+    sortKey: 'symbol',
+  },
+  {
+    title: <Trans key="Balance">Balance</Trans>,
+    sortKey: 'underlyingBalance',
+  },
+
+  {
+    title: <Trans key="APY">APY</Trans>,
+    sortKey: 'supplyAPY',
+  },
+  {
+    title: (
+      <CollateralSwitchTooltip
+        text={<Trans>Collateral</Trans>}
+        key="Collateral"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'usageAsCollateralEnabledOnUser',
+  },
+];
 
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -29,7 +58,7 @@ export const SuppliedPositionsList = () => {
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
-  const suppliedPosition =
+  const suppliedPositions =
     user?.userReservesData
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
       .map((userReserve) => ({
@@ -46,33 +75,14 @@ export const SuppliedPositionsList = () => {
         },
       })) || [];
 
-  const head = [
-    {
-      title: <Trans>Asset</Trans>,
-      sortKey: 'symbol',
-    },
-    {
-      title: <Trans key="Balance">Balance</Trans>,
-      sortKey: 'underlyingBalance',
-    },
-
-    {
-      title: <Trans key="APY">APY</Trans>,
-      sortKey: 'supplyAPY',
-    },
-    {
-      title: (
-        <CollateralSwitchTooltip
-          text={<Trans>Collateral</Trans>}
-          key="Collateral"
-          variant="subheader2"
-        />
-      ),
-      sortKey: 'usageAsCollateralEnabledOnUser',
-    },
-  ];
-
-  positionSortLogic(sortDesc, sortName, 'position', suppliedPosition);
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const sortedReserves =
+    handleSortDashboardReserves(
+      sortDesc,
+      sortName,
+      'position',
+      suppliedPositions as DashboardReserve[]
+    ) ?? [];
 
   const RenderHeader: React.FC = () => {
     return (
@@ -110,10 +120,10 @@ export const SuppliedPositionsList = () => {
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
-      noData={!suppliedPosition.length}
+      noData={!sortedReserves.length}
       topInfo={
         <>
-          {!!suppliedPosition.length && (
+          {!!sortedReserves.length && (
             <>
               <ListTopInfoItem
                 title={<Trans>Balance</Trans>}
@@ -135,16 +145,16 @@ export const SuppliedPositionsList = () => {
         </>
       }
     >
-      {suppliedPosition.length ? (
+      {sortedReserves.length ? (
         <>
           {!downToXSM && <RenderHeader />}
-          {suppliedPosition.map((item) => (
+          {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
-                  <SuppliedPositionsListMobileItem {...item} user={user} />
+                  <SuppliedPositionsListMobileItem {...item} />
                 ) : (
-                  <SuppliedPositionsListItem {...item} user={user} />
+                  <SuppliedPositionsListItem {...item} />
                 )}
               </AssetCapsProvider>
             </Fragment>

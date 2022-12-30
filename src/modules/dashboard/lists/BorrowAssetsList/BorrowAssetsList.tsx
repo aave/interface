@@ -17,12 +17,15 @@ import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
-import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
+import {
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
@@ -30,6 +33,45 @@ import {
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+
+const head = [
+  {
+    title: <Trans>Asset</Trans>,
+    sortKey: 'symbol',
+  },
+  {
+    title: (
+      <AvailableTooltip
+        capType={CapType.borrowCap}
+        text={<Trans>Available</Trans>}
+        key="availableBorrows"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'availableBorrows',
+  },
+
+  {
+    title: (
+      <VariableAPYTooltip
+        text={<Trans>APY, variable</Trans>}
+        key="variableBorrowAPY"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'variableBorrowAPY',
+  },
+  {
+    title: (
+      <StableAPYTooltip
+        text={<Trans>APY, stable</Trans>}
+        key="stableBorrowAPY"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'stableBorrowAPY',
+  },
+];
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -84,7 +126,8 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  const borrowReserves =
+  // Filter out reserves with no liquidity or debt
+  const borrowReserves: unknown =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
@@ -92,46 +135,15 @@ export const BorrowAssetsList = () => {
             availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
         );
 
-  positionSortLogic(sortDesc, sortName, 'position', borrowReserves);
-
-  const head = [
-    {
-      title: <Trans>Asset</Trans>,
-      sortKey: 'symbol',
-    },
-    {
-      title: (
-        <AvailableTooltip
-          capType={CapType.borrowCap}
-          text={<Trans>Available</Trans>}
-          key="availableBorrows"
-          variant="subheader2"
-        />
-      ),
-      sortKey: 'availableBorrows',
-    },
-
-    {
-      title: (
-        <VariableAPYTooltip
-          text={<Trans>APY, variable</Trans>}
-          key="variableBorrowAPY"
-          variant="subheader2"
-        />
-      ),
-      sortKey: 'variableBorrowAPY',
-    },
-    {
-      title: (
-        <StableAPYTooltip
-          text={<Trans>APY, stable</Trans>}
-          key="stableBorrowAPY"
-          variant="subheader2"
-        />
-      ),
-      sortKey: 'stableBorrowAPY',
-    },
-  ];
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const sortedReserves =
+    handleSortDashboardReserves(
+      sortDesc,
+      sortName,
+      'position',
+      borrowReserves as DashboardReserve[]
+    ) ?? [];
+  const borrowDisabled = !sortedReserves.length;
 
   const RenderHeader: React.FC = () => {
     return (
@@ -167,7 +179,6 @@ export const BorrowAssetsList = () => {
       />
     );
 
-  const borrowDisabled = !borrowReserves.length;
   return (
     <ListWrapper
       titleComponent={
@@ -226,8 +237,8 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
-        {borrowReserves.map((item) => (
+        {!downToXSM && !!sortedReserves.length && <RenderHeader />}
+        {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (

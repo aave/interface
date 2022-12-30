@@ -14,17 +14,38 @@ import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeToolt
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { positionSortLogic } from '../../../../helpers/position-sort-logic';
 import {
   ComputedUserReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
+
+const head = [
+  {
+    title: <Trans>Asset</Trans>,
+    sortKey: 'symbol',
+  },
+  {
+    title: <Trans key="Debt">Debt</Trans>,
+    sortKey: 'variableBorrows',
+  },
+  {
+    title: <Trans key="APY">APY</Trans>,
+    sortKey: 'borrowAPY',
+  },
+  {
+    title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+  },
+];
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -77,25 +98,15 @@ export const BorrowedPositionsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  positionSortLogic(sortDesc, sortName, 'position', borrowPositions, true);
-
-  const head = [
-    {
-      title: <Trans>Asset</Trans>,
-      sortKey: 'symbol',
-    },
-    {
-      title: <Trans key="Debt">Debt</Trans>,
-      sortKey: 'variableBorrows',
-    },
-    {
-      title: <Trans key="APY">APY</Trans>,
-      sortKey: 'borrowAPY',
-    },
-    {
-      title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-    },
-  ];
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const sortedReserves =
+    handleSortDashboardReserves(
+      sortDesc,
+      sortName,
+      'position',
+      borrowPositions as DashboardReserve[],
+      true
+    ) ?? [];
 
   const RenderHeader: React.FC = () => {
     return (
@@ -138,10 +149,10 @@ export const BorrowedPositionsList = () => {
           <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
-      noData={!borrowPositions.length}
+      noData={!sortedReserves.length}
       topInfo={
         <>
-          {!!borrowPositions.length && (
+          {!!sortedReserves.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
               <ListTopInfoItem
@@ -161,10 +172,10 @@ export const BorrowedPositionsList = () => {
         </>
       }
     >
-      {borrowPositions.length ? (
+      {sortedReserves.length ? (
         <>
           {!downToXSM && <RenderHeader />}
-          {borrowPositions.map((item) => (
+          {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (

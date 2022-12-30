@@ -1,33 +1,42 @@
+import { InterestRate } from '@aave/contract-helpers';
+import { BorrowAssetsItem } from 'src/modules/dashboard/lists/BorrowAssetsList/types';
+import { SupplyAssetsItem } from 'src/modules/dashboard/lists/SupplyAssetsList/types';
+
 import {
   ComputedReserveData,
   ComputedUserReserveData,
 } from '../hooks/app-data-provider/useAppDataProvider';
 
-// Dev this helper handles sorting across assets, supplied positions, borrowable assets, borrowed positions
-// Some of the data structure is a bit different across each hence a few if elses
+type DashboardReserveData = ComputedUserReserveData &
+  ComputedReserveData &
+  BorrowAssetsItem &
+  SupplyAssetsItem;
 
-interface Positions extends ComputedUserReserveData, ComputedReserveData {
-  borrowRateMode: string;
-}
+export type DashboardReserve = DashboardReserveData & {
+  // Additions
+  borrowRateMode: InterestRate; // for the borrow positions list
+  // Overrides
+  reserve: ComputedReserveData;
+};
 
-export const positionSortLogic = (
+export const handleSortDashboardReserves = (
   sortDesc: boolean,
   sortName: string,
   sortPosition: string,
-  positions: Array<Positions>, // Note: due to different objects on positions vs assets
+  positions: DashboardReserve[], // Note: due to different objects on positions vs assets
   isBorrowedPosition?: boolean
-) => {
+): DashboardReserve[] | undefined => {
   if (sortDesc) {
-    handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
+    return handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
   } else {
-    sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false);
+    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false);
   }
 };
 
 const handleSortDesc = (
   sortName: string,
   sortPosition: string,
-  positions: Array<Positions>,
+  positions: DashboardReserve[],
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
@@ -53,7 +62,7 @@ const handleSortDesc = (
 const sortAsc = (
   sortName: string,
   sortPosition: string,
-  positions: Array<Positions>,
+  positions: DashboardReserve[],
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
@@ -78,7 +87,11 @@ const sortAsc = (
   }
 };
 
-const handleSymbolSort = (sortDesc: boolean, sortPosition: string, positions: Array<Positions>) => {
+const handleSymbolSort = (
+  sortDesc: boolean,
+  sortPosition: string,
+  positions: DashboardReserve[]
+) => {
   // NOTE because the data structure is different we need to check for positions(supplied|borrowed)
   // if position then a.reserve.symbol otherwise a.symbol
   if (sortDesc) {
