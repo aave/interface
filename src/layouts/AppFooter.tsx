@@ -7,11 +7,12 @@ export function AppFooter() {
   return (
     <Box
       sx={(theme) => ({
-        height: { md: 40, sm: 70 },
-        position: 'sticky',
+        height: { md: 60, sm: 70 },
+        position: 'fixed',
+        width: '100%',
         bottom: 0,
         // transition: theme.transitions.create('top'),
-        zIndex: theme.zIndex.appBar,
+        zIndex: 9999999,
         bgcolor: theme.palette.background.default,
         // padding: {
         //   xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
@@ -19,11 +20,11 @@ export function AppFooter() {
         // },
         padding: {
           //   xs: '10px 20px',
-          sm: 0,
+          //   sm: 0,
         },
         pt: {
-          sm: 0,
-          md: 4,
+          //   sm: 0,
+          //   md: 4,
         },
         display: 'flex',
         alignItems: 'center',
