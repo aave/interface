@@ -3,6 +3,9 @@ import {
   ComputedUserReserveData,
 } from '../hooks/app-data-provider/useAppDataProvider';
 
+// Dev this helper handles sorting across assets, supplied positions, borrowable assets, borrowed positions
+// Some of the data structure is a bit different across each hence a few if elses
+
 interface Positions extends ComputedUserReserveData, ComputedReserveData {
   borrowRateMode: string;
 }
@@ -56,10 +59,12 @@ const sortAsc = (
   if (sortName === 'symbol') {
     handleSymbolSort(false, sortPosition, positions);
   } else if (sortName === 'usageAsCollateralEnabledOnUser' || sortName === 'debt') {
+    // NOTE parse to number for sorting
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     positions.sort((a, b) => Number(b[sortName]) - Number(a[sortName]));
   } else {
+    // Note because borrow positions have extra logic we need to have this
     if (isBorrowedPosition) {
       positions.sort((a, b) =>
         a.borrowRateMode === 'Variable'
@@ -74,6 +79,8 @@ const sortAsc = (
 };
 
 const handleSymbolSort = (sortDesc: boolean, sortPosition: string, positions: Array<Positions>) => {
+  // NOTE because the data structure is different we need to check for positions(supplied|borrowed)
+  // if position then a.reserve.symbol otherwise a.symbol
   if (sortDesc) {
     if (sortPosition === 'position') {
       return positions.sort((a, b) =>
