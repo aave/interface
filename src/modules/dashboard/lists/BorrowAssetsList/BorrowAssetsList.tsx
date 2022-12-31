@@ -136,13 +136,13 @@ export const BorrowAssetsList = () => {
         );
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const sortedReserves =
-    handleSortDashboardReserves(
-      sortDesc,
-      sortName,
-      'position',
-      borrowReserves as DashboardReserve[]
-    ) ?? [];
+  const preSortedReserves = borrowReserves as DashboardReserve[];
+  const sortedReserves = handleSortDashboardReserves(
+    sortDesc,
+    sortName,
+    'position',
+    preSortedReserves
+  );
   const borrowDisabled = !sortedReserves.length;
 
   const RenderHeader: React.FC = () => {

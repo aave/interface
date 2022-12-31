@@ -7,6 +7,8 @@ import {
   ComputedUserReserveData,
 } from '../hooks/app-data-provider/useAppDataProvider';
 
+// Note: Create a single type that works with all four dashboards list and all 8 list item components
+// Each list item may need a combination of a few types but not all, i.e. positions vs assets and supplied vs borrowed
 type DashboardReserveData = ComputedUserReserveData &
   ComputedReserveData &
   BorrowAssetsItem &
@@ -23,9 +25,9 @@ export const handleSortDashboardReserves = (
   sortDesc: boolean,
   sortName: string,
   sortPosition: string,
-  positions: DashboardReserve[], // Note: due to different objects on positions vs assets
+  positions: DashboardReserve[],
   isBorrowedPosition?: boolean
-): DashboardReserve[] | undefined => {
+): DashboardReserve[] => {
   if (sortDesc) {
     return handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
   } else {
@@ -40,7 +42,7 @@ const handleSortDesc = (
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
-    handleSymbolSort(true, sortPosition, positions);
+    return handleSymbolSort(true, sortPosition, positions);
   } else if (sortName === 'usageAsCollateralEnabledOnUser' || sortName === 'debt') {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -66,12 +68,12 @@ const sortAsc = (
   isBorrowedPosition: boolean
 ) => {
   if (sortName === 'symbol') {
-    handleSymbolSort(false, sortPosition, positions);
+    return handleSymbolSort(false, sortPosition, positions);
   } else if (sortName === 'usageAsCollateralEnabledOnUser' || sortName === 'debt') {
     // NOTE parse to number for sorting
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    positions.sort((a, b) => Number(b[sortName]) - Number(a[sortName]));
+    return positions.sort((a, b) => Number(b[sortName]) - Number(a[sortName]));
   } else {
     // Note because borrow positions have extra logic we need to have this
     if (isBorrowedPosition) {

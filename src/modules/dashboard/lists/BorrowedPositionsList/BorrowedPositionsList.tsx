@@ -99,14 +99,14 @@ export const BorrowedPositionsList = () => {
         .toFixed();
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const sortedReserves =
-    handleSortDashboardReserves(
-      sortDesc,
-      sortName,
-      'position',
-      borrowPositions as DashboardReserve[],
-      true
-    ) ?? [];
+  const preSortedReserves = borrowPositions as DashboardReserve[];
+  const sortedReserves = handleSortDashboardReserves(
+    sortDesc,
+    sortName,
+    'position',
+    preSortedReserves,
+    true
+  );
 
   const RenderHeader: React.FC = () => {
     return (

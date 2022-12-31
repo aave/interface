@@ -169,13 +169,13 @@ export const SupplyAssetsList = () => {
     : sortedSupplyReserves;
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const sortedReserves =
-    handleSortDashboardReserves(
-      sortDesc,
-      sortName,
-      'assets',
-      supplyReserves as DashboardReserve[]
-    ) ?? [];
+  const preSortedReserves = supplyReserves as DashboardReserve[];
+  const sortedReserves = handleSortDashboardReserves(
+    sortDesc,
+    sortName,
+    'assets',
+    preSortedReserves
+  );
 
   const RenderHeader: React.FC = () => {
     return (
