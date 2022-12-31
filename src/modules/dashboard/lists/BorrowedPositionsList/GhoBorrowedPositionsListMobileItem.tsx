@@ -19,11 +19,7 @@ import { ListValueRow } from '../ListValueRow';
 export const GhoBorrowedPositionsListMobileItem = ({
   reserve,
   borrowRateMode,
-  variableBorrows,
-  variableBorrowsUSD,
   stableBorrowAPY,
-  stableBorrows,
-  stableBorrowsUSD,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
@@ -59,13 +55,8 @@ export const GhoBorrowedPositionsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
-        // value={ghoUserData.userGhoBorrowBalance}
-        // subValue={ghoUserData.userGhoBorrowBalance}
-        // TODO: Cypress not working with GHO utils post-SDK updates but production environments do. ghoUserData comes back with zeros.  This is a workaround to use the same logic as non-GHO assets for this value
-        value={Number(borrowRateMode === InterestRate.Variable ? variableBorrows : stableBorrows)}
-        subValue={Number(
-          borrowRateMode === InterestRate.Variable ? variableBorrowsUSD : stableBorrowsUSD
-        )}
+        value={ghoUserData.userGhoBorrowBalance}
+        subValue={ghoUserData.userGhoBorrowBalance}
         disabled={ghoUserData.userGhoBorrowBalance === 0}
       />
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
