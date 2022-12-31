@@ -19,11 +19,13 @@ import {
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import {
+  DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
@@ -114,7 +116,7 @@ export const BorrowedPositionsList = () => {
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
-            maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
+            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
             key={col.sortKey}
           >
             <ListHeaderTitle
@@ -128,7 +130,7 @@ export const BorrowedPositionsList = () => {
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListColumn maxWidth={170} minWidth={170} />
+        <ListButtonsColumn isColumnHeader />
       </ListHeaderWrapper>
     );
   };

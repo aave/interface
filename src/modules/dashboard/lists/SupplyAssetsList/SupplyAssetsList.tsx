@@ -21,10 +21,12 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
+  DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
@@ -183,7 +185,7 @@ export const SupplyAssetsList = () => {
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
-            maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
+            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
             key={col.sortKey}
             overFlow={col.sortKey === 'usageAsCollateralEnabled' ? 'visible' : 'hidden'}
           >
@@ -198,7 +200,7 @@ export const SupplyAssetsList = () => {
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListColumn maxWidth={170} minWidth={170} />
+        <ListButtonsColumn isColumnHeader />
       </ListHeaderWrapper>
     );
   };

@@ -2,10 +2,18 @@ import { InterestRate } from '@aave/contract-helpers';
 import { BorrowAssetsItem } from 'src/modules/dashboard/lists/BorrowAssetsList/types';
 import { SupplyAssetsItem } from 'src/modules/dashboard/lists/SupplyAssetsList/types';
 
+// Sorting keys
 import {
   ComputedReserveData,
   ComputedUserReserveData,
 } from '../hooks/app-data-provider/useAppDataProvider';
+
+// Helpers
+export const DASHBOARD_LIST_COLUMN_WIDTHS = {
+  ASSET: 110,
+  BUTTONS: 160,
+  CELL: 110,
+};
 
 // Note: Create a single type that works with all four dashboards list and all 8 list item components
 // Each list item may need a combination of a few types but not all, i.e. positions vs assets and supplied vs borrowed

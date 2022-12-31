@@ -23,6 +23,7 @@ import {
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
+  DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
@@ -30,6 +31,7 @@ import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from '../../../../utils/getMaxAmountAvailableToBorrow';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
@@ -140,7 +142,7 @@ export const BorrowAssetsList = () => {
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
-    'position',
+    'asset',
     preSortedReserves
   );
   const borrowDisabled = !sortedReserves.length;
@@ -151,7 +153,7 @@ export const BorrowAssetsList = () => {
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
-            maxWidth={col.sortKey === 'symbol' ? 160 : undefined}
+            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
             key={col.sortKey}
           >
             <ListHeaderTitle
@@ -165,7 +167,7 @@ export const BorrowAssetsList = () => {
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListColumn maxWidth={170} minWidth={170} />
+        <ListButtonsColumn isColumnHeader />
       </ListHeaderWrapper>
     );
   };
