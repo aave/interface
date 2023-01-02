@@ -16,7 +16,7 @@ export const ListColumn = ({
   minWidth,
   maxWidth,
   align = 'center',
-  overFlow = 'hidden',
+  overFlow = 'visible',
 }: ListColumnProps) => {
   return (
     <Box
