@@ -34,7 +34,7 @@ export const ClaimRewardsModalContent = () => {
   const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
   const { user, reserves } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const [claimableUsd, setClaimableUsd] = useState('0');
   const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');
   const [rewards, setRewards] = useState<Reward[]>([]);
@@ -141,7 +141,7 @@ export const ClaimRewardsModalContent = () => {
   return (
     <>
       <TxModalTitle title="Claim rewards" />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 

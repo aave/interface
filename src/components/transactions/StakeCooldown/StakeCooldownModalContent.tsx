@@ -38,7 +38,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     state.stakeUserResult,
     state.stakeGeneralResult,
   ]);
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -111,7 +111,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>

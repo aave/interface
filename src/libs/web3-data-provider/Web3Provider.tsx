@@ -18,7 +18,7 @@ import { hexToAscii } from 'src/utils/utils';
 import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, WalletType, WatchModeOnlyConnector } from './WalletOptions';
+import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
   address: string;
@@ -30,7 +30,7 @@ export type ERC20TokenType = {
 
 export type Web3Data = {
   connectWallet: (wallet: WalletType) => Promise<void>;
-  connectWatchModeOnly: (address: string) => Promise<void>;
+  connectReadOnlyMode: (address: string) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
@@ -46,8 +46,8 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
-  watchModeOnlyAddress: string | undefined;
-  watchModeOnly: boolean;
+  readOnlyModeAddress: string | undefined;
+  readOnlyMode: boolean;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -69,7 +69,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
-  const [watchModeOnly, setWatchModeOnly] = useState(false);
+  const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
@@ -118,9 +118,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setSwitchNetworkError(undefined);
   }, [provider, connector]);
 
-  const connectWatchModeOnly = (address: string): Promise<void> => {
-    localStorage.setItem('watchModeOnlyAddress', address);
-    return connectWallet(WalletType.WATCH_MODE_ONLY);
+  const connectReadOnlyMode = (address: string): Promise<void> => {
+    localStorage.setItem('readOnlyModeAddress', address);
+    return connectWallet(WalletType.READ_ONLY_MODE);
   };
 
   // connect to the wallet specified by wallet type
@@ -130,10 +130,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId);
 
-        if (connector instanceof WatchModeOnlyConnector) {
-          setWatchModeOnly(true);
+        if (connector instanceof ReadOnlyModeConnector) {
+          setReadOnlyMode(true);
         } else {
-          setWatchModeOnly(false);
+          setReadOnlyMode(false);
         }
 
         if (connector instanceof WalletConnectConnector) {
@@ -425,7 +425,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connectWallet,
-          connectWatchModeOnly,
+          connectReadOnlyMode,
           disconnectWallet,
           provider,
           connected: active,
@@ -440,8 +440,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          watchModeOnlyAddress: watchModeOnly ? account?.toLowerCase() : undefined,
-          watchModeOnly,
+          readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
+          readOnlyMode,
         },
       }}
     >
