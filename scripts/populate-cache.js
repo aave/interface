@@ -75956,31 +75956,40 @@ var ENABLE_TESTNET =
     : _a.localStorage.getItem('testnetsEnabled')) === 'true';
 var _a2;
 var FORK_ENABLED =
+  !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   ((_a2 = global == null ? void 0 : global.window) == null
     ? void 0
     : _a2.localStorage.getItem('forkEnabled')) === 'true';
 var _a3;
-var FORK_BASE_CHAIN_ID = Number(
-  ((_a3 = global == null ? void 0 : global.window) == null
-    ? void 0
-    : _a3.localStorage.getItem('forkBaseChainId')) || 1
-);
+var FORK_BASE_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_BASE_CHAIN_ID) ||
+  Number(
+    ((_a3 = global == null ? void 0 : global.window) == null
+      ? void 0
+      : _a3.localStorage.getItem('forkBaseChainId')) || 1
+  );
 var _a4;
-var FORK_CHAIN_ID = Number(
-  ((_a4 = global == null ? void 0 : global.window) == null
-    ? void 0
-    : _a4.localStorage.getItem('forkNetworkId')) || 3030
-);
+var FORK_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_CHAIN_ID) ||
+  Number(
+    ((_a4 = global == null ? void 0 : global.window) == null
+      ? void 0
+      : _a4.localStorage.getItem('forkNetworkId')) || 3030
+  );
 var _a5;
 var FORK_RPC_URL =
+  process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   ((_a5 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a5.localStorage.getItem('forkRPCUrl')) || 'http://127.0.0.1:8545';
+    : _a5.localStorage.getItem('forkRPCUrl')) ||
+  'http://127.0.0.1:8545';
 var _a6;
 var FORK_WS_RPC_URL =
+  process.env.NEXT_PUBLIC_FORK_URL_WS_RPC ||
   ((_a6 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a6.localStorage.getItem('forkWsRPCUrl')) || 'ws://127.0.0.1:8545';
+    : _a6.localStorage.getItem('forkWsRPCUrl')) ||
+  'ws://127.0.0.1:8545';
 var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
