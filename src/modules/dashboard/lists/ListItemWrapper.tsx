@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -49,7 +50,7 @@ export const ListItemWrapper = ({
 
   return (
     <ListItem {...rest}>
-      <ListColumn maxWidth={160} isRow>
+      <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           noWrap
