@@ -20,7 +20,7 @@ export const ListHeader = ({ head }: ListHeaderProps) => {
       </ListColumn>
 
       {head.map((title, i) => (
-        <ListColumn key={i}>
+        <ListColumn overFlow={'visible'} key={i}>
           <ListHeaderTitle>{title}</ListHeaderTitle>
         </ListColumn>
       ))}
