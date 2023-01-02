@@ -76,7 +76,7 @@ export const SwapActions = ({
           symbol,
           blocked,
           isMaxSelected,
-          useFlashLoan,
+          useFlashLoan: false,
           swapCallData: '0x',
           augustus: API_ETH_MOCK_ADDRESS,
         });

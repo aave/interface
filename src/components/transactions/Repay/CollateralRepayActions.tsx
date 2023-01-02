@@ -81,7 +81,7 @@ export const CollateralRepayActions = ({
           poolReserve,
           isWrongNetwork,
           symbol,
-          useFlashLoan,
+          useFlashLoan: false,
           blocked,
           swapCallData: '0x',
           augustus: API_ETH_MOCK_ADDRESS,
