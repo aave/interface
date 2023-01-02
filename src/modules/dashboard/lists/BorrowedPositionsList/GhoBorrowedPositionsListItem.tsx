@@ -21,7 +21,6 @@ import { ListValueColumn } from '../ListValueColumn';
 export const GhoBorrowedPositionsListItem = ({
   reserve,
   borrowRateMode,
-  variableBorrows,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
