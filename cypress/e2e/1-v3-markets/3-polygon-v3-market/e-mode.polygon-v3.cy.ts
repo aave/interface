@@ -45,7 +45,6 @@ const testData = {
       assets.polygonV3Market.EURS,
       assets.polygonV3Market.jEUR,
       assets.polygonV3Market.agEUR,
-      assets.polygonV3Market.miMATIC,
     ],
   },
 };
