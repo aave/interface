@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-15 00:17\n"
+"PO-Revision-Date: 2022-12-23 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -359,15 +359,15 @@ msgstr ""
 msgid "Borrowing is not enabled"
 msgstr "L'emprunt n'est pas activé"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "L'emprunt n'est pas disponible car vous avez activé le mode Efficacité (E-Mode) et le mode Isolation. Pour gérer le mode E et le mode Isolation, rendez-vous sur votre <0>tableau de bord</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "L'emprunt n'est pas disponible, car vous avez activé le mode d'efficacité (E-Mode) pour la catégorie {0}. Pour gérer les catégories E-Mode, visitez votre <0>tableau de bord</0>."
 
@@ -497,7 +497,7 @@ msgstr ""
 msgid "Collateral usage"
 msgstr "Usage de collatéral"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "L'utilisation du collatéral est limitée en raison du mode d'isolation."
 
@@ -1873,8 +1873,8 @@ msgstr "Temps restant pour dépiquer"
 msgid "Time left until the withdrawal window closes."
 msgstr "Temps restant jusqu'à la fermeture de la fenêtre de retrait."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Pour emprunter, vous devez fournir tout actif à utiliser comme garantie."
 
@@ -2109,8 +2109,6 @@ msgstr ""
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Solde du portefeuille"
 
@@ -2121,6 +2119,10 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Watch address"
+msgstr ""
 
 #: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
 msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2309,7 +2311,7 @@ msgstr ""
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr ""
 
@@ -2424,8 +2426,8 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr ""
 

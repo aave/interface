@@ -72,6 +72,8 @@ export class RotationProvider extends BaseProvider {
   // if we rotate away from first rpc, return back after this delay
   private fallForwardDelay: number;
 
+  private lastError = '';
+
   constructor(urls: string[], chainId: number, config?: RotationProviderConfig) {
     super(chainId);
     this.providers = urls.map((url) => new StaticJsonRpcProvider(url, chainId));
@@ -108,7 +110,9 @@ export class RotationProvider extends BaseProvider {
       this.retries += 1;
       if (this.retries > this.maxRetries) {
         this.retries = 0;
-        throw new Error('RotationProvider exceeded max number of retries');
+        throw new Error(
+          `RotationProvider exceeded max number of retries. Last error: ${this.lastError}`
+        );
       }
       this.currentProviderIndex = 0;
     } else {
@@ -128,6 +132,7 @@ export class RotationProvider extends BaseProvider {
       return await this.providers[index].perform(method, params);
     } catch (e) {
       console.error(e.message);
+      this.lastError = e.message;
       this.emit('debug', {
         action: 'perform',
         provider: this.providers[index],
