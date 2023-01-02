@@ -2,28 +2,39 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
 import { RootStore } from './root';
 
-export const selectCurrentChainIdV2MarketKey = (state: RootStore): CustomMarket => {
-  if (state.currentChainId) {
-    // TODO: make it dynamic
-  }
-  return 'fork_proto_polygon' as CustomMarket;
-};
-
-export const selectCurrentChainIdV3MarketKey = (state: RootStore): CustomMarket => {
-  if (state.currentChainId) {
-    // TODO: make it dynamic
-  }
-  return 'fork_proto_polygon_v3' as CustomMarket;
+export const selectCurrentChainIdMarkets = (state: RootStore) => {
+  const marketNames = Object.keys(marketsData);
+  return Object.values(marketsData)
+    .map((marketData, index) => ({
+      ...marketData,
+      marketName: marketNames[index] as CustomMarket,
+    }))
+    .filter(
+      (marketData) =>
+        marketData.chainId == state.currentChainId &&
+        state.currentNetworkConfig.isFork == marketData.isFork
+    );
 };
 
 export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
-  const v2MarketKey = selectCurrentChainIdV2MarketKey(state);
-  const marketData = marketsData[v2MarketKey];
+  const currentChainIdMarkets = selectCurrentChainIdMarkets(state);
+  const marketData = currentChainIdMarkets.filter((marketData) => !marketData.v3);
+  return marketData[0];
+};
+
+export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
+  const currentChainIdMarkets = selectCurrentChainIdMarkets(state);
+  const marketData = currentChainIdMarkets.filter((marketData) => marketData.v3);
+  return marketData[0];
+};
+
+export const selectCurrentChainIdV2PoolReserve = (state: RootStore) => {
+  const marketData = selectCurrentChainIdV2MarketData(state);
   const v2MarketAddressProvider = marketData
     ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
     : undefined;
@@ -34,9 +45,8 @@ export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
   return undefined;
 };
 
-export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
-  const v3MarketKey = selectCurrentChainIdV3MarketKey(state);
-  const marketData = marketsData[v3MarketKey];
+export const selectCurrentChainIdV3PoolReserve = (state: RootStore) => {
+  const marketData = selectCurrentChainIdV3MarketData(state);
   const v3MarketAddressProvider = marketData
     ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
     : undefined;
@@ -200,6 +210,6 @@ export const selectEmodes = (state: RootStore) => {
 };
 
 export const selectEmodesV3 = (state: RootStore) => {
-  const reserves = selectFormatReserves(selectCurrentChainIdV3MarketData(state));
+  const reserves = selectFormatReserves(selectCurrentChainIdV3PoolReserve(state));
   return formatEmodes(reserves);
 };

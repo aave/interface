@@ -36,7 +36,7 @@ import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectCurrentChainIdV3MarketKey, selectFormattedReserves } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
 
 // TODO: what is the better name for this type?
@@ -191,9 +191,7 @@ export const createPoolSlice: StateCreator<
       }
     },
     refreshPoolV3Data: async () => {
-      // how to determine which v2 markets to pool? for now always fetch polygon fork
-      const marketKey = selectCurrentChainIdV3MarketKey(get());
-      const v3MarketData = marketsData[marketKey];
+      const v3MarketData = selectCurrentChainIdV3MarketData(get());
       get().refreshPoolData(v3MarketData);
     },
     mint: async (args) => {

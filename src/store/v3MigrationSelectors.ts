@@ -19,8 +19,8 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
 
 import {
-  selectCurrentChainIdV2MarketData,
-  selectCurrentChainIdV3MarketData,
+  selectCurrentChainIdV2PoolReserve,
+  selectCurrentChainIdV3PoolReserve,
   selectFormatBaseCurrencyData,
   selectNonEmptyUserBorrowPositions,
   selectUserSummaryAndIncentives,
@@ -116,7 +116,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const { userReservesData: userReservesV2Data, ...v2ReservesUserSummary } =
     selectUserSummaryAndIncentives(store, timestamp);
 
-  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+  const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
   const userEmodeCategoryId = poolReserveV3?.userEmodeCategoryId;
 
   let isolatedReserveV3 = selectIsolationModeForMigration(v3ReservesUserSummary);
@@ -336,7 +336,7 @@ export const selectFormatUserSummaryForMigration = (
 };
 
 export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
-  const poolReserve = selectCurrentChainIdV2MarketData(store);
+  const poolReserve = selectCurrentChainIdV2PoolReserve(store);
 
   const userReserves =
     poolReserve?.userReserves?.map((userReserve) => {
@@ -377,7 +377,7 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
 
 export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
   const poolReserveV3Summary = selectV3UserSummary(store, currentTimestamp);
-  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+  const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
 
   const supplies = selectedUserSupplyReservesForMigration(store, currentTimestamp);
   const borrows = selectUserBorrowReservesForMigration(store, currentTimestamp);
@@ -450,7 +450,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 };
 
 export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
-  const poolReserveV3 = selectCurrentChainIdV3MarketData(store);
+  const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserveV3);
 
   const formattedUserSummary = selectFormatUserSummaryForMigration(

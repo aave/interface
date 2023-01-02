@@ -18,8 +18,9 @@ export const MigrateV3Actions = ({ isWrongNetwork, blocked }: MigrateV3ActionsPr
   );
   const { approval, action, loadingTxns, requiresApproval, mainTxState, approvalTxState } =
     useTransactionHandler({
-      handleGetTxns: async () => migrateWithoutPermits(),
-      handleGetPermitTxns: async (signatures, deadline) => migrateWithPermits(signatures, deadline),
+      handleGetTxns: async () => await migrateWithoutPermits(),
+      handleGetPermitTxns: async (signatures, deadline) =>
+        await migrateWithPermits(signatures, deadline),
       tryPermit: true,
       permitAction: ProtocolAction.migrateV3,
     });

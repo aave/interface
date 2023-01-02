@@ -15,7 +15,7 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
-import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
+import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
   selectUserReservesForMigration,
@@ -51,7 +51,7 @@ export default function V3Migration() {
     (state) => ({
       v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
       v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-      poolReserveV3: selectCurrentChainIdV3MarketData(state),
+      poolReserveV3: selectCurrentChainIdV3PoolReserve(state),
     })
   );
 
@@ -70,16 +70,9 @@ export default function V3Migration() {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     toggleMigrationSelectedBorrowAsset: toggleSelectedBorrowPosition,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
-    setCurrentMarketForMigration,
     resetMigrationSelectedAssets,
     enforceAsCollateral,
   } = useRootStore();
-
-  useEffect(() => {
-    if (setCurrentMarketForMigration) {
-      setCurrentMarketForMigration();
-    }
-  }, [setCurrentMarketForMigration]);
 
   useEffect(() => {
     if (resetMigrationSelectedAssets) {

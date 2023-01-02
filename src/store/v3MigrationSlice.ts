@@ -11,10 +11,9 @@ import dayjs from 'dayjs';
 import { BigNumberish } from 'ethers';
 import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
-import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
-import { selectCurrentChainIdV2MarketKey, selectCurrentChainIdV3MarketKey } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData } from './poolSelectors';
 import { RootStore } from './root';
 import {
   selectedUserSupplyReservesForMigration,
@@ -58,7 +57,6 @@ export type V3MigrationSlice = {
   migrateBorrow: (
     signedPermits?: V3MigrationHelperSignedPermit[]
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  setCurrentMarketForMigration: () => void;
   resetMigrationSelectedAssets: () => void;
   enforceAsCollateral: (underlyingAsset: string) => void;
   selectAllBorrow: (timestamp: number) => void;
@@ -282,8 +280,7 @@ export const createV3MigrationSlice: StateCreator<
       const migratorAddress = get().getMigratorAddress();
 
       // TODO: make it dynamic when network switch will be there
-      const v3MarketKey = selectCurrentChainIdV3MarketKey(get());
-      const currentMarketV3Data = marketsData[v3MarketKey];
+      const currentMarketV3Data = selectCurrentChainIdV3MarketData(get());
       const pool = new Pool(provider, {
         POOL: currentMarketV3Data.addresses.LENDING_POOL,
         REPAY_WITH_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -318,11 +315,6 @@ export const createV3MigrationSlice: StateCreator<
         suppliedPositions,
         signedPermits,
       });
-    },
-    setCurrentMarketForMigration: () => {
-      const newMarketData = selectCurrentChainIdV2MarketKey(get());
-      // TOOD: fallback to mainnet if newMarketData do not support v2 and v3
-      get().setCurrentMarket(newMarketData);
     },
   };
 };
