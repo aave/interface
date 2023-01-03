@@ -1,5 +1,5 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -12,6 +12,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -31,8 +32,12 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import {
+  getMaxAmountAvailableToBorrow,
+  getMaxGhoMintAmount,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -40,7 +45,7 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
 
 const amountToUSD = (
-  amount: string,
+  amount: BigNumberValue,
   formattedPriceInMarketReferenceCurrency: string,
   marketReferencePriceInUsd: string
 ) => {
@@ -62,7 +67,12 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { isPermissionsLoading } = usePermissions();
   const { openBorrow, openSupply } = useModalContext();
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
-  const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
+  const {
+    ghoReserveData,
+    user,
+    loading: loadingReserves,
+    marketReferencePriceInUsd,
+  } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
@@ -74,24 +84,37 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    reserve,
-    user,
-    InterestRate.Variable
-  ).toString();
+  let maxAmountToBorrow = '0';
+  let maxAmountToSupply = '0';
+  const isGho = isGhoAndSupported({ symbol: reserve.symbol, currentMarket });
+
+  if (isGho) {
+    const maxMintAmount = getMaxGhoMintAmount(user);
+    maxAmountToBorrow = BigNumber.min(
+      maxMintAmount,
+      valueToBigNumber(ghoReserveData.aaveFacilitatorRemainingCapacity)
+    ).toString();
+    maxAmountToSupply = '0';
+  } else {
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+      reserve,
+      user,
+      InterestRate.Variable
+    ).toString();
+
+    maxAmountToSupply = getMaxAmountAvailableToSupply(
+      balance?.amount || '0',
+      reserve,
+      reserve.underlyingAsset,
+      minRemainingBaseTokenBalance
+    ).toString();
+  }
 
   const maxAmountToBorrowUSD = amountToUSD(
     maxAmountToBorrow,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
-
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance?.amount || '0',
-    reserve,
-    reserve.underlyingAsset,
-    minRemainingBaseTokenBalance
-  ).toString();
 
   const maxAmountToSupplyUSD = amountToUSD(
     maxAmountToSupply,
@@ -149,13 +172,15 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         <>
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
-            <SupplyAction
-              value={maxAmountToSupply}
-              usdValue={maxAmountToSupplyUSD}
-              symbol={selectedAsset}
-              disable={disableSupplyButton}
-              onActionClicked={onSupplyClicked}
-            />
+            {!isGho && (
+              <SupplyAction
+                value={maxAmountToSupply}
+                usdValue={maxAmountToSupplyUSD}
+                symbol={selectedAsset}
+                disable={disableSupplyButton}
+                onActionClicked={onSupplyClicked}
+              />
+            )}
             <BorrowAction
               value={maxAmountToBorrow}
               usdValue={maxAmountToBorrowUSD}

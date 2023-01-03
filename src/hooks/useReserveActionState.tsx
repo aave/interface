@@ -123,13 +123,13 @@ export const useReserveActionState = ({
         )}
 
         {maxAmountToSupply === '0' &&
-          supplyCap.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
+          supplyCap?.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
         {maxAmountToBorrow === '0' &&
-          borrowCap.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
+          borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
         {reserve.isIsolated &&
           balance !== '0' &&
           user?.totalCollateralUSD !== '0' &&
-          debtCeiling.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
+          debtCeiling?.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
       </Stack>
     ),
   };

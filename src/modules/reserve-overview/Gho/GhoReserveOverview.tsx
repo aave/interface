@@ -79,7 +79,7 @@ export const GhoReserveOverview = () => {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={reserve.underlyingAsset} />
+            <ReserveActions reserve={reserve} />
           </Box>
         </Box>
       </ContentContainer>
