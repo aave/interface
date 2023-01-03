@@ -11,6 +11,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { useModalContext } from './useModal';
 
@@ -29,7 +30,7 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { currentNetworkConfig, currentChainId } = useRootStore();
+  const { currentMarket, currentNetworkConfig, currentChainId } = useRootStore();
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;
@@ -41,7 +42,8 @@ export const useReserveActionState = ({
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
   return {
-    disableSupplyButton: balance === '0',
+    disableSupplyButton:
+      balance === '0' || isGhoAndSupported({ symbol: reserve.symbol, currentMarket }),
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
