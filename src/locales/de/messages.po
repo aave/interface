@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-23 18:04\n"
+"PO-Revision-Date: 2023-01-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -185,6 +185,9 @@ msgstr ""
 msgid "Array parameters that should be equal length are not"
 msgstr ""
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
@@ -220,6 +223,7 @@ msgid "Asset to delegate"
 msgstr ""
 
 #: src/modules/dashboard/lists/ListHeader.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets"
 msgstr ""
 
@@ -755,10 +759,6 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
-msgstr ""
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Enter an address to track in watch-only mode"
 msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -1326,6 +1326,18 @@ msgstr ""
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
+msgstr ""
+
+#: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
+msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx
+msgid "Read-only mode."
+msgstr ""
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -1936,6 +1948,14 @@ msgstr ""
 msgid "Total worth"
 msgstr ""
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet balance in read-only mode"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
 msgstr ""
@@ -2118,22 +2138,6 @@ msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr ""
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Watch address"
-msgstr ""
-
-#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
-msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr ""
-
-#: src/layouts/WalletWidget.tsx
-msgid "Watch-only mode."
-msgstr ""
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
