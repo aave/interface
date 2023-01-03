@@ -6,11 +6,13 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -18,32 +20,21 @@ import { ListValueColumn } from '../ListValueColumn';
 
 export const GhoBorrowedPositionsListItem = ({
   reserve,
-  variableBorrows,
-  variableBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
   const { isActive, isFrozen, borrowingEnabled, stableBorrowRateEnabled, variableBorrowAPY } =
     reserve;
-  const {
-    ghoLoadingData,
-    ghoLoadingMarketData,
-    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
-    stkAaveBalance,
-    ghoDiscountRatePercent,
-    ghoBorrowAPY,
-  } = useRootStore();
 
   const borrowRateAfterDiscount = weightedAverageAPY(
-    ghoBorrowAPY,
-    Number(variableBorrows),
-    discountableAmount,
-    borrowAPYWithMaxDiscount
+    ghoReserveData.ghoVariableBorrowAPY,
+    ghoUserData.userGhoBorrowBalance,
+    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-
-  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListItemWrapper
@@ -59,23 +50,23 @@ export const GhoBorrowedPositionsListItem = ({
     >
       <ListValueColumn
         symbol={reserve.symbol}
-        value={variableBorrows}
-        subValue={Number(variableBorrowsUSD)}
+        value={ghoUserData.userGhoBorrowBalance}
+        subValue={ghoUserData.userGhoBorrowBalance}
       />
 
       <ListColumn>
         <Box sx={{ display: 'flex' }}>
           <GhoIncentivesCard
-            value={loading ? -1 : borrowRateAfterDiscount}
+            value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
             incentives={reserve.vIncentivesData}
             symbol={reserve.symbol}
             data-cy={`apyType`}
             tooltip={<PercentIcon />}
-            borrowAmount={variableBorrows}
-            baseApy={ghoBorrowAPY}
-            discountPercent={ghoDiscountRatePercent * -1}
-            discountableAmount={discountableAmount}
-            stkAaveBalance={stkAaveBalance || 0}
+            borrowAmount={ghoUserData.userGhoBorrowBalance}
+            baseApy={ghoReserveData.ghoVariableBorrowAPY}
+            discountPercent={ghoReserveData.ghoDiscountRate * -1}
+            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+            stkAaveBalance={ghoUserData.userDiscountTokenBalance}
             ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
           />
         </Box>

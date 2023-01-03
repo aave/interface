@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0>+Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <1/> (max discount)"
-msgstr "<0>+Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <1/> (max discount)"
+msgid "<0><1><2/></1>Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <3/> (max discount)"
+msgstr "<0><1><2/></1>Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <3/> (max discount)"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -24,6 +24,10 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+
+#: src/components/incentives/GhoIncentivesCard.tsx
+msgid "<0>Discount only applies to <1/> GHO,</0> which equals discountable amount for staking <2/> AAVE."
+msgstr "<0>Discount only applies to <1/> GHO,</0> which equals discountable amount for staking <2/> AAVE."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -263,6 +267,7 @@ msgid "Author"
 msgstr "Author"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
@@ -335,7 +340,7 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
@@ -745,10 +750,6 @@ msgstr "Discount info"
 msgid "Discount on base APY"
 msgstr "Discount on base APY"
 
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Discount only applies to <0/> GHO, which equals discountable amount for staking <1/> AAVE."
-msgstr "Discount only applies to <0/> GHO, which equals discountable amount for staking <1/> AAVE."
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters"
 msgstr "Discount parameters"
@@ -1034,6 +1035,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Interest owed"
+msgstr "Interest owed"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
