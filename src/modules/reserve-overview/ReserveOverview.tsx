@@ -86,7 +86,7 @@ export const ReserveOverview = ({ underlyingAsset }: ReserveOverviewProps) => {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={underlyingAsset} />
+            <ReserveActions reserve={reserve} />
           </Box>
         </Box>
       </ContentContainer>
