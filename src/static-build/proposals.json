@@ -5676,6 +5676,41 @@
       "startTimestamp": 1671654047,
       "creationTimestamp": 1671567299,
       "expirationTimestamp": 1671884447
+    },
+    {
+      "id": 139,
+      "creator": "0xbC540e0729B732fb14afA240aA5A047aE9ba7dF0",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x8922235734EC69e956977E2ea9774de8f614053a"
+      ],
+      "signatures": [
+        "execute()"
+      ],
+      "calldatas": [
+        "0x"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 16332530,
+      "endBlock": 16351730,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 16325330,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x331ce7b8a6bd1ee844fa7a041a484b22a36a8d9b4b7d9f598bb5f09cb4377b10",
+      "creationTimestamp": 1672737719,
+      "startTimestamp": 1672824167,
+      "expirationTimestamp": 1673054567
     }
   ]
 }
