@@ -56,15 +56,21 @@ interface MyAppProps extends AppProps {
   session: Session;
 }
 
+// FullStory flags
 let didInit = false;
+const useFullStory =
+  process.env.NEXT_PUBLIC_ENABLE_2FA === 'true' && process.env.NODE_ENV === 'production';
 
 export default function MyApp(props: MyAppProps) {
+  // Load FullStory for the live production environment only
   useEffect(() => {
-    if (didInit) return;
+    if (useFullStory) {
+      if (didInit) return;
 
-    FullStory.init({ orgId: 'VBTDS' });
-    didInit = true;
-  });
+      FullStory.init({ orgId: 'VBTDS' });
+      didInit = true;
+    }
+  }, []);
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
