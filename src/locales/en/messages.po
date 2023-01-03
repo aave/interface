@@ -210,6 +210,9 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
@@ -245,6 +248,7 @@ msgid "Asset to delegate"
 msgstr "Asset to delegate"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets"
 msgstr "Assets"
 
@@ -421,15 +425,15 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
@@ -559,7 +563,7 @@ msgstr "Collateral to repay with"
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
 
@@ -850,10 +854,6 @@ msgstr "English"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Enter ETH address"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Enter an address to track in watch-only mode"
-msgstr "Enter an address to track in watch-only mode"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1472,6 +1472,18 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
+#: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
+msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+
+#: src/layouts/WalletWidget.tsx
+msgid "Read-only mode."
+msgstr "Read-only mode."
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Read-only mode. Connect to a wallet to perform transactions."
+msgstr "Read-only mode. Connect to a wallet to perform transactions."
+
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
@@ -2040,8 +2052,8 @@ msgstr "Time left to unstake"
 msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
@@ -2106,6 +2118,14 @@ msgstr "Total voting power"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "Total worth"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet"
+msgstr "Track wallet"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet balance in read-only mode"
+msgstr "Track wallet balance in read-only mode"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2281,8 +2301,6 @@ msgstr "Wallet Balance"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Wallet balance"
 
@@ -2293,18 +2311,6 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-
-#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
-msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-
-#: src/layouts/WalletWidget.tsx
-msgid "Watch-only mode."
-msgstr "Watch-only mode."
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Watch-only mode. Connect to a wallet to perform transactions."
-msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
@@ -2494,7 +2500,7 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets."
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 
@@ -2617,8 +2623,8 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
