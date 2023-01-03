@@ -56,12 +56,15 @@ interface MyAppProps extends AppProps {
   session: Session;
 }
 
+// FullStory flags
 let didInit = false;
+const useFullStory =
+  process.env.NEXT_PUBLIC_ENABLE_2FA === 'false' && process.env.NODE_ENV === 'production';
 
 export default function MyApp(props: MyAppProps) {
-  // Load FullStory for production
+  // Load FullStory for the live production environment only
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_ENABLE_2FA) {
+    if (useFullStory) {
       if (didInit) return;
 
       FullStory.init({ orgId: 'VBTDS' });
