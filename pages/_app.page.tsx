@@ -59,7 +59,7 @@ interface MyAppProps extends AppProps {
 // FullStory flags
 let didInit = false;
 const useFullStory =
-  process.env.NEXT_PUBLIC_ENABLE_2FA === 'false' && process.env.NODE_ENV === 'production';
+  process.env.NEXT_PUBLIC_ENABLE_2FA === 'true' && process.env.NODE_ENV === 'production';
 
 export default function MyApp(props: MyAppProps) {
   // Load FullStory for the live production environment only
