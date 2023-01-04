@@ -114,6 +114,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     return <ActionsSkeleton />;
   }
 
+  const onSupplyClicked = () => {
+    if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
+      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase());
+    } else {
+      openSupply(reserve.underlyingAsset);
+    }
+  };
+
   const { market } = getMarketInfoById(currentMarket);
 
   return (
@@ -130,7 +138,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       )}
       <WalletBalance
         balance={balance.amount}
-        symbol={reserve.symbol}
+        symbol={selectedAsset}
         marketTitle={market.marketTitle}
       />
       {reserve.isFrozen ? (
@@ -146,7 +154,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               usdValue={maxAmountToSupplyUSD}
               symbol={selectedAsset}
               disable={disableSupplyButton}
-              onActionClicked={() => openSupply(reserve.underlyingAsset)}
+              onActionClicked={onSupplyClicked}
             />
             <BorrowAction
               value={maxAmountToBorrow}
@@ -293,7 +301,7 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
 };
 
 const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
-  return (
+  return !disable ? (
     <Stack>
       <AvailableTooltip
         variant="description"
@@ -328,7 +336,7 @@ const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
         </Button>
       </Stack>
     </Stack>
-  );
+  ) : null;
 };
 
 const WrappedBaseAssetSelector = ({

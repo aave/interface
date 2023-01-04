@@ -13,6 +13,19 @@ inputs:
     description: use nextjs cache or not
     required: false
     default: 'true'
+  NEXT_PUBLIC_FORK_BASE_CHAIN_ID:
+    description: load the base chain id to fork
+    required: false
+    default: ''
+  NEXT_PUBLIC_FORK_CHAIN_ID:
+    description: load the fork chain id
+    required: false
+    default: ''
+  NEXT_PUBLIC_FORK_URL_RPC:
+    description: forces to use the FORK_URL_RPC as rpc provider and fork market configs with same base chain id
+    required: false
+    default: ''
+
 runs:
   using: 'composite'
   steps:
@@ -49,3 +62,6 @@ runs:
         NEXT_PUBLIC_TRANSAK_API_URL: 'https://api.transak.com'
         NEXT_PUBLIC_TRANSAK_API_KEY: '799087ea-c2be-44b8-a0fe-56d96b37ee3c'
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAAABe-kMUW_1JUfT7
+        NEXT_PUBLIC_FORK_BASE_CHAIN_ID: '${{ inputs.NEXT_PUBLIC_FORK_BASE_CHAIN_ID }}'
+        NEXT_PUBLIC_FORK_CHAIN_ID: '${{ inputs.NEXT_PUBLIC_FORK_CHAIN_ID }}'
+        NEXT_PUBLIC_FORK_URL_RPC: '${{ inputs.NEXT_PUBLIC_FORK_URL_RPC }}'
