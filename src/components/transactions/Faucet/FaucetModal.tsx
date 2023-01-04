@@ -17,15 +17,13 @@ export const FaucetModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Faucet} setOpen={close}>
-      <ModalWrapper title={<Trans>Faucet</Trans>} underlyingAsset={args.underlyingAsset}>
-        {(params) => {
-          if (isFaucetPermissioned) {
-            return <CaptchaFaucetModalContent underlyingAsset={params.underlyingAsset} />;
-          } else {
-            return <FaucetModalContent {...params} />;
-          }
-        }}
-      </ModalWrapper>
+      {isFaucetPermissioned ? (
+        <CaptchaFaucetModalContent underlyingAsset={args.underlyingAsset} />
+      ) : (
+        <ModalWrapper title={<Trans>Faucet</Trans>} underlyingAsset={args.underlyingAsset}>
+          {(params) => <FaucetModalContent {...params} />}
+        </ModalWrapper>
+      )}
     </BasicModal>
   );
 };
