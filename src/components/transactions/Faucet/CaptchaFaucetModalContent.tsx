@@ -12,7 +12,7 @@ import { DetailsNumberLine } from '../FlowCommons/TxModalDetails';
 import { getNormalizedMintAmount } from './utils';
 
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
-  const { watchModeOnlyAddress } = useWeb3Context();
+  const { readOnlyModeAddress } = useWeb3Context();
   const { account, currentMarket, currentMarketData } = useRootStore();
   const reserves = useRootStore((state) => selectCurrentReserves(state));
 
@@ -114,7 +114,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
         <Button
           variant="contained"
-          disabled={loading || !captchaToken || watchModeOnlyAddress !== undefined}
+          disabled={loading || !captchaToken || readOnlyModeAddress !== undefined}
           onClick={faucet}
           size="large"
           sx={{ minHeight: '44px' }}

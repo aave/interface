@@ -76,6 +76,7 @@ export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshGovernanceData();
 }, 60000);
 
+let latest: V3FaucetService;
 useRootStore.subscribe(
   (state) => state.currentMarketData,
   async (selected) => {
@@ -88,16 +89,22 @@ useRootStore.subscribe(
         return;
       }
 
-      try {
-        const service = new V3FaucetService(jsonRpcProvider(), selected.addresses.FAUCET);
-        console.log('checking faucet permission');
-        const isPermissioned = await service.isPermissioned();
-        console.log('is faucet permissioned', isPermissioned);
-        setFaucetPermissioned(isPermissioned);
-      } catch (e) {
-        console.error('error checking faucet permission', e);
-        setFaucetPermissioned(false);
-      }
+      // If there are multiple calls in flight, we only want to use the result from the latest one.
+      // Use the instance of the service to check if it's the latest one since it is recreated
+      // everytime this subscription fires.
+      const service = new V3FaucetService(jsonRpcProvider(), selected.addresses.FAUCET);
+      latest = service;
+      service
+        .isPermissioned()
+        .then((isPermissioned) => {
+          if (latest === service) {
+            setFaucetPermissioned(isPermissioned);
+          }
+        })
+        .catch((e) => {
+          console.error('error checking faucet permission', e);
+          setFaucetPermissioned(false);
+        });
     } else {
       setFaucetPermissioned(false);
     }
