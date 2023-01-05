@@ -178,6 +178,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xa7da242e099136A71fF975B8D78b79AA543c9182',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
       COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
+      // V3_MIGRATOR: '0x52a8e9986e2c6f95c8c17b13fc58d06d05b3384a',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',

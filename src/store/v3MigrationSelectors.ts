@@ -170,13 +170,12 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     const selectedReserve = v3ReservesMap[userReserve.underlyingAsset]?.reserve;
 
     if (isolatedReserveV3) {
-      disabledForMigration = selectedReserve.borrowableInIsolation;
-    } else if (userEmodeCategoryId !== 0) {
-      disabledForMigration = selectedReserve?.eModeCategoryId !== userEmodeCategoryId;
-    }
-    // TOOD: make mapping for liquidity
-    else {
+      disabledForMigration = !selectedReserve.borrowableInIsolation;
+    } else {
       disabledForMigration = !v3ReservesMap[userReserve.underlyingAsset];
+    }
+    if (!disabledForMigration && userEmodeCategoryId !== 0) {
+      disabledForMigration = selectedReserve?.eModeCategoryId !== userEmodeCategoryId;
     }
     return {
       ...userReserve,
