@@ -59,6 +59,10 @@ var __copyProps = (to, from, except, desc) => {
 var __toESM = (mod, isNodeMode, target) => (
   (target = mod != null ? __create(__getProtoOf(mod)) : {}),
   __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
     isNodeMode || !mod || !mod.__esModule
       ? __defProp(target, 'default', { value: mod, enumerable: true })
       : target,
@@ -5295,9 +5299,13 @@ var require_fragments = __commonJS({
       }
     }
     exports2.FormatTypes = Object.freeze({
+      // Bare formatting, as is needed for computing a sighash of an event or function
       sighash: 'sighash',
+      // Human-Readable with Minimal spacing and without names (compact human-readable)
       minimal: 'minimal',
+      // Human-Readable with nice spacing, including all names
       full: 'full',
+      // JSON-format a la Solidity
       json: 'json',
     });
     var paramTypeArray = new RegExp(/^(.*)\[([0-9]*)\]$/);
@@ -10006,7 +10014,12 @@ var require_interface = __commonJS({
         if (nameOrSignatureOrSighash.indexOf('(') === -1) {
           var name_2 = nameOrSignatureOrSighash.trim();
           var matching = Object.keys(this.functions).filter(function (f) {
-            return f.split('(')[0] === name_2;
+            return (
+              f.split(
+                '('
+                /* fix:) */
+              )[0] === name_2
+            );
           });
           if (matching.length === 0) {
             logger2.throwArgumentError('no matching function', 'name', name_2);
@@ -10037,7 +10050,12 @@ var require_interface = __commonJS({
         if (nameOrSignatureOrTopic.indexOf('(') === -1) {
           var name_4 = nameOrSignatureOrTopic.trim();
           var matching = Object.keys(this.events).filter(function (f) {
-            return f.split('(')[0] === name_4;
+            return (
+              f.split(
+                '('
+                /* fix:) */
+              )[0] === name_4
+            );
           });
           if (matching.length === 0) {
             logger2.throwArgumentError('no matching event', 'name', name_4);
@@ -10067,7 +10085,12 @@ var require_interface = __commonJS({
         if (nameOrSignatureOrSighash.indexOf('(') === -1) {
           var name_6 = nameOrSignatureOrSighash.trim();
           var matching = Object.keys(this.errors).filter(function (f) {
-            return f.split('(')[0] === name_6;
+            return (
+              f.split(
+                '('
+                /* fix:) */
+              )[0] === name_6
+            );
           });
           if (matching.length === 0) {
             logger2.throwArgumentError('no matching error', 'name', name_6);
@@ -11113,7 +11136,16 @@ var require_base = __commonJS({
           max = Math.max(naf[b].length, max);
           continue;
         }
-        var comb = [points[a], null, null, points[b]];
+        var comb = [
+          points[a],
+          /* 1 */
+          null,
+          /* 3 */
+          null,
+          /* 5 */
+          points[b],
+          /* 7 */
+        ];
         if (points[a].y.cmp(points[b].y) === 0) {
           comb[1] = points[a].add(points[b]);
           comb[2] = points[a].toJ().mixedAdd(points[b].neg());
@@ -11124,7 +11156,11 @@ var require_base = __commonJS({
           comb[1] = points[a].toJ().mixedAdd(points[b]);
           comb[2] = points[a].toJ().mixedAdd(points[b].neg());
         }
-        var index = [-3, -1, -5, -7, 0, 7, 5, 1, 3];
+        var index = [
+          -3 /* -1 -1 */, -1 /* -1 0 */, -5 /* -1 1 */, -7 /* 0 -1 */, 0 /* 0 0 */, 7 /* 0 1 */,
+          5 /* 1 -1 */, 1 /* 1 0 */, 3,
+          /* 1 1 */
+        ];
         var jsf = getJSF(coeffs[a], coeffs[b]);
         max = Math.max(jsf[0].length, max);
         naf[a] = new Array(max);
@@ -14254,12 +14290,14 @@ var require_curves = __commonJS({
       p: '7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed',
       a: '-1',
       c: '1',
+      // -121665 * (121666^(-1)) (mod P)
       d: '52036cee2b6ffe73 8cc740797779e898 00700a4d4141d8ab 75eb4dca135978a3',
       n: '1000000000000000 0000000000000000 14def9dea2f79cd6 5812631a5cf5d3ed',
       hash: hash.sha256,
       gRed: false,
       g: [
         '216936d3cd6e53fec0a4e231fdd6dc5c692cc7609525a7b2c9562d608f25d51a',
+        // 4/5
         '6666666666666666666666666666666666666666666666666666666666666658',
       ],
     });
@@ -14278,6 +14316,7 @@ var require_curves = __commonJS({
       n: 'ffffffff ffffffff ffffffff fffffffe baaedce6 af48a03b bfd25e8c d0364141',
       h: '1',
       hash: hash.sha256,
+      // Precomputed endomorphism
       beta: '7ae96a2b657c07106e64479eac3434e99cf0497512f58995c1396c28719501ee',
       lambda: '5363ad4cc05c30e0a5261c028812645a122e22ea20816678df02967c1b23bd72',
       basis: [
@@ -16209,12 +16248,19 @@ var require_lang_ja = __commonJS({
     var strings_1 = require_lib9();
     var wordlist_1 = require_wordlist();
     var data = [
+      // 4-kana words
       'AQRASRAGBAGUAIRAHBAghAURAdBAdcAnoAMEAFBAFCBKFBQRBSFBCXBCDBCHBGFBEQBpBBpQBIkBHNBeOBgFBVCBhBBhNBmOBmRBiHBiFBUFBZDBvFBsXBkFBlcBjYBwDBMBBTBBTRBWBBWXXaQXaRXQWXSRXCFXYBXpHXOQXHRXhRXuRXmXXbRXlXXwDXTRXrCXWQXWGaBWaKcaYgasFadQalmaMBacAKaRKKBKKXKKjKQRKDRKCYKCRKIDKeVKHcKlXKjHKrYNAHNBWNaRNKcNIBNIONmXNsXNdXNnBNMBNRBNrXNWDNWMNFOQABQAHQBrQXBQXFQaRQKXQKDQKOQKFQNBQNDQQgQCXQCDQGBQGDQGdQYXQpBQpQQpHQLXQHuQgBQhBQhCQuFQmXQiDQUFQZDQsFQdRQkHQbRQlOQlmQPDQjDQwXQMBQMDQcFQTBQTHQrDDXQDNFDGBDGQDGRDpFDhFDmXDZXDbRDMYDRdDTRDrXSAhSBCSBrSGQSEQSHBSVRShYShkSyQSuFSiBSdcSoESocSlmSMBSFBSFKSFNSFdSFcCByCaRCKcCSBCSRCCrCGbCEHCYXCpBCpQCIBCIHCeNCgBCgFCVECVcCmkCmwCZXCZFCdRClOClmClFCjDCjdCnXCwBCwXCcRCFQCFjGXhGNhGDEGDMGCDGCHGIFGgBGVXGVEGVRGmXGsXGdYGoSGbRGnXGwXGwDGWRGFNGFLGFOGFdGFkEABEBDEBFEXOEaBEKSENBENDEYXEIgEIkEgBEgQEgHEhFEudEuFEiBEiHEiFEZDEvBEsXEsFEdXEdREkFEbBEbRElFEPCEfkEFNYAEYAhYBNYQdYDXYSRYCEYYoYgQYgRYuRYmCYZTYdBYbEYlXYjQYRbYWRpKXpQopQnpSFpCXpIBpISphNpdBpdRpbRpcZpFBpFNpFDpFopFrLADLBuLXQLXcLaFLCXLEhLpBLpFLHXLeVLhILdHLdRLoDLbRLrXIABIBQIBCIBsIBoIBMIBRIXaIaRIKYIKRINBINuICDIGBIIDIIkIgRIxFIyQIiHIdRIbYIbRIlHIwRIMYIcRIRVITRIFBIFNIFQOABOAFOBQOaFONBONMOQFOSFOCDOGBOEQOpBOLXOIBOIFOgQOgFOyQOycOmXOsXOdIOkHOMEOMkOWWHBNHXNHXWHNXHDuHDRHSuHSRHHoHhkHmRHdRHkQHlcHlRHwBHWcgAEgAggAkgBNgBQgBEgXOgYcgLXgHjgyQgiBgsFgdagMYgWSgFQgFEVBTVXEVKBVKNVKDVKYVKRVNBVNYVDBVDxVSBVSRVCjVGNVLXVIFVhBVhcVsXVdRVbRVlRhBYhKYhDYhGShxWhmNhdahdkhbRhjohMXhTRxAXxXSxKBxNBxEQxeNxeQxhXxsFxdbxlHxjcxFBxFNxFQxFOxFoyNYyYoybcyMYuBQuBRuBruDMuCouHBudQukkuoBulVuMXuFEmCYmCRmpRmeDmiMmjdmTFmFQiADiBOiaRiKRiNBiNRiSFiGkiGFiERipRiLFiIFihYibHijBijEiMXiWBiFBiFCUBQUXFUaRUNDUNcUNRUNFUDBUSHUCDUGBUGFUEqULNULoUIRUeEUeYUgBUhFUuRUiFUsXUdFUkHUbBUjSUjYUwXUMDUcHURdUTBUrBUrXUrQZAFZXZZaRZKFZNBZQFZCXZGBZYdZpBZLDZIFZHXZHNZeQZVRZVFZmXZiBZvFZdFZkFZbHZbFZwXZcCZcRZRBvBQvBGvBLvBWvCovMYsAFsBDsaRsKFsNFsDrsSHsSFsCXsCRsEBsEHsEfspBsLBsLDsIgsIRseGsbRsFBsFQsFSdNBdSRdCVdGHdYDdHcdVbdySduDdsXdlRdwXdWYdWcdWRkBMkXOkaRkNIkNFkSFkCFkYBkpRkeNkgBkhVkmXksFklVkMBkWDkFNoBNoaQoaFoNBoNXoNaoNEoSRoEroYXoYCoYbopRopFomXojkowXorFbBEbEIbdBbjYlaRlDElMXlFDjKjjSRjGBjYBjYkjpRjLXjIBjOFjeVjbRjwBnXQnSHnpFnLXnINnMBnTRwXBwXNwXYwNFwQFwSBwGFwLXwLDweNwgBwuHwjDwnXMBXMpFMIBMeNMTHcaQcNBcDHcSFcCXcpBcLXcLDcgFcuFcnXcwXccDcTQcrFTQErXNrCHrpFrgFrbFrTHrFcWNYWNbWEHWMXWTR',
+      // 5-kana words
       'ABGHABIJAEAVAYJQALZJAIaRAHNXAHdcAHbRAZJMAZJRAZTRAdVJAklmAbcNAjdRAMnRAMWYAWpRAWgRAFgBAFhBAFdcBNJBBNJDBQKBBQhcBQlmBDEJBYJkBYJTBpNBBpJFBIJBBIJDBIcABOKXBOEJBOVJBOiJBOZJBepBBeLXBeIFBegBBgGJBVJXBuocBiJRBUJQBlXVBlITBwNFBMYVBcqXBTlmBWNFBWiJBWnRBFGHBFwXXKGJXNJBXNZJXDTTXSHSXSVRXSlHXCJDXGQJXEhXXYQJXYbRXOfXXeNcXVJFXhQJXhEJXdTRXjdXXMhBXcQTXRGBXTEBXTnQXFCXXFOFXFgFaBaFaBNJaBCJaBpBaBwXaNJKaNJDaQIBaDpRaEPDaHMFamDJalEJaMZJaFaFaFNBaFQJaFLDaFVHKBCYKBEBKBHDKXaFKXGdKXEJKXpHKXIBKXZDKXwXKKwLKNacKNYJKNJoKNWcKDGdKDTRKChXKGaRKGhBKGbRKEBTKEaRKEPTKLMDKLWRKOHDKVJcKdBcKlIBKlOPKFSBKFEPKFpFNBNJNJBQNBGHNBEPNBHXNBgFNBVXNBZDNBsXNBwXNNaRNNJDNNJENNJkNDCJNDVDNGJRNJiDNZJNNsCJNJFNNFSBNFCXNFEPNFLXNFIFQJBFQCaRQJEQQLJDQLJFQIaRQOqXQHaFQHHQQVJXQVJDQhNJQmEIQZJFQsJXQJrFQWbRDJABDBYJDXNFDXCXDXLXDXZDDXsJDQqXDSJFDJCXDEPkDEqXDYmQDpSJDOCkDOGQDHEIDVJDDuDuDWEBDJFgSBNDSBSFSBGHSBIBSBTQSKVYSJQNSJQiSJCXSEqXSJYVSIiJSOMYSHAHSHaQSeCFSepQSegBSHdHSHrFShSJSJuHSJUFSkNRSrSrSWEBSFaHSJFQSFCXSFGDSFYXSFODSFgBSFVXSFhBSFxFSFkFSFbBSFMFCADdCJXBCXaFCXKFCXNFCXCXCXGBCXEJCXYBCXLDCXIBCXOPCXHXCXgBCXhBCXiBCXlDCXcHCJNBCJNFCDCJCDGBCDVXCDhBCDiDCDJdCCmNCpJFCIaRCOqXCHCHCHZJCViJCuCuCmddCJiFCdNBCdHhClEJCnUJCreSCWlgCWTRCFBFCFNBCFYBCFVFCFhFCFdSCFTBCFWDGBNBGBQFGJBCGBEqGBpBGBgQGNBEGNJYGNkOGNJRGDUFGJpQGHaBGJeNGJeEGVBlGVKjGiJDGvJHGsVJGkEBGMIJGWjNGFBFGFCXGFGBGFYXGFpBGFMFEASJEAWpEJNFECJVEIXSEIQJEOqXEOcFEeNcEHEJEHlFEJgFEhlmEmDJEmZJEiMBEUqXEoSREPBFEPXFEPKFEPSFEPEFEPpFEPLXEPIBEJPdEPcFEPTBEJnXEqlHEMpREFCXEFODEFcFYASJYJAFYBaBYBVXYXpFYDhBYCJBYJGFYYbRYeNcYJeVYiIJYZJcYvJgYvJRYJsXYsJFYMYMYreVpBNHpBEJpBwXpQxFpYEJpeNDpJeDpeSFpeCHpHUJpHbBpHcHpmUJpiiJpUJrpsJuplITpFaBpFQqpFGBpFEfpFYBpFpBpFLJpFIDpFgBpFVXpFyQpFuFpFlFpFjDpFnXpFwXpJFMpFTBLXCJLXEFLXhFLXUJLXbFLalmLNJBLSJQLCLCLGJBLLDJLHaFLeNFLeSHLeCXLepFLhaRLZsJLsJDLsJrLocaLlLlLMdbLFNBLFSBLFEHLFkFIBBFIBXFIBaQIBKXIBSFIBpHIBLXIBgBIBhBIBuHIBmXIBiFIBZXIBvFIBbFIBjQIBwXIBWFIKTRIQUJIDGFICjQIYSRIINXIJeCIVaRImEkIZJFIvJRIsJXIdCJIJoRIbBQIjYBIcqXITFVIreVIFKFIFSFIFCJIFGFIFLDIFIBIJFOIFgBIFVXIJFhIFxFIFmXIFdHIFbBIJFrIJFWOBGBOQfXOOKjOUqXOfXBOqXEOcqXORVJOFIBOFlDHBIOHXiFHNTRHCJXHIaRHHJDHHEJHVbRHZJYHbIBHRsJHRkDHWlmgBKFgBSBgBCDgBGHgBpBgBIBgBVJgBuBgBvFgKDTgQVXgDUJgGSJgOqXgmUMgZIJgTUJgWIEgFBFgFNBgFDJgFSFgFGBgFYXgJFOgFgQgFVXgFhBgFbHgJFWVJABVQKcVDgFVOfXVeDFVhaRVmGdViJYVMaRVFNHhBNDhBCXhBEqhBpFhBLXhNJBhSJRheVXhhKEhxlmhZIJhdBQhkIJhbMNhMUJhMZJxNJgxQUJxDEkxDdFxSJRxplmxeSBxeCXxeGFxeYXxepQxegBxWVcxFEQxFLXxFIBxFgBxFxDxFZtxFdcxFbBxFwXyDJXyDlcuASJuDJpuDIBuCpJuGSJuIJFueEFuZIJusJXudWEuoIBuWGJuFBcuFKEuFNFuFQFuFDJuFGJuFVJuFUtuFdHuFTBmBYJmNJYmQhkmLJDmLJomIdXmiJYmvJRmsJRmklmmMBymMuCmclmmcnQiJABiJBNiJBDiBSFiBCJiBEFiBYBiBpFiBLXiBTHiJNciDEfiCZJiECJiJEqiOkHiHKFieNDiHJQieQcieDHieSFieCXieGFieEFieIHiegFihUJixNoioNXiFaBiFKFiFNDiFEPiFYXitFOitFHiFgBiFVEiFmXiFitiFbBiFMFiFrFUCXQUIoQUIJcUHQJUeCEUHwXUUJDUUqXUdWcUcqXUrnQUFNDUFSHUFCFUFEfUFLXUtFOZBXOZXSBZXpFZXVXZEQJZEJkZpDJZOqXZeNHZeCDZUqXZFBQZFEHZFLXvBAFvBKFvBCXvBEPvBpHvBIDvBgFvBuHvQNJvFNFvFGBvFIBvJFcsXCDsXLXsXsXsXlFsXcHsQqXsJQFsEqXseIFsFEHsFjDdBxOdNpRdNJRdEJbdpJRdhZJdnSJdrjNdFNJdFQHdFhNkNJDkYaRkHNRkHSRkVbRkuMRkjSJkcqDoSJFoEiJoYZJoOfXohEBoMGQocqXbBAFbBXFbBaFbBNDbBGBbBLXbBTBbBWDbGJYbIJHbFQqbFpQlDgQlOrFlVJRjGEBjZJRnXvJnXbBnEfHnOPDngJRnxfXnUJWwXEJwNpJwDpBwEfXwrEBMDCJMDGHMDIJMLJDcQGDcQpHcqXccqNFcqCXcFCJRBSBRBGBRBEJRBpQTBNFTBQJTBpBTBVXTFABTFSBTFCFTFGBTFMDrXCJrXLDrDNJrEfHrFQJrFitWNjdWNTR',
+      // 6-kana words
       'AKLJMANOPFASNJIAEJWXAYJNRAIIbRAIcdaAeEfDAgidRAdjNYAMYEJAMIbRAFNJBAFpJFBBIJYBDZJFBSiJhBGdEBBEJfXBEJqXBEJWRBpaUJBLXrXBIYJMBOcfXBeEfFBestXBjNJRBcDJOBFEqXXNvJRXDMBhXCJNYXOAWpXONJWXHDEBXeIaRXhYJDXZJSJXMDJOXcASJXFVJXaBQqXaBZJFasXdQaFSJQaFEfXaFpJHaFOqXKBNSRKXvJBKQJhXKEJQJKEJGFKINJBKIJjNKgJNSKVElmKVhEBKiJGFKlBgJKjnUJKwsJYKMFIJKFNJDKFIJFKFOfXNJBSFNJBCXNBpJFNJBvQNJBMBNJLJXNJOqXNJeCXNJeGFNdsJCNbTKFNwXUJQNFEPQDiJcQDMSJQSFpBQGMQJQJeOcQyCJEQUJEBQJFBrQFEJqDXDJFDJXpBDJXIMDGiJhDIJGRDJeYcDHrDJDVXgFDkAWpDkIgRDjDEqDMvJRDJFNFDJFIBSKclmSJQOFSJQVHSJQjDSJGJBSJGJFSECJoSHEJqSJHTBSJVJDSViJYSZJNBSJsJDSFSJFSFEfXSJFLXCBUJVCJXSBCJXpBCXVJXCJXsXCJXdFCJNJHCLIJgCHiJFCVNJMChCJhCUHEJCsJTRCJdYcCoQJCCFEfXCFIJgCFUJxCFstFGJBaQGJBIDGQJqXGYJNRGJHKFGeQqDGHEJFGJeLXGHIiJGHdBlGUJEBGkIJTGFQPDGJFEqEAGegEJIJBEJVJXEhQJTEiJNcEJZJFEJoEqEjDEqEPDsXEPGJBEPOqXEPeQFEfDiDEJfEFEfepQEfMiJEqXNBEqDIDEqeSFEqVJXEMvJRYXNJDYXEJHYKVJcYYJEBYJeEcYJUqXYFpJFYFstXpAZJMpBSJFpNBNFpeQPDpHLJDpHIJFpHgJFpeitFpHZJFpJFADpFSJFpJFCJpFOqXpFitBpJFZJLXIJFLIJgRLVNJWLVHJMLwNpJLFGJBLFLJDLFOqXLJFUJIBDJXIBGJBIJBYQIJBIBIBOqXIBcqDIEGJFILNJTIIJEBIOiJhIJeNBIJeIBIhiJIIWoTRIJFAHIJFpBIJFuHIFUtFIJFTHOSBYJOEcqXOHEJqOvBpFOkVJrObBVJOncqDOcNJkHhNJRHuHJuHdMhBgBUqXgBsJXgONJBgHNJDgHHJQgJeitgHsJXgJyNagyDJBgZJDrgsVJQgkEJNgkjSJgJFAHgFCJDgFZtMVJXNFVXQfXVJXDJVXoQJVQVJQVDEfXVDvJHVEqNFVeQfXVHpJFVHxfXVVJSRVVmaRVlIJOhCXVJhHjYkhxCJVhWVUJhWiJcxBNJIxeEqDxfXBFxcFEPxFSJFxFYJXyBDQJydaUJyFOPDuYCJYuLvJRuHLJXuZJLDuFOPDuFZJHuFcqXmKHJdmCQJcmOsVJiJAGFitLCFieOfXiestXiZJMEikNJQirXzFiFQqXiFIJFiFZJFiFvtFUHpJFUteIcUteOcUVCJkUhdHcUbEJEUJqXQUMNJhURjYkUFitFZDGJHZJIxDZJVJXZJFDJZJFpQvBNJBvBSJFvJxBrseQqDsVFVJdFLJDkEJNBkmNJYkFLJDoQJOPoGsJRoEAHBoEJfFbBQqDbBZJHbFVJXlFIJBjYIrXjeitcjjCEBjWMNBwXQfXwXOaFwDsJXwCJTRwrCZJMDNJQcDDJFcqDOPRYiJFTBsJXTQIJBTFEfXTFLJDrXEJFrEJXMrFZJFWEJdEWYTlm',
+      // 7-kana words
       'ABCDEFACNJTRAMBDJdAcNJVXBLNJEBXSIdWRXErNJkXYDJMBXZJCJaXMNJaYKKVJKcKDEJqXKDcNJhKVJrNYKbgJVXKFVJSBNBYBwDNJeQfXNJeEqXNhGJWENJFiJRQlIJbEQJfXxDQqXcfXQFNDEJQFwXUJDYcnUJDJIBgQDIUJTRDJFEqDSJQSJFSJQIJFSOPeZtSJFZJHCJXQfXCTDEqFGJBSJFGJBOfXGJBcqXGJHNJDGJRLiJEJfXEqEJFEJPEFpBEJYJBZJFYBwXUJYiJMEBYJZJyTYTONJXpQMFXFpeGIDdpJFstXpJFcPDLBVSJRLHQJqXLJFZJFIJBNJDIJBUqXIBkFDJIJEJPTIYJGWRIJeQPDIJeEfHIJFsJXOqGDSFHXEJqXgJCsJCgGQJqXgdQYJEgFMFNBgJFcqDVJwXUJVJFZJchIgJCCxOEJqXxOwXUJyDJBVRuscisciJBiJBieUtqXiJFDJkiFsJXQUGEZJcUJFsJXZtXIrXZDZJDrZJFNJDZJFstXvJFQqXvJFCJEsJXQJqkhkNGBbDJdTRbYJMEBlDwXUJMEFiJFcfXNJDRcNJWMTBLJXC',
+      // 8-kana words
       'BraFUtHBFSJFdbNBLJXVJQoYJNEBSJBEJfHSJHwXUJCJdAZJMGjaFVJXEJPNJBlEJfFiJFpFbFEJqIJBVJCrIBdHiJhOPFChvJVJZJNJWxGFNIFLueIBQJqUHEJfUFstOZJDrlXEASJRlXVJXSFwVJNJWD',
+      // 9-kana words
       'QJEJNNJDQJEJIBSFQJEJxegBQJEJfHEPSJBmXEJFSJCDEJqXLXNJFQqXIcQsFNJFIFEJqXUJgFsJXIJBUJEJfHNFvJxEqXNJnXUJFQqD',
+      // 10-kana words
       'IJBEJqXZJ',
     ];
     var mapping =
@@ -23204,7 +23250,10 @@ var require_lib28 = __commonJS({
                   }
                   throw error;
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -24524,6 +24573,7 @@ var require_lib29 = __commonJS({
         _defaultProvider: ethDefaultProvider('goerli'),
       },
       kintsugi: { chainId: 1337702, name: 'kintsugi' },
+      // ETC (See: #351)
       classic: {
         chainId: 61,
         name: 'classic',
@@ -24819,6 +24869,8 @@ var require_formatter = __commonJS({
           transactionIndex: Formatter2.allowNull(number, null),
           confirmations: Formatter2.allowNull(number, null),
           from: address,
+          // either (gasPrice) or (maxPriorityFeePerGas + maxFeePerGas)
+          // must be set
           gasPrice: Formatter2.allowNull(bigNumber),
           maxPriorityFeePerGas: Formatter2.allowNull(bigNumber),
           maxFeePerGas: Formatter2.allowNull(bigNumber),
@@ -24861,6 +24913,7 @@ var require_formatter = __commonJS({
           from: Formatter2.allowNull(this.address, null),
           contractAddress: Formatter2.allowNull(address, null),
           transactionIndex: number,
+          // should be allowNull(hash), but broken-EIP-658 support is handled in receipt
           root: Formatter2.allowNull(hex),
           gasUsed: bigNumber,
           logsBloom: Formatter2.allowNull(data),
@@ -25616,7 +25669,10 @@ var require_base_provider = __commonJS({
                 }
                 return [2, null];
               case 4:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26072,6 +26128,9 @@ var require_base_provider = __commonJS({
         });
       };
       Object.defineProperty(BaseProvider3.prototype, 'ready', {
+        // This will always return the most recently established network.
+        // For "any", this can change (a "network" event is emitted before
+        // any change is reflected); otherwise this cannot change
         get: function () {
           var _this = this;
           return (0, web_1.poll)(function () {
@@ -26199,13 +26258,19 @@ var require_base_provider = __commonJS({
               case 3:
                 error_6 = _a7.sent();
                 this.emit('error', error_6);
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
               case 4:
                 this._setFastBlockNumber(blockNumber);
                 this.emit('poll', pollId, blockNumber);
                 if (blockNumber === this._lastBlockNumber) {
                   this.emit('didPoll', pollId);
-                  return [2];
+                  return [
+                    2,
+                    /*return*/
+                  ];
                 }
                 if (this._emitted.block === -2) {
                   this._emitted.block = blockNumber - 1;
@@ -26306,7 +26371,10 @@ var require_base_provider = __commonJS({
                   .catch(function (error) {
                     _this.emit('error', error);
                   });
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26547,7 +26615,10 @@ var require_base_provider = __commonJS({
                             switch (_a8.label) {
                               case 0:
                                 if (done) {
-                                  return [2];
+                                  return [
+                                    2,
+                                    /*return*/
+                                  ];
                                 }
                                 return [4, stall(1e3)];
                               case 1:
@@ -26560,7 +26631,10 @@ var require_base_provider = __commonJS({
                                         switch (_a9.label) {
                                           case 0:
                                             if (done) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             if (!(nonce <= replaceable.nonce)) return [3, 1];
                                             lastBlockNumber_1 = blockNumber;
@@ -26570,7 +26644,10 @@ var require_base_provider = __commonJS({
                                           case 2:
                                             mined = _a9.sent();
                                             if (mined && mined.blockNumber != null) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             if (scannedBlock_1 == null) {
                                               scannedBlock_1 = lastBlockNumber_1 - 3;
@@ -26582,7 +26659,10 @@ var require_base_provider = __commonJS({
                                           case 3:
                                             if (!(scannedBlock_1 <= blockNumber)) return [3, 9];
                                             if (done) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             return [
                                               4,
@@ -26596,7 +26676,10 @@ var require_base_provider = __commonJS({
                                             if (!(ti < block.transactions.length)) return [3, 8];
                                             tx = block.transactions[ti];
                                             if (tx.hash === transactionHash) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             if (
                                               !(
@@ -26606,7 +26689,10 @@ var require_base_provider = __commonJS({
                                             )
                                               return [3, 7];
                                             if (done) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             return [
                                               4,
@@ -26615,7 +26701,10 @@ var require_base_provider = __commonJS({
                                           case 6:
                                             receipt_1 = _a9.sent();
                                             if (alreadyDone()) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             reason = 'replaced';
                                             if (
@@ -26645,7 +26734,10 @@ var require_base_provider = __commonJS({
                                                 }
                                               )
                                             );
-                                            return [2];
+                                            return [
+                                              2,
+                                              /*return*/
+                                            ];
                                           case 7:
                                             ti++;
                                             return [3, 5];
@@ -26654,10 +26746,16 @@ var require_base_provider = __commonJS({
                                             return [3, 3];
                                           case 9:
                                             if (done) {
-                                              return [2];
+                                              return [
+                                                2,
+                                                /*return*/
+                                              ];
                                             }
                                             this.once('block', replaceHandler_1);
-                                            return [2];
+                                            return [
+                                              2,
+                                              /*return*/
+                                            ];
                                         }
                                       });
                                     });
@@ -26669,7 +26767,10 @@ var require_base_provider = __commonJS({
                                     _this2.once('block', replaceHandler_1);
                                   }
                                 );
-                                return [2];
+                                return [
+                                  2,
+                                  /*return*/
+                                ];
                             }
                           });
                         });
@@ -26741,7 +26842,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26784,7 +26888,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26827,7 +26934,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26870,7 +26980,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -26916,7 +27029,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -27019,7 +27135,10 @@ var require_base_provider = __commonJS({
                 error_7.transactionHash = tx.hash;
                 throw error_7;
               case 7:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -27152,7 +27271,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -27194,7 +27316,10 @@ var require_base_provider = __commonJS({
                     ),
                   ];
                 }
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -27573,7 +27698,10 @@ var require_base_provider = __commonJS({
                 }
                 throw error_9;
               case 3:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -27612,7 +27740,10 @@ var require_base_provider = __commonJS({
                 }
                 throw error_10;
               case 5:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -28340,7 +28471,10 @@ var require_json_rpc_provider = __commonJS({
                 error_1.transactionHash = hash;
                 throw error_1;
               case 6:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -28770,7 +28904,10 @@ var require_json_rpc_provider = __commonJS({
                 error_4 = _a7.sent();
                 return [2, checkError(method, error_4, params)];
               case 6:
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -28945,6 +29082,7 @@ var require_node_gyp_build = __commonJS({
         'node=' + process.versions.node,
         process.versions.electron ? 'electron=' + process.versions.electron : '',
         typeof __webpack_require__ === 'function' ? 'webpack=true' : '',
+        // eslint-disable-line
       ]
         .filter(Boolean)
         .join(' ');
@@ -29181,6 +29319,12 @@ var require_limiter = __commonJS({
     var kDone = Symbol('kDone');
     var kRun = Symbol('kRun');
     var Limiter = class {
+      /**
+       * Creates a new `Limiter`.
+       *
+       * @param {Number} [concurrency=Infinity] The maximum number of jobs allowed
+       *     to run concurrently
+       */
       constructor(concurrency) {
         this[kDone] = () => {
           this.pending--;
@@ -29190,10 +29334,21 @@ var require_limiter = __commonJS({
         this.jobs = [];
         this.pending = 0;
       }
+      /**
+       * Adds a job to the queue.
+       *
+       * @param {Function} job The job to run
+       * @public
+       */
       add(job) {
         this.jobs.push(job);
         this[kRun]();
       }
+      /**
+       * Removes a job from the queue and runs it if possible.
+       *
+       * @private
+       */
       [kRun]() {
         if (this.pending === this.concurrency) return;
         if (this.jobs.length) {
@@ -29226,6 +29381,30 @@ var require_permessage_deflate = __commonJS({
     var kError = Symbol('error');
     var zlibLimiter;
     var PerMessageDeflate = class {
+      /**
+       * Creates a PerMessageDeflate instance.
+       *
+       * @param {Object} [options] Configuration options
+       * @param {Boolean} [options.serverNoContextTakeover=false] Request/accept
+       *     disabling of server context takeover
+       * @param {Boolean} [options.clientNoContextTakeover=false] Advertise/
+       *     acknowledge disabling of client context takeover
+       * @param {(Boolean|Number)} [options.serverMaxWindowBits] Request/confirm the
+       *     use of a custom server window size
+       * @param {(Boolean|Number)} [options.clientMaxWindowBits] Advertise support
+       *     for, or request, a custom client window size
+       * @param {Object} [options.zlibDeflateOptions] Options to pass to zlib on
+       *     deflate
+       * @param {Object} [options.zlibInflateOptions] Options to pass to zlib on
+       *     inflate
+       * @param {Number} [options.threshold=1024] Size (in bytes) below which
+       *     messages should not be compressed
+       * @param {Number} [options.concurrencyLimit=10] The number of concurrent
+       *     calls to zlib
+       * @param {Boolean} [isServer=false] Create the instance in either server or
+       *     client mode
+       * @param {Number} [maxPayload=0] The maximum allowed message length
+       */
       constructor(options2, isServer, maxPayload) {
         this._maxPayload = maxPayload | 0;
         this._options = options2 || {};
@@ -29240,9 +29419,18 @@ var require_permessage_deflate = __commonJS({
           zlibLimiter = new Limiter(concurrency);
         }
       }
+      /**
+       * @type {String}
+       */
       static get extensionName() {
         return 'permessage-deflate';
       }
+      /**
+       * Create an extension negotiation offer.
+       *
+       * @return {Object} Extension parameters
+       * @public
+       */
       offer() {
         const params = {};
         if (this._options.serverNoContextTakeover) {
@@ -29261,6 +29449,13 @@ var require_permessage_deflate = __commonJS({
         }
         return params;
       }
+      /**
+       * Accept an extension negotiation offer/response.
+       *
+       * @param {Array} configurations The extension negotiation offers/reponse
+       * @return {Object} Accepted configuration
+       * @public
+       */
       accept(configurations) {
         configurations = this.normalizeParams(configurations);
         this.params = this._isServer
@@ -29268,6 +29463,11 @@ var require_permessage_deflate = __commonJS({
           : this.acceptAsClient(configurations);
         return this.params;
       }
+      /**
+       * Releases all resources used by the extension.
+       *
+       * @public
+       */
       cleanup() {
         if (this._inflate) {
           this._inflate.close();
@@ -29282,6 +29482,13 @@ var require_permessage_deflate = __commonJS({
           }
         }
       }
+      /**
+       *  Accept an extension negotiation offer.
+       *
+       * @param {Array} offers The extension negotiation offers
+       * @return {Object} Accepted configuration
+       * @private
+       */
       acceptAsServer(offers) {
         const opts = this._options;
         const accepted = offers.find((params) => {
@@ -29316,6 +29523,13 @@ var require_permessage_deflate = __commonJS({
         }
         return accepted;
       }
+      /**
+       * Accept the extension negotiation response.
+       *
+       * @param {Array} response The extension negotiation response
+       * @return {Object} Accepted configuration
+       * @private
+       */
       acceptAsClient(response) {
         const params = response[0];
         if (this._options.clientNoContextTakeover === false && params.client_no_context_takeover) {
@@ -29334,6 +29548,13 @@ var require_permessage_deflate = __commonJS({
         }
         return params;
       }
+      /**
+       * Normalize parameters.
+       *
+       * @param {Array} configurations The extension negotiation offers/reponse
+       * @return {Array} The offers/response with normalized parameters
+       * @private
+       */
       normalizeParams(configurations) {
         configurations.forEach((params) => {
           Object.keys(params).forEach((key) => {
@@ -29373,6 +29594,14 @@ var require_permessage_deflate = __commonJS({
         });
         return configurations;
       }
+      /**
+       * Decompress data. Concurrency limited.
+       *
+       * @param {Buffer} data Compressed data
+       * @param {Boolean} fin Specifies whether or not this is the last fragment
+       * @param {Function} callback Callback
+       * @public
+       */
       decompress(data, fin, callback) {
         zlibLimiter.add((done) => {
           this._decompress(data, fin, (err, result) => {
@@ -29381,6 +29610,14 @@ var require_permessage_deflate = __commonJS({
           });
         });
       }
+      /**
+       * Compress data. Concurrency limited.
+       *
+       * @param {Buffer} data Data to compress
+       * @param {Boolean} fin Specifies whether or not this is the last fragment
+       * @param {Function} callback Callback
+       * @public
+       */
       compress(data, fin, callback) {
         zlibLimiter.add((done) => {
           this._compress(data, fin, (err, result) => {
@@ -29389,6 +29626,14 @@ var require_permessage_deflate = __commonJS({
           });
         });
       }
+      /**
+       * Decompress data.
+       *
+       * @param {Buffer} data Compressed data
+       * @param {Boolean} fin Specifies whether or not this is the last fragment
+       * @param {Function} callback Callback
+       * @private
+       */
       _decompress(data, fin, callback) {
         const endpoint = this._isServer ? 'client' : 'server';
         if (!this._inflate) {
@@ -29431,6 +29676,14 @@ var require_permessage_deflate = __commonJS({
           callback(null, data2);
         });
       }
+      /**
+       * Compress data.
+       *
+       * @param {Buffer} data Data to compress
+       * @param {Boolean} fin Specifies whether or not this is the last fragment
+       * @param {Function} callback Callback
+       * @private
+       */
       _compress(data, fin, callback) {
         const endpoint = this._isServer ? 'server' : 'client';
         if (!this._deflate) {
@@ -29512,7 +29765,7 @@ var require_fallback2 = __commonJS({
             i + 2 >= len ||
             (buf[i + 1] & 192) !== 128 ||
             (buf[i + 2] & 192) !== 128 ||
-            (buf[i] === 224 && (buf[i + 1] & 224) === 128) ||
+            (buf[i] === 224 && (buf[i + 1] & 224) === 128) || // overlong
             (buf[i] === 237 && (buf[i + 1] & 224) === 160)
           ) {
             return false;
@@ -29524,7 +29777,7 @@ var require_fallback2 = __commonJS({
             (buf[i + 1] & 192) !== 128 ||
             (buf[i + 2] & 192) !== 128 ||
             (buf[i + 3] & 192) !== 128 ||
-            (buf[i] === 240 && (buf[i + 1] & 240) === 128) ||
+            (buf[i] === 240 && (buf[i + 1] & 240) === 128) || // overlong
             (buf[i] === 244 && buf[i + 1] > 143) ||
             buf[i] > 244
           ) {
@@ -29640,6 +29893,15 @@ var require_receiver = __commonJS({
     var GET_DATA = 4;
     var INFLATING = 5;
     var Receiver = class extends Writable {
+      /**
+       * Creates a Receiver instance.
+       *
+       * @param {String} [binaryType=nodebuffer] The type for binary data
+       * @param {Object} [extensions] An object containing the negotiated extensions
+       * @param {Boolean} [isServer=false] Specifies whether to operate in client or
+       *     server mode
+       * @param {Number} [maxPayload=0] The maximum allowed message length
+       */
       constructor(binaryType, extensions, isServer, maxPayload) {
         super();
         this._binaryType = binaryType || BINARY_TYPES[0];
@@ -29662,12 +29924,27 @@ var require_receiver = __commonJS({
         this._state = GET_INFO;
         this._loop = false;
       }
+      /**
+       * Implements `Writable.prototype._write()`.
+       *
+       * @param {Buffer} chunk The chunk of data to write
+       * @param {String} encoding The character encoding of `chunk`
+       * @param {Function} cb Callback
+       * @private
+       */
       _write(chunk, encoding, cb) {
         if (this._opcode === 8 && this._state == GET_INFO) return cb();
         this._bufferedBytes += chunk.length;
         this._buffers.push(chunk);
         this.startLoop(cb);
       }
+      /**
+       * Consumes `n` bytes from the buffered data.
+       *
+       * @param {Number} n The number of bytes to consume
+       * @return {Buffer} The consumed bytes
+       * @private
+       */
       consume(n) {
         this._bufferedBytes -= n;
         if (n === this._buffers[0].length) return this._buffers.shift();
@@ -29690,6 +29967,12 @@ var require_receiver = __commonJS({
         } while (n > 0);
         return dst;
       }
+      /**
+       * Starts the parsing loop.
+       *
+       * @param {Function} cb Callback
+       * @private
+       */
       startLoop(cb) {
         let err;
         this._loop = true;
@@ -29717,6 +30000,12 @@ var require_receiver = __commonJS({
         } while (this._loop);
         cb(err);
       }
+      /**
+       * Reads the first two bytes of a frame.
+       *
+       * @return {(RangeError|undefined)} A possible error
+       * @private
+       */
       getInfo() {
         if (this._bufferedBytes < 2) {
           this._loop = false;
@@ -29783,6 +30072,12 @@ var require_receiver = __commonJS({
         else if (this._payloadLength === 127) this._state = GET_PAYLOAD_LENGTH_64;
         else return this.haveLength();
       }
+      /**
+       * Gets extended payload length (7+16).
+       *
+       * @return {(RangeError|undefined)} A possible error
+       * @private
+       */
       getPayloadLength16() {
         if (this._bufferedBytes < 2) {
           this._loop = false;
@@ -29791,6 +30086,12 @@ var require_receiver = __commonJS({
         this._payloadLength = this.consume(2).readUInt16BE(0);
         return this.haveLength();
       }
+      /**
+       * Gets extended payload length (7+64).
+       *
+       * @return {(RangeError|undefined)} A possible error
+       * @private
+       */
       getPayloadLength64() {
         if (this._bufferedBytes < 8) {
           this._loop = false;
@@ -29810,6 +30111,12 @@ var require_receiver = __commonJS({
         this._payloadLength = num * Math.pow(2, 32) + buf.readUInt32BE(4);
         return this.haveLength();
       }
+      /**
+       * Payload length has been read.
+       *
+       * @return {(RangeError|undefined)} A possible error
+       * @private
+       */
       haveLength() {
         if (this._payloadLength && this._opcode < 8) {
           this._totalPayloadLength += this._payloadLength;
@@ -29821,6 +30128,11 @@ var require_receiver = __commonJS({
         if (this._masked) this._state = GET_MASK;
         else this._state = GET_DATA;
       }
+      /**
+       * Reads mask bytes.
+       *
+       * @private
+       */
       getMask() {
         if (this._bufferedBytes < 4) {
           this._loop = false;
@@ -29829,6 +30141,13 @@ var require_receiver = __commonJS({
         this._mask = this.consume(4);
         this._state = GET_DATA;
       }
+      /**
+       * Reads data bytes.
+       *
+       * @param {Function} cb Callback
+       * @return {(Error|RangeError|undefined)} A possible error
+       * @private
+       */
       getData(cb) {
         let data = EMPTY_BUFFER;
         if (this._payloadLength) {
@@ -29851,6 +30170,13 @@ var require_receiver = __commonJS({
         }
         return this.dataMessage();
       }
+      /**
+       * Decompresses data.
+       *
+       * @param {Buffer} data Compressed data
+       * @param {Function} cb Callback
+       * @private
+       */
       decompress(data, cb) {
         const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
         perMessageDeflate.decompress(data, this._fin, (err, buf) => {
@@ -29867,6 +30193,12 @@ var require_receiver = __commonJS({
           this.startLoop(cb);
         });
       }
+      /**
+       * Handles a data message.
+       *
+       * @return {(Error|undefined)} A possible error
+       * @private
+       */
       dataMessage() {
         if (this._fin) {
           const messageLength = this._messageLength;
@@ -29896,6 +30228,13 @@ var require_receiver = __commonJS({
         }
         this._state = GET_INFO;
       }
+      /**
+       * Handles a control message.
+       *
+       * @param {Buffer} data Data to handle
+       * @return {(Error|RangeError|undefined)} A possible error
+       * @private
+       */
       controlMessage(data) {
         if (this._opcode === 8) {
           this._loop = false;
@@ -29945,6 +30284,12 @@ var require_sender = __commonJS({
     var { mask: applyMask, toBuffer } = require_buffer_util();
     var mask = Buffer.alloc(4);
     var Sender = class {
+      /**
+       * Creates a Sender instance.
+       *
+       * @param {net.Socket} socket The connection socket
+       * @param {Object} [extensions] An object containing the negotiated extensions
+       */
       constructor(socket, extensions) {
         this._extensions = extensions || {};
         this._socket = socket;
@@ -29954,6 +30299,23 @@ var require_sender = __commonJS({
         this._deflating = false;
         this._queue = [];
       }
+      /**
+       * Frames a piece of data according to the HyBi WebSocket protocol.
+       *
+       * @param {Buffer} data The data to frame
+       * @param {Object} options Options object
+       * @param {Number} options.opcode The opcode
+       * @param {Boolean} [options.readOnly=false] Specifies whether `data` can be
+       *     modified
+       * @param {Boolean} [options.fin=false] Specifies whether or not to set the
+       *     FIN bit
+       * @param {Boolean} [options.mask=false] Specifies whether or not to mask
+       *     `data`
+       * @param {Boolean} [options.rsv1=false] Specifies whether or not to set the
+       *     RSV1 bit
+       * @return {Buffer[]} The framed data as a list of `Buffer` instances
+       * @public
+       */
       static frame(data, options2) {
         const merge = options2.mask && options2.readOnly;
         let offset = options2.mask ? 6 : 2;
@@ -29989,6 +30351,15 @@ var require_sender = __commonJS({
         applyMask(data, mask, data, 0, data.length);
         return [target, data];
       }
+      /**
+       * Sends a close message to the other peer.
+       *
+       * @param {Number} [code] The status code component of the body
+       * @param {String} [data] The message component of the body
+       * @param {Boolean} [mask=false] Specifies whether or not to mask the message
+       * @param {Function} [cb] Callback
+       * @public
+       */
       close(code, data, mask2, cb) {
         let buf;
         if (code === void 0) {
@@ -30013,6 +30384,14 @@ var require_sender = __commonJS({
           this.doClose(buf, mask2, cb);
         }
       }
+      /**
+       * Frames and sends a close message.
+       *
+       * @param {Buffer} data The message to send
+       * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
+       * @param {Function} [cb] Callback
+       * @private
+       */
       doClose(data, mask2, cb) {
         this.sendFrame(
           Sender.frame(data, {
@@ -30025,6 +30404,14 @@ var require_sender = __commonJS({
           cb
         );
       }
+      /**
+       * Sends a ping message to the other peer.
+       *
+       * @param {*} data The message to send
+       * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
+       * @param {Function} [cb] Callback
+       * @public
+       */
       ping(data, mask2, cb) {
         const buf = toBuffer(data);
         if (buf.length > 125) {
@@ -30036,6 +30423,15 @@ var require_sender = __commonJS({
           this.doPing(buf, mask2, toBuffer.readOnly, cb);
         }
       }
+      /**
+       * Frames and sends a ping message.
+       *
+       * @param {Buffer} data The message to send
+       * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
+       * @param {Boolean} [readOnly=false] Specifies whether `data` can be modified
+       * @param {Function} [cb] Callback
+       * @private
+       */
       doPing(data, mask2, readOnly, cb) {
         this.sendFrame(
           Sender.frame(data, {
@@ -30048,6 +30444,14 @@ var require_sender = __commonJS({
           cb
         );
       }
+      /**
+       * Sends a pong message to the other peer.
+       *
+       * @param {*} data The message to send
+       * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
+       * @param {Function} [cb] Callback
+       * @public
+       */
       pong(data, mask2, cb) {
         const buf = toBuffer(data);
         if (buf.length > 125) {
@@ -30059,6 +30463,15 @@ var require_sender = __commonJS({
           this.doPong(buf, mask2, toBuffer.readOnly, cb);
         }
       }
+      /**
+       * Frames and sends a pong message.
+       *
+       * @param {Buffer} data The message to send
+       * @param {Boolean} [mask=false] Specifies whether or not to mask `data`
+       * @param {Boolean} [readOnly=false] Specifies whether `data` can be modified
+       * @param {Function} [cb] Callback
+       * @private
+       */
       doPong(data, mask2, readOnly, cb) {
         this.sendFrame(
           Sender.frame(data, {
@@ -30071,6 +30484,22 @@ var require_sender = __commonJS({
           cb
         );
       }
+      /**
+       * Sends a data message to the other peer.
+       *
+       * @param {*} data The message to send
+       * @param {Object} options Options object
+       * @param {Boolean} [options.compress=false] Specifies whether or not to
+       *     compress `data`
+       * @param {Boolean} [options.binary=false] Specifies whether `data` is binary
+       *     or text
+       * @param {Boolean} [options.fin=false] Specifies whether the fragment is the
+       *     last one
+       * @param {Boolean} [options.mask=false] Specifies whether or not to mask
+       *     `data`
+       * @param {Function} [cb] Callback
+       * @public
+       */
       send(data, options2, cb) {
         const buf = toBuffer(data);
         const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
@@ -30113,6 +30542,25 @@ var require_sender = __commonJS({
           );
         }
       }
+      /**
+       * Dispatches a data message.
+       *
+       * @param {Buffer} data The message to send
+       * @param {Boolean} [compress=false] Specifies whether or not to compress
+       *     `data`
+       * @param {Object} options Options object
+       * @param {Number} options.opcode The opcode
+       * @param {Boolean} [options.readOnly=false] Specifies whether `data` can be
+       *     modified
+       * @param {Boolean} [options.fin=false] Specifies whether or not to set the
+       *     FIN bit
+       * @param {Boolean} [options.mask=false] Specifies whether or not to mask
+       *     `data`
+       * @param {Boolean} [options.rsv1=false] Specifies whether or not to set the
+       *     RSV1 bit
+       * @param {Function} [cb] Callback
+       * @private
+       */
       dispatch(data, compress, options2, cb) {
         if (!compress) {
           this.sendFrame(Sender.frame(data, options2), cb);
@@ -30138,6 +30586,11 @@ var require_sender = __commonJS({
           this.dequeue();
         });
       }
+      /**
+       * Executes queued send operations.
+       *
+       * @private
+       */
       dequeue() {
         while (!this._deflating && this._queue.length) {
           const params = this._queue.shift();
@@ -30145,10 +30598,23 @@ var require_sender = __commonJS({
           Reflect.apply(params[0], this, params.slice(1));
         }
       }
+      /**
+       * Enqueues a send operation.
+       *
+       * @param {Array} params Send operation parameters.
+       * @private
+       */
       enqueue(params) {
         this._bufferedBytes += params[1].length;
         this._queue.push(params);
       }
+      /**
+       * Sends a frame.
+       *
+       * @param {Buffer[]} list The frame to send
+       * @param {Function} [cb] Callback
+       * @private
+       */
       sendFrame(list, cb) {
         if (list.length === 2) {
           this._socket.cork();
@@ -30169,18 +30635,42 @@ var require_event_target = __commonJS({
   'node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js'(exports2, module2) {
     'use strict';
     var Event = class {
+      /**
+       * Create a new `Event`.
+       *
+       * @param {String} type The name of the event
+       * @param {Object} target A reference to the target to which the event was
+       *     dispatched
+       */
       constructor(type, target) {
         this.target = target;
         this.type = type;
       }
     };
     var MessageEvent = class extends Event {
+      /**
+       * Create a new `MessageEvent`.
+       *
+       * @param {(String|Buffer|ArrayBuffer|Buffer[])} data The received data
+       * @param {WebSocket} target A reference to the target to which the event was
+       *     dispatched
+       */
       constructor(data, target) {
         super('message', target);
         this.data = data;
       }
     };
     var CloseEvent = class extends Event {
+      /**
+       * Create a new `CloseEvent`.
+       *
+       * @param {Number} code The status code explaining why the connection is being
+       *     closed
+       * @param {String} reason A human-readable string explaining why the
+       *     connection is closing
+       * @param {WebSocket} target A reference to the target to which the event was
+       *     dispatched
+       */
       constructor(code, reason, target) {
         super('close', target);
         this.wasClean = target._closeFrameReceived && target._closeFrameSent;
@@ -30189,11 +30679,24 @@ var require_event_target = __commonJS({
       }
     };
     var OpenEvent = class extends Event {
+      /**
+       * Create a new `OpenEvent`.
+       *
+       * @param {WebSocket} target A reference to the target to which the event was
+       *     dispatched
+       */
       constructor(target) {
         super('open', target);
       }
     };
     var ErrorEvent = class extends Event {
+      /**
+       * Create a new `ErrorEvent`.
+       *
+       * @param {Object} error The error that generated this event
+       * @param {WebSocket} target A reference to the target to which the event was
+       *     dispatched
+       */
       constructor(error, target) {
         super('error', target);
         this.message = error.message;
@@ -30201,6 +30704,18 @@ var require_event_target = __commonJS({
       }
     };
     var EventTarget = {
+      /**
+       * Register an event listener.
+       *
+       * @param {String} type A string representing the event type to listen for
+       * @param {Function} listener The listener to add
+       * @param {Object} [options] An options object specifies characteristics about
+       *     the event listener
+       * @param {Boolean} [options.once=false] A `Boolean`` indicating that the
+       *     listener should be invoked at most once after being added. If `true`,
+       *     the listener would be automatically removed when invoked.
+       * @public
+       */
       addEventListener(type, listener, options2) {
         if (typeof listener !== 'function') return;
         function onMessage(data) {
@@ -30232,6 +30747,13 @@ var require_event_target = __commonJS({
           this[method](type, listener);
         }
       },
+      /**
+       * Remove an event listener.
+       *
+       * @param {String} type A string representing the event type to remove
+       * @param {Function} listener The listener to remove
+       * @public
+       */
       removeEventListener(type, listener) {
         const listeners = this.listeners(type);
         for (let i = 0; i < listeners.length; i++) {
@@ -30250,11 +30772,22 @@ var require_extension = __commonJS({
   'node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js'(exports2, module2) {
     'use strict';
     var tokenChars = [
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-      0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-      1, 0, 1, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      // 0 - 15
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      // 16 - 31
+      0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0,
+      // 32 - 47
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+      // 48 - 63
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      // 64 - 79
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+      // 80 - 95
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      // 96 - 111
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
+      // 112 - 127
     ];
     function push(dest, name2, elem) {
       if (dest[name2] === void 0) dest[name2] = [elem];
@@ -30432,6 +30965,13 @@ var require_websocket = __commonJS({
     var protocolVersions = [8, 13];
     var closeTimeout = 30 * 1e3;
     var WebSocket = class extends EventEmitter {
+      /**
+       * Create a new `WebSocket`.
+       *
+       * @param {(String|url.URL)} address The URL to which to connect
+       * @param {(String|String[])} [protocols] The subprotocols
+       * @param {Object} [options] Connection options
+       */
       constructor(address, protocols, options2) {
         super();
         this._binaryType = BINARY_TYPES[0];
@@ -30461,6 +31001,13 @@ var require_websocket = __commonJS({
           this._isServer = true;
         }
       }
+      /**
+       * This deviates from the WHATWG interface since ws doesn't support the
+       * required default "blob" type (instead we define a custom "nodebuffer"
+       * type).
+       *
+       * @type {String}
+       */
       get binaryType() {
         return this._binaryType;
       }
@@ -30469,22 +31016,45 @@ var require_websocket = __commonJS({
         this._binaryType = type;
         if (this._receiver) this._receiver._binaryType = type;
       }
+      /**
+       * @type {Number}
+       */
       get bufferedAmount() {
         if (!this._socket) return this._bufferedAmount;
         return this._socket._writableState.length + this._sender._bufferedBytes;
       }
+      /**
+       * @type {String}
+       */
       get extensions() {
         return Object.keys(this._extensions).join();
       }
+      /**
+       * @type {String}
+       */
       get protocol() {
         return this._protocol;
       }
+      /**
+       * @type {Number}
+       */
       get readyState() {
         return this._readyState;
       }
+      /**
+       * @type {String}
+       */
       get url() {
         return this._url;
       }
+      /**
+       * Set up the socket and the internal resources.
+       *
+       * @param {net.Socket} socket The network socket between the server and client
+       * @param {Buffer} head The first packet of the upgraded stream
+       * @param {Number} [maxPayload=0] The maximum allowed message size
+       * @private
+       */
       setSocket(socket, head, maxPayload) {
         const receiver = new Receiver(
           this.binaryType,
@@ -30513,6 +31083,11 @@ var require_websocket = __commonJS({
         this._readyState = WebSocket.OPEN;
         this.emit('open');
       }
+      /**
+       * Emit the `'close'` event.
+       *
+       * @private
+       */
       emitClose() {
         if (!this._socket) {
           this._readyState = WebSocket.CLOSED;
@@ -30526,6 +31101,25 @@ var require_websocket = __commonJS({
         this._readyState = WebSocket.CLOSED;
         this.emit('close', this._closeCode, this._closeMessage);
       }
+      /**
+       * Start a closing handshake.
+       *
+       *          +----------+   +-----------+   +----------+
+       *     - - -|ws.close()|-->|close frame|-->|ws.close()|- - -
+       *    |     +----------+   +-----------+   +----------+     |
+       *          +----------+   +-----------+         |
+       * CLOSING  |ws.close()|<--|close frame|<--+-----+       CLOSING
+       *          +----------+   +-----------+   |
+       *    |           |                        |   +---+        |
+       *                +------------------------+-->|fin| - - - -
+       *    |         +---+                      |   +---+
+       *     - - - - -|fin|<---------------------+
+       *              +---+
+       *
+       * @param {Number} [code] Status code explaining why the connection is closing
+       * @param {String} [data] A string explaining why the connection is closing
+       * @public
+       */
       close(code, data) {
         if (this.readyState === WebSocket.CLOSED) return;
         if (this.readyState === WebSocket.CONNECTING) {
@@ -30544,6 +31138,14 @@ var require_websocket = __commonJS({
         });
         this._closeTimer = setTimeout(this._socket.destroy.bind(this._socket), closeTimeout);
       }
+      /**
+       * Send a ping.
+       *
+       * @param {*} [data] The data to send
+       * @param {Boolean} [mask] Indicates whether or not to mask `data`
+       * @param {Function} [cb] Callback which is executed when the ping is sent
+       * @public
+       */
       ping(data, mask, cb) {
         if (this.readyState === WebSocket.CONNECTING) {
           throw new Error('WebSocket is not open: readyState 0 (CONNECTING)');
@@ -30563,6 +31165,14 @@ var require_websocket = __commonJS({
         if (mask === void 0) mask = !this._isServer;
         this._sender.ping(data || EMPTY_BUFFER, mask, cb);
       }
+      /**
+       * Send a pong.
+       *
+       * @param {*} [data] The data to send
+       * @param {Boolean} [mask] Indicates whether or not to mask `data`
+       * @param {Function} [cb] Callback which is executed when the pong is sent
+       * @public
+       */
       pong(data, mask, cb) {
         if (this.readyState === WebSocket.CONNECTING) {
           throw new Error('WebSocket is not open: readyState 0 (CONNECTING)');
@@ -30582,6 +31192,21 @@ var require_websocket = __commonJS({
         if (mask === void 0) mask = !this._isServer;
         this._sender.pong(data || EMPTY_BUFFER, mask, cb);
       }
+      /**
+       * Send a data message.
+       *
+       * @param {*} data The message to send
+       * @param {Object} [options] Options object
+       * @param {Boolean} [options.compress] Specifies whether or not to compress
+       *     `data`
+       * @param {Boolean} [options.binary] Specifies whether `data` is binary or
+       *     text
+       * @param {Boolean} [options.fin=true] Specifies whether the fragment is the
+       *     last one
+       * @param {Boolean} [options.mask] Specifies whether or not to mask `data`
+       * @param {Function} [cb] Callback which is executed when data is written out
+       * @public
+       */
       send(data, options2, cb) {
         if (this.readyState === WebSocket.CONNECTING) {
           throw new Error('WebSocket is not open: readyState 0 (CONNECTING)');
@@ -30609,6 +31234,11 @@ var require_websocket = __commonJS({
         }
         this._sender.send(data || EMPTY_BUFFER, opts, cb);
       }
+      /**
+       * Forcibly close the connection.
+       *
+       * @public
+       */
       terminate() {
         if (this.readyState === WebSocket.CLOSED) return;
         if (this.readyState === WebSocket.CONNECTING) {
@@ -30635,6 +31265,12 @@ var require_websocket = __commonJS({
       Object.defineProperty(WebSocket.prototype, `on${method}`, {
         configurable: true,
         enumerable: true,
+        /**
+         * Return the listener of the event.
+         *
+         * @return {(Function|undefined)} The event listener or `undefined`
+         * @public
+         */
         get() {
           const listeners = this.listeners(method);
           for (let i = 0; i < listeners.length; i++) {
@@ -30642,6 +31278,12 @@ var require_websocket = __commonJS({
           }
           return void 0;
         },
+        /**
+         * Add a listener for the event.
+         *
+         * @param {Function} listener The listener to add
+         * @public
+         */
         set(listener) {
           const listeners = this.listeners(method);
           for (let i = 0; i < listeners.length; i++) {
@@ -31067,6 +31709,27 @@ var require_websocket_server = __commonJS({
     var { GUID, kWebSocket } = require_constants();
     var keyRegex = /^[+/0-9A-Za-z]{22}==$/;
     var WebSocketServer = class extends EventEmitter {
+      /**
+       * Create a `WebSocketServer` instance.
+       *
+       * @param {Object} options Configuration options
+       * @param {Number} [options.backlog=511] The maximum length of the queue of
+       *     pending connections
+       * @param {Boolean} [options.clientTracking=true] Specifies whether or not to
+       *     track clients
+       * @param {Function} [options.handleProtocols] A hook to handle protocols
+       * @param {String} [options.host] The hostname where to bind the server
+       * @param {Number} [options.maxPayload=104857600] The maximum allowed message
+       *     size
+       * @param {Boolean} [options.noServer=false] Enable no server mode
+       * @param {String} [options.path] Accept only connections matching this path
+       * @param {(Boolean|Object)} [options.perMessageDeflate=false] Enable/disable
+       *     permessage-deflate
+       * @param {Number} [options.port] The port where to bind the server
+       * @param {http.Server} [options.server] A pre-created HTTP/S server to use
+       * @param {Function} [options.verifyClient] A hook to reject connections
+       * @param {Function} [callback] A listener for the `listening` event
+       */
       constructor(options2, callback) {
         super();
         options2 = __spreadValues(
@@ -31078,6 +31741,7 @@ var require_websocket_server = __commonJS({
             verifyClient: null,
             noServer: false,
             backlog: null,
+            // use default (511 as implemented in net.js)
             server: null,
             host: null,
             path: null,
@@ -31117,6 +31781,15 @@ var require_websocket_server = __commonJS({
         if (options2.clientTracking) this.clients = /* @__PURE__ */ new Set();
         this.options = options2;
       }
+      /**
+       * Returns the bound address, the address family name, and port of the server
+       * as reported by the operating system if listening on an IP socket.
+       * If the server is listening on a pipe or UNIX domain socket, the name is
+       * returned as a string.
+       *
+       * @return {(Object|String|null)} The address of the server
+       * @public
+       */
       address() {
         if (this.options.noServer) {
           throw new Error('The server is operating in "noServer" mode');
@@ -31124,6 +31797,12 @@ var require_websocket_server = __commonJS({
         if (!this._server) return null;
         return this._server.address();
       }
+      /**
+       * Close the server.
+       *
+       * @param {Function} [cb] Callback
+       * @public
+       */
       close(cb) {
         if (cb) this.once('close', cb);
         if (this.clients) {
@@ -31140,6 +31819,13 @@ var require_websocket_server = __commonJS({
         }
         process.nextTick(emitClose, this);
       }
+      /**
+       * See if a given request should be handled by this server instance.
+       *
+       * @param {http.IncomingMessage} req Request object to inspect
+       * @return {Boolean} `true` if the request is valid, else `false`
+       * @public
+       */
       shouldHandle(req) {
         if (this.options.path) {
           const index = req.url.indexOf('?');
@@ -31148,6 +31834,15 @@ var require_websocket_server = __commonJS({
         }
         return true;
       }
+      /**
+       * Handle a HTTP Upgrade request.
+       *
+       * @param {http.IncomingMessage} req The request object
+       * @param {net.Socket} socket The network socket between the server and client
+       * @param {Buffer} head The first packet of the upgraded stream
+       * @param {Function} cb Callback
+       * @public
+       */
       handleUpgrade(req, socket, head, cb) {
         socket.on('error', socketOnError);
         const key =
@@ -31201,6 +31896,18 @@ var require_websocket_server = __commonJS({
         }
         this.completeUpgrade(key, extensions, req, socket, head, cb);
       }
+      /**
+       * Upgrade the connection to WebSocket.
+       *
+       * @param {String} key The value of the `Sec-WebSocket-Key` header
+       * @param {Object} extensions The accepted extensions
+       * @param {http.IncomingMessage} req The request object
+       * @param {net.Socket} socket The network socket between the server and client
+       * @param {Buffer} head The first packet of the upgraded stream
+       * @param {Function} cb Callback
+       * @throws {Error} If called more than once with the same socket
+       * @private
+       */
       completeUpgrade(key, extensions, req, socket, head, cb) {
         if (!socket.readable || !socket.writable) return socket.destroy();
         if (socket[kWebSocket]) {
@@ -31679,7 +32386,10 @@ var require_websocket_provider = __commonJS({
               case 1:
                 subId = _a7.sent();
                 this._subs[subId] = { tag, processFunc };
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -31789,7 +32499,10 @@ var require_websocket_provider = __commonJS({
                 _a7.label = 2;
               case 2:
                 this._websocket.close(1e3);
-                return [2];
+                return [
+                  2,
+                  /*return*/
+                ];
             }
           });
         });
@@ -34013,7 +34726,10 @@ var require_fallback_provider = __commonJS({
                         ) {
                           return [2, 'break'];
                         }
-                        return [2];
+                        return [
+                          2,
+                          /*return*/
+                        ];
                     }
                   });
                 };
@@ -34039,6 +34755,8 @@ var require_fallback_provider = __commonJS({
                   logger2.throwError('failed to meet quorum', logger_1.Logger.errors.SERVER_ERROR, {
                     method,
                     params,
+                    //results: configs.map((c) => c.result),
+                    //errors: configs.map((c) => c.error),
                     results: configs.map(function (c) {
                       return exposeDebugConfig(c);
                     }),
@@ -35711,6 +36429,7 @@ var require_types2 = __commonJS({
       eEthereumTxType2['MIGRATION_LEND_AAVE'] = 'MIGRATION_LEND_AAVE';
       eEthereumTxType2['FAUCET_MINT'] = 'FAUCET_MINT';
       eEthereumTxType2['REWARD_ACTION'] = 'REWARD_ACTION';
+      eEthereumTxType2['V3_MIGRATION_ACTION'] = 'V3_MIGRATION_ACTION';
     })((eEthereumTxType = exports2.eEthereumTxType || (exports2.eEthereumTxType = {})));
     var ProtocolAction;
     (function (ProtocolAction2) {
@@ -35725,6 +36444,7 @@ var require_types2 = __commonJS({
       ProtocolAction2['repayCollateral'] = 'repayCollateral';
       ProtocolAction2['withdrawETH'] = 'withdrawETH';
       ProtocolAction2['borrowETH'] = 'borrwoETH';
+      ProtocolAction2['migrateV3'] = 'migrateV3';
       ProtocolAction2['supplyWithPermit'] = 'supplyWithPermit';
       ProtocolAction2['repayWithPermit'] = 'repayWithPermit';
     })((ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {})));
@@ -35818,6 +36538,7 @@ var require_bignumber2 = __commonJS({
             decimalSeparator: '.',
             fractionGroupSize: 0,
             fractionGroupSeparator: '\xA0',
+            // non-breaking space
             suffix: '',
           },
           ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz',
@@ -36358,9 +37079,11 @@ var require_bignumber2 = __commonJS({
               yc = y.c;
             if (!xc || !xc[0] || !yc || !yc[0]) {
               return new BigNumber3(
+                // Return NaN if either NaN, or both Infinity or 0.
                 !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc)
                   ? NaN
-                  : (xc && xc[0] == 0) || !yc
+                  : // Return ±0 if x is ±0 or y is ±Infinity, or return ±Infinity as y is ±0.
+                  (xc && xc[0] == 0) || !yc
                   ? s * 0
                   : s / 0
               );
@@ -36598,7 +37321,13 @@ var require_bignumber2 = __commonJS({
                   rd = j < 0 ? 0 : (n / pows10[d - j - 1]) % 10 | 0;
                 }
               }
-              r = r || sd < 0 || xc[ni + 1] != null || (j < 0 ? n : n % pows10[d - j - 1]);
+              r =
+                r ||
+                sd < 0 || // Are there any non-zero digits after the rounding digit?
+                // The expression  n % pows10[d - j - 1]  returns all digits of n to the right
+                // of the digit at j, e.g. if n is 908714 and j is 2, the expression gives 714.
+                xc[ni + 1] != null ||
+                (j < 0 ? n : n % pows10[d - j - 1]);
               r =
                 rm < 4
                   ? (rd || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2))
@@ -36847,7 +37576,14 @@ var require_bignumber2 = __commonJS({
             if (!xc[0] || !yc[0]) {
               return yc[0]
                 ? ((y.s = -b), y)
-                : new BigNumber3(xc[0] ? x : ROUNDING_MODE == 3 ? -0 : 0);
+                : new BigNumber3(
+                    xc[0]
+                      ? x
+                      : // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
+                      ROUNDING_MODE == 3
+                      ? -0
+                      : 0
+                  );
             }
           }
           xe = bitFloor(xe);
@@ -37481,6 +38217,10 @@ var require_utils6 = __commonJS({
         limit: '700000',
         recommended: '700000',
       },
+      [types_1.ProtocolAction.migrateV3]: {
+        limit: '700000',
+        recommended: '700000',
+      },
       [types_1.ProtocolAction.supplyWithPermit]: {
         limit: '350000',
         recommended: '350000',
@@ -37669,6 +38409,7 @@ var require_Reflect = __commonJS({
         var supportsProto = { __proto__: [] } instanceof Array;
         var downLevel = !supportsCreate && !supportsProto;
         var HashMap = {
+          // create an object in dictionary mode (a.k.a. "slow" mode in v8)
           create: supportsCreate
             ? function () {
                 return MakeDictionary(/* @__PURE__ */ Object.create(null));
@@ -37781,7 +38522,12 @@ var require_Reflect = __commonJS({
         function deleteMetadata(metadataKey, target, propertyKey) {
           if (!IsObject(target)) throw new TypeError();
           if (!IsUndefined(propertyKey)) propertyKey = ToPropertyKey(propertyKey);
-          var metadataMap = GetOrCreateMetadataMap(target, propertyKey, false);
+          var metadataMap = GetOrCreateMetadataMap(
+            target,
+            propertyKey,
+            /*Create*/
+            false
+          );
           if (IsUndefined(metadataMap)) return false;
           if (!metadataMap.delete(metadataKey)) return false;
           if (metadataMap.size > 0) return true;
@@ -37837,7 +38583,12 @@ var require_Reflect = __commonJS({
           return false;
         }
         function OrdinaryHasOwnMetadata(MetadataKey, O, P) {
-          var metadataMap = GetOrCreateMetadataMap(O, P, false);
+          var metadataMap = GetOrCreateMetadataMap(
+            O,
+            P,
+            /*Create*/
+            false
+          );
           if (IsUndefined(metadataMap)) return false;
           return ToBoolean(metadataMap.has(MetadataKey));
         }
@@ -37849,12 +38600,22 @@ var require_Reflect = __commonJS({
           return void 0;
         }
         function OrdinaryGetOwnMetadata(MetadataKey, O, P) {
-          var metadataMap = GetOrCreateMetadataMap(O, P, false);
+          var metadataMap = GetOrCreateMetadataMap(
+            O,
+            P,
+            /*Create*/
+            false
+          );
           if (IsUndefined(metadataMap)) return void 0;
           return metadataMap.get(MetadataKey);
         }
         function OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P) {
-          var metadataMap = GetOrCreateMetadataMap(O, P, true);
+          var metadataMap = GetOrCreateMetadataMap(
+            O,
+            P,
+            /*Create*/
+            true
+          );
           metadataMap.set(MetadataKey, MetadataValue);
         }
         function OrdinaryMetadataKeys(O, P) {
@@ -37886,7 +38647,12 @@ var require_Reflect = __commonJS({
         }
         function OrdinaryOwnMetadataKeys(O, P) {
           var keys = [];
-          var metadataMap = GetOrCreateMetadataMap(O, P, false);
+          var metadataMap = GetOrCreateMetadataMap(
+            O,
+            P,
+            /*Create*/
+            false
+          );
           if (IsUndefined(metadataMap)) return keys;
           var keysObj = metadataMap.keys();
           var iterator = GetIterator(keysObj);
@@ -37998,7 +38764,11 @@ var require_Reflect = __commonJS({
           return '' + argument;
         }
         function ToPropertyKey(argument) {
-          var key = ToPrimitive(argument, 3);
+          var key = ToPrimitive(
+            argument,
+            3
+            /* String */
+          );
           if (IsSymbol(key)) return key;
           return ToString(key);
         }
@@ -38125,19 +38895,37 @@ var require_Reflect = __commonJS({
               configurable: true,
             });
             Map2.prototype.has = function (key) {
-              return this._find(key, false) >= 0;
+              return (
+                this._find(
+                  key,
+                  /*insert*/
+                  false
+                ) >= 0
+              );
             };
             Map2.prototype.get = function (key) {
-              var index = this._find(key, false);
+              var index = this._find(
+                key,
+                /*insert*/
+                false
+              );
               return index >= 0 ? this._values[index] : void 0;
             };
             Map2.prototype.set = function (key, value) {
-              var index = this._find(key, true);
+              var index = this._find(
+                key,
+                /*insert*/
+                true
+              );
               this._values[index] = value;
               return this;
             };
             Map2.prototype.delete = function (key) {
-              var index = this._find(key, false);
+              var index = this._find(
+                key,
+                /*insert*/
+                false
+              );
               if (index >= 0) {
                 var size = this._keys.length;
                 for (var i = index + 1; i < size; i++) {
@@ -38249,20 +39037,36 @@ var require_Reflect = __commonJS({
               this._key = CreateUniqueKey();
             }
             WeakMap2.prototype.has = function (target) {
-              var table = GetOrCreateWeakMapTable(target, false);
+              var table = GetOrCreateWeakMapTable(
+                target,
+                /*create*/
+                false
+              );
               return table !== void 0 ? HashMap.has(table, this._key) : false;
             };
             WeakMap2.prototype.get = function (target) {
-              var table = GetOrCreateWeakMapTable(target, false);
+              var table = GetOrCreateWeakMapTable(
+                target,
+                /*create*/
+                false
+              );
               return table !== void 0 ? HashMap.get(table, this._key) : void 0;
             };
             WeakMap2.prototype.set = function (target, value) {
-              var table = GetOrCreateWeakMapTable(target, true);
+              var table = GetOrCreateWeakMapTable(
+                target,
+                /*create*/
+                true
+              );
               table[this._key] = value;
               return this;
             };
             WeakMap2.prototype.delete = function (target) {
-              var table = GetOrCreateWeakMapTable(target, false);
+              var table = GetOrCreateWeakMapTable(
+                target,
+                /*create*/
+                false
+              );
               return table !== void 0 ? delete table[this._key] : false;
             };
             WeakMap2.prototype.clear = function () {
@@ -38793,7 +39597,8 @@ var require_methodValidators = __commonJS({
   'node_modules/@aave/contract-helpers/dist/cjs/commons/validators/methodValidators.js'(exports2) {
     'use strict';
     Object.defineProperty(exports2, '__esModule', { value: true });
-    exports2.StackeUiDataProviderValidator =
+    exports2.V3MigratorValidator =
+      exports2.StackeUiDataProviderValidator =
       exports2.GovDelegationValidator =
       exports2.GovValidator =
       exports2.GovHelperValidator =
@@ -38824,7 +39629,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.lendingPoolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.lendingPoolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.flashLiquidationAddress)
         ) {
           console.error(`[LPFlahsLiquidationValidator] You need to pass valid addresses`);
@@ -38841,7 +39647,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.poolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.poolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.flashLiquidationAddress)
         ) {
           console.error(`[LPFlahsLiquidationValidator] You need to pass valid addresses`);
@@ -38858,7 +39665,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.lendingPoolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.lendingPoolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.repayWithCollateralAddress)
         ) {
           console.error(`[LPRepayWithCollateralValidator] You need to pass valid addresses`);
@@ -38874,7 +39682,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.lendingPoolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.lendingPoolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.swapCollateralAddress)
         ) {
           console.error(`[LPSwapCollateralValidator] You need to pass valid addresses`);
@@ -38890,7 +39699,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.poolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.poolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.repayWithCollateralAddress)
         ) {
           console.error(`[LPRepayWithCollateralValidator] You need to pass valid addresses`);
@@ -38906,7 +39716,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.poolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.poolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.swapCollateralAddress)
         ) {
           console.error(`[LPSwapCollateralValidator] You need to pass valid addresses`);
@@ -38937,10 +39748,12 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.l2PoolAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.l2PoolAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.encoderAddress)
         ) {
           console.error(
+            // @ts-expect-error todo: check why this ignore is needed
             `[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`
           );
           return [];
@@ -38961,6 +39774,7 @@ var require_methodValidators = __commonJS({
         (0, validations_1.amountGtThan0Validator)(target, propertyName, arguments);
         (0, validations_1.amountGtThan0OrMinus1)(target, propertyName, arguments);
         (0, validations_1.amount0OrPositiveValidator)(target, propertyName, arguments);
+        (0, validations_1.isEthAddressArrayValidator)(target, propertyName, arguments);
         return method.apply(this, arguments);
       };
     }
@@ -39045,7 +39859,10 @@ var require_methodValidators = __commonJS({
     function StakingValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function () {
-        if (!ethers_1.utils.isAddress(this.stakingContractAddress)) {
+        if (
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.stakingContractAddress)
+        ) {
           console.error(`[StakingValidator] You need to pass valid addresses`);
           return [];
         }
@@ -39060,7 +39877,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.stakingContractAddress) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.stakingContractAddress) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.stakingHelperContractAddress)
         ) {
           console.error(`[StakingValidator] You need to pass valid addresses`);
@@ -39105,7 +39923,8 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function () {
         if (
-          !ethers_1.utils.isAddress(this.aaveGovernanceV2Address) ||
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.aaveGovernanceV2Address) || // @ts-expect-error todo: check why this ignore is needed
           !ethers_1.utils.isAddress(this.aaveGovernanceV2HelperAddress)
         ) {
           console.error(`[GovernanceValidator] You need to pass valid addresses`);
@@ -39121,7 +39940,10 @@ var require_methodValidators = __commonJS({
     function GovValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function () {
-        if (!ethers_1.utils.isAddress(this.aaveGovernanceV2Address)) {
+        if (
+          // @ts-expect-error todo: check why this ignore is needed
+          !ethers_1.utils.isAddress(this.aaveGovernanceV2Address)
+        ) {
           console.error(`[GovernanceValidator] You need to pass valid addresses`);
           return [];
         }
@@ -39150,6 +39972,15 @@ var require_methodValidators = __commonJS({
       };
     }
     exports2.StackeUiDataProviderValidator = StackeUiDataProviderValidator;
+    function V3MigratorValidator(target, propertyName, descriptor) {
+      const method = descriptor.value;
+      descriptor.value = function () {
+        (0, validations_1.isEthAddressValidator)(target, propertyName, arguments);
+        (0, validations_1.isEthAddressArrayValidator)(target, propertyName, arguments);
+        return method.apply(this, arguments);
+      };
+    }
+    exports2.V3MigratorValidator = V3MigratorValidator;
   },
 });
 
@@ -40163,6 +40994,10 @@ var require_v3_UiIncentiveDataProvider_contract = __commonJS({
     var IUiIncentiveDataProviderV3__factory_1 = require_IUiIncentiveDataProviderV3_factory();
     tslib_1.__exportStar(require_types3(), exports2);
     var UiIncentiveDataProvider = class extends BaseService_1.default {
+      /**
+       * Constructor
+       * @param context The ui incentive data provider context
+       */
       constructor({ provider, uiIncentiveDataProviderAddress, chainId }) {
         super(provider, IUiIncentiveDataProviderV3__factory_1.IUiIncentiveDataProviderV3__factory);
         this._getFeed = (rewardToken, chainlinkFeedsRegistry, quote) =>
@@ -40177,18 +41012,29 @@ var require_v3_UiIncentiveDataProvider_contract = __commonJS({
         this._chainlinkFeedsRegistries = {};
         this.chainId = chainId;
       }
+      /**
+       *  Get the full reserve incentive data for the lending pool and the user
+       * @param user The user address
+       */
       getFullReservesIncentiveData(_0) {
         return __async(this, arguments, function* ({ user, lendingPoolAddressProvider }) {
           const uiIncentiveContract = this.getContractInstance(this.uiIncentiveDataProviderAddress);
           return uiIncentiveContract.getFullReservesIncentiveData(lendingPoolAddressProvider, user);
         });
       }
+      /**
+       *  Get the reserve incentive data for the lending pool
+       */
       getReservesIncentivesData(_0) {
         return __async(this, arguments, function* ({ lendingPoolAddressProvider }) {
           const uiIncentiveContract = this.getContractInstance(this.uiIncentiveDataProviderAddress);
           return uiIncentiveContract.getReservesIncentivesData(lendingPoolAddressProvider);
         });
       }
+      /**
+       *  Get the reserve incentive data for the user
+       * @param user The user address
+       */
       getUserReservesIncentivesData(_0) {
         return __async(this, arguments, function* ({ user, lendingPoolAddressProvider }) {
           const uiIncentiveContract = this.getContractInstance(this.uiIncentiveDataProviderAddress);
@@ -40908,6 +41754,10 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
       '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': 'BPTBALWETH',
     };
     var UiPoolDataProvider = class {
+      /**
+       * Constructor
+       * @param context The ui pool data provider context
+       */
       constructor(context) {
         if (!(0, utils_1.isAddress)(context.uiPoolDataProviderAddress)) {
           throw new Error('contract address is not valid');
@@ -40918,6 +41768,9 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
         );
         this.chainId = context.chainId;
       }
+      /**
+       * Get the underlying asset address for each lending pool reserve
+       */
       getReservesList(_0) {
         return __async(this, arguments, function* ({ lendingPoolAddressProvider }) {
           if (!(0, utils_1.isAddress)(lendingPoolAddressProvider)) {
@@ -40926,6 +41779,9 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
           return this._contract.getReservesList(lendingPoolAddressProvider);
         });
       }
+      /**
+       * Get data for each lending pool reserve
+       */
       getReservesData(_0) {
         return __async(this, arguments, function* ({ lendingPoolAddressProvider }) {
           if (!(0, utils_1.isAddress)(lendingPoolAddressProvider)) {
@@ -40934,6 +41790,9 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
           return this._contract.getReservesData(lendingPoolAddressProvider);
         });
       }
+      /**
+       * Get data for each user reserve on the lending pool
+       */
       getUserReservesData(_0) {
         return __async(this, arguments, function* ({ lendingPoolAddressProvider, user }) {
           if (!(0, utils_1.isAddress)(lendingPoolAddressProvider)) {
@@ -40991,6 +41850,7 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
             baseStableBorrowRate: reserveRaw.baseStableBorrowRate.toString(),
             baseVariableBorrowRate: reserveRaw.baseVariableBorrowRate.toString(),
             optimalUsageRatio: reserveRaw.optimalUsageRatio.toString(),
+            // new fields
             isPaused: reserveRaw.isPaused,
             debtCeiling: reserveRaw.debtCeiling.toString(),
             eModeCategoryId: reserveRaw.eModeCategoryId,
@@ -41009,6 +41869,7 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
             isSiloedBorrowing: reserveRaw.isSiloedBorrowing,
           }));
           const baseCurrencyData = {
+            // this is to get the decimals from the unit so 1e18 = string length of 19 - 1 to get the number of 0
             marketReferenceCurrencyDecimals:
               poolBaseCurrencyRaw.marketReferenceCurrencyUnit.toString().length - 1,
             marketReferenceCurrencyPriceInUsd:
@@ -41176,12 +42037,21 @@ var require_wallet_balance_provider = __commonJS({
     var WalletBalanceProviderFactory_1 = require_WalletBalanceProviderFactory();
     tslib_1.__exportStar(require_WalletBalanceProviderTypes(), exports2);
     var WalletBalanceProvider = class {
+      /**
+       * Constructor
+       * @param context The wallet balance provider context
+       */
       constructor(context) {
         this._contract = WalletBalanceProviderFactory_1.WalletBalanceProviderFactory.connect(
           context.walletBalanceProviderAddress,
           context.provider
         );
       }
+      /**
+       *  Get the balance for a user on a token
+       * @param user The user address
+       * @param token The token address
+       */
       balanceOf(user, token) {
         return __async(this, null, function* () {
           if (!(0, utils_1.isAddress)(user)) {
@@ -41193,6 +42063,11 @@ var require_wallet_balance_provider = __commonJS({
           return this._contract.balanceOf(user, token);
         });
       }
+      /**
+       *  Get the balance for a user on a token
+       * @param users The users addresses
+       * @param tokens The tokens addresses
+       */
       batchBalanceOf(users, tokens) {
         return __async(this, null, function* () {
           if (!users.every((u) => (0, utils_1.isAddress)(u))) {
@@ -41204,6 +42079,11 @@ var require_wallet_balance_provider = __commonJS({
           return this._contract.batchBalanceOf(users, tokens);
         });
       }
+      /**
+       *  Provides balances of user wallet for all reserves available on the pool
+       * @param user The user
+       * @param lendingPoolAddressProvider The lending pool address provider
+       */
       getUserWalletBalancesForLendingPoolProvider(user, lendingPoolAddressProvider) {
         return __async(this, null, function* () {
           if (!(0, utils_1.isAddress)(user)) {
@@ -44490,20 +45370,29 @@ var require_synthetix_contract = __commonJS({
         this.synthetixValidation = this.synthetixValidation.bind(this);
       }
       synthetixValidation(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount }) {
-          const { chainId } = yield this.provider.getNetwork();
-          if (
-            exports2.synthetixProxyByChainId[chainId] &&
-            reserve.toLowerCase() === exports2.synthetixProxyByChainId[chainId].toLowerCase()
-          ) {
-            const synthContract = this.getContractInstance(
-              exports2.synthetixProxyByChainId[chainId]
-            );
-            const transferableAmount = yield synthContract.transferableSynthetix(user);
-            return ethers_1.BigNumber.from(amount).lte(transferableAmount);
+        return __async(
+          this,
+          arguments,
+          function* ({
+            user,
+            reserve,
+            amount,
+            // wei
+          }) {
+            const { chainId } = yield this.provider.getNetwork();
+            if (
+              exports2.synthetixProxyByChainId[chainId] &&
+              reserve.toLowerCase() === exports2.synthetixProxyByChainId[chainId].toLowerCase()
+            ) {
+              const synthContract = this.getContractInstance(
+                exports2.synthetixProxyByChainId[chainId]
+              );
+              const transferableAmount = yield synthContract.transferableSynthetix(user);
+              return ethers_1.BigNumber.from(amount).lte(transferableAmount);
+            }
+            return true;
           }
-          return true;
-        });
+        );
       }
     };
     tslib_1.__decorate(
@@ -45834,6 +46723,7 @@ var require_lendingPool_contract = __commonJS({
                       [fromAsset],
                       swapAll ? [convertedAmountWithSurplus] : [convertedAmount],
                       [0],
+                      // interest rate mode to NONE for flashloan to not open debt
                       onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
                       params,
                       referralCode !== null && referralCode !== void 0 ? referralCode : '0'
@@ -45961,6 +46851,7 @@ var require_lendingPool_contract = __commonJS({
                       [assetToRepay],
                       [convertedRepayAmount],
                       [0],
+                      // interest rate mode to NONE for flashloan to not open debt
                       onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
                       params,
                       referralCode !== null && referralCode !== void 0 ? referralCode : '0'
@@ -46100,6 +46991,7 @@ var require_lendingPool_contract = __commonJS({
                         ? [convertedRepayWithAmountWithSurplus]
                         : [convertedRepayWithAmount],
                       [0],
+                      // interest rate mode to NONE for flashloan to not open debt
                       onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
                       params,
                       referralCode !== null && referralCode !== void 0 ? referralCode : '0'
@@ -52164,6 +53056,7 @@ var require_v3_pool_contract = __commonJS({
           }
         );
       }
+      // Sign permit supply
       signERC20Approval(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, deadline }) {
           const { getTokenData, isApproved } = this.erc20Service;
@@ -52516,7 +53409,7 @@ var require_v3_pool_contract = __commonJS({
             const { populateTransaction } = poolContract;
             const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
             const decimals = yield decimalsOf(reserve);
-            const sig = ethers_1.utils.splitSignature(signature);
+            const sig = (0, bytes_1.splitSignature)(signature);
             const convertedAmount =
               amount === '-1'
                 ? ethers_1.constants.MaxUint256.toString()
@@ -53099,6 +53992,54 @@ var require_v3_pool_contract = __commonJS({
           },
         ];
       }
+      migrateV3(_0) {
+        return __async(
+          this,
+          arguments,
+          function* ({
+            migrator,
+            borrowedAssets,
+            borrowedAmounts,
+            interestRatesModes,
+            user,
+            suppliedPositions,
+            borrowedPositions,
+            permits,
+          }) {
+            const poolContract = this.getContractInstance(this.poolAddress);
+            const mappedBorrowedPositions = borrowedPositions.map((borrowPosition) => [
+              borrowPosition.address,
+              borrowPosition.amount,
+              borrowPosition.rateMode.toString(),
+            ]);
+            const mappedPermits = permits.map((permit) => [
+              permit.aToken,
+              permit.value,
+              permit.deadline,
+              permit.v,
+              permit.r,
+              permit.s,
+            ]);
+            const params = ethers_1.utils.defaultAbiCoder.encode(
+              [
+                'address[]',
+                '(address, uint256, uint256)[]',
+                '(address, uint256, uint256, uint8, bytes32, bytes32)[]',
+              ],
+              [suppliedPositions, mappedBorrowedPositions, mappedPermits]
+            );
+            return poolContract.populateTransaction.flashLoan(
+              migrator,
+              borrowedAssets,
+              borrowedAmounts,
+              interestRatesModes,
+              user,
+              params,
+              '0'
+            );
+          }
+        );
+      }
     };
     tslib_1.__decorate(
       [
@@ -53343,7 +54284,465 @@ var require_v3_pool_contract = __commonJS({
       'setUserEMode',
       null
     );
+    tslib_1.__decorate(
+      [
+        methodValidators_1.LPValidatorV3,
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('migrator')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)('borrowedAssets')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
+      ],
+      Pool.prototype,
+      'migrateV3',
+      null
+    );
     exports2.Pool = Pool;
+  },
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/MigrationHelper__factory.js
+var require_MigrationHelper_factory = __commonJS({
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/MigrationHelper__factory.js'(
+    exports2
+  ) {
+    'use strict';
+    Object.defineProperty(exports2, '__esModule', { value: true });
+    exports2.MigrationHelper__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: 'contract IPoolAddressesProvider',
+            name: 'v3AddressesProvider',
+            type: 'address',
+          },
+          {
+            internalType: 'contract ILendingPool',
+            name: 'v2Pool',
+            type: 'address',
+          },
+        ],
+        stateMutability: 'nonpayable',
+        type: 'constructor',
+      },
+      {
+        inputs: [],
+        name: 'ADDRESSES_PROVIDER',
+        outputs: [
+          {
+            internalType: 'contract IPoolAddressesProvider',
+            name: '',
+            type: 'address',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [],
+        name: 'POOL',
+        outputs: [
+          {
+            internalType: 'contract IPool',
+            name: '',
+            type: 'address',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [],
+        name: 'V2_POOL',
+        outputs: [
+          {
+            internalType: 'contract ILendingPool',
+            name: '',
+            type: 'address',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address',
+          },
+        ],
+        name: 'aTokens',
+        outputs: [
+          {
+            internalType: 'contract IERC20WithPermit',
+            name: '',
+            type: 'address',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [],
+        name: 'cacheATokens',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address[]',
+            name: '',
+            type: 'address[]',
+          },
+          {
+            internalType: 'uint256[]',
+            name: '',
+            type: 'uint256[]',
+          },
+          {
+            internalType: 'uint256[]',
+            name: '',
+            type: 'uint256[]',
+          },
+          {
+            internalType: 'address',
+            name: 'initiator',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'params',
+            type: 'bytes',
+          },
+        ],
+        name: 'executeOperation',
+        outputs: [
+          {
+            internalType: 'bool',
+            name: '',
+            type: 'bool',
+          },
+        ],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'user',
+            type: 'address',
+          },
+          {
+            internalType: 'address[]',
+            name: 'assets',
+            type: 'address[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'contract IERC20WithPermit',
+                name: 'aToken',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint256',
+                name: 'deadline',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint8',
+                name: 'v',
+                type: 'uint8',
+              },
+              {
+                internalType: 'bytes32',
+                name: 'r',
+                type: 'bytes32',
+              },
+              {
+                internalType: 'bytes32',
+                name: 's',
+                type: 'bytes32',
+              },
+            ],
+            internalType: 'struct IMigrationHelper.PermitInput[]',
+            name: 'permits',
+            type: 'tuple[]',
+          },
+        ],
+        name: 'migrationNoBorrow',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+    ];
+    var _bytecode =
+      '0x60e06040523480156200001157600080fd5b5060405162001b8238038062001b82833981016040819052620000349162000473565b6001600160a01b03821660a08190526040805163026b1d5f60e01b8152905163026b1d5f916004808201926020929091908290030181865afa1580156200007f573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000a59190620004c4565b6001600160a01b0390811660c0528116608052620000c2620000ca565b50506200080d565b604080516101a08101825260006101808201818152825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e0810182905261010081018290526101208101829052610140810182905261016081019190915260006080516001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa15801562000175573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f191682016040526200019f919081019062000560565b905060005b8151811015620004555760006001600160a01b0316600080848481518110620001d157620001d16200061e565b6020908102919091018101516001600160a01b0390811683529082019290925260400160002054160362000440576080516001600160a01b03166335ea6a758383815181106200022557620002256200061e565b60200260200101516040518263ffffffff1660e01b81526004016200025991906001600160a01b0391909116815260200190565b61018060405180830381865afa15801562000278573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200029e9190620006b9565b92508260e00151600080848481518110620002bd57620002bd6200061e565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106200031e576200031e6200061e565b602090810291909101015160805160405163095ea7b360e01b81526001600160a01b039182166004820152600019602482015291169063095ea7b3906044016020604051808303816000875af11580156200037d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620003a39190620007c1565b50818181518110620003b957620003b96200061e565b602090810291909101015160c05160405163095ea7b360e01b81526001600160a01b039182166004820152600019602482015291169063095ea7b3906044016020604051808303816000875af115801562000418573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200043e9190620007c1565b505b806200044c81620007e5565b915050620001a4565b505050565b6001600160a01b03811681146200047057600080fd5b50565b600080604083850312156200048757600080fd5b825162000494816200045a565b6020840151909250620004a7816200045a565b809150509250929050565b8051620004bf816200045a565b919050565b600060208284031215620004d757600080fd5b8151620004e4816200045a565b9392505050565b634e487b7160e01b600052604160045260246000fd5b60405161018081016001600160401b0381118282101715620005275762000527620004eb565b60405290565b604051601f8201601f191681016001600160401b0381118282101715620005585762000558620004eb565b604052919050565b600060208083850312156200057457600080fd5b82516001600160401b03808211156200058c57600080fd5b818501915085601f830112620005a157600080fd5b815181811115620005b657620005b6620004eb565b8060051b9150620005c98483016200052d565b8181529183018401918481019088841115620005e457600080fd5b938501935b8385101562000612578451925062000601836200045a565b8282529385019390850190620005e9565b98975050505050505050565b634e487b7160e01b600052603260045260246000fd5b6000602082840312156200064757600080fd5b604051602081016001600160401b03811182821017156200066c576200066c620004eb565b6040529151825250919050565b80516001600160801b0381168114620004bf57600080fd5b805164ffffffffff81168114620004bf57600080fd5b805160ff81168114620004bf57600080fd5b60006101808284031215620006cd57600080fd5b620006d762000501565b620006e3848462000634565b8152620006f36020840162000679565b6020820152620007066040840162000679565b6040820152620007196060840162000679565b60608201526200072c6080840162000679565b60808201526200073f60a0840162000679565b60a08201526200075260c0840162000691565b60c08201526200076560e08401620004b2565b60e08201526101006200077a818501620004b2565b908201526101206200078e848201620004b2565b90820152610140620007a2848201620004b2565b90820152610160620007b6848201620006a7565b908201529392505050565b600060208284031215620007d457600080fd5b81518015158114620004e457600080fd5b6000600182016200080657634e487b7160e01b600052601160045260246000fd5b5060010190565b60805160a05160c0516113156200086d60003960008181610109015281816105610152610a8c015260006087015260008181610130015281816104ba01528181610600015281816107a80152818161088901526109d901526113156000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c80637535d2461161005b5780637535d24614610104578063880f2a221461012b578063920f5c8414610152578063e0bd7a9f1461017557600080fd5b80630542975c146100825780630970352a146100c65780633e108ad9146100db575b600080fd5b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b6100d96100d4366004610d5d565b61017d565b005b6100a96100e9366004610dd3565b6000602081905290815260409020546001600160a01b031681565b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b610165610160366004610e43565b6105db565b60405190151581526020016100bd565b6100d961073c565b60008060005b83518110156102ea5783818151811061019e5761019e610f48565b6020026020010151600001516001600160a01b031663d505accf87308785815181106101cc576101cc610f48565b6020026020010151602001518886815181106101ea576101ea610f48565b60200260200101516040015189878151811061020857610208610f48565b6020026020010151606001518a888151811061022657610226610f48565b6020026020010151608001518b898151811061024457610244610f48565b602090810291909101015160a001516040516001600160e01b031960e08a901b1681526001600160a01b0397881660048201529690951660248701526044860193909352606485019190915260ff16608484015260a483015260c482015260e401600060405180830381600087803b1580156102bf57600080fd5b505af11580156102d3573d6000803e3d6000fd5b5050505080806102e290610f5e565b915050610183565b5060005b84518110156105d35784818151811061030957610309610f48565b6020908102919091018101516001600160a01b038082166000818152938490526040909320549195501692501580159061034b57506001600160a01b03821615155b61039b5760405162461bcd60e51b815260206004820152601b60248201527f494e56414c49445f4f525f4e4f545f4341434845445f41535345540000000000604482015260640160405180910390fd5b6040516370a0823160e01b81526001600160a01b0387811660048301528316906323b872dd908890309084906370a0823190602401602060405180830381865afa1580156103ed573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104119190610f85565b6040516001600160e01b031960e086901b1681526001600160a01b03938416600482015292909116602483015260448201526064016020604051808303816000875af1158015610465573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104899190610f9e565b50604051631a4ca37b60e21b81526001600160a01b03848116600483015260001960248301523060448301526000917f0000000000000000000000000000000000000000000000000000000000000000909116906369328dec906064016020604051808303816000875af1158015610505573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105299190610f85565b60405163617ba03760e01b81526001600160a01b038681166004830152602482018390528981166044830152600060648301529192507f00000000000000000000000000000000000000000000000000000000000000009091169063617ba03790608401600060405180830381600087803b1580156105a757600080fd5b505af11580156105bb573d6000803e3d6000fd5b505050505080806105cb90610f5e565b9150506102ee565b505050505050565b60008080806105ec85870187610fc0565b92509250925060005b825181101561071d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663573ade8184838151811061063f5761063f610f48565b60200260200101516000015185848151811061065d5761065d610f48565b60200260200101516020015186858151811061067b5761067b610f48565b602090810291909101015160409081015190516001600160e01b031960e086901b1681526001600160a01b03938416600482015260248101929092526044820152908b1660648201526084016020604051808303816000875af11580156106e6573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061070a9190610f85565b508061071581610f5e565b9150506105f5565b5061072987848361017d565b5060019c9b505050505050505050505050565b604080516101a08101825260006101808201818152825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e0810182905261010081018290526101208101829052610140810182905261016081019190915260007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa158015610804573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405261082c91908101906110d6565b905060005b8151811015610b1e5760006001600160a01b031660008084848151811061085a5761085a610f48565b6020908102919091018101516001600160a01b03908116835290820192909252604001600020541603610b0c577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166335ea6a758383815181106108c8576108c8610f48565b60200260200101516040518263ffffffff1660e01b81526004016108fb91906001600160a01b0391909116815260200190565b61018060405180830381865afa158015610919573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061093d91906111f2565b92508260e0015160008084848151811061095957610959610f48565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106109b7576109b7610f48565b602090810291909101015160405163095ea7b360e01b81526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000008116600483015260001960248301529091169063095ea7b3906044016020604051808303816000875af1158015610a33573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610a579190610f9e565b50818181518110610a6a57610a6a610f48565b602090810291909101015160405163095ea7b360e01b81526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000008116600483015260001960248301529091169063095ea7b3906044016020604051808303816000875af1158015610ae6573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b0a9190610f9e565b505b80610b1681610f5e565b915050610831565b505050565b6001600160a01b0381168114610b3857600080fd5b50565b634e487b7160e01b600052604160045260246000fd5b60405160c0810167ffffffffffffffff81118282101715610b7457610b74610b3b565b60405290565b6040516060810167ffffffffffffffff81118282101715610b7457610b74610b3b565b604051610180810167ffffffffffffffff81118282101715610b7457610b74610b3b565b604051601f8201601f1916810167ffffffffffffffff81118282101715610bea57610bea610b3b565b604052919050565b600067ffffffffffffffff821115610c0c57610c0c610b3b565b5060051b60200190565b600082601f830112610c2757600080fd5b81356020610c3c610c3783610bf2565b610bc1565b82815260059290921b84018101918181019086841115610c5b57600080fd5b8286015b84811015610c7f578035610c7281610b23565b8352918301918301610c5f565b509695505050505050565b60ff81168114610b3857600080fd5b600082601f830112610caa57600080fd5b81356020610cba610c3783610bf2565b82815260c09283028501820192828201919087851115610cd957600080fd5b8387015b85811015610d505781818a031215610cf55760008081fd5b610cfd610b51565b8135610d0881610b23565b8152818601358682015260408083013590820152606080830135610d2b81610c8a565b908201526080828101359082015260a080830135908201528452928401928101610cdd565b5090979650505050505050565b600080600060608486031215610d7257600080fd5b8335610d7d81610b23565b9250602084013567ffffffffffffffff80821115610d9a57600080fd5b610da687838801610c16565b93506040860135915080821115610dbc57600080fd5b50610dc986828701610c99565b9150509250925092565b600060208284031215610de557600080fd5b8135610df081610b23565b9392505050565b60008083601f840112610e0957600080fd5b50813567ffffffffffffffff811115610e2157600080fd5b6020830191508360208260051b8501011115610e3c57600080fd5b9250929050565b600080600080600080600080600060a08a8c031215610e6157600080fd5b893567ffffffffffffffff80821115610e7957600080fd5b610e858d838e01610df7565b909b50995060208c0135915080821115610e9e57600080fd5b610eaa8d838e01610df7565b909950975060408c0135915080821115610ec357600080fd5b610ecf8d838e01610df7565b909750955060608c01359150610ee482610b23565b90935060808b01359080821115610efa57600080fd5b818c0191508c601f830112610f0e57600080fd5b813581811115610f1d57600080fd5b8d6020828501011115610f2f57600080fd5b6020830194508093505050509295985092959850929598565b634e487b7160e01b600052603260045260246000fd5b600060018201610f7e57634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215610f9757600080fd5b5051919050565b600060208284031215610fb057600080fd5b81518015158114610df057600080fd5b60008060006060808587031215610fd657600080fd5b843567ffffffffffffffff80821115610fee57600080fd5b610ffa88838901610c16565b955060209150818701358181111561101157600080fd5b8701601f8101891361102257600080fd5b8035611030610c3782610bf2565b8181529085028201840190848101908b83111561104c57600080fd5b928501925b8284101561109f5786848d0312156110695760008081fd5b611071610b7a565b843561107c81610b23565b815284870135878201526040808601359082015282529286019290850190611051565b975050505060408701359250808311156110b857600080fd5b5050610dc986828701610c99565b80516110d181610b23565b919050565b600060208083850312156110e957600080fd5b825167ffffffffffffffff81111561110057600080fd5b8301601f8101851361111157600080fd5b805161111f610c3782610bf2565b81815260059190911b8201830190838101908783111561113e57600080fd5b928401925b8284101561116557835161115681610b23565b82529284019290840190611143565b979650505050505050565b60006020828403121561118257600080fd5b6040516020810181811067ffffffffffffffff821117156111a5576111a5610b3b565b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff811681146110d157600080fd5b805164ffffffffff811681146110d157600080fd5b80516110d181610c8a565b6000610180828403121561120557600080fd5b61120d610b9d565b6112178484611170565b8152611225602084016111b2565b6020820152611236604084016111b2565b6040820152611247606084016111b2565b6060820152611258608084016111b2565b608082015261126960a084016111b2565b60a082015261127a60c084016111d2565b60c082015261128b60e084016110c6565b60e082015261010061129e8185016110c6565b908201526101206112b08482016110c6565b908201526101406112c28482016110c6565b908201526101606112d48482016111e7565b90820152939250505056fea26469706673582212201f462dd8b81ef9ee38b791ed50f6aeaccb7a3732366bd9cf34c282862e50af1764736f6c63430008100033';
+    var isSuperArgs = (xs) => xs.length > 1;
+    var MigrationHelper__factory = class extends ethers_1.ContractFactory {
+      constructor(...args) {
+        if (isSuperArgs(args)) {
+          super(...args);
+        } else {
+          super(_abi, _bytecode, args[0]);
+        }
+      }
+      deploy(v3AddressesProvider, v2Pool, overrides) {
+        return super.deploy(v3AddressesProvider, v2Pool, overrides || {});
+      }
+      getDeployTransaction(v3AddressesProvider, v2Pool, overrides) {
+        return super.getDeployTransaction(v3AddressesProvider, v2Pool, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.MigrationHelper__factory = MigrationHelper__factory;
+    MigrationHelper__factory.bytecode = _bytecode;
+    MigrationHelper__factory.abi = _abi;
+  },
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/index.js
+var require_typechain = __commonJS({
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/index.js'(
+    exports2
+  ) {
+    'use strict';
+    Object.defineProperty(exports2, '__esModule', { value: true });
+    exports2.MigrationHelper__factory = void 0;
+    var MigrationHelper__factory_1 = require_MigrationHelper_factory();
+    Object.defineProperty(exports2, 'MigrationHelper__factory', {
+      enumerable: true,
+      get: function () {
+        return MigrationHelper__factory_1.MigrationHelper__factory;
+      },
+    });
+  },
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/index.js
+var require_v3_migration_contract = __commonJS({
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/index.js'(exports2) {
+    'use strict';
+    Object.defineProperty(exports2, '__esModule', { value: true });
+    exports2.V3MigrationHelperService = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
+    var utils_1 = require_utils6();
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var erc20_contract_1 = require_erc20_contract();
+    var typechain_1 = require_typechain();
+    var V3MigrationHelperService = class extends BaseService_1.default {
+      constructor(provider, MIGRATOR_ADDRESS, pool) {
+        super(provider, typechain_1.MigrationHelper__factory);
+        this.MIGRATOR_ADDRESS = MIGRATOR_ADDRESS;
+        this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.pool = pool;
+      }
+      migrateNoBorrow(_0) {
+        return __async(this, arguments, function* ({ assets, user }) {
+          const txs = yield this.approveSupplyAssets(user, assets);
+          const migrator = this.getContractInstance(this.MIGRATOR_ADDRESS);
+          const assetsAddresses = assets.map((asset) => asset.underlyingAsset);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () =>
+              __async(this, null, function* () {
+                return migrator.populateTransaction.migrationNoBorrow(user, assetsAddresses, []);
+              }),
+            from: user,
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.migrateV3),
+          });
+          return txs;
+        });
+      }
+      migrateWithBorrow(_0) {
+        return __async(
+          this,
+          arguments,
+          function* ({ user, borrowedPositions, suppliedPositions, signedPermits }) {
+            let txs = [];
+            const permits = this.splitSignedPermits(signedPermits);
+            if (signedPermits.length === 0) {
+              txs = yield this.approveSupplyAssets(user, suppliedPositions);
+            }
+            const mappedBorrowPositions = yield Promise.all(
+              borrowedPositions.map((_a7) =>
+                __async(this, null, function* () {
+                  var { interestRate, amount } = _a7,
+                    borrow = tslib_1.__rest(_a7, ['interestRate', 'amount']);
+                  const { decimals } = yield this.erc20Service.getTokenData(borrow.address);
+                  const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
+                  return Object.assign(Object.assign({}, borrow), {
+                    rateMode: interestRate === types_1.InterestRate.Variable ? 2 : 1,
+                    amount: convertedAmount,
+                  });
+                })
+              )
+            );
+            const borrowedAssets = mappedBorrowPositions.map((borrow) => borrow.address);
+            const borrowedAmounts = mappedBorrowPositions.map((borrow) => borrow.amount);
+            const interestRatesModes = mappedBorrowPositions.map((borrow) => borrow.rateMode);
+            const suppliedPositionsAddresses = suppliedPositions.map(
+              (suppply) => suppply.underlyingAsset
+            );
+            const txCallback = this.generateTxCallback({
+              rawTxMethod: () =>
+                __async(this, null, function* () {
+                  return this.pool.migrateV3({
+                    migrator: this.MIGRATOR_ADDRESS,
+                    borrowedAssets,
+                    borrowedAmounts,
+                    interestRatesModes,
+                    user,
+                    suppliedPositions: suppliedPositionsAddresses,
+                    borrowedPositions: mappedBorrowPositions,
+                    permits,
+                  });
+                }),
+              from: user,
+            });
+            txs.push({
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
+              gas: this.generateTxPriceEstimation(
+                txs,
+                txCallback,
+                types_1.ProtocolAction.migrateV3
+              ),
+            });
+            return txs;
+          }
+        );
+      }
+      migrateNoBorrowWithPermits({ user, assets, signedPermits }) {
+        const migrator = this.getContractInstance(this.MIGRATOR_ADDRESS);
+        const permits = this.splitSignedPermits(signedPermits);
+        const txCallback = this.generateTxCallback({
+          rawTxMethod: () =>
+            __async(this, null, function* () {
+              return migrator.populateTransaction.migrationNoBorrow(user, assets, permits);
+            }),
+          from: user,
+        });
+        return [
+          {
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.migrateV3),
+          },
+        ];
+      }
+      approveSupplyAssets(user, assets) {
+        return __async(this, null, function* () {
+          const assetsApproved = yield Promise.all(
+            assets.map((_0) =>
+              __async(this, [_0], function* ({ amount, aToken }) {
+                return this.erc20Service.isApproved({
+                  amount,
+                  spender: this.MIGRATOR_ADDRESS,
+                  token: aToken,
+                  user,
+                });
+              })
+            )
+          );
+          return assetsApproved
+            .map((approved, index) => {
+              if (approved) {
+                return;
+              }
+              const asset = assets[index];
+              return this.erc20Service.approve({
+                user,
+                token: asset.aToken,
+                spender: this.MIGRATOR_ADDRESS,
+                amount: ethers_1.constants.MaxUint256.toString(),
+              });
+            })
+            .filter((tx) => Boolean(tx));
+        });
+      }
+      splitSignedPermits(signedPermits) {
+        return signedPermits.map((permit) => {
+          const { aToken, deadline, value, signedPermit } = permit;
+          const signature = ethers_1.utils.splitSignature(signedPermit);
+          return {
+            aToken,
+            deadline,
+            value,
+            v: signature.v,
+            r: signature.r,
+            s: signature.s,
+          };
+        });
+      }
+    };
+    tslib_1.__decorate(
+      [
+        methodValidators_1.V3MigratorValidator,
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
+      ],
+      V3MigrationHelperService.prototype,
+      'migrateNoBorrow',
+      null
+    );
+    tslib_1.__decorate(
+      [
+        methodValidators_1.V3MigratorValidator,
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
+      ],
+      V3MigrationHelperService.prototype,
+      'migrateWithBorrow',
+      null
+    );
+    tslib_1.__decorate(
+      [
+        methodValidators_1.V3MigratorValidator,
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
+      ],
+      V3MigrationHelperService.prototype,
+      'migrateNoBorrowWithPermits',
+      null
+    );
+    exports2.V3MigrationHelperService = V3MigrationHelperService;
   },
 });
 
@@ -62779,9 +64178,9 @@ var require_url_state_machine = __commonJS({
           this.state = 'fragment';
         } else {
           if (
-            this.input.length - this.pointer - 1 === 0 ||
+            this.input.length - this.pointer - 1 === 0 || // remaining consists of 0 code points
             !isWindowsDriveLetterCodePoints(c, this.input[this.pointer + 1]) ||
-            (this.input.length - this.pointer - 1 >= 2 &&
+            (this.input.length - this.pointer - 1 >= 2 && // remaining has at least 2 code points
               !fileOtherwiseCodePoints.has(this.input[this.pointer + 2]))
           ) {
             this.url.host = this.base.host;
@@ -63660,15 +65059,26 @@ var require_lib33 = __commonJS({
       get bodyUsed() {
         return this[INTERNALS].disturbed;
       },
+      /**
+       * Decode response as ArrayBuffer
+       *
+       * @return  Promise
+       */
       arrayBuffer() {
         return consumeBody.call(this).then(function (buf) {
           return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
         });
       },
+      /**
+       * Return raw response as Blob
+       *
+       * @return Promise
+       */
       blob() {
         let ct = (this.headers && this.headers.get('content-type')) || '';
         return consumeBody.call(this).then(function (buf) {
           return Object.assign(
+            // Prevent copying
             new Blob2([], {
               type: ct.toLowerCase(),
             }),
@@ -63678,6 +65088,11 @@ var require_lib33 = __commonJS({
           );
         });
       },
+      /**
+       * Decode response as json
+       *
+       * @return  Promise
+       */
       json() {
         var _this2 = this;
         return consumeBody.call(this).then(function (buffer) {
@@ -63693,14 +65108,30 @@ var require_lib33 = __commonJS({
           }
         });
       },
+      /**
+       * Decode response as text
+       *
+       * @return  Promise
+       */
       text() {
         return consumeBody.call(this).then(function (buffer) {
           return buffer.toString();
         });
       },
+      /**
+       * Decode response as buffer (non-spec api)
+       *
+       * @return  Promise
+       */
       buffer() {
         return consumeBody.call(this);
       },
+      /**
+       * Decode response as text, while automatically detecting the encoding and
+       * trying to decode to UTF-8 (non-spec api)
+       *
+       * @return  Promise
+       */
       textConverted() {
         var _this3 = this;
         return consumeBody.call(this).then(function (buffer) {
@@ -63927,7 +65358,7 @@ var require_lib33 = __commonJS({
         return body.length;
       } else if (body && typeof body.getLengthSync === 'function') {
         if (
-          (body._lengthRetrievers && body._lengthRetrievers.length == 0) ||
+          (body._lengthRetrievers && body._lengthRetrievers.length == 0) || // 1.x
           (body.hasKnownLength && body.hasKnownLength())
         ) {
           return body.getLengthSync();
@@ -63976,6 +65407,12 @@ var require_lib33 = __commonJS({
     }
     var MAP = Symbol('map');
     var Headers = class {
+      /**
+       * Headers class
+       *
+       * @param   Object  headers  Response headers
+       * @return  Void
+       */
       constructor() {
         let init = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : void 0;
         this[MAP] = /* @__PURE__ */ Object.create(null);
@@ -64019,6 +65456,12 @@ var require_lib33 = __commonJS({
           throw new TypeError('Provided initializer must be an object');
         }
       }
+      /**
+       * Return combined header value given name
+       *
+       * @param   String  name  Header name
+       * @return  Mixed
+       */
       get(name2) {
         name2 = `${name2}`;
         validateName(name2);
@@ -64028,6 +65471,13 @@ var require_lib33 = __commonJS({
         }
         return this[MAP][key].join(', ');
       }
+      /**
+       * Iterate over all headers
+       *
+       * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
+       * @param   Boolean   thisArg   `this` context for callback function
+       * @return  Void
+       */
       forEach(callback) {
         let thisArg = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : void 0;
         let pairs = getHeaders(this);
@@ -64041,6 +65491,13 @@ var require_lib33 = __commonJS({
           i++;
         }
       }
+      /**
+       * Overwrite header values given name
+       *
+       * @param   String  name   Header name
+       * @param   String  value  Header value
+       * @return  Void
+       */
       set(name2, value) {
         name2 = `${name2}`;
         value = `${value}`;
@@ -64049,6 +65506,13 @@ var require_lib33 = __commonJS({
         const key = find(this[MAP], name2);
         this[MAP][key !== void 0 ? key : name2] = [value];
       }
+      /**
+       * Append a value onto existing header
+       *
+       * @param   String  name   Header name
+       * @param   String  value  Header value
+       * @return  Void
+       */
       append(name2, value) {
         name2 = `${name2}`;
         value = `${value}`;
@@ -64061,11 +65525,23 @@ var require_lib33 = __commonJS({
           this[MAP][name2] = [value];
         }
       }
+      /**
+       * Check for header name existence
+       *
+       * @param   String   name  Header name
+       * @return  Boolean
+       */
       has(name2) {
         name2 = `${name2}`;
         validateName(name2);
         return find(this[MAP], name2) !== void 0;
       }
+      /**
+       * Delete all header values given name
+       *
+       * @param   String  name  Header name
+       * @return  Void
+       */
       delete(name2) {
         name2 = `${name2}`;
         validateName(name2);
@@ -64074,15 +65550,37 @@ var require_lib33 = __commonJS({
           delete this[MAP][key];
         }
       }
+      /**
+       * Return raw headers (non-spec api)
+       *
+       * @return  Object
+       */
       raw() {
         return this[MAP];
       }
+      /**
+       * Get an iterator on keys.
+       *
+       * @return  Iterator
+       */
       keys() {
         return createHeadersIterator(this, 'key');
       }
+      /**
+       * Get an iterator on values.
+       *
+       * @return  Iterator
+       */
       values() {
         return createHeadersIterator(this, 'value');
       }
+      /**
+       * Get an iterator on entries.
+       *
+       * This is the default iterator of the Headers object.
+       *
+       * @return  Iterator
+       */
       [Symbol.iterator]() {
         return createHeadersIterator(this, 'key+value');
       }
@@ -64225,6 +65723,9 @@ var require_lib33 = __commonJS({
       get status() {
         return this[INTERNALS$1].status;
       }
+      /**
+       * Convenience property representing if the request ended normally
+       */
       get ok() {
         return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
       }
@@ -64237,6 +65738,11 @@ var require_lib33 = __commonJS({
       get headers() {
         return this[INTERNALS$1].headers;
       }
+      /**
+       * Clone this response
+       *
+       * @return  Response
+       */
       clone() {
         return new Response(clone(this), {
           url: this.url,
@@ -64359,6 +65865,11 @@ var require_lib33 = __commonJS({
       get signal() {
         return this[INTERNALS$2].signal;
       }
+      /**
+       * Clone this request
+       *
+       * @return  Request
+       */
       clone() {
         return new Request(this);
       }
@@ -64776,6 +66287,8 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_pool_contract(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_v3_migration_contract(), exports2);
+    tslib_1.__exportStar(require_erc20_2612(), exports2);
     tslib_1.__exportStar(require_types2(), exports2);
     tslib_1.__exportStar(require_ipfs(), exports2);
     tslib_1.__exportStar(require_utils6(), exports2);
@@ -65079,6 +66592,7 @@ var require_lodash = __commonJS({
           true;
       cloneableTags[errorTag] = cloneableTags[funcTag] = cloneableTags[weakMapTag] = false;
       var deburredLetters = {
+        // Latin-1 Supplement block.
         '\xC0': 'A',
         '\xC1': 'A',
         '\xC2': 'A',
@@ -65141,6 +66655,7 @@ var require_lodash = __commonJS({
         '\xDE': 'Th',
         '\xFE': 'th',
         '\xDF': 'ss',
+        // Latin Extended-A block.
         '\u0100': 'A',
         '\u0102': 'A',
         '\u0104': 'A',
@@ -65813,11 +67328,47 @@ var require_lodash = __commonJS({
           this.__values__ = undefined2;
         }
         lodash2.templateSettings = {
+          /**
+           * Used to detect `data` property values to be HTML-escaped.
+           *
+           * @memberOf _.templateSettings
+           * @type {RegExp}
+           */
           escape: reEscape,
+          /**
+           * Used to detect code to be evaluated.
+           *
+           * @memberOf _.templateSettings
+           * @type {RegExp}
+           */
           evaluate: reEvaluate,
+          /**
+           * Used to detect `data` property values to inject.
+           *
+           * @memberOf _.templateSettings
+           * @type {RegExp}
+           */
           interpolate: reInterpolate,
+          /**
+           * Used to reference the data object in the template text.
+           *
+           * @memberOf _.templateSettings
+           * @type {string}
+           */
           variable: '',
+          /**
+           * Used to import variables into the compiled template.
+           *
+           * @memberOf _.templateSettings
+           * @type {Object}
+           */
           imports: {
+            /**
+             * A reference to the `lodash` function.
+             *
+             * @memberOf _.templateSettings.imports
+             * @type {Function}
+             */
             _: lodash2,
           },
         };
@@ -66101,10 +67652,10 @@ var require_lodash = __commonJS({
             if (
               (inherited || hasOwnProperty.call(value, key)) &&
               !(
-                skipIndexes &&
+                skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
                 (key == 'length' ||
                   (isBuff && (key == 'offset' || key == 'parent')) ||
-                  (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+                  (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) || // Skip index properties.
                   isIndex(key, length))
               )
             ) {
@@ -72109,6 +73660,7 @@ var require_int = __commonJS({
         decimal: function (obj) {
           return obj.toString(10);
         },
+        /* eslint-disable max-len */
         hexadecimal: function (obj) {
           return obj >= 0
             ? '0x' + obj.toString(16).toUpperCase()
@@ -72133,11 +73685,16 @@ var require_float = __commonJS({
     var common = require_common3();
     var Type = require_type();
     var YAML_FLOAT_PATTERN = new RegExp(
+      // 2.5e4, 2.5 and integers
       '^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$'
     );
     function resolveYamlFloat(data) {
       if (data === null) return false;
-      if (!YAML_FLOAT_PATTERN.test(data) || data[data.length - 1] === '_') {
+      if (
+        !YAML_FLOAT_PATTERN.test(data) || // Quick hack to not allow integers end with `_`
+        // Probably should update regexp & check speed
+        data[data.length - 1] === '_'
+      ) {
         return false;
       }
       return true;
@@ -75215,6 +76772,28 @@ var marketsData = {
       marketName: 'aavev2',
     },
   },
+  // [CustomMarket.permissioned_market]: {
+  //   marketTitle: 'Ethereum Permissioned Market example',
+  //   chainId: ChainId.mainnet,
+  //   enabledFeatures: {
+  //     // liquiditySwap: true,
+  //     // collateralRepay: true,
+  //     // incentives: true,
+  //     permissions: true,
+  //   },
+  //   permissionComponent: <PermissionView />,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
+  //     LENDING_POOL: '<address here>',
+  //     WETH_GATEWAY: '<address here>',
+  //     // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
+  //     // SWAP_COLLATERAL_ADAPTER: '<address here>',
+  //     WALLET_BALANCE_PROVIDER: '<address here>',
+  //     UI_POOL_DATA_PROVIDER: '<address here>',
+  //     // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
+  //     PERMISSION_MANAGER: '<address here>',
+  //   },
+  // },
   ['amm_mainnet' /* amm_mainnet */]: {
     marketTitle: 'Ethereum AMM',
     chainId: import_contract_helpers2.ChainId.mainnet,
@@ -75276,12 +76855,17 @@ var marketsData = {
       marketName: 'aaveavalanche',
     },
   },
+  // v3
   ['proto_goerli_v3' /* proto_goerli_v3 */]: {
     marketTitle: 'Ethereum G\xF6rli',
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
@@ -75587,11 +77171,13 @@ var networkConfigs = {
       'https://goerli.prylabs.net',
     ],
     publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://goerli.etherscan.io',
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
@@ -75605,6 +77191,9 @@ var networkConfigs = {
       'https://cloudflare-eth.com/v1/mainnet',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
+    // cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
+    // cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -75622,6 +77211,9 @@ var networkConfigs = {
       'https://rpc-mainnet.matic.quiknode.pro',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
+    // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
+    // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
@@ -75643,6 +77235,7 @@ var networkConfigs = {
       'https://polygon-mumbai.g.alchemy.com/v2/demo',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
@@ -75658,11 +77251,13 @@ var networkConfigs = {
       'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax-test.network',
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
@@ -75681,11 +77276,15 @@ var networkConfigs = {
       'https://rpc.ankr.com/avalanche',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
+    // cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
+    // cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax.network',
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg',
@@ -75706,6 +77305,7 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://goerli-rollup-explorer.arbitrum.io',
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
@@ -75722,11 +77322,13 @@ var networkConfigs = {
       'https://1rpc.io/arb',
     ],
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://arbiscan.io',
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       icon: '/icons/bridge/arbitrum.svg',
@@ -75744,11 +77346,13 @@ var networkConfigs = {
       'https://rpc.ankr.com/harmony',
     ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ONE',
     wrappedBaseAssetSymbol: 'WONE',
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer.harmony.one',
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
       icon: '/icons/bridge/harmony.svg',
@@ -75767,11 +77371,14 @@ var networkConfigs = {
       'https://rpc.ankr.com/optimism',
     ],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
+    // OETH
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
@@ -75784,13 +77391,20 @@ var networkConfigs = {
     name: 'Optimism G\xF6rli',
     publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://l2-explorer.surge.sh',
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
+    // bridge: {
+    //   icon: '/icons/bridge/optimism.svg',
+    //   name: 'Optimism Bridge',
+    //   url: 'https://app.optimism.io/bridge',
+    // },
   },
   [import_contract_helpers3.ChainId.fantom]: {
     name: 'Fantom',
@@ -75800,11 +77414,14 @@ var networkConfigs = {
       'https://rpc.ankr.com/fantom',
       'https://fantom-mainnet.public.blastapi.io',
     ],
+    // publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
     baseAssetDecimals: 18,
     explorerLink: 'https://ftmscan.com',
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
       icon: '/icons/bridge/fantom.svg',
@@ -75821,11 +77438,13 @@ var networkConfigs = {
       'https://rpc.ankr.com/fantom_testnet',
     ],
     publicJsonRPCWSUrl: '',
+    // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
     baseAssetDecimals: 18,
     explorerLink: 'https://testnet.ftmscan.com',
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
@@ -75881,13 +77500,18 @@ var RotationProvider = class extends import_providers.BaseProvider {
     super(chainId);
     this.currentProviderIndex = 0;
     this.firstRotationTimestamp = 0;
+    // number of full loops through provider array before throwing an error
     this.maxRetries = 0;
     this.retries = 0;
+    this.lastError = '';
     this.providers = urls.map((url) => new import_providers.StaticJsonRpcProvider(url, chainId));
     this.maxRetries = (config == null ? void 0 : config.maxRetries) || MAX_RETRIES;
     this.fallForwardDelay =
       (config == null ? void 0 : config.fallFowardDelay) || DEFAULT_FALL_FORWARD_DELAY;
   }
+  /**
+   * If we rotate away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC
+   */
   fallForwardRotation() {
     return __async(this, null, function* () {
       const now = new Date().getTime();
@@ -75898,6 +77522,10 @@ var RotationProvider = class extends import_providers.BaseProvider {
       }
     });
   }
+  /**
+   * If rpc fails, rotate to next available and trigger rotation or fall forward delay where applicable
+   * @param prevIndex last updated index, checked to avoid having multiple active rotations
+   */
   rotateUrl(prevIndex) {
     return __async(this, null, function* () {
       if (prevIndex !== this.currentProviderIndex) return;
@@ -75909,7 +77537,9 @@ var RotationProvider = class extends import_providers.BaseProvider {
         this.retries += 1;
         if (this.retries > this.maxRetries) {
           this.retries = 0;
-          throw new Error('RotationProvider exceeded max number of retries');
+          throw new Error(
+            `RotationProvider exceeded max number of retries. Last error: ${this.lastError}`
+          );
         }
         this.currentProviderIndex = 0;
       } else {
@@ -75923,6 +77553,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
       return checkNetworks(networks);
     });
   }
+  // eslint-disable-next-line
   perform(method, params) {
     return __async(this, null, function* () {
       const index = this.currentProviderIndex;
@@ -75930,6 +77561,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
         return yield this.providers[index].perform(method, params);
       } catch (e) {
         console.error(e.message);
+        this.lastError = e.message;
         this.emit('debug', {
           action: 'perform',
           provider: this.providers[index],
@@ -75952,31 +77584,40 @@ var ENABLE_TESTNET =
     : _a.localStorage.getItem('testnetsEnabled')) === 'true';
 var _a2;
 var FORK_ENABLED =
+  !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   ((_a2 = global == null ? void 0 : global.window) == null
     ? void 0
     : _a2.localStorage.getItem('forkEnabled')) === 'true';
 var _a3;
-var FORK_BASE_CHAIN_ID = Number(
-  ((_a3 = global == null ? void 0 : global.window) == null
-    ? void 0
-    : _a3.localStorage.getItem('forkBaseChainId')) || 1
-);
+var FORK_BASE_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_BASE_CHAIN_ID) ||
+  Number(
+    ((_a3 = global == null ? void 0 : global.window) == null
+      ? void 0
+      : _a3.localStorage.getItem('forkBaseChainId')) || 1
+  );
 var _a4;
-var FORK_CHAIN_ID = Number(
-  ((_a4 = global == null ? void 0 : global.window) == null
-    ? void 0
-    : _a4.localStorage.getItem('forkNetworkId')) || 3030
-);
+var FORK_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_CHAIN_ID) ||
+  Number(
+    ((_a4 = global == null ? void 0 : global.window) == null
+      ? void 0
+      : _a4.localStorage.getItem('forkNetworkId')) || 3030
+  );
 var _a5;
 var FORK_RPC_URL =
+  process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   ((_a5 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a5.localStorage.getItem('forkRPCUrl')) || 'http://127.0.0.1:8545';
+    : _a5.localStorage.getItem('forkRPCUrl')) ||
+  'http://127.0.0.1:8545';
 var _a6;
 var FORK_WS_RPC_URL =
+  process.env.NEXT_PUBLIC_FORK_URL_WS_RPC ||
   ((_a6 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a6.localStorage.getItem('forkWsRPCUrl')) || 'ws://127.0.0.1:8545';
+    : _a6.localStorage.getItem('forkWsRPCUrl')) ||
+  'ws://127.0.0.1:8545';
 var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
@@ -76186,50 +77827,51 @@ var _Writer_write;
         : _a7.then(resolve).catch(reject);
     });
   }),
-  (_Writer_write = function _Writer_write2(data) {
-    return __async(this, null, function* () {
-      var _a7, _b;
-      __classPrivateFieldSet2(this, _Writer_locked, true, 'f');
-      try {
-        yield import_fs.default.promises.writeFile(
-          __classPrivateFieldGet2(this, _Writer_tempFilename, 'f'),
-          data,
-          'utf-8'
-        );
-        yield import_fs.default.promises.rename(
-          __classPrivateFieldGet2(this, _Writer_tempFilename, 'f'),
-          __classPrivateFieldGet2(this, _Writer_filename, 'f')
-        );
-        (_a7 = __classPrivateFieldGet2(this, _Writer_prev, 'f')) === null || _a7 === void 0
-          ? void 0
-          : _a7[0]();
-      } catch (err) {
-        (_b = __classPrivateFieldGet2(this, _Writer_prev, 'f')) === null || _b === void 0
-          ? void 0
-          : _b[1](err);
-        throw err;
-      } finally {
-        __classPrivateFieldSet2(this, _Writer_locked, false, 'f');
-        __classPrivateFieldSet2(
-          this,
-          _Writer_prev,
-          __classPrivateFieldGet2(this, _Writer_next, 'f'),
-          'f'
-        );
-        __classPrivateFieldSet2(
-          this,
-          _Writer_next,
-          __classPrivateFieldSet2(this, _Writer_nextPromise, null, 'f'),
-          'f'
-        );
-        if (__classPrivateFieldGet2(this, _Writer_nextData, 'f') !== null) {
-          const nextData = __classPrivateFieldGet2(this, _Writer_nextData, 'f');
-          __classPrivateFieldSet2(this, _Writer_nextData, null, 'f');
-          yield this.write(nextData);
+  (_Writer_write = // File isn't locked, write data
+    function _Writer_write2(data) {
+      return __async(this, null, function* () {
+        var _a7, _b;
+        __classPrivateFieldSet2(this, _Writer_locked, true, 'f');
+        try {
+          yield import_fs.default.promises.writeFile(
+            __classPrivateFieldGet2(this, _Writer_tempFilename, 'f'),
+            data,
+            'utf-8'
+          );
+          yield import_fs.default.promises.rename(
+            __classPrivateFieldGet2(this, _Writer_tempFilename, 'f'),
+            __classPrivateFieldGet2(this, _Writer_filename, 'f')
+          );
+          (_a7 = __classPrivateFieldGet2(this, _Writer_prev, 'f')) === null || _a7 === void 0
+            ? void 0
+            : _a7[0]();
+        } catch (err) {
+          (_b = __classPrivateFieldGet2(this, _Writer_prev, 'f')) === null || _b === void 0
+            ? void 0
+            : _b[1](err);
+          throw err;
+        } finally {
+          __classPrivateFieldSet2(this, _Writer_locked, false, 'f');
+          __classPrivateFieldSet2(
+            this,
+            _Writer_prev,
+            __classPrivateFieldGet2(this, _Writer_next, 'f'),
+            'f'
+          );
+          __classPrivateFieldSet2(
+            this,
+            _Writer_next,
+            __classPrivateFieldSet2(this, _Writer_nextPromise, null, 'f'),
+            'f'
+          );
+          if (__classPrivateFieldGet2(this, _Writer_nextData, 'f') !== null) {
+            const nextData = __classPrivateFieldGet2(this, _Writer_nextData, 'f');
+            __classPrivateFieldSet2(this, _Writer_nextData, null, 'f');
+            yield this.write(nextData);
+          }
         }
-      }
+      });
     });
-  });
 
 // node_modules/lowdb/lib/adapters/TextFile.js
 var _TextFile_filename;
@@ -76607,3 +78249,73 @@ populateCache().then(() => console.log('finished'));
   (module.exports = {
     populateCache,
   });
+/*! Bundled license information:
+
+tslib/tslib.es6.js:
+  (*! *****************************************************************************
+  Copyright (c) Microsoft Corporation.
+  
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
+  
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+  ***************************************************************************** *)
+
+js-sha3/src/sha3.js:
+  (**
+   * [js-sha3]{@link https://github.com/emn178/js-sha3}
+   *
+   * @version 0.8.0
+   * @author Chen, Yi-Cyuan [emn178@gmail.com]
+   * @copyright Chen, Yi-Cyuan 2015-2018
+   * @license MIT
+   *)
+
+reflect-metadata/Reflect.js:
+  (*! *****************************************************************************
+  Copyright (C) Microsoft. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of the
+  License at http://www.apache.org/licenses/LICENSE-2.0
+  
+  THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+  WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+  MERCHANTABLITY OR NON-INFRINGEMENT.
+  
+  See the Apache Version 2.0 License for specific language governing permissions
+  and limitations under the License.
+  ***************************************************************************** *)
+
+lodash/lodash.js:
+  (**
+   * @license
+   * Lodash <https://lodash.com/>
+   * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+   * Released under MIT license <https://lodash.com/license>
+   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+   *)
+
+is-extendable/index.js:
+  (*!
+   * is-extendable <https://github.com/jonschlinkert/is-extendable>
+   *
+   * Copyright (c) 2015, Jon Schlinkert.
+   * Licensed under the MIT License.
+   *)
+
+strip-bom-string/index.js:
+  (*!
+   * strip-bom-string <https://github.com/jonschlinkert/strip-bom-string>
+   *
+   * Copyright (c) 2015, 2017, Jon Schlinkert.
+   * Released under the MIT License.
+   *)
+*/

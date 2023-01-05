@@ -36,7 +36,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
     state.stakeUserResult,
   ]);
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -99,7 +99,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   return (
     <>
       <TxModalTitle title="Unstake" symbol={icon} />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput
