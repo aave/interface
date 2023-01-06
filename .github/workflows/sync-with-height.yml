@@ -1,0 +1,62 @@
+name: Sync with Height
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+# TODO: Determine how/when this should run, as an "all-in-one" approach. This workflow could run once and run everything, or it could run on any updates captured via the events specified within each individual action file
+on:
+  pull_request:
+    branches: ['main']
+  push:
+    branches: ['main']
+
+jobs:
+  sync_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Sync new issue to Height
+        uses: ./github/actions/height-integration/sync-issue/issue-opened-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+      - name: Sync closed issue to Height
+        uses: ./github/actions/height-integration/sync-issue/issue-closed-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+      - name: Sync updated issue labels to Height
+        uses: ./github/actions/height-integration/sync-issue/issue-labels-updated-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+  sync_pull_requests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Sync opened PR to Height
+        uses: ./github/actions/height-integration/sync-pr/pr-opened-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+      - name: Sync ready for review PR to Height
+        uses: ./github/actions/height-integration/sync-pr/pr-ready-for-review-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+      - name: Sync closed PR to Height
+        uses: ./github/actions/height-integration/sync-pr/pr-closed-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+
+      - name: Sync updated PR labels to Height
+        uses: ./github/actions/height-integration/sync-pr/pr-labels-updated-action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}

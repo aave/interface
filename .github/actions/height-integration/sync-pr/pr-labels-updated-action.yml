@@ -1,0 +1,24 @@
+name: Sync updated PR labels to Height
+description: Moves any issue-related tasks in Height into the relevent swimlanes on the interface project board
+
+on:
+  issues:
+    types: [labeled, unlabeled]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # TODO: this likely needs to be split out to separate lables to direct traffic, i.e. do X when Y label added, do Z when Y label removed, do A when B label added, do C when b label removed, etc.
+      # Blocked
+      # Ready for Dev Review
+      # Ready for QA Review
+      # QA Passed
+      # QA Failed
+      - name: Move issue-related tasks into appropriate swimlanes in Height
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://api.height.app/tasks'
+          method: 'PUT'
+          customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
+        #   data: '{ "name": "${{ github.event.issue.title }}", "listIds": ["64fa570a-a252-4521-b801-9b0eb18113bc"], "status": "359d42b4-5e7b-46fa-8465-d179b5a097ef" }'
