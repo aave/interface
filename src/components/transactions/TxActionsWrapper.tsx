@@ -173,13 +173,12 @@ export const TxActionsWrapper = ({
             </Box>
           }
           pagination={pagination['SupplyTour']}
-          top={approvalParams && !watchModeOnlyAddress ? '400px' : '340px'}
+          top={approvalParams && !readOnlyModeAddress ? '400px' : '340px'}
           right={'15px'}
           placement={'top-start'}
           offset={[400, -5]}
         />
       )}
-      {approvalParams && !watchModeOnlyAddress && (
 
       {approvalParams && !readOnlyModeAddress && (
         <Button
@@ -217,7 +216,7 @@ export const TxActionsWrapper = ({
             </Box>
           }
           pagination={pagination['SupplyTour']}
-          top={approvalParams && !watchModeOnlyAddress ? '455px' : '375px'}
+          top={approvalParams && !readOnlyModeAddress ? '455px' : '375px'}
           right={'15px'}
           placement={'top-start'}
           offset={[400, -50]}
