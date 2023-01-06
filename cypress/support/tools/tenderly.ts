@@ -95,6 +95,10 @@ export class TenderlyFork {
     donorAddress?: string,
     tokenCount?: string
   ) {
+    cy.log('walletAddress ' + walletAddress);
+    cy.log('tokenAddress ' + tokenAddress);
+    cy.log('donorAddress ' + donorAddress);
+    cy.log('tokenCount ' + tokenCount);
     let TOP_HOLDER_ADDRESS;
     const _url = this.get_rpc_url();
     const provider = getDefaultProvider(_url);
