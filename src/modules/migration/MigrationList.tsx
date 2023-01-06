@@ -19,6 +19,7 @@ interface MigrationListProps {
   loading?: boolean;
   isAvailable: boolean;
   withCollateral?: boolean;
+  withBorrow?: boolean;
   emodeCategoryId?: number;
   allSelected: boolean;
 }
@@ -32,6 +33,7 @@ export const MigrationList = ({
   loading,
   isAvailable,
   withCollateral,
+  withBorrow,
   emodeCategoryId,
   allSelected,
 }: MigrationListProps) => {
@@ -76,17 +78,29 @@ export const MigrationList = ({
 
             <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
               <ListHeaderTitle>
-                <Trans>Asset</Trans>
+                <Trans>Assets</Trans>
               </ListHeaderTitle>
             </ListColumn>
 
             {withCollateral && (
               <ListColumn align="center">
-                <CollateralSwitchTooltip
-                  text={<Trans>Collateral</Trans>}
-                  key="Collateral"
-                  variant="subheader2"
-                />
+                <Typography variant="subheader2">
+                  <Trans>Collateral change</Trans>
+                </Typography>
+              </ListColumn>
+            )}
+
+            <ListColumn align="center">
+              <Typography variant="subheader2">
+                <Trans>APY change</Trans>
+              </Typography>
+            </ListColumn>
+
+            {withBorrow && (
+              <ListColumn align="center">
+                <Typography variant="subheader2">
+                  <Trans>APY type change</Trans>
+                </Typography>
               </ListColumn>
             )}
 

@@ -76,14 +76,6 @@ export const MigrationListItem = ({
 
           <Box sx={{ pl: isTablet ? 3.5 : 0, overflow: 'hidden' }}>
             <Typography variant="h4" noWrap>
-              {isDesktop ? reserveName : reserveSymbol}
-            </Typography>
-            <Typography
-              sx={{ display: { xs: 'none', lg: 'inline-flex' } }}
-              variant="subheader2"
-              color="text.muted"
-              noWrap
-            >
               {reserveSymbol}
             </Typography>
           </Box>

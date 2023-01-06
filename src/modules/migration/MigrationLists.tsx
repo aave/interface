@@ -71,6 +71,7 @@ export const MigrationLists = ({
         allSelected={allBorrowsSelected}
         isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
+        withBorrow
         titleComponent={<Trans>Your borrows</Trans>}
         totalAmount={totalBorrowsUSD}
         // withEmode TODO: uncomment when emode logic for migration will fix
