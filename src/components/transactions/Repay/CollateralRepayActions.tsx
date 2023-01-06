@@ -4,6 +4,7 @@ import {
   InterestRate,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
@@ -26,6 +27,8 @@ interface CollateralRepayBaseProps extends BoxProps {
   useFlashLoan: boolean;
   blocked: boolean;
   loading?: boolean;
+  signature?: SignatureLike;
+  deadline?: string;
 }
 
 // Used in poolSlice
@@ -54,7 +57,7 @@ export const CollateralRepayActions = ({
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useParaSwapTransactionHandler({
-      handleGetTxns: async () => {
+      handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return paraswapRepayWithCollateral({
           repayAllDebt,
@@ -69,6 +72,8 @@ export const CollateralRepayActions = ({
           blocked,
           swapCallData: route.swapCallData,
           augustus: route.augustus,
+          signature,
+          deadline,
         });
       },
       handleGetApprovalTxns: async () => {
@@ -104,7 +109,9 @@ export const CollateralRepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval()}
+      handleApproval={() =>
+        approval({ amount: repayAmount, underlyingAsset: poolReserve.aTokenAddress })
+      }
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       fetchingData={loading}
@@ -114,6 +121,7 @@ export const CollateralRepayActions = ({
         content: <Trans>Repay {symbol}</Trans>,
         handleClick: action,
       }}
+      tryPermit
     />
   );
 };

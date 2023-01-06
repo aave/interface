@@ -3,6 +3,7 @@ import {
   gasLimitRecommendations,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
@@ -24,6 +25,8 @@ interface SwapBaseProps extends BoxProps {
   isMaxSelected: boolean;
   useFlashLoan: boolean;
   loading?: boolean;
+  signature?: SignatureLike;
+  deadline?: string;
 }
 
 export interface SwapActionProps extends SwapBaseProps {
@@ -50,7 +53,7 @@ export const SwapActions = ({
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useParaSwapTransactionHandler({
-      handleGetTxns: async () => {
+      handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return swapCollateral({
           amountToSwap: route.inputAmount,
@@ -64,6 +67,8 @@ export const SwapActions = ({
           useFlashLoan,
           swapCallData: route.swapCallData,
           augustus: route.augustus,
+          signature,
+          deadline,
         });
       },
       handleGetApprovalTxns: async () => {
@@ -94,7 +99,9 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval()}
+      handleApproval={() =>
+        approval({ amount: amountToSwap, underlyingAsset: poolReserve.aTokenAddress })
+      }
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
