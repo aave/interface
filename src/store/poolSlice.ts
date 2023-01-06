@@ -7,6 +7,7 @@ import {
   IncentivesControllerV2Interface,
   InterestRate,
   LendingPool,
+  PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
@@ -25,6 +26,8 @@ import {
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
+import { ethers, Signature } from 'ethers';
+import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
@@ -241,10 +244,24 @@ export const createPoolSlice: StateCreator<
       rateMode,
       augustus,
       swapCallData,
+      signature,
+      deadline,
     }) => {
       const user = get().account;
       const pool = getCorrectPool();
 
+      let permitSignature: PermitSignature | undefined;
+
+      if (signature && deadline) {
+        const sig: Signature = splitSignature(signature);
+        permitSignature = {
+          amount: ethers.constants.MaxUint256.toString(),
+          deadline: deadline,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
       return pool.paraswapRepayWithCollateral({
         user,
         fromAsset: fromAssetData.underlyingAsset,
@@ -257,6 +274,7 @@ export const createPoolSlice: StateCreator<
         flash: useFlashLoan,
         swapAndRepayCallData: swapCallData,
         augustus,
+        permitSignature,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
@@ -331,9 +349,24 @@ export const createPoolSlice: StateCreator<
       useFlashLoan,
       augustus,
       swapCallData,
+      signature,
+      deadline,
     }) => {
       const pool = getCorrectPool();
       const user = get().account;
+
+      let permitSignature: PermitSignature | undefined;
+
+      if (signature && deadline) {
+        const sig: Signature = splitSignature(signature);
+        permitSignature = {
+          amount: ethers.constants.MaxUint256.toString(),
+          deadline: deadline,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
@@ -346,6 +379,7 @@ export const createPoolSlice: StateCreator<
         flash: useFlashLoan,
         augustus,
         swapCallData,
+        permitSignature,
       });
     },
     setUserEMode: async (categoryId) => {
