@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-21 18:05\n"
+"PO-Revision-Date: 2023-01-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -185,6 +185,9 @@ msgstr "Έγκριση του {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Οι παράμετροι της συστοιχίας που θα έπρεπε να είναι ίσου μήκους δεν είναι"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
@@ -220,6 +223,7 @@ msgid "Asset to delegate"
 msgstr "Περιουσιακό στοιχείο προς εκχώρηση"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets"
 msgstr "Περιουσιακά Στοιχεία"
 
@@ -359,15 +363,15 @@ msgstr ""
 msgid "Borrowing is not enabled"
 msgstr "Ο δανεισμός δεν είναι ενεργοποιημένος"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδή έχετε ενεργοποιήσει τη Λειτουργία Αποδοτικότητας (E-Mode) και τη λειτουργία Απομόνωσης. Για να διαχειριστείτε τη λειτουργία E-Mode και τη λειτουργία Απομόνωσης, επισκεφθείτε τον <0>Πίνακα ελέγχου</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδή έχετε ενεργοποιήσει τη λειτουργία Αποδοτικότητας (E-Mode) για την κατηγορία {0}. Για να διαχειριστείτε τις κατηγορίες E-Mode επισκεφθείτε τον <0>Πίνακα ελέγχου</0>."
 
@@ -497,7 +501,7 @@ msgstr ""
 msgid "Collateral usage"
 msgstr "Χρησιμοποίηση εγγυήσεων"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "H χρήση εγγυήσεων είναι περιορισμένη λόγω της λειτουργίας Απομόνωσης."
 
@@ -756,10 +760,6 @@ msgstr "Αγγλικά"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Εισάγετε διεύθυνση ETH"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Enter an address to track in watch-only mode"
-msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1328,6 +1328,18 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Επιτεύχθηκε"
 
+#: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
+msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx
+msgid "Read-only mode."
+msgstr ""
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Read-only mode. Connect to a wallet to perform transactions."
+msgstr ""
+
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr ""
@@ -1874,8 +1886,8 @@ msgstr "Χρόνος που απομένει για το ξεκλείδωμα"
 msgid "Time left until the withdrawal window closes."
 msgstr "Χρόνος που απομένει μέχρι να κλείσει το παράθυρο ανάληψης."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Για να δανειστείτε πρέπει να προσκομίσετε οποιοδήποτε περιουσιακό στοιχείο που θα χρησιμοποιηθεί ως εγγύηση."
 
@@ -1936,6 +1948,14 @@ msgstr "Συνολική δύναμη ψήφου"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "Συνολική αξία"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet balance in read-only mode"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2110,8 +2130,6 @@ msgstr ""
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Υπόλοιπο πορτοφολιού"
 
@@ -2122,22 +2140,6 @@ msgstr "Το πορτοφόλι δεν εντοπίστηκε. Συνδέστε 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Τα πορτοφόλια παρέχονται από Εξωτερικούς Παρόχους και επιλέγοντας τα συμφωνείτε με τους Όρους των εν λόγω Παρόχων. Η πρόσβασή σας στο πορτοφόλι ενδέχεται να εξαρτάται από τη λειτουργία του Εξωτερικού Παρόχου."
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Watch address"
-msgstr ""
-
-#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
-msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr ""
-
-#: src/layouts/WalletWidget.tsx
-msgid "Watch-only mode."
-msgstr ""
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Watch-only mode. Connect to a wallet to perform transactions."
-msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
@@ -2314,7 +2316,7 @@ msgstr ""
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr ""
 
@@ -2429,8 +2431,8 @@ msgstr "{h}ω"
 msgid "{m}m"
 msgstr "{m}λ"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr ""
 
