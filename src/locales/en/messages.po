@@ -49,10 +49,18 @@ msgstr "APR"
 msgid "APY"
 msgstr "APY"
 
+#: src/modules/migration/MigrationList.tsx
+msgid "APY change"
+msgstr "APY change"
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
 msgstr "APY type"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "APY type change"
+msgstr "APY type change"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -185,7 +193,6 @@ msgstr "Array parameters that should be equal length are not"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Asset"
 msgstr "Asset"
 
@@ -220,6 +227,7 @@ msgstr "Asset to delegate"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr "Assets"
 
@@ -481,13 +489,16 @@ msgstr "Close"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Collateral"
 msgstr "Collateral"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Collateral change"
+msgstr "Collateral change"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -1115,10 +1126,6 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: src/modules/migration/MigrationTopPanel.tsx
-msgid "Migrate from {0} V2 to {1} V3"
-msgstr "Migrate from {0} V2 to {1} V3"
-
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1128,6 +1135,7 @@ msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
 
@@ -1555,6 +1563,14 @@ msgstr "Select token to add"
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Select token to view in block explorer"
 msgstr "Select token to view in block explorer"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 borrows to migrate"
+msgstr "Select v2 borrows to migrate"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 supplies to migrate"
+msgstr "Select v2 supplies to migrate"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
@@ -2375,7 +2391,6 @@ msgstr "You {action} <0/> {symbol}"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/migration/MigrationLists.tsx
 msgid "Your borrows"
 msgstr "Your borrows"
 
@@ -2400,7 +2415,6 @@ msgstr "Your reward balance is 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationLists.tsx
 msgid "Your supplies"
 msgstr "Your supplies"
 

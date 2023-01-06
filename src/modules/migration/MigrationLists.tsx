@@ -57,7 +57,7 @@ export const MigrationLists = ({
         onSelectAllClick={onSelectAllSupplies}
         allSelected={allSuppliesSelected}
         isAvailable={isSupplyPositionsAvailable}
-        titleComponent={<Trans>Your supplies</Trans>}
+        titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
         totalAmount={totalSuppliesUSD}
         withCollateral
         emodeCategoryId={emodeCategoryId}
@@ -72,7 +72,7 @@ export const MigrationLists = ({
         isAvailable={isBorrowPositionsAvailable}
         isBottomOnMobile
         withBorrow
-        titleComponent={<Trans>Your borrows</Trans>}
+        titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
         totalAmount={totalBorrowsUSD}
         // withEmode TODO: uncomment when emode logic for migration will fix
       >
