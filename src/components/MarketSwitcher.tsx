@@ -34,7 +34,7 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   return { market, network };
 };
 
-const getMarketHelpData = (marketName: string) => {
+export const getMarketHelpData = (marketName: string) => {
   const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
@@ -214,9 +214,8 @@ export const MarketSwitcher = () => {
               width: '100%',
               height: '36px',
               background: theme.palette.primary.main,
-              border: `1px solid ${
-                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
-              }`,
+              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
+                }`,
               borderRadius: '6px',
               marginTop: '16px',
               marginBottom: '12px',
@@ -240,13 +239,13 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V3
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
+                      backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }
                     : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
+                      color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                    }
                 }
               >
                 <Trans>Version 3</Trans>
@@ -269,13 +268,13 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V2
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
+                      backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }
                     : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
+                      color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                    }
                 }
               >
                 <Trans>Version 2</Trans>
@@ -296,7 +295,7 @@ export const MarketSwitcher = () => {
               '.MuiListItemIcon-root': { minWidth: 'unset' },
               display:
                 (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
                   ? 'none'
                   : 'flex',
             }}

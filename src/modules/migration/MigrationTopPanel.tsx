@@ -6,13 +6,14 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
-import { getMarketInfoById } from '../../components/MarketSwitcher';
+import { getMarketHelpData, getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 
 export const MigrationTopPanel = () => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
-  const { market } = getMarketInfoById(currentMarket);
+  const { market, network } = getMarketInfoById(currentMarket);
+  const marketNaming = getMarketHelpData(market.marketTitle);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -50,9 +51,14 @@ export const MigrationTopPanel = () => {
           </Box>
           <PageTitle
             pageTitle={
-              <Trans>
-                Migrate from {market.marketTitle} V2 to {market.marketTitle} V3
-              </Trans>
+              <Box sx={{ display: 'flex' }}>
+                <MarketLogo
+                  size={32}
+                  logo={network.networkLogoPath}
+                  testChainName={marketNaming.testChainName}
+                />
+                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
+              </Box>
             }
           />
         </Box>
