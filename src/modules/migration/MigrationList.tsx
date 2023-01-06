@@ -1,14 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
-import { CollateralSwitchTooltip } from 'src/components/infoTooltips/CollateralSwitchTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
-
-import { EmodeInfo } from './EmodeInfo';
 
 interface MigrationListProps {
   titleComponent: ReactNode;
@@ -54,11 +51,6 @@ export const MigrationList = ({
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>
             {titleComponent}
           </Typography>
-        }
-        subTitleComponent={
-          typeof emodeCategoryId !== 'undefined' ? (
-            <EmodeInfo userEmodeCategoryId={emodeCategoryId} />
-          ) : undefined
         }
         topInfo={
           !(loading || +totalAmount <= 0) && (

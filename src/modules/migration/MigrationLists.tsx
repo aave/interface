@@ -74,7 +74,6 @@ export const MigrationLists = ({
         withBorrow
         titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
         totalAmount={totalBorrowsUSD}
-        // withEmode TODO: uncomment when emode logic for migration will fix
       >
         {borrowsPositions}
       </MigrationList>
