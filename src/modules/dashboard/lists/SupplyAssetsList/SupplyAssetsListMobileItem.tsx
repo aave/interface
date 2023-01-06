@@ -2,7 +2,11 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
 import { useHelpContext } from 'src/hooks/useHelp';
+
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -13,8 +17,11 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
+
 import { SupplyAssetsItem } from './types';
 import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
+
+
 
 export const SupplyAssetsListMobileItem = ({
   symbol,
@@ -32,8 +39,12 @@ export const SupplyAssetsListMobileItem = ({
   isFreezed,
   underlyingAsset,
   detailsAddress,
+
   index,
 }: SupplyAssetsItem) => {
+
+}: DashboardReserve) => {
+
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
   const { pagination } = useHelpContext();

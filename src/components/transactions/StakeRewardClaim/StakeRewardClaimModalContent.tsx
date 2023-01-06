@@ -33,7 +33,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
     state.stakeUserResult,
   ]);
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -91,7 +91,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   return (
     <>
       <TxModalTitle title="Claim" symbol={rewardsSymbol} />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       {blockingError !== undefined && (
