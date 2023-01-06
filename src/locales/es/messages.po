@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-02 18:04\n"
+"PO-Revision-Date: 2023-01-05 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1330,15 +1330,15 @@ msgstr "Alcanzado"
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr ""
+msgstr "El modo de solo lectura permite ver las posiciones de las direcciones en Aave, pero no podrás realizar transacciones."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Read-only mode."
-msgstr ""
+msgstr "Modo de solo lectura."
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
-msgstr ""
+msgstr "Modo de solo lectura. Conéctate a una cartera para realizar transacciones."
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
@@ -1950,11 +1950,11 @@ msgstr "Valor total"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet"
-msgstr ""
+msgstr "Haz seguimiento de tu cartera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
-msgstr ""
+msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
