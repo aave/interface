@@ -1,4 +1,4 @@
-import constants from '../../fixtures/constans.json';
+import constants from '../../fixtures/constants.json';
 
 type SkipType = {
   set: (val: boolean) => void;
@@ -251,7 +251,7 @@ export const changeBorrowTypeBlocked = (
 /**
  * This full step to verification dashboard health factor
  *
- * Could be use one value by 'value' - varibale
+ * Could be use one value by 'value' - variable
  *
  * Could be use range by valueFrom and valueTo
  *

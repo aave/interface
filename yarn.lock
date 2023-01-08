@@ -1780,16 +1780,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.3.0.tgz#ea89004119dc42db2e1dba0f97d553f7372f6fcb"
   integrity sha512-AHPmaAx+RYfZz0eYu6Gviiagpmiyw98ySSlQvCUhVGDRtDFe4DBS0x1bSjdF3gqUDYOczB+yYvBTtEylYSdRhg==
 
-"@endemolshinegroup/cosmiconfig-typescript-loader@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/@endemolshinegroup/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-3.0.2.tgz"
-  integrity sha512-QRVtqJuS1mcT56oHpVegkKBlgtWjXw/gHNWO3eL9oyB5Sc7HBoc2OLG/nYpVfT/Jejvo3NUrD0Udk7XgoyDKkA==
-  dependencies:
-    lodash.get "^4"
-    make-error "^1"
-    ts-node "^9"
-    tslib "^2"
-
 "@eslint/eslintrc@^1.3.3":
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.3.3.tgz#2b044ab39fdfa75b4688184f9e573ce3c5b0ff95"
@@ -2556,28 +2546,28 @@
   dependencies:
     eventemitter3 "^4.0.0"
 
-"@lingui/babel-plugin-extract-messages@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.14.0.tgz#c3b2cbeaf3f3318fa165bd8db598ca74600a04bb"
-  integrity sha512-4lcDgVdjYiObuFdDwnAG3jJxS+d3YLq4i7qywlHgjIqteKUH01S3paJRXhZaPvLGl56HarSq0kt8Pymxw8lOrA==
+"@lingui/babel-plugin-extract-messages@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.15.0.tgz#370c5fa3a677252c13fc6709ee56defbffb692fc"
+  integrity sha512-iMQmJIkC18Zwc/IDpm3Oclj3KMDQuvipCS2yVHr0MyaeOCeOZ3ZoLVeaa8pfE5pImzlHJ0ss8RRm/St54JElhw==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "^3.14.0"
+    "@lingui/conf" "^3.15.0"
     mkdirp "^1.0.4"
 
-"@lingui/cli@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.14.0.tgz#846ddd754e1b0dd19da19d3e6b3feede3279dc00"
-  integrity sha512-QZURsIf7A97tf28b/ffpeL0DekA6tBmcwnj4FBui1SbQqJw1d4IPg2bUM5VRn3/25vhqpi9Uhx5m9x7Vv8QfCQ==
+"@lingui/cli@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.15.0.tgz#61db86dc89858e03fdd3952a4a62d4a6bf9f0aa0"
+  integrity sha512-6arKc0Mc1z3ABHobjPkhViV+7VUjBhwFwoU0VlT7HBmtrOYad9CBwWEiD+oiEhiHYzLTR7lHTVf674IjTuVvJQ==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/parser" "^7.11.5"
     "@babel/plugin-syntax-jsx" "^7.10.4"
     "@babel/runtime" "^7.11.2"
     "@babel/types" "^7.11.5"
-    "@lingui/babel-plugin-extract-messages" "^3.14.0"
-    "@lingui/conf" "^3.14.0"
+    "@lingui/babel-plugin-extract-messages" "^3.15.0"
+    "@lingui/conf" "^3.15.0"
     babel-plugin-macros "^3.0.1"
     bcp-47 "^1.0.7"
     chalk "^4.1.0"
@@ -2603,43 +2593,43 @@
     pseudolocale "^1.1.0"
     ramda "^0.27.1"
 
-"@lingui/conf@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.14.0.tgz#1b2c20d556b6ea78e530a07a934be219a0d6c662"
-  integrity sha512-5GMAbIRad9FavqYsfZCRAwjcOLzE7tONDJe9lSYE5SSJbbG01RI5kR5P0B84DUhTI6cGXau+1dAcP9K+JbEx+g==
+"@lingui/conf@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.15.0.tgz#0866bdf92bc72525dd657270c454a2fbe9277b87"
+  integrity sha512-gDGBbqWo6+B3PNjxTGl2asVdd8hC6w+iGsEPonvMw7GFmXb99qybBGdV2ofDlwlT9vChcPwMVtrYE6H0fTZuzA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
     chalk "^4.1.0"
     cosmiconfig "^7.0.0"
+    cosmiconfig-typescript-loader "^2.0.1"
     jest-validate "^26.5.2"
     lodash.get "^4.4.2"
 
-"@lingui/core@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.14.0.tgz#62e6b5e3d17b3f2ecd84b3f821d591763055aa89"
-  integrity sha512-ertREq9oi9B/umxpd/pInm9uFO8FLK2/0FXfDmMqvH5ydswWn/c9nY5YO4W1h4/8LWO45mewypOIyjoue4De1w==
+"@lingui/core@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.15.0.tgz#1f65bd6c1430133f1233dc9942c05c8bd9348e9d"
+  integrity sha512-owjYOn/3xaWVW01p32Ylt3cXkCP79oudJCHdcNOn4noxd/9BhyFX2wLiVf02DxGYnkAgAD3KCp3Z4iyKlueymg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
-"@lingui/macro@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.14.0.tgz#4d97cd548967c2b4b2b2f92715eec4d69e84545c"
-  integrity sha512-NxTRrhrZ/cUO9PX/4vWys90Ku58+ExxHuE30IuDnnDldWhWlOdycmjDt9tB+yIiUdFym/veSxBs+h114FzG5mA==
+"@lingui/macro@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.15.0.tgz#52b8219d470e72d37bdf052d748ffd6163d23fb8"
+  integrity sha512-3+txZQM5UmC+t1zkoYeYkg3r5pIGo9KdD+csX0u4F0IUE2GJkjy+sG917hOhw3QsDUqiCIqDJ503AdSfFbO+uA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "^3.14.0"
+    "@lingui/conf" "^3.15.0"
     ramda "^0.27.1"
 
-"@lingui/react@^3.14.0":
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.14.0.tgz#e3e6732a9d172c8ecb4f82fb8558b1766f5cee31"
-  integrity sha512-ow9Mtru7f0T2S9AwnPWRejppcucCW0LmoDR3P4wqHjL+eH5f8a6nxd2doxGieC91/2i4qqW88y4K/zXJxwRSQw==
+"@lingui/react@^3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.15.0.tgz#6de83da27b4145e30f4dffc6a2947eecf3a954e4"
+  integrity sha512-Xq/48yf2IQhOPpgpqydj1OUyfDgNOY4aattmG4195LeqGPhN0ckiUCBLlNm0vHRsO3ZGwzfprTLYfI9WbfLBzA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/core" "^3.14.0"
+    "@lingui/core" "^3.15.0"
 
 "@metamask/obs-store@^7.0.0":
   version "7.0.0"
@@ -5210,10 +5200,29 @@ core-util-is@~1.0.0:
   resolved "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.3.tgz"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
+cosmiconfig-typescript-loader@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-2.0.2.tgz#7e7ce6064af041c910e1e43fb0fd9625cee56e93"
+  integrity sha512-KmE+bMjWMXJbkWCeY4FJX/npHuZPNr9XF9q9CIQ/bpFwi1qHfCmSiKarrCcRa0LO4fWjk93pVoeRtJAkTGcYNw==
+  dependencies:
+    cosmiconfig "^7"
+    ts-node "^10.8.1"
+
 cosmiconfig-typescript-loader@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.1.1.tgz#38dd3578344038dae40fdf09792bc2e9df529f78"
   integrity sha512-9DHpa379Gp0o0Zefii35fcmuuin6q92FnLDffzdZ0l9tVd3nEobG3O+MZ06+kuBvFTSVScvNb/oHA13Nd4iipg==
+
+cosmiconfig@^7:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-7.1.0.tgz#1443b9afa596b670082ea46cbd8f6a62b84635f6"
+  integrity sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==
+  dependencies:
+    "@types/parse-json" "^4.0.0"
+    import-fresh "^3.2.1"
+    parse-json "^5.0.0"
+    path-type "^4.0.0"
+    yaml "^1.10.0"
 
 cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
   version "7.0.1"
@@ -8616,7 +8625,7 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
-lodash.get@^4, lodash.get@^4.4.2:
+lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npmjs.org/lodash.get/-/lodash.get-4.4.2.tgz"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
@@ -8704,7 +8713,7 @@ make-dir@^3.0.0, make-dir@^3.0.2, make-dir@^3.1.0:
   dependencies:
     semver "^6.0.0"
 
-make-error@^1, make-error@^1.1.1:
+make-error@^1.1.1:
   version "1.3.6"
   resolved "https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz"
   integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
@@ -10759,7 +10768,7 @@ source-map-support@0.5.13:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map-support@^0.5.17, source-map-support@~0.5.20:
+source-map-support@~0.5.20:
   version "0.5.21"
   resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.21.tgz"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==
@@ -11299,18 +11308,6 @@ ts-node@^10.8.1:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-ts-node@^9:
-  version "9.1.1"
-  resolved "https://registry.npmjs.org/ts-node/-/ts-node-9.1.1.tgz"
-  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
-  dependencies:
-    arg "^4.1.0"
-    create-require "^1.1.0"
-    diff "^4.0.1"
-    make-error "^1.1.1"
-    source-map-support "^0.5.17"
-    yn "3.1.1"
-
 tsconfig-paths@^3.14.1:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.14.1.tgz#ba0734599e8ea36c862798e920bcf163277b137a"
@@ -11326,7 +11323,7 @@ tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0:
+tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==

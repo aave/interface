@@ -88,8 +88,8 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
-msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delegate to an address of choice. To learn more check out the Governance"
+msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delegate to an address of choice. To learn more check out the Governance"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1436,13 +1436,10 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 
+#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
-
-#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
-msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
-msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
 msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
@@ -2085,8 +2082,8 @@ msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
-msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
-msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+msgid "To request access for this permissioned market, please visit: <0>Access Provider Name</0>"
+msgstr "To request access for this permissioned market, please visit: <0>Access Provider Name</0>"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"

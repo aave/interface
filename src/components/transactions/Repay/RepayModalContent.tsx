@@ -78,7 +78,7 @@ export const RepayModalContent = ({
 
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  // calculate max amount abailable to repay
+  // calculate max amount available to repay
   let maxAmountToRepay: BigNumber;
   let balance: string;
   if (repayWithATokens) {
@@ -113,7 +113,7 @@ export const RepayModalContent = ({
         setRepayMax(safeAmountToRepayAll.toString(10));
       } else {
         // -1 can always be used for v3 otherwise
-        // for v2 we can onl use -1 when user has more balance than max debt to repay
+        // for v2 we can only use -1 when user has more balance than max debt to repay
         // this is accounted for when maxAmountToRepay.eq(debt) as maxAmountToRepay is
         // min between debt and walletbalance, so if it enters here for v2 it means
         // balance is bigger and will be able to transact with -1

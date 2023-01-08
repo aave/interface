@@ -97,7 +97,7 @@ useRootStore.subscribe(
 
       // If there are multiple calls in flight, we only want to use the result from the latest one.
       // Use the instance of the service to check if it's the latest one since it is recreated
-      // everytime this subscription fires.
+      // every time this subscription fires.
       const service = new V3FaucetService(jsonRpcProvider(), selected.addresses.FAUCET);
       latest = service;
       service

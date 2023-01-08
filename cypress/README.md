@@ -6,7 +6,7 @@ based on cypress(8.5.0) with `cypress-repeat` and tenderly
 
 ## Development mode
 
-there is command for development/debuging/local executing tests:
+there is command for development/debugging/local executing tests:
 
 - `yarn run test:open` - it's open visual window with all test and manual executing
 
@@ -21,7 +21,7 @@ TENDERLY_ACCOUNT=Aave
 TENDERLY_PROJECT=QA
 ```
 
-`cp .env.example .env` - execute before spining up environment if you want to check Stake / Governance pages.
+`cp .env.example .env` - execute before spinning up environment if you want to check Stake / Governance pages.
 
 3. run `yarn run test:open`
 

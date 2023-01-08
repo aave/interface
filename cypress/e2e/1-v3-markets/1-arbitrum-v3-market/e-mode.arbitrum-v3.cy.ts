@@ -1,5 +1,5 @@
 import assets from '../../../fixtures/assets.json';
-import constants from '../../../fixtures/constans.json';
+import constants from '../../../fixtures/constants.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyArbitrumFork } from '../../../support/steps/configuration.steps';
 import { borrow, emodeActivating, supply } from '../../../support/steps/main.steps';

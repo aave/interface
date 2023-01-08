@@ -14915,7 +14915,7 @@ var require_ec = __commonJS({
       var isYOdd = j & 1;
       var isSecondKey = j >> 1;
       if (r.cmp(this.curve.p.umod(this.curve.n)) >= 0 && isSecondKey)
-        throw new Error("Unable to find sencond key candinate");
+        throw new Error("Unable to find sencond key candidate");
       if (isSecondKey)
         r = this.curve.pointFromX(r.add(this.curve.n), isYOdd);
       else
@@ -27313,7 +27313,7 @@ var require_permessage_deflate = __commonJS({
       /**
        * Accept an extension negotiation offer/response.
        *
-       * @param {Array} configurations The extension negotiation offers/reponse
+       * @param {Array} configurations The extension negotiation offers/response
        * @return {Object} Accepted configuration
        * @public
        */
@@ -27405,7 +27405,7 @@ var require_permessage_deflate = __commonJS({
       /**
        * Normalize parameters.
        *
-       * @param {Array} configurations The extension negotiation offers/reponse
+       * @param {Array} configurations The extension negotiation offers/response
        * @return {Array} The offers/response with normalized parameters
        * @private
        */

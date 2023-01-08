@@ -28,7 +28,7 @@ export type NetworkConfig = {
    */
   wrappedBaseAssetSymbol?: string;
   baseAssetSymbol: string;
-  // needed for configuring the chain on metemask when it doesn't exist yet
+  // needed for configuring the chain on metamask when it doesn't exist yet
   baseAssetDecimals: number;
   // usdMarket?: boolean;
   // function returning a link to etherscan et al
@@ -36,7 +36,7 @@ export type NetworkConfig = {
   explorerLinkBuilder: (props: ExplorerLinkBuilderProps) => string;
   // set this to show faucets and similar
   isTestnet?: boolean;
-  // get's automatically populated on fork networks
+  // gets automatically populated on fork networks
   isFork?: boolean;
   networkLogoPath: string;
   // contains the forked off chainId

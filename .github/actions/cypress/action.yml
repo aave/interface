@@ -8,7 +8,7 @@ inputs:
     description: tenderly secret key
     required: true
   CYPRESS_TENDERLY_PROJECT:
-    description: tenderly porject name
+    description: tenderly project name
     required: true
   YARN_TEST_COMMAND:
     description: yarn command to run test

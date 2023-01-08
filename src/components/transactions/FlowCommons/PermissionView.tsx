@@ -22,7 +22,7 @@ export const PermissionView = () => {
         <Typography sx={{ mt: '10px', textAlign: 'center' }}>
           <Trans>
             To request access for this permissioned market, please visit:{' '}
-            <Link href={'https://access-provider-url'}>Acces Provider Name</Link>
+            <Link href={'https://access-provider-url'}>Access Provider Name</Link>
           </Trans>
         </Typography>
       </Box>

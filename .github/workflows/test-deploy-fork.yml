@@ -301,7 +301,7 @@ jobs:
         with:
           PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
           COMMENT_BODY: |
-            ✅ CI run has succeded!
+            ✅ CI run has succeeded!
             You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
       - name: Label

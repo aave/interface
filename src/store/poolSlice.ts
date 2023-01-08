@@ -84,7 +84,7 @@ export interface PoolSlice {
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
-  // TODO: optimize types to use only neccessary properties
+  // TODO: optimize types to use only necessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (

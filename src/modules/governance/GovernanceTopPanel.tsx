@@ -58,7 +58,7 @@ export const GovernanceTopPanel = () => {
               Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
               AAVE token-holders collectively discuss, propose, and vote on upgrades to the
               protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new
-              proposals or delagate to an address of choice. To learn more check out the Governance
+              proposals or delegate to an address of choice. To learn more check out the Governance
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/governance"

@@ -1,5 +1,5 @@
 import assets from '../../../fixtures/assets.json';
-import constants from '../../../fixtures/constans.json';
+import constants from '../../../fixtures/constants.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
 import { supply, swap } from '../../../support/steps/main.steps';

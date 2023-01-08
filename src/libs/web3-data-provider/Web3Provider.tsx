@@ -415,7 +415,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
-  // inject account into zustand as long as aave itnerface is using old web3 providers
+  // inject account into zustand as long as aave interface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
   }, [account]);

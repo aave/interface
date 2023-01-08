@@ -133,7 +133,7 @@ const linkBuilder =
 export function getNetworkConfig(chainId: ChainId): NetworkConfig {
   const config = networkConfigs[chainId];
   if (!config) {
-    // this case can only ever occure when a wallet is connected with a unknown chainId which will not allow interaction
+    // this case can only ever occur when a wallet is connected with a unknown chainId which will not allow interaction
     const name = ChainIdToNetwork[chainId];
     return {
       name: name || `unknown chainId: ${chainId}`,
@@ -247,6 +247,6 @@ export const frozenProposalMap: Record<string, string> = {
   ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
 };
 
-// reexport so we can forbit config import
+// reexport so we can forbid config import
 export { CustomMarket };
 export type { MarketDataType, NetworkConfig };

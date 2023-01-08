@@ -1,4 +1,4 @@
-import constants from '../../fixtures/constans.json';
+import constants from '../../fixtures/constants.json';
 
 type SkipType = {
   set: (val: boolean) => void;
@@ -263,7 +263,7 @@ export const repay = (
 };
 
 /**
- * This full step for withdraw any availble assets
+ * This full step for withdraw any available assets
  * @example
  *```
  * // Withdraw ETH

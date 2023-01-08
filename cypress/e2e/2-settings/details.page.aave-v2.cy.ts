@@ -1,5 +1,5 @@
 import assets from '../../fixtures/assets.json';
-import constants from '../../fixtures/constans.json';
+import constants from '../../fixtures/constants.json';
 import { skipState } from '../../support/steps/common';
 import {
   configEnvWithTenderlyMainnetFork,
@@ -24,7 +24,7 @@ const testData = {
 };
 
 describe('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
-  describe(`CASE1:Verifing detail page for v2 USDT)`, () => {
+  describe(`CASE1:Verifying detail page for v2 USDT)`, () => {
     const skipTestState = skipState(false);
     configEnvWithTenderlyMainnetFork({});
 
@@ -54,9 +54,9 @@ describe('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
         cy.contains('Supply APY');
         cy.get('[data-cy="close-button"]').click();
       });
-      describe('CASE2:Verifing detail page for V3 USDT', () => {
+      describe('CASE2:Verifying detail page for V3 USDT', () => {
         configEnvWithTenderlyOptimismFork({ v3: true });
-        describe('Verifing collateral and e-mode  strings on detail page USDT AAVE V3', () => {
+        describe('Verifying collateral and e-mode  strings on detail page USDT AAVE V3', () => {
           it('Go to detail page for USDT', () => {
             cy.get('[data-cy="menuMarkets"]').click();
             cy.get('[data-cy="marketListItemListItem_USDT"]').click();
