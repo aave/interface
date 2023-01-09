@@ -10,8 +10,9 @@ import {
   Slider,
   SvgIcon,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -63,7 +64,8 @@ let initialRateValuesSet = false;
 // We start this calculator off showing values to reach max discount
 export const GhoDiscountCalculator = () => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
-
+  const { breakpoints } = useTheme();
+  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
   const [selectedTimeRange, setSelectedTimeRange] = useState<GhoBorrowTermRange>(
@@ -160,7 +162,7 @@ export const GhoDiscountCalculator = () => {
           mb: 2,
         }}
       >
-        <ReserveOverviewBox title={<Trans>Discountable amount</Trans>}>
+        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discountable amount</Trans>}>
           {loading ? (
             <Skeleton variant="text" width={75} />
           ) : (
@@ -179,7 +181,7 @@ export const GhoDiscountCalculator = () => {
             </Typography>
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox title={<Trans>Max discount</Trans>}>
+        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Max discount</Trans>}>
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -193,7 +195,7 @@ export const GhoDiscountCalculator = () => {
             />
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox title={<Trans>APY with max discount</Trans>}>
+        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>APY with max discount</Trans>}>
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -305,8 +307,8 @@ export const GhoDiscountCalculator = () => {
           Use the calculator below to see different borrow rates with the discount applied.
         </Trans>
       </Typography>
-      <Grid container spacing={8}>
-        <Grid item xs={12} sm={6}>
+      <Grid container spacing={{ xs: 4, sm: 6 }}>
+        <Grid item xs={12} sm={6} order={{ xs: 2, sm: 1 }}>
           <Box mb={2}>
             <Typography variant="subheader2" gutterBottom>
               <Trans>Borrow amount</Trans>
@@ -392,7 +394,7 @@ export const GhoDiscountCalculator = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} order={{ xs: 1, sm: 2 }}>
           <Typography variant="subheader2" mb={1.5}>
             <Trans>GHO borrow rate</Trans>
           </Typography>
@@ -416,19 +418,14 @@ export const GhoDiscountCalculator = () => {
                   }
                 />
                 {showDiscountRate && (
-                  <>
-                    <FormattedNumber
-                      value={rateSelection.rateAfterDiscount}
-                      percent
-                      variant="display1"
-                      component="div"
-                      symbolsColor="text.primary"
-                      sx={{ '.MuiTypography-root': { ml: 0 } }}
-                    />
-                    <SvgIcon fontSize="large">
-                      <PercentIcon />
-                    </SvgIcon>
-                  </>
+                  <FormattedNumber
+                    value={rateSelection.rateAfterDiscount}
+                    percent
+                    variant="display1"
+                    component="div"
+                    symbolsColor="text.primary"
+                    sx={{ '.MuiTypography-root': { ml: 0 } }}
+                  />
                 )}
               </Box>
               <GhoInterestOwedLineComponent />

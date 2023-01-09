@@ -26,7 +26,6 @@ interface ListItemWrapperProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   footerButton?: ReactNode;
-  ghoBorder?: boolean;
 }
 
 export const ListItemWrapper = ({

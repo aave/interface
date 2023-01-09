@@ -3,7 +3,6 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon, Typography } from '@mui/material';
-import PercentIcon from 'public/icons/markets/percent-icon.svg';
 import { useEffect, useState } from 'react';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -166,7 +165,6 @@ export const GhoBorrowModalContent = ({
                 incentives={userReserve.reserve.vIncentivesData}
                 symbol={userReserve.reserve.symbol}
                 data-cy={`apyType`}
-                tooltip={apyDiffers ? undefined : <PercentIcon />}
                 borrowAmount={
                   apyDiffers
                     ? userReserve.totalBorrows
@@ -196,7 +194,6 @@ export const GhoBorrowModalContent = ({
                     incentives={userReserve.reserve.vIncentivesData}
                     symbol={userReserve.reserve.symbol}
                     data-cy={`apyType`}
-                    tooltip={<PercentIcon />}
                     borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
                     baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
                     discountPercent={ghoReserveData.ghoDiscountRate * -1}
