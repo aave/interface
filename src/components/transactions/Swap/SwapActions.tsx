@@ -91,7 +91,7 @@ export const SwapActions = ({
       gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
       skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
       spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER ?? '',
-      deps: [poolReserve.symbol, amountToSwap],
+      deps: [targetReserve.symbol, amountToSwap],
     });
 
   return (
