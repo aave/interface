@@ -8,10 +8,6 @@ on:
 jobs:
   createHeightTask:
     runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      taskCreated: # the output from createHeightTaskRequest step
-        id: ${{ steps.createHeightTaskRequest.output.id }}
     steps:
       - id: createHeightTaskRequest
         name: Create a new task with issue details in Height
@@ -20,9 +16,6 @@ jobs:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          # Avara List IDs:
-          # aave-interface: 0540b3b8-bd44-4904-a97f-fd9d8780ef0a
-          # aave-interface-sprint: de8b351a-f497-4232-9fee-1e80a3b9e05c
           data: '{
             "name": "${{ github.event.issue.title }}",
             "description": "${{ github.event.issue.description }}",
@@ -67,34 +60,3 @@ jobs:
             }
             ]
             }'
-  # getIntakeTask:
-  #   runs-on: ubuntu-latest
-  #   # Map a step output to a job output
-  #   outputs:
-  #     intakeTask: # the output from createHeightTaskRequest step
-  #       id: ${{ steps.intakeTaskRequest.output.id }}
-  #   steps:
-  #     - id: intakeTaskRequest
-  #       name: Get the Github Issues Intake task object in Height
-  #       uses: fjogeleit/http-request-action@v1
-  #       with:
-  #         url: 'https://api.height.app/tasks/2925'
-  #         method: 'GET'
-  #         customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-  # moveHeightTaskToIntake:
-  #   runs-on: ubuntu-latest
-  #   needs: getIntakeTask
-  #   steps:
-  #     - id: moveHeightTaskToIntakeRequest
-  #       name: Move the new task into 'Github Issues Intake' in Height
-  #       uses: fjogeleit/http-request-action@v1
-  #       run: echo ${{ needs.createHeightTask.output.taskCreated.id }}
-  #       # with:
-  #       # Use ID of created task from previous step
-  #       # ${{ needs.createHeightTask.outputs.taskCreated }}
-  #       # url: 'https://api.height.app/tasks/${{ needs.createHeightTask.outputs.taskCreated.id }}'
-  #       # method: 'PUT'
-  #       # customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-  #       # Avara Task IDs:
-  #       # Github Issues Intake: 2dded224-8da0-4407-868f-d9cd018cbe52 (T-2925)
-  #       # data: '{ "name": "${{ github.event.issue.title }}", "listIds": ["64fa570a-a252-4521-b801-9b0eb18113bc"], "status": "359d42b4-5e7b-46fa-8465-d179b5a097ef" }'
