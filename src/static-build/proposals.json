@@ -5730,16 +5730,16 @@
       ],
       "startBlock": 16351665,
       "endBlock": 16370865,
-      "executionTime": 0,
+      "executionTime": 1673391467,
       "forVotes": "680966215546037647062163",
       "againstVotes": "2000000000000000000",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Succeeded",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1673823467,
       "proposalCreated": 16344465,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xe06d5211b4f8b59decdb58811d73d40ed66a34842fa39597c946795e3752b83a",
@@ -5779,8 +5779,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x20f57c3ef4ee80ce54234133fe98d096adf40a60a982389bc3d3a258ed67bb44",
       "creationTimestamp": 1673295395,
-      "startTimestamp": 1673381855,
-      "expirationTimestamp": 1673612255
+      "startTimestamp": 1673381939,
+      "expirationTimestamp": 1673612339
     }
   ]
 }
