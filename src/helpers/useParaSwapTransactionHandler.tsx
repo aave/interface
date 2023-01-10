@@ -269,7 +269,6 @@ export const useParaSwapTransactionHandler = ({
             setMainTxState({
               txHash: undefined,
             });
-            setTxError(undefined);
             setLoadingTxns(false);
           } else {
             setUsePermit(false);
