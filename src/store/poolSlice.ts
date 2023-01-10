@@ -1,4 +1,6 @@
 import {
+  ERC20_2612Service,
+  ERC20Service,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
@@ -26,7 +28,7 @@ import {
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { ethers, Signature } from 'ethers';
+import { Signature } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
@@ -89,6 +91,12 @@ export interface PoolSlice {
   supply: (
     args: Omit<SupplyActionProps, 'poolReserve'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  generateSignatureRequst: (args: {
+    token: string;
+    amount: string;
+    deadline: string;
+    spender: string;
+  }) => Promise<string>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -246,16 +254,17 @@ export const createPoolSlice: StateCreator<
       swapCallData,
       signature,
       deadline,
+      signedAmount,
     }) => {
       const user = get().account;
       const pool = getCorrectPool();
 
       let permitSignature: PermitSignature | undefined;
 
-      if (signature && deadline) {
+      if (signature && deadline && signedAmount) {
         const sig: Signature = splitSignature(signature);
         permitSignature = {
-          amount: ethers.constants.MaxUint256.toString(),
+          amount: signedAmount,
           deadline: deadline,
           v: sig.v,
           r: sig.r,
@@ -351,16 +360,17 @@ export const createPoolSlice: StateCreator<
       swapCallData,
       signature,
       deadline,
+      signedAmount,
     }) => {
       const pool = getCorrectPool();
       const user = get().account;
 
       let permitSignature: PermitSignature | undefined;
 
-      if (signature && deadline) {
+      if (signature && deadline && signedAmount) {
         const sig: Signature = splitSignature(signature);
         permitSignature = {
-          amount: ethers.constants.MaxUint256.toString(),
+          amount: signedAmount,
           deadline: deadline,
           v: sig.v,
           r: sig.r,
@@ -450,6 +460,47 @@ export const createPoolSlice: StateCreator<
     },
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
+    },
+    // TO-DO: extract this logic to @aave/contract-helpers, and combine with approval tx generation
+    generateSignatureRequst: async ({ token, amount, deadline, spender }) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      const tokenERC2612Service = new ERC20_2612Service(provider);
+      const { name } = await tokenERC20Service.getTokenData(token);
+      const { chainId } = await provider.getNetwork();
+      const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
+      const typeData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          Permit: [
+            { name: 'owner', type: 'address' },
+            { name: 'spender', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'Permit',
+        domain: {
+          name,
+          version: '1',
+          chainId,
+          verifyingContract: token,
+        },
+        message: {
+          owner: get().account,
+          spender: spender,
+          value: amount,
+          nonce,
+          deadline,
+        },
+      };
+      return JSON.stringify(typeData);
     },
     poolComputed: {
       get minRemainingBaseTokenBalance() {
