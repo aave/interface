@@ -1880,6 +1880,10 @@ msgstr "Time left to unstake"
 msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
+#: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
+msgid "Tip: Try increasing slippage or reduce input amount"
+msgstr "Tip: Try increasing slippage or reduce input amount"
+
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
