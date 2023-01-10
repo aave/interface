@@ -84,7 +84,6 @@ useRootStore.subscribe(
       useRootStore.getState();
     if (ENABLE_TESTNET || STAGING_ENV) {
       if (!selected.v3) {
-        console.log('not a v3 testnet market');
         setFaucetPermissioned(false);
         return;
       }
