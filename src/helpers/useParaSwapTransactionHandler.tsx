@@ -3,6 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -70,6 +71,11 @@ export const useParaSwapTransactionHandler = ({
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [signature, setSignature] = useState<SignatureLike | undefined>();
   const [signatureDeadline, setSignatureDeadline] = useState<string | undefined>();
+  interface Dependency {
+    asset: string;
+    amount: string;
+  }
+  const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
 
@@ -262,9 +268,21 @@ export const useParaSwapTransactionHandler = ({
         .then(async (data) => {
           const approval = data.find((tx) => tx.txType === 'ERC20_APPROVAL');
           const preferPermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-          if (approval && preferPermit) {
-            // Request new signature if dependency array updates: collateral asset or amount changes
+          // reset error and approval state if new signature request is required
+          if (
+            deps[0] !== previousDeps.asset ||
+            Number(deps[1]) >
+              Number(previousDeps.amount) + Number(previousDeps.amount) * SIGNATURE_AMOUNT_MARGIN
+          ) {
             setApprovalTxState({ success: false });
+            setTxError(undefined);
+          }
+          // clear error but use existing signature if amount changes
+          if (Number(deps[1]) < Number(previousDeps.amount)) {
+            setTxError(undefined);
+          }
+          setPreviousDeps({ asset: deps[0], amount: deps[1] });
+          if (approval && preferPermit) {
             setUsePermit(true);
             setMainTxState({
               txHash: undefined,
