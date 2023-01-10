@@ -9,7 +9,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -28,6 +28,7 @@ interface CollateralRepayBaseProps extends BoxProps {
   blocked: boolean;
   loading?: boolean;
   signature?: SignatureLike;
+  signedAmount?: string;
   deadline?: string;
 }
 
@@ -53,9 +54,9 @@ export const CollateralRepayActions = ({
   buildTxFn,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
+  const { paraswapRepayWithCollateral, currentMarketData } = useRootStore();
 
-  const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
+  const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
@@ -74,6 +75,7 @@ export const CollateralRepayActions = ({
           augustus: route.augustus,
           signature,
           deadline,
+          signedAmount: calculateSignedAmount(repayWithAmount, fromAssetData.decimals),
         });
       },
       handleGetApprovalTxns: async () => {
@@ -94,12 +96,13 @@ export const CollateralRepayActions = ({
       },
       gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.repayCollateral].limit,
       skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
+      spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER ?? '',
+      deps: [fromAssetData.symbol, repayWithAmount],
     });
 
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
-      symbol={fromAssetData.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
@@ -110,7 +113,10 @@ export const CollateralRepayActions = ({
       {...props}
       handleAction={action}
       handleApproval={() =>
-        approval({ amount: repayAmount, underlyingAsset: poolReserve.aTokenAddress })
+        approval({
+          amount: calculateSignedAmount(repayWithAmount, fromAssetData.decimals),
+          underlyingAsset: fromAssetData.aTokenAddress,
+        })
       }
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
