@@ -22,9 +22,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
   const [txHash, setTxHash] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  // TODO: just for testing
-  // const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
-  const faucetUrl = 'https://api-v2-feat-faucet-relay.aave.com/faucet';
+  const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
 
   const poolReserve = reserves.find(
@@ -58,13 +56,13 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
           faucetAddress: currentMarketData.addresses.FAUCET,
         }),
       });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.msg);
+      }
       setTxHash(data.msg);
     } catch (e: unknown) {
-      if (e instanceof Error) {
+      if (e instanceof Error && e.message) {
         setError(e.message);
       } else {
         setError('An error occurred trying to send the transaction');
