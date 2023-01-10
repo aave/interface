@@ -11,6 +11,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { DashboardContentNoData } from 'src/modules/dashboard/DashboardContentNoData';
 import { MigrationBottomPanel } from 'src/modules/migration/MigrationBottomPanel';
+import { MigrationListBorrowItem } from 'src/modules/migration/MigrationListBorrowItem';
 import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
@@ -160,23 +161,11 @@ export default function V3Migration() {
                   </>
                 ) : borrowReserves.length > 0 ? (
                   borrowReserves.map((reserve) => (
-                    <MigrationListItem
-                      key={reserve.underlyingAsset}
-                      checked={
-                        !reserve.disabledForMigration &&
-                        selectedBorrowAssets.findIndex(
-                          (selectedAsset) =>
-                            selectedAsset.underlyingAsset == reserve.underlyingAsset
-                        ) >= 0
-                      }
-                      reserveIconSymbol={reserve.reserve.iconSymbol}
-                      reserveName={reserve.reserve.name}
-                      reserveSymbol={reserve.reserve.symbol}
-                      amount={reserve.totalBorrows}
-                      amountInUSD={reserve.totalBorrowsUSD}
-                      onCheckboxClick={() => toggleSelectedBorrowPosition(reserve.underlyingAsset)}
-                      disabled={reserve.disabledForMigration}
-                      enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
+                    <MigrationListBorrowItem
+                      key={reserve.debtKey}
+                      userReserve={reserve}
+                      selectedBorrowAssets={selectedBorrowAssets}
+                      toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
                     />
                   ))
                 ) : (

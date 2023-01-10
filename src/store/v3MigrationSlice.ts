@@ -2,6 +2,7 @@ import {
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
+  InterestRate,
   Pool,
   V3MigrationHelperService,
 } from '@aave/contract-helpers';
@@ -19,7 +20,7 @@ import {
   selectedUserSupplyReservesForMigration,
   selectMigrationSelectedBorrowIndex,
   selectMigrationSelectedSupplyIndex,
-  selectUserBorrowReservesForMigration,
+  selectSelectedBorrowReservesForMigrationV3,
   selectUserReservesForMigration,
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyAssetsForMigrationWithPermits,
@@ -31,10 +32,16 @@ type MigrationSelectedAsset = {
   enforced: boolean;
 };
 
+export type MigrationSelectedBorrowAsset = {
+  debtKey: string;
+  underlyingAsset: string;
+  interestRate: InterestRate;
+};
+
 export type V3MigrationSlice = {
   //STATE
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
-  selectedMigrationBorrowAssets: MigrationSelectedAsset[];
+  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
@@ -46,7 +53,7 @@ export type V3MigrationSlice = {
   ) => Promise<string>;
   getApprovePermitsForSelectedAssets: () => Promise<Approval[]>;
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
-  toggleMigrationSelectedBorrowAsset: (assetName: string) => void;
+  toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => void;
   getMigratorAddress: () => string;
   getMigrationServiceInstance: () => V3MigrationHelperService;
   migrateWithPermits: (
@@ -141,20 +148,17 @@ export const createV3MigrationSlice: StateCreator<
         })
       );
     },
-    toggleMigrationSelectedBorrowAsset: (underlyingAsset: string) => {
+    toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => {
       set((state) =>
         produce(state, (draft) => {
           const activeAssetIndex = draft.selectedMigrationBorrowAssets.findIndex(
-            (asset) => asset.underlyingAsset == underlyingAsset
+            (selectedAsset) => asset.debtKey == selectedAsset.debtKey
           );
 
           if (activeAssetIndex >= 0) {
             draft.selectedMigrationBorrowAssets.splice(activeAssetIndex, 1);
           } else {
-            draft.selectedMigrationBorrowAssets.push({
-              underlyingAsset,
-              enforced: false,
-            });
+            draft.selectedMigrationBorrowAssets.push(asset);
           }
         })
       );
@@ -203,11 +207,10 @@ export const createV3MigrationSlice: StateCreator<
       if (get().selectedMigrationBorrowAssets.length == borrowReserves.length) {
         set({ selectedMigrationBorrowAssets: [] });
       } else {
-        const nonSelectedSupplies = borrowReserves
-          .filter(
-            ({ underlyingAsset }) => selectMigrationSelectedBorrowIndex(get(), underlyingAsset) < 0
-          )
-          .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
+        const nonSelectedSupplies = borrowReserves.filter(
+          (borrowAsset) =>
+            selectMigrationSelectedBorrowIndex(get().selectedMigrationBorrowAssets, borrowAsset) < 0
+        );
 
         set({
           selectedMigrationBorrowAssets: [
@@ -236,7 +239,7 @@ export const createV3MigrationSlice: StateCreator<
     migrateWithoutPermits: () => {
       const timestamp = dayjs().unix();
       set({ timestamp });
-      const borrowedPositions = selectUserBorrowReservesForMigration(get(), timestamp);
+      const borrowedPositions = selectSelectedBorrowReservesForMigrationV3(get(), timestamp);
       if (borrowedPositions.length > 0) {
         return get().migrateBorrow();
       }
@@ -250,7 +253,7 @@ export const createV3MigrationSlice: StateCreator<
         signatures,
         deadline
       );
-      const borrowedPositions = selectUserBorrowReservesForMigration(get(), get().timestamp);
+      const borrowedPositions = selectSelectedBorrowReservesForMigrationV3(get(), get().timestamp);
       if (borrowedPositions.length > 0) {
         return get().migrateBorrow(signedPermits);
       }
@@ -299,11 +302,14 @@ export const createV3MigrationSlice: StateCreator<
       const currentTimestamp = dayjs().unix();
       const user = get().account;
       const suppliedPositions = selectUserSupplyAssetsForMigrationNoPermit(get(), currentTimestamp);
-      const borrowedPositions = selectUserBorrowReservesForMigration(get(), currentTimestamp);
+      const borrowedPositions = selectSelectedBorrowReservesForMigrationV3(get(), currentTimestamp);
       const mappedBorrowPositions = borrowedPositions.map(
-        ({ increasedAmount, interestRate, underlyingAsset }) => {
+        ({ increasedStableBorrows, increasedVariableBorrows, interestRate, underlyingAsset }) => {
           return {
-            amount: increasedAmount,
+            amount:
+              interestRate == InterestRate.Variable
+                ? increasedVariableBorrows
+                : increasedStableBorrows,
             interestRate,
             address: underlyingAsset,
           };

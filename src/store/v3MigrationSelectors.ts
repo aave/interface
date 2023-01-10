@@ -17,15 +17,16 @@ import {
 } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import {
   selectCurrentChainIdV2PoolReserve,
   selectCurrentChainIdV3PoolReserve,
   selectFormatBaseCurrencyData,
-  selectNonEmptyUserBorrowPositions,
   selectUserSummaryAndIncentives,
 } from './poolSelectors';
 import { RootStore } from './root';
+import { MigrationSelectedBorrowAsset } from './v3MigrationSlice';
 
 export const selectIsolationModeForMigration = (
   poolReserveV3Summary: Pick<
@@ -45,23 +46,51 @@ export const selectMigrationSelectedSupplyIndex = (store: RootStore, underlyingA
   );
 };
 
-export const selectMigrationSelectedBorrowIndex = (store: RootStore, underlyingAsset: string) => {
-  return store.selectedMigrationBorrowAssets.findIndex(
-    (supplyAsset) => supplyAsset.underlyingAsset == underlyingAsset
-  );
+export const selectMigrationSelectedBorrowIndex = (
+  selectedBorrowAssets: MigrationSelectedBorrowAsset[],
+  borrowAsset: MigrationSelectedBorrowAsset
+) => {
+  return selectedBorrowAssets.findIndex((asset) => asset.debtKey == borrowAsset.debtKey);
 };
 
-export const selectMappedBorrowPositionsForMigration = (store: RootStore, timestamp: number) => {
-  const borrowPositions = selectNonEmptyUserBorrowPositions(store, timestamp);
-  const mappedBorrowPositions = borrowPositions.map((borrow) => {
-    return {
-      ...borrow,
-      // TODO: make mapping for isolated borrowing here
-      disabled: false,
-    };
-  });
+export type SplittedUserReserveIncreasedAmount = ComputedUserReserveData & {
+  increasedStableBorrows: string;
+  increasedVariableBorrows: string;
+  interestRate: InterestRate;
+  debtKey: string;
+};
 
-  return mappedBorrowPositions;
+export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
+  const splittedUserReserves: SplittedUserReserveIncreasedAmount[] = [];
+  userReserves.forEach((userReserve) => {
+    if (userReserve.stableBorrows !== '0') {
+      const increasedAmount = add1HourBorrowAPY(
+        userReserve.stableBorrows,
+        userReserve.reserve.stableBorrowAPY
+      );
+      splittedUserReserves.push({
+        ...userReserve,
+        interestRate: InterestRate.Stable,
+        increasedStableBorrows: increasedAmount,
+        increasedVariableBorrows: '0',
+        debtKey: userReserve.reserve.stableDebtTokenAddress,
+      });
+    }
+    if (userReserve.variableBorrows !== '0') {
+      const increasedAmount = add1HourBorrowAPY(
+        userReserve.variableBorrows,
+        userReserve.reserve.variableBorrowAPY
+      );
+      splittedUserReserves.push({
+        ...userReserve,
+        interestRate: InterestRate.Variable,
+        increasedStableBorrows: '0',
+        increasedVariableBorrows: increasedAmount,
+        debtKey: userReserve.reserve.variableDebtTokenAddress,
+      });
+    }
+  });
+  return splittedUserReserves;
 };
 
 export const selectDefinitiveSupplyAssetForMigration = (
@@ -137,9 +166,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     (userReserve) => userReserve.underlyingBalance !== '0'
   );
 
-  const borrowReserves = userReservesV2Data.filter(
-    (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
-  );
+  const borrowReserves = selectSplittedBorrowsForMigration(userReservesV2Data);
 
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
     let usageAsCollateralEnabledOnUser = true;
@@ -270,41 +297,33 @@ const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
     .toString();
 };
 
-export const selectUserBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
+export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, timestamp: number) => {
   const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
+  const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
   const selectedUserReserves = borrowReserves
     .filter(
       (userReserve) =>
-        valueToBigNumber(userReserve.stableBorrows).isGreaterThan(0) ||
-        valueToBigNumber(userReserve.variableBorrows).isGreaterThan(0)
-    )
-    .filter(
-      (userReserve) => selectMigrationSelectedBorrowIndex(store, userReserve.underlyingAsset) >= 0
+        selectMigrationSelectedBorrowIndex(store.selectedMigrationBorrowAssets, userReserve) >= 0
     )
     .filter((userReserve) => !userReserve.disabledForMigration)
-    .map(({ reserve, ...userReserve }) => {
-      const stableBorrows = valueToBigNumber(userReserve.stableBorrows);
-      if (stableBorrows.isGreaterThan(0)) {
-        const increasedAmount = add1HourBorrowAPY(
-          userReserve.stableBorrows,
-          reserve.stableBorrowAPY
-        );
-        return {
-          ...userReserve,
-          reserve,
-          increasedAmount,
-          interestRate: InterestRate.Stable,
-        };
-      }
-      const increasedAmount = add1HourBorrowAPY(
-        userReserve.variableBorrows,
-        reserve.variableBorrowAPY
+    // debtKey should be mapped for v3Migration
+    .map((borrowReserve) => {
+      let debtKey = borrowReserve.debtKey;
+      const borrowReserveV3 = userReservesDataV3.find(
+        (userReserve) => userReserve.underlyingAsset == borrowReserve.underlyingAsset
       );
+
+      if (borrowReserveV3) {
+        if (borrowReserve.interestRate == InterestRate.Variable) {
+          debtKey = borrowReserveV3.reserve.variableDebtTokenAddress;
+        } else {
+          debtKey = borrowReserveV3.reserve.stableDebtTokenAddress;
+        }
+      }
+
       return {
-        ...userReserve,
-        reserve,
-        increasedAmount,
-        interestRate: InterestRate.Variable,
+        ...borrowReserve,
+        debtKey,
       };
     });
 
@@ -352,13 +371,19 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
       if (isSupplyAsset) {
         scaledATokenBalance = '0';
       }
-      const isBorrowAsset =
-        selectMigrationSelectedBorrowIndex(store, userReserve.underlyingAsset) >= 0;
 
-      if (isBorrowAsset) {
-        principalStableDebt = '0';
-        scaledVariableDebt = '0';
-      }
+      const borrowAssets = store.selectedMigrationBorrowAssets.filter(
+        (borrowAsset) => borrowAsset.underlyingAsset == userReserve.underlyingAsset
+      );
+
+      borrowAssets.forEach((borrowAsset) => {
+        if (borrowAsset.interestRate == InterestRate.Stable) {
+          principalStableDebt = '0';
+        } else {
+          scaledVariableDebt = '0';
+        }
+      });
+
       return {
         ...userReserve,
         principalStableDebt,
@@ -383,7 +408,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
 
   const supplies = selectedUserSupplyReservesForMigration(store, currentTimestamp);
-  const borrows = selectUserBorrowReservesForMigration(store, currentTimestamp);
+  const borrows = selectSelectedBorrowReservesForMigrationV3(store, currentTimestamp);
 
   //TODO: refactor that to be more efficient
   const suppliesMap = supplies.concat(supplies).reduce((obj, item) => {
@@ -392,27 +417,37 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   }, {} as Record<string, typeof supplies[0]>);
 
   const borrowsMap = borrows.concat(borrows).reduce((obj, item) => {
-    obj[item.underlyingAsset] = item;
+    obj[item.debtKey] = item;
     return obj;
   }, {} as Record<string, typeof borrows[0]>);
 
   const userReserves = poolReserveV3Summary.userReservesData.map((userReserveData) => {
-    const borrowAsset = borrowsMap[userReserveData.underlyingAsset];
+    const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];
+    const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
+
     const supplyAsset = suppliesMap[userReserveData.underlyingAsset];
 
     let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
     let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
     // TODO: combine stable borrow amount as well
-    if (borrowAsset && borrowAsset.interestRate == InterestRate.Variable) {
-      const scaledDownVariableDebtV3 = valueToBigNumber(userReserveData.scaledVariableDebt);
-      const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
+    const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
+    if (variableBorrowAsset) {
       const scaledDownVariableDebtV2Balance = rayDiv(
-        valueToWei(borrowAsset.increasedAmount, userReserveData.reserve.decimals),
+        valueToWei(variableBorrowAsset.increasedVariableBorrows, userReserveData.reserve.decimals),
         variableBorrowIndexV3
       );
-      combinedScaledDownVariableDebtV3 = scaledDownVariableDebtV3
+      combinedScaledDownVariableDebtV3 = valueToBigNumber(combinedScaledDownVariableDebtV3)
         .plus(scaledDownVariableDebtV2Balance)
+        .toString();
+    }
+    if (stableBorrowAsset) {
+      const scaledDownStableDebtV2Balance = rayDiv(
+        valueToWei(stableBorrowAsset.increasedStableBorrows, userReserveData.reserve.decimals),
+        variableBorrowIndexV3
+      );
+      combinedScaledDownVariableDebtV3 = valueToBigNumber(combinedScaledDownVariableDebtV3)
+        .plus(scaledDownStableDebtV2Balance)
         .toString();
     }
 

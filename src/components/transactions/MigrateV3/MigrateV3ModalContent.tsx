@@ -7,7 +7,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import {
   selectedUserSupplyReservesForMigration,
-  selectUserBorrowReservesForMigration,
+  selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -26,7 +26,7 @@ export const MigrateV3ModalContent = () => {
     useCallback(
       (state) => ({
         supplyPositions: selectedUserSupplyReservesForMigration(state, currentTimeStamp),
-        borrowPositions: selectUserBorrowReservesForMigration(state, currentTimeStamp),
+        borrowPositions: selectSelectedBorrowReservesForMigrationV3(state, currentTimeStamp),
       }),
       [currentTimeStamp]
     )
@@ -34,7 +34,7 @@ export const MigrateV3ModalContent = () => {
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, connectReadOnlyMode } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
   const supplyAssets = supplyPositions.map((supplyAsset) => {
@@ -68,7 +68,7 @@ export const MigrateV3ModalContent = () => {
   return (
     <>
       <TxModalTitle title="Migrate to V3" />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !connectReadOnlyMode && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
