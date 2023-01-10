@@ -1,7 +1,7 @@
 import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { useEffect, useRef, useState } from 'react';
+import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -34,6 +34,8 @@ interface UseParaSwapTransactionHandlerProps {
    * If true, handleGetApprovalTxns will not be called. Can be used if the route information is still loading.
    */
   skip?: boolean;
+  spender: string;
+  deps?: DependencyList;
 }
 
 interface ApprovalProps {
@@ -46,6 +48,8 @@ export const useParaSwapTransactionHandler = ({
   handleGetApprovalTxns,
   gasLimitRecommendation,
   skip,
+  spender,
+  deps = [],
 }: UseParaSwapTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -60,7 +64,7 @@ export const useParaSwapTransactionHandler = ({
   const { sendTx, getTxError, signTxData } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
-  const { walletApprovalMethodPreference, signERC20Approval } = useRootStore();
+  const { walletApprovalMethodPreference, generateSignatureRequst } = useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -126,12 +130,11 @@ export const useParaSwapTransactionHandler = ({
       try {
         // deadline is an hour after signature
         const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-
-        // TO-DO: separate method in slice for generating approval on Paraswap helper in place of Pool
-        const unsingedPayload = await signERC20Approval({
-          reserve: underlyingAsset,
-          amount,
+        const unsingedPayload = await generateSignatureRequst({
+          token: underlyingAsset,
+          amount: amount,
           deadline,
+          spender,
         });
         try {
           const signature = await signTxData(unsingedPayload);
@@ -260,6 +263,7 @@ export const useParaSwapTransactionHandler = ({
           const approval = data.find((tx) => tx.txType === 'ERC20_APPROVAL');
           const preferPermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
           if (approval && preferPermit) {
+            setApprovalTxState({ success: false });
             setUsePermit(true);
             setMainTxState({
               txHash: undefined,
@@ -282,7 +286,7 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip]);
+  }, [skip, ...deps, walletApprovalMethodPreference]);
 
   return {
     approval,
