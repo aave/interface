@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
+import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
@@ -78,26 +79,7 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
-          <FormattedNumber
-            compact
-            percent
-            value={reserve.variableBorrowAPR}
-            variant="secondary14"
-          />
-        </Row>
-        <Row
-          sx={{ mb: 4 }}
-          caption={<Trans>Borrow APY with max discount</Trans>}
-          captionVariant="description"
-        >
-          <Box>
-            <FormattedNumber
-              compact
-              percent
-              value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-              variant="secondary14"
-            />
-          </Box>
+          <GhoBorrowApyRange percentVariant="secondary14" hyphenVariant="secondary14" />
         </Row>
         <Button
           variant="outlined"

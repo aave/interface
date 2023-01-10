@@ -1,6 +1,15 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -19,6 +28,8 @@ type GhoReserveConfigurationProps = {
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
   const { ghoReserveData } = useAppDataContext();
+  const { breakpoints } = useTheme();
+  const desktopScreens = useMediaQuery(breakpoints.up('sm'));
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -101,12 +112,18 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Box>
         </Box>
       </PanelRow>
-      <Divider sx={{ my: '40px' }} />
+      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow>
         <PanelTitle>
           <Trans>Borrow info</Trans>
         </PanelTitle>
-        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            flexDirection: { xs: 'column', sm: 'row' },
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
@@ -176,16 +193,24 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 />
               </Box>
             </PanelItem>
-            <PanelItem title={<Trans>APY</Trans>}>
+          </Box>
+          {desktopScreens && <Divider orientation="vertical" flexItem sx={{ mx: 6 }} />}
+          <Box mt={{ xs: 6, sm: 0 }}>
+            <PanelItem title={<Trans>Borrow APY</Trans>}>
               <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
+              {desktopScreens && (
+                <Typography variant="caption" color="text.secondary" mt={1}>
+                  <Trans>Decided by community</Trans>
+                </Typography>
+              )}
             </PanelItem>
           </Box>
         </Box>
       </PanelRow>
-      <Divider sx={{ my: '40px' }} />
+      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow id="discount">
         <PanelTitle>
-          <Trans>Discount info</Trans>
+          <Trans>Staking incentive</Trans>
         </PanelTitle>
         <Box sx={{ width: '100%' }}>
           <GhoDiscountCalculator />

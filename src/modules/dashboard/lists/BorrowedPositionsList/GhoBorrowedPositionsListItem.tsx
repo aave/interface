@@ -1,7 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button } from '@mui/material';
-import PercentIcon from 'public/icons/markets/percent-icon.svg';
+import { Button } from '@mui/material';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
@@ -46,7 +45,6 @@ export const GhoBorrowedPositionsListItem = ({
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
-      ghoBorder
     >
       <ListValueColumn
         symbol={reserve.symbol}
@@ -54,21 +52,18 @@ export const GhoBorrowedPositionsListItem = ({
         subValue={ghoUserData.userGhoBorrowBalance}
       />
       <ListColumn>
-        <Box sx={{ display: 'flex' }}>
-          <GhoIncentivesCard
-            value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
-            incentives={reserve.vIncentivesData}
-            symbol={reserve.symbol}
-            data-cy={`apyType`}
-            tooltip={<PercentIcon />}
-            borrowAmount={ghoUserData.userGhoBorrowBalance}
-            baseApy={ghoReserveData.ghoVariableBorrowAPY}
-            discountPercent={ghoReserveData.ghoDiscountRate * -1}
-            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-            stkAaveBalance={ghoUserData.userDiscountTokenBalance}
-            ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
-          />
-        </Box>
+        <GhoIncentivesCard
+          value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
+          incentives={reserve.vIncentivesData}
+          symbol={reserve.symbol}
+          data-cy={`apyType`}
+          borrowAmount={ghoUserData.userGhoBorrowBalance}
+          baseApy={ghoReserveData.ghoVariableBorrowAPY}
+          discountPercent={ghoReserveData.ghoDiscountRate * -1}
+          discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+          stkAaveBalance={ghoUserData.userDiscountTokenBalance}
+          ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+        />
       </ListColumn>
       <ListColumn>
         <ListItemAPYButton

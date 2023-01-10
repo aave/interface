@@ -54,7 +54,6 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
@@ -288,6 +287,7 @@ msgstr "Available rewards"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
@@ -343,6 +343,7 @@ msgstr "Borrow"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Borrow APY"
@@ -351,11 +352,6 @@ msgstr "Borrow APY"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
-
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
-msgid "Borrow APY with max discount"
-msgstr "Borrow APY with max discount"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -668,6 +664,10 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Decided by community"
+msgstr "Decided by community"
+
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Delegate"
@@ -742,10 +742,6 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Discount info"
-msgstr "Discount info"
-
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Discount on base APY"
 msgstr "Discount on base APY"
@@ -758,13 +754,7 @@ msgstr "Discount parameters"
 msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
 msgstr "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Discount program"
-msgstr "Discount program"
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discountable amount"
 msgstr "Discountable amount"
 
@@ -908,6 +898,10 @@ msgstr "Fetching data..."
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
 msgstr "Filter"
+
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
+msgstr "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
@@ -1109,6 +1103,7 @@ msgstr "Language"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -1406,6 +1401,8 @@ msgstr "Powered by"
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Price"
 msgstr "Price"
 
@@ -1588,10 +1585,6 @@ msgstr "SEE CHARTS"
 msgid "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
 msgstr "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Safety Module participants receive a discount on the GHO borrow interest rate."
-msgstr "Safety Module participants receive a discount on the GHO borrow interest rate."
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
@@ -1713,6 +1706,10 @@ msgstr "Stake"
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "Stake AAVE and borrow GHO at a lower rate"
+msgstr "Stake AAVE and borrow GHO at a lower rate"
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Stake AAVE to borrow GHO at a discount"
 msgstr "Stake AAVE to borrow GHO at a discount"
@@ -1752,6 +1749,10 @@ msgstr "Staking Rewards"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Staking balance"
 msgstr "Staking balance"
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Staking incentive"
+msgstr "Staking incentive"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2563,8 +2564,6 @@ msgid "starts"
 msgstr "starts"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "to"
 msgstr "to"
 

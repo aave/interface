@@ -1,10 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { ROUTES } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import {
@@ -60,10 +61,17 @@ export const GhoBorrowedPositionsListMobileItem = ({
         disabled={ghoUserData.userGhoBorrowBalance === 0}
       />
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
+        <GhoIncentivesCard
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
-          symbol={symbol}
-          variant="secondary14"
+          incentives={reserve.vIncentivesData}
+          symbol={reserve.symbol}
+          data-cy={`apyType`}
+          borrowAmount={ghoUserData.userGhoBorrowBalance}
+          baseApy={ghoReserveData.ghoVariableBorrowAPY}
+          discountPercent={ghoReserveData.ghoDiscountRate * -1}
+          discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+          stkAaveBalance={ghoUserData.userDiscountTokenBalance}
+          ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </Row>
       <Row
