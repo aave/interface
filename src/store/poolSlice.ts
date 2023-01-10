@@ -91,6 +91,7 @@ export interface PoolSlice {
   supply: (
     args: Omit<SupplyActionProps, 'poolReserve'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
   generateSignatureRequst: (args: {
     token: string;
     amount: string;
@@ -461,7 +462,7 @@ export const createPoolSlice: StateCreator<
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
     },
-    // TO-DO: extract this logic to @aave/contract-helpers, and combine with approval tx generation
+    // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
     generateSignatureRequst: async ({ token, amount, deadline, spender }) => {
       const provider = get().jsonRpcProvider();
       const tokenERC20Service = new ERC20Service(provider);

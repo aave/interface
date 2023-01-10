@@ -263,6 +263,7 @@ export const useParaSwapTransactionHandler = ({
           const approval = data.find((tx) => tx.txType === 'ERC20_APPROVAL');
           const preferPermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
           if (approval && preferPermit) {
+            // Request new signature if dependency array updates: collateral asset or amount changes
             setApprovalTxState({ success: false });
             setUsePermit(true);
             setMainTxState({
