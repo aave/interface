@@ -916,7 +916,7 @@
     "GHO": {
       "fullName": "GHO",
       "shortName": "GHO",
-      "collateral": true,
+      "collateral": false,
       "wrapped": false
     }
   }

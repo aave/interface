@@ -44,11 +44,6 @@ export class DashboardHelpers {
           }
           return res;
         });
-        // let res = false;
-        // return DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        //   if (!isNaN($val)) res = true;
-        //   return res;
-        // });
       },
       {
         timeout: 30000,
@@ -56,4 +51,11 @@ export class DashboardHelpers {
       }
     );
   };
+  public static openBorrowModal(assetName: string) {
+    cy.get(`[data-cy='dashboardBorrowListItem_${assetName.toUpperCase()}']`)
+      .contains('Borrow')
+      .should('not.be.disabled')
+      .click();
+    cy.get(`[data-cy=Modal] h2:contains("Borrow ${assetName}")`).should('be.visible');
+  }
 }

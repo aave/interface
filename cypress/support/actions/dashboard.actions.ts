@@ -1,4 +1,5 @@
 import constants from '../../fixtures/constans.json';
+import { DashboardHelpers } from '../helpers/dashboard.helper';
 
 export class DashboardActions {
   public static borrow({
@@ -19,11 +20,7 @@ export class DashboardActions {
     const _actionName = constants.actionTypes.borrow;
     return it(`Borrow ${amount} ${asset.shortName}`, () => {
       cy.doSwitchToDashboardBorrowView();
-      cy.get(`[data-cy='dashboardBorrowListItem_${asset.shortName.toUpperCase()}']`)
-        .contains('Borrow')
-        .should('not.be.disabled')
-        .click();
-      cy.get(`[data-cy=Modal] h2:contains("Borrow ${asset.shortName}")`).should('be.visible');
+      DashboardHelpers.openBorrowModal(asset.shortName);
       switch (apyType) {
         case constants.borrowAPYType.variable:
           cy.get('[data-cy=Modal] [role=group] button p')

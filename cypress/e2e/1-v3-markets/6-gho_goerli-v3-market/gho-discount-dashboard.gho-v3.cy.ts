@@ -4,6 +4,7 @@ import { DashboardActions } from '../../../support/actions/dashboard.actions';
 import { TenderlyActions } from '../../../support/actions/tenderly.actions';
 import { DashboardHelpers } from '../../../support/helpers/dashboard.helper';
 import { configEnvWithTenderlyGoerliGhoFork } from '../../../support/steps/configuration.steps';
+import gho from './fixtures/gho.json';
 import { tokenSet } from './helpers/token.helper';
 
 const testData = {
@@ -22,31 +23,29 @@ const testData = {
 };
 
 describe(`GHO discount integrating testing`, () => {
-  const maxGHOApy = 2.02;
-  const minGHOApy = 1.62;
   let baseApy: number;
 
   describe(`Verify default APY for GHO`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
     });
-    it(`Check APY rate from dashboard is ${maxGHOApy}%`, () => {
+    it(`Check APY rate from dashboard is ${gho.apy.max}%`, () => {
       DashboardHelpers.waitLoadingGHODashboard();
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
         console.log($val);
         baseApy = $val;
-        expect(baseApy).to.be.eql(maxGHOApy);
+        expect(baseApy).to.be.eql(gho.apy.max);
       });
     });
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
     DashboardActions.borrow(testData.borrow);
-    it(`Check that borrowed APY is ${maxGHOApy}%`, () => {
+    it(`Check that borrowed APY is ${gho.apy.max}%`, () => {
       //borrow 100 GHO
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(maxGHOApy);
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
-      DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(maxGHOApy);
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
     });
   });
@@ -55,31 +54,31 @@ describe(`GHO discount integrating testing`, () => {
       v3: true,
       tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
     });
-    it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
-      DashboardHelpers.waitLoadingGHODashboard(minGHOApy);
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(minGHOApy);
+    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrow`, () => {
+      DashboardHelpers.waitLoadingGHODashboard(gho.apy.min);
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
       });
     });
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 2 }));
     DashboardActions.borrow(testData.borrow);
-    it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrowed, and that borrow APY go up`, () => {
-      DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(minGHOApy);
+    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrowed, and that borrow APY go up`, () => {
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
       });
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.lessThan(maxGHOApy);
-        expect($val).to.be.greaterThan(minGHOApy);
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+        expect($val).to.be.lessThan(gho.apy.min);
+        expect($val).to.be.greaterThan(gho.apy.min);
       });
     });
     TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 3 }));
-    it(`Check that APY rate grow till max ${maxGHOApy}% after unstake`, () => {
+    it(`Check that APY rate grow till max ${gho.apy.max}% after unstake`, () => {
       cy.wait(1000); //wait update of dashboard
-      DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(maxGHOApy);
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(maxGHOApy);
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
     });
   });
@@ -88,25 +87,25 @@ describe(`GHO discount integrating testing`, () => {
       v3: true,
       tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
     });
-    it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrow`, () => {
-      DashboardHelpers.waitLoadingGHODashboard(minGHOApy);
-      DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(minGHOApy);
+    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrow`, () => {
+      DashboardHelpers.waitLoadingGHODashboard(gho.apy.min);
+      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
       });
     });
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 2 }));
     DashboardActions.borrow(testData.borrow);
-    it(`Check APY rate from dashboard with max discount ${minGHOApy}% for borrowed, and that borrow APY go up`, () => {
-      DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.eql(minGHOApy);
+    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrowed, and that borrow APY go up`, () => {
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
       });
     });
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
     DashboardActions.borrow(testData.borrow2);
     it(`Check that borrowed APY was grow`, () => {
       cy.wait(1000); //wait update of dashboard
-      DashboardHelpers.getApyBorrowedRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-        expect($val).to.be.greaterThan(minGHOApy);
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        expect($val).to.be.greaterThan(gho.apy.min);
       });
     });
   });
