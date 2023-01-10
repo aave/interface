@@ -272,7 +272,8 @@ export const useParaSwapTransactionHandler = ({
           if (
             deps[0] !== previousDeps.asset ||
             Number(deps[1]) >
-              Number(previousDeps.amount) + Number(previousDeps.amount) * SIGNATURE_AMOUNT_MARGIN
+              Number(previousDeps.amount) +
+                Number(previousDeps.amount) * (SIGNATURE_AMOUNT_MARGIN / 2)
           ) {
             setApprovalTxState({ success: false });
             setTxError(undefined);
