@@ -17,6 +17,6 @@ jobs:
           persist-credentials: false
 
       - name: Sync opened issue to Height
-        uses: .github/actions/height-integration/sync-issue/issue-opened/action.yml
+        uses: ./.github/actions/height-integration/sync-issue/issue-opened/action.yml
         with:
           HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
