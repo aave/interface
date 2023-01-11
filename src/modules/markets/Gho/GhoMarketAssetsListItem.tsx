@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, styled, Typography } from '@mui/material';
-import PercentIcon from 'public/icons/markets/percent-icon.svg';
+import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -38,7 +38,7 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
   return (
-    <Box sx={{ px: 6, mt: 1, mb: 6 }}>
+    <Box sx={{ px: 3, mt: 1, mb: 6 }}>
       <FieldSet>
         <Legend>
           <Trans>Aave Protocol native asset</Trans>
@@ -80,47 +80,18 @@ export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProp
             <ListColumn>
               <FormattedNumber
                 compact
-                percent
-                value={ghoReserveData.ghoVariableBorrowAPY}
+                value={ghoReserveData.aaveFacilitatorRemainingCapacity}
                 visibleDecimals={2}
                 variant="h3"
               />
               <Typography variant="secondary12" color="text.secondary">
-                <Trans>Borrow APY</Trans>
+                <Trans>Available to borrow</Trans>
               </Typography>
             </ListColumn>
             <ListColumn minWidth={195}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Box sx={{ mr: 2, position: 'relative', color: 'text.muted' }}>
-                  <FormattedNumber
-                    compact
-                    percent
-                    value={ghoReserveData.ghoVariableBorrowAPY}
-                    visibleDecimals={2}
-                    variant="h3"
-                    symbolsColor="text.muted"
-                  />
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      width: '100%',
-                      top: '48%',
-                      borderBottom: '1px solid',
-                    }}
-                  />
-                </Box>
-                <FormattedNumber
-                  compact
-                  percent
-                  value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-                  visibleDecimals={2}
-                  variant="h3"
-                  sx={{ mr: 0.5 }}
-                />
-                <PercentIcon />
-              </Box>
+              <GhoBorrowApyRange />
               <Typography variant="secondary12" color="text.secondary">
-                <Trans>Borrow APY with max discount</Trans>
+                <Trans>Borrow APY</Trans>
               </Typography>
             </ListColumn>
             <ListColumn maxWidth={95} /> {/* empty column for spacing */}

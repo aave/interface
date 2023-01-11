@@ -372,7 +372,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           </Button>
         </StakeActionBox>
       </Stack>
-      {hasDiscountProgram && <GhoDiscountProgram />}
+
+      {hasDiscountProgram && (
+        <Box sx={{ mt: 4 }}>
+          <GhoDiscountProgram />
+        </Box>
+      )}
     </Paper>
   );
 };

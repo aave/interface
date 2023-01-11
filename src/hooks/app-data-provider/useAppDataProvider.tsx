@@ -96,7 +96,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     eModes,
     ghoReserveData,
     ghoUserData,
-    ghoLoadingData,
+    ghoReserveDataFetched,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -107,7 +107,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectEmodes(state),
     state.ghoReserveData,
     state.ghoUserData,
-    state.ghoLoadingData,
+    state.ghoReserveDataFetched,
   ]);
 
   const formattedPoolReserves = formatReservesAndIncentives({
@@ -275,9 +275,12 @@ export const AppDataProvider: React.FC = ({ children }) => {
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+        // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
+        // would work out pretty well. We could even extend that pattern for the other reserves, and migrate towards the global store instead of the app data provider.
+        // ghoLoadingData for now is just propagated through to reduce changes to other components.
         ghoReserveData: formattedGhoReserveData,
         ghoUserData: formattedGhoUserData,
-        ghoLoadingData: ghoLoadingData,
+        ghoLoadingData: !ghoReserveDataFetched,
       }}
     >
       {children}

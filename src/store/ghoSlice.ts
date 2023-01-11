@@ -35,7 +35,8 @@ const mainnetGhoConfig: GhoMarketConfig = {
 export interface GhoSlice {
   ghoReserveData: GhoReserveData;
   ghoUserData: GhoUserData;
-  ghoLoadingData: boolean;
+  ghoReserveDataFetched: boolean;
+  ghoUserDataFetched: boolean;
   ghoMarketConfig: () => GhoMarketConfig;
   refreshGhoData: () => Promise<void>;
 }
@@ -66,7 +67,8 @@ export const createGhoSlice: StateCreator<
       userGhoScaledBorrowBalance: '0',
       userDiscountLockPeriodEndTimestamp: '0',
     },
-    ghoLoadingData: true,
+    ghoReserveDataFetched: false,
+    ghoUserDataFetched: false,
     ghoMarketConfig: () => {
       return STAGING_ENV || ENABLE_TESTNET ? goerliGhoConfig : mainnetGhoConfig;
     },
@@ -90,13 +92,15 @@ export const createGhoSlice: StateCreator<
         set({
           ghoReserveData: ghoReserveData,
           ghoUserData: ghoUserData,
-          ghoLoadingData: false,
+          ghoReserveDataFetched: true,
+          ghoUserDataFetched: true,
         });
       } else {
         const ghoReserveData = await ghoService.getGhoReserveData();
         set({
           ghoReserveData: ghoReserveData,
-          ghoLoadingData: false,
+          ghoReserveDataFetched: true,
+          ghoUserDataFetched: false,
         });
       }
     },

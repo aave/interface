@@ -1,14 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
+import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useRootStore } from 'src/store/root';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
@@ -17,65 +16,63 @@ const FieldSet = styled('fieldset')(({ theme }) => ({
   margin: 0,
 }));
 
-const Legend = styled('legend')(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
-  margin: 'auto',
-  color: theme.palette.text.secondary,
-  borderRadius: '4px',
-  cursor: 'default',
-  ...theme.typography.main12,
-}));
-
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const { ghoUserData, ghoReserveData } = useAppDataContext();
+  const { currentMarket, ghoMarketConfig } = useRootStore();
+
+  const styles = {
+    desktop: {
+      pt: 4,
+    },
+    mobile: {
+      pt: 4,
+      position: 'relative',
+      '&:before': {
+        content: "''",
+        position: 'absolute',
+        top: 0,
+        left: '-16px',
+        width: 'calc(100% + 32px)',
+        height: '1px',
+        bgcolor: { xs: 'divider', xsm: 'transparent' },
+      },
+    },
+  };
 
   return (
-    <Box sx={{ mt: 5 }}>
-      <FieldSet>
-        <Legend>
-          <Trans>Discount program</Trans>
-        </Legend>
-        <Box sx={{ mx: 1 }}>
-          <Warning sx={{ width: '100%', my: 2 }} severity="info">
+    <Box sx={downToXsm ? styles.mobile : styles.desktop}>
+      <Box display="flex" justifyContent={downToXsm ? 'center' : 'flex-start'}>
+        <TextWithTooltip
+          text={<Trans>Stake AAVE and borrow GHO at a lower rate</Trans>}
+          variant="subheader1"
+        >
+          <>
             <Trans>
-              Safety Module participants receive a discount on the GHO borrow interest rate.
-            </Trans>
-          </Warning>
-        </Box>
-        {downToXsm ? (
-          <GhoDiscountProgramMobile
-            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-            aprWithDiscount={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-            ghoDiscountRatePercent={ghoReserveData.ghoDiscountRate}
-          />
-        ) : (
-          <GhoDiscountProgramDesktop
-            discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-            aprWithDiscount={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-            ghoDiscountRatePercent={ghoReserveData.ghoDiscountRate}
-          />
-        )}
+              For each staked AAVE Safety Module participants may borrow GHO with lower interest
+              rate.
+            </Trans>{' '}
+            <Link
+              href={
+                ROUTES.reserveOverview(ghoMarketConfig().ghoTokenAddress, currentMarket) +
+                '/#discount'
+              }
+              underline="always"
+            >
+              <Trans>Learn more</Trans>
+            </Link>
+          </>
+        </TextWithTooltip>
+      </Box>
+      <FieldSet sx={{ mt: 2, px: 4, py: downToXsm ? 4 : 3 }}>
+        {downToXsm ? <GhoDiscountProgramMobile /> : <GhoDiscountProgramDesktop />}
       </FieldSet>
     </Box>
   );
 };
 
-interface GhoDiscountProgramProps {
-  discountableAmount: number;
-  aprWithDiscount: number;
-  ghoDiscountRatePercent: number;
-}
-
-const GhoDiscountProgramDesktop = ({
-  discountableAmount,
-  aprWithDiscount,
-  ghoDiscountRatePercent,
-}: GhoDiscountProgramProps) => {
-  const { currentMarket, ghoMarketConfig, ghoLoadingData } = useRootStore();
-  const loading = ghoLoadingData;
+const GhoDiscountProgramDesktop: React.FC = () => {
+  const { currentMarket, ghoMarketConfig, ghoReserveDataFetched } = useRootStore();
 
   return (
     <ListItem sx={{ px: 0, minHeight: 'unset' }}>
@@ -88,28 +85,13 @@ const GhoDiscountProgramDesktop = ({
       <ListColumn minWidth={150}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant="subheader2" color="text.secondary">
-            <Trans>Discountable amount</Trans>
+            <Trans>Price</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {loading ? (
-              <Skeleton width={70} height={20} />
-            ) : discountableAmount > 0 ? (
-              <FormattedNumber
-                compact
-                value={discountableAmount}
-                visibleDecimals={1}
-                variant="main14"
-              />
+            {!ghoReserveDataFetched ? (
+              <Skeleton width={70} height={24} />
             ) : (
-              <>
-                <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
-                <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
-                <Typography>
-                  <Trans>to</Trans>
-                </Typography>
-                <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
-                <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
-              </>
+              <FormattedNumber symbol="USD" value={1} visibleDecimals={2} variant="main14" />
             )}
           </Box>
         </Box>
@@ -120,19 +102,10 @@ const GhoDiscountProgramDesktop = ({
             <Trans>Borrow APY</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            {loading ? (
+            {!ghoReserveDataFetched ? (
               <Skeleton width={80} height={20} />
             ) : (
-              <>
-                <FormattedNumber
-                  compact
-                  percent
-                  value={aprWithDiscount}
-                  visibleDecimals={1}
-                  variant="main14"
-                />
-                <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
-              </>
+              <GhoBorrowApyRange percentVariant="main14" hyphenVariant="secondary14" />
             )}
           </Box>
         </Box>
@@ -150,49 +123,30 @@ const GhoDiscountProgramDesktop = ({
   );
 };
 
-const GhoDiscountProgramMobile = ({
-  discountableAmount,
-  aprWithDiscount,
-  ghoDiscountRatePercent,
-}: GhoDiscountProgramProps) => {
-  const { currentMarket, ghoMarketConfig, ghoLoadingData } = useRootStore();
-  const loading = ghoLoadingData;
+const GhoDiscountProgramMobile: React.FC = () => {
+  const { currentMarket, ghoMarketConfig, ghoReserveDataFetched } = useRootStore();
+
   return (
     <Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', my: 4 }}>
-        <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
-        <Box sx={{ px: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+        <TokenIcon sx={{ fontSize: '32px' }} symbol="GHO" fontSize="inherit" />
+        <Box sx={{ ml: 2 }}>
           <Typography variant="h4">GHO</Typography>
         </Box>
       </Box>
       <Row
-        sx={{ mb: 2 }}
+        sx={{ mb: 5 }}
         caption={
           <Typography variant="subheader2" color="text.secondary">
-            <Trans>Discountable amount</Trans>
+            <Trans>Price</Trans>
           </Typography>
         }
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {loading ? (
+          {!ghoReserveDataFetched ? (
             <Skeleton width={70} height={24} />
-          ) : discountableAmount > 0 ? (
-            <FormattedNumber
-              compact
-              value={discountableAmount}
-              visibleDecimals={1}
-              variant="main14"
-            />
           ) : (
-            <>
-              <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
-              <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
-              <Typography>
-                <Trans>to</Trans>
-              </Typography>
-              <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
-              <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
-            </>
+            <FormattedNumber value={1} visibleDecimals={2} variant="main14" symbol="USD" />
           )}
         </Box>
       </Row>
@@ -212,23 +166,15 @@ const GhoDiscountProgramMobile = ({
             justifyContent: 'center',
           }}
         >
-          {loading ? (
+          {!ghoReserveDataFetched ? (
             <Skeleton width={60} height={40} />
           ) : (
-            <>
-              <FormattedNumber
-                compact
-                percent
-                value={aprWithDiscount}
-                visibleDecimals={1}
-                variant="main14"
-              />
-              <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
-            </>
+            <GhoBorrowApyRange percentVariant="main14" hyphenVariant="secondary14" />
           )}
         </Box>
       </Row>
       <Button
+        fullWidth
         variant="outlined"
         component={Link}
         href={ROUTES.reserveOverview(ghoMarketConfig().ghoTokenAddress, currentMarket)}

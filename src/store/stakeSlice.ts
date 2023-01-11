@@ -3,6 +3,7 @@ import {
   StakingService,
   UiStakeDataProvider,
 } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
@@ -56,6 +57,12 @@ export interface StakeSlice {
   stakeDataLoading: boolean;
   stakeUserResult?: StakeUserUiData;
   stakeGeneralResult?: StakeGeneralUiData;
+  signStakingApproval: (args: { token: string; amount: string }) => Promise<string>;
+  stakeWithPermit: (args: {
+    token: string;
+    amount: string;
+    signature: SignatureLike;
+  }) => Promise<EthereumTransactionTypeExtended[]>;
   stake: (args: {
     token: string;
     amount: string;
@@ -115,6 +122,24 @@ export const createStakeSlice: StateCreator<
         console.log('error fetching general stake data');
       }
       set({ stakeDataLoading: false });
+    },
+    signStakingApproval({ token, amount }) {
+      const provider = getCorrectProvider();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
+      });
+      const currentUser = get().account;
+      return service.signStaking(currentUser, amount);
+    },
+    stakeWithPermit({ token, amount, signature }) {
+      const provider = getCorrectProvider();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
+      });
+      const currentUser = get().account;
+      return service.stakeWithPermit(currentUser, amount, signature);
     },
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
