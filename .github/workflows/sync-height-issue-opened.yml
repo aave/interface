@@ -20,3 +20,4 @@ jobs:
         uses: ./.github/actions/height-integration/sync-issue/issue-opened
         with:
           HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+          ISSUE: ${{ github.event.issue }}
