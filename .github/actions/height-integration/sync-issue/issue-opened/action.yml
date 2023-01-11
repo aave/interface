@@ -1,5 +1,5 @@
 name: Sync new issue to Height
-description: Creates a new task in Height and moves it into the Github Issues Intake task on the interface project board
+description: Creates a new subtask in Height and moves it into the Github Issues Intake task on the interface project board
 
 on:
   issues:
