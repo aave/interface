@@ -12,6 +12,9 @@ jobs:
       - id: createHeightTaskRequest
         name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
+        env:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+          ISSUE: ${{ github.event.issue }}
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
