@@ -95,6 +95,10 @@ export const MigrationListItem = ({
         </ListColumn>
       )}
 
+      <ListColumn>
+        <p>0% {'->'} 0%</p>
+      </ListColumn>
+
       {!!borrowApyType && (
         <ListColumn>
           <p>
