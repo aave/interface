@@ -15,10 +15,10 @@ jobs:
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
-          customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ HEIGHT_SECRET_TOKEN }}" }'
+          customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ env.HEIGHT_SECRET_TOKEN }}" }'
           data: '{
-            "name": "${{ ISSUE.title }}",
-            "description": "${{ ISSUE.description }}",
+            "name": "${{ env.ISSUE.title }}",
+            "description": "${{ env.ISSUE.description }}",
             "listIds": [
             "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],

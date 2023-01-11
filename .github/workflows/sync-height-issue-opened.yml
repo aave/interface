@@ -18,6 +18,6 @@ jobs:
 
       - name: Sync opened issue to Height
         uses: ./.github/actions/height-integration/sync-issue/issue-opened
-        with:
+        env:
           HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
           ISSUE: ${{ github.event.issue }}
