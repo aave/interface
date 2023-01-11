@@ -1,10 +1,12 @@
+import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { NoData } from 'src/components/primitives/NoData';
 import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
 
 interface MigrationListProps {
@@ -63,7 +65,41 @@ export const MigrationList = ({
             <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
               <ListHeaderTitle onClick={onSelectAllClick}>
                 <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  {allSelected ? <Trans>Unselect all</Trans> : <Trans>Select all</Trans>}
+                  {allSelected ? (
+                    <Box
+                      sx={(theme) => ({
+                        border: `2px solid ${theme.palette.text.secondary}`,
+                        background: theme.palette.text.secondary,
+                        width: 16,
+                        height: 16,
+                        borderRadius: '2px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}
+                    >
+                      <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+                        <CheckIcon />
+                      </SvgIcon>
+                    </Box>
+                  ) : (
+                    <Box
+                      sx={(theme) => ({
+                        border: `2px solid ${theme.palette.text.secondary}`,
+                        background: theme.palette.text.secondary,
+                        width: 16,
+                        height: 16,
+                        borderRadius: '2px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}
+                    >
+                      <NoData color="white" sx={{ fontSize: '12px', mb: '2px' }} />
+                    </Box>
+                  )}
                 </Typography>
               </ListHeaderTitle>
             </ListColumn>
