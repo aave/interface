@@ -55,6 +55,7 @@ export const MigrationListBorrowItem = ({
       onCheckboxClick={handleCheckboxClick}
       disabled={userReserve.disabledForMigration}
       enabledAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
+      borrowApyType={userReserve.interestRate}
     />
   );
 };

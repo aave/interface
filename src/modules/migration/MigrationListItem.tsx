@@ -21,6 +21,7 @@ interface MigrationListItemProps {
   canBeEnforced?: boolean;
   enableAsCollateral?: () => void;
   isIsolated?: boolean;
+  borrowApyType?: string;
 }
 
 export const MigrationListItem = ({
@@ -36,6 +37,7 @@ export const MigrationListItem = ({
   enableAsCollateral,
   canBeEnforced,
   isIsolated,
+  borrowApyType,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -50,9 +52,8 @@ export const MigrationListItem = ({
       <ListColumn align="center" maxWidth={isDesktop ? 60 : 40} minWidth={40}>
         <Box
           sx={(theme) => ({
-            border: `2px solid ${
-              Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
-            }`,
+            border: `2px solid ${Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+              }`,
             background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
             width: 16,
             height: 16,
@@ -91,6 +92,14 @@ export const MigrationListItem = ({
             isIsolated={isIsolated || false}
             onToggleSwitch={enableAsCollateral}
           />
+        </ListColumn>
+      )}
+
+      {!!borrowApyType && (
+        <ListColumn>
+          <p>
+            {borrowApyType} -{'>'} Variable
+          </p>
         </ListColumn>
       )}
 
