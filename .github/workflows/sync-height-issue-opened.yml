@@ -16,8 +16,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set the environment variables
+        env:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
+          ISSUE: ${{ github.event.issue }}
+
       - name: Sync opened issue to Height
         uses: ./.github/actions/height-integration/sync-issue/issue-opened
         with:
-          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
-          ISSUE: ${{ github.event.issue }}
+          HEIGHT_SECRET_TOKEN: ${{ env.HEIGHT_SECRET_TOKEN }}
+          ISSUE: ${{ env.ISSUE }}
