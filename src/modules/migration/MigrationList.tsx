@@ -62,7 +62,7 @@ export const MigrationList = ({
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper>
-            <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
+            <ListColumn align="center" maxWidth={isDesktop ? 60 : 40} minWidth={40}>
               <ListHeaderTitle onClick={onSelectAllClick}>
                 <Typography variant="main12" sx={{ fontWeight: 700 }}>
                   {allSelected ? (

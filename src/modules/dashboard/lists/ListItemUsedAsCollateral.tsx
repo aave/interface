@@ -43,3 +43,7 @@ export const ListItemUsedAsCollateral = ({
     </>
   );
 };
+
+// TO-DO: Sub out switch for row showing V2 -> V3 collateral change with check or dash
+//          <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+//         <NoData variant={variant} color="text.secondary" />

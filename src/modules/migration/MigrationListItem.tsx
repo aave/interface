@@ -47,7 +47,7 @@ export const MigrationListItem = ({
 
   return (
     <ListItem>
-      <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
+      <ListColumn align="center" maxWidth={isDesktop ? 60 : 40} minWidth={40}>
         <Box
           sx={(theme) => ({
             border: `2px solid ${
