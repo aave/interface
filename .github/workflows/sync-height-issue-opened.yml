@@ -1,0 +1,23 @@
+name: Sync opened issues to Height
+description: Creates a new intake subtask in Height for tracking when an issue is opened or reopened
+
+on:
+  issues:
+    types: [opened, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Sync opened issue to Height
+        uses: ./github/actions/height-integration/sync-issue/issue-opened/action.yml
+        with:
+          HEIGHT_SECRET_TOKEN: ${{ secrets.HEIGHT_SECRET_TOKEN }}
