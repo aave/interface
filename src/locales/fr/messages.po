@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-23 18:04\n"
+"PO-Revision-Date: 2023-01-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -185,6 +185,9 @@ msgstr "Approuver {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Les paramètres de tableau devraient être de même longueur ne sont pas"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
@@ -220,6 +223,7 @@ msgid "Asset to delegate"
 msgstr "Actif à déléguer"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets"
 msgstr "Actifs"
 
@@ -756,10 +760,6 @@ msgstr "Anglais"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Entrez l'adresse ETH"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Enter an address to track in watch-only mode"
-msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1327,6 +1327,18 @@ msgstr "Raw-Ipfs"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
 msgstr "Atteint"
+
+#: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
+msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx
+msgid "Read-only mode."
+msgstr ""
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Read-only mode. Connect to a wallet to perform transactions."
+msgstr ""
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
@@ -1936,6 +1948,14 @@ msgstr "Pouvoir de vote total"
 msgid "Total worth"
 msgstr "Valeur totale"
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet balance in read-only mode"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
 msgstr "La transaction a échoué"
@@ -2119,22 +2139,6 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Watch address"
-msgstr ""
-
-#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
-msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr ""
-
-#: src/layouts/WalletWidget.tsx
-msgid "Watch-only mode."
-msgstr ""
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Watch-only mode. Connect to a wallet to perform transactions."
-msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
