@@ -53,15 +53,16 @@ export const selectMigrationSelectedBorrowIndex = (
   return selectedBorrowAssets.findIndex((asset) => asset.debtKey == borrowAsset.debtKey);
 };
 
-export type SplittedUserReserveIncreasedAmount = ComputedUserReserveData & {
+export type MigrationUserReserve = ComputedUserReserveData & {
   increasedStableBorrows: string;
   increasedVariableBorrows: string;
   interestRate: InterestRate;
   debtKey: string;
+  migrationDisabled?: MigrationDisabled;
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
-  const splittedUserReserves: SplittedUserReserveIncreasedAmount[] = [];
+  const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
       const increasedAmount = add1HourBorrowAPY(
@@ -136,6 +137,13 @@ export const selectUserReservesMapFromUserReserves = (
   return v3ReservesMap;
 };
 
+export enum MigrationDisabled {
+  IsolationModeBorrowDisabled,
+  EModeBorrowDisabled,
+  V3AssetMissing,
+  InsufficientLiquidity, // TODO
+}
+
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = selectV3UserSummary(
     store,
@@ -170,6 +178,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
 
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
     let usageAsCollateralEnabledOnUser = true;
+    let migrationDisabled: MigrationDisabled | undefined;
     const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
     if (isolatedReserveV3) {
@@ -177,6 +186,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
     } else {
       const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
+      if (!v3SupplyAsset) {
+        migrationDisabled = MigrationDisabled.V3AssetMissing;
+      }
       if (v3SupplyAsset?.underlyingBalance !== '0') {
         usageAsCollateralEnabledOnUser = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
       } else {
@@ -188,25 +200,28 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       usageAsCollateralEnabledOnUser,
       isolatedOnV3,
       canBeEnforced,
+      migrationDisabled,
     };
   });
 
   const mappedBorrowReserves = borrowReserves.map((userReserve) => {
     // TOOD: make mapping for liquidity
-    let disabledForMigration = false;
+    let disabledForMigration: MigrationDisabled | undefined;
     const selectedReserve = v3ReservesMap[userReserve.underlyingAsset]?.reserve;
 
-    if (isolatedReserveV3) {
-      disabledForMigration = !selectedReserve.borrowableInIsolation;
-    } else {
-      disabledForMigration = !v3ReservesMap[userReserve.underlyingAsset];
+    // Only show one warning icon per asset row, priority is: asset missing in V3, eMode borrow disabled, isolation mode borrow disabled
+    if (isolatedReserveV3 && !selectedReserve.borrowableInIsolation) {
+      disabledForMigration = MigrationDisabled.IsolationModeBorrowDisabled;
     }
-    if (!disabledForMigration && userEmodeCategoryId !== 0) {
-      disabledForMigration = selectedReserve?.eModeCategoryId !== userEmodeCategoryId;
+    if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+      disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
+    }
+    if (!v3ReservesMap[userReserve.underlyingAsset]) {
+      disabledForMigration = MigrationDisabled.V3AssetMissing;
     }
     return {
       ...userReserve,
-      disabledForMigration,
+      migrationDisabled: disabledForMigration,
     };
   });
 
@@ -305,7 +320,7 @@ export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, tim
       (userReserve) =>
         selectMigrationSelectedBorrowIndex(store.selectedMigrationBorrowAssets, userReserve) >= 0
     )
-    .filter((userReserve) => !userReserve.disabledForMigration)
+    .filter((userReserve) => !userReserve.migrationDisabled)
     // debtKey should be mapped for v3Migration
     .map((borrowReserve) => {
       let debtKey = borrowReserve.debtKey;
