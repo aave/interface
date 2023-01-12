@@ -92,5 +92,6 @@ jobs:
       - name: Log response
         run: cat response.json
       - name: Check API response
+        run: echo "${{ steps.create_subtask.outputs }}"
         if: steps.create_subtask.outputs.status != 200
         run: exit 1
