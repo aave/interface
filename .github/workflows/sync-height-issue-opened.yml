@@ -23,7 +23,7 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
-          export encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
+          export encoded_issue_body=$(echo "This is a description" | jq -cR 'gsub("\n"; "\\n")')
           export payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
             "description": "$encoded_issue_body",
