@@ -22,14 +22,16 @@ jobs:
       - name: Setup jq
         run: sudo apt-get install -y jq
       - name: Normalize and encode issue body as JSON
-        id: encodeDesc
+        id: desc
+        shell: bash
         run: |
           echo desc='${{ github.event.issue.body }}' | sed '{:q;N;s|\n|\\n|g;t q}' | sed 's|"|\\"|g' >> $GITHUB_OUTPUT
       - name: Encode the payload as JSON
         run: |
-          payload=$(echo '{
+          cat <<EOF > payload.json
+          {
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ steps.encodeDesc.outputs.desc }}"
+            "description": "${{ steps.desc.outputs.desc }}",
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
@@ -70,8 +72,8 @@ jobs:
                 "selectValue": null
               }
             ]
-          }')
-          echo $payload > payload.json
+          }
+          EOF
       - name: Log payload
         run: cat payload.json
       - name: Lint payload as valid JSON
