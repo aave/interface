@@ -34,7 +34,7 @@ jobs:
           cat <<EOF > payload.json
           {
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ steps.desc.outputs.desc }}",
+            "description": ${{ steps.desc.outputs.desc }},
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
