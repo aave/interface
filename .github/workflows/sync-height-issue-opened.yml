@@ -12,8 +12,15 @@ jobs:
   create_height_subtask:
     runs-on: ubuntu-latest
     steps:
-      - name: Install jq
-        run: sudo apt-get install -y jq
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache jq
+        uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/jq
+          key: jq-{{ hashFiles('jq-version') }}
+      - name: Setup jq
+        uses: actions/setup-jq@v2
       - name: Encode the payload as JSON
         run: |
           encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
@@ -63,13 +70,16 @@ jobs:
           }' | jq -c . > payload.json
       - name: View payload.json contents
         run: cat payload.json
-      - name: View payload.json contents in a readable way if valid JSON
-        run: cat payload.json | jq
+      - name: Lint JSON payload
+        run: npx jsonlint payload.json
       - name: Create a new subtask with issue details in Height
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v1.0.0
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
           files: payload.json@payload.json
           timeout: 15000
+      - name: Check API response
+        if: steps.create_subtask.outputs.status != 200
+        run: exit 1
