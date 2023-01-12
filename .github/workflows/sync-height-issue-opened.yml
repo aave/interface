@@ -68,6 +68,7 @@ jobs:
               }
             ]
           }')
+          $payload > payload.json
       - name: Log payload
         run: cat payload.json
       - name: Create a new subtask with issue details in Height
