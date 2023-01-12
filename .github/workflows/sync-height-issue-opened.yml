@@ -68,15 +68,13 @@ jobs:
               }
             ]
           }')
-      - name: Lint JSON payload
-        run: npx jsonlint ${{ payload }}
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: '${{ toJson(payload) }}'
+          data: ${{ toJson($payload) }}
           timeout: 15000
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
