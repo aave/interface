@@ -96,6 +96,11 @@ export default function V3Migration() {
   const handleToggleAllBorrow = () => {
     selectAllBorrow(currentTimeStamp);
   };
+  const selectedIsolatedAsset = supplyReserves.find(
+    (reserve) => reserve.isolatedOnV3 && reserve.usageAsCollateralEnabledOnUserV3
+  );
+  let enteringIsolationMode = false;
+  if (selectedIsolatedAsset) enteringIsolationMode = true;
 
   return (
     <>
@@ -133,7 +138,7 @@ export default function V3Migration() {
                       }
                       canBeEnforced={
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                          '0' && reserve.canBeEnforced
+                        '0' && reserve.canBeEnforced
                       }
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}
@@ -187,6 +192,7 @@ export default function V3Migration() {
             disableButton={
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }
+            enteringIsolationMode={enteringIsolationMode}
             loading={loading}
           />
         </ContentContainer>

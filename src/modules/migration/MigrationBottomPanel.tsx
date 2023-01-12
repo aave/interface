@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -27,6 +28,7 @@ interface MigrationBottomPanelProps {
   hfV3AfterChange: string;
   disableButton?: boolean;
   loading?: boolean;
+  enteringIsolationMode: boolean;
 }
 
 enum ErrorType {
@@ -41,6 +43,7 @@ export const MigrationBottomPanel = ({
   hfV3Current,
   hfV3AfterChange,
   disableButton,
+  enteringIsolationMode,
   loading,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
@@ -128,6 +131,8 @@ export const MigrationBottomPanel = ({
             <Blocked />
           </Warning>
         )}
+
+        {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
 
         <Box
           sx={{

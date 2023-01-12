@@ -115,7 +115,7 @@ export const MigrationLists = ({
           numSelected={selectedBorrowAssets?.length || 0}
           numAvailable={borrowReserves?.length || 0}
         >
-          {suppliesPositions}
+          {borrowsPositions}
         </MigrationList>
       )}
     </Box>
