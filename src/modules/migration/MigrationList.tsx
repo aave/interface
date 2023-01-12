@@ -21,6 +21,8 @@ interface MigrationListProps {
   withBorrow?: boolean;
   emodeCategoryId?: number;
   allSelected: boolean;
+  numSelected: number;
+  numAvailable: number;
 }
 
 export const MigrationList = ({
@@ -34,11 +36,13 @@ export const MigrationList = ({
   withCollateral,
   withBorrow,
   allSelected,
+  numSelected,
+  numAvailable,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
-  const isTablet = useMediaQuery(breakpoints.up('xsm'));
-  const isMobile = useMediaQuery(breakpoints.up('xs'));
+  const isTablet = useMediaQuery(breakpoints.up('md'));
+  const isMobile = useMediaQuery(breakpoints.down('xsm'));
 
   const assetColumnWidth =
     isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
@@ -54,9 +58,8 @@ export const MigrationList = ({
           </Typography>
         }
         topInfo={
-          !(loading || +totalAmount <= 0) && (
-            <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />
-          )
+          !(loading || +totalAmount <= 0) &&
+          !isMobile && <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />
         }
       >
         {(isAvailable || loading) && (
@@ -96,20 +99,39 @@ export const MigrationList = ({
                         justifyContent: 'center',
                       })}
                     >
-                      <NoData color="white" sx={{ fontSize: '12px', mb: '2px' }} />
+                      <NoData color="white" variant="secondary12" />
                     </Box>
                   )}
                 </Typography>
               </ListHeaderTitle>
             </ListColumn>
+            {isMobile && (
+              <Box
+                sx={{
+                  width: 160,
+                  height: 22,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="subheader2" color="text.secondary">
+                  <Trans>
+                    {numSelected}/{numAvailable} assets selected
+                  </Trans>
+                </Typography>
+              </Box>
+            )}
 
-            <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
-              <ListHeaderTitle>
-                <Trans>Assets</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
+            {!isMobile && (
+              <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+                <ListHeaderTitle>
+                  <Trans>Assets</Trans>
+                </ListHeaderTitle>
+              </ListColumn>
+            )}
 
-            {withCollateral && (
+            {withCollateral && !isMobile && (
               <ListColumn align="right">
                 <ListHeaderTitle>
                   <Trans>Collateral change</Trans>
@@ -117,13 +139,15 @@ export const MigrationList = ({
               </ListColumn>
             )}
 
-            <ListColumn align="right">
-              <ListHeaderTitle>
-                <Trans>APY change</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
+            {!isMobile && (
+              <ListColumn align="right">
+                <ListHeaderTitle>
+                  <Trans>APY change</Trans>
+                </ListHeaderTitle>
+              </ListColumn>
+            )}
 
-            {withBorrow && (
+            {withBorrow && !isMobile && (
               <ListColumn align="right">
                 <ListHeaderTitle>
                   <Trans>APY type change</Trans>
@@ -131,11 +155,13 @@ export const MigrationList = ({
               </ListColumn>
             )}
 
-            <ListColumn align="right" maxWidth={150} minWidth={150}>
-              <ListHeaderTitle>
-                <Trans>Current v2 balance</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
+            {!isMobile && (
+              <ListColumn align="right" maxWidth={150} minWidth={150}>
+                <ListHeaderTitle>
+                  <Trans>Current v2 balance</Trans>
+                </ListHeaderTitle>
+              </ListColumn>
+            )}
           </ListHeaderWrapper>
         )}
 

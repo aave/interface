@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { useUserReserves } from 'src/hooks/useUserReserves';
 import { useRootStore } from 'src/store/root';
+import { selectUserReservesForMigration } from 'src/store/v3MigrationSelectors';
 
 import { MigrationList } from './MigrationList';
 
@@ -41,6 +42,10 @@ export const MigrationLists = ({
     selectedMigrationBorrowAssets: selectedBorrowAssets,
   } = useRootStore();
 
+  const { supplyReserves, borrowReserves } = useRootStore(
+    useCallback((state) => selectUserReservesForMigration(state, 0), [])
+  );
+
   const allSuppliesSelected =
     Object.keys(selectedSupplyAssets).length === user.userReservesData.length;
   const allBorrowsSelected = Object.keys(selectedBorrowAssets).length === borrowPositions.length;
@@ -61,6 +66,8 @@ export const MigrationLists = ({
         totalAmount={totalSuppliesUSD}
         withCollateral
         emodeCategoryId={emodeCategoryId}
+        numSelected={selectedSupplyAssets?.length || 0}
+        numAvailable={supplyReserves?.length || 0}
       >
         {suppliesPositions}
       </MigrationList>
@@ -74,6 +81,8 @@ export const MigrationLists = ({
         withBorrow
         titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
         totalAmount={totalBorrowsUSD}
+        numSelected={selectedBorrowAssets?.length || 0}
+        numAvailable={borrowReserves?.length || 0}
       >
         {borrowsPositions}
       </MigrationList>
