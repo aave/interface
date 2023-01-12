@@ -135,9 +135,7 @@ export default function V3Migration() {
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
                           '0' && reserve.canBeEnforced
                       }
-                      reserveIconSymbol={reserve.reserve.iconSymbol}
-                      reserveName={reserve.reserve.name}
-                      reserveSymbol={reserve.reserve.symbol}
+                      userReserve={reserve}
                       amount={reserve.underlyingBalance}
                       amountInUSD={reserve.underlyingBalanceUSD}
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}

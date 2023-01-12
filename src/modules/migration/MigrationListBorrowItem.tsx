@@ -45,9 +45,7 @@ export const MigrationListBorrowItem = ({
     <MigrationListItem
       key={userReserve.debtKey}
       checked={isChecked}
-      reserveIconSymbol={userReserve.reserve.iconSymbol}
-      reserveName={userReserve.reserve.name}
-      reserveSymbol={userReserve.reserve.symbol}
+      userReserve={userReserve}
       amount={amount}
       amountInUSD={amountInUSD}
       onCheckboxClick={handleCheckboxClick}

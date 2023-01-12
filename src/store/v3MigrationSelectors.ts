@@ -58,6 +58,9 @@ export type MigrationUserReserve = ComputedUserReserveData & {
   increasedVariableBorrows: string;
   interestRate: InterestRate;
   debtKey: string;
+  usageAsCollateralEnabledOnUser?: boolean;
+  isolatedOnV3?: boolean;
+  canBeEnforced?: boolean;
   migrationDisabled?: MigrationDisabled;
 };
 

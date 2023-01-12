@@ -5,15 +5,12 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { MigrationDisabled } from 'src/store/v3MigrationSelectors';
+import { MigrationDisabled, MigrationUserReserve } from 'src/store/v3MigrationSelectors';
 
 import { ListItemUsedAsCollateral } from '../dashboard/lists/ListItemUsedAsCollateral';
 
 interface MigrationListItemProps {
   checked: boolean;
-  reserveIconSymbol: string;
-  reserveName: string;
-  reserveSymbol: string;
   amount: string;
   amountInUSD: string;
   onCheckboxClick: () => void;
@@ -23,12 +20,11 @@ interface MigrationListItemProps {
   enableAsCollateral?: () => void;
   isIsolated?: boolean;
   borrowApyType?: string;
+  userReserve: MigrationUserReserve;
 }
 
 export const MigrationListItem = ({
   checked,
-  reserveIconSymbol,
-  reserveSymbol,
   amount,
   amountInUSD,
   onCheckboxClick,
@@ -38,6 +34,7 @@ export const MigrationListItem = ({
   canBeEnforced,
   isIsolated,
   borrowApyType,
+  userReserve,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -73,11 +70,11 @@ export const MigrationListItem = ({
 
       <ListColumn align="left" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
         <Row>
-          {isTablet && <TokenIcon symbol={reserveIconSymbol} fontSize="large" />}
+          {isTablet && <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />}
 
           <Box sx={{ pl: isTablet ? 3.5 : 0, overflow: 'hidden' }}>
             <Typography variant="h4" noWrap>
-              {reserveSymbol}
+              {userReserve.reserve.symbol}
             </Typography>
           </Box>
         </Row>
