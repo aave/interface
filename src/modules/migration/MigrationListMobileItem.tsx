@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
