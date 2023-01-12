@@ -21,7 +21,15 @@ jobs:
           key: jq-{{ hashFiles('jq-version') }}
       - name: Setup jq
         run: sudo apt-get install -y jq
-      - name: Normalize and encode issue body as JSON
+      - name: Normalize and encode issue title
+        id: title
+        shell: bash
+        run: |
+          echo title=$(cat <<EOF | sed '{:q;N;s|\n|\\n|g;t q}' | jq -R .
+          ${{ github.event.issue.title }}
+          EOF
+          ) >> $GITHUB_OUTPUT
+      - name: Normalize and encode issue body
         id: desc
         shell: bash
         run: |
@@ -33,7 +41,7 @@ jobs:
         run: |
           cat <<EOF > payload.json
           {
-            "name": "${{ github.event.issue.title }}",
+            "name": ${{ steps.title.outputs.title }},
             "description": ${{ steps.desc.outputs.desc }},
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
