@@ -71,6 +71,8 @@ jobs:
           echo $payload > payload.json
       - name: Log payload
         run: cat payload.json
+      - name: Lint payload as valid JSON
+        run: npx jsonlint payload.json
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
