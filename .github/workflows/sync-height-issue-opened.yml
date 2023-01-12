@@ -16,10 +16,10 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
-          encoded_issue_body=$(echo ${{ github.event.issue.body }} | jq -n -M --arg body "${{ github.event.issue.body }}" '.description = $body')
+          encoded_issue_body=$(jq -n -M --arg body "${{ github.event.issue.body }}" '.description = $body')
           echo '{
             "name": "${{ github.event.issue.title }}",
-            $encoded_issue_body,
+            "'"$encoded_issue_body"'",
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
@@ -67,5 +67,5 @@ jobs:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          files: 'payload.json'
-          timeout: 5000
+          data: '$(cat payload.json)'
+          timeout: 15000
