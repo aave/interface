@@ -25,7 +25,7 @@ jobs:
         id: desc
         shell: bash
         run: |
-          echo desc=$(cat <<EOF | sed '{:q;N;s|\n|\\n|g;t q}' | sed 's|"|\\"|g' | tr -d '\n'
+          echo desc=$(cat <<EOF | sed '{:q;N;s|\n|\\n|g;t q}' | jq -R .
           ${{ github.event.issue.body }}
           EOF
           ) >> $GITHUB_OUTPUT
