@@ -16,7 +16,7 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
-          encoded_issue_body=$(jq -n --arg body "${{ github.event.issue.body }}" '{ "description": $body }')
+          encoded_issue_body=$(jq -n --arg body "${{ github.event.issue.body }}" '.description = $body')
           echo '{
             "name": "${{ github.event.issue.title }}",
             '$encoded_issue_body',
@@ -50,7 +50,7 @@ jobs:
                     "model": "fieldLabel",
                     "value": "github-issue",
                     "date": null,
-                    "hue": 49,å
+                    "hue": 49,
                     "deleted": false,
                     "archived": false
                   }
@@ -60,7 +60,7 @@ jobs:
                 "selectValue": null
               }
             ]
-          }' | jq -n -c . > payload.json
+          }' | jq -c . > payload.json
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
