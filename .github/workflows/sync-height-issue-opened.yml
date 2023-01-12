@@ -27,7 +27,7 @@ jobs:
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
           data: '{
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ encoded_issue_body }}",
+            "description": "$encoded_issue_body",
             "listIds": [
             "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
