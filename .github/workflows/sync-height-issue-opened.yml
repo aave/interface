@@ -27,7 +27,7 @@ jobs:
         id: encodeBody
         run: |
           encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
-          echo encoded_issue_body >> $GITHUB_OUTPUT
+          echo $encoded_issue_body >> $GITHUB_OUTPUT
       - name: Encode the payload as JSON
         run: |
           payload=$(echo '{
