@@ -6,6 +6,7 @@ import { useRootStore } from 'src/store/root';
 import { selectUserReservesForMigration } from 'src/store/v3MigrationSelectors';
 
 import { MigrationList } from './MigrationList';
+import { MigrationMobileList } from './MigrationMobileList';
 
 interface MigrationListsProps {
   totalSuppliesUSD: string;
@@ -34,6 +35,7 @@ export const MigrationLists = ({
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const isMobile = useMediaQuery(breakpoints.down('xsm'));
 
   const { user, borrowPositions } = useUserReserves();
 
@@ -57,35 +59,65 @@ export const MigrationLists = ({
         alignItems: 'flex-start',
       }}
     >
-      <MigrationList
-        loading={loading}
-        onSelectAllClick={onSelectAllSupplies}
-        allSelected={allSuppliesSelected}
-        isAvailable={isSupplyPositionsAvailable}
-        titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
-        totalAmount={totalSuppliesUSD}
-        withCollateral
-        emodeCategoryId={emodeCategoryId}
-        numSelected={selectedSupplyAssets?.length || 0}
-        numAvailable={supplyReserves?.length || 0}
-      >
-        {suppliesPositions}
-      </MigrationList>
+      {isMobile ? (
+        <MigrationMobileList
+          loading={loading}
+          onSelectAllClick={onSelectAllSupplies}
+          allSelected={allSuppliesSelected}
+          isAvailable={isSupplyPositionsAvailable}
+          titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
+          emodeCategoryId={emodeCategoryId}
+          numSelected={selectedSupplyAssets?.length || 0}
+          numAvailable={supplyReserves?.length || 0}
+        >
+          {suppliesPositions}
+        </MigrationMobileList>
+      ) : (
+        <MigrationList
+          loading={loading}
+          onSelectAllClick={onSelectAllSupplies}
+          allSelected={allSuppliesSelected}
+          isAvailable={isSupplyPositionsAvailable}
+          titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
+          emodeCategoryId={emodeCategoryId}
+          withCollateral
+          totalAmount={totalSuppliesUSD}
+          numSelected={selectedSupplyAssets?.length || 0}
+          numAvailable={supplyReserves?.length || 0}
+        >
+          {suppliesPositions}
+        </MigrationList>
+      )}
 
-      <MigrationList
-        loading={loading}
-        onSelectAllClick={onSelectAllBorrows}
-        allSelected={allBorrowsSelected}
-        isAvailable={isBorrowPositionsAvailable}
-        isBottomOnMobile
-        withBorrow
-        titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
-        totalAmount={totalBorrowsUSD}
-        numSelected={selectedBorrowAssets?.length || 0}
-        numAvailable={borrowReserves?.length || 0}
-      >
-        {borrowsPositions}
-      </MigrationList>
+      {isMobile ? (
+        <MigrationMobileList
+          loading={loading}
+          onSelectAllClick={onSelectAllBorrows}
+          allSelected={allBorrowsSelected}
+          isAvailable={isBorrowPositionsAvailable}
+          isBottomOnMobile
+          titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
+          numSelected={selectedBorrowAssets?.length || 0}
+          numAvailable={borrowReserves?.length || 0}
+        >
+          {borrowsPositions}
+        </MigrationMobileList>
+      ) : (
+        <MigrationList
+          loading={loading}
+          onSelectAllClick={onSelectAllBorrows}
+          allSelected={allBorrowsSelected}
+          isAvailable={isBorrowPositionsAvailable}
+          isBottomOnMobile
+          withBorrow
+          totalAmount={totalBorrowsUSD}
+          titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
+          numSelected={selectedBorrowAssets?.length || 0}
+          numAvailable={borrowReserves?.length || 0}
+        >
+          {suppliesPositions}
+        </MigrationList>
+      )}
     </Box>
   );
 };

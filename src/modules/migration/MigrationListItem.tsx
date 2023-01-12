@@ -14,6 +14,8 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
+import { MigrationListMobileItem } from './MigrationListMobileItem';
+
 interface MigrationListItemProps {
   checked: boolean;
   amount: string;
@@ -45,7 +47,7 @@ export const MigrationListItem = ({
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const isTablet = useMediaQuery(breakpoints.up('xsm'));
-  const isMobile = useMediaQuery(breakpoints.up('xs'));
+  const isMobile = useMediaQuery(breakpoints.down('xsm'));
 
   const assetColumnWidth =
     isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
@@ -65,42 +67,61 @@ export const MigrationListItem = ({
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
 
+  if (isMobile)
+    return (
+      <MigrationListMobileItem
+        checked={checked}
+        amount={amount}
+        amountInUSD={amountInUSD}
+        onCheckboxClick={onCheckboxClick}
+        enabledAsCollateral={enabledAsCollateral}
+        disabled={disabled}
+        enableAsCollateral={enableAsCollateral}
+        isIsolated={isIsolated}
+        borrowApyType={borrowApyType}
+        userReserve={userReserve}
+        v3Rates={v3Rates}
+      />
+    );
+
   return (
     <ListItem>
-      <ListColumn align="center" maxWidth={isDesktop ? 60 : 40} minWidth={40}>
-        <Box
-          sx={(theme) => ({
-            border: `2px solid ${
-              Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
-            }`,
-            background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
-            width: 16,
-            height: 16,
-            borderRadius: '2px',
-            cursor: Boolean(disabled) ? 'default' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          })}
-          onClick={Boolean(disabled) ? undefined : onCheckboxClick}
-        >
-          <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-            <CheckIcon />
-          </SvgIcon>
-        </Box>
-      </ListColumn>
-
-      <ListColumn align="left" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
-        <Row>
-          {isTablet && <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />}
-
-          <Box sx={{ pl: isTablet ? 3.5 : 0, overflow: 'hidden' }}>
-            <Typography variant="h4" noWrap>
-              {userReserve.reserve.symbol}
-            </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', py: 4 }}>
+        <ListColumn align="center" maxWidth={60} minWidth={40}>
+          <Box
+            sx={(theme) => ({
+              border: `2px solid ${
+                Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+              }`,
+              background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+              width: 16,
+              height: 16,
+              borderRadius: '2px',
+              cursor: Boolean(disabled) ? 'default' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+            onClick={Boolean(disabled) ? undefined : onCheckboxClick}
+          >
+            <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+              <CheckIcon />
+            </SvgIcon>
           </Box>
-        </Row>
-      </ListColumn>
+        </ListColumn>
+
+        <ListColumn align="left" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+          <Row>
+            <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
+
+            <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+              <Typography variant="h4" noWrap>
+                {userReserve.reserve.symbol}
+              </Typography>
+            </Box>
+          </Row>
+        </ListColumn>
+      </Box>
 
       {!!enableAsCollateral && (
         <ListColumn align="right">
