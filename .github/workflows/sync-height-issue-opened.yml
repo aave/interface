@@ -80,7 +80,7 @@ jobs:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: ${{ toJson(cat tmp/payload.json) }}
+          data: $(cat tmp/payload.json)
           timeout: 15000
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
