@@ -9,6 +9,8 @@ import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoData } from 'src/components/primitives/NoData';
 import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
 
+import { MigrationSelectionBox } from './MigrationSelectionBox';
+
 interface MigrationListProps {
   titleComponent: ReactNode;
   totalAmount: string;
@@ -36,14 +38,25 @@ export const MigrationList = ({
   withCollateral,
   withBorrow,
   allSelected,
+  numSelected,
 }: MigrationListProps) => {
-  const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const assetColumnWidth = isDesktop ? 120 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
-
+  const selectionBoxStyle = {
+    border: `2px solid ${theme.palette.text.secondary}`,
+    background: theme.palette.text.secondary,
+    width: 16,
+    height: 16,
+    borderRadius: '2px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
   return (
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
       <ListWrapper
@@ -61,45 +74,11 @@ export const MigrationList = ({
         {(isAvailable || loading) && (
           <ListHeaderWrapper>
             <ListColumn align="center" maxWidth={60} minWidth={60}>
-              <ListHeaderTitle onClick={onSelectAllClick}>
-                <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  {allSelected ? (
-                    <Box
-                      sx={(theme) => ({
-                        border: `2px solid ${theme.palette.text.secondary}`,
-                        background: theme.palette.text.secondary,
-                        width: 16,
-                        height: 16,
-                        borderRadius: '2px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      })}
-                    >
-                      <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-                        <CheckIcon />
-                      </SvgIcon>
-                    </Box>
-                  ) : (
-                    <Box
-                      sx={(theme) => ({
-                        border: `2px solid ${theme.palette.text.secondary}`,
-                        background: theme.palette.text.secondary,
-                        width: 16,
-                        height: 16,
-                        borderRadius: '2px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      })}
-                    >
-                      <NoData color="white" variant="secondary12" />
-                    </Box>
-                  )}
-                </Typography>
-              </ListHeaderTitle>
+              <MigrationSelectionBox
+                allSelected={allSelected}
+                numSelected={numSelected}
+                onSelectAllClick={onSelectAllClick}
+              />
             </ListColumn>
 
             <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>

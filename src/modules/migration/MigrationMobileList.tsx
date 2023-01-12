@@ -1,12 +1,11 @@
-import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
-import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { NoData } from 'src/components/primitives/NoData';
+
+import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationMobileListProps {
   titleComponent: ReactNode;
@@ -32,10 +31,8 @@ export const MigrationMobileList = ({
   numSelected,
   numAvailable,
 }: MigrationMobileListProps) => {
-  const paperWidth = '100%';
-
   return (
-    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
+    <Box sx={{ width: '100%', mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
       <ListWrapper
         titleComponent={
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>
@@ -46,45 +43,11 @@ export const MigrationMobileList = ({
         {(isAvailable || loading) && (
           <ListHeaderWrapper>
             <ListColumn align="center" maxWidth={40} minWidth={40}>
-              <ListHeaderTitle onClick={onSelectAllClick}>
-                <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  {allSelected ? (
-                    <Box
-                      sx={(theme) => ({
-                        border: `2px solid ${theme.palette.text.secondary}`,
-                        background: theme.palette.text.secondary,
-                        width: 16,
-                        height: 16,
-                        borderRadius: '2px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      })}
-                    >
-                      <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-                        <CheckIcon />
-                      </SvgIcon>
-                    </Box>
-                  ) : (
-                    <Box
-                      sx={(theme) => ({
-                        border: `2px solid ${theme.palette.text.secondary}`,
-                        background: theme.palette.text.secondary,
-                        width: 16,
-                        height: 16,
-                        borderRadius: '2px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      })}
-                    >
-                      <NoData color="white" variant="secondary12" />
-                    </Box>
-                  )}
-                </Typography>
-              </ListHeaderTitle>
+              <MigrationSelectionBox
+                allSelected={allSelected}
+                numSelected={numSelected}
+                onSelectAllClick={onSelectAllClick}
+              />
             </ListColumn>
 
             <Box
