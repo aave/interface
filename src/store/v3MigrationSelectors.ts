@@ -15,6 +15,7 @@ import {
   rayDiv,
   valueToBigNumber,
 } from '@aave/math-utils';
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -62,6 +63,16 @@ export type MigrationUserReserve = ComputedUserReserveData & {
   isolatedOnV3?: boolean;
   canBeEnforced?: boolean;
   migrationDisabled?: MigrationDisabled;
+  V3Rates?: V3Rates;
+};
+
+export type V3Rates = {
+  stableBorrowAPY: string;
+  variableBorrowAPY: string;
+  supplyAPY: string;
+  aIncentivesData?: ReserveIncentiveResponse[];
+  vIncentivesData?: ReserveIncentiveResponse[];
+  sIncentivesData?: ReserveIncentiveResponse[];
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
@@ -184,14 +195,21 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     let migrationDisabled: MigrationDisabled | undefined;
     const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
+    let v3Rates: V3Rates | undefined;
+    const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
+    if (v3SupplyAsset) {
+      v3Rates = {
+        stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
+        variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
+        supplyAPY: v3SupplyAsset.reserve.supplyAPY,
+      };
+    } else {
+      migrationDisabled = MigrationDisabled.V3AssetMissing;
+    }
     if (isolatedReserveV3) {
       usageAsCollateralEnabledOnUser =
         userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
     } else {
-      const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
-      if (!v3SupplyAsset) {
-        migrationDisabled = MigrationDisabled.V3AssetMissing;
-      }
       if (v3SupplyAsset?.underlyingBalance !== '0') {
         usageAsCollateralEnabledOnUser = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
       } else {
@@ -204,12 +222,14 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       isolatedOnV3,
       canBeEnforced,
       migrationDisabled,
+      v3Rates,
     };
   });
 
   const mappedBorrowReserves = borrowReserves.map((userReserve) => {
     // TOOD: make mapping for liquidity
     let disabledForMigration: MigrationDisabled | undefined;
+    let v3Rates: V3Rates | undefined;
     const selectedReserve = v3ReservesMap[userReserve.underlyingAsset]?.reserve;
 
     // Only show one warning icon per asset row, priority is: asset missing in V3, eMode borrow disabled, isolation mode borrow disabled
@@ -219,11 +239,19 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
       disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
     }
-    if (!v3ReservesMap[userReserve.underlyingAsset]) {
+    const v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+    if (v3BorrowAsset) {
+      v3Rates = {
+        stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
+        variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
+        supplyAPY: v3BorrowAsset.reserve.stableBorrowAPY,
+      };
+    } else {
       disabledForMigration = MigrationDisabled.V3AssetMissing;
     }
     return {
       ...userReserve,
+      v3Rates,
       migrationDisabled: disabledForMigration,
     };
   });

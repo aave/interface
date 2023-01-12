@@ -1,11 +1,15 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { MigrationDisabled, MigrationUserReserve } from 'src/store/v3MigrationSelectors';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
 import { ListItemUsedAsCollateral } from '../dashboard/lists/ListItemUsedAsCollateral';
 
@@ -20,7 +24,8 @@ interface MigrationListItemProps {
   enableAsCollateral?: () => void;
   isIsolated?: boolean;
   borrowApyType?: string;
-  userReserve: MigrationUserReserve;
+  userReserve: ComputedUserReserveData;
+  v3Rates?: V3Rates;
 }
 
 export const MigrationListItem = ({
@@ -35,6 +40,7 @@ export const MigrationListItem = ({
   isIsolated,
   borrowApyType,
   userReserve,
+  v3Rates,
 }: MigrationListItemProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
@@ -43,6 +49,21 @@ export const MigrationListItem = ({
 
   const assetColumnWidth =
     isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 180 : 80;
+
+  const v2APY = borrowApyType
+    ? borrowApyType === InterestRate.Stable
+      ? userReserve.stableBorrowAPY
+      : userReserve.reserve.variableBorrowAPY
+    : userReserve.reserve.supplyAPY;
+  const v2Incentives = borrowApyType
+    ? borrowApyType === InterestRate.Stable
+      ? userReserve.reserve.sIncentivesData
+      : userReserve.reserve.vIncentivesData
+    : userReserve.reserve.aIncentivesData;
+  const v3APY = borrowApyType ? v3Rates?.variableBorrowAPY || '-1' : v3Rates?.supplyAPY || '-1';
+  const v3Incentives = borrowApyType
+    ? v3Rates?.vIncentivesData || []
+    : v3Rates?.aIncentivesData || [];
 
   return (
     <ListItem>
@@ -94,11 +115,21 @@ export const MigrationListItem = ({
 
       <ListColumn align="right">
         <Box sx={{ display: 'flex' }}>
-          <FormattedNumber value={'0'} percent variant="main14" />
+          <IncentivesCard
+            value={v2APY}
+            symbol={userReserve.reserve.symbol}
+            incentives={v2Incentives}
+            variant="main14"
+          />
           <SvgIcon sx={{ px: 1.5 }}>
             <ArrowNarrowRightIcon fontSize="14px" />
           </SvgIcon>
-          <FormattedNumber value={'0'} percent variant="main14" />
+          <IncentivesCard
+            value={v3APY}
+            symbol={userReserve.reserve.symbol}
+            incentives={v3Incentives}
+            variant="main14"
+          />
         </Box>
       </ListColumn>
 

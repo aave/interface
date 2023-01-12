@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { useMemo } from 'react';
-import { MigrationUserReserve } from 'src/store/v3MigrationSelectors';
+import { MigrationUserReserve, V3Rates } from 'src/store/v3MigrationSelectors';
 import { MigrationSelectedBorrowAsset } from 'src/store/v3MigrationSlice';
 
 import { MigrationListItem } from './MigrationListItem';
@@ -9,12 +9,14 @@ type MigrationListBorrowItemProps = {
   userReserve: MigrationUserReserve;
   selectedBorrowAssets: MigrationSelectedBorrowAsset[];
   toggleSelectedBorrowPosition: (asset: MigrationSelectedBorrowAsset) => void;
+  v3Rates?: V3Rates;
 };
 
 export const MigrationListBorrowItem = ({
   selectedBorrowAssets,
   userReserve,
   toggleSelectedBorrowPosition,
+  v3Rates,
 }: MigrationListBorrowItemProps) => {
   const isChecked = useMemo(() => {
     return (
@@ -52,6 +54,7 @@ export const MigrationListBorrowItem = ({
       disabled={userReserve.migrationDisabled}
       enabledAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
       borrowApyType={userReserve.interestRate}
+      v3Rates={v3Rates}
     />
   );
 };

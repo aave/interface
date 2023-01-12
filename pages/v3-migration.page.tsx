@@ -133,7 +133,7 @@ export default function V3Migration() {
                       }
                       canBeEnforced={
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                          '0' && reserve.canBeEnforced
+                        '0' && reserve.canBeEnforced
                       }
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}
@@ -141,6 +141,7 @@ export default function V3Migration() {
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
                       enabledAsCollateral={reserve.usageAsCollateralEnabledOnUser}
                       isIsolated={reserve.isolatedOnV3}
+                      v3Rates={reserve.v3Rates}
                     />
                   ))
                 ) : (
@@ -164,6 +165,7 @@ export default function V3Migration() {
                       userReserve={reserve}
                       selectedBorrowAssets={selectedBorrowAssets}
                       toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
+                      v3Rates={reserve.v3Rates}
                     />
                   ))
                 ) : (
