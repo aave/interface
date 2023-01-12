@@ -14,58 +14,57 @@ jobs:
     steps:
       - name: Install jq
         run: sudo apt-get install -y jq
-      - name: Json encode
+      - name: Encode the payload as JSON
         run: |
-          issue_body='{
+          encoded_issue_body=$(jq -n --arg body "${{ github.event.issue.body }}" '{ "description": $body }')
+          echo '{
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ github.event.issue.body }}",
+            '$encoded_issue_body',
             "listIds": [
-            "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
+              "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
             "parentTaskId": "2dded224-8da0-4407-868f-d9cd018cbe52",
             "status": "a347dcd0-d492-4e7b-86e6-5e7b759134d8",
             "orderIntent": {
-            "intent": "end"
+              "intent": "end"
             },
             "assigneesIds": [
-            "848a5626-451f-4e15-b711-bd0a84883718",
-            "fe99c0a6-ad7b-458d-ae9f-687af57e0053",
-            "b0093618-6032-4e90-aa01-1dfc6628832d"
+              "848a5626-451f-4e15-b711-bd0a84883718",
+              "fe99c0a6-ad7b-458d-ae9f-687af57e0053",
+              "b0093618-6032-4e90-aa01-1dfc6628832d"
             ],
             "links": [],
             "fields": [
-            {
-            "fieldTemplateId": "f1bae626-c18c-4198-b354-560d1610766c",
-            "name": "Tags",
-            "type": "labels",
-            "value": null,
-            "label": null,
-            "values": null,
-            "date": null,
-            "recursion": null,
-            "labels": [
-            {
-            "id": "a7ba7d3e-d1d6-4111-92e6-e89c9456ea13",
-            "model": "fieldLabel",
-            "value": "github-issue",
-            "date": null,
-            "hue": 49,
-            "deleted": false,
-            "archived": false
-            }
-            ],
-            "linkedTasks": null,
-            "linkedTimer": null,
-            "selectValue": null
-            }
+              {
+                "fieldTemplateId": "f1bae626-c18c-4198-b354-560d1610766c",
+                "name": "Tags",
+                "type": "labels",
+                "value": null,
+                "label": null,
+                "values": null,
+                "date": null,
+                "recursion": null,
+                "labels": [
+                  {
+                    "id": "a7ba7d3e-d1d6-4111-92e6-e89c9456ea13",
+                    "model": "fieldLabel",
+                    "value": "github-issue",
+                    "date": null,
+                    "hue": 49,å
+                    "deleted": false,
+                    "archived": false
+                  }
+                ],
+                "linkedTasks": null,
+                "linkedTimer": null,
+                "selectValue": null
+              }
             ]
-            }'
-          encoded_issue_body=$(jq -n --arg message "$issue_body" '$message | @json')
-          echo $encoded_issue_body
+          }' | jq -n -c . > payload.json
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: $encoded_issue_body
+          data: '@payload.json'
