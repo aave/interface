@@ -12,18 +12,22 @@ jobs:
   create_height_subtask:
     runs-on: ubuntu-latest
     steps:
-      - id: createHeightTaskRequest
-        name: Create a new subtask with issue details in Height
-        uses: fjogeleit/http-request-action@v1
+      - name: Install jq
+        run: sudo apt-get install -y jq
+      - name: Json encode
         run: |
-          stringified_body=$(jq -n --arg message "${{ github.event.issue.body }}" '$message | @json')
+          issue_body="${{ github.event.issue.body }}"
+          encoded_issue_body=$(jq -n --arg message "$my_message" '$message | @json')
+          echo $encoded_issue_body
+      - name: Create a new subtask with issue details in Height
+        uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
           data: '{
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ $stringified_body }}",
+            "description": $encoded_issue_body,
             "listIds": [
             "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
