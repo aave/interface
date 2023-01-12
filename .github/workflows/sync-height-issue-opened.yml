@@ -16,10 +16,10 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
-          encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -n -M --arg body "${{ github.event.issue.body }}" '.description = $body' | jq -cR 'gsub("\n"; "\\n")')
+          encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
           echo '{
             "name": "${{ github.event.issue.title }}",
-            "'"$encoded_issue_body"'",
+            "description": $encoded_issue_body,
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
