@@ -32,7 +32,7 @@ jobs:
         run: |
           payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ steps.encodeBody.outputs.encodedBody }}"
+            "description": "${{ steps.encodeBody.outputs.encoded_issue_body }}"
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
