@@ -1,13 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useHelpContext } from '../../../../hooks/useHelp';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -23,16 +21,16 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  user,
   index,
-}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
-  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
-    reserve;
+}: DashboardReserve) => {
+  const { user } = useAppDataContext();
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { pagination, setHelpTourAsset } = useHelpContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
+    reserve;
   if (index === 0) setHelpTourAsset(underlyingAsset);
 
   const canBeEnabledAsCollateral =

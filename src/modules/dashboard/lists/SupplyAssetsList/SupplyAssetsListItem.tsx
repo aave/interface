@@ -5,6 +5,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -15,6 +16,7 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
+
 import { SupplyAssetsItem } from './types';
 import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
@@ -35,7 +37,7 @@ export const SupplyAssetsListItem = ({
   usageAsCollateralEnabledOnUser,
   detailsAddress,
   index,
-}: SupplyAssetsItem) => {
+}: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
   const { pagination, setHelpTourAsset } = useHelpContext();

@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -24,9 +22,9 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  user,
   index,
-}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
+}: DashboardReserve) => {
+  const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
@@ -96,7 +94,7 @@ export const SuppliedPositionsListItem = ({
               pagination={pagination['WithdrawTour']}
               placement={'top-start'}
               top={'-8px'}
-              right={'75px'}
+              right={'68px'}
               offset={[-7, 14]}
             />
             <Trans>Withdraw</Trans>
