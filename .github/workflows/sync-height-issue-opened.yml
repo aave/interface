@@ -23,8 +23,8 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
-          encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
-          payload=$(echo '{
+          export encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
+          export payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
             "description": "$encoded_issue_body",
             "listIds": [
@@ -71,7 +71,9 @@ jobs:
           echo $encoded_issue_body
           echo $payload
       - name: Another step for logging
-        run: echo $payload && echo $encoded_issue_body
+        run: |
+          echo $payload
+          echo $encoded_issue_body
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
