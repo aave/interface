@@ -24,7 +24,7 @@ jobs:
       - name: Encode the payload as JSON
         run: |
           encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
-          payload=$(echo '{
+          export payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
             "description": "$encoded_issue_body",
             "listIds": [
@@ -76,7 +76,7 @@ jobs:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: '${{ toJson($payload) }}'
+          data: '${{ toJson(payload) }}'
           timeout: 15000
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
