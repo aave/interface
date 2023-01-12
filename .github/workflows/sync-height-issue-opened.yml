@@ -20,7 +20,7 @@ jobs:
           path: /usr/local/bin/jq
           key: jq-{{ hashFiles('jq-version') }}
       - name: Setup jq
-        uses: actions/setup-jq@v2
+        run: sudo apt-get install -y jq
       - name: Encode the payload as JSON
         run: |
           encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
@@ -73,7 +73,7 @@ jobs:
       - name: Lint JSON payload
         run: npx jsonlint payload.json
       - name: Create a new subtask with issue details in Height
-        uses: fjogeleit/http-request-action@v1.0.0
+        uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
