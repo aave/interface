@@ -17,7 +17,7 @@ jobs:
       - name: Json encode
         run: |
           issue_body="${{ github.event.issue.body }}"
-          encoded_issue_body=$(jq -n --arg message "$my_message" '$message | @json')
+          encoded_issue_body=$(jq -n --arg message "$issue_body" '$message | @json')
           echo $encoded_issue_body
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
