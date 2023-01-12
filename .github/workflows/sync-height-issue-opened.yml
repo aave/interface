@@ -11,8 +11,6 @@ concurrency:
 jobs:
   create_height_subtask:
     runs-on: ubuntu-latest
-    outputs:
-      encodedBody: ${{ steps.encodeBody.outputs.encoded_issue_body }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,15 +22,14 @@ jobs:
       - name: Setup jq
         run: sudo apt-get install -y jq
       - name: Normalize and encode issue body as JSON
-        id: encodeBody
+        id: encodeDesc
         run: |
-          encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cRr 'gsub("\n"; "\\n")')
-          echo $encoded_issue_body >> $GITHUB_OUTPUT
+          echo desc='${{ github.event.issue.body }}' | sed '{:q;N;s|\n|\\n|g;t q}' | sed 's|"|\\"|g' >> $GITHUB_OUTPUT
       - name: Encode the payload as JSON
         run: |
           payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
-            "description": "${{ steps.encodeBody.outputs.encoded_issue_body }}"
+            "description": "${{ steps.encodeDesc.outputs.desc }}"
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
