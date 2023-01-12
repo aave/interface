@@ -69,7 +69,7 @@ jobs:
             ]
           }')
           echo $encoded_issue_body
-          echo $payload
+          echo $payload > tmp/payload.json
       - name: Another step for logging
         run: |
           echo $payload
@@ -80,7 +80,7 @@ jobs:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: ${{ toJson(payload) }}
+          data: ${{ toJson(cat tmp/payload.json) }}
           timeout: 15000
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
