@@ -68,6 +68,7 @@ jobs:
               }
             ]
           }')
+          echo $encoded_issue_body
           echo $payload
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
