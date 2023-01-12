@@ -71,7 +71,7 @@ jobs:
           echo $encoded_issue_body
           echo $payload > payload.json
       - name: Log payload
-        run: echo cat payload.json
+        run: cat payload.json
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
