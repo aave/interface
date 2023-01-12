@@ -51,7 +51,7 @@ export const MigrationTopPanel = () => {
           </Box>
           <PageTitle
             pageTitle={
-              <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <MarketLogo
                   size={32}
                   logo={network.networkLogoPath}
