@@ -41,7 +41,7 @@ export const MigrationList = ({
   const isMobile = useMediaQuery(breakpoints.up('xs'));
 
   const assetColumnWidth =
-    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 180 : 80;
+    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
@@ -124,16 +124,16 @@ export const MigrationList = ({
             </ListColumn>
 
             {withBorrow && (
-              <ListColumn align="right" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+              <ListColumn align="right">
                 <ListHeaderTitle>
                   <Trans>APY type change</Trans>
                 </ListHeaderTitle>
               </ListColumn>
             )}
 
-            <ListColumn align="right">
+            <ListColumn align="right" maxWidth={150} minWidth={150}>
               <ListHeaderTitle>
-                <Trans>Current balance</Trans>
+                <Trans>Current v2 balance</Trans>
               </ListHeaderTitle>
             </ListColumn>
           </ListHeaderWrapper>

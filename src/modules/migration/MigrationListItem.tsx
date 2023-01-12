@@ -1,7 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -10,8 +13,6 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
-
-import { ListItemUsedAsCollateral } from '../dashboard/lists/ListItemUsedAsCollateral';
 
 interface MigrationListItemProps {
   checked: boolean;
@@ -36,7 +37,6 @@ export const MigrationListItem = ({
   enabledAsCollateral,
   disabled,
   enableAsCollateral,
-  canBeEnforced,
   isIsolated,
   borrowApyType,
   userReserve,
@@ -48,7 +48,7 @@ export const MigrationListItem = ({
   const isMobile = useMediaQuery(breakpoints.up('xs'));
 
   const assetColumnWidth =
-    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 180 : 80;
+    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
 
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -70,8 +70,9 @@ export const MigrationListItem = ({
       <ListColumn align="center" maxWidth={isDesktop ? 60 : 40} minWidth={40}>
         <Box
           sx={(theme) => ({
-            border: `2px solid ${Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
-              }`,
+            border: `2px solid ${
+              Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+            }`,
             background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
             width: 16,
             height: 16,
@@ -102,14 +103,38 @@ export const MigrationListItem = ({
       </ListColumn>
 
       {!!enableAsCollateral && (
-        <ListColumn>
-          <ListItemUsedAsCollateral
-            canBeEnabledAsCollateral={true}
-            disabled={!canBeEnforced}
-            usageAsCollateralEnabledOnUser={enabledAsCollateral || false}
-            isIsolated={isIsolated || false}
-            onToggleSwitch={enableAsCollateral}
-          />
+        <ListColumn align="right">
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {userReserve.usageAsCollateralEnabledOnUser &&
+            userReserve.reserve.usageAsCollateralEnabled ? (
+              <CheckRoundedIcon fontSize="small" color="success" />
+            ) : (
+              <NoData variant="main14" color="text.secondary" />
+            )}
+
+            <SvgIcon sx={{ px: 1.5 }}>
+              <ArrowNarrowRightIcon fontSize="14px" />
+            </SvgIcon>
+            {!enabledAsCollateral ? (
+              <NoData variant="main14" color="text.secondary" />
+            ) : isIsolated ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
+                  <ExclamationCircleIcon />
+                </SvgIcon>
+                <IsolatedBadge />
+              </Box>
+            ) : (
+              <CheckRoundedIcon fontSize="small" color="success" />
+            )}
+          </Box>
         </ListColumn>
       )}
 
@@ -134,7 +159,7 @@ export const MigrationListItem = ({
       </ListColumn>
 
       {!!borrowApyType && (
-        <ListColumn align="right" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+        <ListColumn align="right">
           <Box sx={{ display: 'flex' }}>
             <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
               <Typography variant="buttonS" color="primary">
@@ -153,7 +178,7 @@ export const MigrationListItem = ({
         </ListColumn>
       )}
 
-      <ListColumn align="right">
+      <ListColumn align="right" maxWidth={150} minWidth={150}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
             <FormattedNumber value={amount} variant="secondary14" />

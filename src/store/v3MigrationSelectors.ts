@@ -59,7 +59,7 @@ export type MigrationUserReserve = ComputedUserReserveData & {
   increasedVariableBorrows: string;
   interestRate: InterestRate;
   debtKey: string;
-  usageAsCollateralEnabledOnUser?: boolean;
+  usageAsCollateralEnabledOnUserV3?: boolean;
   isolatedOnV3?: boolean;
   canBeEnforced?: boolean;
   migrationDisabled?: MigrationDisabled;
@@ -191,7 +191,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const borrowReserves = selectSplittedBorrowsForMigration(userReservesV2Data);
 
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
-    let usageAsCollateralEnabledOnUser = true;
+    let usageAsCollateralEnabledOnUserV3 = true;
     let migrationDisabled: MigrationDisabled | undefined;
     const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
@@ -207,18 +207,18 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       migrationDisabled = MigrationDisabled.V3AssetMissing;
     }
     if (isolatedReserveV3) {
-      usageAsCollateralEnabledOnUser =
+      usageAsCollateralEnabledOnUserV3 =
         userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
     } else {
       if (v3SupplyAsset?.underlyingBalance !== '0') {
-        usageAsCollateralEnabledOnUser = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
+        usageAsCollateralEnabledOnUserV3 = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
       } else {
-        usageAsCollateralEnabledOnUser = !isolatedOnV3;
+        usageAsCollateralEnabledOnUserV3 = !isolatedOnV3;
       }
     }
     return {
       ...userReserve,
-      usageAsCollateralEnabledOnUser,
+      usageAsCollateralEnabledOnUserV3,
       isolatedOnV3,
       canBeEnforced,
       migrationDisabled,
