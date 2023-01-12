@@ -1,10 +1,11 @@
-import { CheckIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
+import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { MigrationDisabled } from 'src/store/v3MigrationSelectors';
 
 import { ListItemUsedAsCollateral } from '../dashboard/lists/ListItemUsedAsCollateral';
 
@@ -16,7 +17,7 @@ interface MigrationListItemProps {
   amount: string;
   amountInUSD: string;
   onCheckboxClick: () => void;
-  disabled?: boolean;
+  disabled?: MigrationDisabled;
   enabledAsCollateral?: boolean;
   canBeEnforced?: boolean;
   enableAsCollateral?: () => void;
@@ -27,7 +28,6 @@ interface MigrationListItemProps {
 export const MigrationListItem = ({
   checked,
   reserveIconSymbol,
-  reserveName,
   reserveSymbol,
   amount,
   amountInUSD,
@@ -45,7 +45,7 @@ export const MigrationListItem = ({
   const isMobile = useMediaQuery(breakpoints.up('xs'));
 
   const assetColumnWidth =
-    isMobile && !isTablet ? 75 : isTablet && !isDesktop ? 140 : isDesktop ? 240 : 140;
+    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 180 : 80;
 
   return (
     <ListItem>
@@ -95,15 +95,33 @@ export const MigrationListItem = ({
         </ListColumn>
       )}
 
-      <ListColumn>
-        <p>0% {'->'} 0%</p>
+      <ListColumn align="right">
+        <Box sx={{ display: 'flex' }}>
+          <FormattedNumber value={'0'} percent variant="main14" />
+          <SvgIcon sx={{ px: 1.5 }}>
+            <ArrowNarrowRightIcon fontSize="14px" />
+          </SvgIcon>
+          <FormattedNumber value={'0'} percent variant="main14" />
+        </Box>
       </ListColumn>
 
       {!!borrowApyType && (
-        <ListColumn>
-          <p>
-            {borrowApyType} -{'>'} Variable
-          </p>
+        <ListColumn align="right" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+          <Box sx={{ display: 'flex' }}>
+            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+              <Typography variant="buttonS" color="primary">
+                {borrowApyType}
+              </Typography>
+            </Button>
+            <SvgIcon sx={{ px: 1.5 }}>
+              <ArrowNarrowRightIcon fontSize="14px" />
+            </SvgIcon>
+            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+              <Typography variant="buttonS" color="primary">
+                Variable
+              </Typography>
+            </Button>
+          </Box>
         </ListColumn>
       )}
 
