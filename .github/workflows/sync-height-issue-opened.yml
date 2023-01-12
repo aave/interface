@@ -24,7 +24,7 @@ jobs:
       - name: Encode the payload as JSON
         run: |
           encoded_issue_body=$(echo "${{ github.event.issue.body }}" | jq -cR 'gsub("\n"; "\\n")')
-          echo '{
+          payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
             "description": "$encoded_issue_body",
             "listIds": [
@@ -67,18 +67,16 @@ jobs:
                 "selectValue": null
               }
             ]
-          }' | jq -c . > payload.json
-      - name: View payload.json contents
-        run: cat payload.json
+          }')
       - name: Lint JSON payload
-        run: npx jsonlint payload.json
+        run: npx jsonlint "${{ payload }}"
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          files: payload.json@payload.json
+          data: ${{ payload }}
           timeout: 15000
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
