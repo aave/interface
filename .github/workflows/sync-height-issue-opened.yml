@@ -25,7 +25,7 @@ jobs:
         run: |
           payload=$(echo '{
             "name": "${{ github.event.issue.title }}",
-            "description": $(echo "This is a description" | jq -cR 'gsub("\n"; "\\n")'),
+            "description": "$(echo "This is a description" | jq -cR 'gsub("\n"; "\\n")')",
             "listIds": [
               "0540b3b8-bd44-4904-a97f-fd9d8780ef0a"
             ],
