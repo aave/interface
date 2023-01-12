@@ -74,13 +74,23 @@ jobs:
       - name: Lint payload as valid JSON
         run: npx jsonlint payload.json
       - name: Create a new subtask with issue details in Height
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://api.height.app/tasks'
-          method: 'POST'
-          customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          files: payload.json
-          timeout: 15000
+        # uses: fjogeleit/http-request-action@v1
+        # with:
+        #   url: 'https://api.height.app/tasks'
+        #   method: 'POST'
+        #   customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
+        #   files: payload.json
+        #   timeout: 15000
+        run: |
+          echo "Sending task creation request..."
+          curl -X POST https://api.height.app/tasks \
+          -H "Content-Type: application/json" \
+          -H "Authorization: api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" \
+          -d @payload.json \
+          -o response.json
+          echo "Task creation request complete."
+      - name: Log response
+        run: cat response.json
       - name: Check API response
         if: steps.create_subtask.outputs.status != 200
         run: exit 1
