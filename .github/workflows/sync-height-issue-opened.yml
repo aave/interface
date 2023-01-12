@@ -61,11 +61,15 @@ jobs:
               }
             ]
           }' | jq -c . > payload.json
+      - name: View payload.json contents
+        run: cat payload.json
+      - name: View payload.json contents in a readable way if valid JSON
+        run: cat payload.json | jq
       - name: Create a new subtask with issue details in Height
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.height.app/tasks'
           method: 'POST'
           customHeaders: '{ "Content-Type": "application/json", "Authorization": "api-key ${{ secrets.HEIGHT_SECRET_TOKEN }}" }'
-          data: '\"$(cat payload.json)\"'
+          files: payload.json@payload.json
           timeout: 15000
