@@ -138,7 +138,7 @@ export default function V3Migration() {
                       }
                       canBeEnforced={
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                        '0' && reserve.canBeEnforced
+                          '0' && reserve.canBeEnforced
                       }
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}
