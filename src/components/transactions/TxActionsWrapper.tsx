@@ -129,7 +129,7 @@ export const TxActionsWrapper = ({
 
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
-  const { pagination } = useHelpContext();
+  const { pagination, tourInProgress } = useHelpContext();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
@@ -138,48 +138,68 @@ export const TxActionsWrapper = ({
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
-      {pagination['SupplyTour'] === 6 && (
+      {(pagination['SupplyTour'] === 6 || pagination['WithdrawTour'] === 5) && (
         <HelpTooltip
-          title={'Approval for first supply'}
+          title={
+            tourInProgress !== 'Withdrawal Tour'
+              ? 'Approval for first supply'
+              : 'Withdraw your assets'
+          }
           description={
             <Box>
-              <Box>
-                The first supply of one asset will require an additional approval transaction on
-                your wallet.
-              </Box>
+              {tourInProgress !== 'Withdrawal Tour' ? (
+                <Box>
+                  The first supply of one asset will require an additional approval transaction on
+                  your wallet.
+                </Box>
+              ) : (
+                <Box>This will trigger your wallet and you will need to sign your transaction</Box>
+              )}
               <Box sx={{ objectFit: 'cover', mt: 2 }}>
                 <img
-                  src={uiConfig.approveButtonImage}
-                  alt="SVG of approve and supply button"
+                  src={
+                    tourInProgress !== 'Withdrawal Tour'
+                      ? uiConfig.approveButtonImage
+                      : localStorage.getItem('colorMode') === 'light' ||
+                        !localStorage.getItem('colorMode')
+                      ? uiConfig.withdrawButtonImageLight
+                      : uiConfig.withdrawButtonImageDark
+                  }
+                  alt="Image of withdraw button"
                   style={{ maxWidth: '100%', maxHeight: '100%' }}
                 />
               </Box>
-
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <SvgIcon
-                  sx={{
-                    color: '#0A91FF',
-                    fontSize: { xs: '15px', xsm: '15px' },
-                    mb: '6px',
-                    mr: '10px',
-                  }}
-                >
-                  <InformationCircleIcon />
-                </SvgIcon>
-                <Typography sx={{ mt: 4 }}>
-                  You can entern an amount on the input feel to see it working.
-                </Typography>
-              </Box>
+              {tourInProgress !== 'Withdrawal Tour' && (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <SvgIcon
+                    sx={{
+                      color: '#0A91FF',
+                      fontSize: { xs: '15px', xsm: '15px' },
+                      mb: '6px',
+                      mr: '10px',
+                    }}
+                  >
+                    <InformationCircleIcon />
+                  </SvgIcon>
+                  <Typography sx={{ mt: 4 }}>
+                    You can enter an amount on the input feel to see it working.
+                  </Typography>
+                </Box>
+              )}
             </Box>
           }
-          pagination={pagination['SupplyTour']}
-          top={approvalParams && !watchModeOnlyAddress ? '400px' : '340px'}
-          right={'15px'}
-          placement={'top-start'}
-          offset={[400, -5]}
+          pagination={
+            tourInProgress !== 'Withdrawal Tour'
+              ? pagination['SupplyTour']
+              : pagination['WithdrawTour']
+          }
+          top={tourInProgress !== 'Withdrawal Tour' ? '340px' : '380px'}
+          right={tourInProgress !== 'Withdrawal Tour' ? '15px' : '385px'}
+          placement={tourInProgress !== 'Withdrawal Tour' ? 'top-start' : 'left'}
+          offset={tourInProgress !== 'Withdrawal Tour' ? [400, -5] : [0, 15]}
         />
       )}
-      {approvalParams && !watchModeOnlyAddress && (
+      {approvalParams && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
@@ -194,28 +214,42 @@ export const TxActionsWrapper = ({
           {approvalParams.content}
         </Button>
       )}
-      {pagination['SupplyTour'] === 7 && (
+      {(pagination['SupplyTour'] === 7 || pagination['WithdrawTour'] === 6) && (
         <HelpTooltip
-          title={'Approval for first supply'}
+          title={'Submit your transaction'}
           description={
             <Box>
               <Box>
                 <img
-                  src={uiConfig.metamaskSupply}
+                  src={
+                    tourInProgress !== 'Withdrawal Tour'
+                      ? uiConfig.metamaskSupply
+                      : uiConfig.metamaskWithdraw
+                  }
                   alt="SVG of approve and supply button"
                   style={{ maxWidth: '100%', maxHeight: '100%' }}
                 />
               </Box>
-
-              <Typography sx={{ mt: 1 }}>
-                Submit your transaction. Once the transaction is confirmed, your supply is
-                successfully registered and you begin earning interest.
-                <Typography sx={{ mt: 4 }}>You can use different Wallets.</Typography>
-              </Typography>
+              {tourInProgress !== 'Withdrawal Tour' ? (
+                <Typography sx={{ mt: 1 }}>
+                  Submit your transaction. Once the transaction is confirmed, your supply is
+                  successfully registered and you begin earning interest.
+                  <Typography sx={{ mt: 4 }}>You can use different Wallets.</Typography>
+                </Typography>
+              ) : (
+                <Typography sx={{ mt: 1 }}>
+                  Once the transaction is completed you will receive the tokens together with the
+                  rewards earned in your wallet.
+                </Typography>
+              )}
             </Box>
           }
-          pagination={pagination['SupplyTour']}
-          top={approvalParams && !watchModeOnlyAddress ? '455px' : '375px'}
+          pagination={
+            tourInProgress !== 'Withdrawal Tour'
+              ? pagination['SupplyTour']
+              : pagination['WithdrawTour']
+          }
+          top={'375px'}
           right={'15px'}
           placement={'top-start'}
           offset={[400, -50]}

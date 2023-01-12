@@ -3,23 +3,19 @@ import { Button, Box, Typography } from '@mui/material';
 
 import { uiConfig } from '../../uiConfig';
 
-import { useHelpContext } from 'src/hooks/useHelp';
 import { useModalContext } from 'src/hooks/useModal';
 
 export default function HelpModalContent() {
-  const { setPagination, setTourInProgress } = useHelpContext();
   const { close } = useModalContext();
 
   const handleClose = () => {
+    localStorage.setItem('Supply Tour', 'true');
     close();
-    localStorage.setItem('SupplyTour', 'true');
   };
 
-  const handleClickTour = async () => {
-    setTourInProgress('SupplyTour');
-    setPagination(1);
+  const handleClickTour = () => {
+    localStorage.setItem(`Supply Tour`, 'false');
     close();
-    localStorage.setItem(`SupplyTour`, 'false');
   };
 
   return (

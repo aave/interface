@@ -38,10 +38,11 @@ export const SupplyAssetsListItem = ({
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
-  const { pagination } = useHelpContext();
+  const { pagination, setHelpTourAsset } = useHelpContext();
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   if (supplyCapUsage.isMaxed) return null;
+  if (index === 0) setHelpTourAsset(underlyingAsset);
 
   return (
     <ListItemWrapper
@@ -84,7 +85,7 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         {index === 0 &&
-        localStorage.getItem('SupplyTour') === 'false' &&
+        localStorage.getItem('Supply Tour') === 'false' &&
         pagination['SupplyTour'] === 1 ? (
           <Button
             disabled={!isActive || isFreezed || Number(walletBalance) <= 0}

@@ -107,7 +107,7 @@ export const AssetInput = <T extends Asset = Asset>({
   };
   const { breakpoints } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
-  const { pagination } = useHelpContext();
+  const { pagination, tourInProgress } = useHelpContext();
   const asset =
     assets.length === 1
       ? assets[0]
@@ -115,11 +115,19 @@ export const AssetInput = <T extends Asset = Asset>({
 
   return (
     <Box>
-      {pagination['SupplyTour'] === 2 && (
+      {(pagination['SupplyTour'] === 2 || pagination['WithdrawTour'] === 2) && (
         <HelpTooltip
-          title={'Supply an asset'}
-          description={"Select the amount you'd like to supply."}
-          pagination={pagination['SupplyTour']}
+          title={tourInProgress !== 'Withdrawal Tour' ? 'Supply an asset' : 'Withdraw an asset'}
+          description={
+            tourInProgress !== 'Withdrawal Tour'
+              ? "Select the amount you'd like to supply."
+              : "Select the amount you'd like to withdraw from AAVE."
+          }
+          pagination={
+            tourInProgress !== 'Withdrawal Tour'
+              ? pagination['SupplyTour']
+              : pagination['WithdrawTour']
+          }
           placement={'left'}
           top={'135px'}
           right={xsmUp ? '390px' : '330px'}

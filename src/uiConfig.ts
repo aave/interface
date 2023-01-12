@@ -1,10 +1,17 @@
 export const uiConfig = {
-  appLogo: '/aave_santa.svg',
+  appLogo: '/aaveLogo.svg',
   helpImage: '/helpSettingsHeaderImage.jpg',
   helpModalSupplyImageLight: '/helpModalSupplyImageLight.jpg',
   helpModalSupplyImageDark: '/helpModalSupplyImageDark.jpg',
+  helpModalWithdrawImageLight: '/helpModalWithdrawImageLight.jpg',
+  helpModalWithdrawFinishImageLight: '/helpModalWithdrawFinishImageLight.jpg',
+  helpModalWithdrawImageDark: '/helpModalWithdrawImageDark.jpg',
+  helpModalWithdrawFinishImageDark: '/helpModalWithdrawFinishImageDark.jpg',
   gasEstationImageLight: '/gasEstationImageLight.jpg',
   gasEstationImageDark: '/gasEstationImageDark.jpg',
   approveButtonImage: '/approveButtonImage.jpg',
+  withdrawButtonImageLight: '/withdrawButtonImageLight.jpg',
+  withdrawButtonImageDark: '/withdrawButtonImageDark.jpg',
   metamaskSupply: '/metamaskSupplyImage.jpg',
+  metamaskWithdraw: '/metamaskWithdrawImage.jpg',
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/solid';
-import { Link } from '../primitives/Link';
 import { uiConfig } from '../../uiConfig';
 
 import { useHelpContext } from 'src/hooks/useHelp';
@@ -9,7 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 
 import { HelpBubble } from './HelpBubble';
 
-export const HelpModalSupplyContent = () => {
+export const HelpModalWithdrawContent = () => {
   const { pagination, totalPagination, setPagination } = useHelpContext();
   const { close } = useModalContext();
 
@@ -17,62 +16,45 @@ export const HelpModalSupplyContent = () => {
   const xsm = useMediaQuery(breakpoints.down('xsm'));
 
   let title, description, top, right;
-  const page = pagination['SupplyTour' as keyof typeof pagination];
+  const page = pagination['WithdrawTour' as keyof typeof pagination];
 
   const handleNextClick = () => {
     setPagination(page + 1);
-    pagination['SupplyTour'] === 7 && close();
+    pagination['WithdrawTour'] === 6 && close();
   };
 
   const handlePreviousClick = () => {
     setPagination(page - 1);
-    pagination['SupplyTour'] === 2 && close();
+    pagination['WithdrawTour'] === 2 && close();
   };
 
-  switch (pagination['SupplyTour']) {
+  switch (pagination['WithdrawTour']) {
     case 2:
-      title = 'Supply an asset';
-      description = "Select the amount you'd like to supply.";
+      title = 'Withdraw an asset';
+      description = "Select the amount you'd like to withdraw from AAVE.";
       top = '130px';
-      right = xsm ? '320px' : '360px';
+      right = xsm ? '320px' : '350px';
       break;
     case 3:
-      title = 'How much will I earn?';
+      title = 'Transaction overview';
       description = (
         <Box>
-          <Typography sx={{ mt: 1 }}>
-            aTokens holders receive continuous earnings that evolve with market conditions based on:
+          <Typography sx={{ my: 1, fontWeight: 700 }}>Remaining supply</Typography>
+          <Typography>
+            This is the amount of assets that will be left on the protocol after the withdrawal has
+            been submitted
           </Typography>
-          <Typography sx={{ mt: 2, mb: 3 }}>
-            Each asset has its own market of supply and demand with its own APY (Annual Percentage
-            Yield) which evolves with time.
+          <Typography sx={{ my: 1, fontWeight: 700 }}>Special Considerations</Typography>
+          <Typography>
+            When withdrawing assets like ETH, you will be given the option to Unwrap WETH.
           </Typography>
-          <Link
-            href="https://docs.aave.com/faq/depositing-and-earning"
-            sx={{ textDecoration: 'none', color: '#F148D3' }}
-          >
-            <Typography>Learn more</Typography>
-          </Link>
         </Box>
       );
       top = '210px';
-      right = xsm ? '320px' : '360px';
+      right = xsm ? '320px' : '350px';
       break;
     case 4:
-      title = 'Collateralization';
-      description = (
-        <Typography>
-          After supplying your assets, you are able to unselect the asset so that it will not be
-          used as collateral. The opt-out is available in the "Supply" section within your
-          dashboard. Simply switch the "use as collateral" button on the asset you would prefer to
-          opt-out from being used as a collateral.
-        </Typography>
-      );
-      top = '240px';
-      right = xsm ? '320px' : '360px';
-      break;
-    case 5:
-      title = 'Gas Fee Stimation';
+      title = 'Gas Fee Estimation';
       description = (
         <Box>
           <Box sx={{ width: '149px', height: '52px' }}>
@@ -91,35 +73,33 @@ export const HelpModalSupplyContent = () => {
           </Typography>
         </Box>
       );
-      top = '270px';
-      right = xsm ? '320px' : '360px';
+      top = '300px';
+      right = xsm ? '320px' : '340px';
+      break;
+    case 5:
+      title = 'Withdraw your assets';
+      description = (
+        <Typography>
+          This will trigger your wallet and you will need to sign your transaction.
+        </Typography>
+      );
+      top = '330px';
+      right = xsm ? '305px' : '330px';
       break;
     case 6:
       title = 'Approval for first supply';
       description = (
-        <Typography>
-          The first supply of one asset will require an additional approval transaction on your
-          wallet.
-        </Typography>
-      );
-      top = '320px';
-      right = xsm ? '25px' : '55px';
-      break;
-    case 7:
-      title = 'Approval for first supply';
-      description = (
         <Typography sx={{ mt: 1 }}>
-          Submit your transaction. Once the transaction is confirmed, your supply is successfully
-          registered and you begin earning interest.
-          <Typography sx={{ mt: 4 }}>You can use different Wallets. Discover wallets</Typography>
+          Once the transaction is completed you will receive the tokens together with the rewards
+          earned in your wallet.
         </Typography>
       );
-      top = '360px';
-      right = xsm ? '25px' : '55px';
+      top = '330px';
+      right = xsm ? '30px' : '65px';
       break;
     default:
-      title = 'Supply an asset';
-      description = "Select the amount you'd like to supply.";
+      title = 'Withdraw an asset';
+      description = "Select the amount you'd like to withdraw from AAVE.";
       top = undefined;
       right = undefined;
   }
@@ -131,8 +111,12 @@ export const HelpModalSupplyContent = () => {
         <img
           src={
             localStorage.getItem('colorMode') === 'light' || !localStorage.getItem('colorMode')
-              ? uiConfig.helpModalSupplyImageLight
-              : uiConfig.helpModalSupplyImageDark
+              ? pagination['WithdrawTour'] !== 6
+                ? uiConfig.helpModalWithdrawImageLight
+                : uiConfig.helpModalWithdrawFinishImageLight
+              : pagination['WithdrawTour'] !== 6
+              ? uiConfig.helpModalWithdrawImageDark
+              : uiConfig.helpModalWithdrawFinishImageDark
           }
           alt="SVG of approve and supply button"
           style={{ objectFit: 'contain' }}

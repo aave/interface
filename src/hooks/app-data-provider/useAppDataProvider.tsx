@@ -40,7 +40,7 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
     isWrappedBaseAsset: boolean;
   };
 
-export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
+export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData> & { index: number };
 
 export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
   earnedAPY: number;

@@ -46,7 +46,7 @@ export const SupplyAssetsList = () => {
     localStorage.getItem(localStorageName) === 'true'
   );
 
-  if (!localStorage.getItem('SupplyTour')) {
+  if (!localStorage.getItem('Supply Tour')) {
     openHelp();
   }
 

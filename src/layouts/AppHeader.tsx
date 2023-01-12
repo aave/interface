@@ -50,7 +50,7 @@ export function AppHeader() {
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [tourWidgetOpen, setTourWidgetOpen] = useState(false);
 
-  const { pagination } = useHelpContext();
+  const { pagination, tourInProgress } = useHelpContext();
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {
@@ -154,7 +154,7 @@ export function AppHeader() {
           <NavItems />
         </Box>
         <Box sx={{ flexGrow: 1 }} />
-        {pagination['SupplyTour'] === 8 && (
+        {(pagination['SupplyTour'] === 8 || pagination['WithdrawTour'] === 7) && (
           <HelpTooltip
             title={'Restart the any of our Tour at any time.'}
             description={
@@ -162,7 +162,11 @@ export function AppHeader() {
                 Check our other tours to learn more about how to interact with AAVE Protocol.
               </Box>
             }
-            pagination={pagination['SupplyTour']}
+            pagination={
+              tourInProgress !== 'Withdrawal Tour'
+                ? pagination['SupplyTour']
+                : pagination['WithdrawTour']
+            }
             placement={'bottom'}
             top={'40px'}
             right={xsm ? '188px' : md ? '198px' : '222px'}

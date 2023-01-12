@@ -9,7 +9,7 @@ export function HelpModal() {
 
   const handleClose = () => {
     close();
-    localStorage.setItem('SupplyTour', 'true');
+    localStorage.setItem('Supply Tour', 'true');
   };
 
   return (

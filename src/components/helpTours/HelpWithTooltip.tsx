@@ -47,7 +47,7 @@ export const HelpWithTooltip = ({
 }: HelpWithTooltipProps) => {
   const [openTooltip, setOpenTooltip] = useState(true);
   const { openConfirmationHelp } = useModalContext();
-  const { pagination, setPagination, setClickAway } = useHelpContext();
+  const { pagination, tourInProgress, setPagination, setClickAway } = useHelpContext();
 
   const formattedOpen = typeof open !== 'undefined' ? open : openTooltip;
   const toggleOpen = () =>
@@ -59,7 +59,12 @@ export const HelpWithTooltip = ({
     } else {
       setOpenTooltip(false);
     }
-    if (pagination['SupplyTour'] === 1 || pagination['SupplyTour'] === 8) setPagination(9);
+    (pagination['SupplyTour'] === 1 || pagination['SupplyTour'] === 8) &&
+      tourInProgress === 'Supply Tour' &&
+      setPagination(9);
+    (pagination['WithdrawTour'] === 1 || pagination['WithdrawTour'] === 7) &&
+      tourInProgress === 'Withdrawal Tour' &&
+      setPagination(9);
     openConfirmationHelp();
     setClickAway(false);
   };

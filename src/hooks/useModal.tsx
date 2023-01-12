@@ -22,7 +22,7 @@ export enum ModalType {
   GovDelegation,
   GovVote,
   Help,
-  SupplyHelp,
+  MobileHelp,
   ConfirmationHelp,
 }
 
@@ -63,7 +63,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovDelegation: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openHelp: () => void;
-  openSupplyHelp: () => void;
+  openMobileHelp: () => void;
   openConfirmationHelp: () => void;
   close: () => void;
   type?: ModalType;
@@ -161,8 +161,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
         },
-        openSupplyHelp: () => {
-          setType(ModalType.SupplyHelp);
+        openMobileHelp: () => {
+          setType(ModalType.MobileHelp);
         },
         openHelp: () => {
           setType(ModalType.Help);

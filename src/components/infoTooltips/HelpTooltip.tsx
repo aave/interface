@@ -38,45 +38,49 @@ export const HelpTooltip = ({
 }: HelpTooltipProps) => {
   const { setPagination, totalPagination, tourInProgress, clickAway, helpTourAsset } =
     useHelpContext();
-  const { openSupply, openSupplyHelp, openConfirmationHelp, close } = useModalContext();
+  const { openSupply, openWithdraw, openMobileHelp, openConfirmationHelp, close } =
+    useModalContext();
   const { breakpoints } = useTheme();
 
   const md = useMediaQuery(breakpoints.down('md'));
-  let pagesInTour;
-
-  const page = window.location.href.split('/').pop();
-
-  switch (page) {
-    case 'withdraw':
-      pagesInTour = totalPagination.withdrawPagination;
-      break;
-    default:
-      pagesInTour = totalPagination.supplyPagination;
-  }
 
   const handleNextClick = () => {
     setPagination(pagination + 1);
-    pagination === 1 && tourInProgress === 'SupplyTour' && md && openSupplyHelp();
-    pagination === 1 && tourInProgress === 'SupplyTour' && !md && openSupply(helpTourAsset);
-    pagination === 7 && tourInProgress === 'SupplyTour' && close();
+    if (tourInProgress === 'Supply Tour') {
+      pagination === 1 && !md && openSupply(helpTourAsset);
+      pagination === 7 && close();
+    } else if (tourInProgress === 'Withdrawal Tour') {
+      pagination === 1 && !md && openWithdraw(helpTourAsset);
+      pagination === 6 && close();
+    }
+    pagination === 1 && md && openMobileHelp();
   };
 
   const handlePreviousClick = () => {
     setPagination(pagination - 1);
-    pagination === 2 && tourInProgress === 'SupplyTour' && close();
-    pagination === 8 && tourInProgress === 'SupplyTour' && md && openSupplyHelp();
-    pagination === 8 && tourInProgress === 'SupplyTour' && !md && openSupply(helpTourAsset);
+    if (tourInProgress === 'Supply Tour') {
+      pagination === 2 && close();
+      pagination === 8 && md && openMobileHelp();
+      pagination === 8 && !md && openSupply(helpTourAsset);
+    } else if (tourInProgress === 'Withdrawal Tour') {
+      pagination === 2 && close();
+      pagination === 7 && md && openMobileHelp();
+      pagination === 7 && !md && openWithdraw(helpTourAsset);
+    }
   };
 
   const handleClose = () => {
-    if ((pagination === 1 || pagination === 8) && tourInProgress === 'SupplyTour') setPagination(9);
+    (pagination === 1 || pagination === 8) && tourInProgress === 'Supply Tour' && setPagination(9);
+    (pagination === 1 || pagination === 7) &&
+      tourInProgress === 'Withdrawal Tour' &&
+      setPagination(9);
     close();
     openConfirmationHelp();
   };
 
   const finishTour = () => {
     setPagination(1);
-    localStorage.setItem('SupplyTour', 'true');
+    localStorage.setItem(tourInProgress, 'true');
   };
 
   return (
@@ -91,7 +95,7 @@ export const HelpTooltip = ({
               <Typography sx={{ fontSize: '18px', fontWeight: 700, lineHeight: '22px' }}>
                 {title}
               </Typography>
-              {pagination !== pagesInTour && (
+              {pagination !== totalPagination && (
                 <Box sx={{ position: 'absolute', top: '24px', right: '50px', zIndex: 5 }}>
                   <IconButton
                     sx={{
@@ -135,7 +139,7 @@ export const HelpTooltip = ({
           >
             {!clickAway && (
               <Typography sx={{ mt: '12px' }}>
-                {pagination}/{pagesInTour}
+                {pagination}/{totalPagination}
               </Typography>
             )}
             <Box
@@ -158,7 +162,8 @@ export const HelpTooltip = ({
               ) : (
                 <Box></Box>
               )}
-              {pagination !== pagesInTour ? (
+
+              {pagination !== totalPagination ? (
                 <Button onClick={handleNextClick} variant="contained" sx={{ ml: '15px' }}>
                   <Typography>Next</Typography>
                   <ArrowRightIcon style={{ height: '15.56px', width: '16px' }} />

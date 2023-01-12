@@ -76,38 +76,59 @@ export const DetailsNumberLine = ({
   loading = false,
   ...rest
 }: DetailsNumberLineProps) => {
-  const { pagination } = useHelpContext();
+  const { pagination, tourInProgress } = useHelpContext();
 
   return (
     <Row caption={description} captionVariant="description" mb={4}>
-      {pagination['SupplyTour'] === 3 && (
+      {(pagination['SupplyTour'] === 3 || pagination['WithdrawTour'] === 3) && (
         <HelpTooltip
-          title={'How much will I earn?'}
-          description={
-            <Box>
-              <Typography sx={{ mt: 1 }}>
-                aTokens holders receive continuous earnings that evolve with market conditions based
-                on:
-              </Typography>
-              <Typography sx={{ mt: 2, mb: 3 }}>
-                Each asset has its own market of supply and demand with its own APY (Annual
-                Percentage Yield) which evolves with time.
-              </Typography>
-              <Link
-                href="https://docs.aave.com/faq/depositing-and-earning"
-                sx={{ textDecoration: 'none', color: '#F148D3' }}
-              >
-                <Typography>Learn more</Typography>
-              </Link>
-            </Box>
+          title={
+            tourInProgress !== 'Withdrawal Tour' ? 'How much will I earn?' : 'Transaction overview'
           }
-          pagination={pagination['SupplyTour']}
+          description={
+            tourInProgress !== 'Withdrawal Tour' ? (
+              <Box>
+                <Typography sx={{ mt: 1 }}>
+                  aTokens holders receive continuous earnings that evolve with market conditions
+                  based on:
+                </Typography>
+                <Typography sx={{ mt: 2, mb: 3 }}>
+                  Each asset has its own market of supply and demand with its own APY (Annual
+                  Percentage Yield) which evolves with time.
+                </Typography>
+                <Link
+                  href="https://docs.aave.com/faq/depositing-and-earning"
+                  sx={{ textDecoration: 'none', color: '#F148D3' }}
+                >
+                  <Typography>Learn more</Typography>
+                </Link>
+              </Box>
+            ) : (
+              <Box>
+                <Typography sx={{ my: 2, fontWeight: 700 }}>Remaining supply</Typography>
+                <Typography sx={{ mt: 1 }}>
+                  This is the amount of assets that will be left on the protocol after the
+                  withdrawal has been submitted
+                </Typography>
+                <Typography sx={{ my: 2, fontWeight: 700 }}>Special Considerations</Typography>
+                <Typography sx={{ mt: 2, mb: 3 }}>
+                  When withdrawing assets like ETH, you will be given the option to Unwrap WETH.
+                </Typography>
+              </Box>
+            )
+          }
+          pagination={
+            tourInProgress !== 'Withdrawal Tour'
+              ? pagination['SupplyTour']
+              : pagination['WithdrawTour']
+          }
           top={'225px'}
           placement={'left'}
           right={'390px'}
           offset={[0, 225]}
         />
       )}
+
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />

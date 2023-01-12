@@ -40,7 +40,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
     state,
     gasPriceData: { data },
   } = useGasStation();
-  const { pagination } = useHelpContext();
+  const { pagination, tourInProgress } = useHelpContext();
   const { reserves } = useAppDataContext();
   const {
     currentNetworkConfig: { wrappedBaseAssetSymbol },
@@ -58,7 +58,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
-      {pagination['SupplyTour'] === 5 && (
+      {(pagination['SupplyTour'] === 5 || pagination['WithdrawTour'] === 4) && (
         <HelpTooltip
           title={'Gas Fee Stimation'}
           description={
@@ -80,7 +80,11 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
               </Typography>
             </Box>
           }
-          pagination={pagination['SupplyTour']}
+          pagination={
+            tourInProgress !== 'Withdrawal Tour'
+              ? pagination['SupplyTour']
+              : pagination['WithdrawTour']
+          }
           top={'340px'}
           placement={'left'}
           right={'390px'}

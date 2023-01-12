@@ -11,16 +11,20 @@ import { CollateralTooltip } from '../../../../components/infoTooltips/Collatera
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useHelpContext } from '../../../../hooks/useHelp';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
+import { HelpModal } from 'src/components/helpTours/HelpModal';
+import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
 
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { setWitdrawTourActive } = useHelpContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -39,6 +43,8 @@ export const SuppliedPositionsList = () => {
             : {}),
         },
       })) || [];
+
+  setWitdrawTourActive(suppliedPosition.length);
 
   const head = [
     <Trans key="Balance">Balance</Trans>,
@@ -87,14 +93,16 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
+          <HelpModal />
+          <ConfirmationHelpModal />
           {!downToXSM && <ListHeader head={head} />}
-          {suppliedPosition.map((item) => (
+          {suppliedPosition.map((item, index) => (
             <Fragment key={item.underlyingAsset}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
-                  <SuppliedPositionsListMobileItem {...item} user={user} />
+                  <SuppliedPositionsListMobileItem {...item} user={user} index={index} />
                 ) : (
-                  <SuppliedPositionsListItem {...item} user={user} />
+                  <SuppliedPositionsListItem {...item} user={user} index={index} />
                 )}
               </AssetCapsProvider>
             </Fragment>

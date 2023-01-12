@@ -32,7 +32,7 @@ interface TourWidgetProps {
 
 export default function WalletWidget({ open, setOpen, headerHeight }: TourWidgetProps) {
   const { breakpoints } = useTheme();
-  const { setTourInProgress, setPagination, setClickAway } = useHelpContext();
+  const { setTourInProgress, setClickAway, setPagination, withdrawTourActive } = useHelpContext();
   const md = useMediaQuery(breakpoints.down('md'));
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -47,23 +47,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: TourWidget
     'Governance Tour',
   ];
 
-  const handlerClickTour = (tour: string) => {
-    setPagination(1);
-    switch (tour) {
-      case 'Supply Tour':
-        setTourInProgress('SupplyTour');
-        localStorage.setItem('SupplyTour', 'false');
-        break;
-      case 'Borrow Tour':
-        setTourInProgress('BorrowTour');
-        localStorage.setItem('BorrowTour', 'false');
-        break;
-    }
+  const finishTours = ['Supply Tour', 'Withdrawal Tour'];
+
+  const handlerClickTour = async (tour: string) => {
+    setTourInProgress(tour);
     setClickAway(false);
     setOpen(false);
+    localStorage.setItem(tour, 'false');
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setPagination(1);
     setOpen(true);
     setAnchorEl(event.currentTarget);
   };
@@ -100,14 +94,14 @@ export default function WalletWidget({ open, setOpen, headerHeight }: TourWidget
           py: 2,
         }}
       >
-        <ListItemText sx={{ color: '#A6A8B5' }}>
+        <ListItemText sx={{ color: '#A6A8B5', lineHeight: '16.94px', fontSize: '14px' }}>
           <Typography>AAVE Tours</Typography>
         </ListItemText>
       </Box>
       {tours.map((tour) => {
         return (
           <Box component={component}>
-            {tour !== 'Supply Tour' ? (
+            {!finishTours.find((elm) => elm === tour) ? (
               !md ? (
                 <HelpTourTooltip
                   tooltipContent={
@@ -117,21 +111,21 @@ export default function WalletWidget({ open, setOpen, headerHeight }: TourWidget
                     </Box>
                   }
                   tour={
-                    <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'primary.light' } }}>
-                      <Typography>{tour}</Typography>
-                      <Box>
-                        {tour !== 'Supply Tour' && (
-                          <Typography sx={{ color: { xs: '#F1F1F3', md: 'primary.light' } }}>
-                            Coming soon
-                          </Typography>
-                        )}
-                      </Box>
+                    <ListItemText
+                      sx={{ color: { xs: '#F1F1F3', md: 'primary.light' }, fontWeight: 500 }}
+                    >
+                      <Box sx={{ fontWeight: 600 }}>{tour}</Box>
+                      {!finishTours.find((elm) => elm === tour) && (
+                        <Typography sx={{ color: { xs: '#F1F1F3', md: 'primary.light' } }}>
+                          Coming soon
+                        </Typography>
+                      )}
                     </ListItemText>
                   }
                 />
               ) : (
                 <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'primary.light' } }}>
-                  <Typography>{tour}</Typography>
+                  <Box sx={{ fontWeight: 600 }}>{tour}</Box>
                   <Typography sx={{ color: 'rgba(241, 241, 243, 0.35)' }}>Coming soon</Typography>
                 </ListItemText>
               )
@@ -140,7 +134,24 @@ export default function WalletWidget({ open, setOpen, headerHeight }: TourWidget
                 onClick={() => handlerClickTour(tour)}
                 sx={{ color: { xs: '#F1F1F3', md: 'primary.light' } }}
               >
-                <Typography>{tour}</Typography>
+                {withdrawTourActive === 0 && tour === 'Withdrawal Tour' ? (
+                  <HelpTourTooltip
+                    tooltipContent={
+                      <Box>
+                        <Typography>Available when you supply to the protocol</Typography>
+                      </Box>
+                    }
+                    tour={
+                      <ListItemText
+                        sx={{ color: { xs: '#F1F1F3', md: 'primary.light' }, fontWeight: 600 }}
+                      >
+                        {tour}
+                      </ListItemText>
+                    }
+                  />
+                ) : (
+                  <Box sx={{ fontWeight: 600 }}>{tour}</Box>
+                )}
               </ListItemText>
             )}
           </Box>

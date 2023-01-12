@@ -9,11 +9,13 @@ import {
   ExtendedFormattedUser,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
+import { useHelpContext } from '../../../../hooks/useHelp';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SuppliedPositionsListMobileItem = ({
   reserve,
@@ -22,13 +24,16 @@ export const SuppliedPositionsListMobileItem = ({
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
   user,
+  index,
 }: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
   const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
     reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
+  const { pagination, setHelpTourAsset } = useHelpContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  if (index === 0) setHelpTourAsset(underlyingAsset);
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
@@ -84,15 +89,34 @@ export const SuppliedPositionsListMobileItem = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={!isActive}
-          variant="contained"
-          onClick={() => openWithdraw(underlyingAsset)}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Withdraw</Trans>
-        </Button>
+        {index === 0 &&
+        localStorage.getItem('Withdrawal Tour') === 'false' &&
+        pagination['WithdrawTour'] === 1 ? (
+          <Button disabled={!isActive} variant="contained" sx={{ mr: 1.5 }} fullWidth>
+            <HelpTooltip
+              title={'Withdraw your assets from AAVE'}
+              description={
+                'To withdraw an asset, go to the "Your Supply" section and click on "Withdraw" for the asset you wish to withdraw.'
+              }
+              pagination={pagination['WithdrawTour']}
+              placement={'top-start'}
+              top={'-8px'}
+              right={'-10px'}
+              offset={[-7, 14]}
+            />
+            <Trans>Withdraw</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={!isActive}
+            variant="contained"
+            onClick={() => openWithdraw(underlyingAsset)}
+            sx={{ mr: 1.5 }}
+            fullWidth
+          >
+            <Trans>Withdraw</Trans>
+          </Button>
+        )}
 
         {isSwapButton ? (
           <Button

@@ -3,38 +3,43 @@ import { createContext, useContext, useState } from 'react';
 interface HelpContextState {
   pagination: { SupplyTour: number; WithdrawTour: number };
   tourInProgress: string;
-  totalPagination: { supplyPagination: number; withdrawPagination: number };
+  totalPagination: number | undefined;
   clickAway: boolean;
   helpTourAsset: string;
+  withdrawTourActive: number;
   setClickAway: (clickAway: boolean) => void;
   setPagination: (pagination: number) => void;
   setTourInProgress: (tour: string) => void;
+  setHelpTourAsset: (helpTourAsset: string) => void;
+  setWitdrawTourActive: (withdrawTourActive: number) => void;
 }
 // set an empty object as default state
 const HelpContext = createContext({} as HelpContextState);
 
 export const HelpContextProvider: React.FC = ({ children }) => {
   const [pages, setPagination] = useState(1);
+  const [withdrawTourActive, setWitdrawTourActive] = useState(1);
   const [clickAway, setClickAway] = useState(false);
-  const [tourInProgress, setTourInProgress] = useState('');
-  const helpTourAsset = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+  const [tourInProgress, setTourInProgress] = useState('Supply Tour');
+  const [helpTourAsset, setHelpTourAsset] = useState('');
 
-  const totalPagination = { supplyPagination: 8, withdrawPagination: 12 };
-
+  const pagesInTour = { supplyPagination: 8, withdrawPagination: 7 };
   let pagination = {
-    SupplyTour: 0,
-    WithdrawTour: 0,
+    SupplyTour: 1,
+    WithdrawTour: 1,
   };
 
+  let totalPagination;
+
   switch (tourInProgress) {
-    case 'SupplyTour':
+    case 'Supply Tour':
       pagination['SupplyTour'] = pages;
+      totalPagination = pagesInTour.supplyPagination;
       break;
-    case 'WithdrawTour':
+    case 'Withdrawal Tour':
       pagination['WithdrawTour'] = pages;
+      totalPagination = pagesInTour.withdrawPagination;
       break;
-    default:
-      pagination['SupplyTour'] = pages;
   }
 
   return (
@@ -45,9 +50,12 @@ export const HelpContextProvider: React.FC = ({ children }) => {
         tourInProgress,
         clickAway,
         helpTourAsset,
+        withdrawTourActive,
         setPagination,
         setTourInProgress,
         setClickAway,
+        setHelpTourAsset,
+        setWitdrawTourActive,
       }}
     >
       {children}

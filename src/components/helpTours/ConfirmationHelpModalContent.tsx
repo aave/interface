@@ -5,8 +5,9 @@ import { useHelpContext } from 'src/hooks/useHelp';
 import { useModalContext } from 'src/hooks/useModal';
 
 export function ConfirmationHelpModalContent() {
-  const { setPagination, setClickAway, pagination, helpTourAsset } = useHelpContext();
-  const { close, openSupplyHelp, openSupply } = useModalContext();
+  const { setPagination, setClickAway, pagination, helpTourAsset, tourInProgress } =
+    useHelpContext();
+  const { close, openMobileHelp, openSupply, openWithdraw } = useModalContext();
   const { breakpoints } = useTheme();
 
   const md = useMediaQuery(breakpoints.down('md'));
@@ -14,14 +15,24 @@ export function ConfirmationHelpModalContent() {
   const handleClose = () => {
     close();
     setClickAway(true);
-    setPagination(8);
+    tourInProgress === 'Supply Tour' && setPagination(8);
+    tourInProgress === 'Withdrawal Tour' && setPagination(7);
   };
 
   const handleClickTour = () => {
     close();
-    md && pagination['SupplyTour'] !== 9 && openSupplyHelp();
-    !md && pagination['SupplyTour'] !== 9 && openSupply(helpTourAsset);
-    pagination['SupplyTour'] === 9 && setPagination(1);
+    switch (tourInProgress) {
+      case 'Withdrawal Tour':
+        !md && pagination['WithdrawTour'] !== 9 && openWithdraw(helpTourAsset);
+        md && pagination['WithdrawTour'] !== 9 && openMobileHelp();
+        pagination['WithdrawTour'] === 9 && setPagination(1);
+        break;
+      default:
+        md && pagination['SupplyTour'] !== 9 && openMobileHelp();
+        !md && pagination['SupplyTour'] !== 9 && openSupply(helpTourAsset);
+        pagination['SupplyTour'] === 9 && setPagination(1);
+        break;
+    }
   };
 
   return (
