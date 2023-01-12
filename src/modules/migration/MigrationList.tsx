@@ -33,7 +33,6 @@ export const MigrationList = ({
   isAvailable,
   withCollateral,
   withBorrow,
-  emodeCategoryId,
   allSelected,
 }: MigrationListProps) => {
   const { breakpoints } = useTheme();
@@ -42,7 +41,7 @@ export const MigrationList = ({
   const isMobile = useMediaQuery(breakpoints.up('xs'));
 
   const assetColumnWidth =
-    isMobile && !isTablet ? 75 : isTablet && !isDesktop ? 140 : isDesktop ? 240 : 140;
+    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 180 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
@@ -111,24 +110,24 @@ export const MigrationList = ({
             </ListColumn>
 
             {withCollateral && (
-              <ListColumn align="center">
-                <Typography variant="subheader2">
+              <ListColumn align="right">
+                <ListHeaderTitle>
                   <Trans>Collateral change</Trans>
-                </Typography>
+                </ListHeaderTitle>
               </ListColumn>
             )}
 
-            <ListColumn align="center">
-              <Typography variant="subheader2">
+            <ListColumn align="right">
+              <ListHeaderTitle>
                 <Trans>APY change</Trans>
-              </Typography>
+              </ListHeaderTitle>
             </ListColumn>
 
             {withBorrow && (
-              <ListColumn align="center">
-                <Typography variant="subheader2">
+              <ListColumn align="right" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+                <ListHeaderTitle>
                   <Trans>APY type change</Trans>
-                </Typography>
+                </ListHeaderTitle>
               </ListColumn>
             )}
 
