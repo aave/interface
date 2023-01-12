@@ -25,7 +25,7 @@ jobs:
         id: desc
         shell: bash
         run: |
-          desc='${{ github.event.issue.body }}' | sed '{:q;N;s|\n|\\n|g;t q}' | sed 's|"|\\"|g' >> $GITHUB_OUTPUT
+          desc=$(echo "${{ github.event.issue.body }}" | sed 's|"|\\"|g;s|\n|\\n|g' | jq -R '.') >> $GITHUB_OUTPUT
       - name: Encode the payload as JSON
         run: |
           cat <<EOF > payload.json
