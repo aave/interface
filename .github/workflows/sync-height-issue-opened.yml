@@ -2,7 +2,7 @@ name: Sync opened issues to Height
 
 on:
   issues:
-    types: [opened, reopened]
+    types: [opened]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
