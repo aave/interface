@@ -146,6 +146,7 @@ export default function V3Migration() {
                       onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
                       enabledAsCollateral={reserve.usageAsCollateralEnabledOnUserV3}
                       isIsolated={reserve.isolatedOnV3}
+                      enteringIsolation={enteringIsolationMode}
                       v3Rates={reserve.v3Rates}
                     />
                   ))

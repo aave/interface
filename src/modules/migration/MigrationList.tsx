@@ -1,12 +1,10 @@
-import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { NoData } from 'src/components/primitives/NoData';
 import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
 
 import { MigrationSelectionBox } from './MigrationSelectionBox';
