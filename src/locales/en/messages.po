@@ -202,6 +202,18 @@ msgstr "Asset"
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
+msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
@@ -1567,11 +1579,9 @@ msgid "Select token to view in block explorer"
 msgstr "Select token to view in block explorer"
 
 #: src/modules/migration/MigrationLists.tsx
-#: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr "Select v2 borrows to migrate"
 
-#: src/modules/migration/MigrationLists.tsx
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
@@ -2106,6 +2116,10 @@ msgstr "Unbacked"
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
+msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
