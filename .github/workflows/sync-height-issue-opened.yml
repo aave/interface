@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           echo desc=$(cat <<EOF | sed '{:q;N;s|\n|\\n|g;t q}' | jq -R .
-          *## Github Issue\nImported from Github issue: ${{ github.event.issue.url }}*\n---\n${{ github.event.issue.body }}
+          *<h3>Github Issue</h3>\n*Imported from Github issue: ${{ github.event.issue.url }}*\n---\n${{ github.event.issue.body }}
           EOF
           ) >> $GITHUB_OUTPUT
       - name: Encode the payload as JSON
