@@ -19,6 +19,7 @@ import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
+  assetSelected,
   selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
   selectV3UserSummary,
@@ -96,8 +97,12 @@ export default function V3Migration() {
   const handleToggleAllBorrow = () => {
     selectAllBorrow(currentTimeStamp);
   };
+
   const selectedIsolatedAsset = supplyReserves.find(
-    (reserve) => reserve.isolatedOnV3 && reserve.usageAsCollateralEnabledOnUserV3
+    (reserve) =>
+      reserve.isolatedOnV3 &&
+      reserve.usageAsCollateralEnabledOnUserV3 &&
+      assetSelected(reserve, selectedSupplyAssets)
   );
   let enteringIsolationMode = false;
   if (selectedIsolatedAsset) enteringIsolationMode = true;
@@ -143,7 +148,9 @@ export default function V3Migration() {
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}
                       amountInUSD={reserve.underlyingBalanceUSD}
-                      onCheckboxClick={() => toggleSelectedSupplyPosition(reserve.underlyingAsset)}
+                      onCheckboxClick={() => {
+                        toggleSelectedSupplyPosition(reserve.underlyingAsset);
+                      }}
                       enabledAsCollateral={reserve.usageAsCollateralEnabledOnUserV3}
                       isIsolated={reserve.isolatedOnV3}
                       enteringIsolation={enteringIsolationMode}
@@ -172,6 +179,7 @@ export default function V3Migration() {
                       selectedBorrowAssets={selectedBorrowAssets}
                       toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
                       v3Rates={reserve.v3Rates}
+                      enteringIsolation={enteringIsolationMode}
                     />
                   ))
                 ) : (

@@ -550,3 +550,50 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 export const selectIsMigrationAvailable = (store: RootStore) => {
   return Boolean(store.currentMarketData.addresses.V3_MIGRATOR);
 };
+
+export type MigrationReserve = ComputedUserReserveData & { migrationDisabled?: MigrationDisabled };
+type MigrationSelectedReserve = {
+  underlyingAsset: string;
+  enforced?: boolean;
+  debtKey?: string;
+  interestRate?: InterestRate;
+};
+type ComputedMigrationSelections = {
+  activeSelections: MigrationReserve[];
+  activeUnselected: MigrationReserve[];
+};
+export const assetSelected = (
+  reserve: MigrationReserve,
+  selectedAssets: MigrationSelectedReserve[]
+) => {
+  const selectedReserve = selectedAssets.find(
+    (selectedAsset: MigrationSelectedReserve) =>
+      selectedAsset.underlyingAsset === reserve.underlyingAsset
+  );
+  return selectedReserve !== undefined;
+};
+export const assetEnabled = (selected: MigrationSelectedReserve, reserves: MigrationReserve[]) => {
+  const selectedReserve = reserves.find(
+    (reserve: MigrationReserve) => selected.underlyingAsset === reserve.underlyingAsset
+  );
+  return selectedReserve !== undefined && selectedReserve.migrationDisabled === undefined;
+};
+
+export const computeSelections = (
+  reserves: MigrationReserve[],
+  selections: MigrationSelectedReserve[]
+): ComputedMigrationSelections => {
+  const enabledReserves = reserves.filter((reserve) => reserve.migrationDisabled === undefined);
+
+  const selectedEnabledReserves = enabledReserves.filter((reserve) =>
+    assetSelected(reserve, selections)
+  );
+  const unselectedEnabledReserves = enabledReserves.filter(
+    (reserve) => !assetSelected(reserve, selections)
+  );
+
+  return {
+    activeSelections: selectedEnabledReserves,
+    activeUnselected: unselectedEnabledReserves,
+  };
+};
