@@ -90,8 +90,9 @@ export const MigrationListItem = ({
         <ListColumn align="center" maxWidth={64} minWidth={64}>
           <Box
             sx={(theme) => ({
-              border: `2px solid ${Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
-                }`,
+              border: `2px solid ${
+                Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+              }`,
               background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
               width: 16,
               height: 16,
@@ -126,7 +127,7 @@ export const MigrationListItem = ({
         <ListColumn align="right">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {userReserve.usageAsCollateralEnabledOnUser &&
-              userReserve.reserve.usageAsCollateralEnabled ? (
+            userReserve.reserve.usageAsCollateralEnabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
               <NoData variant="main14" color="text.secondary" />

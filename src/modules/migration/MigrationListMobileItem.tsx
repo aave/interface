@@ -59,9 +59,17 @@ export const MigrationListMobileItem = ({
     : v3Rates?.aIncentivesData || [];
 
   return (
-    <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', pl: 2, py: 2 }}>
-        <ListColumn align="left" maxWidth={40} minWidth={40}>
+    <ListItem sx={{ display: 'flex', flexDirection: 'column', pl: 0 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          pb: 2,
+          pt: 2.5,
+        }}
+      >
+        <ListColumn align="center" maxWidth={48} minWidth={48}>
           <Box
             sx={(theme) => ({
               border: `2px solid ${
@@ -88,7 +96,7 @@ export const MigrationListMobileItem = ({
           <Row>
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
-            <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+            <Box sx={{ pl: '12px', overflow: 'hidden' }}>
               <Typography variant="h4" noWrap>
                 {userReserve.reserve.symbol}
               </Typography>
@@ -114,98 +122,109 @@ export const MigrationListMobileItem = ({
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, pt: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          pl: 12,
+          py: 2,
+        }}
+      >
         <Typography variant="description" color="text.secondary">
           <Trans>APY change</Trans>
         </Typography>
-        <ListColumn align="right">
-          <Box sx={{ display: 'flex' }}>
-            <IncentivesCard
-              value={v2APY}
-              symbol={userReserve.reserve.symbol}
-              incentives={v2Incentives}
-              variant="main14"
-            />
-            <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon fontSize="14px" />
-            </SvgIcon>
-            <IncentivesCard
-              value={v3APY}
-              symbol={userReserve.reserve.symbol}
-              incentives={v3Incentives}
-              variant="main14"
-            />
-          </Box>
-        </ListColumn>
+
+        <Box sx={{ display: 'flex' }}>
+          <IncentivesCard
+            value={v2APY}
+            symbol={userReserve.reserve.symbol}
+            incentives={v2Incentives}
+            variant="main14"
+          />
+          <SvgIcon sx={{ px: 1.5 }}>
+            <ArrowNarrowRightIcon fontSize="14px" />
+          </SvgIcon>
+          <IncentivesCard
+            value={v3APY}
+            symbol={userReserve.reserve.symbol}
+            incentives={v3Incentives}
+            variant="main14"
+          />
+        </Box>
       </Box>
 
       {!!enableAsCollateral && (
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, pb: 2 }}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            pl: 12,
+            pb: 4,
+          }}
         >
           <Typography variant="description" color="text.secondary">
             <Trans>Collateral change</Trans>
           </Typography>
-          <ListColumn align="right">
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {userReserve.usageAsCollateralEnabledOnUser &&
-              userReserve.reserve.usageAsCollateralEnabled ? (
-                <CheckRoundedIcon fontSize="small" color="success" />
-              ) : (
-                <NoData variant="main14" color="text.secondary" />
-              )}
 
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon fontSize="14px" />
-              </SvgIcon>
-              {!enabledAsCollateral ? (
-                <NoData variant="main14" color="text.secondary" />
-              ) : isIsolated ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
-                    <ExclamationCircleIcon />
-                  </SvgIcon>
-                  <IsolatedBadge />
-                </Box>
-              ) : (
-                <CheckRoundedIcon fontSize="small" color="success" />
-              )}
-            </Box>
-          </ListColumn>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {userReserve.usageAsCollateralEnabledOnUser &&
+            userReserve.reserve.usageAsCollateralEnabled ? (
+              <CheckRoundedIcon fontSize="small" color="success" />
+            ) : (
+              <NoData variant="main14" color="text.secondary" />
+            )}
+
+            <SvgIcon sx={{ px: 1.5 }}>
+              <ArrowNarrowRightIcon fontSize="14px" />
+            </SvgIcon>
+            {!enabledAsCollateral ? (
+              <NoData variant="main14" color="text.secondary" />
+            ) : isIsolated ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
+                  <ExclamationCircleIcon />
+                </SvgIcon>
+                <IsolatedBadge />
+              </Box>
+            ) : (
+              <CheckRoundedIcon fontSize="small" color="success" />
+            )}
+          </Box>
         </Box>
       )}
 
       {!!borrowApyType && (
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, py: 2 }}
+          sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, pb: 4 }}
         >
           <Typography variant="description" color="text.secondary">
             <Trans>APY type change</Trans>
           </Typography>
-          <ListColumn align="right">
-            <Box sx={{ display: 'flex' }}>
-              <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
-                <Typography variant="buttonS" color="primary">
-                  {borrowApyType}
-                </Typography>
-              </Button>
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon fontSize="14px" />
-              </SvgIcon>
-              <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
-                <Typography variant="buttonS" color="primary">
-                  Variable
-                </Typography>
-              </Button>
-            </Box>
-          </ListColumn>
+          <Box sx={{ display: 'flex' }}>
+            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+              <Typography variant="buttonS" color="primary">
+                {borrowApyType}
+              </Typography>
+            </Button>
+            <SvgIcon sx={{ px: 1.5 }}>
+              <ArrowNarrowRightIcon fontSize="14px" />
+            </SvgIcon>
+            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+              <Typography variant="buttonS" color="primary">
+                Variable
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       )}
     </ListItem>
