@@ -5,14 +5,17 @@ import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
 interface MigrationListMobileItemProps {
@@ -25,6 +28,7 @@ interface MigrationListMobileItemProps {
   canBeEnforced?: boolean;
   enableAsCollateral?: () => void;
   isIsolated?: boolean;
+  enteringIsolation: boolean;
   borrowApyType?: string;
   userReserve: ComputedUserReserveData;
   v3Rates?: V3Rates;
@@ -39,6 +43,7 @@ export const MigrationListMobileItem = ({
   disabled,
   enableAsCollateral,
   isIsolated,
+  enteringIsolation,
   borrowApyType,
   userReserve,
   v3Rates,
@@ -58,6 +63,8 @@ export const MigrationListMobileItem = ({
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
 
+  const { currentMarket, currentMarketData } = useRootStore();
+
   return (
     <ListItem sx={{ display: 'flex', flexDirection: 'column', pl: 0 }}>
       <Box
@@ -73,18 +80,20 @@ export const MigrationListMobileItem = ({
           <Box
             sx={(theme) => ({
               border: `2px solid ${
-                Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+                disabled !== undefined
+                  ? theme.palette.action.disabled
+                  : theme.palette.text.secondary
               }`,
               background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
               width: 16,
               height: 16,
               borderRadius: '2px',
-              cursor: Boolean(disabled) ? 'default' : 'pointer',
+              cursor: disabled !== undefined ? 'default' : 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             })}
-            onClick={Boolean(disabled) ? undefined : onCheckboxClick}
+            onClick={disabled !== undefined ? undefined : onCheckboxClick}
           >
             <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
               <CheckIcon />
@@ -96,10 +105,18 @@ export const MigrationListMobileItem = ({
           <Row>
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
-            <Box sx={{ pl: '12px', overflow: 'hidden' }}>
-              <Typography variant="h4" noWrap>
+            <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
+              <Typography variant="h4" noWrap sx={{ pr: 1 }}>
                 {userReserve.reserve.symbol}
               </Typography>
+              {disabled !== undefined && (
+                <MigrationDisabledTooltip
+                  dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
+                  marketName={currentMarketData.marketTitle}
+                  warningType={disabled}
+                  isolatedV3={enteringIsolation}
+                />
+              )}
             </Box>
           </Row>
         </ListColumn>
