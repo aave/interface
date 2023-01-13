@@ -102,20 +102,29 @@ export const MigrationListItem = ({
                   ? theme.palette.action.disabled
                   : theme.palette.text.secondary
               }`,
-              background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+              background:
+                disabled !== undefined
+                  ? theme.palette.background.disabled
+                  : checked
+                  ? theme.palette.text.secondary
+                  : theme.palette.background.paper,
               width: 16,
               height: 16,
               borderRadius: '2px',
-              cursor: disabled !== undefined ? 'default' : 'pointer',
+              '&:hover': {
+                cursor: disabled !== undefined ? 'not-allowed' : 'pointer',
+              },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             })}
             onClick={disabled !== undefined ? undefined : onCheckboxClick}
           >
-            <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-              <CheckIcon />
-            </SvgIcon>
+            {disabled === undefined && (
+              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+                <CheckIcon />
+              </SvgIcon>
+            )}
           </Box>
         </ListColumn>
 

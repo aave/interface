@@ -6,12 +6,14 @@ interface MigrationSelectionBoxProps {
   allSelected: boolean;
   numSelected: number;
   onSelectAllClick: () => void;
+  disabled: boolean;
 }
 
 export const MigrationSelectionBox = ({
   numSelected,
   allSelected,
   onSelectAllClick,
+  disabled,
 }: MigrationSelectionBoxProps) => {
   const theme = useTheme();
   const selectionBoxStyle = {
@@ -26,6 +28,24 @@ export const MigrationSelectionBox = ({
     justifyContent: 'center',
   };
 
+  if (disabled) {
+    return (
+      <ListHeaderTitle>
+        <Typography variant="main12" sx={{ fontWeight: 700 }}>
+          <Box
+            sx={{
+              ...selectionBoxStyle,
+              background: theme.palette.action.disabledBackground,
+              border: `2px solid ${theme.palette.action.disabled}`,
+              '&:hover': {
+                cursor: 'not-allowed',
+              },
+            }}
+          />
+        </Typography>
+      </ListHeaderTitle>
+    );
+  }
   return (
     <ListHeaderTitle onClick={onSelectAllClick}>
       <Typography variant="main12" sx={{ fontWeight: 700 }}>

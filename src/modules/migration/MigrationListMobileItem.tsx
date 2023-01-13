@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
@@ -64,6 +64,9 @@ export const MigrationListMobileItem = ({
     : v3Rates?.aIncentivesData || [];
 
   const { currentMarket, currentMarketData } = useRootStore();
+  const theme = useTheme();
+  const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
+  const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
 
   return (
     <ListItem sx={{ display: 'flex', flexDirection: 'column', pl: 0 }}>
@@ -84,20 +87,29 @@ export const MigrationListMobileItem = ({
                   ? theme.palette.action.disabled
                   : theme.palette.text.secondary
               }`,
-              background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
+              background:
+                disabled !== undefined
+                  ? theme.palette.background.disabled
+                  : checked
+                  ? theme.palette.text.secondary
+                  : theme.palette.background.paper,
               width: 16,
               height: 16,
               borderRadius: '2px',
-              cursor: disabled !== undefined ? 'default' : 'pointer',
+              '&:hover': {
+                cursor: disabled !== undefined ? 'not-allowed' : 'pointer',
+              },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             })}
             onClick={disabled !== undefined ? undefined : onCheckboxClick}
           >
-            <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-              <CheckIcon />
-            </SvgIcon>
+            {disabled === undefined && (
+              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+                <CheckIcon />
+              </SvgIcon>
+            )}
           </Box>
         </ListColumn>
 
@@ -106,7 +118,7 @@ export const MigrationListMobileItem = ({
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
             <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
-              <Typography variant="h4" noWrap sx={{ pr: 1 }}>
+              <Typography variant="subheader1" color={baseColorPrimary} noWrap sx={{ pr: 1 }}>
                 {userReserve.reserve.symbol}
               </Typography>
               {disabled !== undefined && (
@@ -123,17 +135,18 @@ export const MigrationListMobileItem = ({
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12 }}>
-        <Typography variant="description" color="text.secondary">
+        <Typography variant="description" color={baseColorSecondary}>
           <Trans>Current v2 Balance</Trans>
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-            <FormattedNumber value={amount} variant="secondary14" />
+            <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
           </Box>
           <FormattedNumber
             value={amountInUSD}
             variant="secondary12"
-            color="text.secondary"
+            color={baseColorSecondary}
+            symbolsColor={baseColorSecondary}
             symbol="USD"
           />
         </Box>
@@ -149,7 +162,7 @@ export const MigrationListMobileItem = ({
           py: 2,
         }}
       >
-        <Typography variant="description" color="text.secondary">
+        <Typography variant="description" color={baseColorSecondary}>
           <Trans>APY change</Trans>
         </Typography>
 
@@ -159,15 +172,22 @@ export const MigrationListMobileItem = ({
             symbol={userReserve.reserve.symbol}
             incentives={v2Incentives}
             variant="main14"
+            color={baseColorPrimary}
           />
           <SvgIcon sx={{ px: 1.5 }}>
-            <ArrowNarrowRightIcon fontSize="14px" />
+            <ArrowNarrowRightIcon
+              fontSize="14px"
+              color={
+                disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+              }
+            />
           </SvgIcon>
           <IncentivesCard
             value={v3APY}
             symbol={userReserve.reserve.symbol}
             incentives={v3Incentives}
             variant="main14"
+            color={baseColorPrimary}
           />
         </Box>
       </Box>
@@ -195,7 +215,12 @@ export const MigrationListMobileItem = ({
             )}
 
             <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon fontSize="14px" />
+              <ArrowNarrowRightIcon
+                fontSize="14px"
+                color={
+                  disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                }
+              />
             </SvgIcon>
             {!enabledAsCollateral ? (
               <NoData variant="main14" color="text.secondary" />
@@ -224,20 +249,25 @@ export const MigrationListMobileItem = ({
         <Box
           sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, pb: 4 }}
         >
-          <Typography variant="description" color="text.secondary">
+          <Typography variant="description" color={baseColorSecondary}>
             <Trans>APY type change</Trans>
           </Typography>
           <Box sx={{ display: 'flex' }}>
             <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
-              <Typography variant="buttonS" color="primary">
+              <Typography variant="buttonS" color={baseColorPrimary}>
                 {borrowApyType}
               </Typography>
             </Button>
             <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon fontSize="14px" />
+              <ArrowNarrowRightIcon
+                fontSize="14px"
+                color={
+                  disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                }
+              />
             </SvgIcon>
             <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
-              <Typography variant="buttonS" color="primary">
+              <Typography variant="buttonS" color={baseColorPrimary}>
                 Variable
               </Typography>
             </Button>

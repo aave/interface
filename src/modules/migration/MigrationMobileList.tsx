@@ -18,6 +18,7 @@ interface MigrationMobileListProps {
   allSelected: boolean;
   numSelected: number;
   numAvailable: number;
+  disabled: boolean;
 }
 
 export const MigrationMobileList = ({
@@ -30,6 +31,7 @@ export const MigrationMobileList = ({
   allSelected,
   numSelected,
   numAvailable,
+  disabled,
 }: MigrationMobileListProps) => {
   return (
     <Box sx={{ width: '100%', mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
@@ -47,6 +49,7 @@ export const MigrationMobileList = ({
                 allSelected={allSelected}
                 numSelected={numSelected}
                 onSelectAllClick={onSelectAllClick}
+                disabled={disabled}
               />
             </ListColumn>
 

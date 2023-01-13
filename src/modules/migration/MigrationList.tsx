@@ -7,6 +7,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
 
+import { MigrationMobileList } from './MigrationMobileList';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationListProps {
@@ -23,6 +24,7 @@ interface MigrationListProps {
   allSelected: boolean;
   numSelected: number;
   numAvailable: number;
+  disabled: boolean;
 }
 
 export const MigrationList = ({
@@ -37,13 +39,34 @@ export const MigrationList = ({
   withBorrow,
   allSelected,
   numSelected,
+  numAvailable,
+  disabled,
 }: MigrationListProps) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const assetColumnWidth = isDesktop ? 120 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
+
+  if (isMobile) {
+    return (
+      <MigrationMobileList
+        titleComponent={titleComponent}
+        isBottomOnMobile={isBottomOnMobile}
+        onSelectAllClick={onSelectAllClick}
+        loading={loading}
+        isAvailable={isAvailable}
+        allSelected={allSelected}
+        numSelected={numSelected}
+        disabled={disabled}
+        numAvailable={numAvailable}
+      >
+        {children}
+      </MigrationMobileList>
+    );
+  }
 
   return (
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
@@ -66,6 +89,7 @@ export const MigrationList = ({
                 allSelected={allSelected}
                 numSelected={numSelected}
                 onSelectAllClick={onSelectAllClick}
+                disabled={disabled}
               />
             </ListColumn>
 
