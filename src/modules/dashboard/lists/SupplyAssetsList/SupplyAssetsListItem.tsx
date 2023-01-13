@@ -17,7 +17,6 @@ import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 
-import { SupplyAssetsItem } from './types';
 import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SupplyAssetsListItem = ({
