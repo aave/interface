@@ -46,17 +46,7 @@ export const MigrationList = ({
   const assetColumnWidth = isDesktop ? 120 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
-  const selectionBoxStyle = {
-    border: `2px solid ${theme.palette.text.secondary}`,
-    background: theme.palette.text.secondary,
-    width: 16,
-    height: 16,
-    borderRadius: '2px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  };
+
   return (
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
       <ListWrapper
@@ -72,8 +62,8 @@ export const MigrationList = ({
         }
       >
         {(isAvailable || loading) && (
-          <ListHeaderWrapper>
-            <ListColumn align="center" maxWidth={60} minWidth={60}>
+          <ListHeaderWrapper sx={{ pl: 0 }}>
+            <ListColumn align="center" maxWidth={64} minWidth={64}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}

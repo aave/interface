@@ -85,14 +85,13 @@ export const MigrationListItem = ({
     );
 
   return (
-    <ListItem>
+    <ListItem sx={{ pl: 0 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', py: 4 }}>
-        <ListColumn align="center" maxWidth={60} minWidth={60}>
+        <ListColumn align="center" maxWidth={64} minWidth={64}>
           <Box
             sx={(theme) => ({
-              border: `2px solid ${
-                Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
-              }`,
+              border: `2px solid ${Boolean(disabled) ? theme.palette.action.disabled : theme.palette.text.secondary
+                }`,
               background: checked ? theme.palette.text.secondary : theme.palette.background.paper,
               width: 16,
               height: 16,
@@ -114,8 +113,8 @@ export const MigrationListItem = ({
           <Row>
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
-            <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-              <Typography variant="h4" noWrap>
+            <Box sx={{ pl: '12px', overflow: 'hidden' }}>
+              <Typography variant="subheader1" noWrap>
                 {userReserve.reserve.symbol}
               </Typography>
             </Box>
@@ -127,7 +126,7 @@ export const MigrationListItem = ({
         <ListColumn align="right">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {userReserve.usageAsCollateralEnabledOnUser &&
-            userReserve.reserve.usageAsCollateralEnabled ? (
+              userReserve.reserve.usageAsCollateralEnabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
               <NoData variant="main14" color="text.secondary" />
