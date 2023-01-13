@@ -30,7 +30,7 @@ interface UseTransactionHandlerProps {
 export type Approval = {
   amount: string;
   underlyingAsset: string;
-  permitType?: 'POOL' | 'MIGRATOR';
+  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3';
 };
 
 export const useTransactionHandler = ({
@@ -56,8 +56,11 @@ export const useTransactionHandler = ({
     useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const generatePermitPayloadForMigrationAsset = useRootStore(
-    (state) => state.generatePermitPayloadForMigrationAsset
+  const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
+    (state) => state.generatePermitPayloadForMigrationSupplyAsset
+  );
+  const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
+    (state) => state.generatePermitPayloadForMigrationBorrowAsset
   );
   const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
     state.signERC20Approval,
@@ -137,9 +140,13 @@ export const useTransactionHandler = ({
                   deadline,
                 })
               );
-            } else {
+            } else if (approval.permitType == 'SUPPLY_MIGRATOR_V3') {
               unsignedPayloads.push(
-                await generatePermitPayloadForMigrationAsset({ ...approval, deadline })
+                await generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
+              );
+            } else if (approval.permitType == 'BORROW_MIGRATOR_V3') {
+              unsignedPayloads.push(
+                await generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
               );
             }
           }

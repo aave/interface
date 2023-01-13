@@ -5,7 +5,12 @@ import {
   UserReserveDataHumanized,
   valueToWei,
 } from '@aave/contract-helpers';
-import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
+import {
+  V3MigrationHelperSignedCreditDelegationPermit,
+  V3MigrationHelperSignedPermit,
+  V3RepayAsset,
+  V3SupplyAsset,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   ComputedUserReserve,
   formatReserves,
@@ -17,6 +22,7 @@ import {
 } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import {
@@ -254,12 +260,18 @@ export const selectUserSupplyIncreasedReservesForMigrationPermits = (
   });
 };
 
-export const selectUserSupplyAssetsForMigrationNoPermit = (store: RootStore, timestamp: number) => {
-  const selectedUserReserves = selectedUserSupplyReservesForMigration(store, timestamp);
-  return selectedUserReserves.map(({ underlyingAsset, reserve }) => {
+export const selectUserSupplyAssetsForMigrationNoPermit = (
+  store: RootStore,
+  timestamp: number
+): V3SupplyAsset[] => {
+  const selectedUserSupplyReserves = selectUserSupplyIncreasedReservesForMigrationPermits(
+    store,
+    timestamp
+  );
+  return selectedUserSupplyReserves.map(({ underlyingAsset, reserve, increasedAmount }) => {
     const deadline = Math.floor(Date.now() / 1000 + 3600);
     return {
-      amount: constants.MaxUint256.toString(),
+      amount: increasedAmount,
       aToken: reserve.aTokenAddress,
       underlyingAsset: underlyingAsset,
       deadline,
@@ -267,19 +279,59 @@ export const selectUserSupplyAssetsForMigrationNoPermit = (store: RootStore, tim
   });
 };
 
-export const selectUserSupplyAssetsForMigrationWithPermits = (
+export const selectMigrationRepayAssets = (store: RootStore, timestamp: number): V3RepayAsset[] => {
+  const deadline = Math.floor(Date.now() / 1000 + 3600);
+  return selectSelectedBorrowReservesForMigration(store, timestamp).map((userReserve) => ({
+    underlyingAsset: userReserve.underlyingAsset,
+    amount:
+      // TODO: verify which digits
+      userReserve.interestRate == InterestRate.Stable
+        ? userReserve.increasedStableBorrows
+        : userReserve.increasedVariableBorrows,
+    deadline,
+    debtToken: userReserve.debtKey,
+    rateMode: userReserve.interestRate,
+  }));
+};
+
+export const selectMigrationSignedPermits = (
   store: RootStore,
   signatures: SignatureLike[],
   deadline: BigNumberish
-): V3MigrationHelperSignedPermit[] => {
-  return store.approvalPermitsForMigrationAssets.map(({ amount, underlyingAsset }, index) => {
+): {
+  supplyPermits: V3MigrationHelperSignedPermit[];
+  creditDelegationPermits: V3MigrationHelperSignedCreditDelegationPermit[];
+} => {
+  const approvalsWithSignatures = store.approvalPermitsForMigrationAssets.map((approval, index) => {
     return {
+      ...approval,
       signedPermit: signatures[index],
+    };
+  });
+
+  const supplyPermits: V3MigrationHelperSignedPermit[] = approvalsWithSignatures
+    .filter((approval) => approval.permitType === 'SUPPLY_MIGRATOR_V3')
+    .map(({ signedPermit, underlyingAsset, amount }) => ({
       deadline,
       aToken: underlyingAsset,
       value: amount,
-    };
-  });
+      signedPermit,
+    }));
+
+  const creditDelegationPermits: V3MigrationHelperSignedCreditDelegationPermit[] =
+    approvalsWithSignatures
+      .filter((approval) => approval.permitType === 'BORROW_MIGRATOR_V3')
+      .map(({ amount, signedPermit, underlyingAsset }) => ({
+        deadline,
+        debtToken: underlyingAsset,
+        signedPermit,
+        value: amount,
+      }));
+
+  return {
+    supplyPermits,
+    creditDelegationPermits,
+  };
 };
 
 const addPercent = (amount: string) => {
@@ -297,15 +349,19 @@ const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
     .toString();
 };
 
-export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, timestamp: number) => {
+export const selectSelectedBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
   const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
-  const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
-  const selectedUserReserves = borrowReserves
+  return borrowReserves
     .filter(
       (userReserve) =>
         selectMigrationSelectedBorrowIndex(store.selectedMigrationBorrowAssets, userReserve) >= 0
     )
-    .filter((userReserve) => !userReserve.disabledForMigration)
+    .filter((userReserve) => !userReserve.disabledForMigration);
+};
+
+export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, timestamp: number) => {
+  const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
+  const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp)
     // debtKey should be mapped for v3Migration
     .map((borrowReserve) => {
       let debtKey = borrowReserve.debtKey;
@@ -403,6 +459,40 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
   );
 };
 
+export const selectMigrationBorrowPermitPayloads = (
+  store: RootStore,
+  timestamp: number
+): Approval[] => {
+  const borrowUserReserves = selectSelectedBorrowReservesForMigrationV3(store, timestamp);
+
+  const stableUserReserves: Record<string, SplittedUserReserveIncreasedAmount> = {};
+  borrowUserReserves
+    .filter((userReserve) => userReserve.interestRate == InterestRate.Stable)
+    .forEach((item) => {
+      stableUserReserves[item.underlyingAsset] = item;
+    });
+
+  return borrowUserReserves
+    .filter((userReserve) => userReserve.interestRate == InterestRate.Variable)
+    .map(({ increasedVariableBorrows, underlyingAsset, debtKey, reserve }) => {
+      const stableUserReserve = stableUserReserves[underlyingAsset];
+      let combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows);
+      if (stableUserReserve) {
+        const increasedStableBorrows = stableUserReserve.increasedStableBorrows;
+        combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows).plus(
+          valueToBigNumber(increasedStableBorrows)
+        );
+      }
+      const combinedAmountInWei = valueToWei(combinedIncreasedAmount.toString(), reserve.decimals);
+
+      return {
+        amount: combinedAmountInWei,
+        underlyingAsset: debtKey,
+        permitType: 'BORROW_MIGRATOR_V3',
+      };
+    });
+};
+
 export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
   const poolReserveV3Summary = selectV3UserSummary(store, currentTimestamp);
   const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
@@ -411,12 +501,12 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   const borrows = selectSelectedBorrowReservesForMigrationV3(store, currentTimestamp);
 
   //TODO: refactor that to be more efficient
-  const suppliesMap = supplies.concat(supplies).reduce((obj, item) => {
+  const suppliesMap = supplies.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
     return obj;
   }, {} as Record<string, typeof supplies[0]>);
 
-  const borrowsMap = borrows.concat(borrows).reduce((obj, item) => {
+  const borrowsMap = borrows.reduce((obj, item) => {
     obj[item.debtKey] = item;
     return obj;
   }, {} as Record<string, typeof borrows[0]>);
@@ -430,7 +520,6 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
     let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
-    // TODO: combine stable borrow amount as well
     const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
     if (variableBorrowAsset) {
       const scaledDownVariableDebtV2Balance = rayDiv(

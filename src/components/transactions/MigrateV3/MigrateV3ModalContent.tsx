@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useCallback } from 'react';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -49,11 +50,15 @@ export const MigrateV3ModalContent = () => {
 
   const borrowsAssets = borrowPositions.map((asset) => {
     return {
-      underlyingAsset: asset.underlyingAsset,
+      underlyingAsset: asset.debtKey,
       iconSymbol: asset.reserve.iconSymbol,
       symbol: asset.reserve.symbol,
-      amount: asset.totalBorrows,
-      amountInUSD: asset.totalBorrowsUSD,
+      amount:
+        asset.interestRate == InterestRate.Stable ? asset.stableBorrows : asset.variableBorrows,
+      amountInUSD:
+        asset.interestRate == InterestRate.Stable
+          ? asset.stableBorrowsUSD
+          : asset.variableBorrowsUSD,
     };
   });
 
