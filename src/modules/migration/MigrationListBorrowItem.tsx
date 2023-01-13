@@ -10,6 +10,7 @@ type MigrationListBorrowItemProps = {
   selectedBorrowAssets: MigrationSelectedBorrowAsset[];
   toggleSelectedBorrowPosition: (asset: MigrationSelectedBorrowAsset) => void;
   v3Rates?: V3Rates;
+  enteringIsolation: boolean;
 };
 
 export const MigrationListBorrowItem = ({
@@ -17,6 +18,7 @@ export const MigrationListBorrowItem = ({
   userReserve,
   toggleSelectedBorrowPosition,
   v3Rates,
+  enteringIsolation,
 }: MigrationListBorrowItemProps) => {
   const isChecked = useMemo(() => {
     return (
@@ -55,6 +57,7 @@ export const MigrationListBorrowItem = ({
       enabledAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
       borrowApyType={userReserve.interestRate}
       v3Rates={v3Rates}
+      enteringIsolation={enteringIsolation}
     />
   );
 };
