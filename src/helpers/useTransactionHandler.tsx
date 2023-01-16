@@ -130,28 +130,29 @@ export const useTransactionHandler = ({
         try {
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const unsignedPayloads: string[] = [];
+          const unsignedPromisePayloads: Promise<string>[] = [];
           for (const approval of approvals) {
             if (!approval.permitType || approval.permitType == 'POOL') {
-              unsignedPayloads.push(
-                await signPoolERC20Approval({
+              unsignedPromisePayloads.push(
+                signPoolERC20Approval({
                   reserve: approval.underlyingAsset,
                   amount: approval.amount,
                   deadline,
                 })
               );
             } else if (approval.permitType == 'SUPPLY_MIGRATOR_V3') {
-              unsignedPayloads.push(
-                await generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
+              unsignedPromisePayloads.push(
+                generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
               );
             } else if (approval.permitType == 'BORROW_MIGRATOR_V3') {
-              unsignedPayloads.push(
-                await generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
+              unsignedPromisePayloads.push(
+                generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
               );
             }
           }
           try {
             const signatures: SignatureLike[] = [];
+            const unsignedPayloads = await Promise.all(unsignedPromisePayloads);
             for (const unsignedPayload of unsignedPayloads) {
               signatures.push(await signTxData(unsignedPayload));
             }
