@@ -17,7 +17,4 @@ export class ModalHelpers {
         return parseFloat($val.text());
       });
   }
-
-  public static getNewGHOApyRate() {}
-  public static getOldGHOApyRate() {}
 }
