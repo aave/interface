@@ -71,7 +71,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    // privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
@@ -92,7 +92,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
-    // privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://polygon-rpc.com',
       'https://polygon-mainnet.public.blastapi.io',
@@ -156,8 +156,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
-    // privateJsonRPCUrl:
-    //   'https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
+    privateJsonRPCUrl:
+      'https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
     publicJsonRPCUrl: [
       'https://api.avax.network/ext/bc/C/rpc',
       'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
@@ -227,7 +227,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.harmony]: {
     name: 'Harmony',
-    // privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://api.s0.t.hmny.io',
       'https://api.harmony.one',
@@ -251,8 +251,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'Optimism',
-    // privateJsonRPCUrl:
-    //   'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl:
+      'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://optimism-mainnet.public.blastapi.io',
       'https://1rpc.io/op',
@@ -295,7 +295,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.fantom]: {
     name: 'Fantom',
-    // privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.fantom.network',
       'https://rpc.ankr.com/fantom',
