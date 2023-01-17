@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
-import Turnstile from 'react-turnstile';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { selectCurrentReserves } from 'src/store/poolSelectors';
@@ -9,6 +8,7 @@ import { useRootStore } from 'src/store/root';
 
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine } from '../FlowCommons/TxModalDetails';
+import Turnstile from './Turnstile';
 import { getNormalizedMintAmount } from './utils';
 
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
