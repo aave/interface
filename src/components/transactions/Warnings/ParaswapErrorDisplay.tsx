@@ -12,7 +12,6 @@ interface ErrorProps {
   txError: TxErrorType;
 }
 export const ParaswapErrorDisplay: React.FC<ErrorProps> = ({ txError }) => {
-  console.log(txError.rawError);
   return (
     <Box>
       <GasEstimationError txError={txError} />
