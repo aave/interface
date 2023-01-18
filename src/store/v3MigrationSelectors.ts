@@ -176,7 +176,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
   const userEmodeCategoryId = poolReserveV3?.userEmodeCategoryId;
 
-  let isolatedReserveV3 = selectIsolationModeForMigration(v3ReservesUserSummary);
+  let isolatedReserveV3:
+    | (FormatReserveUSDResponse & { enteringIsolationMode?: boolean })
+    | undefined = selectIsolationModeForMigration(v3ReservesUserSummary);
 
   const v3ReservesMap = selectUserReservesMapFromUserReserves(userReserveV3Data);
 
@@ -185,7 +187,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (definitiveAssets.length > 0) {
       const definitiveAsset = v3ReservesMap[definitiveAssets[0].underlyingAsset];
       if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
-        isolatedReserveV3 = definitiveAsset.reserve;
+        isolatedReserveV3 = { ...definitiveAsset.reserve, enteringIsolationMode: true };
       }
     }
   }

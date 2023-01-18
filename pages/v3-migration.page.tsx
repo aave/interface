@@ -19,7 +19,6 @@ import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
 import {
-  assetSelected,
   selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
   selectV3UserSummary,
@@ -41,6 +40,7 @@ export default function V3Migration() {
     supplyReserves,
     borrowReserves,
     healthFactor: v2HealthFactorBeforeMigration,
+    isolatedReserveV3,
   } = useRootStore(
     useCallback(
       (state) => selectUserReservesForMigration(state, currentTimeStamp),
@@ -98,15 +98,6 @@ export default function V3Migration() {
     selectAllBorrow(currentTimeStamp);
   };
 
-  const selectedIsolatedAsset = supplyReserves.find(
-    (reserve) =>
-      reserve.isolatedOnV3 &&
-      reserve.usageAsCollateralEnabledOnUserV3 &&
-      assetSelected(reserve, selectedSupplyAssets)
-  );
-  let enteringIsolationMode = false;
-  if (selectedIsolatedAsset) enteringIsolationMode = true;
-
   return (
     <>
       <MigrationTopPanel />
@@ -153,7 +144,7 @@ export default function V3Migration() {
                       }}
                       enabledAsCollateral={reserve.usageAsCollateralEnabledOnUserV3}
                       isIsolated={reserve.isolatedOnV3}
-                      enteringIsolation={enteringIsolationMode}
+                      enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
                       v3Rates={reserve.v3Rates}
                       disabled={reserve.migrationDisabled}
                     />
@@ -180,7 +171,7 @@ export default function V3Migration() {
                       selectedBorrowAssets={selectedBorrowAssets}
                       toggleSelectedBorrowPosition={toggleSelectedBorrowPosition}
                       v3Rates={reserve.v3Rates}
-                      enteringIsolation={enteringIsolationMode}
+                      enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
                     />
                   ))
                 ) : (
@@ -202,7 +193,7 @@ export default function V3Migration() {
             disableButton={
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }
-            enteringIsolationMode={enteringIsolationMode}
+            enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
             loading={loading}
           />
         </ContentContainer>
