@@ -1,7 +1,9 @@
+import { V3FaucetService } from '@aave/contract-helpers';
 import { enableMapSet } from 'immer';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
@@ -22,16 +24,18 @@ export type RootStore = StakeSlice &
   GovernanceSlice;
 
 export const useRootStore = create<RootStore>()(
-  devtools((...args) => {
-    return {
-      ...createStakeSlice(...args),
-      ...createProtocolDataSlice(...args),
-      ...createWalletSlice(...args),
-      ...createPoolSlice(...args),
-      ...createIncentiveSlice(...args),
-      ...createGovernanceSlice(...args),
-    };
-  })
+  subscribeWithSelector(
+    devtools((...args) => {
+      return {
+        ...createStakeSlice(...args),
+        ...createProtocolDataSlice(...args),
+        ...createWalletSlice(...args),
+        ...createPoolSlice(...args),
+        ...createIncentiveSlice(...args),
+        ...createGovernanceSlice(...args),
+      };
+    })
+  )
 );
 
 // hydrate state from localeStorage to not break on ssr issues
@@ -71,3 +75,38 @@ export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
 export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshGovernanceData();
 }, 60000);
+
+let latest: V3FaucetService;
+useRootStore.subscribe(
+  (state) => state.currentMarketData,
+  async (selected) => {
+    const { setIsFaucetPermissioned: setFaucetPermissioned, jsonRpcProvider } =
+      useRootStore.getState();
+    if (ENABLE_TESTNET || STAGING_ENV) {
+      if (!selected.v3) {
+        setFaucetPermissioned(false);
+        return;
+      }
+
+      // If there are multiple calls in flight, we only want to use the result from the latest one.
+      // Use the instance of the service to check if it's the latest one since it is recreated
+      // everytime this subscription fires.
+      const service = new V3FaucetService(jsonRpcProvider(), selected.addresses.FAUCET);
+      latest = service;
+      service
+        .isPermissioned()
+        .then((isPermissioned) => {
+          if (latest === service) {
+            setFaucetPermissioned(isPermissioned);
+          }
+        })
+        .catch((e) => {
+          console.error('error checking faucet permission', e);
+          setFaucetPermissioned(false);
+        });
+    } else {
+      setFaucetPermissioned(false);
+    }
+  },
+  { fireImmediately: true }
+);
