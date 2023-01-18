@@ -2,13 +2,15 @@ import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode, useCallback } from 'react';
 import { useRootStore } from 'src/store/root';
-import { computeSelections, selectUserReservesForMigration } from 'src/store/v3MigrationSelectors';
+import {
+  computeSelections,
+  IsolatedReserve,
+  selectUserReservesForMigration,
+} from 'src/store/v3MigrationSelectors';
 
 import { MigrationList } from './MigrationList';
 
 interface MigrationListsProps {
-  totalSuppliesUSD: string;
-  totalBorrowsUSD: string;
   onSelectAllSupplies: () => void;
   onSelectAllBorrows: () => void;
   suppliesPositions: ReactNode;
@@ -17,16 +19,16 @@ interface MigrationListsProps {
   isSupplyPositionsAvailable: boolean;
   isBorrowPositionsAvailable: boolean;
   emodeCategoryId?: number;
+  isolatedReserveV3?: IsolatedReserve;
 }
 
 export const MigrationLists = ({
-  totalSuppliesUSD,
-  totalBorrowsUSD,
   onSelectAllSupplies,
   onSelectAllBorrows,
   suppliesPositions,
   borrowsPositions,
   loading,
+  isolatedReserveV3,
   isSupplyPositionsAvailable,
   isBorrowPositionsAvailable,
   emodeCategoryId,
@@ -62,6 +64,7 @@ export const MigrationLists = ({
       }}
     >
       <MigrationList
+        isolatedReserveV3={isolatedReserveV3}
         loading={loading}
         onSelectAllClick={onSelectAllSupplies}
         allSelected={activeSupplyUnselected.length === 0}
@@ -70,7 +73,6 @@ export const MigrationLists = ({
         emodeCategoryId={emodeCategoryId}
         withCollateral
         disabled={allSuppliesDisabled}
-        totalAmount={totalSuppliesUSD}
         numSelected={activeSupplySelections.length || 0}
         numAvailable={activeSupplyUnselected.length || 0}
       >
@@ -85,7 +87,6 @@ export const MigrationLists = ({
         isBottomOnMobile
         withBorrow
         disabled={allBorrowsDisabled}
-        totalAmount={totalBorrowsUSD}
         titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
         numSelected={activeBorrowSelections.length || 0}
         numAvailable={activeBorrowUnselected.length || 0}

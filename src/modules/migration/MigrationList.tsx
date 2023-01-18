@@ -5,14 +5,16 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Warning } from 'src/components/primitives/Warning';
+import { useRootStore } from 'src/store/root';
+import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
 import { MigrationMobileList } from './MigrationMobileList';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationListProps {
   titleComponent: ReactNode;
-  totalAmount: string;
   isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
@@ -25,11 +27,11 @@ interface MigrationListProps {
   numSelected: number;
   numAvailable: number;
   disabled: boolean;
+  isolatedReserveV3?: IsolatedReserve;
 }
 
 export const MigrationList = ({
   titleComponent,
-  totalAmount,
   isBottomOnMobile,
   children,
   onSelectAllClick,
@@ -41,8 +43,13 @@ export const MigrationList = ({
   numSelected,
   numAvailable,
   disabled,
+  isolatedReserveV3,
 }: MigrationListProps) => {
   const theme = useTheme();
+  const { currentMarket, currentMarketData } = useRootStore();
+  const marketName = currentMarketData.marketTitle;
+  const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
+
   const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -72,14 +79,25 @@ export const MigrationList = ({
     <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, xl: 0 } }}>
       <ListWrapper
         titleComponent={
-          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-            {titleComponent}
-          </Typography>
-        }
-        topInfo={
-          !(loading || +totalAmount <= 0) && (
-            <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />
-          )
+          <Box display="block">
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+              {titleComponent}
+            </Typography>
+            {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
+              <Box sx={{ pt: '16px' }}>
+                <Warning severity="warning" icon={false} sx={{ mb: 0 }}>
+                  <Typography variant="caption" color={theme.palette.warning[100]}>
+                    <Trans>
+                      Some migrated assets will not be used as collateral due to enabled isolation
+                      mode in {marketName} V3 Market. Visit{' '}
+                      <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
+                      mode.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              </Box>
+            )}
+          </Box>
         }
       >
         {(isAvailable || loading) && (

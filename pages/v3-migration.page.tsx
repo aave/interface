@@ -35,8 +35,6 @@ export default function V3Migration() {
   const currentTimeStamp = useCurrentTimestamp(10);
 
   const {
-    totalCollateralUSD,
-    totalBorrowsUSD,
     supplyReserves,
     borrowReserves,
     healthFactor: v2HealthFactorBeforeMigration,
@@ -105,13 +103,12 @@ export default function V3Migration() {
         <ContentContainer>
           <MigrationLists
             loading={loading}
-            totalSuppliesUSD={totalCollateralUSD}
-            totalBorrowsUSD={totalBorrowsUSD}
             isSupplyPositionsAvailable={supplyReserves.length > 0}
             isBorrowPositionsAvailable={borrowReserves.length > 0}
             onSelectAllSupplies={handleToggleAllSupply}
             onSelectAllBorrows={handleToggleAllBorrow}
             emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
+            isolatedReserveV3={isolatedReserveV3}
             suppliesPositions={
               <>
                 {loading ? (
@@ -134,7 +131,7 @@ export default function V3Migration() {
                       }
                       canBeEnforced={
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
-                          '0' && reserve.canBeEnforced
+                        '0' && reserve.canBeEnforced
                       }
                       userReserve={reserve}
                       amount={reserve.underlyingBalance}

@@ -297,7 +297,6 @@ msgstr "Back to Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -1622,6 +1621,10 @@ msgstr "Since this is a test network, you can get any of the assets if you have 
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 
+#: src/modules/migration/MigrationList.tsx
+msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
+msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
+
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
@@ -2569,8 +2572,8 @@ msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
 #: src/modules/migration/MigrationMobileList.tsx
-msgid "{numSelected}/{numAvailable} assets selected"
-msgstr "{numSelected}/{numAvailable} assets selected"
+msgid "{numSelected}/{0} assets selected"
+msgstr "{numSelected}/{0} assets selected"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
