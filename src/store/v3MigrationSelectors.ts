@@ -164,6 +164,7 @@ export enum MigrationDisabled {
   InsufficientLiquidity, // TODO
 }
 
+export type IsolatedReserve = FormatReserveUSDResponse & { enteringIsolationMode?: boolean };
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = selectV3UserSummary(
     store,
@@ -176,9 +177,8 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
   const userEmodeCategoryId = poolReserveV3?.userEmodeCategoryId;
 
-  let isolatedReserveV3:
-    | (FormatReserveUSDResponse & { enteringIsolationMode?: boolean })
-    | undefined = selectIsolationModeForMigration(v3ReservesUserSummary);
+  let isolatedReserveV3: IsolatedReserve | undefined =
+    selectIsolationModeForMigration(v3ReservesUserSummary);
 
   const v3ReservesMap = selectUserReservesMapFromUserReserves(userReserveV3Data);
 
