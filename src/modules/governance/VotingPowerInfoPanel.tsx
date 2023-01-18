@@ -69,7 +69,14 @@ export function VotingPowerInfoPanel() {
         {currentAccount ? (
           <Button
             variant="contained"
-            disabled={powers?.votingPower === '0' && powers?.propositionPower === '0'}
+            disabled={
+              powers?.votingPower === '0' &&
+              powers?.propositionPower === '0' &&
+              powers?.aaveVotingDelegatee === '' &&
+              powers?.aavePropositionDelegatee === '' &&
+              powers?.stkAavePropositionDelegatee === '' &&
+              powers?.stkAaveVotingDelegatee === ''
+            }
             onClick={() => openGovDelegation()}
           >
             <Trans>Delegate</Trans>
