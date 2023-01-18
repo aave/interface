@@ -134,32 +134,34 @@ export const MigrationBottomPanel = ({
 
         {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
 
-        <Box
-          sx={{
-            height: '44px',
-            backgroundColor: 'background.surface',
-            borderRadius: '4px',
-            display: 'flex',
-            justifyContent: 'center',
-            mb: 4,
-          }}
-        >
-          <FormControlLabel
-            sx={{ margin: 0 }}
-            control={
-              <Checkbox
-                checked={isChecked}
-                onChange={() => setIsChecked(!isChecked)}
-                size="small"
-              />
-            }
-            label={
-              <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
-                <Trans>I fully understand the risks of migrating.</Trans>
-              </Typography>
-            }
-          />
-        </Box>
+        {blockingError === undefined && (
+          <Box
+            sx={{
+              height: '44px',
+              backgroundColor: 'background.surface',
+              borderRadius: '4px',
+              display: 'flex',
+              justifyContent: 'center',
+              mb: 4,
+            }}
+          >
+            <FormControlLabel
+              sx={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={() => setIsChecked(!isChecked)}
+                  size="small"
+                />
+              }
+              label={
+                <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+                  <Trans>I fully understand the risks of migrating.</Trans>
+                </Typography>
+              }
+            />
+          </Box>
+        )}
 
         <Box>
           <Button
