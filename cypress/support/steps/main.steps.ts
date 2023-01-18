@@ -231,9 +231,10 @@ export const repay = (
           break;
       }
     });
+
     if (repayableAsset) {
       it(`Choose ${repayableAsset.shortName} as option to repay`, () => {
-        cy.get('[data-cy=Modal] ').as('Modal');
+        cy.get('[data-cy=Modal]').as('Modal');
         cy.get('@Modal').get('[data-cy=assetSelect]').click();
         cy.get('@Modal')
           .get(`[data-cy='assetsSelectOption_${repayableAsset.shortName.toUpperCase()}']`)
@@ -245,6 +246,13 @@ export const repay = (
       isMaxAmount ? 'MAX' : amount
     } amount for ${_shortName}, with ${repayOption} repay option`, () => {
       cy.setAmount(amount, isMaxAmount);
+      if (repayOption == constants.repayType.collateral) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
       cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
@@ -440,6 +448,11 @@ export const swap = (
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       cy.setAmount(amount, isMaxAmount);
+      cy.get('[data-cy=Modal]')
+        .find('[data-cy=approveButtonChange]')
+        .click()
+        .get('[data-cy=approveOption_Transaction]')
+        .click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
