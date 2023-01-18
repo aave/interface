@@ -3,11 +3,12 @@ import {
   gasLimitRecommendations,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -24,6 +25,9 @@ interface SwapBaseProps extends BoxProps {
   isMaxSelected: boolean;
   useFlashLoan: boolean;
   loading?: boolean;
+  signature?: SignatureLike;
+  deadline?: string;
+  signedAmount?: string;
 }
 
 export interface SwapActionProps extends SwapBaseProps {
@@ -46,11 +50,11 @@ export const SwapActions = ({
   buildTxFn,
   ...props
 }: SwapBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const swapCollateral = useRootStore((state) => state.swapCollateral);
+  const { swapCollateral, currentMarketData } = useRootStore();
 
-  const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
+  const { approval, action, approvalTxState, mainTxState, loadingTxns, requiresApproval } =
     useParaSwapTransactionHandler({
-      handleGetTxns: async () => {
+      handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return swapCollateral({
           amountToSwap: route.inputAmount,
@@ -64,6 +68,9 @@ export const SwapActions = ({
           useFlashLoan,
           swapCallData: route.swapCallData,
           augustus: route.augustus,
+          signature,
+          deadline,
+          signedAmount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
         });
       },
       handleGetApprovalTxns: async () => {
@@ -83,6 +90,8 @@ export const SwapActions = ({
       },
       gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
       skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
+      spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER ?? '',
+      deps: [targetReserve.symbol, amountToSwap],
     });
 
   return (
@@ -94,7 +103,12 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval()}
+      handleApproval={() =>
+        approval({
+          amount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
+          underlyingAsset: poolReserve.aTokenAddress,
+        })
+      }
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
@@ -106,6 +120,7 @@ export const SwapActions = ({
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
+      tryPermit
       {...props}
     />
   );

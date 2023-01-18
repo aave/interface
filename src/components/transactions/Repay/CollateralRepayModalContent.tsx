@@ -20,7 +20,6 @@ import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 
 import { Asset, AssetInput } from '../AssetInput';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
@@ -29,6 +28,7 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
 
 export function CollateralRepayModalContent({
@@ -302,7 +302,7 @@ export function CollateralRepayModalContent({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && <ParaswapErrorDisplay txError={txError} />}
 
       <CollateralRepayActions
         poolReserve={poolReserve}

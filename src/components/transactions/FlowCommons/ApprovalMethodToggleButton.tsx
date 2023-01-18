@@ -33,7 +33,11 @@ export const ApprovalMethodToggleButton = ({
 
   return (
     <>
-      <Box onClick={handleClick} sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+      <Box
+        onClick={handleClick}
+        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        data-cy={`approveButtonChange`}
+      >
         <Typography variant="subheader2" color="info.main">
           <Trans>{currentMethod}</Trans>
         </Typography>
@@ -53,6 +57,7 @@ export const ApprovalMethodToggleButton = ({
         data-cy={`approveMenu_${currentMethod}`}
       >
         <MenuItem
+          data-cy={`approveOption_${ApprovalMethod.PERMIT}`}
           selected={currentMethod === ApprovalMethod.PERMIT}
           value={ApprovalMethod.PERMIT}
           onClick={() => {
@@ -71,6 +76,7 @@ export const ApprovalMethodToggleButton = ({
         </MenuItem>
 
         <MenuItem
+          data-cy={`approveOption_${ApprovalMethod.APPROVE}`}
           selected={currentMethod === ApprovalMethod.APPROVE}
           value={ApprovalMethod.APPROVE}
           onClick={() => {
