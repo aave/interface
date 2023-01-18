@@ -43,7 +43,7 @@ export interface GhoSlice {
 
 export const createGhoSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   GhoSlice
 > = (set, get) => {
