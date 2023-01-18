@@ -44,9 +44,9 @@ export const MigrationLists = ({
   );
 
   const allSuppliesDisabled =
-    supplyReserves.find((reserve) => !!reserve.migrationDisabled) !== undefined;
+    supplyReserves.find((reserve) => reserve.migrationDisabled === undefined) === undefined;
   const allBorrowsDisabled =
-    borrowReserves.find((reserve) => !!reserve.migrationDisabled) !== undefined;
+    borrowReserves.find((reserve) => reserve.migrationDisabled === undefined) === undefined;
 
   const { activeSelections: activeSupplySelections, activeUnselected: activeSupplyUnselected } =
     computeSelections(supplyReserves, selectedSupplyAssets);
