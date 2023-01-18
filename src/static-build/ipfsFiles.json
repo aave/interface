@@ -2042,6 +2042,48 @@
       "ipfsHash": "QmQZJs5u3XyjxPWvqjPoGXMyvuXKTKMsLRSAsmu8stu5iT",
       "originalHash": "0x20f57c3ef4ee80ce54234133fe98d096adf40a60a982389bc3d3a258ed67bb44",
       "id": 141
+    },
+    {
+      "title": "Freeze agEUR on Aave v3 Polygon",
+      "author": "BGD Labs (@bgd-labs)",
+      "shortDescription": "Following the Midas protocol incident, temporarily freeze agEUR",
+      "discussions": "https://governance.aave.com/t/jeur-incident-plan-of-action/11379",
+      "created": "2022-01-18T00:00:00.000Z",
+      "updated": "2022-01-18T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nFollowing the exploit on Midas Protocol, slightly …",
+      "basename": "FREEZE-AGEUR-V3-POLYGON",
+      "description": "\n\n## Simple Summary\n\nFollowing the exploit on Midas Protocol, slightly affecting the collateralization of agEUR, this proposal temporarily freezes agEUR. \n\n## Motivation\n\nEven if agEUR collateralization doesn't seem threatened by the loss on Midas protocol exploit, it is important for the community to decide if a freezing should be executed, for caution.\n\n## Specification\n\nThis is a cross-chain governance proposal for Aave v3 Polygon.\nThe proposal payload simply executes `setReserveFreeze()` on the [Aave v3 Polygon PoolConfigurator](https://polygonscan.com/address/0x8145eddDf43f50276641b55bd3AD95944510021E) for agEUR.\n\n## References\n\n- [Proposal payload implementation](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/polygon/AaveV3PolFreezeAGEUR.sol)\n- [Tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/polygon/AaveV3PolJEURAGEURFreeze.t.sol)\n- [Deployed payload](https://polygonscan.com/address/0x7b8fa4540246554e77fcff140f9114de00f8bb8d#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmaAMNazUpFvqbnRGfj6D9rLuXvZ4pXZcSmAfWrp1PsJCK",
+      "originalHash": "0xafa8d52094cc041ee20ca429e22b86ae20d6735b4067a617548ccc242bd5b264",
+      "id": 142
+    },
+    {
+      "title": "Freeze jEUR on Aave v3 Polygon",
+      "author": "BGD Labs (@bgd-labs)",
+      "shortDescription": "Following the Midas protocol incident, temporarily freeze jEUR",
+      "discussions": "https://governance.aave.com/t/jeur-incident-plan-of-action/11379",
+      "created": "2022-01-18T00:00:00.000Z",
+      "updated": "2022-01-18T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nFollowing the exploit on Midas Protocol, slightly …",
+      "basename": "FREEZE-JEUR-V3-POLYGON",
+      "description": "\n\n## Simple Summary\n\nFollowing the exploit on Midas Protocol, slightly affecting the collateralization of jEUR, this proposal temporarily freezes jEUR. \n\n## Motivation\n\nIt is important for the community to decide if a freezing should be executed, for caution, given that a meaningful amount of the jEUR supply (5-10%) seems to be affected.\n\n## Specification\n\nThis is a cross-chain governance proposal for Aave v3 Polygon.\nThe proposal payload simply executes `setReserveFreeze()` on the [Aave v3 Polygon PoolConfigurator](https://polygonscan.com/address/0x8145eddDf43f50276641b55bd3AD95944510021E) for jEUR.\n\n## References\n\n- [Proposal payload implementation](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/polygon/AaveV3PolFreezeJEUR.sol)\n- [Tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/polygon/AaveV3PolJEURAGEURFreeze.t.sol)\n- [Deployed payload](https://polygonscan.com/address/0x165e90bd0a41d08fa1891ccdcee315d7b83b3419#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmP8BeNhsgfuNviVtctC7BDFxxE8ee4rUpN9VNHX2cTR4Z",
+      "originalHash": "0x0baa1d8fa1dbcd7a15276f668b234f9847ba2848f9aa6a4b79eaa6d927b92b8e",
+      "id": 143
+    },
+    {
+      "title": "Ethereum v2 Collector Contract Consolidation",
+      "author": "Llama, DeFi_Consulting, efecarranza, dydymoon",
+      "shortDescription": "Consolidate the assets held within the v2 Collector Contract",
+      "discussion": "https://governance.aave.com/t/arfc-ethereum-v2-collector-contract-consolidation/10909",
+      "created": "2023-01-17T00:00:00.000Z",
+      "updated": "2023-01-18T00:00:00.000Z",
+      "preview": "# Summary\n@llamaxyz proposes consolidating the Aave v2 Collector …",
+      "basename": "COLLECTOR-V2-ASSET-CONSOLIDATION",
+      "description": "\n\n# Summary\n@llamaxyz proposes consolidating the Aave v2 Collector Contract holdings by swapping a portion of the long tail assets to USDC and redeeming assets from the Aave AMM deployment.\n\n# Abstract\nThe Aave v2 Collector Contract has accumulated a holding in several assets over time. Assets from the v1, v2, RWA, ARC, and AMM depoloyments all accumulate in the Ethereum v2 Collector Contract. This proposal is the first of several intended to consolidate the various Collector Contracts and Treasury holdings.\n\nThis proposal seeks to consolidate 17 assets in the v2 Ethereum Collector Contract to USDC and redeem ammTokens for the underlying assets.\n\n# Motivation\nThe DAO is currently accumulating over 60 assets in the v2 Collector Contract from various Aave deployments. Many of these holdings are of small economic value, are undercollateralized assets, or exhibit volatile pricing behaviour. Upon consolidating the DAO’s assets into USDC, which most of the DAO’s costs are denominated in, Llama intends to present the community with recommendations for deploying a portion of the larger holdings.\n\nThe AMM Liquidity Pool, v2, attracts very little capital and usage relative to other deployments. A number of the assets are frozen and, with v3 being deployed on Ethereum soon, it makes sense for the DAO to relocate this capital away from from the v2 AMM deployment. This proposal enables the following ammTokens, aAmmDAI, aAmmUSDC, aAmmUSDT, aAmmWBTC, and aAmmWETH to be redeemed periodically by calling a contract. Any actor will be able to interact with the contract via Etherscan. Llama, or anyone else, can redeem these ammTokens periodically with the underlying asset to be held within the v2 Collector Contract.\n\n# Specification\nThie following assets held within the Ethereum v2 Collector Contract are to be converted to USDC via swap contract.\n\n![long-tail asssets](https://i.imgur.com/2WY7n0o.png)\n\nUsers will be able to deposit USDC and receive the tokens mentioned in the table above, plus a small premium. The premium is expected to reimburse the cost incurred from swapping the applicable token to USDC along with associated gas costs. The methodology enables actors to support Aave in swapping one asset for another by creating an arbitrage opportunity in a decentralized manner.\n\nThe following assets are to be redeemed from the AMM deployment.\n\n![amm assets](https://i.imgur.com/e1WHaaM.png)\n\n# Implementation\nThe below outlines at a high level the flow of events this proposal will achieve:\n\nRedeem aTokens and ammTokens for underlying asset\nDeploy a Swap Contract whereby actors can deposit USDC and receive a selected token stated in the above table at the Chainlink Oracle price + premium\nv2 Collector Contract receives USDC\nTest cases can be found [here](https://github.com/llama-community/aave-v2-collector-consolidation/blob/main/src/test/ProposalPayloadE2E.t.sol)\n\nPayload Implementation can be found [here](https://github.com/llama-community/aave-v2-collector-consolidation/blob/main/src/ProposalPayload.sol)\n\nProposal Payload = [0xBefcd01681224555b74eAC87207eaF9Bc3361F59](https://etherscan.io/address/0xBefcd01681224555b74eAC87207eaF9Bc3361F59)\n\n# Copyright\nCopyright and related rights waived via CC0.\n",
+      "ipfsHash": "QmdPubKYGG9Nx4yYff7PMFP7DMSsrjtY7SZou2D6YRLkXx",
+      "originalHash": "0xdfb4dfe48453691fbeac9238f4954338ffa3ac10b56e77b63d3d1d76eae8b327",
+      "id": 144
     }
   ]
 }
