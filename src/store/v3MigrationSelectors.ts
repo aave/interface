@@ -2,20 +2,24 @@ import {
   InterestRate,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
   UserReserveDataHumanized,
   valueToWei,
 } from '@aave/contract-helpers';
 import { V3MigrationHelperSignedPermit } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   ComputedUserReserve,
-  formatReserves,
+  formatReservesAndIncentives,
   FormatReserveUSDResponse,
   formatUserSummary,
   FormatUserSummaryResponse,
   rayDiv,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import {
+  CalculateReserveIncentivesResponse,
+  ReserveIncentiveResponse,
+} from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -141,12 +145,14 @@ export const selectDefinitiveSupplyAssetForMigration = (
 };
 
 export const selectUserReservesMapFromUserReserves = (
-  userReservesData: ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[]
+  userReservesData: ComputedUserReserve<
+    ReserveDataHumanized & FormatReserveUSDResponse & Partial<CalculateReserveIncentivesResponse>
+  >[]
 ) => {
   const v3ReservesMap = userReservesData.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
     return obj;
-  }, {} as Record<string, ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>>);
+  }, {} as Record<string, ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse & Partial<CalculateReserveIncentivesResponse>>>);
 
   return v3ReservesMap;
 };
@@ -202,6 +208,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
         variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
         supplyAPY: v3SupplyAsset.reserve.supplyAPY,
+        aIncentivesData: v3SupplyAsset.reserve.aIncentivesData,
+        vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
+        sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
       };
     } else {
       migrationDisabled = MigrationDisabled.V3AssetMissing;
@@ -245,6 +254,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
         variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
         supplyAPY: v3BorrowAsset.reserve.stableBorrowAPY,
+        aIncentivesData: v3BorrowAsset.reserve.aIncentivesData,
+        vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
+        sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
       };
     } else {
       disabledForMigration = MigrationDisabled.V3AssetMissing;
@@ -378,14 +390,16 @@ export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, tim
 
 export const selectFormatUserSummaryForMigration = (
   reserves: ReserveDataHumanized[] = [],
+  reserveIncentives: ReservesIncentiveDataHumanized[] = [],
   userReserves: UserReserveDataHumanized[] = [],
   baseCurrencyData: PoolBaseCurrencyHumanized,
   currentTimestamp: number,
   userEmodeCategoryId = 0
 ) => {
   const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
-  const formattedReserves = formatReserves({
+  const formattedReserves = formatReservesAndIncentives({
     reserves: reserves,
+    reserveIncentives,
     currentTimestamp,
     marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
@@ -442,6 +456,7 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
 
   return selectFormatUserSummaryForMigration(
     poolReserve?.reserves,
+    poolReserve?.reserveIncentives,
     userReserves,
     baseCurrencyData,
     currentTimestamp,
@@ -521,6 +536,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 
   const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
+    poolReserveV3?.reserveIncentives,
     userReserves,
     baseCurrencyData,
     currentTimestamp,
@@ -539,6 +555,7 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 
   const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
+    poolReserveV3?.reserveIncentives,
     poolReserveV3?.userReserves,
     baseCurrencyData,
     timestamp,
@@ -548,6 +565,7 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 };
 
 export const selectIsMigrationAvailable = (store: RootStore) => {
+  return true;
   return Boolean(store.currentMarketData.addresses.V3_MIGRATOR);
 };
 

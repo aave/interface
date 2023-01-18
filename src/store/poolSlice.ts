@@ -10,6 +10,8 @@ import {
   Pool,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
+  UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
@@ -41,6 +43,7 @@ import { RootStore } from './root';
 // TODO: what is the better name for this type?
 export type PoolReserve = {
   reserves?: ReserveDataHumanized[];
+  reserveIncentives?: ReservesIncentiveDataHumanized[];
   baseCurrencyData?: PoolBaseCurrencyHumanized;
   userEmodeCategoryId?: number;
   userReserves?: UserReserveDataHumanized[];
@@ -127,6 +130,12 @@ export const createPoolSlice: StateCreator<
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
+      const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress:
+          currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
+        provider: get().jsonRpcProvider(),
+        chainId: currentChainId,
+      });
       const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
       const promises: Promise<void>[] = [];
       try {
@@ -151,6 +160,29 @@ export const createPoolSlice: StateCreator<
                       .get(currentChainId)!
                       .get(lendingPoolAddressProvider)!.baseCurrencyData =
                       reservesResponse.baseCurrencyData;
+                  }
+                })
+              )
+            )
+        );
+        promises.push(
+          uiIncentiveDataProviderContract
+            .getReservesIncentivesDataHumanized({
+              lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+            })
+            .then((reserveIncentivesResponse) =>
+              set((state) =>
+                produce(state, (draft) => {
+                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                      reserveIncentives: reserveIncentivesResponse,
+                    });
+                  } else {
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.reserveIncentives =
+                      reserveIncentivesResponse;
                   }
                 })
               )
