@@ -1,4 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
+import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
   constructBuildTx,
@@ -397,4 +397,14 @@ const ExactOutSwapper = (chainId: ChainId) => {
     getRate,
     getTransactionParams,
   };
+};
+
+// generate signature approval a certain threshold above the current balance to account for accrued interest
+export const SIGNATURE_AMOUNT_MARGIN = 0.1;
+
+// Calculate aToken amount to request for signature, adding small margin to account for accruing interest
+export const calculateSignedAmount = (amount: string, decimals: number) => {
+  const amountWithMargin = Number(amount) + Number(amount) * SIGNATURE_AMOUNT_MARGIN; // 10% margin for aToken interest accrual
+  const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
+  return formattedAmountWithMargin;
 };

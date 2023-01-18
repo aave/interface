@@ -78,7 +78,7 @@ export interface StakeSlice {
 
 export const createStakeSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   StakeSlice
 > = (set, get) => {
