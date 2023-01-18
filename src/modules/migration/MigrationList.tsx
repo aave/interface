@@ -43,7 +43,7 @@ export const MigrationList = ({
   disabled,
 }: MigrationListProps) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const assetColumnWidth = isDesktop ? 120 : 80;
@@ -69,7 +69,7 @@ export const MigrationList = ({
   }
 
   return (
-    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
+    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, xl: 0 } }}>
       <ListWrapper
         titleComponent={
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>

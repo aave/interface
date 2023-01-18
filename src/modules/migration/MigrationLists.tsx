@@ -32,7 +32,7 @@ export const MigrationLists = ({
   emodeCategoryId,
 }: MigrationListsProps) => {
   const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const isDesktop = useMediaQuery(breakpoints.up('xl'));
 
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
