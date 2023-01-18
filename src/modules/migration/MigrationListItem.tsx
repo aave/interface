@@ -58,6 +58,7 @@ export const MigrationListItem = ({
   const assetColumnWidth =
     isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
   const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';
+  const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
 
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -153,17 +154,23 @@ export const MigrationListItem = ({
         <ListColumn align="right">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {userReserve.usageAsCollateralEnabledOnUser &&
-            userReserve.reserve.usageAsCollateralEnabled ? (
+            userReserve.reserve.usageAsCollateralEnabled &&
+            !disabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="main14" color={baseColorSecondary} />
             )}
 
             <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon fontSize="14px" />
+              <ArrowNarrowRightIcon
+                fontSize="14px"
+                color={
+                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                }
+              />
             </SvgIcon>
-            {!enabledAsCollateral ? (
-              <NoData variant="main14" color="text.secondary" />
+            {!enabledAsCollateral || disabled ? (
+              <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
               <Box
                 sx={{

@@ -202,7 +202,7 @@ export const MigrationListMobileItem = ({
             pb: 4,
           }}
         >
-          <Typography variant="description" color="text.secondary">
+          <Typography variant="description" color={baseColorSecondary}>
             <Trans>Collateral change</Trans>
           </Typography>
 
@@ -211,7 +211,7 @@ export const MigrationListMobileItem = ({
             userReserve.reserve.usageAsCollateralEnabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="main14" color={baseColorSecondary} />
             )}
 
             <SvgIcon sx={{ px: 1.5 }}>
@@ -223,7 +223,7 @@ export const MigrationListMobileItem = ({
               />
             </SvgIcon>
             {!enabledAsCollateral ? (
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
               <Box
                 sx={{
