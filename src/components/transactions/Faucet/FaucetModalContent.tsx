@@ -1,5 +1,3 @@
-import { mintAmountsPerToken, valueToWei } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useModalContext } from 'src/hooks/useModal';
 
@@ -8,6 +6,7 @@ import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { FaucetActions } from './FaucetActions';
+import { getNormalizedMintAmount } from './utils';
 
 export type FaucetModalContentProps = {
   underlyingAsset: string;
@@ -17,11 +16,8 @@ export enum ErrorType {}
 
 export const FaucetModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: faucetTxState, txError } = useModalContext();
-  const defaultValue = valueToWei('1000', 18);
-  const mintAmount = mintAmountsPerToken[poolReserve.symbol.toUpperCase()]
-    ? mintAmountsPerToken[poolReserve.symbol.toUpperCase()]
-    : defaultValue;
-  const normalizedAmount = normalize(mintAmount, poolReserve.decimals);
+
+  const normalizedAmount = getNormalizedMintAmount(poolReserve.symbol, poolReserve.decimals);
 
   if (faucetTxState.success)
     return (

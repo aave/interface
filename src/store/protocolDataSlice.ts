@@ -25,7 +25,7 @@ export interface ProtocolDataSlice {
 
 export const createProtocolDataSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   ProtocolDataSlice
 > = (set, get) => {

@@ -38,7 +38,7 @@ const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEther
 
 export const createGovernanceSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   GovernanceSlice
 > = (set, get) => {

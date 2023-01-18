@@ -37,7 +37,7 @@ const getWalletPreferences = () => {
 
 export const createWalletSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   WalletSlice
 > = (set, get) => ({
