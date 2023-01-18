@@ -421,6 +421,10 @@ export const selectFormatUserSummaryForMigration = (
 
 export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
   const poolReserve = selectCurrentChainIdV2PoolReserve(store);
+  const { borrowReserves: borrowReservesV3 } = selectUserReservesForMigration(
+    store,
+    currentTimestamp
+  );
 
   const userReserves =
     poolReserve?.userReserves?.map((userReserve) => {
@@ -434,9 +438,17 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
         scaledATokenBalance = '0';
       }
 
-      const borrowAssets = store.selectedMigrationBorrowAssets.filter(
-        (borrowAsset) => borrowAsset.underlyingAsset == userReserve.underlyingAsset
-      );
+      const borrowAssets = store.selectedMigrationBorrowAssets
+        .filter((borrowAsset) => borrowAsset.underlyingAsset == userReserve.underlyingAsset)
+        .filter((borrowReserveV2) => {
+          const filteredReserve = borrowReservesV3.find(
+            (borrowReserveV3) => borrowReserveV3.underlyingAsset == borrowReserveV2.underlyingAsset
+          );
+          if (filteredReserve) {
+            return !filteredReserve.migrationDisabled;
+          }
+          return true;
+        });
 
       borrowAssets.forEach((borrowAsset) => {
         if (borrowAsset.interestRate == InterestRate.Stable) {
