@@ -565,7 +565,6 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 };
 
 export const selectIsMigrationAvailable = (store: RootStore) => {
-  return true;
   return Boolean(store.currentMarketData.addresses.V3_MIGRATOR);
 };
 
