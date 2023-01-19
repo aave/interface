@@ -72,7 +72,7 @@ export type V3MigrationSlice = {
 
 export const createV3MigrationSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   V3MigrationSlice
 > = (set, get) => {
