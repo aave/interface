@@ -5806,16 +5806,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 16434793,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xafa8d52094cc041ee20ca429e22b86ae20d6735b4067a617548ccc242bd5b264",
+      "startTimestamp": 1674145079,
       "creationTimestamp": 1674058199,
-      "startTimestamp": 1674145043,
-      "expirationTimestamp": 1674375443
+      "expirationTimestamp": 1674375515
     },
     {
       "id": 143,
@@ -5841,16 +5841,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 16434802,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x0baa1d8fa1dbcd7a15276f668b234f9847ba2848f9aa6a4b79eaa6d927b92b8e",
+      "startTimestamp": 1674145187,
       "creationTimestamp": 1674058307,
-      "startTimestamp": 1674145151,
-      "expirationTimestamp": 1674375551
+      "expirationTimestamp": 1674375623
     },
     {
       "id": 144,
@@ -5876,16 +5876,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 16435162,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xdfb4dfe48453691fbeac9238f4954338ffa3ac10b56e77b63d3d1d76eae8b327",
+      "startTimestamp": 1674149519,
       "creationTimestamp": 1674062651,
-      "startTimestamp": 1674149471,
-      "expirationTimestamp": 1674379871
+      "expirationTimestamp": 1674379943
     }
   ]
 }
