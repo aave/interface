@@ -7,10 +7,10 @@ import {
   valueToWei,
 } from '@aave/contract-helpers';
 import {
+  MigrationRepayAsset,
+  MigrationSupplyAsset,
   V3MigrationHelperSignedCreditDelegationPermit,
   V3MigrationHelperSignedPermit,
-  V3RepayAsset,
-  V3SupplyAsset,
 } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   ComputedUserReserve,
@@ -26,7 +26,7 @@ import {
   ReserveIncentiveResponse,
 } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
-import { BigNumberish, constants } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -327,7 +327,7 @@ export const selectUserSupplyIncreasedReservesForMigrationPermits = (
 export const selectUserSupplyAssetsForMigrationNoPermit = (
   store: RootStore,
   timestamp: number
-): V3SupplyAsset[] => {
+): MigrationSupplyAsset[] => {
   const selectedUserSupplyReserves = selectUserSupplyIncreasedReservesForMigrationPermits(
     store,
     timestamp
@@ -343,7 +343,10 @@ export const selectUserSupplyAssetsForMigrationNoPermit = (
   });
 };
 
-export const selectMigrationRepayAssets = (store: RootStore, timestamp: number): V3RepayAsset[] => {
+export const selectMigrationRepayAssets = (
+  store: RootStore,
+  timestamp: number
+): MigrationRepayAsset[] => {
   const deadline = Math.floor(Date.now() / 1000 + 3600);
   return selectSelectedBorrowReservesForMigration(store, timestamp).map((userReserve) => ({
     underlyingAsset: userReserve.underlyingAsset,
@@ -543,7 +546,7 @@ export const selectMigrationBorrowPermitPayloads = (
 ): Approval[] => {
   const borrowUserReserves = selectSelectedBorrowReservesForMigrationV3(store, timestamp);
 
-  const stableUserReserves: Record<string, SplittedUserReserveIncreasedAmount> = {};
+  const stableUserReserves: Record<string, MigrationUserReserve> = {};
   borrowUserReserves
     .filter((userReserve) => userReserve.interestRate == InterestRate.Stable)
     .forEach((item) => {

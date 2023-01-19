@@ -5,10 +5,8 @@ import {
   InterestRate,
   Pool,
   V3MigrationHelperService,
-  valueToWei,
 } from '@aave/contract-helpers';
 import { MigrationDelegationApproval } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
-import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumberish } from 'ethers';
@@ -24,11 +22,9 @@ import {
   selectMigrationSelectedBorrowIndex,
   selectMigrationSelectedSupplyIndex,
   selectMigrationSignedPermits,
-  selectSelectedBorrowReservesForMigrationV3,
   selectUserReservesForMigration,
   selectUserSupplyAssetsForMigrationNoPermit,
   selectUserSupplyIncreasedReservesForMigrationPermits,
-  SplittedUserReserveIncreasedAmount,
 } from './v3MigrationSelectors';
 
 type MigrationSelectedAsset = {
