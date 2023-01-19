@@ -20,16 +20,16 @@ interface GhoMarketConfig {
 
 const goerliGhoConfig: GhoMarketConfig = {
   market: marketsData[CustomMarket.proto_goerli_gho_v3],
-  ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
-  uiGhoDataProviderAddress: '0x4e066F688347c28dF0121b0a5CE403FACeB6Bf8C',
+  ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
+  uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
 };
 
 // TODO: update when GHO is launched on mainnet
 // NOTE: these addresses are Goerli addresses, and should be updated on launch
 const mainnetGhoConfig: GhoMarketConfig = {
   market: marketsData[CustomMarket.proto_mainnet],
-  ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
-  uiGhoDataProviderAddress: '0x4e066F688347c28dF0121b0a5CE403FACeB6Bf8C',
+  ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
+  uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
 };
 
 export interface GhoSlice {
@@ -43,7 +43,7 @@ export interface GhoSlice {
 
 export const createGhoSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   GhoSlice
 > = (set, get) => {

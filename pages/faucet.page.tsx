@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import * as React from 'react';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -9,6 +10,7 @@ import { ContentContainer } from '../src/components/ContentContainer';
 export default function Faucet() {
   return (
     <>
+      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload" />
       <FaucetTopPanel />
       <ContentContainer>
         <FaucetAssetsList />

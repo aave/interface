@@ -1,17 +1,26 @@
 import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { useEffect, useRef, useState } from 'react';
+import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+
+import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
 interface UseParaSwapTransactionHandlerProps {
   /**
    * This function is called when the user clicks the action button in the modal and should return the transaction for the swap or repay.
    * The paraswap API should be called in the implementation to get the required transaction parameters.
    */
-  handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
+  handleGetTxns: (
+    signature?: SignatureLike,
+    deadline?: string
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   /**
    * This function is only called once on initial load, and should return a transaction for the swap or repay,
    * but the paraswap API should not be called in the implementation. This is to determine if an approval is needed and
@@ -26,6 +35,13 @@ interface UseParaSwapTransactionHandlerProps {
    * If true, handleGetApprovalTxns will not be called. Can be used if the route information is still loading.
    */
   skip?: boolean;
+  spender: string;
+  deps?: DependencyList;
+}
+
+interface ApprovalProps {
+  amount?: string;
+  underlyingAsset?: string;
 }
 
 export const useParaSwapTransactionHandler = ({
@@ -33,6 +49,8 @@ export const useParaSwapTransactionHandler = ({
   handleGetApprovalTxns,
   gasLimitRecommendation,
   skip,
+  spender,
+  deps = [],
 }: UseParaSwapTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -44,12 +62,21 @@ export const useParaSwapTransactionHandler = ({
     setLoadingTxns,
     setTxError,
   } = useModalContext();
-  const { sendTx, getTxError } = useWeb3Context();
+  const { sendTx, getTxError, signTxData } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
+  const { walletApprovalMethodPreference, generateSignatureRequst } = useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const [signature, setSignature] = useState<SignatureLike | undefined>();
+  const [signatureDeadline, setSignatureDeadline] = useState<string | undefined>();
+  interface Dependency {
+    asset: string;
+    amount: string;
+  }
+  const [previousDeps, setPreviousDeps] = useState<Dependency>({ asset: deps[0], amount: deps[1] });
+  const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -103,8 +130,49 @@ export const useParaSwapTransactionHandler = ({
     }
   };
 
-  const approval = async () => {
-    if (approvalTx) {
+  const approval = async ({ amount, underlyingAsset }: ApprovalProps) => {
+    if (usePermit && amount && underlyingAsset) {
+      setApprovalTxState({ ...approvalTxState, loading: true });
+      try {
+        // deadline is an hour after signature
+        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+        const unsingedPayload = await generateSignatureRequst({
+          token: underlyingAsset,
+          amount: amount,
+          deadline,
+          spender,
+        });
+        try {
+          const signature = await signTxData(unsingedPayload);
+          if (!mounted.current) return;
+          setSignature(signature);
+          setSignatureDeadline(deadline);
+          setApprovalTxState({
+            txHash: MOCK_SIGNED_HASH,
+            loading: false,
+            success: true,
+          });
+          setTxError(undefined);
+        } catch (error) {
+          if (!mounted.current) return;
+          const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+          setTxError(parsedError);
+
+          setApprovalTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
+      } catch (error) {
+        if (!mounted.current) return;
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
+    } else if (approvalTx) {
       try {
         setApprovalTxState({ ...approvalTxState, loading: true });
         const params = await approvalTx.tx();
@@ -144,7 +212,7 @@ export const useParaSwapTransactionHandler = ({
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     setTxError(undefined);
-    await handleGetTxns()
+    await handleGetTxns(signature, signatureDeadline)
       .then(async (data) => {
         // Find actionTx (repay with collateral or swap)
         const actionTx = data.find((tx) => ['DLP_ACTION'].includes(tx.txType));
@@ -198,7 +266,33 @@ export const useParaSwapTransactionHandler = ({
       setLoadingTxns(true);
       handleGetApprovalTxns()
         .then(async (data) => {
-          setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+          const approval = data.find((tx) => tx.txType === 'ERC20_APPROVAL');
+          const preferPermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+          // reset error and approval state if new signature request is required
+          if (
+            deps[0] !== previousDeps.asset ||
+            Number(deps[1]) >
+              Number(previousDeps.amount) +
+                Number(previousDeps.amount) * (SIGNATURE_AMOUNT_MARGIN / 2)
+          ) {
+            setApprovalTxState({ success: false });
+            setTxError(undefined);
+          }
+          // clear error but use existing signature if amount changes
+          if (Number(deps[1]) < Number(previousDeps.amount)) {
+            setTxError(undefined);
+          }
+          setPreviousDeps({ asset: deps[0], amount: deps[1] });
+          if (approval && preferPermit) {
+            setUsePermit(true);
+            setMainTxState({
+              txHash: undefined,
+            });
+            setLoadingTxns(false);
+          } else {
+            setUsePermit(false);
+            setApprovalTx(approval);
+          }
         })
         .finally(() => {
           setMainTxState({
@@ -211,13 +305,13 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip]);
+  }, [skip, ...deps, walletApprovalMethodPreference]);
 
   return {
     approval,
     action,
     loadingTxns,
-    requiresApproval: !!approvalTx,
+    requiresApproval: !!approvalTx || usePermit,
     approvalTxState,
     mainTxState,
     actionTx,
