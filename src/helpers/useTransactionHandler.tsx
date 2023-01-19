@@ -348,6 +348,7 @@ export const useTransactionHandler = ({
                   [
                     'DLP_ACTION',
                     'REWARD_ACTION',
+                    'FAUCET_V2_MINT',
                     'FAUCET_MINT',
                     'STAKE_ACTION',
                     'GOV_DELEGATION_ACTION',

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-02 18:04\n"
+"PO-Revision-Date: 2023-01-18 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -152,6 +152,7 @@ msgid "Already on cooldown"
 msgstr "Ya en cooldown"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
@@ -789,6 +790,7 @@ msgstr "Preguntas frecuentes"
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Error al cargar los votantes de la propuesta. Por favor actualiza la página."
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -798,6 +800,7 @@ msgstr "Error al cargar los votantes de la propuesta. Por favor actualiza la pá
 msgid "Faucet"
 msgstr "Faucet"
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
@@ -1330,15 +1333,15 @@ msgstr "Alcanzado"
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr ""
+msgstr "El modo de solo lectura permite ver las posiciones de las direcciones en Aave, pero no podrás realizar transacciones."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Read-only mode."
-msgstr ""
+msgstr "Modo de solo lectura."
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
-msgstr ""
+msgstr "Modo de solo lectura. Conéctate a una cartera para realizar transacciones."
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
@@ -1885,6 +1888,10 @@ msgstr "Tempo restante para unstakear"
 msgid "Time left until the withdrawal window closes."
 msgstr "Tiempo restante hasta que se cierre la ventana de retiro."
 
+#: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
+msgid "Tip: Try increasing slippage or reduce input amount"
+msgstr ""
+
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
@@ -1950,11 +1957,11 @@ msgstr "Valor total"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet"
-msgstr ""
+msgstr "Haz seguimiento de tu cartera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
-msgstr ""
+msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2382,6 +2389,10 @@ msgstr "tokens no es lo mismo que stakearlos. Si deseas stakearlos"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, por favor ve al"
+
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+msgid "will receive"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"

@@ -19,7 +19,6 @@ export const ListItemUsedAsCollateral = ({
   onToggleSwitch,
   disabled,
 }: ListItemUsedAsCollateralProps) => {
-  // TODO: fix this for migration
   const isEnabled = usageAsCollateralEnabledOnUser && canBeEnabledAsCollateral;
   return (
     <>

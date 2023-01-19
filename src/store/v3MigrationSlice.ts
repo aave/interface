@@ -78,7 +78,7 @@ export type V3MigrationSlice = {
 
 export const createV3MigrationSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   V3MigrationSlice
 > = (set, get) => {
@@ -236,7 +236,10 @@ export const createV3MigrationSlice: StateCreator<
     },
     selectAllSupply: (currentTimestamp: number) => {
       const { supplyReserves } = selectUserReservesForMigration(get(), currentTimestamp);
-      if (get().selectedMigrationSupplyAssets.length == supplyReserves.length) {
+      if (
+        get().selectedMigrationSupplyAssets.length == supplyReserves.length ||
+        get().selectedMigrationSupplyAssets.length != 0
+      ) {
         set({ selectedMigrationSupplyAssets: [] });
       } else {
         const nonSelectedSupplies = supplyReserves
@@ -255,7 +258,10 @@ export const createV3MigrationSlice: StateCreator<
     },
     selectAllBorrow: (currentTimestamp: number) => {
       const { borrowReserves } = selectUserReservesForMigration(get(), currentTimestamp);
-      if (get().selectedMigrationBorrowAssets.length == borrowReserves.length) {
+      if (
+        get().selectedMigrationBorrowAssets.length == borrowReserves.length ||
+        get().selectedMigrationBorrowAssets.length != 0
+      ) {
         set({ selectedMigrationBorrowAssets: [] });
       } else {
         const nonSelectedSupplies = borrowReserves.filter(
@@ -329,6 +335,15 @@ export const createV3MigrationSlice: StateCreator<
       const creditDelegationApprovals: MigrationDelegationApproval[] = borrowPermitPayloads.map(
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
+
+      console.log({
+        repayAssets,
+        supplyAssets,
+        user,
+        creditDelegationApprovals,
+        signedCreditDelegationPermits: creditDelegationPermits,
+        signedSupplyPermits: supplyPermits,
+      });
 
       return get().getMigrationServiceInstance().migrate({
         repayAssets,

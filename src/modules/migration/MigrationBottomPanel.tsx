@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -27,6 +28,7 @@ interface MigrationBottomPanelProps {
   hfV3AfterChange: string;
   disableButton?: boolean;
   loading?: boolean;
+  enteringIsolationMode: boolean;
 }
 
 enum ErrorType {
@@ -41,6 +43,7 @@ export const MigrationBottomPanel = ({
   hfV3Current,
   hfV3AfterChange,
   disableButton,
+  enteringIsolationMode,
   loading,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
@@ -129,32 +132,36 @@ export const MigrationBottomPanel = ({
           </Warning>
         )}
 
-        <Box
-          sx={{
-            height: '44px',
-            backgroundColor: 'background.surface',
-            borderRadius: '4px',
-            display: 'flex',
-            justifyContent: 'center',
-            mb: 4,
-          }}
-        >
-          <FormControlLabel
-            sx={{ margin: 0 }}
-            control={
-              <Checkbox
-                checked={isChecked}
-                onChange={() => setIsChecked(!isChecked)}
-                size="small"
-              />
-            }
-            label={
-              <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
-                <Trans>I fully understand the risks of migrating.</Trans>
-              </Typography>
-            }
-          />
-        </Box>
+        {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
+
+        {blockingError === undefined && (
+          <Box
+            sx={{
+              height: '44px',
+              backgroundColor: 'background.surface',
+              borderRadius: '4px',
+              display: 'flex',
+              justifyContent: 'center',
+              mb: 4,
+            }}
+          >
+            <FormControlLabel
+              sx={{ margin: 0 }}
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={() => setIsChecked(!isChecked)}
+                  size="small"
+                />
+              }
+              label={
+                <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+                  <Trans>I fully understand the risks of migrating.</Trans>
+                </Typography>
+              }
+            />
+          </Box>
+        )}
 
         <Box>
           <Button

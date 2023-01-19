@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
@@ -22,6 +21,7 @@ import {
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
 
@@ -237,7 +237,7 @@ export const SwapModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && <ParaswapErrorDisplay txError={txError} />}
 
       <SwapActions
         isMaxSelected={isMaxSelected}

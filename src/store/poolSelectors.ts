@@ -2,7 +2,7 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
-import { CustomMarket, MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
 import { RootStore } from './root';

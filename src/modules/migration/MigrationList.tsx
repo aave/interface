@@ -1,98 +1,147 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
-import { CollateralSwitchTooltip } from 'src/components/infoTooltips/CollateralSwitchTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { ListTopInfoItem } from 'src/modules/dashboard/lists/ListTopInfoItem';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Warning } from 'src/components/primitives/Warning';
+import { useRootStore } from 'src/store/root';
+import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
-import { EmodeInfo } from './EmodeInfo';
+import { MigrationMobileList } from './MigrationMobileList';
+import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationListProps {
   titleComponent: ReactNode;
-  totalAmount: string;
   isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
   loading?: boolean;
   isAvailable: boolean;
   withCollateral?: boolean;
+  withBorrow?: boolean;
   emodeCategoryId?: number;
   allSelected: boolean;
+  numSelected: number;
+  numAvailable: number;
+  disabled: boolean;
+  isolatedReserveV3?: IsolatedReserve;
 }
 
 export const MigrationList = ({
   titleComponent,
-  totalAmount,
   isBottomOnMobile,
   children,
   onSelectAllClick,
   loading,
   isAvailable,
   withCollateral,
-  emodeCategoryId,
+  withBorrow,
   allSelected,
+  numSelected,
+  numAvailable,
+  disabled,
+  isolatedReserveV3,
 }: MigrationListProps) => {
-  const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
-  const isTablet = useMediaQuery(breakpoints.up('xsm'));
-  const isMobile = useMediaQuery(breakpoints.up('xs'));
+  const theme = useTheme();
+  const { currentMarket, currentMarketData } = useRootStore();
+  const marketName = currentMarketData.marketTitle;
+  const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
 
-  const assetColumnWidth =
-    isMobile && !isTablet ? 75 : isTablet && !isDesktop ? 140 : isDesktop ? 240 : 140;
+  const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  const isMobile = useMediaQuery(theme.breakpoints.down(655));
+
+  const assetColumnWidth = isDesktop ? 120 : 80;
 
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
+  if (isMobile) {
+    return (
+      <MigrationMobileList
+        titleComponent={titleComponent}
+        isBottomOnMobile={isBottomOnMobile}
+        onSelectAllClick={onSelectAllClick}
+        loading={loading}
+        isAvailable={isAvailable}
+        allSelected={allSelected}
+        numSelected={numSelected}
+        disabled={disabled}
+        numAvailable={numAvailable}
+      >
+        {children}
+      </MigrationMobileList>
+    );
+  }
+
   return (
-    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
+    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, xl: 0 } }}>
       <ListWrapper
         titleComponent={
-          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-            {titleComponent}
-          </Typography>
-        }
-        subTitleComponent={
-          typeof emodeCategoryId !== 'undefined' ? (
-            <EmodeInfo userEmodeCategoryId={emodeCategoryId} />
-          ) : undefined
-        }
-        topInfo={
-          !(loading || +totalAmount <= 0) && (
-            <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalAmount || 0} />
-          )
+          <Box display="block">
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+              {titleComponent}
+            </Typography>
+            {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
+              <Box sx={{ pt: '16px' }}>
+                <Warning severity="warning" icon={false} sx={{ mb: 0 }}>
+                  <Typography variant="caption" color={theme.palette.warning[100]}>
+                    <Trans>
+                      Some migrated assets will not be used as collateral due to enabled isolation
+                      mode in {marketName} V3 Market. Visit{' '}
+                      <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
+                      mode.
+                    </Trans>
+                  </Typography>
+                </Warning>
+              </Box>
+            )}
+          </Box>
         }
       >
         {(isAvailable || loading) && (
-          <ListHeaderWrapper>
-            <ListColumn align="center" maxWidth={isDesktop ? 100 : 60} minWidth={60}>
-              <ListHeaderTitle onClick={onSelectAllClick}>
-                <Typography variant="main12" sx={{ fontWeight: 700 }}>
-                  {allSelected ? <Trans>Unselect all</Trans> : <Trans>Select all</Trans>}
-                </Typography>
-              </ListHeaderTitle>
+          <ListHeaderWrapper sx={{ pl: 0 }}>
+            <ListColumn align="center" maxWidth={64} minWidth={64}>
+              <MigrationSelectionBox
+                allSelected={allSelected}
+                numSelected={numSelected}
+                onSelectAllClick={onSelectAllClick}
+                disabled={disabled}
+              />
             </ListColumn>
 
             <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
               <ListHeaderTitle>
-                <Trans>Asset</Trans>
+                <Trans>Assets</Trans>
               </ListHeaderTitle>
             </ListColumn>
 
             {withCollateral && (
-              <ListColumn align="center">
-                <CollateralSwitchTooltip
-                  text={<Trans>Collateral</Trans>}
-                  key="Collateral"
-                  variant="subheader2"
-                />
+              <ListColumn align="right">
+                <ListHeaderTitle>
+                  <Trans>Collateral change</Trans>
+                </ListHeaderTitle>
               </ListColumn>
             )}
 
             <ListColumn align="right">
               <ListHeaderTitle>
-                <Trans>Current balance</Trans>
+                <Trans>APY change</Trans>
+              </ListHeaderTitle>
+            </ListColumn>
+
+            {withBorrow && (
+              <ListColumn align="right">
+                <ListHeaderTitle>
+                  <Trans>APY type change</Trans>
+                </ListHeaderTitle>
+              </ListColumn>
+            )}
+
+            <ListColumn align="right" maxWidth={150} minWidth={150}>
+              <ListHeaderTitle>
+                <Trans>Current v2 balance</Trans>
               </ListHeaderTitle>
             </ListColumn>
           </ListHeaderWrapper>

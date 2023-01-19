@@ -49,10 +49,20 @@ msgstr "APR"
 msgid "APY"
 msgstr "APY"
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "APY change"
+msgstr "APY change"
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
 msgstr "APY type"
+
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "APY type change"
+msgstr "APY type change"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -147,6 +157,7 @@ msgid "Already on cooldown"
 msgstr "Already on cooldown"
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
@@ -185,13 +196,24 @@ msgstr "Array parameters that should be equal length are not"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Asset"
 msgstr "Asset"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
+msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
@@ -220,6 +242,7 @@ msgstr "Asset to delegate"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr "Assets"
 
@@ -275,7 +298,6 @@ msgstr "Back to Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -481,13 +503,17 @@ msgstr "Close"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationList.tsx
 msgid "Collateral"
 msgstr "Collateral"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
+
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "Collateral change"
+msgstr "Collateral change"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -569,13 +595,17 @@ msgstr "Created"
 msgid "Current LTV"
 msgstr "Current LTV"
 
-#: src/modules/migration/MigrationList.tsx
-msgid "Current balance"
-msgstr "Current balance"
-
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
 msgstr "Current differential"
+
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "Current v2 Balance"
+msgstr "Current v2 Balance"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Current v2 balance"
+msgstr "Current v2 balance"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current votes"
@@ -690,7 +720,6 @@ msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network 
 msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/migration/EmodeInfo.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
 
@@ -796,6 +825,7 @@ msgstr "FAQ"
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -805,6 +835,7 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 msgid "Faucet"
 msgstr "Faucet"
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
@@ -1115,10 +1146,6 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
-#: src/modules/migration/MigrationTopPanel.tsx
-msgid "Migrate from {0} V2 to {1} V3"
-msgstr "Migrate from {0} V2 to {1} V3"
-
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1128,6 +1155,7 @@ msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
 
@@ -1239,7 +1267,6 @@ msgstr "Not enough voting power to participate in this proposal"
 msgid "Not reached"
 msgstr "Not reached"
 
-#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
@@ -1248,7 +1275,6 @@ msgstr "Nothing borrowed yet"
 msgid "Nothing staked"
 msgstr "Nothing staked"
 
-#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
@@ -1305,10 +1331,6 @@ msgstr "Please connect a wallet to view your personal information here."
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
 msgstr "Please connect your wallet to get free testnet assets."
-
-#: pages/v3-migration.page.tsx
-msgid "Please connect your wallet to see migration tool."
-msgstr "Please connect your wallet to see migration tool."
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
@@ -1536,10 +1558,6 @@ msgstr "Select"
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
 
-#: src/modules/migration/MigrationList.tsx
-msgid "Select all"
-msgstr "Select all"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Select language"
@@ -1555,6 +1573,14 @@ msgstr "Select token to add"
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Select token to view in block explorer"
 msgstr "Select token to view in block explorer"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 borrows to migrate"
+msgstr "Select v2 borrows to migrate"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 supplies to migrate"
+msgstr "Select v2 supplies to migrate"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
@@ -1591,6 +1617,10 @@ msgstr "Since this is a test network, you can get any of the assets if you have 
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
+msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
@@ -1984,6 +2014,10 @@ msgstr "Time left to unstake"
 msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
+#: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
+msgid "Tip: Try increasing slippage or reduce input amount"
+msgstr "Tip: Try increasing slippage or reduce input amount"
+
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
@@ -2087,9 +2121,9 @@ msgstr "Unbacked"
 msgid "Unbacked mint cap is exceeded"
 msgstr "Unbacked mint cap is exceeded"
 
-#: src/modules/migration/MigrationList.tsx
-msgid "Unselect all"
-msgstr "Unselect all"
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
+msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
@@ -2159,14 +2193,6 @@ msgstr "Variable debt supply is not zero"
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Version 2"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Version 3"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -2375,7 +2401,6 @@ msgstr "You {action} <0/> {symbol}"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/migration/MigrationLists.tsx
 msgid "Your borrows"
 msgstr "Your borrows"
 
@@ -2400,7 +2425,6 @@ msgstr "Your reward balance is 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
-#: src/modules/migration/MigrationLists.tsx
 msgid "Your supplies"
 msgstr "Your supplies"
 
@@ -2488,17 +2512,19 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+msgid "will receive"
+msgstr "will receive"
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"
 
-#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/migration/EmodeInfo.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
@@ -2540,6 +2566,10 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/modules/migration/MigrationMobileList.tsx
+msgid "{numSelected}/{numAvailable} assets selected"
+msgstr "{numSelected}/{numAvailable} assets selected"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

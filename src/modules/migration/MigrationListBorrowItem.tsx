@@ -1,26 +1,28 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { useMemo } from 'react';
-import { SplittedUserReserveIncreasedAmount } from 'src/store/v3MigrationSelectors';
+import { MigrationUserReserve, V3Rates } from 'src/store/v3MigrationSelectors';
 import { MigrationSelectedBorrowAsset } from 'src/store/v3MigrationSlice';
 
 import { MigrationListItem } from './MigrationListItem';
 
 type MigrationListBorrowItemProps = {
-  userReserve: SplittedUserReserveIncreasedAmount & {
-    disabledForMigration: boolean;
-  };
+  userReserve: MigrationUserReserve;
   selectedBorrowAssets: MigrationSelectedBorrowAsset[];
   toggleSelectedBorrowPosition: (asset: MigrationSelectedBorrowAsset) => void;
+  v3Rates?: V3Rates;
+  enteringIsolation: boolean;
 };
 
 export const MigrationListBorrowItem = ({
   selectedBorrowAssets,
   userReserve,
   toggleSelectedBorrowPosition,
+  v3Rates,
+  enteringIsolation,
 }: MigrationListBorrowItemProps) => {
   const isChecked = useMemo(() => {
     return (
-      !userReserve.disabledForMigration &&
+      !userReserve.migrationDisabled &&
       selectedBorrowAssets.findIndex((selectedAsset) =>
         userReserve.interestRate == InterestRate.Stable
           ? selectedAsset.debtKey == userReserve.reserve.stableDebtTokenAddress
@@ -47,14 +49,15 @@ export const MigrationListBorrowItem = ({
     <MigrationListItem
       key={userReserve.debtKey}
       checked={isChecked}
-      reserveIconSymbol={userReserve.reserve.iconSymbol}
-      reserveName={userReserve.reserve.name}
-      reserveSymbol={userReserve.reserve.symbol}
+      userReserve={userReserve}
       amount={amount}
       amountInUSD={amountInUSD}
       onCheckboxClick={handleCheckboxClick}
-      disabled={userReserve.disabledForMigration}
+      disabled={userReserve.migrationDisabled}
       enabledAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
+      borrowApyType={userReserve.interestRate}
+      v3Rates={v3Rates}
+      enteringIsolation={enteringIsolation}
     />
   );
 };

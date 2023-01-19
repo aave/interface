@@ -2,6 +2,7 @@ import {
   InterestRate,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
   UserReserveDataHumanized,
   valueToWei,
 } from '@aave/contract-helpers';
@@ -13,13 +14,17 @@ import {
 } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import {
   ComputedUserReserve,
-  formatReserves,
+  formatReservesAndIncentives,
   FormatReserveUSDResponse,
   formatUserSummary,
   FormatUserSummaryResponse,
   rayDiv,
   valueToBigNumber,
 } from '@aave/math-utils';
+import {
+  CalculateReserveIncentivesResponse,
+  ReserveIncentiveResponse,
+} from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish, constants } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
@@ -59,15 +64,29 @@ export const selectMigrationSelectedBorrowIndex = (
   return selectedBorrowAssets.findIndex((asset) => asset.debtKey == borrowAsset.debtKey);
 };
 
-export type SplittedUserReserveIncreasedAmount = ComputedUserReserveData & {
+export type MigrationUserReserve = ComputedUserReserveData & {
   increasedStableBorrows: string;
   increasedVariableBorrows: string;
   interestRate: InterestRate;
   debtKey: string;
+  usageAsCollateralEnabledOnUserV3?: boolean;
+  isolatedOnV3?: boolean;
+  canBeEnforced?: boolean;
+  migrationDisabled?: MigrationDisabled;
+  V3Rates?: V3Rates;
+};
+
+export type V3Rates = {
+  stableBorrowAPY: string;
+  variableBorrowAPY: string;
+  supplyAPY: string;
+  aIncentivesData?: ReserveIncentiveResponse[];
+  vIncentivesData?: ReserveIncentiveResponse[];
+  sIncentivesData?: ReserveIncentiveResponse[];
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
-  const splittedUserReserves: SplittedUserReserveIncreasedAmount[] = [];
+  const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
       const increasedAmount = add1HourBorrowAPY(
@@ -116,7 +135,11 @@ export const selectDefinitiveSupplyAssetForMigration = (
 
   const nonIsolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
     const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
-    return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+    if (v3UserReserve) {
+      return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+    } else {
+      return false;
+    }
   });
 
   if (nonIsolatedAssets.length > 0) {
@@ -132,16 +155,26 @@ export const selectDefinitiveSupplyAssetForMigration = (
 };
 
 export const selectUserReservesMapFromUserReserves = (
-  userReservesData: ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>[]
+  userReservesData: ComputedUserReserve<
+    ReserveDataHumanized & FormatReserveUSDResponse & Partial<CalculateReserveIncentivesResponse>
+  >[]
 ) => {
   const v3ReservesMap = userReservesData.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
     return obj;
-  }, {} as Record<string, ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>>);
+  }, {} as Record<string, ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse & Partial<CalculateReserveIncentivesResponse>>>);
 
   return v3ReservesMap;
 };
 
+export enum MigrationDisabled {
+  IsolationModeBorrowDisabled,
+  EModeBorrowDisabled,
+  V3AssetMissing,
+  InsufficientLiquidity, // TODO
+}
+
+export type IsolatedReserve = FormatReserveUSDResponse & { enteringIsolationMode?: boolean };
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = selectV3UserSummary(
     store,
@@ -154,7 +187,8 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const poolReserveV3 = selectCurrentChainIdV3PoolReserve(store);
   const userEmodeCategoryId = poolReserveV3?.userEmodeCategoryId;
 
-  let isolatedReserveV3 = selectIsolationModeForMigration(v3ReservesUserSummary);
+  let isolatedReserveV3: IsolatedReserve | undefined =
+    selectIsolationModeForMigration(v3ReservesUserSummary);
 
   const v3ReservesMap = selectUserReservesMapFromUserReserves(userReserveV3Data);
 
@@ -163,7 +197,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (definitiveAssets.length > 0) {
       const definitiveAsset = v3ReservesMap[definitiveAssets[0].underlyingAsset];
       if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
-        isolatedReserveV3 = definitiveAsset.reserve;
+        isolatedReserveV3 = { ...definitiveAsset.reserve, enteringIsolationMode: true };
       }
     }
   }
@@ -175,44 +209,74 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const borrowReserves = selectSplittedBorrowsForMigration(userReservesV2Data);
 
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
-    let usageAsCollateralEnabledOnUser = true;
+    let usageAsCollateralEnabledOnUserV3 = true;
+    let migrationDisabled: MigrationDisabled | undefined;
     const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
     const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
+    let v3Rates: V3Rates | undefined;
+    const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
+    if (v3SupplyAsset) {
+      v3Rates = {
+        stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
+        variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
+        supplyAPY: v3SupplyAsset.reserve.supplyAPY,
+        aIncentivesData: v3SupplyAsset.reserve.aIncentivesData,
+        vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
+        sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
+      };
+    } else {
+      migrationDisabled = MigrationDisabled.V3AssetMissing;
+    }
     if (isolatedReserveV3) {
-      usageAsCollateralEnabledOnUser =
+      usageAsCollateralEnabledOnUserV3 =
         userReserve.underlyingAsset == isolatedReserveV3.underlyingAsset;
     } else {
-      const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
       if (v3SupplyAsset?.underlyingBalance !== '0') {
-        usageAsCollateralEnabledOnUser = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
+        usageAsCollateralEnabledOnUserV3 = v3SupplyAsset?.usageAsCollateralEnabledOnUser;
       } else {
-        usageAsCollateralEnabledOnUser = !isolatedOnV3;
+        usageAsCollateralEnabledOnUserV3 = !isolatedOnV3;
       }
     }
     return {
       ...userReserve,
-      usageAsCollateralEnabledOnUser,
+      usageAsCollateralEnabledOnUserV3,
       isolatedOnV3,
       canBeEnforced,
+      migrationDisabled,
+      v3Rates,
     };
   });
 
   const mappedBorrowReserves = borrowReserves.map((userReserve) => {
     // TOOD: make mapping for liquidity
-    let disabledForMigration = false;
+    let disabledForMigration: MigrationDisabled | undefined;
+    let v3Rates: V3Rates | undefined;
     const selectedReserve = v3ReservesMap[userReserve.underlyingAsset]?.reserve;
 
-    if (isolatedReserveV3) {
-      disabledForMigration = !selectedReserve.borrowableInIsolation;
-    } else {
-      disabledForMigration = !v3ReservesMap[userReserve.underlyingAsset];
+    // Only show one warning icon per asset row, priority is: asset missing in V3, eMode borrow disabled, isolation mode borrow disabled
+    if (isolatedReserveV3 && !selectedReserve.borrowableInIsolation) {
+      disabledForMigration = MigrationDisabled.IsolationModeBorrowDisabled;
     }
-    if (!disabledForMigration && userEmodeCategoryId !== 0) {
-      disabledForMigration = selectedReserve?.eModeCategoryId !== userEmodeCategoryId;
+    if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+      disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
+    }
+    const v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+    if (v3BorrowAsset) {
+      v3Rates = {
+        stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
+        variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
+        supplyAPY: v3BorrowAsset.reserve.stableBorrowAPY,
+        aIncentivesData: v3BorrowAsset.reserve.aIncentivesData,
+        vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
+        sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
+      };
+    } else {
+      disabledForMigration = MigrationDisabled.V3AssetMissing;
     }
     return {
       ...userReserve,
-      disabledForMigration,
+      v3Rates,
+      migrationDisabled: disabledForMigration,
     };
   });
 
@@ -351,17 +415,16 @@ const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
 
 export const selectSelectedBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
   const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
-  return borrowReserves
-    .filter(
-      (userReserve) =>
-        selectMigrationSelectedBorrowIndex(store.selectedMigrationBorrowAssets, userReserve) >= 0
-    )
-    .filter((userReserve) => !userReserve.disabledForMigration);
+  return borrowReserves.filter(
+    (userReserve) =>
+      selectMigrationSelectedBorrowIndex(store.selectedMigrationBorrowAssets, userReserve) >= 0
+  );
 };
 
 export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
   const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp)
+    .filter((userReserve) => !userReserve.migrationDisabled)
     // debtKey should be mapped for v3Migration
     .map((borrowReserve) => {
       let debtKey = borrowReserve.debtKey;
@@ -388,14 +451,16 @@ export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, tim
 
 export const selectFormatUserSummaryForMigration = (
   reserves: ReserveDataHumanized[] = [],
+  reserveIncentives: ReservesIncentiveDataHumanized[] = [],
   userReserves: UserReserveDataHumanized[] = [],
   baseCurrencyData: PoolBaseCurrencyHumanized,
   currentTimestamp: number,
   userEmodeCategoryId = 0
 ) => {
   const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
-  const formattedReserves = formatReserves({
+  const formattedReserves = formatReservesAndIncentives({
     reserves: reserves,
+    reserveIncentives,
     currentTimestamp,
     marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
@@ -415,6 +480,10 @@ export const selectFormatUserSummaryForMigration = (
 
 export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
   const poolReserve = selectCurrentChainIdV2PoolReserve(store);
+  const { borrowReserves: borrowReservesV3 } = selectUserReservesForMigration(
+    store,
+    currentTimestamp
+  );
 
   const userReserves =
     poolReserve?.userReserves?.map((userReserve) => {
@@ -428,9 +497,17 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
         scaledATokenBalance = '0';
       }
 
-      const borrowAssets = store.selectedMigrationBorrowAssets.filter(
-        (borrowAsset) => borrowAsset.underlyingAsset == userReserve.underlyingAsset
-      );
+      const borrowAssets = store.selectedMigrationBorrowAssets
+        .filter((borrowAsset) => borrowAsset.underlyingAsset == userReserve.underlyingAsset)
+        .filter((borrowReserveV2) => {
+          const filteredReserve = borrowReservesV3.find(
+            (borrowReserveV3) => borrowReserveV3.underlyingAsset == borrowReserveV2.underlyingAsset
+          );
+          if (filteredReserve) {
+            return filteredReserve.migrationDisabled === undefined; // include asset if migration is enabled
+          }
+          return false; // exclude asset if V3 reserve does not exist
+        });
 
       borrowAssets.forEach((borrowAsset) => {
         if (borrowAsset.interestRate == InterestRate.Stable) {
@@ -452,6 +529,7 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
 
   return selectFormatUserSummaryForMigration(
     poolReserve?.reserves,
+    poolReserve?.reserveIncentives,
     userReserves,
     baseCurrencyData,
     currentTimestamp,
@@ -521,7 +599,8 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
     let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
     const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
-    if (variableBorrowAsset) {
+
+    if (variableBorrowAsset && variableBorrowAsset.migrationDisabled === undefined) {
       const scaledDownVariableDebtV2Balance = rayDiv(
         valueToWei(variableBorrowAsset.increasedVariableBorrows, userReserveData.reserve.decimals),
         variableBorrowIndexV3
@@ -530,7 +609,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         .plus(scaledDownVariableDebtV2Balance)
         .toString();
     }
-    if (stableBorrowAsset) {
+    if (stableBorrowAsset && stableBorrowAsset.migrationDisabled === undefined) {
       const scaledDownStableDebtV2Balance = rayDiv(
         valueToWei(stableBorrowAsset.increasedStableBorrows, userReserveData.reserve.decimals),
         variableBorrowIndexV3
@@ -540,7 +619,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         .toString();
     }
 
-    if (supplyAsset) {
+    if (supplyAsset && supplyAsset.migrationDisabled === undefined) {
       const scaledDownATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
       const liquidityIndexV3 = valueToBigNumber(userReserveData.reserve.liquidityIndex);
       const scaledDownBalanceV2 = rayDiv(
@@ -564,6 +643,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
 
   const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
+    poolReserveV3?.reserveIncentives,
     userReserves,
     baseCurrencyData,
     currentTimestamp,
@@ -582,6 +662,7 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 
   const formattedUserSummary = selectFormatUserSummaryForMigration(
     poolReserveV3?.reserves,
+    poolReserveV3?.reserveIncentives,
     poolReserveV3?.userReserves,
     baseCurrencyData,
     timestamp,
@@ -592,4 +673,51 @@ export const selectV3UserSummary = (store: RootStore, timestamp: number) => {
 
 export const selectIsMigrationAvailable = (store: RootStore) => {
   return Boolean(store.currentMarketData.addresses.V3_MIGRATOR);
+};
+
+export type MigrationReserve = ComputedUserReserveData & { migrationDisabled?: MigrationDisabled };
+type MigrationSelectedReserve = {
+  underlyingAsset: string;
+  enforced?: boolean;
+  debtKey?: string;
+  interestRate?: InterestRate;
+};
+type ComputedMigrationSelections = {
+  activeSelections: MigrationReserve[];
+  activeUnselected: MigrationReserve[];
+};
+export const assetSelected = (
+  reserve: MigrationReserve,
+  selectedAssets: MigrationSelectedReserve[]
+) => {
+  const selectedReserve = selectedAssets.find(
+    (selectedAsset: MigrationSelectedReserve) =>
+      selectedAsset.underlyingAsset === reserve.underlyingAsset
+  );
+  return selectedReserve !== undefined;
+};
+export const assetEnabled = (selected: MigrationSelectedReserve, reserves: MigrationReserve[]) => {
+  const selectedReserve = reserves.find(
+    (reserve: MigrationReserve) => selected.underlyingAsset === reserve.underlyingAsset
+  );
+  return selectedReserve !== undefined && selectedReserve.migrationDisabled === undefined;
+};
+
+export const computeSelections = (
+  reserves: MigrationReserve[],
+  selections: MigrationSelectedReserve[]
+): ComputedMigrationSelections => {
+  const enabledReserves = reserves.filter((reserve) => reserve.migrationDisabled === undefined);
+
+  const selectedEnabledReserves = enabledReserves.filter((reserve) =>
+    assetSelected(reserve, selections)
+  );
+  const unselectedEnabledReserves = enabledReserves.filter(
+    (reserve) => !assetSelected(reserve, selections)
+  );
+
+  return {
+    activeSelections: selectedEnabledReserves,
+    activeUnselected: unselectedEnabledReserves,
+  };
 };

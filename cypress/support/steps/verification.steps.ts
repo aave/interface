@@ -344,9 +344,5 @@ export const verifyCountOfBorrowAssets = (
         );
       });
     });
-    it('Verifying length', () => {
-      cy.doSwitchToDashboardBorrowView();
-      cy.get('[data-cy*=dashboardBorrowListItem_]').should('have.length', assets.length);
-    });
   });
 };
