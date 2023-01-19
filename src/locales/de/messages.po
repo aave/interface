@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-02 18:04\n"
+"PO-Revision-Date: 2023-01-18 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -152,6 +152,7 @@ msgid "Already on cooldown"
 msgstr ""
 
 #: src/components/transactions/AssetInput.tsx
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
@@ -789,6 +790,7 @@ msgstr ""
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr ""
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -798,6 +800,7 @@ msgstr ""
 msgid "Faucet"
 msgstr ""
 
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr ""
@@ -1885,6 +1888,10 @@ msgstr ""
 msgid "Time left until the withdrawal window closes."
 msgstr ""
 
+#: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
+msgid "Tip: Try increasing slippage or reduce input amount"
+msgstr ""
+
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
@@ -2381,6 +2388,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
+msgstr ""
+
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+msgid "will receive"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
