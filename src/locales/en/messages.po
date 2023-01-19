@@ -1267,6 +1267,7 @@ msgstr "Not enough voting power to participate in this proposal"
 msgid "Not reached"
 msgstr "Not reached"
 
+#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
@@ -1275,6 +1276,7 @@ msgstr "Nothing borrowed yet"
 msgid "Nothing staked"
 msgstr "Nothing staked"
 
+#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
@@ -1331,6 +1333,10 @@ msgstr "Please connect a wallet to view your personal information here."
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
 msgstr "Please connect your wallet to get free testnet assets."
+
+#: pages/v3-migration.page.tsx
+msgid "Please connect your wallet to see migration tool."
+msgstr "Please connect your wallet to see migration tool."
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
@@ -2194,6 +2200,14 @@ msgstr "Variable debt supply is not zero"
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
 
+#: src/components/MarketSwitcher.tsx
+msgid "Version 2"
+msgstr "Version 2"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Version 3"
+msgstr "Version 3"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -2520,6 +2534,7 @@ msgstr "will receive"
 msgid "withdrew"
 msgstr "withdrew"
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
