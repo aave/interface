@@ -38,7 +38,7 @@ describe(`GHO discount integrating testing on modal view`, () => {
     });
   });
   describe(`Verify discount of APY with 1 stkAave`, () => {
-    let stapBackAPY: number;
+    let stepBackAPY: number;
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
       tokens: tokenSet({ aAAVE: 10, stkAave: 1 }),
@@ -49,20 +49,20 @@ describe(`GHO discount integrating testing on modal view`, () => {
       ModalHelpers.setAmount(100);
       ModalHelpers.getApyRate().then(($val) => {
         expect($val).to.be.eql(gho.apy.min);
-        stapBackAPY = $val;
+        stepBackAPY = $val;
       });
     });
     it(`APY with medium discount`, () => {
       ModalHelpers.setAmount(500);
       ModalHelpers.getApyRate().then(($val) => {
-        expect(stapBackAPY).to.be.lt($val);
-        stapBackAPY = $val;
+        expect(stepBackAPY).to.be.lt($val);
+        stepBackAPY = $val;
       });
     });
     it(`APY for max amount with discount`, () => {
       ModalHelpers.setAmount(1000, true);
       ModalHelpers.getApyRate().then(($val) => {
-        expect(stapBackAPY).to.be.lt($val);
+        expect(stepBackAPY).to.be.lt($val);
         expect($val).to.be.gt(gho.apy.min);
       });
     });

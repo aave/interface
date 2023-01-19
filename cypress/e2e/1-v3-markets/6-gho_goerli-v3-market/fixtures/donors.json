@@ -5,10 +5,6 @@
   },
   "aAAVE": {
     "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
-    "tokenAddress": "0x1bca65F8Bc7Cb5De632f0dAa9c3e991a5C2427ff"
-  },
-  "GHO": {
-    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
-    "tokenAddress": "0x2A379e5d2871123F301b2c73463cE011EcB217e6"
+    "tokenAddress": "0x0a599770BD5a047B0d46B8d54E5FA7d200736aeF"
   }
 }
