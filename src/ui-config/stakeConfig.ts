@@ -31,7 +31,7 @@ export const prodStakeConfig: StakeConfig = {
 
 export const goerliStakeConfig: StakeConfig = {
   chainId: ChainId.goerli,
-  stakeDataProvider: '0xB7bD67F6FdCB1E962aBD3a9A2137AE040DC1741A',
+  stakeDataProvider: '0xf46c27acea33167b9940dbe1b21b45232821e86e',
   tokens: {
     [Stake.aave]: {
       TOKEN_STAKING: '0x716AD55707ddbA3Bb180f717688A21C315Ce6A49',
