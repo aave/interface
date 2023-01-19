@@ -445,9 +445,9 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
             (borrowReserveV3) => borrowReserveV3.underlyingAsset == borrowReserveV2.underlyingAsset
           );
           if (filteredReserve) {
-            return !filteredReserve.migrationDisabled;
+            return filteredReserve.migrationDisabled === undefined; // include asset if migration is enabled
           }
-          return true;
+          return false; // exclude asset if V3 reserve does not exist
         });
 
       borrowAssets.forEach((borrowAsset) => {
@@ -507,7 +507,8 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     let usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
     // TODO: combine stable borrow amount as well
     const variableBorrowIndexV3 = valueToBigNumber(userReserveData.reserve.variableBorrowIndex);
-    if (variableBorrowAsset) {
+
+    if (variableBorrowAsset && variableBorrowAsset.migrationDisabled === undefined) {
       const scaledDownVariableDebtV2Balance = rayDiv(
         valueToWei(variableBorrowAsset.increasedVariableBorrows, userReserveData.reserve.decimals),
         variableBorrowIndexV3
@@ -516,7 +517,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         .plus(scaledDownVariableDebtV2Balance)
         .toString();
     }
-    if (stableBorrowAsset) {
+    if (stableBorrowAsset && stableBorrowAsset.migrationDisabled === undefined) {
       const scaledDownStableDebtV2Balance = rayDiv(
         valueToWei(stableBorrowAsset.increasedStableBorrows, userReserveData.reserve.decimals),
         variableBorrowIndexV3
@@ -526,7 +527,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         .toString();
     }
 
-    if (supplyAsset) {
+    if (supplyAsset && supplyAsset.migrationDisabled === undefined) {
       const scaledDownATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
       const liquidityIndexV3 = valueToBigNumber(userReserveData.reserve.liquidityIndex);
       const scaledDownBalanceV2 = rayDiv(
