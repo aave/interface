@@ -2572,8 +2572,8 @@ msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
 #: src/modules/migration/MigrationMobileList.tsx
-msgid "{numSelected}/{0} assets selected"
-msgstr "{numSelected}/{0} assets selected"
+msgid "{numSelected}/{numAvailable} assets selected"
+msgstr "{numSelected}/{numAvailable} assets selected"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

@@ -63,7 +63,7 @@ export const MigrationMobileList = ({
             >
               <Typography variant="subheader2" color="text.secondary">
                 <Trans>
-                  {numSelected}/{numSelected + numAvailable} assets selected
+                  {numSelected}/{numAvailable} assets selected
                 </Trans>
               </Typography>
             </Box>

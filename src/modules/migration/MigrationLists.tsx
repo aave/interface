@@ -74,7 +74,7 @@ export const MigrationLists = ({
         withCollateral
         disabled={allSuppliesDisabled}
         numSelected={activeSupplySelections.length || 0}
-        numAvailable={activeSupplyUnselected.length || 0}
+        numAvailable={supplyReserves.length || 0}
       >
         {suppliesPositions}
       </MigrationList>
@@ -89,7 +89,7 @@ export const MigrationLists = ({
         disabled={allBorrowsDisabled}
         titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
         numSelected={activeBorrowSelections.length || 0}
-        numAvailable={activeBorrowUnselected.length || 0}
+        numAvailable={borrowReserves.length || 0}
       >
         {borrowsPositions}
       </MigrationList>
