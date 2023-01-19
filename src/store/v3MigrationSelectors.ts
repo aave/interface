@@ -129,7 +129,11 @@ export const selectDefinitiveSupplyAssetForMigration = (
 
   const nonIsolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
     const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
-    return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+    if (v3UserReserve) {
+      return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+    } else {
+      return false;
+    }
   });
 
   if (nonIsolatedAssets.length > 0) {
