@@ -51,7 +51,7 @@ export const MigrationList = ({
   const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down(655));
 
   const assetColumnWidth = isDesktop ? 120 : 80;
 

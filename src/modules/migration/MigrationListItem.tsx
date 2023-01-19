@@ -51,9 +51,9 @@ export const MigrationListItem = ({
 }: MigrationListItemProps) => {
   const theme = useTheme();
   const { currentMarket, currentMarketData } = useRootStore();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTablet = useMediaQuery(theme.breakpoints.up('xsm'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  const isTablet = useMediaQuery(theme.breakpoints.up(655));
+  const isMobile = useMediaQuery(theme.breakpoints.down(655));
 
   const assetColumnWidth =
     isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
