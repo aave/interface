@@ -181,20 +181,22 @@ export const BorrowInfo = ({
           currentMarketData={currentMarketData}
         />
       )}
-      <Box
-        sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
-        paddingTop={'42px'}
-      >
-        <Typography variant="subheader1" color="text.main">
-          <Trans>Collector Info</Trans>
-        </Typography>
-      </Box>
       {currentMarketData.addresses.COLLECTOR && (
-        <ReserveFactorOverview
-          collectorContract={currentMarketData.addresses.COLLECTOR}
-          explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
-          reserveFactor={reserve.reserveFactor}
-        />
+        <>
+          <Box
+            sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+            paddingTop={'42px'}
+          >
+            <Typography variant="subheader1" color="text.main">
+              <Trans>Collector Info</Trans>
+            </Typography>
+          </Box>
+          <ReserveFactorOverview
+            collectorContract={currentMarketData.addresses.COLLECTOR}
+            explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+            reserveFactor={reserve.reserveFactor}
+          />
+        </>
       )}
     </Box>
   );
