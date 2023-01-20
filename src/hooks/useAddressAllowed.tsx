@@ -11,7 +11,7 @@ const TWO_MINUTES = 2 * 60 * 1000;
 export const useAddressAllowed = (address: string): AddressAllowedResult => {
   const [isAllowed, setIsAllowed] = useState(true);
 
-  const screeningUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/addresses/status`;
+  const screeningUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/addresses/status-v2`;
   const queryParams = `?address=${address}`;
 
   const getIsAddressAllowed = async () => {
