@@ -10,6 +10,12 @@ import {
   Skeleton,
   styled,
   SvgIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
   useMediaQuery,
   useTheme,
@@ -239,6 +245,33 @@ export default function ProposalPage({
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
+                        table({ node, ...props }) {
+                          return (
+                            <TableContainer component={Paper} variant="outlined">
+                              <Table {...props} sx={{ wordBreak: 'normal' }} />
+                            </TableContainer>
+                          );
+                        },
+                        tr({ node, ...props }) {
+                          return (
+                            <TableRow
+                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                              {...props}
+                            />
+                          );
+                        },
+                        td({ children }) {
+                          return <TableCell>{children}</TableCell>;
+                        },
+                        th({ children }) {
+                          return <TableCell>{children}</TableCell>;
+                        },
+                        tbody({ children }) {
+                          return <TableBody>{children}</TableBody>;
+                        },
+                        thead({ node, ...props }) {
+                          return <TableHead {...props} />;
+                        },
                         img({ src: _src, alt }) {
                           if (!_src) return null;
                           const src = /^\.\.\//.test(_src)
