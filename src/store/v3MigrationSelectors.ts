@@ -427,7 +427,7 @@ export const selectSelectedBorrowReservesForMigration = (store: RootStore, times
 export const selectSelectedBorrowReservesForMigrationV3 = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
   const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp)
-    .filter((userReserve) => !userReserve.migrationDisabled)
+    .filter((userReserve) => userReserve.migrationDisabled === undefined)
     // debtKey should be mapped for v3Migration
     .map((borrowReserve) => {
       let debtKey = borrowReserve.debtKey;
