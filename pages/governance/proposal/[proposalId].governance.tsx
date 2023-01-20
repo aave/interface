@@ -260,11 +260,11 @@ export default function ProposalPage({
                             />
                           );
                         },
-                        td({ children }) {
-                          return <TableCell>{children}</TableCell>;
+                        td({ children, style }) {
+                          return <TableCell style={style}>{children}</TableCell>;
                         },
-                        th({ children }) {
-                          return <TableCell>{children}</TableCell>;
+                        th({ children, style }) {
+                          return <TableCell style={style}>{children}</TableCell>;
                         },
                         tbody({ children }) {
                           return <TableBody>{children}</TableBody>;
