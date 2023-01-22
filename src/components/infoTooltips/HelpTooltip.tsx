@@ -1,20 +1,19 @@
-import { ReactNode } from 'react';
-
-import { useHelpContext } from 'src/hooks/useHelp';
-import { useModalContext } from 'src/hooks/useModal';
-
+import { XIcon } from '@heroicons/react/outline';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/solid';
 import {
   Box,
   Button,
-  Typography,
-  useTheme,
-  useMediaQuery,
   IconButton,
   SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
+import { ReactNode } from 'react';
+import { useHelpContext } from 'src/hooks/useHelp';
+import { useModalContext } from 'src/hooks/useModal';
+
 import { HelpBubble } from '../helpTours/HelpBubble';
-import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/solid';
-import { XIcon } from '@heroicons/react/outline';
 import { HelpWithTooltip } from '../helpTours/HelpWithTooltip';
 
 interface HelpTooltipProps {
@@ -160,7 +159,7 @@ export const HelpTooltip = ({
                   <Typography>Previous</Typography>
                 </Button>
               ) : (
-                <Box></Box>
+                <Box />
               )}
 
               {pagination !== totalPagination ? (

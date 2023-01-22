@@ -1,4 +1,3 @@
-import { Link } from '../components/primitives/Link';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import {
   Box,
@@ -16,13 +15,12 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-
-import { DrawerWrapper } from './components/DrawerWrapper';
-import { MobileCloseButton } from './components/MobileCloseButton';
-
+import { HelpTourTooltip } from 'src/components/infoTooltips/HelpTourTooltip';
 import { useHelpContext } from 'src/hooks/useHelp';
 
-import { HelpTourTooltip } from 'src/components/infoTooltips/HelpTourTooltip';
+import { Link } from '../components/primitives/Link';
+import { DrawerWrapper } from './components/DrawerWrapper';
+import { MobileCloseButton } from './components/MobileCloseButton';
 
 interface TourWidgetProps {
   open: boolean;
@@ -98,9 +96,9 @@ export default function WalletWidget({ open, setOpen, headerHeight }: TourWidget
           <Typography>AAVE Tours</Typography>
         </ListItemText>
       </Box>
-      {tours.map((tour) => {
+      {tours.map((tour, index) => {
         return (
-          <Box component={component}>
+          <Box component={component} key={index}>
             {!finishTours.find((elm) => elm === tour) ? (
               !md ? (
                 <HelpTourTooltip

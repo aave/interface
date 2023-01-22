@@ -1,19 +1,18 @@
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, BoxProps, Button, SvgIcon, CircularProgress, Typography } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
-import { uiConfig } from '../../uiConfig';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useHelpContext } from 'src/hooks/useHelp';
 import { TxAction } from 'src/ui-config/errorMapping';
 
+import { uiConfig } from '../../uiConfig';
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
 import { RightHelperText } from './FlowCommons/RightHelperText';
-
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;

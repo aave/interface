@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { useHelpContext } from 'src/hooks/useHelp';
-
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -16,8 +15,6 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,

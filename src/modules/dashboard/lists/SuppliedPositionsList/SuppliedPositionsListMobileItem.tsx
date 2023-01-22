@@ -1,19 +1,19 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
-import { useModalContext } from '../../../../hooks/useModal';
 import { useHelpContext } from '../../../../hooks/useHelp';
+import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SuppliedPositionsListMobileItem = ({
   reserve,

@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
+import { useModalContext } from 'src/hooks/useModal';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -14,7 +15,6 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export const SuppliedPositionsListItem = ({
   reserve,

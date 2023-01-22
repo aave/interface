@@ -12,9 +12,9 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useHelpContext } from 'src/hooks/useHelp';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -22,7 +22,6 @@ import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
-
 import TourWidget from './TourWidget';
 import WalletWidget from './WalletWidget';
 

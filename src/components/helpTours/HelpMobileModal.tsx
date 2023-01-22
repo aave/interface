@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../primitives/BasicModal';
 import { HelpModalSupplyContent } from './HelpSupplyModalContent';

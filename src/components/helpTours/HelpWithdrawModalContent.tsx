@@ -1,11 +1,10 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/solid';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
-import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
-import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/solid';
-import { uiConfig } from '../../uiConfig';
-
 import { useHelpContext } from 'src/hooks/useHelp';
 import { useModalContext } from 'src/hooks/useModal';
 
+import { uiConfig } from '../../uiConfig';
 import { HelpBubble } from './HelpBubble';
 
 export const HelpModalWithdrawContent = () => {
@@ -157,7 +156,7 @@ export const HelpModalWithdrawContent = () => {
                   <Typography>Previous</Typography>
                 </Button>
               ) : (
-                <Box></Box>
+                <Box />
               )}
               <Button onClick={handleNextClick} variant="contained">
                 <Typography>Next</Typography>

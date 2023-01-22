@@ -1,6 +1,5 @@
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
-import { Button, Box, Typography, useTheme, useMediaQuery } from '@mui/material';
-
 import { useHelpContext } from 'src/hooks/useHelp';
 import { useModalContext } from 'src/hooks/useModal';
 

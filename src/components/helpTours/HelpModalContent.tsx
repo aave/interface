@@ -1,9 +1,8 @@
+import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { uiConfig } from '../../uiConfig';
-
-import { useModalContext } from 'src/hooks/useModal';
 
 export default function HelpModalContent() {
   const { close } = useModalContext();

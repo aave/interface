@@ -12,19 +12,18 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
-  useTheme,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
-
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { useHelpContext } from 'src/hooks/useHelp';
+
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;

@@ -2,20 +2,20 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Link } from '../../primitives/Link';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { CollateralType } from 'src/helpers/types';
 import { useHelpContext } from 'src/hooks/useHelp';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
+import { Link } from '../../primitives/Link';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export interface TxModalDetailsProps {
   gasLimit?: string;

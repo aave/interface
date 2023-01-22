@@ -1,21 +1,20 @@
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import { Box, Typography, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React from 'react';
-import { uiConfig } from '../../../uiConfig';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
+import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 import { useGasStation } from 'src/hooks/useGasStation';
-import { useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { GasPriceData } from '../../../hooks/useGetGasPrices';
+import { uiConfig } from '../../../uiConfig';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { GasOption } from './GasStationProvider';
-
-import { HelpTooltip } from 'src/components/infoTooltips/HelpTooltip';
 
 export interface GasStationProps {
   gasLimit: BigNumber;

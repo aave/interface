@@ -1,12 +1,11 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/solid';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
-import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
-import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/solid';
-import { Link } from '../primitives/Link';
-import { uiConfig } from '../../uiConfig';
-
 import { useHelpContext } from 'src/hooks/useHelp';
 import { useModalContext } from 'src/hooks/useModal';
 
+import { uiConfig } from '../../uiConfig';
+import { Link } from '../primitives/Link';
 import { HelpBubble } from './HelpBubble';
 
 export const HelpModalSupplyContent = () => {
@@ -63,9 +62,9 @@ export const HelpModalSupplyContent = () => {
       description = (
         <Typography>
           After supplying your assets, you are able to unselect the asset so that it will not be
-          used as collateral. The opt-out is available in the "Supply" section within your
-          dashboard. Simply switch the "use as collateral" button on the asset you would prefer to
-          opt-out from being used as a collateral.
+          used as collateral. The opt-out is available in the &quot;Supply&quot; section within your
+          dashboard. Simply switch the &quot;use as collateral&quot; button on the asset you would
+          prefer to opt-out from being used as a collateral.
         </Typography>
       );
       top = '240px';
@@ -119,7 +118,7 @@ export const HelpModalSupplyContent = () => {
       break;
     default:
       title = 'Supply an asset';
-      description = "Select the amount you'd like to supply.";
+      description = `Select the amount you'd like to supply.`;
       top = undefined;
       right = undefined;
   }
@@ -173,7 +172,7 @@ export const HelpModalSupplyContent = () => {
                   <Typography>Previous</Typography>
                 </Button>
               ) : (
-                <Box></Box>
+                <Box />
               )}
               <Button onClick={handleNextClick} variant="contained">
                 <Typography>Next</Typography>

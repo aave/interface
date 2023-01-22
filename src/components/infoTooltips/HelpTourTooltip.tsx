@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
 import { Typography } from '@mui/material';
-import { JSXElementConstructor, ReactElement } from 'react';
+import React, { JSXElementConstructor, ReactElement, useState } from 'react';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 
-interface HelpTourTooltip {
-  tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
-  tour: ReactElement<any, string | JSXElementConstructor<any>>;
+interface HelpTourTooltipProps {
+  tooltipContent: ReactElement<string | JSXElementConstructor<string>>;
+  tour: ReactElement<string | JSXElementConstructor<string>>;
 }
 
-export const HelpTourTooltip = ({ tour, tooltipContent }: HelpTourTooltip) => {
+export const HelpTourTooltip = ({ tour, tooltipContent }: HelpTourTooltipProps) => {
   const [openTooltip, setOpenTooltip] = useState(false);
 
   return (

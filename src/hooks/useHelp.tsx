@@ -24,7 +24,7 @@ export const HelpContextProvider: React.FC = ({ children }) => {
   const [helpTourAsset, setHelpTourAsset] = useState('');
 
   const pagesInTour = { supplyPagination: 8, withdrawPagination: 7 };
-  let pagination = {
+  const pagination = {
     SupplyTour: 1,
     WithdrawTour: 1,
   };

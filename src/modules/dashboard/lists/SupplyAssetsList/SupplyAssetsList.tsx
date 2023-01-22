@@ -4,6 +4,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { Fragment, useState } from 'react';
+import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
+import { HelpModal } from 'src/components/helpTours/HelpModal';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -12,8 +14,6 @@ import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarnin
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { HelpModal } from 'src/components/helpTours/HelpModal';
-import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';

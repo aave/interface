@@ -1,9 +1,8 @@
 import { XIcon } from '@heroicons/react/outline';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 import React from 'react';
-
-import { useModalContext } from 'src/hooks/useModal';
 import { useHelpContext } from 'src/hooks/useHelp';
+import { useModalContext } from 'src/hooks/useModal';
 
 export interface BasicModalProps {
   open: boolean;

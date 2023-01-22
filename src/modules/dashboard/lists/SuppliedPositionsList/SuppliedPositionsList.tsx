@@ -2,10 +2,13 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
+import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
+import { HelpModal } from 'src/components/helpTours/HelpModal';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useHelpContext } from 'src/hooks/useHelp';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -14,7 +17,6 @@ import { CollateralTooltip } from '../../../../components/infoTooltips/Collatera
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { useHelpContext } from 'src/hooks/useHelp';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -26,8 +28,6 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
-import { HelpModal } from 'src/components/helpTours/HelpModal';
-import { ConfirmationHelpModal } from 'src/components/helpTours/ConfirmationHelpModal';
 
 const head = [
   {
