@@ -123,10 +123,10 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6',
       COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavev3',
-    },
+    // halIntegration: {
+    //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
+    //   marketName: 'aavev3',
+    // },
   },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
