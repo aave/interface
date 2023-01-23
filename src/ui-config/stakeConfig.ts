@@ -31,12 +31,12 @@ export const prodStakeConfig: StakeConfig = {
 
 export const goerliStakeConfig: StakeConfig = {
   chainId: ChainId.goerli,
-  stakeDataProvider: '0x34bFD6bc994A64b7048516f866a5d0E20f94fDD2',
+  stakeDataProvider: '0xa6b5F3E8d74169a3c1923E4F57667efB2868b0CF',
   tokens: {
     [Stake.aave]: {
-      TOKEN_STAKING: '0x716AD55707ddbA3Bb180f717688A21C315Ce6A49',
+      TOKEN_STAKING: '0x1f9d78a12bd183726c3ac65441182d2c8d0f9cc4',
       STAKING_REWARD_TOKEN: '0x0000000000000000000000000000000000000000',
-      STAKING_HELPER: '0xf46c27acea33167b9940dbe1b21b45232821e86e',
+      STAKING_HELPER: '0x7068b01B2E3Aded032942dCb83862F7A2a456E92',
     },
     // TODO: Deploy with balancer contracts
     // [Stake.bpt]: {
