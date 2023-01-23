@@ -11,10 +11,13 @@ import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 
+import { getTrustWalletInjectedProvider, TrustWalletConnector } from './TrustWalletConnector';
+
 export enum WalletType {
   INJECTED = 'injected',
   WALLET_CONNECT = 'wallet_connect',
   WALLET_LINK = 'wallet_link',
+  TRUST_WALLET = 'trustwallet',
   TORUS = 'torus',
   FRAME = 'frame',
   GNOSIS = 'gnosis',
@@ -77,6 +80,17 @@ export const getWallet = (
 ): AbstractConnector => {
   const supportedChainIds = getSupportedChainIds();
 
+  const createWalletConnectConnector = () =>
+    new WalletConnectConnector({
+      rpc: supportedChainIds.reduce((acc, network) => {
+        const config = getNetworkConfig(network);
+        acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+        return acc;
+      }, {} as { [networkId: number]: string }),
+      bridge: 'https://aave.bridge.walletconnect.org',
+      qrcode: true,
+    });
+
   switch (wallet) {
     case WalletType.READ_ONLY_MODE:
       return new ReadOnlyModeConnector();
@@ -84,6 +98,10 @@ export const getWallet = (
       return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
       return new InjectedConnector({});
+    case WalletType.TRUST_WALLET:
+      return !!getTrustWalletInjectedProvider()
+        ? new TrustWalletConnector({})
+        : createWalletConnectConnector();
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({
@@ -92,15 +110,7 @@ export const getWallet = (
         url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector({
-        rpc: supportedChainIds.reduce((acc, network) => {
-          const config = getNetworkConfig(network);
-          acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
-          return acc;
-        }, {} as { [networkId: number]: string }),
-        bridge: 'https://aave.bridge.walletconnect.org',
-        qrcode: true,
-      });
+      return createWalletConnectConnector();
     case WalletType.GNOSIS:
       if (window) {
         return new SafeAppConnector();

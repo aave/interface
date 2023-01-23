@@ -50,6 +50,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
+      case WalletType.TRUST_WALLET:
+        return (
+          <img
+            src={`/icons/wallets/trustwallet.svg`}
+            width="24px"
+            height="24px"
+            alt={`trust wallet icon`}
+          />
+        );
       case WalletType.TORUS:
         return (
           <img
@@ -179,6 +188,7 @@ export const WalletSelector = () => {
         walletName="Coinbase Wallet"
         walletType={WalletType.WALLET_LINK}
       />
+      <WalletRow key="trustwallet" walletName="Trust Wallet" walletType={WalletType.TRUST_WALLET} />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
