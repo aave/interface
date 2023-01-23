@@ -111,7 +111,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { borrowCap, debtCeiling } = useAssetCaps();
+  const { borrowCap } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -222,8 +222,6 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
-
       <AssetInput
         value={amount}
         onChange={handleChange}
