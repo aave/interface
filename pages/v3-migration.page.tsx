@@ -72,7 +72,14 @@ export default function V3Migration() {
     selectedMigrationBorrowAssets: selectedBorrowAssets,
     resetMigrationSelectedAssets,
     enforceAsCollateral,
+    getMigrationExceptionSupplyBalances,
   } = useRootStore();
+
+  useEffect(() => {
+    if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
+      getMigrationExceptionSupplyBalances(supplyReserves);
+    }
+  }, [getMigrationExceptionSupplyBalances, supplyReserves]);
 
   useEffect(() => {
     if (resetMigrationSelectedAssets) {

@@ -134,9 +134,14 @@ export const selectDefinitiveSupplyAssetForMigration = (
   }
 
   const nonIsolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
-    const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
+    const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(store, supplyAsset);
+    const v3UserReserve = userReservesV3Map[underlyingAssetAddress];
+    const v3ReserveBalanceWithExceptions = selectMigrationAssetBalanceWithExceptions(
+      store,
+      v3UserReserve
+    );
     if (v3UserReserve) {
-      return v3UserReserve.underlyingBalance == '0' && !v3UserReserve.reserve.isIsolated;
+      return v3ReserveBalanceWithExceptions == '0' && !v3UserReserve.reserve.isIsolated;
     } else {
       return false;
     }
@@ -147,8 +152,13 @@ export const selectDefinitiveSupplyAssetForMigration = (
   }
 
   const isolatedAssets = store.selectedMigrationSupplyAssets.filter((supplyAsset) => {
-    const v3UserReserve = userReservesV3Map[supplyAsset.underlyingAsset];
-    return v3UserReserve.underlyingBalance == '0' && v3UserReserve.reserve.isIsolated;
+    const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(store, supplyAsset);
+    const v3UserReserve = userReservesV3Map[underlyingAssetAddress];
+    const v3ReserveBalanceWithExceptions = selectMigrationAssetBalanceWithExceptions(
+      store,
+      v3UserReserve
+    );
+    return v3ReserveBalanceWithExceptions == '0' && v3UserReserve.reserve.isIsolated;
   });
 
   return isolatedAssets;
@@ -174,6 +184,68 @@ export enum MigrationDisabled {
   InsufficientLiquidity, // TODO
 }
 
+export const selectMigrationUnderlyingAssetWithExceptions = (
+  store: RootStore,
+  reserve: {
+    underlyingAsset: string;
+  }
+): string => {
+  const defaultUnderlyingAsset = reserve.underlyingAsset;
+  if (!store.exceptionsBalancesLoading && store.migrationExceptions[defaultUnderlyingAsset]) {
+    return store.migrationExceptions[defaultUnderlyingAsset].v3UnderlyingAsset;
+  }
+  return defaultUnderlyingAsset;
+};
+
+export const selectMigrationUnderluingAssetWithExceptionsByV3Key = (
+  store: RootStore,
+  reserveV3: {
+    underlyingAsset: string;
+  }
+) => {
+  const exceptionItem = Object.values(store.migrationExceptions).find(
+    (exception) => exception.v3UnderlyingAsset == reserveV3.underlyingAsset
+  );
+  return exceptionItem?.v2UnderlyingAsset || reserveV3.underlyingAsset;
+};
+
+export const selectMigrationAssetBalanceWithExceptions = (
+  store: RootStore,
+  reserve: {
+    underlyingAsset: string;
+    underlyingBalance: string;
+  }
+) => {
+  const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(store, reserve);
+  if (!store.exceptionsBalancesLoading) {
+    const exceptionAsset = store.migrationExceptions[underlyingAssetAddress];
+    if (exceptionAsset) {
+      return exceptionAsset.amount;
+    }
+    return reserve.underlyingBalance;
+  }
+  return reserve.underlyingBalance;
+};
+
+export const seletMigrationUnderlyingBalanceExceptionByV3Key = (
+  store: RootStore,
+  reserveV3: {
+    underlyingAsset: string;
+    scaledATokenBalance: string;
+  }
+) => {
+  if (store.exceptionsBalancesLoading) {
+    return reserveV3.scaledATokenBalance;
+  }
+  const exceptionAsset = Object.values(store.migrationExceptions).find(
+    (exception) => exception.v3UnderlyingAsset == reserveV3.underlyingAsset
+  );
+  if (exceptionAsset) {
+    return exceptionAsset.amount;
+  }
+  return reserveV3.scaledATokenBalance;
+};
+
 export type IsolatedReserve = FormatReserveUSDResponse & { enteringIsolationMode?: boolean };
 export const selectUserReservesForMigration = (store: RootStore, timestamp: number) => {
   const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = selectV3UserSummary(
@@ -195,7 +267,11 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   if (v3ReservesUserSummary.totalCollateralMarketReferenceCurrency == '0') {
     const definitiveAssets = selectDefinitiveSupplyAssetForMigration(store, v3ReservesMap);
     if (definitiveAssets.length > 0) {
-      const definitiveAsset = v3ReservesMap[definitiveAssets[0].underlyingAsset];
+      const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(
+        store,
+        definitiveAssets[0]
+      );
+      const definitiveAsset = v3ReservesMap[underlyingAssetAddress];
       if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
         isolatedReserveV3 = { ...definitiveAsset.reserve, enteringIsolationMode: true };
       }
@@ -211,10 +287,12 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
   const mappedSupplyReserves = supplyReserves.map((userReserve) => {
     let usageAsCollateralEnabledOnUserV3 = true;
     let migrationDisabled: MigrationDisabled | undefined;
-    const isolatedOnV3 = v3ReservesMap[userReserve.underlyingAsset]?.reserve.isIsolated;
-    const canBeEnforced = v3ReservesMap[userReserve.underlyingAsset]?.underlyingBalance == '0';
+    const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(store, userReserve);
+
+    const isolatedOnV3 = v3ReservesMap[underlyingAssetAddress]?.reserve.isIsolated;
+    const canBeEnforced = v3ReservesMap[underlyingAssetAddress]?.underlyingBalance == '0';
     let v3Rates: V3Rates | undefined;
-    const v3SupplyAsset = v3ReservesMap[userReserve.underlyingAsset];
+    const v3SupplyAsset = v3ReservesMap[underlyingAssetAddress];
     if (v3SupplyAsset) {
       v3Rates = {
         stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
@@ -596,7 +674,11 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];
     const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
 
-    const supplyAsset = suppliesMap[userReserveData.underlyingAsset];
+    const supplyUnderlyingAssetAddress = selectMigrationUnderluingAssetWithExceptionsByV3Key(
+      store,
+      userReserveData
+    );
+    const supplyAsset = suppliesMap[supplyUnderlyingAssetAddress];
 
     let combinedScaledDownVariableDebtV3 = userReserveData.scaledVariableDebt;
     let combinedScaledDownABalance = userReserveData.scaledATokenBalance;
@@ -622,15 +704,16 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
         .toString();
     }
 
-    if (supplyAsset && supplyAsset.migrationDisabled === undefined) {
+    if (supplyAsset) {
+      usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUser;
       const scaledDownATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
       const liquidityIndexV3 = valueToBigNumber(userReserveData.reserve.liquidityIndex);
-      const scaledDownBalanceV2 = rayDiv(
-        valueToWei(supplyAsset.underlyingBalance, userReserveData.reserve.decimals),
-        liquidityIndexV3
-      );
+      const underlyingBalanceV2 =
+        store.migrationExceptions[supplyUnderlyingAssetAddress]?.amount ||
+        valueToWei(supplyAsset.underlyingBalance, userReserveData.reserve.decimals);
+
+      const scaledDownBalanceV2 = rayDiv(underlyingBalanceV2, liquidityIndexV3);
       combinedScaledDownABalance = scaledDownATokenBalance.plus(scaledDownBalanceV2).toString();
-      usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUserV3;
     }
 
     return {

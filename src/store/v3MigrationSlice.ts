@@ -38,11 +38,29 @@ export type MigrationSelectedBorrowAsset = {
   interestRate: InterestRate;
 };
 
+type MigrationSupplyException = {
+  underlyingAsset: string;
+  scaledATokenBalance: string;
+};
+
+const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
+  [1]: ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84'],
+};
+
 export type V3MigrationSlice = {
   //STATE
+  exceptionsBalancesLoading: boolean;
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
+  migrationExceptions: Record<
+    string,
+    {
+      v2UnderlyingAsset: string;
+      v3UnderlyingAsset: string;
+      amount: string;
+    }
+  >;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
@@ -70,6 +88,7 @@ export type V3MigrationSlice = {
   enforceAsCollateral: (underlyingAsset: string) => void;
   selectAllBorrow: (timestamp: number) => void;
   selectAllSupply: (timestamp: number) => void;
+  getMigrationExceptionSupplyBalances: (supplies: MigrationSupplyException[]) => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -82,6 +101,7 @@ export const createV3MigrationSlice: StateCreator<
     selectedMigrationSupplyAssets: [],
     selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
+    migrationExceptions: {},
     timestamp: 0,
     approvalPermitsForMigrationAssets: [],
     generatePermitPayloadForMigrationSupplyAsset: async ({ amount, underlyingAsset, deadline }) => {
@@ -332,15 +352,6 @@ export const createV3MigrationSlice: StateCreator<
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
 
-      console.log({
-        repayAssets,
-        supplyAssets,
-        user,
-        creditDelegationApprovals,
-        signedCreditDelegationPermits: creditDelegationPermits,
-        signedSupplyPermits: supplyPermits,
-      });
-
       return get().getMigrationServiceInstance().migrate({
         repayAssets,
         supplyAssets,
@@ -377,6 +388,47 @@ export const createV3MigrationSlice: StateCreator<
         migrationServiceInstances: { ...migrationServiceInstances, [address]: newMigratorInstance },
       });
       return newMigratorInstance;
+    },
+    getMigrationExceptionSupplyBalances: async (supplies) => {
+      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
+      const currentChainIdExcetptions = MIGRATION_ASSETS_EXCEPTIONS[chainId];
+      if (!currentChainIdExcetptions) {
+        return;
+      }
+      if (!get().exceptionsBalancesLoading && Object.keys(get().migrationExceptions).length == 0) {
+        set({ exceptionsBalancesLoading: true });
+        const filteredSuppliesForExceptions = supplies.filter(
+          (supply) =>
+            currentChainIdExcetptions.indexOf(supply.underlyingAsset) >= 0 &&
+            supply.scaledATokenBalance !== '0'
+        );
+        try {
+          const mappedSupplies = filteredSuppliesForExceptions.map(
+            ({ scaledATokenBalance, underlyingAsset }) => {
+              console.log(scaledATokenBalance, underlyingAsset);
+              return get()
+                .getMigrationServiceInstance()
+                .getMigrationSupply({ amount: scaledATokenBalance, asset: underlyingAsset });
+            }
+          );
+
+          const supplyBalancesV3 = await Promise.all(mappedSupplies);
+
+          set((state) =>
+            produce(state, (draft) => {
+              supplyBalancesV3.forEach(([asset, amount], index) => {
+                const v2UnderlyingAsset = filteredSuppliesForExceptions[index].underlyingAsset;
+                draft.migrationExceptions[v2UnderlyingAsset] = {
+                  v2UnderlyingAsset,
+                  v3UnderlyingAsset: asset.toLowerCase(),
+                  amount: amount.toString(),
+                };
+              });
+            })
+          );
+        } catch (e) {}
+        set({ exceptionsBalancesLoading: false });
+      }
     },
   };
 };
