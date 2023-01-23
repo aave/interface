@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { ParentSize } from '@visx/responsive';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -21,12 +22,54 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
+import { ApyGraph } from '../graphs/ApyGraph';
+import { Fields } from '../graphs/InterestRateModelGraphContainer';
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
+import { GhoInterestRateGraph } from './GhoInterestRateGraph';
 import {
   getSecondsForGhoBorrowTermDuration,
   GhoBorrowTermRange,
   GhoTimeRangeSelector,
 } from './GhoTimeRangeSelector';
+
+const calculateDiscountRateData = (
+  borrowedGho: number,
+  timeRange: ESupportedTimeRanges,
+  discountableAmount: number,
+  ghoBaseVariableBorrowRate: number,
+  ghoDiscountRate: number
+) => {
+  // const discountableAmount = stakedAave * ghoReserveData.ghoDiscountedPerToken;
+
+  // Factor in time for compounding for a final rate, using base variable rate
+  const termDuration = getSecondsForGhoBorrowTermDuration(timeRange);
+  const ratePayload = {
+    rate: valueToBigNumber(ghoBaseVariableBorrowRate).shiftedBy(RAY_DECIMALS),
+    duration: termDuration,
+  };
+  const newRate = calculateCompoundedRate(ratePayload).shiftedBy(-RAY_DECIMALS).toNumber();
+  const borrowRateWithMaxDiscount = newRate * (1 - ghoDiscountRate);
+  // Apply discount to the newly compounded rate
+  const newBorrowRate = weightedAverageAPY(
+    newRate,
+    borrowedGho,
+    discountableAmount,
+    borrowRateWithMaxDiscount
+  );
+
+  return {
+    baseRate: newRate,
+    rateAfterDiscount: newBorrowRate,
+    rateAfterMaxDiscount: borrowRateWithMaxDiscount,
+  };
+  // Update local state
+  // setDiscountableGhoAmount(discountableAmount);
+  // setRateSelection({
+  //   baseRate: newRate,
+  //   rateAfterDiscount: newBorrowRate,
+  //   rateAfterMaxDiscount: borrowRateWithMaxDiscount,
+  // });
+};
 
 const sliderStyles = {
   color: '#669AFF',
@@ -296,6 +339,42 @@ export const GhoDiscountCalculator = () => {
     return <></>;
   };
 
+  const data = [];
+  [
+    ESupportedTimeRanges.OneMonth,
+    ESupportedTimeRanges.ThreeMonths,
+    ESupportedTimeRanges.SixMonths,
+    ESupportedTimeRanges.OneYear,
+  ].forEach((timeRange) => {
+    const discountRate = calculateDiscountRateData(
+      ghoBorrow ?? 0,
+      timeRange,
+      (stkAave ?? 0) * ghoReserveData.ghoDiscountedPerToken,
+      ghoReserveData.ghoBaseVariableBorrowRate,
+      ghoReserveData.ghoDiscountRate
+    );
+    const interestAccrued = (ghoBorrow || 0) * discountRate.rateAfterMaxDiscount;
+    data.push({
+      date: getSecondsForGhoBorrowTermDuration(timeRange),
+      interestRate: discountRate.rateAfterMaxDiscount,
+      accruedInterest: interestAccrued,
+    });
+  });
+
+  const fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
+  // const generateData = () => {
+  //   const data = [];
+  //   for (let i = 0; i < 12; i++) {
+  //     data.push({
+  //       date: new Date(2021, i, 1).getTime(),
+  //       interestRate: 0.016,
+  //       accruedInterest: i * 0.016 * 100,
+  //     });
+  //   }
+  //   return data;
+  // };
+  // const data = generateData();
+
   return (
     <>
       <Typography variant="subheader1" gutterBottom>
@@ -434,6 +513,19 @@ export const GhoDiscountCalculator = () => {
           )}
         </Grid>
       </Grid>
+      <Box>
+        <ParentSize>
+          {({ width }) => (
+            <GhoInterestRateGraph
+              width={width * 0.8}
+              height={155}
+              data={data}
+              fields={fields}
+              selectedTimeRange={selectedTimeRange}
+            />
+          )}
+        </ParentSize>
+      </Box>
       <GhoDiscountParametersComponent loading={ghoLoadingData} />
     </>
   );

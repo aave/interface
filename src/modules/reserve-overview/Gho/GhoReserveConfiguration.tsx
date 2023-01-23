@@ -21,6 +21,7 @@ import {
 
 import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
+import { GhoInterestRateGraph } from './GhoInterestRateGraph';
 
 type GhoReserveConfigurationProps = {
   reserve: ComputedReserveData;
