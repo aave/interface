@@ -14,6 +14,18 @@ export class DashboardHelpers {
     return this.getApyRate(_selector);
   }
 
+  public static getGhoApyBorrowRangeMin(tokenName: string) {
+    const _selector = `[data-cy="dashboardBorrowListItem_${tokenName}"]`;
+    cy.doSwitchToDashboardBorrowView();
+    return this.getApyGhoRangeMin(_selector);
+  }
+
+  public static getGhoApyBorrowRangeMax(tokenName: string) {
+    const _selector = `[data-cy="dashboardBorrowListItem_${tokenName}"]`;
+    cy.doSwitchToDashboardBorrowView();
+    return this.getApyGhoRangeMax(_selector);
+  }
+
   public static getApySupplyRate(tokenName: string) {
     const _selector = `[data-cy='dashboardSupplyListItem_${tokenName}']`;
     cy.doSwitchToDashboardSupplyView();
@@ -24,6 +36,26 @@ export class DashboardHelpers {
     return cy
       .get(selector)
       .find(`[data-cy="apr"]`)
+      .first()
+      .then(($val) => {
+        return parseFloat($val.text());
+      });
+  }
+
+  private static getApyGhoRangeMin(selector: string) {
+    return cy
+      .get(selector)
+      .find(`[data-cy="apr-gho-from"]`)
+      .first()
+      .then(($val) => {
+        return parseFloat($val.text());
+      });
+  }
+
+  private static getApyGhoRangeMax(selector: string) {
+    return cy
+      .get(selector)
+      .find(`[data-cy="apr-gho-till"]`)
       .first()
       .then(($val) => {
         return parseFloat($val.text());
