@@ -1,5 +1,6 @@
 import { GhoService } from '@aave/contract-helpers';
 import { GhoReserveData, GhoUserData } from '@aave/math-utils';
+import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
   ENABLE_TESTNET,
@@ -18,18 +19,22 @@ interface GhoMarketConfig {
   uiGhoDataProviderAddress: string;
 }
 
-const goerliGhoConfig: GhoMarketConfig = {
-  market: marketsData[CustomMarket.proto_goerli_gho_v3],
-  ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
-  uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+const getGoerliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
+  return {
+    market: marketsData[market],
+    ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
+    uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+  };
 };
 
 // TODO: update when GHO is launched on mainnet
 // NOTE: these addresses are Goerli addresses, and should be updated on launch
-const mainnetGhoConfig: GhoMarketConfig = {
-  market: marketsData[CustomMarket.proto_mainnet],
-  ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
-  uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+const getMainnetGhoConfig = (market: CustomMarket): GhoMarketConfig => {
+  return {
+    market: marketsData[market],
+    ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
+    uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+  };
 };
 
 export interface GhoSlice {
@@ -70,7 +75,20 @@ export const createGhoSlice: StateCreator<
     ghoReserveDataFetched: false,
     ghoUserDataFetched: false,
     ghoMarketConfig: () => {
-      return STAGING_ENV || ENABLE_TESTNET ? goerliGhoConfig : mainnetGhoConfig;
+      const currentMarket = get().currentMarket;
+      if (GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
+        if (STAGING_ENV || ENABLE_TESTNET) {
+          return getGoerliGhoConfig(currentMarket);
+        } else {
+          return getMainnetGhoConfig(currentMarket);
+        }
+      } else {
+        if (STAGING_ENV || ENABLE_TESTNET) {
+          return getGoerliGhoConfig(CustomMarket.proto_goerli_gho_v3);
+        } else {
+          return getMainnetGhoConfig(CustomMarket.proto_mainnet);
+        }
+      }
     },
     refreshGhoData: async () => {
       const ghoConfig = get().ghoMarketConfig();
