@@ -51,6 +51,10 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+
+  // v3.0.1 mainnets
+  proto_mainnet_v3_1 = 'proto_mainnet_v3_1',
+
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -58,7 +62,6 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  proto_mainnet_v3 = 'proto_mainnet_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -100,7 +103,7 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  [CustomMarket.proto_mainnet_v3]: {
+  [CustomMarket.proto_mainnet_v3_1]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
     v3: true,
