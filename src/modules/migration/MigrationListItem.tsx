@@ -154,8 +154,7 @@ export const MigrationListItem = ({
         <ListColumn align="right">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {userReserve.usageAsCollateralEnabledOnUser &&
-            userReserve.reserve.usageAsCollateralEnabled &&
-            !disabled ? (
+            userReserve.reserve.usageAsCollateralEnabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
               <NoData variant="main14" color={baseColorSecondary} />
@@ -169,7 +168,7 @@ export const MigrationListItem = ({
                 }
               />
             </SvgIcon>
-            {!enabledAsCollateral || disabled ? (
+            {!enabledAsCollateral ? (
               <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
               <Box
@@ -220,7 +219,12 @@ export const MigrationListItem = ({
       {!!borrowApyType && (
         <ListColumn align="right">
           <Box sx={{ display: 'flex' }}>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColor}>
                 {borrowApyType}
               </Typography>
@@ -233,7 +237,12 @@ export const MigrationListItem = ({
                 }
               />
             </SvgIcon>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColor}>
                 Variable
               </Typography>
