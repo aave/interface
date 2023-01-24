@@ -212,7 +212,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Staking incentive</Trans>
         </PanelTitle>
-        <Box>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <GhoDiscountCalculator />
         </Box>
       </PanelRow>
