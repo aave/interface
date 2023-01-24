@@ -17,6 +17,7 @@ import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataP
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
+import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { MigrationListMobileItem } from './MigrationListMobileItem';
 
 interface MigrationListItemProps {
@@ -95,6 +96,7 @@ export const MigrationListItem = ({
         borrowApyType={borrowApyType}
         userReserve={userReserve}
         v3Rates={v3Rates}
+        showCollateralToggle={showCollateralToggle}
       />
     );
   return (
@@ -174,14 +176,6 @@ export const MigrationListItem = ({
               />
             </SvgIcon>
 
-            {/* TODO: uncomment this to see how enforce is working */}
-            {showCollateralToggle
-              ? null
-              : // <button onClick={enableAsCollateral}>
-                //   {enabledAsCollateral ? 'deenforce' : 'enforce'}
-                // </button>
-                null}
-
             {!enabledAsCollateral ? (
               <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
@@ -199,7 +193,16 @@ export const MigrationListItem = ({
                 <IsolatedBadge />
               </Box>
             ) : (
-              <CheckRoundedIcon fontSize="small" color="success" />
+              <>
+                {showCollateralToggle ? (
+                  <MigrationListItemToggler
+                    enableAsCollateral={enableAsCollateral}
+                    enabledAsCollateral={enabledAsCollateral}
+                  />
+                ) : (
+                  <CheckRoundedIcon fontSize="small" color="success" />
+                )}
+              </>
             )}
           </Box>
         </ListColumn>
