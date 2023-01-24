@@ -18,6 +18,8 @@ import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataP
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
+import { MigrationListItemToggler } from './MigrationListItemToggler';
+
 interface MigrationListMobileItemProps {
   checked: boolean;
   amount: string;
@@ -32,6 +34,7 @@ interface MigrationListMobileItemProps {
   borrowApyType?: string;
   userReserve: ComputedUserReserveData;
   v3Rates?: V3Rates;
+  showCollateralToggle?: boolean;
 }
 
 export const MigrationListMobileItem = ({
@@ -47,6 +50,7 @@ export const MigrationListMobileItem = ({
   borrowApyType,
   userReserve,
   v3Rates,
+  showCollateralToggle,
 }: MigrationListMobileItemProps) => {
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -239,7 +243,16 @@ export const MigrationListMobileItem = ({
                 <IsolatedBadge />
               </Box>
             ) : (
-              <CheckRoundedIcon fontSize="small" color="success" />
+              <>
+                {showCollateralToggle ? (
+                  <MigrationListItemToggler
+                    enableAsCollateral={enableAsCollateral}
+                    enabledAsCollateral={enabledAsCollateral}
+                  />
+                ) : (
+                  <CheckRoundedIcon fontSize="small" color="success" />
+                )}
+              </>
             )}
           </Box>
         </Box>
