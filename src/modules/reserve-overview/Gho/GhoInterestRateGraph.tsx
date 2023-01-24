@@ -75,7 +75,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 20, right: 40, bottom: 20, left: 40 },
+    margin = { top: 0, right: 40, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,

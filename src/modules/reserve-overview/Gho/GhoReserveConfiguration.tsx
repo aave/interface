@@ -21,7 +21,6 @@ import {
 
 import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
-import { GhoInterestRateGraph } from './GhoInterestRateGraph';
 
 type GhoReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -213,7 +212,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Staking incentive</Trans>
         </PanelTitle>
-        <Box sx={{ width: '100%' }}>
+        <Box>
           <GhoDiscountCalculator />
         </Box>
       </PanelRow>

@@ -13,9 +13,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { Stack } from '@mui/system';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -65,6 +66,7 @@ const calculateDiscountRateData = (
 
 const sliderStyles = {
   color: '#669AFF',
+  marginBottom: '8px',
   '.MuiSlider-rail': {
     color: 'text.disabled',
   },
@@ -274,7 +276,7 @@ export const GhoDiscountCalculator = () => {
 
     if (discountNotAvailable)
       return (
-        <Typography variant="helperText" component="p" color="warning.dark">
+        <Typography variant="caption" component="p" color="warning.dark">
           <Trans>Add stkAAVE to see borrow APY with the discount</Trans>
         </Typography>
       );
@@ -333,7 +335,6 @@ export const GhoDiscountCalculator = () => {
 
   const data = [];
   const now = dayjs().unix() * 1000;
-  console.log(now);
   const oneDay = dayjs.duration({ days: 1 }).asSeconds();
 
   // TODO: optimize this, we don't need every day for the graph
@@ -371,139 +372,129 @@ export const GhoDiscountCalculator = () => {
           Use the calculator below to see different borrow rates with the discount applied.
         </Trans>
       </Typography>
-      <Grid container spacing={{ xs: 4, sm: 6 }}>
-        <Grid item xs={12} sm={6} order={{ xs: 2, sm: 1 }}>
-          <Box mb={2}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Borrow amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={ghoBorrow ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="GHO" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setGhoBorrow(null)
-                  : setGhoBorrow(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={ghoBorrow ?? 0}
-              onChange={(_, val) => setGhoBorrow(Number(val))}
-              step={1000}
-              min={0}
-              max={100000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 100000, label: '100,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-          <Box mb={8}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Borrow term</Trans>
-            </Typography>
-            <GhoTimeRangeSelector
-              disabled={ghoLoadingData}
-              timeRange={selectedTimeRange}
-              onTimeRangeChanged={setSelectedTimeRange}
-            />
-          </Box>
-          <Box>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Staked AAVE amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={stkAave ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="AAVE" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setStkAave(null)
-                  : setStkAave(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={stkAave ?? 0}
-              onChange={(_, val) => setStkAave(Number(val))}
-              step={5}
-              min={0}
-              max={1000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 1000, label: '1,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={6} order={{ xs: 1, sm: 2 }}>
-          <Typography variant="subheader2" mb={1.5}>
-            <Trans>GHO borrow rate</Trans>
+      <Stack direction="row" gap={2}>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Borrow amount</Trans>
           </Typography>
-          {ghoLoadingData ? (
-            <CircularProgress size={24} sx={{ my: 2, color: '#669AFF' }} />
-          ) : (
-            <>
-              <Box display="flex" alignItems="center" mb={2}>
-                <FormattedNumber
-                  value={rateSelection.baseRate}
-                  percent
-                  variant="display1"
-                  component="div"
-                  color={showDiscountRate ? 'text.muted' : 'text.primary'}
-                  symbolsColor={showDiscountRate ? 'text.muted' : 'text.primary'}
-                  mr={1}
-                  sx={
-                    showDiscountRate
-                      ? { textDecoration: 'line-through', '.MuiTypography-root': { ml: 0 } }
-                      : { '.MuiTypography-root': { ml: 0 } }
-                  }
-                />
-                {showDiscountRate && (
-                  <FormattedNumber
-                    value={rateSelection.rateAfterDiscount}
-                    percent
-                    variant="display1"
-                    component="div"
-                    symbolsColor="text.primary"
-                    sx={{ '.MuiTypography-root': { ml: 0 } }}
-                  />
-                )}
-              </Box>
-              <GhoInterestOwedLineComponent />
-              <GhoDiscountCalculatorHelperText />
-            </>
-          )}
-        </Grid>
-      </Grid>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={ghoBorrow ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="GHO" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setGhoBorrow(null)
+                : setGhoBorrow(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={ghoBorrow ?? 0}
+            onChange={(_, val) => setGhoBorrow(Number(val))}
+            step={1000}
+            min={0}
+            max={100000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 100000, label: '100,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Staked AAVE amount</Trans>
+          </Typography>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={stkAave ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="AAVE" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setStkAave(null)
+                : setStkAave(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={stkAave ?? 0}
+            onChange={(_, val) => setStkAave(Number(val))}
+            step={5}
+            min={0}
+            max={1000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 1000, label: '1,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
+      </Stack>
+      <Box sx={{ minHeight: '35px' }}>
+        <GhoDiscountCalculatorHelperText />
+      </Box>
       <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Stack direction="row" spacing={4}>
+            <Stack>
+              <Typography variant="subheader2">GHO effective interest rate</Typography>
+              <FormattedNumber
+                value={rateSelection.rateAfterDiscount}
+                percent
+                variant="h2"
+                component="div"
+                symbolsColor="text.primary"
+                sx={{ '.MuiTypography-root': { ml: 0 } }}
+              />
+            </Stack>
+            <Stack>
+              <Typography variant="subheader2">Total interest accrued</Typography>
+              <Stack direction="row" alignItems="center">
+                <TokenIcon symbol="GHO" fontSize="small" />
+                <FormattedNumber
+                  value={interestOwed}
+                  visibleDecimals={2}
+                  variant="h2"
+                  sx={{ mx: 1 }}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+          <GhoTimeRangeSelector
+            disabled={ghoLoadingData}
+            timeRange={selectedTimeRange}
+            onTimeRangeChanged={setSelectedTimeRange}
+          />
+        </Box>
         <ParentSize>
           {({ width }) => (
             <GhoInterestRateGraph
-              width={width * 0.8}
-              height={155}
+              width={width}
+              height={240}
               data={data}
               fields={fields}
               selectedTimeRange={selectedTimeRange}

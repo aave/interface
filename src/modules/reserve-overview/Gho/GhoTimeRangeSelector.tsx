@@ -12,9 +12,6 @@ export interface GhoTimeRangeSelectorProps {
 }
 
 export const ghoTimeRangeOptions = [
-  ESupportedTimeRanges.OneMonth,
-  ESupportedTimeRanges.ThreeMonths,
-  ESupportedTimeRanges.SixMonths,
   ESupportedTimeRanges.OneYear,
   ESupportedTimeRanges.TwoYears,
   ESupportedTimeRanges.FiveYears,
