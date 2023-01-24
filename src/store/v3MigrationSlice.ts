@@ -402,32 +402,28 @@ export const createV3MigrationSlice: StateCreator<
             currentChainIdExcetptions.indexOf(supply.underlyingAsset) >= 0 &&
             supply.scaledATokenBalance !== '0'
         );
-        try {
-          const mappedSupplies = filteredSuppliesForExceptions.map(
-            ({ scaledATokenBalance, underlyingAsset }) => {
-              console.log(scaledATokenBalance, underlyingAsset);
-              return get()
-                .getMigrationServiceInstance()
-                .getMigrationSupply({ amount: scaledATokenBalance, asset: underlyingAsset });
-            }
-          );
-
-          const supplyBalancesV3 = await Promise.all(mappedSupplies);
-
-          set((state) =>
-            produce(state, (draft) => {
-              supplyBalancesV3.forEach(([asset, amount], index) => {
-                const v2UnderlyingAsset = filteredSuppliesForExceptions[index].underlyingAsset;
-                draft.migrationExceptions[v2UnderlyingAsset] = {
-                  v2UnderlyingAsset,
-                  v3UnderlyingAsset: asset.toLowerCase(),
-                  amount: amount.toString(),
-                };
-              });
-            })
-          );
-        } catch (e) {}
-        set({ exceptionsBalancesLoading: false });
+        const mappedSupplies = filteredSuppliesForExceptions.map(
+          ({ scaledATokenBalance, underlyingAsset }) => {
+            console.log(scaledATokenBalance, underlyingAsset);
+            return get()
+              .getMigrationServiceInstance()
+              .getMigrationSupply({ amount: scaledATokenBalance, asset: underlyingAsset });
+          }
+        );
+        const supplyBalancesV3 = await Promise.all(mappedSupplies);
+        set((state) =>
+          produce(state, (draft) => {
+            supplyBalancesV3.forEach(([asset, amount], index) => {
+              const v2UnderlyingAsset = filteredSuppliesForExceptions[index].underlyingAsset;
+              draft.migrationExceptions[v2UnderlyingAsset] = {
+                v2UnderlyingAsset,
+                v3UnderlyingAsset: asset.toLowerCase(),
+                amount: amount.toString(),
+              };
+            });
+            draft.exceptionsBalancesLoading = false;
+          })
+        );
       }
     },
   };
