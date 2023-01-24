@@ -98,6 +98,7 @@ export const createV3MigrationSlice: StateCreator<
   V3MigrationSlice
 > = (set, get) => {
   return {
+    exceptionsBalancesLoading: false,
     selectedMigrationSupplyAssets: [],
     selectedMigrationBorrowAssets: [],
     migrationServiceInstances: {},
