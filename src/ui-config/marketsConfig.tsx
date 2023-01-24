@@ -284,7 +284,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xF71DBe0FAEF1473ffC607d4c555dfF0aEaDb878d',
       UI_INCENTIVE_DATA_PROVIDER: '0x265d414f80b0fca9505710e6F16dB4b67555D365',
       COLLECTOR: '0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0',
-      V3_MIGRATOR: '0x6a3d47e9Aa3c64cFB613053f4419845CdCe18eb7',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -428,7 +427,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xC69728f11E9E6127733751c8410432913123acf1',
       UI_INCENTIVE_DATA_PROVIDER: '0x874313A46e4957D29FAAC43BF5Eb2B144894f557',
       COLLECTOR: '0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383',
-      V3_MIGRATOR: '0x6a3d47e9Aa3c64cFB613053f4419845CdCe18eb7',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
