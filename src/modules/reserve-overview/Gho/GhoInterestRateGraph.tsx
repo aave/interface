@@ -1,19 +1,20 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, lighten, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
+import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { scaleLinear, scaleTime } from '@visx/scale';
-import { Bar, Line, LinePath } from '@visx/shape';
+import { AreaClosed, Bar, Line, LinePath } from '@visx/shape';
 import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { bisector, extent, max } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
 import React, { Fragment, useCallback, useMemo } from 'react';
-import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
+import { ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
-type TooltipData = FormattedReserveHistoryItem;
+type TooltipData = GhoInterestRate;
 
 type GhoInterestRate = {
   date: number;
@@ -52,7 +53,10 @@ const formatDate = (d: Date, timeRange: ReserveRateTimeRange) => {
 };
 
 // accessors
-const getDate = (d: GhoInterestRate) => new Date(d.date);
+const getDate = (d: GhoInterestRate) => {
+  const date = new Date(d.date);
+  return date;
+};
 const bisectDate = bisector<GhoInterestRate, Date>((d) => new Date(d.date)).left;
 const getData = (d: GhoInterestRate) => d.interestRate * 100;
 
@@ -71,7 +75,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 20, right: 10, bottom: 20, left: 40 },
+    margin = { top: 20, right: 40, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -105,7 +109,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
     const innerHeight = height - margin.top - margin.bottom;
 
     // scales
-    const xAxisNumTicks = selectedTimeRange !== '6m' || isXsm ? 3 : 4;
+    const xAxisNumTicks = 4; // selectedTimeRange !== '6m' || isXsm ? 3 : 4;
     const dateScale = useMemo(
       () =>
         scaleTime({
@@ -119,6 +123,17 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, (valueMax || 0) * 1.1],
+        nice: true,
+      });
+    }, [innerHeight, data, fields]);
+
+    const yValueScale2 = useMemo(() => {
+      const valueMax = Math.max(
+        ...fields.map((field) => max(data, (d) => d.accruedInterest) as number)
+      );
+      return scaleLinear({
+        range: [innerHeight, 0],
+        domain: [0, valueMax || 0],
         nice: true,
       });
     }, [innerHeight, data, fields]);
@@ -158,18 +173,29 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
               numTicks={3}
             />
 
-            {/* Data Value Lines */}
-            {fields.map((field) => (
-              <LinePath
-                key={field.name}
-                stroke={field.color}
-                strokeWidth={2}
-                data={data}
-                x={(d) => dateScale(getDate(d)) ?? 0}
-                y={(d) => yValueScale(getData(d)) ?? 0}
-                curve={curveMonotoneX}
-              />
-            ))}
+            <LinearGradient
+              id={`area-gradient`}
+              from={lighten('#7975FB', 0.4)}
+              to={lighten('#7975FB', 0.9)}
+              toOpacity={0}
+            />
+            <AreaClosed<GhoInterestRate>
+              data={data}
+              x={(d) => dateScale(getDate(d)) ?? 0}
+              y={(d) => yValueScale(getData(d)) ?? 0}
+              yScale={yValueScale}
+              strokeWidth={0}
+              fill={`url(#area-gradient)`}
+              curve={curveMonotoneX}
+            />
+            <LinePath
+              stroke="#7975FB"
+              strokeWidth={2}
+              data={data}
+              x={(d) => dateScale(getDate(d)) ?? 0}
+              y={(d) => yValueScale(getData(d)) ?? 0}
+              curve={curveMonotoneX}
+            />
 
             {/* X Axis */}
             <AxisBottom
@@ -201,14 +227,14 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
             />
 
             <AxisRight
-              scale={yValueScale}
+              scale={yValueScale2}
               strokeWidth={0}
               numTicks={3}
-              tickFormat={(value) => `${value}%`}
+              tickFormat={(value) => '$' + value}
               tickLabelProps={() => ({
                 fill: theme.palette.text.muted,
                 fontSize: 10,
-                dx: margin.right + 450,
+                dx: innerWidth,
               })}
             />
 
@@ -239,7 +265,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                     <Fragment key={field.name}>
                       <circle
                         cx={tooltipLeft}
-                        cy={yValueScale(getData(tooltipData, field.name)) + 1}
+                        cy={yValueScale(getData(tooltipData)) + 1}
                         r={4}
                         fillOpacity={0.1}
                         strokeOpacity={0.1}
@@ -248,7 +274,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                       />
                       <circle
                         cx={tooltipLeft}
-                        cy={yValueScale(getData(tooltipData, field.name))}
+                        cy={yValueScale(getData(tooltipData))}
                         r={4}
                         fill={accentColorDark}
                         stroke="white"
@@ -289,7 +315,10 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                     {field.text}
                   </Typography>
                   <Typography variant="main12" color="text.primary">
-                    {getData(tooltipData, field.name).toFixed(2)}%
+                    {getData(tooltipData).toFixed(2)}%
+                  </Typography>
+                  <Typography variant="main12" color="text.primary">
+                    {tooltipData.accruedInterest}
                   </Typography>
                 </Box>
               ))}

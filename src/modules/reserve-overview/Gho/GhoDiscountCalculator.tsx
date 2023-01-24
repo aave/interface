@@ -14,6 +14,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -22,8 +23,6 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
-import { ApyGraph } from '../graphs/ApyGraph';
-import { Fields } from '../graphs/InterestRateModelGraphContainer';
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { GhoInterestRateGraph } from './GhoInterestRateGraph';
 import {
@@ -34,7 +33,7 @@ import {
 
 const calculateDiscountRateData = (
   borrowedGho: number,
-  timeRange: ESupportedTimeRanges,
+  termDuration: number,
   discountableAmount: number,
   ghoBaseVariableBorrowRate: number,
   ghoDiscountRate: number
@@ -42,7 +41,7 @@ const calculateDiscountRateData = (
   // const discountableAmount = stakedAave * ghoReserveData.ghoDiscountedPerToken;
 
   // Factor in time for compounding for a final rate, using base variable rate
-  const termDuration = getSecondsForGhoBorrowTermDuration(timeRange);
+  // const termDuration = getSecondsForGhoBorrowTermDuration(termDuration);
   const ratePayload = {
     rate: valueToBigNumber(ghoBaseVariableBorrowRate).shiftedBy(RAY_DECIMALS),
     duration: termDuration,
@@ -62,13 +61,6 @@ const calculateDiscountRateData = (
     rateAfterDiscount: newBorrowRate,
     rateAfterMaxDiscount: borrowRateWithMaxDiscount,
   };
-  // Update local state
-  // setDiscountableGhoAmount(discountableAmount);
-  // setRateSelection({
-  //   baseRate: newRate,
-  //   rateAfterDiscount: newBorrowRate,
-  //   rateAfterMaxDiscount: borrowRateWithMaxDiscount,
-  // });
 };
 
 const sliderStyles = {
@@ -340,40 +332,33 @@ export const GhoDiscountCalculator = () => {
   };
 
   const data = [];
-  [
-    ESupportedTimeRanges.OneMonth,
-    ESupportedTimeRanges.ThreeMonths,
-    ESupportedTimeRanges.SixMonths,
-    ESupportedTimeRanges.OneYear,
-  ].forEach((timeRange) => {
-    const discountRate = calculateDiscountRateData(
+  const now = dayjs().unix() * 1000;
+  console.log(now);
+  const oneDay = dayjs.duration({ days: 1 }).asSeconds();
+
+  // TODO: optimize this, we don't need every day for the graph
+  let duration = 365;
+  if (selectedTimeRange === ESupportedTimeRanges.TwoYears) duration = 365 * 2;
+  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) duration = 365 * 5;
+
+  for (let i = 0; i < duration; i++) {
+    const rate = calculateDiscountRateData(
       ghoBorrow ?? 0,
-      timeRange,
+      oneDay * i,
       (stkAave ?? 0) * ghoReserveData.ghoDiscountedPerToken,
       ghoReserveData.ghoBaseVariableBorrowRate,
       ghoReserveData.ghoDiscountRate
     );
-    const interestAccrued = (ghoBorrow || 0) * discountRate.rateAfterMaxDiscount;
+    const interestAccrued = (ghoBorrow || 0) * rate.rateAfterDiscount;
     data.push({
-      date: getSecondsForGhoBorrowTermDuration(timeRange),
-      interestRate: discountRate.rateAfterMaxDiscount,
+      date: now + oneDay * i * 1000,
+      interestRate: rate.rateAfterDiscount,
       accruedInterest: interestAccrued,
     });
-  });
+  }
 
-  const fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
-  // const generateData = () => {
-  //   const data = [];
-  //   for (let i = 0; i < 12; i++) {
-  //     data.push({
-  //       date: new Date(2021, i, 1).getTime(),
-  //       interestRate: 0.016,
-  //       accruedInterest: i * 0.016 * 100,
-  //     });
-  //   }
-  //   return data;
-  // };
-  // const data = generateData();
+  // TODO: probably don't need this, holdover from the current ApyGraph
+  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
 
   return (
     <>
