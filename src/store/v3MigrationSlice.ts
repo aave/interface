@@ -260,6 +260,7 @@ export const createV3MigrationSlice: StateCreator<
         set({ selectedMigrationSupplyAssets: [] });
       } else {
         const nonSelectedSupplies = supplyReserves
+          .filter((supplyAsset) => supplyAsset.migrationDisabled === undefined)
           .filter(
             ({ underlyingAsset }) => selectMigrationSelectedSupplyIndex(get(), underlyingAsset) < 0
           )
@@ -281,10 +282,13 @@ export const createV3MigrationSlice: StateCreator<
       ) {
         set({ selectedMigrationBorrowAssets: [] });
       } else {
-        const nonSelectedSupplies = borrowReserves.filter(
-          (borrowAsset) =>
-            selectMigrationSelectedBorrowIndex(get().selectedMigrationBorrowAssets, borrowAsset) < 0
-        );
+        const nonSelectedSupplies = borrowReserves
+          .filter((supplyAsset) => supplyAsset.migrationDisabled === undefined)
+          .filter(
+            (borrowAsset) =>
+              selectMigrationSelectedBorrowIndex(get().selectedMigrationBorrowAssets, borrowAsset) <
+              0
+          );
 
         set({
           selectedMigrationBorrowAssets: [
