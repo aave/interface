@@ -98,17 +98,16 @@ export const MigrationListItem = ({
         <ListColumn align="center" maxWidth={64} minWidth={64}>
           <Box
             sx={(theme) => ({
-              border: `2px solid ${
-                disabled !== undefined
+              border: `2px solid ${disabled !== undefined
                   ? theme.palette.action.disabled
                   : theme.palette.text.secondary
-              }`,
+                }`,
               background:
                 disabled !== undefined
                   ? theme.palette.background.disabled
                   : checked
-                  ? theme.palette.text.secondary
-                  : theme.palette.background.paper,
+                    ? theme.palette.text.secondary
+                    : theme.palette.background.paper,
               width: 16,
               height: 16,
               borderRadius: '2px',
@@ -154,8 +153,8 @@ export const MigrationListItem = ({
         <ListColumn align="right">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {userReserve.usageAsCollateralEnabledOnUser &&
-            userReserve.reserve.usageAsCollateralEnabled &&
-            !disabled ? (
+              userReserve.reserve.usageAsCollateralEnabled &&
+              !disabled ? (
               <CheckRoundedIcon fontSize="small" color="success" />
             ) : (
               <NoData variant="main14" color={baseColorSecondary} />
@@ -220,7 +219,12 @@ export const MigrationListItem = ({
       {!!borrowApyType && (
         <ListColumn align="right">
           <Box sx={{ display: 'flex' }}>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColor}>
                 {borrowApyType}
               </Typography>
@@ -233,7 +237,12 @@ export const MigrationListItem = ({
                 }
               />
             </SvgIcon>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColor}>
                 Variable
               </Typography>
