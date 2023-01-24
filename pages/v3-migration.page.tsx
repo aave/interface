@@ -103,6 +103,10 @@ export default function V3Migration() {
     selectAllBorrow(currentTimeStamp);
   };
 
+  const userControlledCollateral =
+    Object.keys(selectedSupplyAssets).length > 0 &&
+    v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency == '0';
+
   return (
     <>
       <MigrationTopPanel />
@@ -136,6 +140,7 @@ export default function V3Migration() {
                       enableAsCollateral={() =>
                         enabledAsCollateral(reserve.canBeEnforced, reserve.underlyingAsset)
                       }
+                      userControlledCollateral={userControlledCollateral}
                       canBeEnforced={
                         v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency ==
                           '0' && reserve.canBeEnforced

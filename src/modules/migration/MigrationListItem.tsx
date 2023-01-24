@@ -33,6 +33,7 @@ interface MigrationListItemProps {
   userReserve: ComputedUserReserveData;
   v3Rates?: V3Rates;
   enteringIsolation: boolean;
+  userControlledCollateral?: boolean;
 }
 
 export const MigrationListItem = ({
@@ -48,6 +49,8 @@ export const MigrationListItem = ({
   borrowApyType,
   userReserve,
   v3Rates,
+  userControlledCollateral,
+  canBeEnforced,
 }: MigrationListItemProps) => {
   const theme = useTheme();
   const { currentMarket, currentMarketData } = useRootStore();
@@ -74,6 +77,8 @@ export const MigrationListItem = ({
   const v3Incentives = borrowApyType
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
+
+  const showCollateralToggle = userControlledCollateral && isIsolated && canBeEnforced;
 
   if (isMobile)
     return (
@@ -168,6 +173,15 @@ export const MigrationListItem = ({
                 }
               />
             </SvgIcon>
+
+            {/* TODO: uncomment this to see how enforce is working */}
+            {showCollateralToggle
+              ? null
+              : // <button onClick={enableAsCollateral}>
+                //   {enabledAsCollateral ? 'deenforce' : 'enforce'}
+                // </button>
+                null}
+
             {!enabledAsCollateral ? (
               <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
