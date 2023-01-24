@@ -1,4 +1,4 @@
-import { Box, lighten, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, lighten, Typography, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -16,7 +16,7 @@ import { ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
 type TooltipData = GhoInterestRate;
 
-type GhoInterestRate = {
+export type GhoInterestRate = {
   date: number;
   interestRate: number;
   accruedInterest: number;
@@ -60,8 +60,6 @@ const getDate = (d: GhoInterestRate) => {
 const bisectDate = bisector<GhoInterestRate, Date>((d) => new Date(d.date)).left;
 const getData = (d: GhoInterestRate) => d.interestRate * 100;
 
-type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
-
 export type AreaProps = {
   width: number;
   height: number;
@@ -86,7 +84,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
-    const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
+    // const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
 
     // Tooltip Styles
     const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
@@ -119,7 +117,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
       [innerWidth, data]
     );
     const yValueScale = useMemo(() => {
-      const valueMax = Math.max(...fields.map((field) => max(data, (d) => getData(d)) as number));
+      const valueMax = Math.max(...fields.map(() => max(data, (d) => getData(d)) as number));
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, (valueMax || 0) * 1.1],
@@ -128,9 +126,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
     }, [innerHeight, data, fields]);
 
     const yValueScale2 = useMemo(() => {
-      const valueMax = Math.max(
-        ...fields.map((field) => max(data, (d) => d.accruedInterest) as number)
-      );
+      const valueMax = Math.max(...fields.map(() => max(data, (d) => d.accruedInterest) as number));
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, valueMax || 0],
