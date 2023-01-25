@@ -61,7 +61,6 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
