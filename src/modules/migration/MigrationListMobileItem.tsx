@@ -266,7 +266,12 @@ export const MigrationListMobileItem = ({
             <Trans>APY type change</Trans>
           </Typography>
           <Box sx={{ display: 'flex' }}>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColorPrimary}>
                 {borrowApyType}
               </Typography>
@@ -279,7 +284,12 @@ export const MigrationListMobileItem = ({
                 }
               />
             </SvgIcon>
-            <Button variant="outlined" size="small" sx={{ width: '50px', background: 'white' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ width: '50px', background: 'white' }}
+              disabled
+            >
               <Typography variant="buttonS" color={baseColorPrimary}>
                 Variable
               </Typography>
