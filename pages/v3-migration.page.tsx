@@ -104,7 +104,7 @@ export default function V3Migration() {
   };
 
   const userControlledCollateral =
-    Object.keys(selectedSupplyAssets).length > 0 &&
+    Object.keys(selectedSupplyAssets).length > 1 &&
     v3UserSummaryBeforeMigration.totalCollateralMarketReferenceCurrency == '0';
 
   return (
