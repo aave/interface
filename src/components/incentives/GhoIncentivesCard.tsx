@@ -156,8 +156,8 @@ export const GhoIncentivesCard = ({
               <GhoBorrowApyRange
                 percentVariant={variant}
                 hyphenVariant={variant}
-                minVal={rangeValues[0]}
-                maxVal={rangeValues[1]}
+                minVal={Math.min(...rangeValues)}
+                maxVal={Math.max(...rangeValues)}
               />
             ) : (
               <FormattedNumber

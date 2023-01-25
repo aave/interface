@@ -99,6 +99,23 @@ export const GhoBorrowModalContent = ({
     }
   }, [amount]);
 
+  const IncentivesWithBorrowAmount = () => (
+    <GhoIncentivesCard
+      value={ghoLoadingData ? -1 : calculatedFutureBorrowAPY}
+      incentives={userReserve.reserve.vIncentivesData}
+      symbol={userReserve.reserve.symbol}
+      data-cy="apyType"
+      borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
+      baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
+      discountPercent={ghoReserveData.ghoDiscountRate * -1}
+      discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
+      stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
+      ghoRoute={
+        ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount'
+      }
+    />
+  );
+
   return (
     <>
       {!discountAvailable && !hasGhoBorrowPositions && (
@@ -160,41 +177,22 @@ export const GhoBorrowModalContent = ({
         >
           <Box sx={{ textAlign: 'right' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <GhoIncentivesCard
-                value={ghoLoadingData || showNoAPYData ? -1 : currentBorrowAPY}
-                incentives={userReserve.reserve.vIncentivesData}
-                symbol={userReserve.reserve.symbol}
-                data-cy={`apyType`}
-                borrowAmount={
-                  apyDiffers
-                    ? userReserve.totalBorrows
-                    : amount !== ''
-                    ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
-                    : userReserve.totalBorrows
-                }
-                baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
-                discountPercent={ghoReserveData.ghoDiscountRate * -1}
-                discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-                stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
-                ghoRoute={
-                  ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
-                  '/#discount'
-                }
-                onMoreDetailsClick={() => close()}
-              />
-              {apyDiffers && (
+              {!hasGhoBorrowPositions ? (
+                <IncentivesWithBorrowAmount />
+              ) : (
                 <>
-                  {hasGhoBorrowPositions && (
-                    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                      <ArrowNarrowRightIcon />
-                    </SvgIcon>
-                  )}
                   <GhoIncentivesCard
-                    value={ghoLoadingData ? -1 : calculatedFutureBorrowAPY}
+                    value={ghoLoadingData || showNoAPYData ? -1 : currentBorrowAPY}
                     incentives={userReserve.reserve.vIncentivesData}
                     symbol={userReserve.reserve.symbol}
                     data-cy={`apyType`}
-                    borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
+                    borrowAmount={
+                      apyDiffers
+                        ? userReserve.totalBorrows
+                        : amount !== ''
+                        ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
+                        : userReserve.totalBorrows
+                    }
                     baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
                     discountPercent={ghoReserveData.ghoDiscountRate * -1}
                     discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
@@ -203,7 +201,16 @@ export const GhoBorrowModalContent = ({
                       ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
                       '/#discount'
                     }
+                    onMoreDetailsClick={() => close()}
                   />
+                  {apyDiffers && (
+                    <>
+                      <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                        <ArrowNarrowRightIcon />
+                      </SvgIcon>
+                      <IncentivesWithBorrowAmount />
+                    </>
+                  )}
                 </>
               )}
             </Box>
