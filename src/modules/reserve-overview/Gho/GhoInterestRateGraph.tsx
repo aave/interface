@@ -1,4 +1,4 @@
-import { Box, lighten, Stack, Typography, useTheme } from '@mui/material';
+import { Box, lighten, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -67,7 +67,6 @@ export type AreaProps = {
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
   data: GhoInterestRate[];
-  fields: { name: string; color: string; text: string }[];
   selectedTimeRange: ReserveRateTimeRange;
 };
 
@@ -81,12 +80,11 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipLeft = 0,
     data,
-    fields,
     selectedTimeRange,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
-    // const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
+    const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
 
     // Tooltip Styles
     const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
@@ -109,7 +107,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
     const innerHeight = height - margin.top - margin.bottom;
 
     // scales
-    const xAxisNumTicks = 4; // selectedTimeRange !== '6m' || isXsm ? 3 : 4;
+    const xAxisNumTicks = isXsm ? 3 : 4;
     const dateScale = useMemo(
       () =>
         scaleTime({
@@ -118,23 +116,23 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
         }),
       [innerWidth, data]
     );
-    const yValueScale = useMemo(() => {
-      const valueMax = Math.max(...fields.map(() => max(data, (d) => getData(d)) as number));
+    const apyScale = useMemo(() => {
+      const valueMax = max(data, (d) => d.interestRate * 100);
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, (valueMax || 0) * 1.1],
         nice: true,
       });
-    }, [innerHeight, data, fields]);
+    }, [innerHeight, data]);
 
-    const yValueScale2 = useMemo(() => {
-      const valueMax = Math.max(...fields.map(() => max(data, (d) => d.accruedInterest) as number));
+    const accruedInterestScale = useMemo(() => {
+      const valueMax = max(data, (d) => d.accruedInterest);
       return scaleLinear({
         range: [innerHeight, 0],
-        domain: [0, valueMax || 0],
+        domain: [0, (valueMax || 0) * 1.1],
         nice: true,
       });
-    }, [innerHeight, data, fields]);
+    }, [innerHeight, data]);
 
     // tooltip handler
     const handleTooltip = useCallback(
@@ -163,7 +161,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
           <Group left={margin.left} top={margin.top}>
             {/* Horizontal Background Lines */}
             <GridRows
-              scale={yValueScale}
+              scale={apyScale}
               width={innerWidth}
               strokeDasharray="3,3"
               stroke={theme.palette.divider}
@@ -180,8 +178,8 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
             <AreaClosed<GhoInterestRate>
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
-              y={(d) => yValueScale(getData(d)) ?? 0}
-              yScale={yValueScale}
+              y={(d) => apyScale(getData(d)) ?? 0}
+              yScale={apyScale}
               strokeWidth={0}
               fill={`url(#area-gradient)`}
               curve={curveMonotoneX}
@@ -191,7 +189,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
-              y={(d) => yValueScale(getData(d)) ?? 0}
+              y={(d) => apyScale(getData(d)) ?? 0}
               curve={curveMonotoneX}
             />
 
@@ -213,7 +211,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
             {/* Y Axis */}
             <AxisLeft
               left={0}
-              scale={yValueScale}
+              scale={apyScale}
               strokeWidth={0}
               numTicks={3}
               tickFormat={(value) => `${value}%`}
@@ -225,7 +223,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
             />
 
             <AxisRight
-              scale={yValueScale2}
+              scale={accruedInterestScale}
               strokeWidth={0}
               numTicks={3}
               tickFormat={(value) => '$' + value}
@@ -258,30 +256,26 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                   pointerEvents="none"
                   strokeDasharray="5,2"
                 />
-                {fields.map((field) => {
-                  return (
-                    <Fragment key={field.name}>
-                      <circle
-                        cx={tooltipLeft}
-                        cy={yValueScale(getData(tooltipData)) + 1}
-                        r={4}
-                        fillOpacity={0.1}
-                        strokeOpacity={0.1}
-                        strokeWidth={2}
-                        pointerEvents="none"
-                      />
-                      <circle
-                        cx={tooltipLeft}
-                        cy={yValueScale(getData(tooltipData))}
-                        r={4}
-                        fill={accentColorDark}
-                        stroke="white"
-                        strokeWidth={2}
-                        pointerEvents="none"
-                      />
-                    </Fragment>
-                  );
-                })}
+                <Fragment>
+                  <circle
+                    cx={tooltipLeft}
+                    cy={apyScale(getData(tooltipData)) + 1}
+                    r={4}
+                    fillOpacity={0.1}
+                    strokeOpacity={0.1}
+                    strokeWidth={2}
+                    pointerEvents="none"
+                  />
+                  <circle
+                    cx={tooltipLeft}
+                    cy={apyScale(getData(tooltipData))}
+                    r={4}
+                    fill={accentColorDark}
+                    stroke="white"
+                    strokeWidth={2}
+                    pointerEvents="none"
+                  />
+                </Fragment>
               </g>
             )}
           </Group>

@@ -66,7 +66,7 @@ export const GhoInterestRateGraphContainer = ({
   }
 
   // TODO: probably don't need this, holdover from the current ApyGraph
-  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
+  // const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
 
   if (downToXsm) {
     return (
@@ -116,9 +116,6 @@ const GhoInterestRateGraphDesktopContainer = ({
   selectedTimeRange,
   onSelectedTimeRangeChanged,
 }: GhoInterestRateContainerProps) => {
-  // TODO: probably don't need this, holdover from the current ApyGraph
-  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
-
   return (
     <Box>
       <Box
@@ -165,7 +162,6 @@ const GhoInterestRateGraphDesktopContainer = ({
             width={width}
             height={240}
             data={data}
-            fields={fields}
             selectedTimeRange={selectedTimeRange}
           />
         )}
@@ -182,9 +178,6 @@ const GhoInterestRateGraphMobileContainer = ({
   selectedTimeRange,
   onSelectedTimeRangeChanged,
 }: GhoInterestRateContainerProps) => {
-  // TODO: probably don't need this, holdover from the current ApyGraph
-  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
-
   return (
     <Box>
       <Box
@@ -219,7 +212,6 @@ const GhoInterestRateGraphMobileContainer = ({
             width={width}
             height={280}
             data={data}
-            fields={fields}
             selectedTimeRange={selectedTimeRange}
           />
         )}
