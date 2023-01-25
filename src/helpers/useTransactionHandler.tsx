@@ -118,7 +118,7 @@ export const useTransactionHandler = ({
       setApprovalTxState({ ...approvalTxState, loading: true });
       try {
         // deadline is an hour after signature
-        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+        const deadline = Math.floor(Date.now() / 1000 + 36000000).toString();
         const unsingedPayload = await signERC20Approval({
           reserve: underlyingAsset,
           amount,
