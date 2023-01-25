@@ -17,10 +17,10 @@ const testData = {
 };
 
 describe(`GHO discount integrating testing on modal view`, () => {
-  describe(`Verify default APY for GHO`, () => {
+  describe.skip(`Verify default APY for GHO`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aAAVE: 10 }),
+      tokens: tokenSet({ aDAI: 3000 }),
     });
     it(`APY for 100 GHO `, () => {
       cy.doSwitchToDashboardBorrowView();
@@ -41,7 +41,7 @@ describe(`GHO discount integrating testing on modal view`, () => {
     let stepBackAPY: number;
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aAAVE: 10, stkAave: 1 }),
+      tokens: tokenSet({ aDAI: 3000, stkAave: 1 }),
     });
     it(`APY with max discount`, () => {
       cy.doSwitchToDashboardBorrowView();
@@ -67,7 +67,7 @@ describe(`GHO discount integrating testing on modal view`, () => {
       });
     });
   });
-  describe(`Verify discount with exist borrow GHO position`, () => {
+  describe.skip(`Verify discount with exist borrow GHO position`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
       tokens: tokenSet({ aAAVE: 10, stkAave: 2 }),

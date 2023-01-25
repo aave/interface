@@ -35,7 +35,7 @@ export class DashboardHelpers {
   private static getApyRate(selector: string) {
     return cy
       .get(selector)
-      .find(`[data-cy="apr"]`)
+      .find(`[data-cy="apy"]`)
       .first()
       .then(($val) => {
         return parseFloat($val.text());
@@ -45,7 +45,7 @@ export class DashboardHelpers {
   private static getApyGhoRangeMin(selector: string) {
     return cy
       .get(selector)
-      .find(`[data-cy="apr-gho-from"]`)
+      .find(`[data-cy="apy-gho-from"]`)
       .first()
       .then(($val) => {
         return parseFloat($val.text());
@@ -55,7 +55,7 @@ export class DashboardHelpers {
   private static getApyGhoRangeMax(selector: string) {
     return cy
       .get(selector)
-      .find(`[data-cy="apr-gho-till"]`)
+      .find(`[data-cy="apy-gho-till"]`)
       .first()
       .then(($val) => {
         return parseFloat($val.text());

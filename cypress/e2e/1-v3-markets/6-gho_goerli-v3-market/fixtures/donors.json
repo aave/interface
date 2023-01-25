@@ -6,5 +6,9 @@
   "aAAVE": {
     "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
     "tokenAddress": "0x0a599770BD5a047B0d46B8d54E5FA7d200736aeF"
+  },
+  "aDAI": {
+    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
+    "tokenAddress": "0x035356d5CbA6EE20CB0395679279FbfF93afF60B"
   }
 }

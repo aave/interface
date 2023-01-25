@@ -37,7 +37,7 @@ describe(`GHO discount integrating testing`, () => {
         expect(baseApy).to.be.eql(gho.apy.max);
       });
     });
-    TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
+    TenderlyActions.tenderlyTokenRequest(tokenSet({ aDAI: 9000 }));
     DashboardActions.borrow(testData.borrow);
     it(`Check that borrowed APY is ${gho.apy.max}%`, () => {
       //borrow 100 GHO
@@ -49,29 +49,34 @@ describe(`GHO discount integrating testing`, () => {
       });
     });
   });
-  describe(`Check APY with discount and unstake`, () => {
+  describe(`Check APY range with discount and unstake`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
+      tokens: tokenSet({ stkAave: 2, aDAI: 200 }),
     });
-    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrow`, () => {
+    it(`Check APY range rate from dashboard from ${gho.apy.min} till ${gho.apy.max}`, () => {
       DashboardHelpers.waitLoadingGHODashboard(gho.apy.min);
-      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+      DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
         expect($val).to.be.eql(gho.apy.min);
       });
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
+      });
     });
-    TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 2 }));
+    TenderlyActions.tenderlyTokenRequest(tokenSet({ aDAI: 300 }));
     DashboardActions.borrow(testData.borrow);
-    it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrowed, and that borrow APY go up`, () => {
+    it(`Check APY rate range from equal ${gho.apy.min} and apy discount max is low then ${gho.apy.max}, borrowed apy have to be ${gho.apy.min}`, () => {
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
         expect($val).to.be.eql(gho.apy.min);
       });
-      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
-        expect($val).to.be.lessThan(gho.apy.min);
-        expect($val).to.be.greaterThan(gho.apy.min);
+      DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
+        expect($val).to.be.lessThan(gho.apy.max);
       });
     });
-    TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 3 }));
+    TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 2 }));
     it(`Check that APY rate grow till max ${gho.apy.max}% after unstake`, () => {
       cy.wait(1000); //wait update of dashboard
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
@@ -85,7 +90,7 @@ describe(`GHO discount integrating testing`, () => {
   describe(`Check borrowed APY updating`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ stkAave: 3, aAAVE: 1 }),
+      tokens: tokenSet({ stkAave: 3, aDAI: 300 }),
     });
     it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrow`, () => {
       DashboardHelpers.waitLoadingGHODashboard(gho.apy.min);
@@ -93,14 +98,14 @@ describe(`GHO discount integrating testing`, () => {
         expect($val).to.be.eql(gho.apy.min);
       });
     });
-    TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 2 }));
+    TenderlyActions.tenderlyTokenRequest(tokenSet({ aDAI: 600 }));
     DashboardActions.borrow(testData.borrow);
     it(`Check APY rate from dashboard with max discount ${gho.apy.min}% for borrowed, and that borrow APY go up`, () => {
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
         expect($val).to.be.eql(gho.apy.min);
       });
     });
-    TenderlyActions.tenderlyTokenRequest(tokenSet({ aAAVE: 10 }));
+    TenderlyActions.tenderlyTokenRequest(tokenSet({ aDAI: 3000 }));
     DashboardActions.borrow(testData.borrow2);
     it(`Check that borrowed APY was grow`, () => {
       cy.wait(1000); //wait update of dashboard

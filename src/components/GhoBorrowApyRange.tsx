@@ -47,7 +47,6 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
           value={lowRangeValue} // 50/50 choice
           visibleDecimals={2}
           variant={percentVariant ?? 'h3'}
-          data-cy={'apr-gho'}
         />
       ) : (
         <>
@@ -56,7 +55,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
             value={lowRangeValue * 100}
             visibleDecimals={2}
             variant={percentVariant ?? 'h3'}
-            data-cy={'apr-gho-from'}
+            data-cy={'apy-gho-from'}
           />
           <Typography
             variant={hyphenVariant ?? 'secondary16'}
@@ -71,7 +70,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
             value={highRangeValue}
             visibleDecimals={2}
             variant={percentVariant ?? 'h3'}
-            data-cy={'apr-gho-till'}
+            data-cy={'apy-gho-till'}
           />
         </>
       )}
