@@ -398,6 +398,7 @@ export const createV3MigrationSlice: StateCreator<
       const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
       const currentChainIdExceptions = MIGRATION_ASSETS_EXCEPTIONS[chainId];
       if (
+        currentChainIdExceptions &&
         currentChainIdExceptions.length > 0 &&
         !get().exceptionsBalancesLoading &&
         Object.keys(get().migrationExceptions).length == 0
