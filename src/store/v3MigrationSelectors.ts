@@ -705,7 +705,7 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
     }
 
     if (supplyAsset) {
-      usageAsCollateralEnabledOnUser = supplyAsset.usageAsCollateralEnabledOnUser;
+      usageAsCollateralEnabledOnUser = userReserveData.usageAsCollateralEnabledOnUser;
       const scaledDownATokenBalance = valueToBigNumber(userReserveData.scaledATokenBalance);
       const liquidityIndexV3 = valueToBigNumber(userReserveData.reserve.liquidityIndex);
       const underlyingBalanceV2 =
