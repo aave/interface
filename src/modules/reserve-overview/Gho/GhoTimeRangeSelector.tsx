@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
-import { ESupportedTimeRanges, TimeRangeSelector } from '../TimeRangeSelector';
+import {
+  ESupportedTimeRanges,
+  TimeRangeSelector,
+  TimeRangeSelectorProps,
+} from '../TimeRangeSelector';
 
 dayjs.extend(duration);
 
@@ -9,6 +13,7 @@ export interface GhoTimeRangeSelectorProps {
   disabled?: boolean;
   timeRange: ESupportedTimeRanges;
   onTimeRangeChanged: (value: ESupportedTimeRanges) => void;
+  sx?: TimeRangeSelectorProps['sx'];
 }
 
 export const ghoTimeRangeOptions = [
@@ -43,6 +48,7 @@ export const getSecondsForGhoBorrowTermDuration = (timeRange: GhoBorrowTermRange
 export const GhoTimeRangeSelector = ({
   disabled = false, // support default fallback
   timeRange,
+  sx,
   onTimeRangeChanged,
 }: GhoTimeRangeSelectorProps) => (
   <TimeRangeSelector
@@ -50,5 +56,6 @@ export const GhoTimeRangeSelector = ({
     timeRanges={ghoTimeRangeOptions}
     selectedTimeRange={timeRange}
     onTimeRangeChanged={onTimeRangeChanged}
+    sx={sx}
   />
 );

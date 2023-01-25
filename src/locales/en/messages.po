@@ -366,6 +366,7 @@ msgstr "Borrow APY, variable"
 
 #: src/components/incentives/GhoIncentivesCard.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Borrow amount"
 msgstr "Borrow amount"
 
@@ -902,6 +903,7 @@ msgstr "Filter"
 msgid "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
 msgstr "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
@@ -1702,6 +1704,7 @@ msgid "Stake AAVE and borrow GHO at a lower rate"
 msgstr "Stake AAVE and borrow GHO at a lower rate"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Stake AAVE to borrow GHO at a discount"
 msgstr "Stake AAVE to borrow GHO at a discount"
 
@@ -1718,6 +1721,7 @@ msgstr "Stake cooldown activated"
 msgid "Staked"
 msgstr "Staked"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Staked AAVE amount"
 msgstr "Staked AAVE amount"

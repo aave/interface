@@ -1,5 +1,5 @@
 import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -61,6 +61,8 @@ export const GhoInterestRateGraphContainer = ({
   onSelectedTimeRangeChanged,
 }: GhoInterestRateGraphContainerProps) => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
+  const { breakpoints } = useTheme();
+  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
 
   const data: GhoInterestRate[] = [];
   const now = dayjs().unix() * 1000;
@@ -99,6 +101,57 @@ export const GhoInterestRateGraphContainer = ({
   // TODO: probably don't need this, holdover from the current ApyGraph
   const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
 
+  if (downToXsm) {
+    return (
+      <GhoInterestRateGraphMobileContainer
+        data={data}
+        loading={ghoLoadingData}
+        borrowAmount={borrowAmount}
+        stkAaveAmount={stkAaveAmount}
+        interestOwed={interestOwed}
+        rateAfterDiscount={rateAfterDiscount}
+        selectedTimeRange={selectedTimeRange}
+        onSelectedTimeRangeChanged={onSelectedTimeRangeChanged}
+      />
+    );
+  } else {
+    return (
+      <GhoInterestRateGraphDesktopContainer
+        data={data}
+        loading={ghoLoadingData}
+        borrowAmount={borrowAmount}
+        stkAaveAmount={stkAaveAmount}
+        interestOwed={interestOwed}
+        rateAfterDiscount={rateAfterDiscount}
+        selectedTimeRange={selectedTimeRange}
+        onSelectedTimeRangeChanged={onSelectedTimeRangeChanged}
+      />
+    );
+  }
+};
+
+interface GhoInterestRateContainerProps {
+  data: GhoInterestRate[];
+  loading: boolean;
+  borrowAmount: number | null;
+  stkAaveAmount: number | null;
+  interestOwed: number;
+  rateAfterDiscount: number;
+  selectedTimeRange: GhoBorrowTermRange;
+  onSelectedTimeRangeChanged: (value: GhoBorrowTermRange) => void;
+}
+
+const GhoInterestRateGraphDesktopContainer = ({
+  data,
+  loading,
+  interestOwed,
+  rateAfterDiscount,
+  selectedTimeRange,
+  onSelectedTimeRangeChanged,
+}: GhoInterestRateContainerProps) => {
+  // TODO: probably don't need this, holdover from the current ApyGraph
+  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
+
   return (
     <Box>
       <Box
@@ -134,7 +187,7 @@ export const GhoInterestRateGraphContainer = ({
           </Stack>
         </Stack>
         <GhoTimeRangeSelector
-          disabled={ghoLoadingData}
+          disabled={loading}
           timeRange={selectedTimeRange}
           onTimeRangeChanged={onSelectedTimeRangeChanged}
         />
@@ -150,6 +203,68 @@ export const GhoInterestRateGraphContainer = ({
           />
         )}
       </ParentSize>
+    </Box>
+  );
+};
+
+const GhoInterestRateGraphMobileContainer = ({
+  data,
+  loading,
+  interestOwed,
+  rateAfterDiscount,
+  selectedTimeRange,
+  onSelectedTimeRangeChanged,
+}: GhoInterestRateContainerProps) => {
+  // TODO: probably don't need this, holdover from the current ApyGraph
+  const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Stack>
+          <Typography variant="subheader2">GHO effective interest rate</Typography>
+          <FormattedNumber
+            value={rateAfterDiscount}
+            percent
+            variant="h2"
+            component="div"
+            symbolsColor="text.primary"
+            sx={{ '.MuiTypography-root': { ml: 0 } }}
+          />
+        </Stack>
+        <Stack>
+          <Typography variant="subheader2">Total interest accrued</Typography>
+          <Stack direction="row" alignItems="center">
+            <TokenIcon symbol="GHO" fontSize="small" />
+            <FormattedNumber value={interestOwed} visibleDecimals={2} variant="h2" sx={{ mx: 1 }} />
+          </Stack>
+        </Stack>
+      </Box>
+      <ParentSize>
+        {({ width }) => (
+          <GhoInterestRateGraph
+            width={width}
+            height={280}
+            data={data}
+            fields={fields}
+            selectedTimeRange={selectedTimeRange}
+          />
+        )}
+      </ParentSize>
+      <Box sx={{ mt: 3, mb: 4 }}>
+        <GhoTimeRangeSelector
+          disabled={loading}
+          timeRange={selectedTimeRange}
+          onTimeRangeChanged={onSelectedTimeRangeChanged}
+          sx={{ button: { width: '100%' }, buttonGroup: { width: '100%' } }}
+        />
+      </Box>
     </Box>
   );
 };
