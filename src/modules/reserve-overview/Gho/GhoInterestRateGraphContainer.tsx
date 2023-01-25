@@ -64,26 +64,35 @@ export const GhoInterestRateGraphContainer = ({
 
   const data: GhoInterestRate[] = [];
   const now = dayjs().unix() * 1000;
-  const oneDay = dayjs.duration({ days: 1 }).asSeconds();
 
-  // TODO: optimize this, we don't need every day for the graph
   let duration = 365;
   if (selectedTimeRange === ESupportedTimeRanges.TwoYears) duration = 365 * 2;
-  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) duration = 365 * 5;
+  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) duration = 260; // weekly
+
+  let elapsedTime = dayjs.duration({ days: 1 }).asSeconds();
+  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) {
+    elapsedTime = dayjs.duration({ weeks: 1 }).asSeconds();
+  }
 
   for (let i = 0; i < duration; i++) {
     const rate = calculateDiscountRateData(
       borrowAmount ?? 0,
-      oneDay * i,
+      elapsedTime * i,
       (stkAaveAmount ?? 0) * ghoReserveData.ghoDiscountedPerToken,
       ghoReserveData.ghoBaseVariableBorrowRate,
       ghoReserveData.ghoDiscountRate
     );
-    const interestAccrued = (borrowAmount || 0) * rate.rateAfterDiscount;
+
+    const accruedInterest = (borrowAmount || 0) * rate.baseRate;
+    const accruedInterestWithDiscount = (borrowAmount || 0) * rate.rateAfterDiscount;
+    const stakingDiscount = accruedInterest - accruedInterestWithDiscount;
+
     data.push({
-      date: now + oneDay * i * 1000,
+      date: now + elapsedTime * i * 1000,
       interestRate: rate.rateAfterDiscount,
-      accruedInterest: interestAccrued,
+      accruedInterest,
+      accruedInterestWithDiscount,
+      stakingDiscount,
     });
   }
 

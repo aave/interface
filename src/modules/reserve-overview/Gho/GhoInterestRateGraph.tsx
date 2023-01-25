@@ -1,4 +1,4 @@
-import { Box, lighten, Typography, useTheme } from '@mui/material';
+import { Box, lighten, Stack, Typography, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -20,6 +20,8 @@ export type GhoInterestRate = {
   date: number;
   interestRate: number;
   accruedInterest: number;
+  accruedInterestWithDiscount: number;
+  stakingDiscount: number;
 };
 
 /**
@@ -300,24 +302,62 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
               >
                 {formatDate(getDate(tooltipData), selectedTimeRange)}
               </Typography>
-              {fields.map((field) => (
-                <Box
-                  key={field.name}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
-                    {field.text}
+              <Stack gap={1}>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="caption" color="text.secondary">
+                    Interest accrued
                   </Typography>
-                  <Typography variant="main12" color="text.primary">
-                    {getData(tooltipData).toFixed(2)}%
+                  <Typography variant="caption" color="text.secondary">
+                    ${tooltipData.accruedInterest.toFixed(2)}
                   </Typography>
-                  <Typography variant="main12" color="text.primary">
-                    {tooltipData.accruedInterest}
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="caption" color="text.secondary">
+                    Staking discount
                   </Typography>
-                </Box>
-              ))}
+                  <Typography variant="caption" color="text.secondary">
+                    -${tooltipData.stakingDiscount.toFixed(2)}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Stack sx={{ mr: 5 }} direction="row" alignItems="center">
+                    <Box
+                      sx={{
+                        borderRadius: '100%',
+                        background: '#DBDAFE',
+                        width: '8px',
+                        height: '8px',
+                        mx: 1,
+                      }}
+                    />
+                    <Typography variant="subheader2" color="text.secondary">
+                      Total interest accrued
+                    </Typography>
+                  </Stack>
+                  <Typography variant="main12" color="text.secondary">
+                    ${tooltipData.accruedInterestWithDiscount.toFixed(2)}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Stack direction="row" alignItems="center">
+                    <Box
+                      sx={{
+                        borderRadius: '100%',
+                        background: '#7C79FF',
+                        width: '8px',
+                        height: '8px',
+                        mx: 1,
+                      }}
+                    />
+                    <Typography variant="subheader2" color="text.secondary">
+                      Effective interest rate
+                    </Typography>
+                  </Stack>
+                  <Typography variant="main12" color="text.secondary">
+                    {(tooltipData.interestRate * 100).toFixed(2)}%
+                  </Typography>
+                </Stack>
+              </Stack>
             </TooltipWithBounds>
           </div>
         )}
