@@ -89,10 +89,15 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
-      const increasedAmount = add1HourBorrowAPY(
-        userReserve.stableBorrows,
-        userReserve.reserve.stableBorrowAPY
-      );
+      let increasedAmount = userReserve.stableBorrows;
+      if (userReserve.reserve.stableBorrowAPY == '0') {
+        increasedAmount = addPercent(increasedAmount);
+      } else {
+        increasedAmount = add1HourBorrowAPY(
+          userReserve.stableBorrows,
+          userReserve.reserve.stableBorrowAPY
+        );
+      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Stable,
@@ -102,10 +107,15 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
       });
     }
     if (userReserve.variableBorrows !== '0') {
-      const increasedAmount = add1HourBorrowAPY(
-        userReserve.variableBorrows,
-        userReserve.reserve.variableBorrowAPY
-      );
+      let increasedAmount = userReserve.variableBorrows;
+      if (userReserve.reserve.variableBorrowAPY === '0') {
+        increasedAmount = addPercent(increasedAmount);
+      } else {
+        increasedAmount = add1HourBorrowAPY(
+          userReserve.variableBorrows,
+          userReserve.reserve.variableBorrowAPY
+        );
+      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Variable,
@@ -348,6 +358,15 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
       };
+      if (
+        valueToBigNumber(
+          valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
+        )
+          .plus(valueToWei(userReserve.increasedVariableBorrows, userReserve.reserve.decimals))
+          .isGreaterThan(v3BorrowAsset.reserve.availableLiquidity)
+      ) {
+        disabledForMigration = MigrationDisabled.InsufficientLiquidity;
+      }
     } else {
       disabledForMigration = MigrationDisabled.V3AssetMissing;
     }
@@ -643,7 +662,6 @@ export const selectMigrationBorrowPermitPayloads = (
         );
       }
       const combinedAmountInWei = valueToWei(combinedIncreasedAmount.toString(), reserve.decimals);
-
       return {
         amount: combinedAmountInWei,
         underlyingAsset: debtKey,
