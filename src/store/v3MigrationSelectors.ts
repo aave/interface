@@ -191,7 +191,10 @@ export enum MigrationDisabled {
   IsolationModeBorrowDisabled,
   EModeBorrowDisabled,
   V3AssetMissing,
-  InsufficientLiquidity, // TODO
+  InsufficientLiquidity,
+  AssetNotFlashloanable,
+  ReserveFrozen,
+  NotEnoughtSupplies,
 }
 
 export const selectMigrationUnderlyingAssetWithExceptions = (
@@ -304,6 +307,9 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     let v3Rates: V3Rates | undefined;
     const v3SupplyAsset = v3ReservesMap[underlyingAssetAddress];
     if (v3SupplyAsset) {
+      const availableSupplies = valueToBigNumber(v3SupplyAsset.reserve.supplyCap).minus(
+        v3SupplyAsset.reserve.totalLiquidity
+      );
       v3Rates = {
         stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
         variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
@@ -312,6 +318,11 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
         sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
       };
+      if (v3SupplyAsset.reserve.isFrozen) {
+        migrationDisabled = MigrationDisabled.ReserveFrozen;
+      } else if (!availableSupplies.isGreaterThan(userReserve.underlyingBalance)) {
+        migrationDisabled = MigrationDisabled.NotEnoughtSupplies;
+      }
     } else {
       migrationDisabled = MigrationDisabled.V3AssetMissing;
     }
@@ -358,14 +369,18 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
       };
-      if (
-        valueToBigNumber(
-          valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
-        )
-          .plus(valueToWei(userReserve.increasedVariableBorrows, userReserve.reserve.decimals))
-          .isGreaterThan(v3BorrowAsset.reserve.availableLiquidity)
-      ) {
+      const notEnoughLiquidityOnV3 = valueToBigNumber(
+        valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
+      )
+        .plus(valueToWei(userReserve.increasedVariableBorrows, userReserve.reserve.decimals))
+        .isGreaterThan(v3BorrowAsset.reserve.availableLiquidity);
+
+      if (notEnoughLiquidityOnV3) {
         disabledForMigration = MigrationDisabled.InsufficientLiquidity;
+      } else if (!v3BorrowAsset.reserve.flashLoanEnabled) {
+        disabledForMigration = MigrationDisabled.AssetNotFlashloanable;
+      } else if (v3BorrowAsset.reserve.isFrozen) {
+        disabledForMigration = MigrationDisabled.ReserveFrozen;
       }
     } else {
       disabledForMigration = MigrationDisabled.V3AssetMissing;
