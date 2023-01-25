@@ -192,7 +192,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://goerli-rollup-explorer.arbitrum.io',
+    explorerLink: 'https://goerli.arbiscan.io',
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',

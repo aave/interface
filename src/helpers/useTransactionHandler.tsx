@@ -129,7 +129,7 @@ export const useTransactionHandler = ({
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature
-          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          const deadline = Math.floor(Date.now() / 1000 + 3600000).toString();
           const unsignedPromisePayloads: Promise<string>[] = [];
           for (const approval of approvals) {
             if (!approval.permitType || approval.permitType == 'POOL') {
