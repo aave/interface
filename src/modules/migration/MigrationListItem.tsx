@@ -176,7 +176,12 @@ export const MigrationListItem = ({
               />
             </SvgIcon>
 
-            {!enabledAsCollateral ? (
+            {showCollateralToggle ? (
+              <MigrationListItemToggler
+                enableAsCollateral={enableAsCollateral}
+                enabledAsCollateral={enabledAsCollateral}
+              />
+            ) : !enabledAsCollateral ? (
               <NoData variant="main14" color={baseColorSecondary} />
             ) : isIsolated ? (
               <Box
@@ -193,16 +198,7 @@ export const MigrationListItem = ({
                 <IsolatedBadge />
               </Box>
             ) : (
-              <>
-                {showCollateralToggle ? (
-                  <MigrationListItemToggler
-                    enableAsCollateral={enableAsCollateral}
-                    enabledAsCollateral={enabledAsCollateral}
-                  />
-                ) : (
-                  <CheckRoundedIcon fontSize="small" color="success" />
-                )}
-              </>
+              <CheckRoundedIcon fontSize="small" color="success" />
             )}
           </Box>
         </ListColumn>
