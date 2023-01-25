@@ -2055,11 +2055,6 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
-"@fullstory/browser@^1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@fullstory/browser/-/browser-1.6.2.tgz#fa636a4579779fe23fa87a11dd175be25c67185c"
-  integrity sha512-r3kPrTKijI/LkdSW7t1GlXPn4jPuZL4AFGDJBWMj4E4HLeF2lCvZtSOZ1YTwZtJFciLp/+KOIW3qBDkqqXC2qw==
-
 "@gnosis.pm/safe-apps-provider@0.10.3":
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.10.3.tgz#0ce03a3e96920c375a56a66329e610b845396c00"
