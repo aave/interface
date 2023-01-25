@@ -18,6 +18,7 @@ export type MarketDataType = {
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
+  disableCharts?: boolean;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -78,6 +79,7 @@ export const marketsData: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
     v3: true,
+    disableCharts: true,
     enabledFeatures: {
       governance: true,
       staking: true,
