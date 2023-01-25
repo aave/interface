@@ -1,15 +1,14 @@
-import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { GhoInterestRate, GhoInterestRateGraph } from './GhoInterestRateGraph';
 import { GhoBorrowTermRange, GhoTimeRangeSelector } from './GhoTimeRangeSelector';
+import { calculateDiscountRate } from './utils';
 
 interface GhoInterestRateGraphContainerProps {
   borrowAmount: number | null;
@@ -19,38 +18,6 @@ interface GhoInterestRateGraphContainerProps {
   selectedTimeRange: GhoBorrowTermRange;
   onSelectedTimeRangeChanged: (value: GhoBorrowTermRange) => void;
 }
-
-const calculateDiscountRateData = (
-  borrowedGho: number,
-  termDuration: number,
-  discountableAmount: number,
-  ghoBaseVariableBorrowRate: number,
-  ghoDiscountRate: number
-) => {
-  // const discountableAmount = stakedAave * ghoReserveData.ghoDiscountedPerToken;
-
-  // Factor in time for compounding for a final rate, using base variable rate
-  // const termDuration = getSecondsForGhoBorrowTermDuration(termDuration);
-  const ratePayload = {
-    rate: valueToBigNumber(ghoBaseVariableBorrowRate).shiftedBy(RAY_DECIMALS),
-    duration: termDuration,
-  };
-  const newRate = calculateCompoundedRate(ratePayload).shiftedBy(-RAY_DECIMALS).toNumber();
-  const borrowRateWithMaxDiscount = newRate * (1 - ghoDiscountRate);
-  // Apply discount to the newly compounded rate
-  const newBorrowRate = weightedAverageAPY(
-    newRate,
-    borrowedGho,
-    discountableAmount,
-    borrowRateWithMaxDiscount
-  );
-
-  return {
-    baseRate: newRate,
-    rateAfterDiscount: newBorrowRate,
-    rateAfterMaxDiscount: borrowRateWithMaxDiscount,
-  };
-};
 
 export const GhoInterestRateGraphContainer = ({
   borrowAmount,
@@ -77,7 +44,7 @@ export const GhoInterestRateGraphContainer = ({
   }
 
   for (let i = 0; i < duration; i++) {
-    const rate = calculateDiscountRateData(
+    const rate = calculateDiscountRate(
       borrowAmount ?? 0,
       elapsedTime * i,
       (stkAaveAmount ?? 0) * ghoReserveData.ghoDiscountedPerToken,

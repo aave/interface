@@ -1,4 +1,3 @@
-import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import AddIcon from '@mui/icons-material/Add';
 import {
@@ -18,11 +17,11 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { GhoInterestRateGraphContainer } from './GhoInterestRateGraphContainer';
 import { getSecondsForGhoBorrowTermDuration, GhoBorrowTermRange } from './GhoTimeRangeSelector';
+import { calculateDiscountRate } from './utils';
 
 const sliderStyles = {
   color: '#669AFF',
@@ -74,9 +73,7 @@ export const GhoDiscountCalculator = () => {
     rateAfterMaxDiscount: ghoReserveData.ghoBorrowAPYWithMaxDiscount,
   });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
-  // const showDiscountRate =
-  //   (ghoBorrow !== null && stkAave !== null && ghoBorrow > 0 && stkAave > 0) ||
-  //   rateSelection.rateAfterDiscount === rateSelection.rateAfterMaxDiscount;
+
   const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
 
   useEffect(() => {
@@ -92,46 +89,27 @@ export const GhoDiscountCalculator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ghoLoadingData]);
 
-  /**
-   * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds and a given term length
-   * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
-   * NOTE: if the discount rate strategy changes on-chain, then this creates a maintenance issue and we'll have to update this.
-   * @param stakedAave - The hypothectical amount of stkAAVE
-   * @param borrowedGho - The hypothetical amount of GHO
-   */
-  const calculateDiscountRate = async (stakedAave: number, borrowedGho: number) => {
-    const discountableAmount = stakedAave * ghoReserveData.ghoDiscountedPerToken;
-
-    // Factor in time for compounding for a final rate, using base variable rate
-    const termDuration = getSecondsForGhoBorrowTermDuration(selectedTimeRange);
-    const ratePayload = {
-      rate: valueToBigNumber(ghoReserveData.ghoBaseVariableBorrowRate).shiftedBy(RAY_DECIMALS),
-      duration: termDuration,
-    };
-    const newRate = calculateCompoundedRate(ratePayload).shiftedBy(-RAY_DECIMALS).toNumber();
-    const borrowRateWithMaxDiscount = newRate * (1 - ghoReserveData.ghoDiscountRate);
-    // Apply discount to the newly compounded rate
-    const newBorrowRate = weightedAverageAPY(
-      newRate,
-      borrowedGho,
-      discountableAmount,
-      borrowRateWithMaxDiscount
-    );
-
-    // Update local state
-    setDiscountableGhoAmount(discountableAmount);
-    setRateSelection({
-      baseRate: newRate,
-      rateAfterDiscount: newBorrowRate,
-      rateAfterMaxDiscount: borrowRateWithMaxDiscount,
-    });
-  };
-
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    calculateDiscountRate(stkAave ?? 0, ghoBorrow ?? 0);
+    const stkAaveAmount = stkAave ?? 0;
+    const ghoBorrowAmount = ghoBorrow ?? 0;
+    const discountableAmount = stkAaveAmount * ghoReserveData.ghoDiscountedPerToken;
+    const termDuration = getSecondsForGhoBorrowTermDuration(selectedTimeRange);
+    const calculatedRate = calculateDiscountRate(
+      ghoBorrowAmount,
+      termDuration,
+      discountableAmount,
+      ghoReserveData.ghoBaseVariableBorrowRate,
+      ghoReserveData.ghoDiscountRate
+    );
+
+    setDiscountableGhoAmount(discountableAmount);
+    setRateSelection({
+      baseRate: calculatedRate.baseRate,
+      rateAfterDiscount: calculatedRate.rateAfterDiscount,
+      rateAfterMaxDiscount: calculatedRate.rateAfterMaxDiscount,
+    });
   }, [stkAave, ghoBorrow, selectedTimeRange]);
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
