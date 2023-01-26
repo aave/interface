@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -27,51 +28,58 @@ export const GhoInterestRateGraphContainer = ({
   selectedTimeRange,
   onSelectedTimeRangeChanged,
 }: GhoInterestRateGraphContainerProps) => {
+  console.log('render');
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
 
-  const data: GhoInterestRate[] = [];
-  const now = dayjs().unix() * 1000;
+  const graphData = useMemo(() => {
+    const data: GhoInterestRate[] = [];
+    const now = dayjs().unix() * 1000;
 
-  let duration = 365;
-  if (selectedTimeRange === ESupportedTimeRanges.TwoYears) duration = 365 * 2;
-  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) duration = 260; // weekly
+    let duration = 365;
+    if (selectedTimeRange === ESupportedTimeRanges.TwoYears) duration = 365 * 2;
+    if (selectedTimeRange === ESupportedTimeRanges.FiveYears) duration = 260; // weekly
 
-  let elapsedTime = dayjs.duration({ days: 1 }).asSeconds();
-  if (selectedTimeRange === ESupportedTimeRanges.FiveYears) {
-    elapsedTime = dayjs.duration({ weeks: 1 }).asSeconds();
-  }
+    let elapsedTime = dayjs.duration({ days: 1 }).asSeconds();
+    if (selectedTimeRange === ESupportedTimeRanges.FiveYears) {
+      elapsedTime = dayjs.duration({ weeks: 1 }).asSeconds();
+    }
+    for (let i = 0; i < duration; i++) {
+      const rate = calculateDiscountRate(
+        borrowAmount ?? 0,
+        elapsedTime * i,
+        (stkAaveAmount ?? 0) * ghoReserveData.ghoDiscountedPerToken,
+        ghoReserveData.ghoBaseVariableBorrowRate,
+        ghoReserveData.ghoDiscountRate
+      );
 
-  for (let i = 0; i < duration; i++) {
-    const rate = calculateDiscountRate(
-      borrowAmount ?? 0,
-      elapsedTime * i,
-      (stkAaveAmount ?? 0) * ghoReserveData.ghoDiscountedPerToken,
-      ghoReserveData.ghoBaseVariableBorrowRate,
-      ghoReserveData.ghoDiscountRate
-    );
+      const accruedInterest = (borrowAmount || 0) * rate.baseRate;
+      const accruedInterestWithDiscount = (borrowAmount || 0) * rate.rateAfterDiscount;
+      const stakingDiscount = accruedInterest - accruedInterestWithDiscount;
 
-    const accruedInterest = (borrowAmount || 0) * rate.baseRate;
-    const accruedInterestWithDiscount = (borrowAmount || 0) * rate.rateAfterDiscount;
-    const stakingDiscount = accruedInterest - accruedInterestWithDiscount;
-
-    data.push({
-      date: now + elapsedTime * i * 1000,
-      interestRate: rate.rateAfterDiscount,
-      accruedInterest,
-      accruedInterestWithDiscount,
-      stakingDiscount,
-    });
-  }
-
-  // TODO: probably don't need this, holdover from the current ApyGraph
-  // const fields = [{ name: 'interestRate', color: '#2EBAC6', text: 'Supply APR' }];
+      data.push({
+        date: now + elapsedTime * i * 1000,
+        interestRate: rate.rateAfterDiscount,
+        accruedInterest,
+        accruedInterestWithDiscount,
+        stakingDiscount,
+      });
+    }
+    return data;
+  }, [
+    borrowAmount,
+    stkAaveAmount,
+    selectedTimeRange,
+    ghoReserveData.ghoDiscountedPerToken,
+    ghoReserveData.ghoBaseVariableBorrowRate,
+    ghoReserveData.ghoDiscountRate,
+  ]);
 
   if (downToXsm) {
     return (
       <GhoInterestRateGraphMobileContainer
-        data={data}
+        data={graphData}
         loading={ghoLoadingData}
         borrowAmount={borrowAmount}
         stkAaveAmount={stkAaveAmount}
@@ -84,7 +92,7 @@ export const GhoInterestRateGraphContainer = ({
   } else {
     return (
       <GhoInterestRateGraphDesktopContainer
-        data={data}
+        data={graphData}
         loading={ghoLoadingData}
         borrowAmount={borrowAmount}
         stkAaveAmount={stkAaveAmount}

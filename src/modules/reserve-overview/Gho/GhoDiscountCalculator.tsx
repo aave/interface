@@ -112,7 +112,7 @@ export const GhoDiscountCalculator = () => {
   }, [stkAave, ghoBorrow, selectedTimeRange]);
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
-    <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', my: 10 }}>
+    <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         <Typography variant="secondary14" color="text.secondary">
           <Trans>Discount parameters</Trans>
@@ -261,208 +261,205 @@ export const GhoDiscountCalculator = () => {
     return <></>;
   };
 
-  if (downToXsm) {
-    return (
-      <>
-        <Typography variant="subheader1" gutterBottom>
-          <Trans>Stake AAVE to borrow GHO at a discount</Trans>
-        </Typography>
-        <Typography variant="caption" color="text.secondary" mb={6}>
-          <Trans>
-            For each staked AAVE, Safety Module participants may borrow GHO with lower interest
-            rate. Use the calculator below to see different borrow rates with the discount applied.
-          </Trans>
-        </Typography>
-        <GhoInterestRateGraphContainer
-          borrowAmount={ghoBorrow}
-          stkAaveAmount={stkAave}
-          rateAfterDiscount={rateSelection.rateAfterDiscount}
-          interestOwed={interestOwed}
-          selectedTimeRange={selectedTimeRange}
-          onSelectedTimeRangeChanged={setSelectedTimeRange}
-        />
-        <Stack gap={2}>
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Borrow amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={ghoBorrow ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="GHO" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setGhoBorrow(null)
-                  : setGhoBorrow(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={ghoBorrow ?? 0}
-              onChange={(_, val) => setGhoBorrow(Number(val))}
-              step={1000}
-              min={0}
-              max={100000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 100000, label: '100,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Staked AAVE amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={stkAave ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="AAVE" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setStkAave(null)
-                  : setStkAave(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={stkAave ?? 0}
-              onChange={(_, val) => setStkAave(Number(val))}
-              step={5}
-              min={0}
-              max={1000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 1000, label: '1,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-          <Box sx={{ minHeight: '35px' }}>
-            <GhoDiscountCalculatorHelperText />
-          </Box>
-        </Stack>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Typography variant="subheader1" gutterBottom>
-          <Trans>Stake AAVE to borrow GHO at a discount</Trans>
-        </Typography>
-        <Typography variant="caption" color="text.secondary" mb={6}>
-          <Trans>
-            For each staked AAVE, Safety Module participants may borrow GHO with lower interest
-            rate. Use the calculator below to see different borrow rates with the discount applied.
-          </Trans>
-        </Typography>
-        <Stack direction="row" gap={2}>
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Borrow amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={ghoBorrow ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="GHO" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setGhoBorrow(null)
-                  : setGhoBorrow(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={ghoBorrow ?? 0}
-              onChange={(_, val) => setGhoBorrow(Number(val))}
-              step={1000}
-              min={0}
-              max={100000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 100000, label: '100,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subheader2" gutterBottom>
-              <Trans>Staked AAVE amount</Trans>
-            </Typography>
-            {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
-            <OutlinedInput
-              disabled={ghoLoadingData}
-              fullWidth
-              value={stkAave ?? ''}
-              placeholder="0"
-              endAdornment={<TokenIcon symbol="AAVE" />}
-              inputProps={{
-                min: 0,
-                sx: { py: 2, px: 3, fontSize: '21px' },
-              }}
-              onChange={(e) =>
-                e.target.value === '' || Number(e.target.value) <= 0
-                  ? setStkAave(null)
-                  : setStkAave(Number(e.target.value))
-              }
-              type="number"
-            />
-            <Slider
-              disabled={ghoLoadingData}
-              size="small"
-              value={stkAave ?? 0}
-              onChange={(_, val) => setStkAave(Number(val))}
-              step={5}
-              min={0}
-              max={1000}
-              marks={[
-                { value: 0, label: '0' },
-                { value: 1000, label: '1,000' },
-              ]}
-              sx={sliderStyles}
-            />
-          </Box>
-        </Stack>
+  const GhoDiscountCalculatorDesktop = (
+    <>
+      <Stack direction="row" gap={2}>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Borrow amount</Trans>
+          </Typography>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={ghoBorrow ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="GHO" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setGhoBorrow(null)
+                : setGhoBorrow(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={ghoBorrow ?? 0}
+            onChange={(_, val) => setGhoBorrow(Number(val))}
+            step={1000}
+            min={0}
+            max={100000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 100000, label: '100,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Staked AAVE amount</Trans>
+          </Typography>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={stkAave ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="AAVE" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setStkAave(null)
+                : setStkAave(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={stkAave ?? 0}
+            onChange={(_, val) => setStkAave(Number(val))}
+            step={5}
+            min={0}
+            max={1000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 1000, label: '1,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
+      </Stack>
+      <Box sx={{ minHeight: '35px' }}>
+        <GhoDiscountCalculatorHelperText />
+      </Box>
+      <GhoInterestRateGraphContainer
+        borrowAmount={ghoBorrow}
+        stkAaveAmount={stkAave}
+        rateAfterDiscount={rateSelection.rateAfterDiscount}
+        interestOwed={interestOwed}
+        selectedTimeRange={selectedTimeRange}
+        onSelectedTimeRangeChanged={setSelectedTimeRange}
+      />
+    </>
+  );
+
+  const GhoDiscountCalculatorMobile = (
+    <>
+      <GhoInterestRateGraphContainer
+        borrowAmount={ghoBorrow}
+        stkAaveAmount={stkAave}
+        rateAfterDiscount={rateSelection.rateAfterDiscount}
+        interestOwed={interestOwed}
+        selectedTimeRange={selectedTimeRange}
+        onSelectedTimeRangeChanged={setSelectedTimeRange}
+      />
+      <Stack gap={2}>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Borrow amount</Trans>
+          </Typography>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={ghoBorrow ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="GHO" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setGhoBorrow(null)
+                : setGhoBorrow(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={ghoBorrow ?? 0}
+            onChange={(_, val) => setGhoBorrow(Number(val))}
+            step={1000}
+            min={0}
+            max={100000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 100000, label: '100,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="subheader2" gutterBottom>
+            <Trans>Staked AAVE amount</Trans>
+          </Typography>
+          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
+          <OutlinedInput
+            disabled={ghoLoadingData}
+            fullWidth
+            value={stkAave ?? ''}
+            placeholder="0"
+            endAdornment={<TokenIcon symbol="AAVE" />}
+            inputProps={{
+              min: 0,
+              sx: { py: 2, px: 3, fontSize: '21px' },
+            }}
+            onChange={(e) =>
+              e.target.value === '' || Number(e.target.value) <= 0
+                ? setStkAave(null)
+                : setStkAave(Number(e.target.value))
+            }
+            type="number"
+          />
+          <Slider
+            disabled={ghoLoadingData}
+            size="small"
+            value={stkAave ?? 0}
+            onChange={(_, val) => setStkAave(Number(val))}
+            step={5}
+            min={0}
+            max={1000}
+            marks={[
+              { value: 0, label: '0' },
+              { value: 1000, label: '1,000' },
+            ]}
+            sx={sliderStyles}
+          />
+        </Box>
         <Box sx={{ minHeight: '35px' }}>
           <GhoDiscountCalculatorHelperText />
         </Box>
-        <GhoInterestRateGraphContainer
-          borrowAmount={ghoBorrow}
-          stkAaveAmount={stkAave}
-          rateAfterDiscount={rateSelection.rateAfterDiscount}
-          interestOwed={interestOwed}
-          selectedTimeRange={selectedTimeRange}
-          onSelectedTimeRangeChanged={setSelectedTimeRange}
-        />
+      </Stack>
+    </>
+  );
+
+  return (
+    <>
+      <Typography variant="subheader1" gutterBottom>
+        <Trans>Stake AAVE to borrow GHO at a discount</Trans>
+      </Typography>
+      <Typography variant="caption" color="text.secondary" mb={6}>
+        <Trans>
+          For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate.
+          Use the calculator below to see different borrow rates with the discount applied.
+        </Trans>
+      </Typography>
+      {downToXsm ? GhoDiscountCalculatorMobile : GhoDiscountCalculatorDesktop}
+      <Box sx={{ my: downToXsm ? 4 : 10 }}>
         <GhoDiscountParametersComponent loading={ghoLoadingData} />
-      </>
-    );
-  }
+      </Box>
+    </>
+  );
 };

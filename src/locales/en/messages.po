@@ -904,7 +904,6 @@ msgid "For each staked AAVE Safety Module participants may borrow GHO with lower
 msgstr "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 
@@ -1703,7 +1702,6 @@ msgstr "Stake AAVE"
 msgid "Stake AAVE and borrow GHO at a lower rate"
 msgstr "Stake AAVE and borrow GHO at a lower rate"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Stake AAVE to borrow GHO at a discount"
 msgstr "Stake AAVE to borrow GHO at a discount"
