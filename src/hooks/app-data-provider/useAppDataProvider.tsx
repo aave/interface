@@ -2,7 +2,6 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   ComputedUserReserve,
   formatReservesAndIncentives,
-  formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
   UserReserveData,
 } from '@aave/math-utils';
@@ -11,7 +10,6 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import {
   reserveSortFn,
@@ -20,9 +18,10 @@ import {
   selectCurrentUserEmodeCategoryId,
   selectCurrentUserReserves,
   selectEmodes,
+  selectFormattedReserves,
+  selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useProtocolDataContext } from '../useProtocolDataContext';
 
 /**
  * removes the marketPrefix from a symbol
@@ -74,51 +73,23 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig } = useProtocolDataContext();
   const [
     reserves,
     baseCurrencyData,
     userReserves,
     userEmodeCategoryId,
-    reserveIncentiveData,
-    userIncentiveData,
     eModes,
+    formattedPoolReserves,
+    user,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
     selectCurrentUserReserves(state),
     selectCurrentUserEmodeCategoryId(state),
-    state.reserveIncentiveData,
-    state.userIncentiveData,
     selectEmodes(state),
+    selectFormattedReserves(state, currentTimestamp),
+    selectUserSummaryAndIncentives(state, currentTimestamp),
   ]);
-
-  const formattedPoolReserves = formatReservesAndIncentives({
-    reserves,
-    currentTimestamp,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: reserveIncentiveData || [],
-  })
-    .map((r) => ({
-      ...r,
-      ...fetchIconSymbolAndName(r),
-      isEmodeEnabled: r.eModeCategoryId !== 0,
-      isWrappedBaseAsset:
-        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
-    }))
-    .sort(reserveSortFn);
-
-  const user = formatUserSummaryAndIncentives({
-    currentTimestamp,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    userReserves,
-    formattedReserves: formattedPoolReserves,
-    userEmodeCategoryId: userEmodeCategoryId,
-    reserveIncentives: reserveIncentiveData || [],
-    userIncentives: userIncentiveData || [],
-  });
 
   const proportions = user.userReservesData.reduce(
     (acc, value) => {
