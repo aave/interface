@@ -12,6 +12,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -74,35 +76,42 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    reserve,
-    user,
-    InterestRate.Variable
-  ).toString();
+  let maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable);
+  const availableBorrowCap =
+    reserve.borrowCap === '0'
+      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      : valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt));
+  maxAmountToBorrow = BigNumber.max(BigNumber.min(maxAmountToBorrow, availableBorrowCap), 0);
 
   const maxAmountToBorrowUSD = amountToUSD(
-    maxAmountToBorrow,
+    maxAmountToBorrow.toString(),
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
 
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+  let maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance?.amount || '0',
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
-  ).toString();
+  );
+
+  const availableSupplyCap =
+    reserve.supplyCap === '0'
+      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      : valueToBigNumber(reserve.supplyCap).minus(valueToBigNumber(reserve.totalLiquidity));
+  maxAmountToSupply = BigNumber.max(BigNumber.min(maxAmountToSupply, availableSupplyCap), 0);
 
   const maxAmountToSupplyUSD = amountToUSD(
-    maxAmountToSupply,
+    maxAmountToSupply.toString(),
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
     balance: balance?.amount || '0',
-    maxAmountToSupply,
-    maxAmountToBorrow,
+    maxAmountToSupply: maxAmountToSupply.toString(),
+    maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
   });
 
@@ -150,14 +159,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
             <SupplyAction
-              value={maxAmountToSupply}
+              value={maxAmountToSupply.toString()}
               usdValue={maxAmountToSupplyUSD}
               symbol={selectedAsset}
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
             <BorrowAction
-              value={maxAmountToBorrow}
+              value={maxAmountToBorrow.toString()}
               usdValue={maxAmountToBorrowUSD}
               symbol={selectedAsset}
               disable={disableBorrowButton}
