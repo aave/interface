@@ -31,6 +31,7 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
+    V3_MIGRATOR?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -58,6 +59,7 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  // proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -99,6 +101,21 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
+  // [CustomMarket.proto_ethereum_v3_1]: {
+  //   marketTitle: 'Ethereum',
+  //   chainId: ChainId.mainnet,
+  //   v3: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e'.toLowerCase(),
+  //     LENDING_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+  //     WETH_GATEWAY: '0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C',
+  //     WALLET_BALANCE_PROVIDER: '0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2',
+  //     UI_POOL_DATA_PROVIDER: '0x91c0eA31b49B69Ea18607702c5d9aC360bf3dE7d',
+  //     UI_INCENTIVE_DATA_PROVIDER: '0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6',
+  //     REPAY_WITH_COLLATERAL_ADAPTER: '0x1809f186D680f239420B56948C58F8DbbCdf1E18',
+  //     SWAP_COLLATERAL_ADAPTER: '0x872fBcb1B582e8Cd0D0DD4327fBFa0B4C2730995',
+  //   },
+  // },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -152,6 +169,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x204f2Eb81D996729829debC819f7992DCEEfE7b1',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
       COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
+      V3_MIGRATOR: '0x3db487975aB1728DB5787b798866c2021B24ec52',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -176,6 +194,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
       COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
+      V3_MIGRATOR: '0xf50a080aC535e531EC33cC05b227E910De2fb1fA',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',

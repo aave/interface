@@ -12,6 +12,7 @@ export const TopInfoPanel = ({
   pageTitle,
   titleComponent,
   withMarketSwitcher,
+  withMigrateButton,
   bridge,
   children,
 }: TopInfoPanelProps) => {
@@ -30,6 +31,7 @@ export const TopInfoPanel = ({
             <PageTitle
               pageTitle={pageTitle}
               withMarketSwitcher={withMarketSwitcher}
+              withMigrateButton={withMigrateButton}
               bridge={bridge}
             />
           )}

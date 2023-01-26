@@ -1,16 +1,17 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { AlertColor, Typography } from '@mui/material';
 
 import { Link } from '../../primitives/Link';
 import { Warning } from '../../primitives/Warning';
 
 interface IsolationModeWarningProps {
   asset?: string;
+  severity?: AlertColor;
 }
 
-export const IsolationModeWarning = ({ asset }: IsolationModeWarningProps) => {
+export const IsolationModeWarning = ({ asset, severity }: IsolationModeWarningProps) => {
   return (
-    <Warning severity="info" sx={{ mb: 3 }}>
+    <Warning severity={severity || 'info'} sx={{ mb: 3 }}>
       <Typography variant="subheader1" mb={0.5}>
         <Trans>You are entering Isolation mode</Trans>
       </Typography>

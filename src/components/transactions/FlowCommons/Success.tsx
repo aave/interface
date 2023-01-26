@@ -123,7 +123,7 @@ export const TxSuccessView = ({
               })}
             >
               <TokenIcon
-                symbol={symbol}
+                symbol={addToken.symbol}
                 aToken={addToken && addToken.aToken ? true : false}
                 sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
               />

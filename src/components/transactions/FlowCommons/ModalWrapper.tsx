@@ -8,6 +8,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -46,16 +47,14 @@ export const ModalWrapper: React.FC<{
   requiredPermission,
   keepWrappedSymbol,
 }) => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { readOnlyModeAddress } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
-  const {
-    currentChainId: marketChainId,
-    currentNetworkConfig,
-    currentMarketData,
-  } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
   const { permissions } = usePermissions();
+
+  const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -69,9 +68,6 @@ export const ModalWrapper: React.FC<{
   ) {
     return <>{currentMarketData.permissionComponent}</>;
   }
-
-  const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
-  const isWrongNetwork = connectedChainId !== requiredChainId;
 
   const poolReserve = reserves.find((reserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())

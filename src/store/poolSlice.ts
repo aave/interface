@@ -13,6 +13,8 @@ import {
   Pool,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
+  UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
@@ -37,27 +39,27 @@ import { CollateralRepayActionProps } from 'src/components/transactions/Repay/Co
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectFormattedReserves } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
+
+// TODO: what is the better name for this type?
+export type PoolReserve = {
+  reserves?: ReserveDataHumanized[];
+  reserveIncentives?: ReservesIncentiveDataHumanized[];
+  baseCurrencyData?: PoolBaseCurrencyHumanized;
+  userEmodeCategoryId?: number;
+  userReserves?: UserReserveDataHumanized[];
+};
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
-  data: Map<
-    number,
-    Map<
-      string,
-      {
-        reserves?: ReserveDataHumanized[];
-        baseCurrencyData?: PoolBaseCurrencyHumanized;
-        userEmodeCategoryId?: number;
-        userReserves?: UserReserveDataHumanized[];
-      }
-    >
-  >;
-  refreshPoolData: () => Promise<void>;
+  data: Map<number, Map<string, PoolReserve>>;
+  refreshPoolData: (marketData?: MarketDataType) => Promise<void>;
+  refreshPoolV3Data: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
   isFaucetPermissioned: boolean;
@@ -134,12 +136,18 @@ export const createPoolSlice: StateCreator<
   }
   return {
     data: new Map(),
-    refreshPoolData: async () => {
+    refreshPoolData: async (marketData?: MarketDataType) => {
       const account = get().account;
-      const currentMarketData = get().currentMarketData;
       const currentChainId = get().currentChainId;
+      const currentMarketData = marketData || get().currentMarketData;
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
+        provider: get().jsonRpcProvider(),
+        chainId: currentChainId,
+      });
+      const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress:
+          currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
@@ -167,6 +175,29 @@ export const createPoolSlice: StateCreator<
                       .get(currentChainId)!
                       .get(lendingPoolAddressProvider)!.baseCurrencyData =
                       reservesResponse.baseCurrencyData;
+                  }
+                })
+              )
+            )
+        );
+        promises.push(
+          uiIncentiveDataProviderContract
+            .getReservesIncentivesDataHumanized({
+              lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+            })
+            .then((reserveIncentivesResponse) =>
+              set((state) =>
+                produce(state, (draft) => {
+                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                      reserveIncentives: reserveIncentivesResponse,
+                    });
+                  } else {
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.reserveIncentives =
+                      reserveIncentivesResponse;
                   }
                 })
               )
@@ -207,6 +238,10 @@ export const createPoolSlice: StateCreator<
       } catch (e) {
         console.log('error fetching pool data', e);
       }
+    },
+    refreshPoolV3Data: async () => {
+      const v3MarketData = selectCurrentChainIdV3MarketData(get());
+      get().refreshPoolData(v3MarketData);
     },
     isFaucetPermissioned: true,
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),

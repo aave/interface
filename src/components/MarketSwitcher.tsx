@@ -34,7 +34,7 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   return { market, network };
 };
 
-const getMarketHelpData = (marketName: string) => {
+export const getMarketHelpData = (marketName: string) => {
   const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
