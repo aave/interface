@@ -208,8 +208,12 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Box>
         </Box>
       </PanelRow>
-      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-      <ReserveEModePanel reserve={reserve} />
+      {reserve.eModeCategoryId !== 0 && (
+        <>
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
+          <ReserveEModePanel reserve={reserve} />
+        </>
+      )}
       <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow id="discount">
         <PanelTitle>
