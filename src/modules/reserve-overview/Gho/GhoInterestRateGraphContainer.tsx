@@ -28,7 +28,6 @@ export const GhoInterestRateGraphContainer = ({
   selectedTimeRange,
   onSelectedTimeRangeChanged,
 }: GhoInterestRateGraphContainerProps) => {
-  console.log('render');
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
@@ -200,17 +199,19 @@ const GhoInterestRateGraphMobileContainer = ({
           <FormattedNumber
             value={rateAfterDiscount}
             percent
-            variant="h2"
+            variant="h1"
             component="div"
             symbolsColor="text.primary"
             sx={{ '.MuiTypography-root': { ml: 0 } }}
           />
         </Stack>
         <Stack>
-          <Typography variant="subheader2">Total interest accrued</Typography>
-          <Stack direction="row" alignItems="center">
+          <Typography sx={{ ml: 'auto' }} variant="subheader2">
+            Total interest accrued
+          </Typography>
+          <Stack sx={{ ml: 'auto' }} direction="row" alignItems="center">
             <TokenIcon symbol="GHO" fontSize="small" />
-            <FormattedNumber value={interestOwed} visibleDecimals={2} variant="h2" sx={{ mx: 1 }} />
+            <FormattedNumber value={interestOwed} visibleDecimals={2} variant="h1" sx={{ ml: 1 }} />
           </Stack>
         </Stack>
       </Box>
