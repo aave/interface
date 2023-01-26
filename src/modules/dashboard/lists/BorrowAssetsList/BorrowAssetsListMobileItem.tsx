@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
@@ -33,10 +32,6 @@ export const BorrowAssetsListMobileItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
-
-  // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const { borrowCap: borrowCapUsage } = useAssetCaps();
-  if (borrowCapUsage.isMaxed) return null;
 
   return (
     <ListMobileItemWrapper

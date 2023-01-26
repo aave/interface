@@ -19539,7 +19539,7 @@ var require_keystore = __commonJS({
               mnemonicCounter
             );
             var mnemonicCiphertext = (0, bytes_1.arrayify)(mnemonicAesCtr.encrypt(entropy));
-            var now = new Date();
+            var now = /* @__PURE__ */ new Date();
             var timestamp =
               now.getUTCFullYear() +
               '-' +
@@ -25700,7 +25700,7 @@ var require_base_provider = __commonJS({
       throw new Error('invalid event - ' + eventName);
     }
     function getTime() {
-      return new Date().getTime();
+      return /* @__PURE__ */ new Date().getTime();
     }
     function stall(duration) {
       return new Promise(function (resolve) {
@@ -34295,7 +34295,7 @@ var require_fallback_provider = __commonJS({
     var _version_1 = require_version24();
     var logger2 = new logger_1.Logger(_version_1.version);
     function now() {
-      return new Date().getTime();
+      return /* @__PURE__ */ new Date().getTime();
     }
     function checkNetworks2(networks) {
       var result = null;
@@ -77753,7 +77753,7 @@ var networkConfigs = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://goerli-rollup-explorer.arbitrum.io',
+    explorerLink: 'https://goerli.arbiscan.io',
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
@@ -77963,7 +77963,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
    */
   fallForwardRotation() {
     return __async(this, null, function* () {
-      const now = new Date().getTime();
+      const now = /* @__PURE__ */ new Date().getTime();
       const diff = now - this.firstRotationTimestamp;
       if (diff < this.fallForwardDelay) {
         yield sleep(this.fallForwardDelay - diff);
@@ -77980,7 +77980,7 @@ var RotationProvider = class extends import_providers.BaseProvider {
       if (prevIndex !== this.currentProviderIndex) return;
       if (this.currentProviderIndex === 0) {
         this.currentProviderIndex += 1;
-        this.firstRotationTimestamp = new Date().getTime();
+        this.firstRotationTimestamp = /* @__PURE__ */ new Date().getTime();
         this.fallForwardRotation();
       } else if (this.currentProviderIndex === this.providers.length - 1) {
         this.retries += 1;

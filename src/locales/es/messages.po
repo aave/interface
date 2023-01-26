@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-18 18:05\n"
+"PO-Revision-Date: 2023-01-23 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1890,7 +1890,7 @@ msgstr "Tiempo restante hasta que se cierre la ventana de retiro."
 
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
-msgstr ""
+msgstr "Tip: Intenta aumentar el deslizamiento o reduce la cantidad de entrada"
 
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -2392,7 +2392,7 @@ msgstr "tokens, por favor ve al"
 
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 msgid "will receive"
-msgstr ""
+msgstr "recibirán"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
