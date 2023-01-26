@@ -95,7 +95,7 @@ export const createStakeSlice: StateCreator<
     refetchStakeData: async () => {
       const uiStakeDataProvider = new UiStakeDataProvider({
         provider: getCorrectProvider(),
-        uiStakeDataProvider: stakeConfig.stakeUiHelper,
+        uiStakeDataProvider: stakeConfig.stakeDataProvider,
       });
       const promises: Promise<void>[] = [];
       try {
@@ -126,7 +126,7 @@ export const createStakeSlice: StateCreator<
     signStakingApproval({ token, amount }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
         STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
@@ -135,7 +135,7 @@ export const createStakeSlice: StateCreator<
     stakeWithPermit({ token, amount, signature }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
         STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
@@ -144,7 +144,7 @@ export const createStakeSlice: StateCreator<
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
       });
       const currentUser = get().account;
       return service.stake(currentUser, amount, onBehalfOf);
@@ -153,7 +153,7 @@ export const createStakeSlice: StateCreator<
       const provider = getCorrectProvider();
       const currentAccount = get().account;
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
       return service.cooldown(currentAccount);
     },
@@ -161,7 +161,7 @@ export const createStakeSlice: StateCreator<
       const currentAccount = get().account;
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
       });
       return service.claimRewards(currentAccount, amount);
     },
@@ -169,7 +169,7 @@ export const createStakeSlice: StateCreator<
       const provider = getCorrectProvider();
       const currentAccount = get().account;
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].STAKING_TOKEN_ADDRESS,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
       return (amount) => service.redeem(currentAccount, amount);
     },
