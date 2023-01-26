@@ -190,12 +190,35 @@ export const GhoDiscountCalculator = () => {
     </Box>
   );
 
-  const GhoDiscountCalculatorHelperText: React.FC = () => {
+  const BorrowAmountHelperText: React.FC = () => {
+    const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
+
+    if (maxGhoNotBorrowed) {
+      return (
+        <Typography variant="caption" component="p" color="text.secondary">
+          <Trans>
+            You may borrow up to {discountableGhoAmount} GHO at{' '}
+            <FormattedNumber
+              value={rateSelection.rateAfterMaxDiscount}
+              percent
+              variant="caption"
+              symbolsColor="text.secondary"
+              sx={{ '.MuiTypography-root': { ml: 0 } }}
+            />{' '}
+            (max discount)
+          </Trans>
+        </Typography>
+      );
+    }
+
+    return <></>;
+  };
+
+  const StkAaveAmountHelperText: React.FC = () => {
     const maxDiscountNotReached = ghoBorrow && discountableGhoAmount < ghoBorrow;
     const additionalStkAaveToReachMax = !maxDiscountNotReached
       ? 0
       : (ghoBorrow - discountableGhoAmount) / Number(ghoReserveData.ghoDiscountedPerToken);
-    const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
     const discountNotAvailable = !stkAave || !ghoBorrow;
 
     const handleAddStkAaveForMaxDiscount = () => {
@@ -228,23 +251,6 @@ export const GhoDiscountCalculator = () => {
               Add {additionalStkAaveToReachMax} stkAAVE
             </Typography>{' '}
             to borrow at{' '}
-            <FormattedNumber
-              value={rateSelection.rateAfterMaxDiscount}
-              percent
-              variant="caption"
-              symbolsColor="text.secondary"
-              sx={{ '.MuiTypography-root': { ml: 0 } }}
-            />{' '}
-            (max discount)
-          </Trans>
-        </Typography>
-      );
-
-    if (maxGhoNotBorrowed)
-      return (
-        <Typography variant="caption" component="p" color="text.secondary">
-          <Trans>
-            You may borrow up to {discountableGhoAmount} GHO at{' '}
             <FormattedNumber
               value={rateSelection.rateAfterMaxDiscount}
               percent
@@ -300,6 +306,9 @@ export const GhoDiscountCalculator = () => {
             ]}
             sx={sliderStyles}
           />
+          <Box sx={{ minHeight: '35px' }}>
+            <BorrowAmountHelperText />
+          </Box>
         </Box>
         <Box sx={{ width: '100%' }}>
           <Typography variant="subheader2" gutterBottom>
@@ -337,11 +346,11 @@ export const GhoDiscountCalculator = () => {
             ]}
             sx={sliderStyles}
           />
+          <Box sx={{ minHeight: '35px' }}>
+            <StkAaveAmountHelperText />
+          </Box>
         </Box>
       </Stack>
-      <Box sx={{ minHeight: '35px' }}>
-        <GhoDiscountCalculatorHelperText />
-      </Box>
       <GhoInterestRateGraphContainer
         borrowAmount={ghoBorrow}
         stkAaveAmount={stkAave}
@@ -400,6 +409,9 @@ export const GhoDiscountCalculator = () => {
             ]}
             sx={sliderStyles}
           />
+          <Box sx={{ minHeight: '35px' }}>
+            <BorrowAmountHelperText />
+          </Box>
         </Box>
         <Box sx={{ width: '100%' }}>
           <Typography variant="subheader2" gutterBottom>
@@ -437,9 +449,9 @@ export const GhoDiscountCalculator = () => {
             ]}
             sx={sliderStyles}
           />
-        </Box>
-        <Box sx={{ minHeight: '35px' }}>
-          <GhoDiscountCalculatorHelperText />
+          <Box sx={{ minHeight: '35px' }}>
+            <StkAaveAmountHelperText />
+          </Box>
         </Box>
       </Stack>
     </>
