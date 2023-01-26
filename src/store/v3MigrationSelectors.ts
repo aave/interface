@@ -203,7 +203,7 @@ export const selectMigrationUnderlyingAssetWithExceptions = (
     underlyingAsset: string;
   }
 ): string => {
-  const defaultUnderlyingAsset = reserve.underlyingAsset;
+  const defaultUnderlyingAsset = reserve?.underlyingAsset;
   if (!store.exceptionsBalancesLoading && store.migrationExceptions[defaultUnderlyingAsset]) {
     return store.migrationExceptions[defaultUnderlyingAsset].v3UnderlyingAsset;
   }
