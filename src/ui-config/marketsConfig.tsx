@@ -59,7 +59,7 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
+  // proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -95,7 +95,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
       COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
-      V3_MIGRATOR: '0xC95FEDBc2753d2362292557e7c97be1E13a84b66',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -170,7 +169,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x204f2Eb81D996729829debC819f7992DCEEfE7b1',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
       COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
-      V3_MIGRATOR: '0x088f369f8ddb54608067d847f46dfdf19457832d',
+      V3_MIGRATOR: '0x3db487975aB1728DB5787b798866c2021B24ec52',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -195,7 +194,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
       COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
-      V3_MIGRATOR: '0xfc5f404bec816c6dc4f1ef4370c96bc5d0c561a9',
+      V3_MIGRATOR: '0xf50a080aC535e531EC33cC05b227E910De2fb1fA',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',

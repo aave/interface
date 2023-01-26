@@ -13,6 +13,7 @@ interface MigrationDisabledTooltipProps {
   warningType: MigrationDisabled;
   isolatedV3?: boolean;
 }
+
 export const MigrationDisabledTooltip = ({
   dashboardLink,
   marketName,
@@ -29,7 +30,25 @@ export const MigrationDisabledTooltip = ({
         </Link>
       </Trans>
     ),
-    [MigrationDisabled.InsufficientLiquidity]: <></>, // TODO
+    [MigrationDisabled.AssetNotFlashloanable]: (
+      <Trans>Flashloan is disabled for this asset, hence this position cannot be migrated.</Trans>
+    ),
+    [MigrationDisabled.InsufficientLiquidity]: (
+      <Trans>
+        Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in{' '}
+        {marketName} v3 market.
+      </Trans>
+    ),
+    [MigrationDisabled.NotEnoughtSupplies]: (
+      <Trans>
+        Asset cannot be migrated due to supply cap restriction in {marketName} v3 market.
+      </Trans>
+    ),
+    [MigrationDisabled.ReserveFrozen]: (
+      <Trans>
+        Asset is frozen in {marketName} v3 market, hence this position cannot be migrated.
+      </Trans>
+    ),
     [MigrationDisabled.IsolationModeBorrowDisabled]: isolatedV3 ? (
       <Trans>
         Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market
