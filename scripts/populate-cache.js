@@ -11252,8 +11252,15 @@ var require_base = __commonJS({
           comb[2] = points[a].toJ().mixedAdd(points[b].neg());
         }
         var index = [
-          -3 /* -1 -1 */, -1 /* -1 0 */, -5 /* -1 1 */, -7 /* 0 -1 */, 0 /* 0 0 */, 7 /* 0 1 */,
-          5 /* 1 -1 */, 1 /* 1 0 */, 3,
+          -3, /* -1 -1 */
+          -1, /* -1 0 */
+          -5, /* -1 1 */
+          -7, /* 0 -1 */
+          0, /* 0 0 */
+          7, /* 0 1 */
+          5, /* 1 -1 */
+          1, /* 1 0 */
+          3,
           /* 1 1 */
         ];
         var jsf = getJSF(coeffs[a], coeffs[b]);
@@ -36725,6 +36732,7 @@ var require_types2 = __commonJS({
     (function (ProtocolAction2) {
       ProtocolAction2['default'] = 'default';
       ProtocolAction2['supply'] = 'supply';
+      ProtocolAction2['borrow'] = 'borrow';
       ProtocolAction2['withdraw'] = 'withdraw';
       ProtocolAction2['deposit'] = 'deposit';
       ProtocolAction2['liquidationCall'] = 'liquidationCall';
@@ -36737,6 +36745,7 @@ var require_types2 = __commonJS({
       ProtocolAction2['migrateV3'] = 'migrateV3';
       ProtocolAction2['supplyWithPermit'] = 'supplyWithPermit';
       ProtocolAction2['repayWithPermit'] = 'repayWithPermit';
+      ProtocolAction2['vote'] = 'vote';
     })((ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {})));
     var GovernanceVote;
     (function (GovernanceVote2) {
@@ -38475,6 +38484,10 @@ var require_utils6 = __commonJS({
         limit: '300000',
         recommended: '300000',
       },
+      [types_1.ProtocolAction.borrow]: {
+        limit: '400000',
+        recommended: '400000',
+      },
       [types_1.ProtocolAction.withdraw]: {
         limit: '230000',
         recommended: '300000',
@@ -38518,6 +38531,10 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.repayWithPermit]: {
         limit: '350000',
         recommended: '350000',
+      },
+      [types_1.ProtocolAction.vote]: {
+        limit: '125000',
+        recommended: '125000',
       },
     };
     exports2.mintAmountsPerToken = {
@@ -46655,6 +46672,7 @@ var require_lendingPool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.deposit,
             });
             txs.push({
               tx: txCallback,
@@ -46760,12 +46778,13 @@ var require_lendingPool_contract = __commonJS({
                   );
                 }),
               from: user,
+              action: types_1.ProtocolAction.borrow,
             });
             return [
               {
                 tx: txCallback,
                 txType: types_1.eEthereumTxType.DLP_ACTION,
-                gas: this.generateTxPriceEstimation([], txCallback),
+                gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.borrow),
               },
             ];
           }
@@ -46832,6 +46851,7 @@ var require_lendingPool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.repay,
             });
             txs.push({
               tx: txCallback,
@@ -47037,6 +47057,7 @@ var require_lendingPool_contract = __commonJS({
                     );
                   }),
                 from: user,
+                action: types_1.ProtocolAction.swapCollateral,
               });
               txs.push({
                 tx: txCallback,
@@ -47165,6 +47186,7 @@ var require_lendingPool_contract = __commonJS({
                     );
                   }),
                 from: user,
+                action: types_1.ProtocolAction.repayCollateral,
               });
               txs.push({
                 tx: txCallback,
@@ -47305,6 +47327,7 @@ var require_lendingPool_contract = __commonJS({
                     );
                   }),
                 from: user,
+                action: types_1.ProtocolAction.repayCollateral,
               });
               txs.push({
                 tx: txCallback,
@@ -49566,11 +49589,12 @@ var require_governance_contract = __commonJS({
               return govContract.populateTransaction.submitVote(proposalId, support);
             }),
           from: user,
+          action: types_1.ProtocolAction.vote,
         });
         txs.push({
           tx: txCallback,
           txType: types_1.eEthereumTxType.GOVERNANCE_ACTION,
-          gas: this.generateTxPriceEstimation(txs, txCallback),
+          gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.vote),
         });
         return txs;
       }
@@ -53428,6 +53452,7 @@ var require_v3_pool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.supply,
             });
             txs.push({
               tx: txCallback,
@@ -53498,6 +53523,7 @@ var require_v3_pool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.supply,
             });
             txs.push({
               tx: txCallback,
@@ -53626,11 +53652,16 @@ var require_v3_pool_contract = __commonJS({
                   );
                 }),
               from: user,
+              action: types_1.ProtocolAction.supplyWithPermit,
             });
             txs.push({
               tx: txCallback,
               txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation(txs, txCallback),
+              gas: this.generateTxPriceEstimation(
+                txs,
+                txCallback,
+                types_1.ProtocolAction.supplyWithPermit
+              ),
             });
             return txs;
           }
@@ -53748,12 +53779,13 @@ var require_v3_pool_contract = __commonJS({
                   );
                 }),
               from: user,
+              action: types_1.ProtocolAction.borrow,
             });
             return [
               {
                 tx: txCallback,
                 txType: types_1.eEthereumTxType.DLP_ACTION,
-                gas: this.generateTxPriceEstimation([], txCallback),
+                gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.borrow),
               },
             ];
           }
@@ -53831,6 +53863,7 @@ var require_v3_pool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.repay,
             });
             txs.push({
               tx: txCallback,
@@ -53907,11 +53940,16 @@ var require_v3_pool_contract = __commonJS({
                 }),
               from: user,
               value: (0, utils_1.getTxValue)(reserve, convertedAmount),
+              action: types_1.ProtocolAction.repayWithPermit,
             });
             txs.push({
               tx: txCallback,
               txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay),
+              gas: this.generateTxPriceEstimation(
+                txs,
+                txCallback,
+                types_1.ProtocolAction.repayWithPermit
+              ),
             });
             return txs;
           }
@@ -54148,6 +54186,7 @@ var require_v3_pool_contract = __commonJS({
                     );
                   }),
                 from: user,
+                action: types_1.ProtocolAction.swapCollateral,
               });
               txs.push({
                 tx: txCallback,
@@ -54283,6 +54322,7 @@ var require_v3_pool_contract = __commonJS({
                     );
                   }),
                 from: user,
+                action: types_1.ProtocolAction.repayCollateral,
               });
               txs.push({
                 tx: txCallback,
@@ -54754,32 +54794,16 @@ var require_v3_pool_contract = __commonJS({
   },
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/MigrationHelper__factory.js
-var require_MigrationHelper_factory = __commonJS({
-  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/MigrationHelper__factory.js'(
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/IMigrationHelper__factory.js
+var require_IMigrationHelper_factory = __commonJS({
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/IMigrationHelper__factory.js'(
     exports2
   ) {
     'use strict';
     Object.defineProperty(exports2, '__esModule', { value: true });
-    exports2.MigrationHelper__factory = void 0;
+    exports2.IMigrationHelper__factory = void 0;
     var ethers_1 = require_lib31();
     var _abi = [
-      {
-        inputs: [
-          {
-            internalType: 'contract IPoolAddressesProvider',
-            name: 'v3AddressesProvider',
-            type: 'address',
-          },
-          {
-            internalType: 'contract ILendingPool',
-            name: 'v2Pool',
-            type: 'address',
-          },
-        ],
-        stateMutability: 'nonpayable',
-        type: 'constructor',
-      },
       {
         inputs: [],
         name: 'ADDRESSES_PROVIDER',
@@ -54816,26 +54840,7 @@ var require_MigrationHelper_factory = __commonJS({
             type: 'address',
           },
         ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-        ],
-        name: 'aTokens',
-        outputs: [
-          {
-            internalType: 'contract IERC20WithPermit',
-            name: '',
-            type: 'address',
-          },
-        ],
-        stateMutability: 'view',
+        stateMutability: 'nonpayable',
         type: 'function',
       },
       {
@@ -54849,17 +54854,17 @@ var require_MigrationHelper_factory = __commonJS({
         inputs: [
           {
             internalType: 'address[]',
-            name: '',
+            name: 'assets',
             type: 'address[]',
           },
           {
             internalType: 'uint256[]',
-            name: '',
+            name: 'amounts',
             type: 'uint256[]',
           },
           {
             internalType: 'uint256[]',
-            name: '',
+            name: 'premiums',
             type: 'uint256[]',
           },
           {
@@ -54888,13 +54893,54 @@ var require_MigrationHelper_factory = __commonJS({
         inputs: [
           {
             internalType: 'address',
-            name: 'user',
+            name: 'asset',
             type: 'address',
           },
           {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+        ],
+        name: 'getMigrationSupply',
+        outputs: [
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [
+          {
             internalType: 'address[]',
-            name: 'assets',
+            name: 'assetsToMigrate',
             type: 'address[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'asset',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'rateMode',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct IMigrationHelper.RepaySimpleInput[]',
+            name: 'positionsToRepay',
+            type: 'tuple[]',
           },
           {
             components: [
@@ -54933,36 +54979,81 @@ var require_MigrationHelper_factory = __commonJS({
             name: 'permits',
             type: 'tuple[]',
           },
+          {
+            components: [
+              {
+                internalType: 'contract ICreditDelegationToken',
+                name: 'debtToken',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint256',
+                name: 'deadline',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint8',
+                name: 'v',
+                type: 'uint8',
+              },
+              {
+                internalType: 'bytes32',
+                name: 'r',
+                type: 'bytes32',
+              },
+              {
+                internalType: 'bytes32',
+                name: 's',
+                type: 'bytes32',
+              },
+            ],
+            internalType: 'struct IMigrationHelper.CreditDelegationInput[]',
+            name: 'creditDelegationPermits',
+            type: 'tuple[]',
+          },
         ],
-        name: 'migrationNoBorrow',
+        name: 'migrate',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+      {
+        inputs: [
+          {
+            components: [
+              {
+                internalType: 'contract IERC20WithPermit',
+                name: 'asset',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+              {
+                internalType: 'address',
+                name: 'to',
+                type: 'address',
+              },
+            ],
+            internalType: 'struct IMigrationHelper.EmergencyTransferInput[]',
+            name: 'emergencyInput',
+            type: 'tuple[]',
+          },
+        ],
+        name: 'rescueFunds',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
       },
     ];
-    var _bytecode =
-      '0x60e06040523480156200001157600080fd5b5060405162001b8238038062001b82833981016040819052620000349162000473565b6001600160a01b03821660a08190526040805163026b1d5f60e01b8152905163026b1d5f916004808201926020929091908290030181865afa1580156200007f573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000a59190620004c4565b6001600160a01b0390811660c0528116608052620000c2620000ca565b50506200080d565b604080516101a08101825260006101808201818152825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e0810182905261010081018290526101208101829052610140810182905261016081019190915260006080516001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa15801562000175573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f191682016040526200019f919081019062000560565b905060005b8151811015620004555760006001600160a01b0316600080848481518110620001d157620001d16200061e565b6020908102919091018101516001600160a01b0390811683529082019290925260400160002054160362000440576080516001600160a01b03166335ea6a758383815181106200022557620002256200061e565b60200260200101516040518263ffffffff1660e01b81526004016200025991906001600160a01b0391909116815260200190565b61018060405180830381865afa15801562000278573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200029e9190620006b9565b92508260e00151600080848481518110620002bd57620002bd6200061e565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106200031e576200031e6200061e565b602090810291909101015160805160405163095ea7b360e01b81526001600160a01b039182166004820152600019602482015291169063095ea7b3906044016020604051808303816000875af11580156200037d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620003a39190620007c1565b50818181518110620003b957620003b96200061e565b602090810291909101015160c05160405163095ea7b360e01b81526001600160a01b039182166004820152600019602482015291169063095ea7b3906044016020604051808303816000875af115801562000418573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200043e9190620007c1565b505b806200044c81620007e5565b915050620001a4565b505050565b6001600160a01b03811681146200047057600080fd5b50565b600080604083850312156200048757600080fd5b825162000494816200045a565b6020840151909250620004a7816200045a565b809150509250929050565b8051620004bf816200045a565b919050565b600060208284031215620004d757600080fd5b8151620004e4816200045a565b9392505050565b634e487b7160e01b600052604160045260246000fd5b60405161018081016001600160401b0381118282101715620005275762000527620004eb565b60405290565b604051601f8201601f191681016001600160401b0381118282101715620005585762000558620004eb565b604052919050565b600060208083850312156200057457600080fd5b82516001600160401b03808211156200058c57600080fd5b818501915085601f830112620005a157600080fd5b815181811115620005b657620005b6620004eb565b8060051b9150620005c98483016200052d565b8181529183018401918481019088841115620005e457600080fd5b938501935b8385101562000612578451925062000601836200045a565b8282529385019390850190620005e9565b98975050505050505050565b634e487b7160e01b600052603260045260246000fd5b6000602082840312156200064757600080fd5b604051602081016001600160401b03811182821017156200066c576200066c620004eb565b6040529151825250919050565b80516001600160801b0381168114620004bf57600080fd5b805164ffffffffff81168114620004bf57600080fd5b805160ff81168114620004bf57600080fd5b60006101808284031215620006cd57600080fd5b620006d762000501565b620006e3848462000634565b8152620006f36020840162000679565b6020820152620007066040840162000679565b6040820152620007196060840162000679565b60608201526200072c6080840162000679565b60808201526200073f60a0840162000679565b60a08201526200075260c0840162000691565b60c08201526200076560e08401620004b2565b60e08201526101006200077a818501620004b2565b908201526101206200078e848201620004b2565b90820152610140620007a2848201620004b2565b90820152610160620007b6848201620006a7565b908201529392505050565b600060208284031215620007d457600080fd5b81518015158114620004e457600080fd5b6000600182016200080657634e487b7160e01b600052601160045260246000fd5b5060010190565b60805160a05160c0516113156200086d60003960008181610109015281816105610152610a8c015260006087015260008181610130015281816104ba01528181610600015281816107a80152818161088901526109d901526113156000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c80637535d2461161005b5780637535d24614610104578063880f2a221461012b578063920f5c8414610152578063e0bd7a9f1461017557600080fd5b80630542975c146100825780630970352a146100c65780633e108ad9146100db575b600080fd5b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b6100d96100d4366004610d5d565b61017d565b005b6100a96100e9366004610dd3565b6000602081905290815260409020546001600160a01b031681565b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b6100a97f000000000000000000000000000000000000000000000000000000000000000081565b610165610160366004610e43565b6105db565b60405190151581526020016100bd565b6100d961073c565b60008060005b83518110156102ea5783818151811061019e5761019e610f48565b6020026020010151600001516001600160a01b031663d505accf87308785815181106101cc576101cc610f48565b6020026020010151602001518886815181106101ea576101ea610f48565b60200260200101516040015189878151811061020857610208610f48565b6020026020010151606001518a888151811061022657610226610f48565b6020026020010151608001518b898151811061024457610244610f48565b602090810291909101015160a001516040516001600160e01b031960e08a901b1681526001600160a01b0397881660048201529690951660248701526044860193909352606485019190915260ff16608484015260a483015260c482015260e401600060405180830381600087803b1580156102bf57600080fd5b505af11580156102d3573d6000803e3d6000fd5b5050505080806102e290610f5e565b915050610183565b5060005b84518110156105d35784818151811061030957610309610f48565b6020908102919091018101516001600160a01b038082166000818152938490526040909320549195501692501580159061034b57506001600160a01b03821615155b61039b5760405162461bcd60e51b815260206004820152601b60248201527f494e56414c49445f4f525f4e4f545f4341434845445f41535345540000000000604482015260640160405180910390fd5b6040516370a0823160e01b81526001600160a01b0387811660048301528316906323b872dd908890309084906370a0823190602401602060405180830381865afa1580156103ed573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104119190610f85565b6040516001600160e01b031960e086901b1681526001600160a01b03938416600482015292909116602483015260448201526064016020604051808303816000875af1158015610465573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104899190610f9e565b50604051631a4ca37b60e21b81526001600160a01b03848116600483015260001960248301523060448301526000917f0000000000000000000000000000000000000000000000000000000000000000909116906369328dec906064016020604051808303816000875af1158015610505573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105299190610f85565b60405163617ba03760e01b81526001600160a01b038681166004830152602482018390528981166044830152600060648301529192507f00000000000000000000000000000000000000000000000000000000000000009091169063617ba03790608401600060405180830381600087803b1580156105a757600080fd5b505af11580156105bb573d6000803e3d6000fd5b505050505080806105cb90610f5e565b9150506102ee565b505050505050565b60008080806105ec85870187610fc0565b92509250925060005b825181101561071d577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663573ade8184838151811061063f5761063f610f48565b60200260200101516000015185848151811061065d5761065d610f48565b60200260200101516020015186858151811061067b5761067b610f48565b602090810291909101015160409081015190516001600160e01b031960e086901b1681526001600160a01b03938416600482015260248101929092526044820152908b1660648201526084016020604051808303816000875af11580156106e6573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061070a9190610f85565b508061071581610f5e565b9150506105f5565b5061072987848361017d565b5060019c9b505050505050505050505050565b604080516101a08101825260006101808201818152825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e0810182905261010081018290526101208101829052610140810182905261016081019190915260007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa158015610804573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405261082c91908101906110d6565b905060005b8151811015610b1e5760006001600160a01b031660008084848151811061085a5761085a610f48565b6020908102919091018101516001600160a01b03908116835290820192909252604001600020541603610b0c577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166335ea6a758383815181106108c8576108c8610f48565b60200260200101516040518263ffffffff1660e01b81526004016108fb91906001600160a01b0391909116815260200190565b61018060405180830381865afa158015610919573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061093d91906111f2565b92508260e0015160008084848151811061095957610959610f48565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106109b7576109b7610f48565b602090810291909101015160405163095ea7b360e01b81526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000008116600483015260001960248301529091169063095ea7b3906044016020604051808303816000875af1158015610a33573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610a579190610f9e565b50818181518110610a6a57610a6a610f48565b602090810291909101015160405163095ea7b360e01b81526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000008116600483015260001960248301529091169063095ea7b3906044016020604051808303816000875af1158015610ae6573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b0a9190610f9e565b505b80610b1681610f5e565b915050610831565b505050565b6001600160a01b0381168114610b3857600080fd5b50565b634e487b7160e01b600052604160045260246000fd5b60405160c0810167ffffffffffffffff81118282101715610b7457610b74610b3b565b60405290565b6040516060810167ffffffffffffffff81118282101715610b7457610b74610b3b565b604051610180810167ffffffffffffffff81118282101715610b7457610b74610b3b565b604051601f8201601f1916810167ffffffffffffffff81118282101715610bea57610bea610b3b565b604052919050565b600067ffffffffffffffff821115610c0c57610c0c610b3b565b5060051b60200190565b600082601f830112610c2757600080fd5b81356020610c3c610c3783610bf2565b610bc1565b82815260059290921b84018101918181019086841115610c5b57600080fd5b8286015b84811015610c7f578035610c7281610b23565b8352918301918301610c5f565b509695505050505050565b60ff81168114610b3857600080fd5b600082601f830112610caa57600080fd5b81356020610cba610c3783610bf2565b82815260c09283028501820192828201919087851115610cd957600080fd5b8387015b85811015610d505781818a031215610cf55760008081fd5b610cfd610b51565b8135610d0881610b23565b8152818601358682015260408083013590820152606080830135610d2b81610c8a565b908201526080828101359082015260a080830135908201528452928401928101610cdd565b5090979650505050505050565b600080600060608486031215610d7257600080fd5b8335610d7d81610b23565b9250602084013567ffffffffffffffff80821115610d9a57600080fd5b610da687838801610c16565b93506040860135915080821115610dbc57600080fd5b50610dc986828701610c99565b9150509250925092565b600060208284031215610de557600080fd5b8135610df081610b23565b9392505050565b60008083601f840112610e0957600080fd5b50813567ffffffffffffffff811115610e2157600080fd5b6020830191508360208260051b8501011115610e3c57600080fd5b9250929050565b600080600080600080600080600060a08a8c031215610e6157600080fd5b893567ffffffffffffffff80821115610e7957600080fd5b610e858d838e01610df7565b909b50995060208c0135915080821115610e9e57600080fd5b610eaa8d838e01610df7565b909950975060408c0135915080821115610ec357600080fd5b610ecf8d838e01610df7565b909750955060608c01359150610ee482610b23565b90935060808b01359080821115610efa57600080fd5b818c0191508c601f830112610f0e57600080fd5b813581811115610f1d57600080fd5b8d6020828501011115610f2f57600080fd5b6020830194508093505050509295985092959850929598565b634e487b7160e01b600052603260045260246000fd5b600060018201610f7e57634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215610f9757600080fd5b5051919050565b600060208284031215610fb057600080fd5b81518015158114610df057600080fd5b60008060006060808587031215610fd657600080fd5b843567ffffffffffffffff80821115610fee57600080fd5b610ffa88838901610c16565b955060209150818701358181111561101157600080fd5b8701601f8101891361102257600080fd5b8035611030610c3782610bf2565b8181529085028201840190848101908b83111561104c57600080fd5b928501925b8284101561109f5786848d0312156110695760008081fd5b611071610b7a565b843561107c81610b23565b815284870135878201526040808601359082015282529286019290850190611051565b975050505060408701359250808311156110b857600080fd5b5050610dc986828701610c99565b80516110d181610b23565b919050565b600060208083850312156110e957600080fd5b825167ffffffffffffffff81111561110057600080fd5b8301601f8101851361111157600080fd5b805161111f610c3782610bf2565b81815260059190911b8201830190838101908783111561113e57600080fd5b928401925b8284101561116557835161115681610b23565b82529284019290840190611143565b979650505050505050565b60006020828403121561118257600080fd5b6040516020810181811067ffffffffffffffff821117156111a5576111a5610b3b565b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff811681146110d157600080fd5b805164ffffffffff811681146110d157600080fd5b80516110d181610c8a565b6000610180828403121561120557600080fd5b61120d610b9d565b6112178484611170565b8152611225602084016111b2565b6020820152611236604084016111b2565b6040820152611247606084016111b2565b6060820152611258608084016111b2565b608082015261126960a084016111b2565b60a082015261127a60c084016111d2565b60c082015261128b60e084016110c6565b60e082015261010061129e8185016110c6565b908201526101206112b08482016110c6565b908201526101406112c28482016110c6565b908201526101606112d48482016111e7565b90820152939250505056fea26469706673582212201f462dd8b81ef9ee38b791ed50f6aeaccb7a3732366bd9cf34c282862e50af1764736f6c63430008100033';
-    var isSuperArgs = (xs) => xs.length > 1;
-    var MigrationHelper__factory = class extends ethers_1.ContractFactory {
-      constructor(...args) {
-        if (isSuperArgs(args)) {
-          super(...args);
-        } else {
-          super(_abi, _bytecode, args[0]);
-        }
-      }
-      deploy(v3AddressesProvider, v2Pool, overrides) {
-        return super.deploy(v3AddressesProvider, v2Pool, overrides || {});
-      }
-      getDeployTransaction(v3AddressesProvider, v2Pool, overrides) {
-        return super.getDeployTransaction(v3AddressesProvider, v2Pool, overrides || {});
-      }
-      attach(address) {
-        return super.attach(address);
-      }
-      connect(signer) {
-        return super.connect(signer);
-      }
+    var IMigrationHelper__factory = class {
       static createInterface() {
         return new ethers_1.utils.Interface(_abi);
       }
@@ -54970,9 +55061,26 @@ var require_MigrationHelper_factory = __commonJS({
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
     };
-    exports2.MigrationHelper__factory = MigrationHelper__factory;
-    MigrationHelper__factory.bytecode = _bytecode;
-    MigrationHelper__factory.abi = _abi;
+    exports2.IMigrationHelper__factory = IMigrationHelper__factory;
+    IMigrationHelper__factory.abi = _abi;
+  },
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/index.js
+var require_factories = __commonJS({
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/index.js'(
+    exports2
+  ) {
+    'use strict';
+    Object.defineProperty(exports2, '__esModule', { value: true });
+    exports2.IMigrationHelper__factory = void 0;
+    var IMigrationHelper__factory_1 = require_IMigrationHelper_factory();
+    Object.defineProperty(exports2, 'IMigrationHelper__factory', {
+      enumerable: true,
+      get: function () {
+        return IMigrationHelper__factory_1.IMigrationHelper__factory;
+      },
+    });
   },
 });
 
@@ -54983,12 +55091,14 @@ var require_typechain = __commonJS({
   ) {
     'use strict';
     Object.defineProperty(exports2, '__esModule', { value: true });
-    exports2.MigrationHelper__factory = void 0;
-    var MigrationHelper__factory_1 = require_MigrationHelper_factory();
-    Object.defineProperty(exports2, 'MigrationHelper__factory', {
+    exports2.IMigrationHelper__factory = exports2.factories = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    exports2.factories = tslib_1.__importStar(require_factories());
+    var IMigrationHelper__factory_1 = require_IMigrationHelper_factory();
+    Object.defineProperty(exports2, 'IMigrationHelper__factory', {
       enumerable: true,
       get: function () {
-        return MigrationHelper__factory_1.MigrationHelper__factory;
+        return IMigrationHelper__factory_1.IMigrationHelper__factory;
       },
     });
   },
@@ -55002,83 +55112,78 @@ var require_v3_migration_contract = __commonJS({
     exports2.V3MigrationHelperService = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var ethers_1 = require_lib31();
+    var baseDebtToken_contract_1 = require_baseDebtToken_contract();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
-    var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var erc20_contract_1 = require_erc20_contract();
     var typechain_1 = require_typechain();
     var V3MigrationHelperService = class extends BaseService_1.default {
       constructor(provider, MIGRATOR_ADDRESS, pool) {
-        super(provider, typechain_1.MigrationHelper__factory);
+        super(provider, typechain_1.IMigrationHelper__factory);
         this.MIGRATOR_ADDRESS = MIGRATOR_ADDRESS;
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.baseDebtTokenService = new baseDebtToken_contract_1.BaseDebtToken(
+          provider,
+          this.erc20Service
+        );
         this.pool = pool;
       }
-      migrateNoBorrow(_0) {
-        return __async(this, arguments, function* ({ assets, user }) {
-          const txs = yield this.approveSupplyAssets(user, assets);
+      getMigrationSupply(_0) {
+        return __async(this, arguments, function* ({ asset, amount }) {
           const migrator = this.getContractInstance(this.MIGRATOR_ADDRESS);
-          const assetsAddresses = assets.map((asset) => asset.underlyingAsset);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () =>
-              __async(this, null, function* () {
-                return migrator.populateTransaction.migrationNoBorrow(user, assetsAddresses, []);
-              }),
-            from: user,
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.migrateV3),
-          });
-          return txs;
+          return migrator.getMigrationSupply(asset, amount);
         });
       }
-      migrateWithBorrow(_0) {
+      migrate(_0) {
         return __async(
           this,
           arguments,
-          function* ({ user, borrowedPositions, suppliedPositions, signedPermits }) {
+          function* ({
+            supplyAssets,
+            user,
+            repayAssets,
+            signedSupplyPermits,
+            signedCreditDelegationPermits,
+            creditDelegationApprovals,
+          }) {
             let txs = [];
-            const permits = this.splitSignedPermits(signedPermits);
-            if (signedPermits.length === 0) {
-              txs = yield this.approveSupplyAssets(user, suppliedPositions);
+            let permits = [];
+            if (signedSupplyPermits && signedSupplyPermits.length > 0) {
+              permits = this.splitSignedPermits(signedSupplyPermits);
+            } else {
+              txs = yield this.approveSupplyAssets(user, supplyAssets);
             }
-            const mappedBorrowPositions = yield Promise.all(
-              borrowedPositions.map((_a7) =>
-                __async(this, null, function* () {
-                  var { interestRate, amount } = _a7,
-                    borrow = tslib_1.__rest(_a7, ['interestRate', 'amount']);
-                  const { decimals } = yield this.erc20Service.getTokenData(borrow.address);
-                  const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
-                  return Object.assign(Object.assign({}, borrow), {
-                    rateMode: interestRate === types_1.InterestRate.Variable ? 2 : 1,
-                    amount: convertedAmount,
-                  });
-                })
-              )
-            );
-            const borrowedAssets = mappedBorrowPositions.map((borrow) => borrow.address);
-            const borrowedAmounts = mappedBorrowPositions.map((borrow) => borrow.amount);
-            const interestRatesModes = mappedBorrowPositions.map(() => 2);
-            const suppliedPositionsAddresses = suppliedPositions.map(
-              (suppply) => suppply.underlyingAsset
-            );
+            let creditDelegationPermits = [];
+            if (signedCreditDelegationPermits && signedCreditDelegationPermits.length > 0) {
+              creditDelegationPermits = this.splitSignedCreditDelegationPermits(
+                signedCreditDelegationPermits
+              );
+            } else {
+              const delegationApprovals = yield this.approveDelegationTokens(
+                user,
+                creditDelegationApprovals
+              );
+              txs.push(...delegationApprovals);
+            }
+            const assetsToMigrate = supplyAssets.map((supplyAsset) => supplyAsset.underlyingAsset);
+            const assetsToRepay = repayAssets.map((repayAsset) => {
+              return {
+                asset: repayAsset.underlyingAsset,
+                rateMode: repayAsset.rateMode === types_1.InterestRate.Stable ? 1 : 2,
+              };
+            });
+            const migrator = this.getContractInstance(this.MIGRATOR_ADDRESS);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () =>
                 __async(this, null, function* () {
-                  return this.pool.migrateV3({
-                    migrator: this.MIGRATOR_ADDRESS,
-                    borrowedAssets,
-                    borrowedAmounts,
-                    interestRatesModes,
-                    user,
-                    suppliedPositions: suppliedPositionsAddresses,
-                    borrowedPositions: mappedBorrowPositions,
+                  return migrator.populateTransaction.migrate(
+                    assetsToMigrate,
+                    assetsToRepay,
                     permits,
-                  });
+                    creditDelegationPermits
+                  );
                 }),
               from: user,
             });
@@ -55086,7 +55191,7 @@ var require_v3_migration_contract = __commonJS({
               tx: txCallback,
               txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
               gas: this.generateTxPriceEstimation(
-                txs,
+                permits.length > 0 ? [] : txs,
                 txCallback,
                 types_1.ProtocolAction.migrateV3
               ),
@@ -55095,23 +55200,37 @@ var require_v3_migration_contract = __commonJS({
           }
         );
       }
-      migrateNoBorrowWithPermits({ user, assets, signedPermits }) {
-        const migrator = this.getContractInstance(this.MIGRATOR_ADDRESS);
-        const permits = this.splitSignedPermits(signedPermits);
-        const txCallback = this.generateTxCallback({
-          rawTxMethod: () =>
-            __async(this, null, function* () {
-              return migrator.populateTransaction.migrationNoBorrow(user, assets, permits);
-            }),
-          from: user,
+      approveDelegationTokens(user, assets) {
+        return __async(this, null, function* () {
+          console.log(assets, 'assets');
+          const assetsApproved = yield Promise.all(
+            assets.map((_0) =>
+              __async(this, [_0], function* ({ amount, debtTokenAddress }) {
+                return this.baseDebtTokenService.isDelegationApproved({
+                  debtTokenAddress,
+                  allowanceGiver: user,
+                  allowanceReceiver: this.MIGRATOR_ADDRESS,
+                  amount,
+                });
+              })
+            )
+          );
+          console.log(assetsApproved, 'assetsApproved');
+          return assetsApproved
+            .map((approved, index) => {
+              if (approved) {
+                return;
+              }
+              const asset = assets[index];
+              return this.baseDebtTokenService.approveDelegation({
+                user,
+                delegatee: this.MIGRATOR_ADDRESS,
+                debtTokenAddress: asset.debtTokenAddress,
+                amount: asset.amount,
+              });
+            })
+            .filter((tx) => Boolean(tx));
         });
-        return [
-          {
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.V3_MIGRATION_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.migrateV3),
-          },
-        ];
       }
       approveSupplyAssets(user, assets) {
         return __async(this, null, function* () {
@@ -55157,17 +55276,31 @@ var require_v3_migration_contract = __commonJS({
           };
         });
       }
+      splitSignedCreditDelegationPermits(signedPermits) {
+        return signedPermits.map((permit) => {
+          const { debtToken, deadline, value, signedPermit } = permit;
+          const signature = ethers_1.utils.splitSignature(signedPermit);
+          return {
+            debtToken,
+            deadline,
+            value,
+            v: signature.v,
+            r: signature.r,
+            s: signature.s,
+          };
+        });
+      }
     };
     tslib_1.__decorate(
       [
         methodValidators_1.V3MigratorValidator,
-        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('asset')),
         tslib_1.__metadata('design:type', Function),
         tslib_1.__metadata('design:paramtypes', [Object]),
         tslib_1.__metadata('design:returntype', Promise),
       ],
       V3MigrationHelperService.prototype,
-      'migrateNoBorrow',
+      'getMigrationSupply',
       null
     );
     tslib_1.__decorate(
@@ -55179,19 +55312,7 @@ var require_v3_migration_contract = __commonJS({
         tslib_1.__metadata('design:returntype', Promise),
       ],
       V3MigrationHelperService.prototype,
-      'migrateWithBorrow',
-      null
-    );
-    tslib_1.__decorate(
-      [
-        methodValidators_1.V3MigratorValidator,
-        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
-        tslib_1.__metadata('design:type', Function),
-        tslib_1.__metadata('design:paramtypes', [Object]),
-        tslib_1.__metadata('design:returntype', Array),
-      ],
-      V3MigrationHelperService.prototype,
-      'migrateNoBorrowWithPermits',
+      'migrate',
       null
     );
     exports2.V3MigrationHelperService = V3MigrationHelperService;
@@ -77225,6 +77346,21 @@ var marketsData = {
       marketName: 'aavev2',
     },
   },
+  // [CustomMarket.proto_ethereum_v3_1]: {
+  //   marketTitle: 'Ethereum',
+  //   chainId: ChainId.mainnet,
+  //   v3: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e'.toLowerCase(),
+  //     LENDING_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+  //     WETH_GATEWAY: '0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C',
+  //     WALLET_BALANCE_PROVIDER: '0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2',
+  //     UI_POOL_DATA_PROVIDER: '0x91c0eA31b49B69Ea18607702c5d9aC360bf3dE7d',
+  //     UI_INCENTIVE_DATA_PROVIDER: '0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6',
+  //     REPAY_WITH_COLLATERAL_ADAPTER: '0x1809f186D680f239420B56948C58F8DbbCdf1E18',
+  //     SWAP_COLLATERAL_ADAPTER: '0x872fBcb1B582e8Cd0D0DD4327fBFa0B4C2730995',
+  //   },
+  // },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -77278,6 +77414,7 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: '0x204f2Eb81D996729829debC819f7992DCEEfE7b1',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
       COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
+      V3_MIGRATOR: '0x3db487975aB1728DB5787b798866c2021B24ec52',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -77302,6 +77439,7 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: '0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
       COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
+      V3_MIGRATOR: '0xf50a080aC535e531EC33cC05b227E910De2fb1fA',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -77632,7 +77770,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    // privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
