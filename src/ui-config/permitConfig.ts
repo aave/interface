@@ -3,7 +3,15 @@ import { ChainId } from '@aave/contract-helpers';
 export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
-  [ChainId.mainnet]: {},
+  [ChainId.mainnet]: {
+    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': false,
+    '0x6b175474e89094c44da98b954eedeac495271d0f': false,
+    '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': true,
+    '0x514910771af9ca656af840dff83e8264ecf986ca': false,
+    '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': false,
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false,
+    '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true,
+  },
   [ChainId.goerli]: {
     '0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464': true,
     '0xaa63e0c86b531e2edfe9f91f6436df20c301963d': true,
