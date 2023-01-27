@@ -12,6 +12,7 @@ import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withToolti
 import { bisector, extent, max } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
 import React, { Fragment, useCallback, useMemo } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
 type TooltipData = GhoInterestRate;
@@ -301,17 +302,30 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                   <Typography variant="caption" color="text.secondary">
                     Interest accrued
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    ${tooltipData.accruedInterest.toFixed(2)}
-                  </Typography>
+                  <FormattedNumber
+                    value={tooltipData.accruedInterest}
+                    visibleDecimals={2}
+                    symbol="USD"
+                    variant="caption"
+                    color="text.secondary"
+                    compact
+                  />
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="caption" color="text.secondary">
                     Staking discount
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    -${tooltipData.stakingDiscount.toFixed(2)}
-                  </Typography>
+                  <Box>
+                    {'-'}
+                    <FormattedNumber
+                      value={tooltipData.stakingDiscount}
+                      visibleDecimals={2}
+                      symbol="USD"
+                      variant="caption"
+                      color="text.secondary"
+                      compact
+                    />
+                  </Box>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack sx={{ mr: 5 }} direction="row" alignItems="center">
@@ -328,9 +342,14 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                       Total interest accrued
                     </Typography>
                   </Stack>
-                  <Typography variant="main12" color="text.secondary">
-                    ${tooltipData.accruedInterestWithDiscount.toFixed(2)}
-                  </Typography>
+                  <FormattedNumber
+                    value={tooltipData.accruedInterestWithDiscount}
+                    visibleDecimals={2}
+                    symbol="USD"
+                    variant="main12"
+                    color="text.secondary"
+                    compact
+                  />
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
