@@ -899,10 +899,6 @@ msgstr "Fetching data..."
 msgid "Filter"
 msgstr "Filter"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
-msgstr "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
@@ -1095,7 +1091,6 @@ msgstr "Language"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
