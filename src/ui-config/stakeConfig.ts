@@ -20,7 +20,7 @@ export const prodStakeConfig: StakeConfig = {
     [Stake.aave]: {
       TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-      STAKING_HELPER: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
+      STAKING_HELPER: '0xaF630B2151b7b7F22dEf78a9830af5BED07208B3',
     },
     [Stake.bpt]: {
       TOKEN_STAKING: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
@@ -36,7 +36,7 @@ export const goerliStakeConfig: StakeConfig = {
     [Stake.aave]: {
       TOKEN_STAKING: '0xb85B34C58129a9a7d54149e86934ed3922b05592',
       STAKING_REWARD_TOKEN: '0x0000000000000000000000000000000000000000',
-      STAKING_HELPER: '0xe914d574975a1cd273388035db4413dda788c0e5',
+      STAKING_HELPER: '0xaF630B2151b7b7F22dEf78a9830af5BED07208B3',
     },
     // TODO: Deploy with balancer contracts
     // [Stake.bpt]: {
