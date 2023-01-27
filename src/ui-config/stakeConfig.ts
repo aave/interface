@@ -15,7 +15,7 @@ export interface StakeConfig {
 
 export const prodStakeConfig: StakeConfig = {
   chainId: ChainId.mainnet,
-  stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
+  stakeDataProvider: '0xfaa9e83a1243F6486Cd1bc81D2cac94071b12056',
   tokens: {
     [Stake.aave]: {
       TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
@@ -31,7 +31,7 @@ export const prodStakeConfig: StakeConfig = {
 
 export const goerliStakeConfig: StakeConfig = {
   chainId: ChainId.goerli,
-  stakeDataProvider: '0x02119C949D827ca1FaFFDb17B14E6A9dEE04f410',
+  stakeDataProvider: '0xfaa9e83a1243F6486Cd1bc81D2cac94071b12056',
   tokens: {
     [Stake.aave]: {
       TOKEN_STAKING: '0xb85B34C58129a9a7d54149e86934ed3922b05592',
