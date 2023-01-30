@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
@@ -134,7 +135,9 @@ const GhoInterestRateGraphDesktopContainer = ({
       >
         <Stack direction="row" spacing={4}>
           <Stack>
-            <Typography variant="subheader2">GHO effective interest rate</Typography>
+            <Typography variant="subheader2">
+              <Trans>GHO effective interest rate</Trans>
+            </Typography>
             <FormattedNumber
               value={rateAfterDiscount}
               percent
@@ -145,7 +148,9 @@ const GhoInterestRateGraphDesktopContainer = ({
             />
           </Stack>
           <Stack>
-            <Typography variant="subheader2">Total interest accrued</Typography>
+            <Typography variant="subheader2">
+              <Trans>Total interest accrued</Trans>
+            </Typography>
             <Stack direction="row" alignItems="center">
               <TokenIcon symbol="GHO" fontSize="small" />
               <FormattedNumber
@@ -195,7 +200,9 @@ const GhoInterestRateGraphMobileContainer = ({
         }}
       >
         <Stack>
-          <Typography variant="subheader2">GHO effective interest rate</Typography>
+          <Typography variant="subheader2">
+            <Trans>GHO effective interest rate</Trans>
+          </Typography>
           <FormattedNumber
             value={rateAfterDiscount}
             percent
@@ -207,7 +214,7 @@ const GhoInterestRateGraphMobileContainer = ({
         </Stack>
         <Stack>
           <Typography sx={{ ml: 'auto' }} variant="subheader2">
-            Total interest accrued
+            <Trans>Total interest accrued</Trans>
           </Typography>
           <Stack sx={{ ml: 'auto' }} direction="row" alignItems="center">
             <TokenIcon symbol="GHO" fontSize="small" />

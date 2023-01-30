@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { Box, lighten, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
@@ -300,7 +301,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
               <Stack gap={1}>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="caption" color="text.secondary">
-                    Interest accrued
+                    <Trans>Interest accrued</Trans>
                   </Typography>
                   <FormattedNumber
                     value={tooltipData.accruedInterest}
@@ -313,7 +314,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="caption" color="text.secondary">
-                    Staking discount
+                    <Trans>Staking discount</Trans>
                   </Typography>
                   <Box>
                     {'-'}
@@ -339,7 +340,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                       }}
                     />
                     <Typography variant="subheader2" color="text.secondary">
-                      Total interest accrued
+                      <Trans>Total interest accrued</Trans>
                     </Typography>
                   </Stack>
                   <FormattedNumber
@@ -363,7 +364,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                       }}
                     />
                     <Typography variant="subheader2" color="text.secondary">
-                      Effective interest rate
+                      <Trans>Effective interest rate</Trans>
                     </Typography>
                   </Stack>
                   <Typography variant="main12" color="text.secondary">

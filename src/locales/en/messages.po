@@ -787,6 +787,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Effective interest rate"
+msgstr "Effective interest rate"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
@@ -929,6 +933,11 @@ msgstr "GHO"
 msgid "GHO discount program"
 msgstr "GHO discount program"
 
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+msgid "GHO effective interest rate"
+msgstr "GHO effective interest rate"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1019,6 +1028,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Interest accrued"
+msgstr "Interest accrued"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1731,6 +1744,10 @@ msgstr "Staking Rewards"
 msgid "Staking balance"
 msgstr "Staking balance"
 
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Staking discount"
+msgstr "Staking discount"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Staking incentive"
 msgstr "Staking incentive"
@@ -2085,6 +2102,12 @@ msgstr "Total borrows"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
 msgstr "Total emission per day"
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+msgid "Total interest accrued"
+msgstr "Total interest accrued"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
