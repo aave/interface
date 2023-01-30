@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-18 18:05\n"
+"PO-Revision-Date: 2023-01-26 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -54,9 +54,19 @@ msgstr ""
 msgid "APY"
 msgstr ""
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "APY change"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
+msgstr ""
+
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "APY type change"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
@@ -198,6 +208,26 @@ msgstr ""
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr ""
 
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset cannot be migrated to {marketName} v3 Market since collateral asset will enable isolation mode."
+msgstr ""
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr ""
@@ -205,6 +235,10 @@ msgstr ""
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Asset is frozen in {marketName} v3 market, hence this position cannot be migrated."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -225,6 +259,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr ""
 
@@ -285,6 +320,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Be mindful of the network congestion and gas prices."
 msgstr ""
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
@@ -488,6 +527,11 @@ msgstr ""
 msgid "Collateral balance after repay"
 msgstr ""
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "Collateral change"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr ""
@@ -570,6 +614,14 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
+msgstr ""
+
+#: src/modules/migration/MigrationListMobileItem.tsx
+msgid "Current v2 Balance"
+msgstr ""
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Current v2 balance"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -813,6 +865,10 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr ""
@@ -848,6 +904,7 @@ msgid "Global settings"
 msgstr ""
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr ""
@@ -862,6 +919,14 @@ msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Health Factor ({0} v2)"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Health Factor ({0} v3)"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -885,6 +950,10 @@ msgstr ""
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "I fully understand the risks of migrating."
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1008,6 +1077,7 @@ msgid "Liquidation <0/> threshold"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/modules/migration/HFChange.tsx
 msgid "Liquidation at"
 msgstr ""
 
@@ -1093,6 +1163,39 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
+#: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+msgid "Migrate"
+msgstr ""
+
+#: src/components/TopInfoPanel/PageTitle.tsx
+msgid "Migrate to V3"
+msgstr ""
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+msgid "Migrate to v3"
+msgstr ""
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
+msgid "Migrate to {0} v3 Market"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Migrated"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+msgid "Migrating"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migration risks"
+msgstr ""
+
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr ""
@@ -1135,6 +1238,10 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "No"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "No assets selected to migrate."
 msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
@@ -1181,6 +1288,7 @@ msgstr ""
 msgid "Not reached"
 msgstr ""
 
+#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr ""
@@ -1189,6 +1297,7 @@ msgstr ""
 msgid "Nothing staked"
 msgstr ""
 
+#: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
 msgstr ""
@@ -1234,12 +1343,20 @@ msgstr ""
 msgid "Per the community, the Fantom market has been frozen."
 msgstr ""
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
+msgstr ""
+
+#: pages/v3-migration.page.tsx
+msgid "Please connect your wallet to see migration tool."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
@@ -1266,6 +1383,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Powered by"
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Preview tx and migrate"
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
@@ -1416,6 +1537,10 @@ msgstr ""
 msgid "Review approval tx details"
 msgstr ""
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Review changes to continue"
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr ""
@@ -1476,6 +1601,22 @@ msgstr ""
 msgid "Select token to view in block explorer"
 msgstr ""
 
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 borrows to migrate"
+msgstr ""
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Select v2 supplies to migrate"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Selected borrow assets"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Selected supply assets"
+msgstr ""
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr ""
@@ -1502,6 +1643,10 @@ msgstr ""
 
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+msgstr ""
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr ""
 
 #: pages/500.page.tsx
@@ -1820,6 +1965,14 @@ msgstr ""
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr ""
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
+msgstr ""
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
 msgstr ""
@@ -1993,6 +2146,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
+msgstr ""
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
@@ -2444,6 +2601,10 @@ msgstr ""
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
+msgstr ""
+
+#: src/modules/migration/MigrationMobileList.tsx
+msgid "{numSelected}/{numAvailable} assets selected"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
