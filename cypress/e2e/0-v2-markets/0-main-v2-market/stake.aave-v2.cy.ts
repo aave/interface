@@ -87,7 +87,8 @@ testCases.forEach(
         it(`Check cooldown activation`, () => {
           cy.wait(timeout);
           cy.get(`[data-cy="awaitCoolDownBtn_${testCase.assetName.shortName}"]`).should(
-            'be.disabled'
+            'be.disabled',
+            { timeout: 50000 }
           );
         });
       });

@@ -25,7 +25,7 @@ export const StakeActions = ({
 }: StakeActionProps) => {
   const stake = useRootStore((state) => state.stake);
 
-  const { action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
+  const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: false,
       handleGetTxns: async () => {
@@ -47,6 +47,7 @@ export const StakeActions = ({
       isWrongNetwork={isWrongNetwork}
       amount={amountToStake}
       handleAction={action}
+      handleApproval={() => approval([{ amount: amountToStake, underlyingAsset: selectedToken }])}
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
