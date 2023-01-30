@@ -214,17 +214,19 @@ export const GhoDiscountCalculator = () => {
               <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
                 <AddIcon />
               </SvgIcon>
-              Add {additionalStkAaveToReachMax} stkAAVE
+              <Trans>Add</Trans> {additionalStkAaveToReachMax} stkAAVE
             </Typography>{' '}
-            to borrow at{' '}
-            <FormattedNumber
-              value={rateSelection.rateAfterMaxDiscount}
-              percent
-              variant="caption"
-              symbolsColor="text.secondary"
-              sx={{ '.MuiTypography-root': { ml: 0 } }}
-            />{' '}
-            (max discount)
+            <Trans>
+              to borrow at{' '}
+              <FormattedNumber
+                value={rateSelection.rateAfterMaxDiscount}
+                percent
+                variant="caption"
+                symbolsColor="text.secondary"
+                sx={{ '.MuiTypography-root': { ml: 0 } }}
+              />{' '}
+              (max discount)
+            </Trans>
           </Trans>
         </Typography>
       );
