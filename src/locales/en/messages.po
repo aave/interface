@@ -365,8 +365,6 @@ msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
 #: src/components/incentives/GhoIncentivesCard.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Borrow amount"
 msgstr "Borrow amount"
 
@@ -1714,11 +1712,6 @@ msgstr "Stake cooldown activated"
 msgid "Staked"
 msgstr "Staked"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Staked AAVE amount"
-msgstr "Staked AAVE amount"
-
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Staking"
@@ -2626,6 +2619,10 @@ msgstr "{networkName} Faucet"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
+msgid "{title}"
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"

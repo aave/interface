@@ -1,54 +1,19 @@
 import { Trans } from '@lingui/macro';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  Box,
-  OutlinedInput,
-  Skeleton,
-  Slider,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
+import { CalculatorInput } from './CalculatorInput';
 import { GhoInterestRateGraphContainer } from './GhoInterestRateGraphContainer';
 import { getSecondsForGhoBorrowTermDuration, GhoBorrowTermRange } from './GhoTimeRangeSelector';
 import { calculateDiscountRate } from './utils';
-
-const sliderStyles = {
-  color: '#669AFF',
-  marginBottom: '8px',
-  '.MuiSlider-rail': {
-    color: 'text.disabled',
-  },
-  '.MuiSlider-thumb': {
-    boxShadow:
-      '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)',
-  },
-  '.MuiSlider-mark': {
-    display: 'none',
-  },
-  '.MuiSlider-markLabel': {
-    top: '24px',
-    fontSize: '10px',
-    color: 'text.secondary',
-    '&[data-index="1"]': {
-      transform: 'translateX(-100%)',
-    },
-    '@media (pointer: coarse)': {
-      top: '30px',
-    },
-  },
-};
 
 interface CalculatedRateSelection {
   baseRate: number;
@@ -272,84 +237,26 @@ export const GhoDiscountCalculator = () => {
     <>
       <Stack direction="row" gap={2}>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subheader2" gutterBottom>
-            <Trans>Borrow amount</Trans>
-          </Typography>
-          <OutlinedInput
+          <CalculatorInput
+            title="Borrow amount"
+            value={ghoBorrow}
             disabled={ghoLoadingData}
-            fullWidth
-            value={ghoBorrow ?? ''}
-            placeholder="0"
-            endAdornment={<TokenIcon symbol="GHO" />}
-            inputProps={{
-              min: 0,
-              sx: { py: 2, px: 3, fontSize: '21px' },
-            }}
-            onChange={(e) =>
-              e.target.value === '' || Number(e.target.value) <= 0
-                ? setGhoBorrow(null)
-                : setGhoBorrow(Number(e.target.value))
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            inputComponent={NumberFormatCustom as any}
+            tokenSymbol="GHO"
+            onValueChanged={(value) => setGhoBorrow(value)}
+            sliderMax={100000}
+            helperTextComponent={<BorrowAmountHelperText />}
           />
-          <Slider
-            disabled={ghoLoadingData}
-            size="small"
-            value={ghoBorrow ?? 0}
-            onChange={(_, val) => setGhoBorrow(Number(val))}
-            step={1000}
-            min={0}
-            max={100000}
-            marks={[
-              { value: 0, label: '0' },
-              { value: 100000, label: '100,000' },
-            ]}
-            sx={sliderStyles}
-          />
-          <Box sx={{ minHeight: '35px' }}>
-            <BorrowAmountHelperText />
-          </Box>
         </Box>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subheader2" gutterBottom>
-            <Trans>Staked AAVE amount</Trans>
-          </Typography>
-          <OutlinedInput
+          <CalculatorInput
+            title="Staked AAVE amount"
+            value={stkAave}
             disabled={ghoLoadingData}
-            fullWidth
-            value={stkAave ?? ''}
-            placeholder="0"
-            endAdornment={<TokenIcon symbol="AAVE" />}
-            inputProps={{
-              min: 0,
-              sx: { py: 2, px: 3, fontSize: '21px' },
-            }}
-            onChange={(e) =>
-              e.target.value === '' || Number(e.target.value) <= 0
-                ? setStkAave(null)
-                : setStkAave(Number(e.target.value))
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            inputComponent={NumberFormatCustom as any}
+            tokenSymbol="AAVE"
+            onValueChanged={(value) => setStkAave(value)}
+            sliderMax={1000}
+            helperTextComponent={<StkAaveAmountHelperText />}
           />
-          <Slider
-            disabled={ghoLoadingData}
-            size="small"
-            value={stkAave ?? 0}
-            onChange={(_, val) => setStkAave(Number(val))}
-            step={5}
-            min={0}
-            max={1000}
-            marks={[
-              { value: 0, label: '0' },
-              { value: 1000, label: '1,000' },
-            ]}
-            sx={sliderStyles}
-          />
-          <Box sx={{ minHeight: '35px' }}>
-            <StkAaveAmountHelperText />
-          </Box>
         </Box>
       </Stack>
       <GhoInterestRateGraphContainer
@@ -375,84 +282,26 @@ export const GhoDiscountCalculator = () => {
       />
       <Stack gap={2}>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subheader2" gutterBottom>
-            <Trans>Borrow amount</Trans>
-          </Typography>
-          <OutlinedInput
+          <CalculatorInput
+            title="Borrow amount"
+            value={ghoBorrow}
             disabled={ghoLoadingData}
-            fullWidth
-            value={ghoBorrow ?? ''}
-            placeholder="0"
-            endAdornment={<TokenIcon symbol="GHO" />}
-            inputProps={{
-              min: 0,
-              sx: { py: 2, px: 3, fontSize: '21px' },
-            }}
-            onChange={(e) =>
-              e.target.value === '' || Number(e.target.value) <= 0
-                ? setGhoBorrow(null)
-                : setGhoBorrow(Number(e.target.value))
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            inputComponent={NumberFormatCustom as any}
+            tokenSymbol="GHO"
+            onValueChanged={(value) => setGhoBorrow(value)}
+            sliderMax={100000}
+            helperTextComponent={<BorrowAmountHelperText />}
           />
-          <Slider
-            disabled={ghoLoadingData}
-            size="small"
-            value={ghoBorrow ?? 0}
-            onChange={(_, val) => setGhoBorrow(Number(val))}
-            step={1000}
-            min={0}
-            max={100000}
-            marks={[
-              { value: 0, label: '0' },
-              { value: 100000, label: '100,000' },
-            ]}
-            sx={sliderStyles}
-          />
-          <Box sx={{ minHeight: '35px' }}>
-            <BorrowAmountHelperText />
-          </Box>
         </Box>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subheader2" gutterBottom>
-            <Trans>Staked AAVE amount</Trans>
-          </Typography>
-          <OutlinedInput
+          <CalculatorInput
+            title="Staked AAVE amount"
+            value={stkAave}
             disabled={ghoLoadingData}
-            fullWidth
-            value={stkAave ?? ''}
-            placeholder="0"
-            endAdornment={<TokenIcon symbol="AAVE" />}
-            inputProps={{
-              min: 0,
-              sx: { py: 2, px: 3, fontSize: '21px' },
-            }}
-            onChange={(e) =>
-              e.target.value === '' || Number(e.target.value) <= 0
-                ? setStkAave(null)
-                : setStkAave(Number(e.target.value))
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            inputComponent={NumberFormatCustom as any}
+            tokenSymbol="AAVE"
+            onValueChanged={(value) => setStkAave(value)}
+            sliderMax={1000}
+            helperTextComponent={<StkAaveAmountHelperText />}
           />
-          <Slider
-            disabled={ghoLoadingData}
-            size="small"
-            value={stkAave ?? 0}
-            onChange={(_, val) => setStkAave(Number(val))}
-            step={5}
-            min={0}
-            max={1000}
-            marks={[
-              { value: 0, label: '0' },
-              { value: 1000, label: '1,000' },
-            ]}
-            sx={sliderStyles}
-          />
-          <Box sx={{ minHeight: '35px' }}>
-            <StkAaveAmountHelperText />
-          </Box>
         </Box>
       </Stack>
     </>
