@@ -25,7 +25,7 @@ export function getMaxAmountAvailableToBorrow(
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
       ? valueToBigNumber(ethers.constants.MaxUint256.toString())
-      : valueToBigNumber(Number(poolReserve.borrowCap) * 1.05).minus(
+      : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
           valueToBigNumber(poolReserve.totalDebt)
         );
   const availableLiquidity = BigNumber.max(
