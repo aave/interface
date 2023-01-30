@@ -15,7 +15,7 @@ const testData = {
   testCases: {
     depositMATIC: {
       asset: assets.polygonV3Market.MATIC,
-      amount: 5000,
+      amount: 50,
       hasApproval: true,
     },
     swapMATIC: {
