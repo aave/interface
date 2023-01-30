@@ -16,6 +16,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
@@ -274,7 +275,6 @@ export const GhoDiscountCalculator = () => {
           <Typography variant="subheader2" gutterBottom>
             <Trans>Borrow amount</Trans>
           </Typography>
-          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
           <OutlinedInput
             disabled={ghoLoadingData}
             fullWidth
@@ -290,7 +290,8 @@ export const GhoDiscountCalculator = () => {
                 ? setGhoBorrow(null)
                 : setGhoBorrow(Number(e.target.value))
             }
-            type="number"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            inputComponent={NumberFormatCustom as any}
           />
           <Slider
             disabled={ghoLoadingData}
@@ -314,7 +315,6 @@ export const GhoDiscountCalculator = () => {
           <Typography variant="subheader2" gutterBottom>
             <Trans>Staked AAVE amount</Trans>
           </Typography>
-          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
           <OutlinedInput
             disabled={ghoLoadingData}
             fullWidth
@@ -330,7 +330,8 @@ export const GhoDiscountCalculator = () => {
                 ? setStkAave(null)
                 : setStkAave(Number(e.target.value))
             }
-            type="number"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            inputComponent={NumberFormatCustom as any}
           />
           <Slider
             disabled={ghoLoadingData}
@@ -377,7 +378,6 @@ export const GhoDiscountCalculator = () => {
           <Typography variant="subheader2" gutterBottom>
             <Trans>Borrow amount</Trans>
           </Typography>
-          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
           <OutlinedInput
             disabled={ghoLoadingData}
             fullWidth
@@ -393,7 +393,8 @@ export const GhoDiscountCalculator = () => {
                 ? setGhoBorrow(null)
                 : setGhoBorrow(Number(e.target.value))
             }
-            type="number"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            inputComponent={NumberFormatCustom as any}
           />
           <Slider
             disabled={ghoLoadingData}
@@ -417,7 +418,6 @@ export const GhoDiscountCalculator = () => {
           <Typography variant="subheader2" gutterBottom>
             <Trans>Staked AAVE amount</Trans>
           </Typography>
-          {/* TODO: Instead of type="number", look into using TextField component with inputMode and pattern for inputProps: https://mui.com/material-ui/react-text-field/#type-quot-number-quot */}
           <OutlinedInput
             disabled={ghoLoadingData}
             fullWidth
@@ -433,7 +433,8 @@ export const GhoDiscountCalculator = () => {
                 ? setStkAave(null)
                 : setStkAave(Number(e.target.value))
             }
-            type="number"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            inputComponent={NumberFormatCustom as any}
           />
           <Slider
             disabled={ghoLoadingData}
