@@ -43,7 +43,6 @@ const testData = {
       assets.polygonV3Market.USDT,
       assets.polygonV3Market.USDC,
       assets.polygonV3Market.EURS,
-      assets.polygonV3Market.jEUR,
       assets.polygonV3Market.agEUR,
     ],
   },
