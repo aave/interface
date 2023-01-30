@@ -1,7 +1,6 @@
 import '/public/fonts/inter/inter.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import * as FullStory from '@fullstory/browser';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { NextPage } from 'next';
@@ -11,7 +10,6 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import * as React from 'react';
-import { useEffect } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
@@ -56,22 +54,7 @@ interface MyAppProps extends AppProps {
   session: Session;
 }
 
-// FullStory flags
-let didInit = false;
-const useFullStory =
-  process.env.NEXT_PUBLIC_ENABLE_2FA === 'true' && process.env.NODE_ENV === 'production';
-
 export default function MyApp(props: MyAppProps) {
-  // Load FullStory for the live production environment only
-  useEffect(() => {
-    if (useFullStory) {
-      if (didInit) return;
-
-      FullStory.init({ orgId: 'VBTDS' });
-      didInit = true;
-    }
-  }, []);
-
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
 
