@@ -54794,9 +54794,9 @@ var require_v3_pool_contract = __commonJS({
   },
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/IMigrationHelper__factory.js
+// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/IMigrationHelper__factory.js
 var require_IMigrationHelper_factory = __commonJS({
-  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/IMigrationHelper__factory.js'(
+  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/IMigrationHelper__factory.js'(
     exports2
   ) {
     'use strict';
@@ -55066,44 +55066,6 @@ var require_IMigrationHelper_factory = __commonJS({
   },
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/index.js
-var require_factories = __commonJS({
-  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/factories/index.js'(
-    exports2
-  ) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', { value: true });
-    exports2.IMigrationHelper__factory = void 0;
-    var IMigrationHelper__factory_1 = require_IMigrationHelper_factory();
-    Object.defineProperty(exports2, 'IMigrationHelper__factory', {
-      enumerable: true,
-      get: function () {
-        return IMigrationHelper__factory_1.IMigrationHelper__factory;
-      },
-    });
-  },
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/index.js
-var require_typechain = __commonJS({
-  'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/index.js'(
-    exports2
-  ) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', { value: true });
-    exports2.IMigrationHelper__factory = exports2.factories = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    exports2.factories = tslib_1.__importStar(require_factories());
-    var IMigrationHelper__factory_1 = require_IMigrationHelper_factory();
-    Object.defineProperty(exports2, 'IMigrationHelper__factory', {
-      enumerable: true,
-      get: function () {
-        return IMigrationHelper__factory_1.IMigrationHelper__factory;
-      },
-    });
-  },
-});
-
 // node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/index.js
 var require_v3_migration_contract = __commonJS({
   'node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/index.js'(exports2) {
@@ -55118,10 +55080,10 @@ var require_v3_migration_contract = __commonJS({
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var erc20_contract_1 = require_erc20_contract();
-    var typechain_1 = require_typechain();
+    var IMigrationHelper__factory_1 = require_IMigrationHelper_factory();
     var V3MigrationHelperService = class extends BaseService_1.default {
       constructor(provider, MIGRATOR_ADDRESS, pool) {
-        super(provider, typechain_1.IMigrationHelper__factory);
+        super(provider, IMigrationHelper__factory_1.IMigrationHelper__factory);
         this.MIGRATOR_ADDRESS = MIGRATOR_ADDRESS;
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.baseDebtTokenService = new baseDebtToken_contract_1.BaseDebtToken(
