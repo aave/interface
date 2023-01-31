@@ -12,8 +12,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import BigNumber from 'bignumber.js';
-import { ethers } from 'ethers';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -76,12 +74,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  let maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable);
-  const availableBorrowCap =
-    reserve.borrowCap === '0'
-      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
-      : valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt));
-  maxAmountToBorrow = BigNumber.max(BigNumber.min(maxAmountToBorrow, availableBorrowCap), 0);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable);
 
   const maxAmountToBorrowUSD = amountToUSD(
     maxAmountToBorrow.toString(),
@@ -89,18 +82,12 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     marketReferencePriceInUsd
   );
 
-  let maxAmountToSupply = getMaxAmountAvailableToSupply(
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance?.amount || '0',
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
   );
-
-  const availableSupplyCap =
-    reserve.supplyCap === '0'
-      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
-      : valueToBigNumber(reserve.supplyCap).minus(valueToBigNumber(reserve.totalLiquidity));
-  maxAmountToSupply = BigNumber.max(BigNumber.min(maxAmountToSupply, availableSupplyCap), 0);
 
   const maxAmountToSupplyUSD = amountToUSD(
     maxAmountToSupply.toString(),
