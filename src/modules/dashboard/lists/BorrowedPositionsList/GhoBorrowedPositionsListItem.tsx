@@ -51,7 +51,6 @@ export const GhoBorrowedPositionsListItem = ({
         value={ghoUserData.userGhoBorrowBalance}
         subValue={ghoUserData.userGhoBorrowBalance}
       />
-
       <ListColumn>
         <GhoIncentivesCard
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
@@ -66,7 +65,6 @@ export const GhoBorrowedPositionsListItem = ({
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </ListColumn>
-
       <ListColumn>
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
@@ -79,7 +77,6 @@ export const GhoBorrowedPositionsListItem = ({
           currentMarket={currentMarket}
         />
       </ListColumn>
-
       <ListButtonsColumn>
         <Button
           disabled={!isActive}

@@ -61,6 +61,7 @@ export const GhoIncentivesCard = ({
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
+            data-cy={'apy'}
           />
         </Box>
       ) : (
@@ -164,6 +165,7 @@ export const GhoIncentivesCard = ({
                 percent
                 variant={variant}
                 symbolsVariant={symbolsVariant}
+                data-cy={'apy'}
               />
             )}
           </Box>

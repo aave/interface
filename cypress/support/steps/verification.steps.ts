@@ -68,6 +68,7 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               cy.getDashBoardBorrowedRow(_assetName, estimatedCase.apyType).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
