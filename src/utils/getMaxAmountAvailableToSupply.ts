@@ -6,7 +6,7 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 export function remainingCap(poolReserve: ComputedReserveData) {
   return poolReserve.supplyCap === '0'
     ? new BigNumber(-1)
-    : new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity).multipliedBy('0.995');
+    : new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity);
 }
 
 export function getMaxAmountAvailableToSupply(
