@@ -1,4 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
+import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 
 export function hexToAscii(_hex: string): string {
   const hex = _hex.toString();
@@ -46,4 +47,15 @@ export const optimizedPath = (currentChainId: ChainId) => {
 export const minBaseTokenRemainingByNetwork: Record<number, string> = {
   [ChainId.optimism]: '0.0001',
   [ChainId.arbitrum_one]: '0.0001',
+};
+
+export const amountToUSD = (
+  amount: BigNumberValue,
+  formattedPriceInMarketReferenceCurrency: string,
+  marketReferencePriceInUsd: string
+) => {
+  return valueToBigNumber(amount)
+    .multipliedBy(formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS);
 };
