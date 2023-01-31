@@ -216,7 +216,7 @@ export const GhoBorrowModalContent = ({
                 href={`/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${currentMarket}`}
                 underline="always"
               >
-                Learn details
+                Learn more
               </Link>
             </Trans>
           </Typography>
