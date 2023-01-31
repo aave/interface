@@ -518,7 +518,7 @@ const addPercent = (amount: string) => {
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
 };
 
-// adding  30 min of variable or either stable or variable debt APY similar to swap
+// adding  7 days of either stable or variable debt APY similar to swap
 // https://github.com/aave/interface/blob/main/src/hooks/useSwap.ts#L72-L78
 const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
