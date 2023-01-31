@@ -96,6 +96,7 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
+          NEXT_PUBLIC_ENABLE_2FA: false
           CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
