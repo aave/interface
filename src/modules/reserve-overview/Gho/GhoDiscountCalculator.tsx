@@ -185,13 +185,12 @@ export const GhoDiscountCalculator = () => {
     const additionalStkAaveToReachMax = !maxDiscountNotReached
       ? 0
       : (ghoBorrow - discountableGhoAmount) / Number(ghoReserveData.ghoDiscountedPerToken);
-    const discountNotAvailable = !stkAave || !ghoBorrow;
 
     const handleAddStkAaveForMaxDiscount = () => {
       if (stkAave) setStkAave(stkAave + additionalStkAaveToReachMax);
     };
 
-    if (discountNotAvailable)
+    if (!stkAave)
       return (
         <Typography variant="caption" component="p" color="warning.dark">
           <Trans>Add stkAAVE to see borrow APY with the discount</Trans>
