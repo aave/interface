@@ -74,14 +74,10 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    reserve,
-    user,
-    InterestRate.Variable
-  ).toString();
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable);
 
   const maxAmountToBorrowUSD = amountToUSD(
-    maxAmountToBorrow,
+    maxAmountToBorrow.toString(),
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
@@ -91,18 +87,18 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
-  ).toString();
+  );
 
   const maxAmountToSupplyUSD = amountToUSD(
-    maxAmountToSupply,
+    maxAmountToSupply.toString(),
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
     balance: balance?.amount || '0',
-    maxAmountToSupply,
-    maxAmountToBorrow,
+    maxAmountToSupply: maxAmountToSupply.toString(),
+    maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
   });
 
@@ -150,14 +146,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
             <SupplyAction
-              value={maxAmountToSupply}
+              value={maxAmountToSupply.toString()}
               usdValue={maxAmountToSupplyUSD}
               symbol={selectedAsset}
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
             <BorrowAction
-              value={maxAmountToBorrow}
+              value={maxAmountToBorrow.toString()}
               usdValue={maxAmountToBorrowUSD}
               symbol={selectedAsset}
               disable={disableBorrowButton}

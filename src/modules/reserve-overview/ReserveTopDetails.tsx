@@ -209,7 +209,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       )}
       <TopInfoPanelItem title={<Trans>Reserve Size</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={poolReserve?.totalLiquidityUSD}
+          value={Math.max(Number(poolReserve?.totalLiquidityUSD), 0)}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -219,7 +219,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
       <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={poolReserve?.availableLiquidityUSD}
+          value={Math.max(Number(poolReserve?.availableLiquidityUSD), 0)}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
