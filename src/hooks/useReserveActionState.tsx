@@ -41,12 +41,13 @@ export const useReserveActionState = ({
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
   return {
-    disableSupplyButton: balance === '0',
+    disableSupplyButton: balance === '0' || maxAmountToSupply === '0',
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
       isolationModeBorrowDisabled ||
-      eModeBorrowDisabled,
+      eModeBorrowDisabled ||
+      maxAmountToBorrow === '0',
     alerts: (
       <Stack gap={3}>
         {balance === '0' && (

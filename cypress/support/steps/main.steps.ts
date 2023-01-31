@@ -614,10 +614,12 @@ export const emodeActivating = (
     turnOn,
     multipleEmodes,
     emodeOption,
+    emodeName = 'Stablecoins',
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
     emodeOption?: string;
+    emodeName?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -654,7 +656,7 @@ export const emodeActivating = (
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
-      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? 'Stablecoins' : 'Disabled');
+      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? emodeName : 'Disabled');
     });
   });
 };

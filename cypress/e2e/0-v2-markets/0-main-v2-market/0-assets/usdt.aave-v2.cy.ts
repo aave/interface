@@ -62,13 +62,14 @@ const testData = {
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
-      {
-        asset: assets.aaveMarket.USDT,
-        apyType: constants.apyType.stable,
-        amount: 10,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
+      // swap unstable
+      // {
+      //   asset: assets.aaveMarket.USDT,
+      //   apyType: constants.apyType.stable,
+      //   amount: 10,
+      //   hasApproval: false,
+      //   repayOption: constants.repayType.collateral,
+      // },
     ],
     withdraw: {
       asset: assets.aaveMarket.USDT,
@@ -95,7 +96,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.aaveMarket.USDT.shortName,
         wrapped: assets.aaveMarket.USDT.wrapped,
-        amount: 80,
+        amount: 90,
         apyType: constants.borrowAPYType.stable,
       },
     ],
