@@ -93,7 +93,7 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
       if (userReserve.reserve.stableBorrowAPY == '0') {
         increasedAmount = addPercent(increasedAmount);
       } else {
-        increasedAmount = add1HourBorrowAPY(
+        increasedAmount = add1WeekBorrowAPY(
           userReserve.stableBorrows,
           userReserve.reserve.stableBorrowAPY
         );
@@ -111,7 +111,7 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
       if (userReserve.reserve.variableBorrowAPY === '0') {
         increasedAmount = addPercent(increasedAmount);
       } else {
-        increasedAmount = add1HourBorrowAPY(
+        increasedAmount = add1WeekBorrowAPY(
           userReserve.variableBorrows,
           userReserve.reserve.variableBorrowAPY
         );
@@ -520,11 +520,11 @@ const addPercent = (amount: string) => {
 
 // adding  30 min of variable or either stable or variable debt APY similar to swap
 // https://github.com/aave/interface/blob/main/src/hooks/useSwap.ts#L72-L78
-const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
+const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
   const convertedBorrowAPY = valueToBigNumber(borrowAPY);
   return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 * 48))
+    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
     .toString();
 };
 
