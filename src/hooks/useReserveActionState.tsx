@@ -41,9 +41,10 @@ export const useReserveActionState = ({
   const eModeBorrowDisabled =
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  const isGho = isGhoAndSupported({ symbol: reserve.symbol, currentMarket });
+
   return {
-    disableSupplyButton:
-      balance === '0' || isGhoAndSupported({ symbol: reserve.symbol, currentMarket }),
+    disableSupplyButton: balance === '0' || isGho,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
@@ -53,7 +54,7 @@ export const useReserveActionState = ({
       <Stack gap={3}>
         {balance === '0' && (
           <>
-            {currentNetworkConfig.isTestnet ? (
+            {currentNetworkConfig.isTestnet && !isGho ? (
               <Warning sx={{ mb: 0 }} severity="info" icon={false}>
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
