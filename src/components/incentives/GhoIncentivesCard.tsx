@@ -52,7 +52,6 @@ export const GhoIncentivesCard = ({
       justifyContent: 'center',
       textAlign: 'center',
     }}
-    data-cy={'apy'}
   >
     {value.toString() !== '-1' ? (
       discountableAmount === 0 ? (
@@ -62,6 +61,7 @@ export const GhoIncentivesCard = ({
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
+            data-cy={'apy'}
           />
         </Box>
       ) : (
@@ -165,6 +165,7 @@ export const GhoIncentivesCard = ({
                 percent
                 variant={variant}
                 symbolsVariant={symbolsVariant}
+                data-cy={'apy'}
               />
             )}
           </Box>

@@ -4,11 +4,15 @@ export interface TokenRequest {
   tokenAddress: string;
   donorAddress?: string;
   tokenCount?: string;
+  name: string;
 }
 
 export class TenderlyActions {
   public static tenderlyTokenRequest(tokens: TokenRequest[], addressFrom?: string) {
     it(`Token request `, () => {
+      tokens.forEach(($token) => {
+        cy.log(`Request: ${$token.name} ${$token.tokenCount}`);
+      });
       Promise.all(
         tokens.map((token) => {
           const _addressFrom = addressFrom || token.donorAddress;
@@ -25,7 +29,10 @@ export class TenderlyActions {
   }
 
   public static tenderlyTokenWithdraw(tokens: TokenRequest[], addressTo?: string) {
-    it(`Token withdraw `, () => {
+    it(`Token withdraw`, () => {
+      tokens.forEach(($token) => {
+        cy.log(`Withdraw: ${$token.name} ${$token.tokenCount}`);
+      });
       Promise.all(
         tokens.map((token) => {
           const wallet = Wallet.createRandom();

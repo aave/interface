@@ -8,6 +8,7 @@ export const tokenSet = ({ stkAave = 0, aAAVE = 0, aDAI = 0 }) => {
       tokenAddress: donors.stkAAVE.tokenAddress,
       donorAddress: donors.stkAAVE.donorWalletAddress,
       tokenCount: stkAave.toString(),
+      name: donors.stkAAVE.name,
     });
   }
   if (aAAVE != 0) {
@@ -15,6 +16,7 @@ export const tokenSet = ({ stkAave = 0, aAAVE = 0, aDAI = 0 }) => {
       tokenAddress: donors.aAAVE.tokenAddress,
       donorAddress: donors.aAAVE.donorWalletAddress,
       tokenCount: aAAVE.toString(),
+      name: donors.aAAVE.name,
     });
   }
   if (aDAI != 0) {
@@ -22,6 +24,7 @@ export const tokenSet = ({ stkAave = 0, aAAVE = 0, aDAI = 0 }) => {
       tokenAddress: donors.aDAI.tokenAddress,
       donorAddress: donors.aDAI.donorWalletAddress,
       tokenCount: aDAI.toString(),
+      name: donors.aDAI.name,
     });
   }
   return tokenRequest;

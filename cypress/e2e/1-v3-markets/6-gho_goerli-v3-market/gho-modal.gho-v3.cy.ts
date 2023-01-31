@@ -10,74 +10,193 @@ import { tokenSet } from './helpers/token.helper';
 const testData = {
   borrow: {
     asset: assets.ghoV3Market.GHO,
-    amount: 100,
+    amount: 200,
     apyType: constants.borrowAPYType.default,
     hasApproval: true,
   },
 };
 
-describe(`GHO discount integrating testing on modal view`, () => {
-  describe.skip(`Verify default APY for GHO`, () => {
+describe(`GHO MODAL APY TESTING`, () => {
+  describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aDAI: 3000 }),
+      tokens: tokenSet({ aDAI: 1000 }),
     });
-    it(`APY for 100 GHO `, () => {
+    before(`Open Modal`, () => {
       cy.doSwitchToDashboardBorrowView();
       DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
-      ModalHelpers.setAmount(100);
-      ModalHelpers.getApyRate().then(($val) => {
+    });
+    //BUG T-5080
+    it.skip(`Verify modal without discount APY=${gho.apy.max}%, no amount`, () => {
+      ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.eql(gho.apy.max);
       });
     });
-    it(`APY for max GHO amount`, () => {
-      ModalHelpers.setAmount(100, true);
-      ModalHelpers.getApyRate().then(($val) => {
+    it(`Verify modal without discount APY=${gho.apy.max}%, some amount`, () => {
+      ModalHelpers.setAmount(100);
+      ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.eql(gho.apy.max);
       });
     });
-  });
-  describe(`Verify discount of APY with 1 stkAave`, () => {
-    let stepBackAPY: number;
-    configEnvWithTenderlyGoerliGhoFork({
-      v3: true,
-      tokens: tokenSet({ aDAI: 3000, stkAave: 1 }),
-    });
-    it(`APY with max discount`, () => {
-      cy.doSwitchToDashboardBorrowView();
-      DashboardHelpers.openBorrowModal(gho.shortName);
-      ModalHelpers.setAmount(100);
-      ModalHelpers.getApyRate().then(($val) => {
-        expect($val).to.be.eql(gho.apy.min);
-        stepBackAPY = $val;
-      });
-    });
-    it(`APY with medium discount`, () => {
-      ModalHelpers.setAmount(500);
-      ModalHelpers.getApyRate().then(($val) => {
-        expect(stepBackAPY).to.be.lt($val);
-        stepBackAPY = $val;
-      });
-    });
-    it(`APY for max amount with discount`, () => {
+    it(`Verify modal without discount APY=${gho.apy.max}%, max amount`, () => {
       ModalHelpers.setAmount(1000, true);
-      ModalHelpers.getApyRate().then(($val) => {
-        expect(stepBackAPY).to.be.lt($val);
-        expect($val).to.be.gt(gho.apy.min);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
     });
   });
-  describe.skip(`Verify discount with exist borrow GHO position`, () => {
+  describe(`Verify modal with max discount APY = ${gho.apy.min}%`, () => {
     configEnvWithTenderlyGoerliGhoFork({
       v3: true,
-      tokens: tokenSet({ aAAVE: 10, stkAave: 2 }),
+      tokens: tokenSet({ stkAave: 50, aDAI: 1000 }),
+    });
+    before(`Open Modal`, () => {
+      cy.doSwitchToDashboardBorrowView();
+      DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
+    });
+    //BUG T-5080
+    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with max discount APY=${gho.apy.min}%, some amount`, () => {
+      ModalHelpers.setAmount(100);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with max discount APY=${gho.apy.min}%, max amount`, () => {
+      ModalHelpers.setAmount(1000, true);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+  });
+  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
+    configEnvWithTenderlyGoerliGhoFork({
+      v3: true,
+      tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
+    });
+    before(`Open Modal`, () => {
+      cy.doSwitchToDashboardBorrowView();
+      DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
+    });
+    //BUG T-5080 - should be range
+    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with max discount APY=${gho.apy.min}%, small amount`, () => {
+      ModalHelpers.setAmount(100);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with some discount ${gho.apy.min}<%APY<${gho.apy.max}%, medium amount`, () => {
+      ModalHelpers.setAmount(1000);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.greaterThan(gho.apy.min);
+        expect($val).to.be.lessThan(gho.apy.max);
+      });
+    });
+    it(`Verify modal without discount APY=${gho.apy.max}%, max amount`, () => {
+      ModalHelpers.setAmount(1000, true);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
+      });
+    });
+  });
+  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY < ${gho.apy.max}%`, () => {
+    let maxAPY: number;
+    configEnvWithTenderlyGoerliGhoFork({
+      v3: true,
+      tokens: tokenSet({ stkAave: 1, aDAI: 500 }),
+    });
+    before(`Open Modal`, () => {
+      cy.doSwitchToDashboardBorrowView();
+      DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
+        maxAPY = $val;
+      });
+    });
+    //BUG T-5080 - should be range
+    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with max discount APY=${gho.apy.min}%, small amount`, () => {
+      ModalHelpers.setAmount(1);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+    });
+    it(`Verify modal with some discount ${gho.apy.min} < %APY < ${gho.apy.max}%, medium amount`, () => {
+      ModalHelpers.setAmount(200);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.greaterThan(gho.apy.min);
+        expect($val).to.be.lessThan(maxAPY);
+      });
+    });
+    it(`Verify modal without discount APY=${gho.apy.max}%, max amount`, () => {
+      ModalHelpers.setAmount(1000, true);
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(maxAPY);
+      });
+    });
+  });
+  describe(`Verify modal with changing discount for APY`, () => {
+    let minAPYRage: number;
+    let maxAPYRange: number;
+    let borrowedAPY: number;
+    configEnvWithTenderlyGoerliGhoFork({
+      v3: true,
+      tokens: tokenSet({ stkAave: 1, aDAI: 500 }),
     });
     DashboardActions.borrow(testData.borrow);
-    it(`APY for max amount with discount`, () => {
-      DashboardHelpers.openBorrowModal(gho.shortName);
-      ModalHelpers.setAmount(500, true);
-      ModalHelpers.getApyRate().then(($val) => {
-        expect($val).to.be.gt(gho.apy.min);
+    it(`Open Modal, and save values`, () => {
+      cy.doSwitchToDashboardBorrowView();
+      DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
+        maxAPYRange = $val;
+      });
+      DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
+        minAPYRage = $val;
+      });
+      DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
+        borrowedAPY = $val;
+      });
+    });
+    it(`Verify modal with max discount for this case, no amount`, () => {
+      ModalHelpers.getApy().then(($val) => {
+        expect($val).to.be.eql(borrowedAPY);
+        expect($val).to.be.eql(minAPYRage);
+      });
+    });
+    it(`Verify modal with some discount for this case, some amount`, () => {
+      ModalHelpers.setAmount(20);
+      ModalHelpers.getApyOld().then(($val) => {
+        expect($val).to.be.eql(borrowedAPY);
+        expect($val).to.be.eql(minAPYRage);
+      });
+      ModalHelpers.getApyNew().then(($val) => {
+        expect($val).to.be.greaterThan(borrowedAPY);
+        expect($val).to.be.greaterThan(minAPYRage);
+        expect($val).to.be.lessThan(maxAPYRange);
+      });
+    });
+    it(`Verify modal with max discount for this case, max amount`, () => {
+      ModalHelpers.setAmount(20, true);
+      ModalHelpers.getApyOld().then(($val) => {
+        expect($val).to.be.eql(borrowedAPY);
+        expect($val).to.be.eql(minAPYRage);
+      });
+      ModalHelpers.getApyNew().then(($val) => {
+        expect($val).to.be.greaterThan(borrowedAPY);
+        expect($val).to.be.greaterThan(minAPYRage);
+        expect($val).to.be.eql(maxAPYRange);
       });
     });
   });

@@ -1,14 +1,17 @@
 {
   "stkAAVE": {
-    "donorWalletAddress": "0xa68e2f643e0fa7062a78dfb6c629577ae21ad829",
-    "tokenAddress": "0x716AD55707ddbA3Bb180f717688A21C315Ce6A49"
+    "name": "stkAAVE",
+    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
+    "tokenAddress": "0xb85B34C58129a9a7d54149e86934ed3922b05592"
   },
   "aAAVE": {
+    "name": "aAAVE",
     "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
     "tokenAddress": "0x0a599770BD5a047B0d46B8d54E5FA7d200736aeF"
   },
   "aDAI": {
+    "name": "aDAI",
     "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
-    "tokenAddress": "0x035356d5CbA6EE20CB0395679279FbfF93afF60B"
+    "tokenAddress": "0x7402b9625D1712426807952b798e3180dC38876F"
   }
 }
