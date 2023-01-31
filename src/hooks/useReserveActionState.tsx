@@ -52,9 +52,9 @@ export const useReserveActionState = ({
       eModeBorrowDisabled,
     alerts: (
       <Stack gap={3}>
-        {balance === '0' && (
+        {balance === '0' && !isGho && (
           <>
-            {currentNetworkConfig.isTestnet && !isGho ? (
+            {currentNetworkConfig.isTestnet ? (
               <Warning sx={{ mb: 0 }} severity="info" icon={false}>
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
@@ -82,7 +82,7 @@ export const useReserveActionState = ({
           </>
         )}
 
-        {balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
+        {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Warning>
