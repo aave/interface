@@ -66,6 +66,7 @@ export const GhoIncentivesCard = ({
         </Box>
       ) : (
         <Tooltip
+          enterTouchDelay={0}
           title={
             <Box
               sx={{
