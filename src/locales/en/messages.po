@@ -2522,6 +2522,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 msgid "repaid"
 msgstr "repaid"
 
+#: src/modules/migration/StETHMigrationWarning.tsx
+msgid "stETH asset will be migrated as Wrapped stETH using Lido Protocol exchange which leads to supply balance change after migration 19.000(19000$)"
+msgstr "stETH asset will be migrated as Wrapped stETH using Lido Protocol exchange which leads to supply balance change after migration 19.000(19000$)"
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
