@@ -107,7 +107,7 @@ export const GhoBorrowModalContent = ({
   }, [amount]);
 
   const BorrowAPY = () => {
-    if (ghoLoadingData || (!hasGhoBorrowPositions && amount === '')) {
+    if (ghoLoadingData || (!hasGhoBorrowPositions && amount === '' && discountAvailable)) {
       return <NoData variant="secondary14" color="text.secondary" />;
     }
 
