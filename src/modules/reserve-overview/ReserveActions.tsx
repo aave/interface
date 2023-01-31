@@ -32,7 +32,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { amountToUSD } from 'src/utils/utils';
+import { amountToUsd } from 'src/utils/utils';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -68,7 +68,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     InterestRate.Variable
   ).toString();
 
-  const maxAmountToBorrowUSD = amountToUSD(
+  const maxAmountToBorrowUsd = amountToUsd(
     maxAmountToBorrow,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
@@ -81,7 +81,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     minRemainingBaseTokenBalance
   ).toString();
 
-  const maxAmountToSupplyUSD = amountToUSD(
+  const maxAmountToSupplyUsd = amountToUsd(
     maxAmountToSupply,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
@@ -139,14 +139,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           <Stack gap={3}>
             <SupplyAction
               value={maxAmountToSupply}
-              usdValue={maxAmountToSupplyUSD}
+              usdValue={maxAmountToSupplyUsd}
               symbol={selectedAsset}
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
             <BorrowAction
               value={maxAmountToBorrow}
-              usdValue={maxAmountToBorrowUSD}
+              usdValue={maxAmountToBorrowUsd}
               symbol={selectedAsset}
               disable={disableBorrowButton}
               onActionClicked={() => openBorrow(reserve.underlyingAsset)}

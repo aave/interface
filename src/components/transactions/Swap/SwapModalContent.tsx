@@ -13,7 +13,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
-import { amountToUSD } from 'src/utils/utils';
+import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
@@ -64,7 +64,7 @@ export const SwapModalContent = ({
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
 
-  const remainingCapUsd = amountToUSD(
+  const remainingCapUsd = amountToUsd(
     remainingCap(swapTarget.reserve),
     swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd

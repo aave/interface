@@ -49,7 +49,7 @@ export const minBaseTokenRemainingByNetwork: Record<number, string> = {
   [ChainId.arbitrum_one]: '0.0001',
 };
 
-export const amountToUSD = (
+export const amountToUsd = (
   amount: BigNumberValue,
   formattedPriceInMarketReferenceCurrency: string,
   marketReferencePriceInUsd: string
