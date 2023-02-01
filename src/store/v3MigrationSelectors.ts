@@ -519,7 +519,7 @@ const addPercent = (amount: string) => {
 };
 
 // adding  7 days of either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/useSwap.ts#L72-L78
+// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
 const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
   const convertedBorrowAPY = valueToBigNumber(borrowAPY);
