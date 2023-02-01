@@ -1,6 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
-import * as markets from '@bgd-labs/aave-address-book'; // import specific pool
+import * as markets from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
+
+// Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
@@ -133,21 +135,6 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  // [CustomMarket.proto_ethereum_v3_1]: {
-  //   marketTitle: 'Ethereum',
-  //   chainId: ChainId.mainnet,
-  //   v3: true,
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: markets..POOL,
-  //     WETH_GATEWAY: markets..WETH_GATEWAY,
-  //     WALLET_BALANCE_PROVIDER: markets..WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: markets..UI_POOL_DATA_PROVIDER,
-  //     UI_INCENTIVE_DATA_PROVIDER: markets..UI_INCENTIVE_DATA_PROVIDER,
-  //     REPAY_WITH_COLLATERAL_ADAPTER: markets..REPAY_WITH_COLLATERAL_ADAPTER,
-  //     SWAP_COLLATERAL_ADAPTER: markets..SWAP_COLLATERAL_ADAPTER,
-  //   },
-  // },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
