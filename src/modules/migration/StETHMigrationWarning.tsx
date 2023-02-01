@@ -37,6 +37,7 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
       icon={false}
       sx={{
         backgroundColor: 'error.200',
+        mb: 4,
       }}
     >
       <Typography color="error.100" variant="caption" component="span">
