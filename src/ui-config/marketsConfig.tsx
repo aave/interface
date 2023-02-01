@@ -117,7 +117,7 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
       WETH_GATEWAY: markets.AaveV2Ethereum.WETH_GATEWAY,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -138,7 +138,7 @@ export const marketsData: {
   //   chainId: ChainId.mainnet,
   //   v3: true,
   //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER.toLowerCase(),
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER,
   //     LENDING_POOL: markets..POOL,
   //     WETH_GATEWAY: markets..WETH_GATEWAY,
   //     WALLET_BALANCE_PROVIDER: markets..WALLET_BALANCE_PROVIDER,
@@ -159,7 +159,7 @@ export const marketsData: {
   //   },
   //   permissionComponent: <PermissionView />,
   //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER.toLowerCase(),
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets..POOL_ADDRESSES_PROVIDER,
   //     LENDING_POOL: markets..POOL,
   //     WETH_GATEWAY: markets..WETH_GATEWAY,
   //     // REPAY_WITH_COLLATERAL_ADAPTER: markets..REPAY_WITH_COLLATERAL_ADAPTER,
@@ -174,8 +174,7 @@ export const marketsData: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER:
-        markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2EthereumAMM.POOL,
       WETH_GATEWAY: markets.AaveV2EthereumAMM.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: markets.AaveV2EthereumAMM.WALLET_BALANCE_PROVIDER,
@@ -193,7 +192,7 @@ export const marketsData: {
       collateralRepay: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Polygon.POOL,
       WETH_GATEWAY: markets.AaveV2Polygon.WETH_GATEWAY,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV2Polygon.SWAP_COLLATERAL_ADAPTER,
@@ -218,7 +217,7 @@ export const marketsData: {
       collateralRepay: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Avalanche.POOL,
       WETH_GATEWAY: markets.AaveV2Avalanche.WETH_GATEWAY,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV2Avalanche.SWAP_COLLATERAL_ADAPTER,
@@ -243,7 +242,7 @@ export const marketsData: {
       faucet: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Goerli.POOL,
       WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
       FAUCET: markets.AaveV3Goerli.FAUCET,
@@ -262,13 +261,13 @@ export const marketsData: {
       collateralRepay: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Arbitrum.POOL,
       WETH_GATEWAY: markets.AaveV3Arbitrum.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: markets.AaveV3Arbitrum.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      L2_ENCODER: markets.AaveV3Arbitrum.L2_ENCODER,
       COLLECTOR: markets.AaveV3Arbitrum.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.SWAP_COLLATERAL_ADAPTER,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -287,15 +286,14 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER:
-        markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
       WETH_GATEWAY: markets.AaveV3ArbitrumGoerli.WETH_GATEWAY,
       FAUCET: markets.AaveV3ArbitrumGoerli.FAUCET,
       WALLET_BALANCE_PROVIDER: markets.AaveV3ArbitrumGoerli.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: '0xE8BA4db946a310A1Aca92571A53D3bdE834B5409',
+      L2_ENCODER: markets.AaveV3ArbitrumGoerli.L2_ENCODER,
     },
   },
   [CustomMarket.proto_avalanche_v3]: {
@@ -308,7 +306,7 @@ export const marketsData: {
       collateralRepay: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Avalanche.POOL,
       WETH_GATEWAY: markets.AaveV3Avalanche.WETH_GATEWAY,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -332,7 +330,7 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fuji.POOL,
       WETH_GATEWAY: markets.AaveV3Fuji.WETH_GATEWAY,
       FAUCET: markets.AaveV3Fuji.FAUCET,
@@ -350,14 +348,14 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER:
-        markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
       WETH_GATEWAY: markets.AaveV3OptimismGoerli.WETH_GATEWAY,
       FAUCET: markets.AaveV3OptimismGoerli.FAUCET,
       WALLET_BALANCE_PROVIDER: markets.AaveV3OptimismGoerli.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER,
     },
   },
   [CustomMarket.proto_fantom_v3]: {
@@ -370,7 +368,7 @@ export const marketsData: {
       liquiditySwap: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fantom.POOL,
       WETH_GATEWAY: markets.AaveV3Fantom.WETH_GATEWAY,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV3Fantom.SWAP_COLLATERAL_ADAPTER,
@@ -394,8 +392,7 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER:
-        markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
       WETH_GATEWAY: markets.AaveV3FantomTestnet.WETH_GATEWAY,
       FAUCET: markets.AaveV3FantomTestnet.FAUCET,
@@ -412,7 +409,7 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Harmony.POOL,
       WETH_GATEWAY: markets.AaveV3Harmony.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: markets.AaveV3Harmony.WALLET_BALANCE_PROVIDER,
@@ -431,13 +428,13 @@ export const marketsData: {
       liquiditySwap: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Optimism.POOL,
       WETH_GATEWAY: markets.AaveV3Optimism.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: markets.AaveV3Optimism.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV3Optimism.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Optimism.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      L2_ENCODER: markets.AaveV3Optimism.L2_ENCODER,
       COLLECTOR: markets.AaveV3Optimism.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -453,7 +450,7 @@ export const marketsData: {
       collateralRepay: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Polygon.POOL,
       WETH_GATEWAY: markets.AaveV3Polygon.WETH_GATEWAY,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
@@ -476,7 +473,7 @@ export const marketsData: {
       faucet: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Mumbai.POOL,
       WETH_GATEWAY: markets.AaveV3Mumbai.WETH_GATEWAY,
       FAUCET: markets.AaveV3Mumbai.FAUCET,
@@ -494,7 +491,7 @@ export const marketsData: {
     },
 
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Goerli.POOL,
       WETH_GATEWAY: markets.AaveV2Goerli.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: markets.AaveV2Goerli.WALLET_BALANCE_PROVIDER,
@@ -511,13 +508,13 @@ export const marketsData: {
       faucet: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Mumbai.POOL,
       WETH_GATEWAY: markets.AaveV2Mumbai.WETH_GATEWAY,
       FAUCET: markets.AaveV2Mumbai.FAUCET,
-      WALLET_BALANCE_PROVIDER: '0x0', // markets.AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0x0', // markets.AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: '0x0', // markets.AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER,
+      WALLET_BALANCE_PROVIDER: markets.AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
   [CustomMarket.proto_fuji]: {
@@ -528,7 +525,7 @@ export const marketsData: {
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER.toLowerCase(),
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Fuji.POOL,
       WETH_GATEWAY: markets.AaveV2Fuji.WETH_GATEWAY,
       FAUCET: markets.AaveV2Fuji.FAUCET,
