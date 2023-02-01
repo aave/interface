@@ -101,7 +101,9 @@ const testData = {
   },
 };
 
-describe('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+//skip while caps is full
+//TODO: make adaptive skip if caps is full
+describe.skip('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
 
