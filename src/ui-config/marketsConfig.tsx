@@ -120,7 +120,7 @@ export const marketsData: {
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
+      LENDING_POOL: markets.AaveV2Ethereum.POOL,
       WETH_GATEWAY: markets.AaveV2Ethereum.WETH_GATEWAY,
       REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
       SWAP_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.SWAP_COLLATERAL_ADAPTER,
