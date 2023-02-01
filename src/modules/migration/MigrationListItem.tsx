@@ -284,9 +284,13 @@ export const MigrationListItem = ({
         </ListColumn>
       </Box>
 
-      {userReserve.reserve.symbol !== 'stETH' && (
+      {userReserve.reserve.symbol === 'stETH' && (
         <Box sx={{ pl: '16px', width: '100%' }}>
-          <StETHMigrationWarning />
+          <StETHMigrationWarning
+            v2Price={userReserve.reserve.priceInUSD}
+            v2Amount={amount}
+            v3Price={v3Rates?.priceInUSD}
+          />
         </Box>
       )}
     </ListItem>
