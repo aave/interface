@@ -1,5 +1,7 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
@@ -27,6 +29,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
+          <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
             <img src={`/aave.svg`} width="32px" height="32px" alt="" />
             <Typography
@@ -39,7 +42,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add
+              AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add
               more security to the protocol and earn Safety Incentives. In the case of a shortfall
               event, up to 30% of your stake can be slashed to cover the deficit, providing an
               additional layer of protection for the protocol.
