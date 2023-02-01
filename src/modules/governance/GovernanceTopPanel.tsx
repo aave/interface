@@ -1,7 +1,9 @@
+import { ChainId } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
@@ -40,6 +42,7 @@ export const GovernanceTopPanel = () => {
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
+          <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
             <img src={`/aave.svg`} width="32px" height="32px" alt="" />
             <Typography
@@ -56,14 +59,14 @@ export const GovernanceTopPanel = () => {
               AAVE token-holders collectively discuss, propose, and vote on upgrades to the
               protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new
               proposals or delagate to an address of choice. To learn more check out the Governance
-              documentation
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/governance"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >
-              <Trans>here.</Trans>
+              <Trans>documentation</Trans>
             </Link>
+            .
           </Typography>
         </Box>
       }
