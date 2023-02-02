@@ -83,6 +83,7 @@ export type V3Rates = {
   aIncentivesData?: ReserveIncentiveResponse[];
   vIncentivesData?: ReserveIncentiveResponse[];
   sIncentivesData?: ReserveIncentiveResponse[];
+  priceInUSD: string;
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
@@ -317,6 +318,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         aIncentivesData: v3SupplyAsset.reserve.aIncentivesData,
         vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
         sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
+        priceInUSD: v3SupplyAsset.reserve.priceInUSD,
       };
       if (v3SupplyAsset.reserve.isFrozen) {
         migrationDisabled = MigrationDisabled.ReserveFrozen;
@@ -368,6 +370,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         aIncentivesData: v3BorrowAsset.reserve.aIncentivesData,
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
+        priceInUSD: v3BorrowAsset.reserve.priceInUSD,
       };
       const notEnoughLiquidityOnV3 = valueToBigNumber(
         valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)

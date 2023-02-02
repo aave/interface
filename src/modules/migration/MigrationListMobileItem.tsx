@@ -19,6 +19,7 @@ import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
+import { StETHMigrationWarning } from './StETHMigrationWarning';
 
 interface MigrationListMobileItemProps {
   checked: boolean;
@@ -292,6 +293,16 @@ export const MigrationListMobileItem = ({
               </Typography>
             </Button>
           </Box>
+        </Box>
+      )}
+
+      {userReserve.reserve.symbol === 'stETH' && (
+        <Box sx={{ pl: '16px', width: '100%' }}>
+          <StETHMigrationWarning
+            v2Price={userReserve.reserve.priceInUSD}
+            v2Amount={amount}
+            v3Price={v3Rates?.priceInUSD}
+          />
         </Box>
       )}
     </ListItem>
