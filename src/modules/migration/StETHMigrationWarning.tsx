@@ -36,11 +36,11 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
     <Warning
       icon={false}
       sx={{
-        backgroundColor: 'error.200',
         mb: 4,
       }}
+      severity="error"
     >
-      <Typography color="error.100" variant="caption" component="span">
+      <Typography variant="caption" component="span">
         <Trans>
           stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to
           supply balance change after migration:{' '}
@@ -52,13 +52,12 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
                 variant="caption"
                 value={v3TotalPrice}
                 symbol="USD"
-                color="error.100"
                 symbolsColor="error.100"
               />
               {').'}
             </>
           ) : (
-            <NoData variant="caption" color="error.100" component="span" />
+            <NoData variant="caption" component="span" />
           )}
         </Trans>{' '}
       </Typography>
