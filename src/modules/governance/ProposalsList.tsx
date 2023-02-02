@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
@@ -43,7 +43,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             proposal.ipfsHash,
             governanceConfig.ipfsGateway
           );
-          nextProposals.push({
+          nextProposals.unshift({
             ipfs: {
               id: i,
               originalHash: proposal.ipfsHash,
@@ -53,7 +53,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             prerendered: false,
           });
         }
-        setProposals((p) => [...p, ...nextProposals]);
+        setProposals((p) => [...nextProposals, ...p]);
       }
       setLoadingNewProposals(false);
     } catch (e) {
@@ -79,8 +79,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         );
         setProposals((proposals) => {
           updatedProposals.map((proposal) => {
-            proposals[proposal.id].proposal = proposal;
-            proposals[proposal.id].prerendered = false;
+            proposals[proposals.length - 1 - proposal.id].proposal = proposal;
+            proposals[proposals.length - 1 - proposal.id].prerendered = false;
           });
           return proposals;
         });
@@ -93,6 +93,14 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
 
   usePolling(fetchNewProposals, 60000, false, [proposals.length]);
   usePolling(updatePendingProposals, 30000, false, [proposals.length]);
+
+  const filteredProposals = useMemo(
+    () =>
+      proposals.filter(
+        (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
+      ),
+    [proposals, proposalFilter]
+  );
 
   return (
     <div>
@@ -124,20 +132,14 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         </Select>
       </Box>
       {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
-      {proposals
-        .slice()
-        .reverse()
-        .filter(
-          (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
-        )
-        .map(({ proposal, prerendered, ipfs }) => (
-          <ProposalListItem
-            key={proposal.id}
-            proposal={proposal}
-            ipfs={ipfs}
-            prerendered={prerendered}
-          />
-        ))}
+      {filteredProposals.map(({ proposal, prerendered, ipfs }) => (
+        <ProposalListItem
+          key={proposal.id}
+          proposal={proposal}
+          ipfs={ipfs}
+          prerendered={prerendered}
+        />
+      ))}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export const getStaticProps = async () => {
     };
   });
 
-  return { props: { proposals } };
+  return { props: { proposals: proposals.slice().reverse() } };
 };
 
 export type GovernancePageProps = {
