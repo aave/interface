@@ -54,14 +54,22 @@ export const createProtocolDataSlice: StateCreator<
     tryPermit: (reserveAddress: string) => {
       const currentNetworkConfig = get().currentNetworkConfig;
       const currentMarketData = get().currentMarketData;
+      // current chain id, or underlying chain id for fork networks
       const underlyingChainId = currentNetworkConfig.isFork
         ? currentNetworkConfig.underlyingChainId
         : currentMarketData.chainId;
-      const tryPermit =
+      // enable permit for all v3 test network assets or v3 production assets included in permitConfig)
+      const testnetPermitEnabled = Boolean(
         currentMarketData.v3 &&
-        underlyingChainId &&
-        permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()];
-      return Boolean(tryPermit);
+          currentNetworkConfig.isTestnet &&
+          reserveAddress.toLowerCase() !== '0xb685400156cf3cbe8725958deaa61436727a30c3' // WMATIC on Mumbai is a special case
+      );
+      const productionPermitEnabled = Boolean(
+        currentMarketData.v3 &&
+          underlyingChainId &&
+          permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()]
+      );
+      return testnetPermitEnabled || productionPermitEnabled;
     },
   };
 };
