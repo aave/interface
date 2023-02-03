@@ -30,7 +30,7 @@ export const SuppliedPositionsListItem = ({
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
-    reserve.usageAsCollateralEnabled &&
+    reserve.reserveLiquidationThreshold !== '0' &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
@@ -43,9 +43,8 @@ export const SuppliedPositionsListItem = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
-        canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
-      }`}
+      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
+        }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
     >

@@ -54,7 +54,7 @@ export const WithdrawModalContent = ({
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
     userReserve?.usageAsCollateralEnabledOnUser &&
-    poolReserve.usageAsCollateralEnabled &&
+    poolReserve.reserveLiquidationThreshold !== '0' &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
     // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.01

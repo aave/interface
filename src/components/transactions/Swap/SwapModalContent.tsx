@@ -164,7 +164,7 @@ export const SwapModalContent = ({
   const showHealthFactor =
     user &&
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
-    poolReserve.usageAsCollateralEnabled;
+    poolReserve.reserveLiquidationThreshold !== '0';
 
   // calculate impact based on $ difference
   const priceImpact =

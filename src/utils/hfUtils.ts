@@ -137,7 +137,8 @@ export const calculateHFAfterRepay = ({
   });
 
   const hfRealEffectOfFromAmount =
-    fromAssetData.usageAsCollateralEnabled && repayWithUserReserve?.usageAsCollateralEnabledOnUser
+    fromAssetData.reserveLiquidationThreshold !== '0' &&
+    repayWithUserReserve?.usageAsCollateralEnabledOnUser
       ? calculateHealthFactorFromBalancesBigUnits({
           collateralBalanceMarketReferenceCurrency: valueToBigNumber(amountToSwap).multipliedBy(
             fromAssetData.priceInUSD
