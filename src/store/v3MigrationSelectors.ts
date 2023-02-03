@@ -286,7 +286,10 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         definitiveAssets[0]
       );
       const definitiveAsset = v3ReservesMap[underlyingAssetAddress];
-      if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
+      if (
+        definitiveAsset.reserve.reserveLiquidationThreshold !== '0' &&
+        definitiveAsset.reserve.isIsolated
+      ) {
         isolatedReserveV3 = { ...definitiveAsset.reserve, enteringIsolationMode: true };
       }
     }

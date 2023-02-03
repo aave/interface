@@ -179,7 +179,7 @@ export const SupplyInfo = ({
               </Typography>
             </Warning>
           </Box>
-        ) : reserve.usageAsCollateralEnabled ? (
+        ) : reserve.reserveLiquidationThreshold !== '0' ? (
           <Box
             sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
             paddingTop={'42px'}
@@ -203,7 +203,7 @@ export const SupplyInfo = ({
           </Box>
         )}
       </div>
-      {reserve.usageAsCollateralEnabled && (
+      {reserve.reserveLiquidationThreshold !== '0' && (
         <Box
           sx={{
             display: 'flex',

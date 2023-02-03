@@ -96,7 +96,7 @@ export const SwapModalDetails = ({
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              {parseUsageString(swapSource.reserve.usageAsCollateralEnabled)}
+              {parseUsageString(swapSource.reserve.reserveLiquidationThreshold !== '0')}
 
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
