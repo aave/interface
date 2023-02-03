@@ -1247,10 +1247,10 @@ msgstr "No assets selected to migrate."
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "No search results for"
-msgstr "No search results for"
+#: src/components/NoSearchResults.tsx
+#: src/components/NoSearchResults.tsx
+msgid "No search results{0}"
+msgstr "No search results{0}"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -2303,10 +2303,6 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2605,6 +2601,10 @@ msgstr "{networkName} Faucet"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
+
+#: src/components/NoSearchResults.tsx
+msgid "{subtitle}"
+msgstr "{subtitle}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

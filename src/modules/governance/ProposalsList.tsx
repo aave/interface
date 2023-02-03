@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useMemo, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
@@ -26,7 +28,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const [updatingPendingProposals, setUpdatingPendingProposals] = useState(true);
   const [proposals, setProposals] = useState(initialProposals);
   const [proposalFilter, setProposalFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('Add');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loadedIndex, setLoadedIndex] = useState(1);
 
   const handleChange = (event: SelectChangeEvent) => {
     setProposalFilter(event.target.value as string);
@@ -101,13 +104,25 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       proposals.filter(
         (proposal) =>
           (proposalFilter === 'all' || proposal.proposal.state === proposalFilter) &&
-          (proposal.ipfs.shortDescription.includes(searchQuery) ||
-            proposal.ipfs.title.includes(searchQuery))
+          (proposal.ipfs.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            proposal.ipfs.title.toLowerCase().includes(searchQuery.toLowerCase()))
       ),
     [proposals, proposalFilter, searchQuery]
   );
 
-  console.log('rendering');
+  const loadedProposals = useMemo(
+    () => filteredProposals.slice(0, loadedIndex * 10),
+    [filteredProposals, loadedIndex]
+  );
+
+  const onSearchTermChange = (value: string) => {
+    setLoadedIndex(1);
+    setSearchQuery(value);
+  };
+
+  const handleLoadMore = () => {
+    setLoadedIndex((loadedIndex) => loadedIndex + 1);
+  };
 
   return (
     <div>
@@ -116,7 +131,15 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           px: 6,
           py: 8,
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: {
+            xs: 'column',
+            lg: 'row',
+          },
+          alignItems: {
+            xs: 'flex-start',
+            lg: 'center',
+          },
+          gap: 3,
           borderBottom: '1px solid',
           borderColor: 'divider',
         }}
@@ -124,8 +147,17 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
-        <MarketAssetSearchInput onSearchTermChange={(value) => setSearchQuery(value)} />
-        <Typography sx={{ mx: 4 }}>
+        <MarketAssetSearchInput
+          wrapperSx={{
+            width: {
+              xs: '100%',
+              lg: '340px',
+            },
+          }}
+          placeholder="Search proposals"
+          onSearchTermChange={onSearchTermChange}
+        />
+        <Typography>
           <Trans>Filter</Trans>
         </Typography>
         <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
@@ -140,14 +172,24 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         </Select>
       </Box>
       {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
-      {filteredProposals.map(({ proposal, prerendered, ipfs }) => (
-        <ProposalListItem
-          key={proposal.id}
-          proposal={proposal}
-          ipfs={ipfs}
-          prerendered={prerendered}
-        />
-      ))}
+      {loadedProposals.length ? (
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={handleLoadMore}
+          hasMore={loadedProposals.length < filteredProposals.length}
+        >
+          {loadedProposals.map(({ proposal, prerendered, ipfs }) => (
+            <ProposalListItem
+              key={proposal.id}
+              proposal={proposal}
+              ipfs={ipfs}
+              prerendered={prerendered}
+            />
+          ))}
+        </InfiniteScroll>
+      ) : (
+        <NoSearchResults searchTerm={searchQuery} />
+      )}
     </div>
   );
 }

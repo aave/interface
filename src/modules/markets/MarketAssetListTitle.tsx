@@ -68,7 +68,16 @@ export const MarketAssetListTitle = ({
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <MarketAssetSearchInput onSearchTermChange={onSearchTermChange} />
+            <MarketAssetSearchInput
+              wrapperSx={{
+                width: {
+                  xs: '100%',
+                  sm: '340px',
+                },
+              }}
+              placeholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
+              onSearchTermChange={onSearchTermChange}
+            />
             {sm && (
               <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
                 <Typography variant="buttonM">

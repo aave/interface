@@ -1,14 +1,20 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { Box, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
+import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 
 interface MarketAssetSearchInputProps {
   onSearchTermChange: (value: string) => void;
+  wrapperSx?: BoxProps;
+  placeholder: string;
 }
 
-export const MarketAssetSearchInput = ({ onSearchTermChange }: MarketAssetSearchInputProps) => {
+export const MarketAssetSearchInput = ({
+  onSearchTermChange,
+  wrapperSx,
+  placeholder,
+}: MarketAssetSearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -26,74 +32,38 @@ export const MarketAssetSearchInput = ({ onSearchTermChange }: MarketAssetSearch
       onSearchTermChange(value);
     }, 300);
   }, [onSearchTermChange]);
-
-  if (sm) {
-    return (
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          alignItems: 'center',
-          flexGrow: 1,
-          gap: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
-          height: '36px',
-        })}
-      >
-        <Box sx={{ ml: 2, mt: 1 }}>
-          <SearchIcon height={16} />
-        </Box>
-        <InputBase
-          autoFocus
-          inputRef={inputEl}
-          sx={{ flexGrow: 1, fontSize: 16 }}
-          placeholder="Search asset"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            debounchedChangeHandler(e.target.value);
-          }}
-        />
-        <IconButton
-          sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
-          onClick={() => handleClear()}
-        >
-          <XCircleIcon height={16} />
-        </IconButton>
+  return (
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: '6px',
+        height: '36px',
+        ...wrapperSx,
+      })}
+    >
+      <Box sx={{ ml: 2, mt: 1 }}>
+        <SearchIcon height={16} />
       </Box>
-    );
-  } else {
-    return (
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          alignItems: 'center',
-          gap: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
-          height: '36px',
-        })}
+      <InputBase
+        autoFocus={sm}
+        inputRef={inputEl}
+        sx={{ width: '100%', fontSize: { xs: 16, sm: 14 } }}
+        placeholder={placeholder}
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          debounchedChangeHandler(e.target.value);
+        }}
+      />
+      <IconButton
+        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        onClick={() => handleClear()}
       >
-        <Box sx={{ ml: 2, mt: 1 }}>
-          <SearchIcon height={16} />
-        </Box>
-        <InputBase
-          inputRef={inputEl}
-          sx={{ width: '275px' }}
-          placeholder="Search asset name, symbol, or address"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            debounchedChangeHandler(e.target.value);
-          }}
-        />
-        <IconButton
-          sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
-          onClick={() => handleClear()}
-        >
-          <XCircleIcon height={16} />
-        </IconButton>
-      </Box>
-    );
-  }
+        <XCircleIcon height={16} />
+      </IconButton>
+    </Box>
+  );
 };

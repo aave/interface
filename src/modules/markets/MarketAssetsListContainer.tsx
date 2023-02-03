@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
@@ -87,45 +88,11 @@ export const MarketAssetsListContainer = () => {
 
       {/* Show no search results message if nothing hits in either list */}
       {!loading && filteredData.length === 0 && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 1,
-            pt: 15,
-            pb: 32,
-            px: 4,
-          }}
-        >
-          {sm ? (
-            <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
-              <Typography variant="h2">
-                <Trans>No search results for</Trans>
-              </Typography>
-              <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
-                &apos;{searchTerm}&apos;
-              </Typography>
-            </Box>
-          ) : (
-            <Typography
-              sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
-              variant="h2"
-            >
-              <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
-            </Typography>
-          )}
-          <Typography
-            sx={{ width: '280px', textAlign: 'center' }}
-            variant="description"
-            color="text.secondary"
-          >
-            <Trans>
-              We couldn&apos;t find any assets related to your search. Try again with a different
-              asset name, symbol, or address.
-            </Trans>
-          </Typography>
-        </Box>
+        <NoSearchResults
+          searchTerm={searchTerm}
+          subtitle="We couldn't find any assets related to your search. Try again with a different asset
+          name, symbol, or address."
+        />
       )}
     </ListWrapper>
   );
