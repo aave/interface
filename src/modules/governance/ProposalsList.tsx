@@ -16,6 +16,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
+import { MarketAssetSearchInput } from '../markets/MarketAssetSearchInput';
 import { ProposalListItem } from './ProposalListItem';
 import { enhanceProposalWithTimes } from './utils/formatProposal';
 
@@ -25,6 +26,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const [updatingPendingProposals, setUpdatingPendingProposals] = useState(true);
   const [proposals, setProposals] = useState(initialProposals);
   const [proposalFilter, setProposalFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('Add');
 
   const handleChange = (event: SelectChangeEvent) => {
     setProposalFilter(event.target.value as string);
@@ -97,10 +99,15 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const filteredProposals = useMemo(
     () =>
       proposals.filter(
-        (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
+        (proposal) =>
+          (proposalFilter === 'all' || proposal.proposal.state === proposalFilter) &&
+          (proposal.ipfs.shortDescription.includes(searchQuery) ||
+            proposal.ipfs.title.includes(searchQuery))
       ),
-    [proposals, proposalFilter]
+    [proposals, proposalFilter, searchQuery]
   );
+
+  console.log('rendering');
 
   return (
     <div>
@@ -117,6 +124,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
+        <MarketAssetSearchInput onSearchTermChange={(value) => setSearchQuery(value)} />
         <Typography sx={{ mx: 4 }}>
           <Trans>Filter</Trans>
         </Typography>
