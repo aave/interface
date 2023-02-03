@@ -48,7 +48,10 @@ export function calculateHFAfterSwap({
   // it takes into account if in emode as threshold is different
   let hfEffectOfFromAmount = '0';
 
-  if (fromAssetUserData.usageAsCollateralEnabledOnUser && fromAssetData.usageAsCollateralEnabled) {
+  if (
+    fromAssetUserData.usageAsCollateralEnabledOnUser &&
+    fromAssetData.reserveLiquidationThreshold !== '0'
+  ) {
     hfEffectOfFromAmount = calculateHealthFactorFromBalancesBigUnits({
       collateralBalanceMarketReferenceCurrency: valueToBigNumber(fromAmount).multipliedBy(
         fromAssetData.formattedPriceInMarketReferenceCurrency

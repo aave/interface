@@ -91,7 +91,10 @@ export const WithdrawModalContent = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
-  if (userReserve?.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
+  if (
+    userReserve?.usageAsCollateralEnabledOnUser &&
+    poolReserve.reserveLiquidationThreshold !== '0'
+  ) {
     const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
