@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -16,8 +16,6 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { breakpoints } = useTheme();
-  const sm = useMediaQuery(breakpoints.down('sm'));
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredData = reserves
