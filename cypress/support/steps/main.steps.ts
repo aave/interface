@@ -666,7 +666,7 @@ export const emodeActivating = (
  */
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+    cy.get('[data-cy=CloseModalIcon]').last().should('not.be.disabled').click({ force: true });
     cy.get('[data-cy=Modal]').should('not.exist');
   });
 };

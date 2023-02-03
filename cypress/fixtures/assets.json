@@ -223,6 +223,12 @@
       "collateral": true,
       "wrapped": true
     },
+    "WETH": {
+      "fullName": "WrappedEthereum",
+      "shortName": "WETH",
+      "collateral": true,
+      "wrapped": true
+    },
     "USDT": {
       "fullName": "USDT Coin",
       "shortName": "USDT",
