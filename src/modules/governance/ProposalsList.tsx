@@ -129,7 +129,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       <Box
         sx={{
           px: 6,
-          py: 8,
+          py: 6,
           display: 'flex',
           flexDirection: {
             xs: 'column',
@@ -147,16 +147,6 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
-        <SearchInput
-          wrapperSx={{
-            width: {
-              xs: '100%',
-              lg: '340px',
-            },
-          }}
-          placeholder="Search proposals"
-          onSearchTermChange={onSearchTermChange}
-        />
         <Typography>
           <Trans>Filter</Trans>
         </Typography>
@@ -170,6 +160,16 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             </MenuItem>
           ))}
         </Select>
+        <SearchInput
+          wrapperSx={{
+            width: {
+              xs: '100%',
+              lg: '280px',
+            },
+          }}
+          placeholder="Search proposals"
+          onSearchTermChange={onSearchTermChange}
+        />
       </Box>
       {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
       {loadedProposals.length ? (
