@@ -54,14 +54,18 @@ export const createProtocolDataSlice: StateCreator<
     tryPermit: (reserveAddress: string) => {
       const currentNetworkConfig = get().currentNetworkConfig;
       const currentMarketData = get().currentMarketData;
+      // current chain id, or underlying chain id for fork networks
       const underlyingChainId = currentNetworkConfig.isFork
         ? currentNetworkConfig.underlyingChainId
         : currentMarketData.chainId;
-      const tryPermit =
+      // enable permit for all v3 test network assets or v3 production assets included in permitConfig)
+      const testnetPermitEnabled = Boolean(currentMarketData.v3 && currentNetworkConfig.isTestnet);
+      const productionPermitEnabled = Boolean(
         currentMarketData.v3 &&
-        underlyingChainId &&
-        permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()];
-      return Boolean(tryPermit);
+          underlyingChainId &&
+          permitByChainAndToken[underlyingChainId]?.[utils.getAddress(reserveAddress).toLowerCase()]
+      );
+      return testnetPermitEnabled || productionPermitEnabled;
     },
   };
 };

@@ -66,7 +66,7 @@ export const weightedAverageAPY = (
   discountableAmount: number,
   borrowRateAfterDiscount: number
 ) => {
-  if (totalBorrowAmount === 0) return baseVariableBorrowRate;
+  if (discountableAmount === 0) return baseVariableBorrowRate;
   if (totalBorrowAmount <= discountableAmount) return borrowRateAfterDiscount;
 
   const nonDiscountableAmount = totalBorrowAmount - discountableAmount;

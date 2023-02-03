@@ -19,6 +19,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 
@@ -207,12 +208,18 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Box>
         </Box>
       </PanelRow>
+      {reserve.eModeCategoryId !== 0 && (
+        <>
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
+          <ReserveEModePanel reserve={reserve} />
+        </>
+      )}
       <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow id="discount">
         <PanelTitle>
           <Trans>Staking incentive</Trans>
         </PanelTitle>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <GhoDiscountCalculator />
         </Box>
       </PanelRow>

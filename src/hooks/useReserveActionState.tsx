@@ -41,9 +41,10 @@ export const useReserveActionState = ({
   const eModeBorrowDisabled =
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  const isGho = isGhoAndSupported({ symbol: reserve.symbol, currentMarket });
+
   return {
-    disableSupplyButton:
-      balance === '0' || isGhoAndSupported({ symbol: reserve.symbol, currentMarket }),
+    disableSupplyButton: balance === '0' || isGho,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
@@ -51,7 +52,7 @@ export const useReserveActionState = ({
       eModeBorrowDisabled,
     alerts: (
       <Stack gap={3}>
-        {balance === '0' && (
+        {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (
               <Warning sx={{ mb: 0 }} severity="info" icon={false}>
@@ -81,7 +82,7 @@ export const useReserveActionState = ({
           </>
         )}
 
-        {balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
+        {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Warning>

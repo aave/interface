@@ -60,7 +60,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
         subValue={ghoUserData.userGhoBorrowBalance}
         disabled={ghoUserData.userGhoBorrowBalance === 0}
       />
-
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <GhoIncentivesCard
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
@@ -75,7 +74,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </Row>
-
       <Row
         caption={
           <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
@@ -94,7 +92,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
       </Row>
-
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={!isActive}

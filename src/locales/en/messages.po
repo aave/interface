@@ -365,7 +365,6 @@ msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
 #: src/components/incentives/GhoIncentivesCard.tsx
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Borrow amount"
 msgstr "Borrow amount"
 
@@ -397,10 +396,6 @@ msgstr "Borrow info"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Borrow term"
-msgstr "Borrow term"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
@@ -772,7 +767,7 @@ msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network
 msgid "E-Mode"
 msgstr "E-Mode"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
 msgid "E-Mode Category"
 msgstr "E-Mode Category"
 
@@ -788,9 +783,13 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to 97%. <
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Effective interest rate"
+msgstr "Effective interest rate"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -902,10 +901,6 @@ msgstr "Fetching data..."
 msgid "Filter"
 msgstr "Filter"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
-msgstr "For each staked AAVE Safety Module participants may borrow GHO with lower interest rate."
-
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
 msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
@@ -934,13 +929,14 @@ msgstr "Funds in the Safety Module"
 msgid "GHO"
 msgstr "GHO"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrow rate"
-msgstr "GHO borrow rate"
-
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"
 msgstr "GHO discount program"
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+msgid "GHO effective interest rate"
+msgstr "GHO effective interest rate"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1033,9 +1029,9 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Interest owed"
-msgstr "Interest owed"
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Interest accrued"
+msgstr "Interest accrued"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1106,7 +1102,6 @@ msgstr "Language"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -1130,7 +1125,7 @@ msgstr "Liquidation <0/> threshold"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
@@ -1144,7 +1139,7 @@ msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
@@ -1179,7 +1174,7 @@ msgstr "Markets"
 msgid "Max"
 msgstr "Max"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
@@ -1585,8 +1580,8 @@ msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
-msgstr "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
+msgid "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn more</1>"
+msgstr "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn more</1>"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
@@ -1730,10 +1725,6 @@ msgstr "Stake cooldown activated"
 msgid "Staked"
 msgstr "Staked"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Staked AAVE amount"
-msgstr "Staked AAVE amount"
-
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Staking"
@@ -1752,6 +1743,10 @@ msgstr "Staking Rewards"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Staking balance"
 msgstr "Staking balance"
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+msgid "Staking discount"
+msgstr "Staking discount"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Staking incentive"
@@ -2107,6 +2102,12 @@ msgstr "Total borrows"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
 msgstr "Total emission per day"
+
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
+msgid "Total interest accrued"
+msgstr "Total interest accrued"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
@@ -2641,6 +2642,10 @@ msgstr "{networkName} Faucet"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
+msgid "{title}"
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
