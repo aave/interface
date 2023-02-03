@@ -18,7 +18,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
-import { MarketAssetSearchInput } from '../markets/MarketAssetSearchInput';
+import { SearchInput } from '../../components/SearchInput';
 import { ProposalListItem } from './ProposalListItem';
 import { enhanceProposalWithTimes } from './utils/formatProposal';
 
@@ -147,7 +147,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
-        <MarketAssetSearchInput
+        <SearchInput
           wrapperSx={{
             width: {
               xs: '100%',

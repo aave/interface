@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { MarketAssetSearchInput } from './MarketAssetSearchInput';
+import { SearchInput } from '../../components/SearchInput';
 
 interface MarketAssetListTitleProps {
   marketTitle: string;
@@ -68,7 +68,7 @@ export const MarketAssetListTitle = ({
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <MarketAssetSearchInput
+            <SearchInput
               wrapperSx={{
                 width: {
                   xs: '100%',

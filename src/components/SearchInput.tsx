@@ -4,17 +4,13 @@ import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 
-interface MarketAssetSearchInputProps {
+interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
   wrapperSx?: BoxProps;
   placeholder: string;
 }
 
-export const MarketAssetSearchInput = ({
-  onSearchTermChange,
-  wrapperSx,
-  placeholder,
-}: MarketAssetSearchInputProps) => {
+export const SearchInput = ({ onSearchTermChange, wrapperSx, placeholder }: SearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
