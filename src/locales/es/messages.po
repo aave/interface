@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-02 18:05\n"
+"PO-Revision-Date: 2023-02-03 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2537,7 +2537,7 @@ msgstr "stETH suministrado como garantía continuará acumulando recompensas de 
 
 #: src/modules/migration/StETHMigrationWarning.tsx
 msgid "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to supply balance change after migration: {0}"
-msgstr ""
+msgstr "Los tokens stETH se migrarán a Wrapped stETH usando el wrapper del protocolo de Lido, lo que provoca un cambio en el balance de suministro después de la migración: {0}"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
