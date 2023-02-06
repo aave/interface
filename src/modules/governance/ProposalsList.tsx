@@ -1,13 +1,4 @@
-import { ProposalState } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
-import {
-  Box,
-  LinearProgress,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -18,7 +9,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
-import { SearchInput } from '../../components/SearchInput';
+import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalListItem } from './ProposalListItem';
 import { enhanceProposalWithTimes } from './utils/formatProposal';
 
@@ -30,10 +21,6 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const [proposalFilter, setProposalFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [loadedIndex, setLoadedIndex] = useState(1);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setProposalFilter(event.target.value as string);
-  };
 
   async function fetchNewProposals() {
     try {
@@ -126,51 +113,11 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
 
   return (
     <div>
-      <Box
-        sx={{
-          px: 6,
-          py: 6,
-          display: 'flex',
-          flexDirection: {
-            xs: 'column',
-            lg: 'row',
-          },
-          alignItems: {
-            xs: 'flex-start',
-            lg: 'center',
-          },
-          gap: 3,
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Typography variant="h3" sx={{ flexGrow: 1 }}>
-          <Trans>Proposals</Trans>
-        </Typography>
-        <Typography>
-          <Trans>Filter</Trans>
-        </Typography>
-        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
-          <MenuItem value="all">
-            <Trans>All proposals</Trans>
-          </MenuItem>
-          {Object.keys(ProposalState).map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
-        <SearchInput
-          wrapperSx={{
-            width: {
-              xs: '100%',
-              lg: '280px',
-            },
-          }}
-          placeholder="Search proposals"
-          onSearchTermChange={onSearchTermChange}
-        />
-      </Box>
+      <ProposalListHeader
+        proposalFilter={proposalFilter}
+        handleProposalFilterChange={setProposalFilter}
+        handleSearchQueryChange={onSearchTermChange}
+      />
       {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
       {loadedProposals.length ? (
         <InfiniteScroll

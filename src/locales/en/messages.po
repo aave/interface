@@ -136,7 +136,8 @@ msgstr "All Assets"
 msgid "All done!"
 msgstr "All done!"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "All proposals"
 
@@ -461,7 +462,7 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/components/TitleWithSearchBar.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -860,7 +861,8 @@ msgstr "Faucet {0}"
 msgid "Fetching data..."
 msgstr "Fetching data..."
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
 
@@ -1404,7 +1406,8 @@ msgstr "Proposal details"
 msgid "Proposal overview"
 msgstr "Proposal overview"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Proposals"
 
@@ -2482,7 +2485,7 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "assets"
 

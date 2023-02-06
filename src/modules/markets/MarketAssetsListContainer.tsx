@@ -1,15 +1,15 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
+import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { MarketAssetListTitle } from 'src/modules/markets/MarketAssetListTitle';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -17,6 +17,8 @@ export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const filteredData = reserves
     .filter((res) => res.isActive)
@@ -48,9 +50,14 @@ export const MarketAssetsListContainer = () => {
   return (
     <ListWrapper
       titleComponent={
-        <MarketAssetListTitle
+        <TitleWithSearchBar
           onSearchTermChange={setSearchTerm}
-          marketTitle={currentMarketData.marketTitle}
+          title={
+            <>
+              {currentMarketData.marketTitle} <Trans>assets</Trans>
+            </>
+          }
+          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         />
       }
     >
