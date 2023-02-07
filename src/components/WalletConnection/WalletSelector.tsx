@@ -18,8 +18,6 @@ export type WalletRowProps = {
   walletType: WalletType;
 };
 
-// const resolution = new Resolution()
-
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet } = useWeb3Context();
 
@@ -171,7 +169,7 @@ export const WalletSelector = () => {
         const data = await response.json();
         const resolvedAddress = data['meta']['owner'];
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectWatchModeOnly(resolvedAddress);
+          connectReadOnlyMode(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
@@ -224,7 +222,7 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or Web3 Domain"
+          placeholder="Enter ethereum address or username"
           fullWidth
           autoFocus
           value={inputMockWalletAddress}
