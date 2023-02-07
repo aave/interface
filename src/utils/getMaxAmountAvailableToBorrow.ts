@@ -80,6 +80,34 @@ export function getMaxAmountAvailableToBorrow(
   return shouldAddMargin ? maxUserAmountToBorrow.multipliedBy('0.99') : maxUserAmountToBorrow;
 }
 
+/**
+ * Calculates the maximum amount of GHO a user can mint
+ * @param user
+ */
+export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse) {
+  const maxUserAmountToMint = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
+
+  const shouldAddMargin =
+    /**
+     * When a user has borrows we assume the debt is increasing faster then the supply.
+     * That's a simplification that might not be true, but doesn't matter in most cases.
+     */
+    user.totalBorrowsMarketReferenceCurrency !== '0' ||
+    /**
+     * When the user would be able to borrow all the remaining ceiling we need to add a margin as existing debt.
+     */
+    (user.isInIsolationMode &&
+      user.isolatedReserve?.isolationModeTotalDebt !== '0' &&
+      // TODO: would be nice if userFormatter contained formatted reserve as this math is done twice now
+      valueToBigNumber(user.isolatedReserve?.debtCeiling || '0')
+        .minus(user.isolatedReserve?.isolationModeTotalDebt || '0')
+        .shiftedBy(-(user.isolatedReserve?.debtCeilingDecimals || 0))
+        .multipliedBy('0.99')
+        .lt(user.availableBorrowsUSD));
+
+  return shouldAddMargin ? maxUserAmountToMint.multipliedBy('0.99') : maxUserAmountToMint;
+}
+
 export function assetCanBeBorrowedByUser(
   {
     borrowingEnabled,

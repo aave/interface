@@ -50,7 +50,7 @@ runs:
         headless: true
         install: false
         record: false
-        start: yarn serve:static
+        start: yarn serve:static --no-request-logging
         wait-on: 'http://localhost:3000'
         command: ${{ inputs.YARN_TEST_COMMAND }}
       env:

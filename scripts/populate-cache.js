@@ -11252,15 +11252,8 @@ var require_base = __commonJS({
           comb[2] = points[a].toJ().mixedAdd(points[b].neg());
         }
         var index = [
-          -3, /* -1 -1 */
-          -1, /* -1 0 */
-          -5, /* -1 1 */
-          -7, /* 0 -1 */
-          0, /* 0 0 */
-          7, /* 0 1 */
-          5, /* 1 -1 */
-          1, /* 1 0 */
-          3,
+          -3 /* -1 -1 */, -1 /* -1 0 */, -5 /* -1 1 */, -7 /* 0 -1 */, 0 /* 0 0 */, 7 /* 0 1 */,
+          5 /* 1 -1 */, 1 /* 1 0 */, 3,
           /* 1 1 */
         ];
         var jsf = getJSF(coeffs[a], coeffs[b]);
@@ -79526,6 +79519,7 @@ var import_lodash = __toESM(require_lodash());
 
 // node_modules/steno/lib/index.js
 var import_fs = __toESM(require('fs'), 1);
+
 var __classPrivateFieldSet2 = function (receiver, state, value, kind, f) {
   if (kind === 'm') throw new TypeError('Private method is not writable');
   if (kind === 'a' && !f) throw new TypeError('Private accessor was defined without a setter');
@@ -79637,6 +79631,7 @@ _JSONFile_adapter = /* @__PURE__ */ new WeakMap();
 // node_modules/lowdb/lib/adapters/TextFileSync.js
 var import_fs2 = __toESM(require('fs'), 1);
 var import_path = __toESM(require('path'), 1);
+
 var __classPrivateFieldSet3 = function (receiver, state, value, kind, f) {
   if (kind === 'm') throw new TypeError('Private method is not writable');
   if (kind === 'a' && !f) throw new TypeError('Private accessor was defined without a setter');
@@ -80005,10 +80000,10 @@ populateCache().then(() => console.log('finished'));
 tslib/tslib.es6.js:
   (*! *****************************************************************************
   Copyright (c) Microsoft Corporation.
-  
+
   Permission to use, copy, modify, and/or distribute this software for any
   purpose with or without fee is hereby granted.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
   REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
   AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
@@ -80034,12 +80029,12 @@ reflect-metadata/Reflect.js:
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use
   this file except in compliance with the License. You may obtain a copy of the
   License at http://www.apache.org/licenses/LICENSE-2.0
-  
+
   THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
   KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
   WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
   MERCHANTABLITY OR NON-INFRINGEMENT.
-  
+
   See the Apache Version 2.0 License for specific language governing permissions
   and limitations under the License.
   ***************************************************************************** *)

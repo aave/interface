@@ -17,8 +17,8 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
-import { useRootStore, useStakeDataSubscription } from 'src/store/root';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useRootStore } from 'src/store/root';
+import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -29,7 +29,6 @@ export default function Staking() {
     state.stakeUserResult,
     state.stakeDataLoading,
   ]);
-  useStakeDataSubscription();
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
 
   const { breakpoints } = useTheme();
@@ -103,8 +102,10 @@ export default function Staking() {
               <Grid
                 item
                 xs={12}
-                lg={6}
-                sx={{ display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
+                sx={{
+                  display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' },
+                }}
               >
                 <StakingPanel
                   stakeTitle="AAVE"
@@ -119,29 +120,32 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
+                  hasDiscountProgram
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                lg={6}
-                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
-              >
-                <StakingPanel
-                  stakeTitle="ABPT"
-                  stakedToken="ABPT"
-                  maxSlash="0.3"
-                  icon="stkbpt"
-                  stakeData={stakeGeneralResult?.bpt}
-                  stakeUserData={stakeUserResult?.bpt}
-                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
-                  onStakeAction={() => openStake('bpt', 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown('bpt')}
-                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
-                  headerAction={<GetABPToken />}
-                />
-              </Grid>
+              {!STAGING_ENV && !ENABLE_TESTNET && (
+                <Grid
+                  item
+                  xs={12}
+                  lg={6}
+                  sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                >
+                  <StakingPanel
+                    stakeTitle="ABPT"
+                    stakedToken="ABPT"
+                    maxSlash="0.3"
+                    icon="stkbpt"
+                    stakeData={stakeGeneralResult?.bpt}
+                    stakeUserData={stakeUserResult?.bpt}
+                    ethUsdPrice={stakeGeneralResult?.usdPriceEth}
+                    onStakeAction={() => openStake('bpt', 'stkBPT')}
+                    onCooldownAction={() => openStakeCooldown('bpt')}
+                    onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
+                    onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                    headerAction={<GetABPToken />}
+                  />
+                </Grid>
+              )}
             </Grid>
           </>
         ) : (

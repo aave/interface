@@ -11,16 +11,26 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MarketAssetListTitle } from 'src/modules/markets/MarketAssetListTitle';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
+
+import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
+import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
 
 export const MarketAssetsListContainer = () => {
+  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const { reserves, loading } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const [searchTerm, setSearchTerm] = useState('');
 
+  const ghoReserve = getGhoReserve(reserves);
   const filteredData = reserves
+    // Filter out any non-active reserves
     .filter((res) => res.isActive)
+    // Filter out all GHO, as we deliberately display it on supported markets
+    .filter((res) => res !== ghoReserve)
+    // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -30,6 +40,7 @@ export const MarketAssetsListContainer = () => {
         res.underlyingAsset.toLowerCase().includes(term)
       );
     })
+    // Transform the object for list to consume it
     .map((reserve) => ({
       ...reserve,
       ...(reserve.isWrappedBaseAsset
@@ -40,11 +51,29 @@ export const MarketAssetsListContainer = () => {
         : {}),
     }));
 
+  // Determine frozen reserves
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom'].includes(currentNetworkConfig.name);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen);
   const frozenReserves = filteredData.filter((r) => r.isFrozen);
+
+  // Determine if to show GHO market list item
+  const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
+    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
+      return false;
+    }
+
+    if (!searchTerm) {
+      return true;
+    }
+
+    const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+    return (
+      normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
+    );
+  };
+  const displayGho: boolean = shouldDisplayGho(currentMarket, searchTerm);
 
   return (
     <ListWrapper
@@ -58,6 +87,16 @@ export const MarketAssetsListContainer = () => {
       {showFrozenMarketWarning && (
         <Box mx={6}>
           <MarketWarning marketName={currentNetworkConfig.name} forum />
+        </Box>
+      )}
+
+      {displayGho && (
+        <Box mb={4}>
+          {isTableChangedToCards ? (
+            <GhoMarketAssetsListMobileItem reserve={ghoReserve} />
+          ) : (
+            <GhoMarketAssetsListItem reserve={ghoReserve} />
+          )}
         </Box>
       )}
 
@@ -86,7 +125,7 @@ export const MarketAssetsListContainer = () => {
       <MarketAssetsList reserves={frozenReserves} loading={loading} />
 
       {/* Show no search results message if nothing hits in either list */}
-      {!loading && filteredData.length === 0 && (
+      {!loading && filteredData.length === 0 && !displayGho && (
         <Box
           sx={{
             display: 'flex',

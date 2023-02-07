@@ -15,6 +15,7 @@ interface AddTokenDropdownProps {
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   currentChainId: number;
   connectedChainId: number;
+  hideAToken?: boolean;
 }
 
 export const AddTokenDropdown = ({
@@ -24,6 +25,7 @@ export const AddTokenDropdown = ({
   addERC20Token,
   currentChainId,
   connectedChainId,
+  hideAToken,
 }: AddTokenDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [changingNetwork, setChangingNetwork] = useState(false);
@@ -53,12 +55,16 @@ export const AddTokenDropdown = ({
     connectedChainId,
     changingNetwork,
     addERC20Token,
-    poolReserve.underlyingAsset,
-    poolReserve.decimals,
-    poolReserve.symbol,
-    poolReserve.iconSymbol,
+    poolReserve?.underlyingAsset,
+    poolReserve?.decimals,
+    poolReserve?.symbol,
+    poolReserve?.iconSymbol,
     underlyingBase64,
   ]);
+
+  if (!poolReserve) {
+    return null;
+  }
 
   return (
     <>
@@ -70,11 +76,13 @@ export const AddTokenDropdown = ({
             onImageGenerated={setUnderlyingBase64}
             aToken={false}
           />
-          <Base64Token
-            symbol={poolReserve.iconSymbol}
-            onImageGenerated={setATokenBase64}
-            aToken={true}
-          />
+          {!hideAToken && (
+            <Base64Token
+              symbol={poolReserve.iconSymbol}
+              onImageGenerated={setATokenBase64}
+              aToken={true}
+            />
+          )}
         </>
       )}
       <Box onClick={handleClick}>
@@ -135,30 +143,32 @@ export const AddTokenDropdown = ({
           </Typography>
         </MenuItem>
 
-        <MenuItem
-          key="atoken"
-          value="atoken"
-          onClick={() => {
-            if (currentChainId !== connectedChainId) {
-              switchNetwork(currentChainId).then(() => {
-                setChangingNetwork(true);
-              });
-            } else {
-              addERC20Token({
-                address: poolReserve.aTokenAddress,
-                decimals: poolReserve.decimals,
-                symbol: `a${poolReserve.symbol}`,
-                image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
-              });
-            }
-            handleClose();
-          }}
-        >
-          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {`a${poolReserve.symbol}`}
-          </Typography>
-        </MenuItem>
+        {!hideAToken && (
+          <MenuItem
+            key="atoken"
+            value="atoken"
+            onClick={() => {
+              if (currentChainId !== connectedChainId) {
+                switchNetwork(currentChainId).then(() => {
+                  setChangingNetwork(true);
+                });
+              } else {
+                addERC20Token({
+                  address: poolReserve.aTokenAddress,
+                  decimals: poolReserve.decimals,
+                  symbol: `a${poolReserve.symbol}`,
+                  image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
+                });
+              }
+              handleClose();
+            }}
+          >
+            <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
+            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+              {`a${poolReserve.symbol}`}
+            </Typography>
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

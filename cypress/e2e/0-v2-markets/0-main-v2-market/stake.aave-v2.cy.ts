@@ -38,7 +38,7 @@ testCases.forEach(
   }) => {
     describe(`STAKE INTEGRATION SPEC, ${testCase.assetName.shortName} V2 MARKET`, () => {
       configEnvWithTenderlyMainnetFork({
-        tokens: [{ address: testCase.assetName.address }],
+        tokens: [{ tokenAddress: testCase.assetName.address }],
       });
       describe(`Stake amount`, () => {
         it(`Open staking page`, () => {

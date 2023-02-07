@@ -9,6 +9,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -30,6 +31,8 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
+import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
+import { GhoBorrowedPositionsListMobileItem } from './GhoBorrowedPositionsListMobileItem';
 
 const head = [
   {
@@ -50,14 +53,15 @@ const head = [
 ];
 
 export const BorrowedPositionsList = () => {
-  const { user, loading } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const { user, loading, eModes } = useAppDataContext();
+  const { currentMarketData, currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
 
-  const borrowPositions =
+  let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       if (userReserve.variableBorrows !== '0') {
         acc.push({
@@ -91,6 +95,14 @@ export const BorrowedPositionsList = () => {
       }
       return acc;
     }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
+
+  // Move GHO to top of borrowed positions list
+  const ghoReserve = borrowPositions.filter((pos) => pos.reserve.symbol === GHO_SYMBOL);
+  if (ghoReserve.length > 0) {
+    borrowPositions = borrowPositions.filter((pos) => pos.reserve.symbol !== GHO_SYMBOL);
+    borrowPositions.unshift(ghoReserve[0]);
+  }
+
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
@@ -147,7 +159,7 @@ export const BorrowedPositionsList = () => {
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
-        currentMarketData.v3 ? (
+        showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
@@ -181,7 +193,22 @@ export const BorrowedPositionsList = () => {
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
-                  <BorrowedPositionsListMobileItem {...item} />
+                  isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
+                    <GhoBorrowedPositionsListMobileItem
+                      {...item}
+                      key={item.underlyingAsset + item.borrowRateMode}
+                    />
+                  ) : (
+                    <BorrowedPositionsListMobileItem
+                      {...item}
+                      key={item.underlyingAsset + item.borrowRateMode}
+                    />
+                  )
+                ) : isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
+                  <GhoBorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
                 ) : (
                   <BorrowedPositionsListItem
                     {...item}

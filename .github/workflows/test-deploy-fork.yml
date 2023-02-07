@@ -66,9 +66,9 @@ jobs:
       matrix:
         market:
           - ethereum
-          - amm
-          - polygon
-          - avalanche
+    #          - amm
+    #          - polygon
+    #          - avalanche
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -88,9 +88,8 @@ jobs:
       matrix:
         market:
           - polygon
-          - avalanche
-          - optimism
-          - ethereum
+    #          - avalanche
+    #          - optimism
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -124,16 +123,6 @@ jobs:
           name: out
           path: out
 
-      - name: pinata
-        id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
-        with:
-          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
-          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
-          PIN_ALIAS: 'pull_request_${{ env.PR_NUMBER }}'
-          BUILD_LOCATION: './out'
-          CID_VERSION: 1
-
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
@@ -152,10 +141,10 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - ethereum
-          - amm
-          - polygon
-          - avalanche
+    #          - ethereum
+    #          - amm
+    #          - polygon
+    #          - avalanche
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -174,10 +163,9 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - polygon
-          - avalanche
-          - optimism
-          - ethereum
+    #          - polygon
+    #          - avalanche
+    #          - optimism
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -196,9 +184,9 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - ethereum
+          #          - ethereum
           - polygon
-          - avalanche
+    #          - avalanche
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -217,8 +205,8 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - polygon
-          - avalanche
+          #          - polygon
+          #          - avalanche
           - optimism
           - ethereum
     steps:

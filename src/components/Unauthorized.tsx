@@ -1,0 +1,40 @@
+import { Box, Button } from '@mui/material';
+import { signIn, useSession } from 'next-auth/react';
+import { ReactNode } from 'react';
+
+import LoveGhost from '/public/loveGhost.svg';
+
+import { TokenIcon } from './primitives/TokenIcon';
+
+export const Unauthorized = ({ children }: { children: ReactNode }) => {
+  const { data: session, status } = useSession();
+
+  // Bypass Okta verification
+  if (session || process.env.NEXT_PUBLIC_ENABLE_2FA === 'false') {
+    return <>{children}</>;
+  }
+
+  return (
+    <Box
+      sx={{
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        gap: 4,
+      }}
+    >
+      <Button
+        sx={{ mt: 14 }}
+        variant="outlined"
+        disabled={status === 'loading'}
+        onClick={() => signIn('okta')}
+        endIcon={<TokenIcon symbol="GHO" />}
+      >
+        Let&apos;s GHOOO
+      </Button>
+      <LoveGhost style={{ marginBottom: '16px' }} />
+    </Box>
+  );
+};

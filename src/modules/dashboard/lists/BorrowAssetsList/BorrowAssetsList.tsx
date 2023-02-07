@@ -12,6 +12,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -35,6 +36,8 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
+import { GhoBorrowAssetsListMobileItem } from './GhoBorrowAssetsListMobileItem';
 
 const head = [
   {
@@ -76,7 +79,7 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -128,17 +131,26 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  // Filter out reserves with no liquidity or debt
   const borrowReserves: unknown =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
-            availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
+          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
+            (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
+            isGhoAndSupported({
+              symbol,
+              currentMarket,
+            })
         );
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const preSortedReserves = borrowReserves as DashboardReserve[];
+  let preSortedReserves = borrowReserves as DashboardReserve[];
+  // Move GHO to top of assets to borrow list
+  const ghoReserve = preSortedReserves.filter((reserve) => reserve.symbol === GHO_SYMBOL);
+  if (ghoReserve.length > 0) {
+    preSortedReserves = preSortedReserves.filter((reserve) => reserve.symbol !== GHO_SYMBOL);
+    preSortedReserves.unshift(ghoReserve[0]);
+  }
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
@@ -244,7 +256,19 @@ export const BorrowAssetsList = () => {
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                <BorrowAssetsListMobileItem {...item} />
+                isGhoAndSupported({
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
+                  <GhoBorrowAssetsListMobileItem {...item} />
+                ) : (
+                  <BorrowAssetsListMobileItem {...item} />
+                )
+              ) : isGhoAndSupported({
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
+                <GhoBorrowAssetsListItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}

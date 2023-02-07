@@ -10,6 +10,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
+import { GhoDiscountProgram } from './GhoDiscountProgram';
 import { StakeActionBox } from './StakeActionBox';
 
 function secondsToDHMS(seconds: number) {
@@ -55,13 +56,13 @@ export interface StakingPanelProps {
   onUnstakeAction?: () => void;
   stakeData?: StakeGeneralUiData['aave'];
   stakeUserData?: StakeUserUiData['aave'];
-  description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethUsdPrice?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
+  hasDiscountProgram?: boolean;
 }
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
@@ -71,13 +72,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onUnstakeAction,
   stakeTitle,
   stakedToken,
-  description,
   headerAction,
   icon,
   stakeData,
   stakeUserData,
   ethUsdPrice,
   maxSlash,
+  hasDiscountProgram,
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
@@ -112,13 +113,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       .div(ethUsdPrice || '1')
   );
 
-  const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenUserBalance || '0')
-      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
-      .multipliedBy(stakeData?.distributionPerSecond || '0')
-      .multipliedBy('2592000')
-      .toFixed(0)
-  );
+  let aavePerMonth = '0';
+  if (stakeData?.stakeTokenTotalSupply !== '0') {
+    aavePerMonth = formatEther(
+      valueToBigNumber(stakeUserData?.stakeTokenUserBalance || '0')
+        .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
+        .multipliedBy(stakeData?.distributionPerSecond || '0')
+        .multipliedBy('2592000')
+        .toFixed(0)
+    );
+  }
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
@@ -372,7 +376,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </StakeActionBox>
       </Stack>
 
-      {!!description && description}
+      {hasDiscountProgram && (
+        <Box sx={{ mt: 4 }}>
+          <GhoDiscountProgram />
+        </Box>
+      )}
     </Paper>
   );
 };

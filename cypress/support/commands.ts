@@ -1,4 +1,5 @@
 import 'cypress-wait-until';
+import { CustomizedBridge } from './tools/bridge';
 
 declare global {
   namespace Cypress {
@@ -46,6 +47,7 @@ declare global {
        * This will switch dashboard view to Supply
        */
       doSwitchToDashboardSupplyView(): void;
+      refresh(): void;
     }
   }
 }
@@ -68,6 +70,7 @@ Cypress.Commands.add(
       cy.get(`[data-cy=approvalButton]`, { timeout: 20000 }).should('not.be.disabled').click();
     }
     cy.get('[data-cy=actionButton]', { timeout: 30000 })
+      .last()
       .should('not.be.disabled')
       .then(($btn) => {
         if (assetName && actionName) {
@@ -78,7 +81,7 @@ Cypress.Commands.add(
         }
       })
       .click();
-    cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
+    cy.get("[data-cy=Modal] h2:contains('All done!')").last().should('be.visible');
   }
 );
 
@@ -115,6 +118,25 @@ Cypress.Commands.add('doSwitchToDashboardBorrowView', () => {
 
 Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
   switchDashboardView('Supply', 'supplies');
+});
+
+Cypress.Commands.add('refresh', () => {
+  cy.wait(1000); // it's need for some cases where we reload page before full uplaoding page
+  cy.visit(window.url, {
+    onBeforeLoad(win) {
+      // eslint-disable-next-line
+      (win as any).ethereum = new CustomizedBridge(window.signer, window.provider);
+      win.localStorage.setItem('forkEnabled', 'true');
+      win.localStorage.setItem('forkNetworkId', '3030');
+      win.localStorage.setItem('forkBaseChainId', window.chainId);
+      win.localStorage.setItem('forkRPCUrl', window.rpc);
+      win.localStorage.setItem('walletProvider', 'injected');
+      win.localStorage.setItem('selectedAccount', window.address);
+      win.localStorage.setItem('selectedMarket', window.market);
+      win.localStorage.setItem('testnetsEnabled', window.testnetsEnabled);
+    },
+  });
+  cy.wait(1000); //give a time to upload recent data from blockchain
 });
 
 export {};

@@ -25,6 +25,10 @@ inputs:
     description: forces to use the FORK_URL_RPC as rpc provider and fork market configs with same base chain id
     required: false
     default: ''
+  NEXT_PUBLIC_ENABLE_2FA:
+    description: enable 2fa
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
@@ -55,6 +59,7 @@ runs:
       run: yarn ${{ inputs.YARN_COMMAND }}
       env:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
+        NEXT_PUBLIC_ENABLE_2FA: 'false'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'
         NEXT_PUBLIC_ENABLE_STAKING: 'true'
         NEXT_PUBLIC_API_BASEURL: 'https://aave-api-v2.aave.com'

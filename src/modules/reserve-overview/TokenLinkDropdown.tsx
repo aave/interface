@@ -11,9 +11,14 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 interface TokenLinkDropdownProps {
   poolReserve: ComputedReserveData;
   downToSM: boolean;
+  hideAToken?: boolean;
 }
 
-export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownProps) => {
+export const TokenLinkDropdown = ({
+  poolReserve,
+  downToSM,
+  hideAToken,
+}: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { currentNetworkConfig } = useProtocolDataContext();
   const open = Boolean(anchorEl);
@@ -24,6 +29,10 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (!poolReserve) {
+    return null;
+  }
 
   return (
     <>
@@ -73,18 +82,20 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
           </Typography>
         </MenuItem>
 
-        <MenuItem
-          component="a"
-          href={currentNetworkConfig.explorerLinkBuilder({
-            address: poolReserve?.aTokenAddress,
-          })}
-          target="_blank"
-        >
-          <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {'a' + poolReserve.symbol}
-          </Typography>
-        </MenuItem>
+        {!hideAToken && (
+          <MenuItem
+            component="a"
+            href={currentNetworkConfig.explorerLinkBuilder({
+              address: poolReserve?.aTokenAddress,
+            })}
+            target="_blank"
+          >
+            <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
+            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+              {'a' + poolReserve.symbol}
+            </Typography>
+          </MenuItem>
+        )}
         {poolReserve.borrowingEnabled && (
           <MenuItem
             component="a"

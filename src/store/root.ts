@@ -5,6 +5,7 @@ import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig'
 import create from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
+import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
@@ -23,7 +24,8 @@ export type RootStore = StakeSlice &
   PoolSlice &
   IncentiveSlice &
   GovernanceSlice &
-  V3MigrationSlice;
+  V3MigrationSlice &
+  GhoSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -36,6 +38,7 @@ export const useRootStore = create<RootStore>()(
         ...createIncentiveSlice(...args),
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
+        ...createGhoSlice(...args),
       };
     })
   )
@@ -59,6 +62,7 @@ if (typeof document !== 'undefined') {
   };
 }
 
+// TODO: in all of the refetch methods across all slices, ensure that the store does not get updated if the data does not changes. IOW, turn a global update into a very atomic approach to reduce the amount of rerenders that occur based off of the AppDataProvider context provider's data.
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refetchStakeData();
 }, 60000);
@@ -83,7 +87,11 @@ export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshGovernanceData();
 }, 60000);
 
+export const useGhoDataSubscription = createSingletonSubscriber(() => {
+  return useRootStore.getState().refreshGhoData();
+}, 60000);
 let latest: V3FaucetService;
+
 useRootStore.subscribe(
   (state) => state.currentMarketData,
   async (selected) => {
