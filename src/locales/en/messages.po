@@ -1888,6 +1888,10 @@ msgstr "The Stable Rate is not enabled for this currency"
 msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
 
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "The amount of migrated collateral is not enough to cover the amount of migrated debt"
+msgstr "The amount of migrated collateral is not enough to cover the amount of migrated debt"
+
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
 msgstr "The app is running in testnet mode. Learn how it works in"

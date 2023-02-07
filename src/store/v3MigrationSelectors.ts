@@ -778,6 +778,10 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   // return the smallest object possible for migration page
   return {
     healthFactor: formattedUserSummary.healthFactor,
+    currentLoanToValue: formattedUserSummary.currentLoanToValue,
+    totalCollateralMarketReferenceCurrency:
+      formattedUserSummary.totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency: formattedUserSummary.totalBorrowsMarketReferenceCurrency,
   };
 };
 

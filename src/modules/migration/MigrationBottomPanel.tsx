@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -25,7 +26,12 @@ interface MigrationBottomPanelProps {
   hfV2Current: string;
   hfV2AfterChange: string;
   hfV3Current: string;
-  hfV3AfterChange: string;
+  v3SummaryAfterMigration: {
+    healthFactor: string;
+    currentLoanToValue: string;
+    totalCollateralMarketReferenceCurrency: string;
+    totalBorrowsMarketReferenceCurrency: string;
+  };
   disableButton?: boolean;
   loading?: boolean;
   enteringIsolationMode: boolean;
@@ -35,13 +41,14 @@ enum ErrorType {
   NO_SELECTION,
   V2_HF_TOO_LOW,
   V3_HF_TOO_LOW,
+  INSUFFICIENT_LTV,
 }
 
 export const MigrationBottomPanel = ({
   hfV2Current,
   hfV2AfterChange,
   hfV3Current,
-  hfV3AfterChange,
+  v3SummaryAfterMigration,
   disableButton,
   enteringIsolationMode,
   loading,
@@ -54,6 +61,21 @@ export const MigrationBottomPanel = ({
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
 
+  const {
+    healthFactor: hfV3AfterChange,
+    totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency,
+    currentLoanToValue,
+  } = v3SummaryAfterMigration;
+
+  const maxBorrowAmount = valueToBigNumber(totalCollateralMarketReferenceCurrency).multipliedBy(
+    currentLoanToValue
+  );
+
+  const insufficientLtv = valueToBigNumber(totalBorrowsMarketReferenceCurrency).isGreaterThan(
+    maxBorrowAmount
+  );
+
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
   if (disableButton && isChecked) {
@@ -62,6 +84,8 @@ export const MigrationBottomPanel = ({
     blockingError = ErrorType.V2_HF_TOO_LOW;
   } else if (Number(hfV3AfterChange) < 1.005 && hfV3AfterChange !== '-1') {
     blockingError = ErrorType.V3_HF_TOO_LOW;
+  } else if (insufficientLtv) {
+    blockingError = ErrorType.INSUFFICIENT_LTV;
   }
 
   // error render handling
@@ -84,6 +108,12 @@ export const MigrationBottomPanel = ({
               migrated collateral or reduce migrated borrow to continue.
             </Trans>
           </>
+        );
+      case ErrorType.INSUFFICIENT_LTV:
+        return (
+          <Trans>
+            The amount of migrated collateral is not enough to cover the amount of migrated debt
+          </Trans>
         );
       default:
         return <></>;
