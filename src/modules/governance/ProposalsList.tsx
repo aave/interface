@@ -1,6 +1,7 @@
 import { LinearProgress } from '@mui/material';
+import Fuse from 'fuse.js';
 import { GovernancePageProps } from 'pages/governance/index.governance';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { usePolling } from 'src/hooks/usePolling';
@@ -21,6 +22,12 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const [proposalFilter, setProposalFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [loadedIndex, setLoadedIndex] = useState(1);
+  const searchEngineRef = useRef(
+    new Fuse(initialProposals, {
+      keys: ['ipfs.title', 'ipfs.shortDescription'],
+      threshold: 0.3,
+    })
+  );
 
   async function fetchNewProposals() {
     try {
@@ -45,6 +52,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             prerendered: false,
           });
         }
+        nextProposals.map((elem) => searchEngineRef.current.add(elem));
         setProposals((p) => [...nextProposals, ...p]);
       }
       setLoadingNewProposals(false);
@@ -86,20 +94,23 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(fetchNewProposals, 60000, false, [proposals.length]);
   usePolling(updatePendingProposals, 30000, false, [proposals.length]);
 
-  const filteredProposals = useMemo(
-    () =>
-      proposals.filter(
-        (proposal) =>
-          (proposalFilter === 'all' || proposal.proposal.state === proposalFilter) &&
-          (proposal.ipfs.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            proposal.ipfs.title.toLowerCase().includes(searchQuery.toLowerCase()))
-      ),
-    [proposals, proposalFilter, searchQuery]
-  );
+  const filteredByState = useMemo(() => {
+    const filtered = proposals.filter(
+      (item) => proposalFilter === 'all' || item.proposal.state === proposalFilter
+    );
+    searchEngineRef.current.setCollection(filtered);
+    return filtered;
+  }, [proposals, proposalFilter]);
+
+  const filteredByQuery = useMemo(() => {
+    if (!searchQuery) return filteredByState;
+    const filteredByQuery = searchEngineRef.current.search(searchQuery);
+    return filteredByQuery.map((elem) => elem.item);
+  }, [searchQuery, filteredByState]);
 
   const loadedProposals = useMemo(
-    () => filteredProposals.slice(0, loadedIndex * 10),
-    [filteredProposals, loadedIndex]
+    () => filteredByQuery.slice(0, loadedIndex * 10),
+    [filteredByQuery, loadedIndex]
   );
 
   const onSearchTermChange = (value: string) => {
@@ -123,7 +134,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <InfiniteScroll
           pageStart={1}
           loadMore={handleLoadMore}
-          hasMore={loadedProposals.length < filteredProposals.length}
+          hasMore={loadedProposals.length < filteredByQuery.length}
         >
           {loadedProposals.map(({ proposal, prerendered, ipfs }) => (
             <ProposalListItem

@@ -69,6 +69,7 @@
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.5.4",
+    "fuse.js": "^6.6.2",
     "gray-matter": "^4.0.3",
     "immer": "^9.0.15",
     "lowdb": "^3.0.0",
