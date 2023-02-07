@@ -6,13 +6,14 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 export function remainingCap(poolReserve: ComputedReserveData) {
   return poolReserve.supplyCap === '0'
     ? new BigNumber(-1)
-    : new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity).multipliedBy('0.995');
+    : new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity);
 }
 
 export function getMaxAmountAvailableToSupply(
   walletBalance: string,
   poolReserve: ComputedReserveData,
-  underlyingAsset: string
+  underlyingAsset: string,
+  minRemainingBaseToken: string
 ): BigNumber {
   if (poolReserve.isFrozen) {
     return valueToBigNumber('0');
@@ -26,7 +27,7 @@ export function getMaxAmountAvailableToSupply(
     maxAmountToSupply.gt(0) &&
     underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()
   ) {
-    maxAmountToSupply = maxAmountToSupply.minus('0.001');
+    maxAmountToSupply = maxAmountToSupply.minus(minRemainingBaseToken);
   }
 
   // make sure we don't try to supply more then maximum

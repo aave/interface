@@ -54,7 +54,7 @@ export const WithdrawModalContent = ({
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
     userReserve?.usageAsCollateralEnabledOnUser &&
-    poolReserve.usageAsCollateralEnabled &&
+    poolReserve.reserveLiquidationThreshold !== '0' &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
     // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.01
@@ -91,7 +91,10 @@ export const WithdrawModalContent = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
-  if (userReserve?.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
+  if (
+    userReserve?.usageAsCollateralEnabledOnUser &&
+    poolReserve.reserveLiquidationThreshold !== '0'
+  ) {
     const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
@@ -183,6 +186,13 @@ export const WithdrawModalContent = ({
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
         maxValue={maxAmountToWithdraw.toString(10)}
+        balanceText={
+          unborrowedLiquidity.lt(underlyingBalance) ? (
+            <Trans>Available</Trans>
+          ) : (
+            <Trans>Supply balance</Trans>
+          )
+        }
       />
 
       {blockingError !== undefined && (

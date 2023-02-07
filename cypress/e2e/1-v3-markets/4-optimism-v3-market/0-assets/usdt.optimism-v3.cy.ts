@@ -59,8 +59,15 @@ const testData = {
         asset: assets.optimismMarket.USDT,
         apyType: constants.apyType.stable,
         amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
+      {
+        asset: assets.optimismMarket.USDT,
+        apyType: constants.apyType.stable,
+        amount: 2,
         hasApproval: true,
-        repayOption: constants.repayType.default,
+        repayOption: constants.repayType.wallet,
       },
       {
         asset: assets.optimismMarket.USDT,
@@ -94,15 +101,14 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.optimismMarket.USDT.shortName,
-        amount: 46.0,
+        amount: 44.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 
-//Debt Ceiling max
-describe.skip('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
+describe('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyOptimismFork({ v3: true });
 

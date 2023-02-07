@@ -1,12 +1,13 @@
+import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxAction } from 'src/ui-config/errorMapping';
 
-import { LeftHelperText } from './FlowCommons/LeftHelperText';
+import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
 import { RightHelperText } from './FlowCommons/RightHelperText';
 
 interface TxActionsWrapperProps extends BoxProps {
@@ -23,6 +24,14 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  fetchingData?: boolean;
+  errorParams?: {
+    loading: boolean;
+    disabled: boolean;
+    content: ReactNode;
+    handleClick: () => Promise<void>;
+  };
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -40,22 +49,30 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  fetchingData = false,
+  errorParams,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError, retryWithApproval } = useModalContext();
-  const { watchModeOnlyAddress } = useWeb3Context();
+  const { txError } = useModalContext();
+  const { readOnlyModeAddress } = useWeb3Context();
 
   const hasApprovalError =
-    requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
+    requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
-    if (txError && txError.txAction === TxAction.GAS_ESTIMATION && txError.actionBlocked)
+    if (
+      (txError?.txAction === TxAction.GAS_ESTIMATION ||
+        txError?.txAction === TxAction.MAIN_ACTION) &&
+      txError?.actionBlocked
+    ) {
+      if (errorParams) return errorParams;
       return { loading: false, disabled: true, content: actionText };
-    if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.actionBlocked)
-      return { loading: false, disabled: true, content: actionText };
+    }
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
+    if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
     // if (hasApprovalError && handleRetry)
@@ -78,29 +95,48 @@ export const TxActionsWrapper = ({
       return null;
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
-    if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
-    if (retryWithApproval)
-      return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
-    return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
+    if (approvalTxState?.success)
+      return {
+        disabled: true,
+        content: (
+          <>
+            <Trans>Approve Confirmed</Trans>
+            <SvgIcon sx={{ fontSize: 20, ml: 2 }}>
+              <CheckIcon />
+            </SvgIcon>
+          </>
+        ),
+      };
+
+    return {
+      content: (
+        <ApprovalTooltip
+          variant="buttonL"
+          iconSize={20}
+          iconMargin={2}
+          color="white"
+          text={<Trans>Approve {symbol} to continue</Trans>}
+        />
+      ),
+      handleClick: handleApproval,
+    };
   }
 
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && !watchModeOnlyAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
-          <RightHelperText approvalHash={approvalTxState?.txHash} />
+      {requiresApproval && !readOnlyModeAddress && (
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+          <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
 
-      {approvalParams && !watchModeOnlyAddress && (
+      {approvalParams && !readOnlyModeAddress && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
-          onClick={approvalParams.handleClick}
+          onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
           sx={{ minHeight: '44px' }}
           data-cy="approvalButton"
@@ -114,7 +150,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked || watchModeOnlyAddress !== undefined}
+        disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
@@ -123,9 +159,9 @@ export const TxActionsWrapper = ({
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
       </Button>
-      {watchModeOnlyAddress && (
+      {readOnlyModeAddress && (
         <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
-          <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
+          <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}
     </Box>

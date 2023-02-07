@@ -1,10 +1,13 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
+import { RenFILToolTip } from '../../../components/infoTooltips/RenFILToolTip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
@@ -18,6 +21,7 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
+  borrowEnabled?: boolean;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
@@ -31,6 +35,7 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
+  borrowEnabled = true,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
@@ -38,9 +43,14 @@ export const ListItemWrapper = ({
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
+  const showFrozenTooltip = frozen && symbol !== 'renFIL';
+  const showRenFilTooltip = frozen && symbol === 'renFIL';
+  const showAmplTooltip = !frozen && symbol === 'AMPL';
+  const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+
   return (
     <ListItem {...rest}>
-      <ListColumn maxWidth={160} isRow>
+      <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           noWrap
@@ -53,8 +63,12 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
-        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+        {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
+        {showRenFilTooltip && <RenFILToolTip />}
+        {showAmplTooltip && <AMPLToolTip />}
+        {showBorrowDisabledTooltip && (
+          <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
+        )}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
         {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}

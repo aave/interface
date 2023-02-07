@@ -8,11 +8,14 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
+import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
@@ -30,7 +33,6 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
-import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
@@ -52,6 +54,9 @@ export const SupplyModalContent = ({
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { supplyCap, debtCeiling } = useAssetCaps();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -66,7 +71,8 @@ export const SupplyModalContent = ({
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     walletBalance,
     poolReserve,
-    underlyingAsset
+    underlyingAsset,
+    minRemainingBaseTokenBalance
   );
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
@@ -156,13 +162,13 @@ export const SupplyModalContent = ({
   };
 
   // collateralization state
-  let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
-    ? CollateralType.ENABLED
-    : CollateralType.DISABLED;
+  let willBeUsedAsCollateral: CollateralType = CollateralType.ENABLED;
   const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
-  if (poolReserve.isIsolated) {
+  if (!poolReserve.usageAsCollateralEnabled) {
+    willBeUsedAsCollateral = CollateralType.DISABLED;
+  } else if (poolReserve.isIsolated) {
     // Note: is debt ceiling only used for isolated assets?
     if (debtCeiling.isMaxed) {
       willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
@@ -212,7 +218,11 @@ export const SupplyModalContent = ({
       {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
       {supplyCap.determineWarningDisplay({ supplyCap })}
       {debtCeiling.determineWarningDisplay({ debtCeiling })}
-      {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
+      {poolReserve.symbol === 'AMPL' && (
+        <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+          <AMPLWarning />
+        </Warning>
+      )}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
@@ -236,6 +246,7 @@ export const SupplyModalContent = ({
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
         maxValue={maxAmountToSupply.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
       />
 
       {blockingError !== undefined && (

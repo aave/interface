@@ -50,11 +50,9 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const { connected } = useWeb3Context();
 
   const web3Request = async () => {
-    if (jsonRpcProvider) {
-      const feeData = await jsonRpcProvider.getFeeData();
-      setData(rawToGasPriceData(feeData));
-      setError(false);
-    }
+    const feeData = await jsonRpcProvider().getFeeData();
+    setData(rawToGasPriceData(feeData));
+    setError(false);
   };
 
   const estimateGasPrice = async () => {

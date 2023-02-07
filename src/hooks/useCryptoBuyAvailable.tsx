@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface CryptoBuyAvailableResult {
   isAvailable: boolean;
@@ -19,10 +19,10 @@ export const useCryptoBuyAvailable = (
           `${transakApiUrl}/cryptocoverage/api/v1/public/partner/crypto-currencies?symbol=${cryptoCode}&network=${networkMarketName}`
         );
 
-        if (response.ok) {
-          setIsAvailable(true);
-        }
-      } catch (e) {}
+        setIsAvailable(response.ok);
+      } catch (e) {
+        setIsAvailable(false);
+      }
     })();
   }, [cryptoCode, networkMarketName]);
 

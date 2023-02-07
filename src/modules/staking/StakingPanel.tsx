@@ -6,8 +6,8 @@ import { formatEther } from 'ethers/lib/utils';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { StakeGeneralData, StakeUserData } from 'src/hooks/stake-data-provider/graphql/hooks';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';
@@ -53,8 +53,8 @@ export interface StakingPanelProps {
   onStakeRewardClaimAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
-  stakeData?: StakeGeneralData;
-  stakeUserData?: StakeUserData;
+  stakeData?: StakeGeneralUiData['aave'];
+  stakeUserData?: StakeUserUiData['aave'];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethUsdPrice?: string;

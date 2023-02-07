@@ -48,12 +48,19 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
             <Skeleton width={40} />
           </Typography>
         ) : (
-          <FormattedNumber
-            value={votes}
-            sx={{ flexGrow: 1 }}
-            visibleDecimals={2}
-            variant="secondary14"
-          />
+          <Box component="span" sx={{ flexGrow: 1 }}>
+            <FormattedNumber
+              value={votes}
+              visibleDecimals={0}
+              sx={{ mr: 1 }}
+              variant="secondary14"
+              roundDown
+              compact={false}
+            />
+            <Typography variant="description" component="span" color="text.secondary">
+              AAVE
+            </Typography>
+          </Box>
         )}
         {loading ? (
           <Typography variant="caption">

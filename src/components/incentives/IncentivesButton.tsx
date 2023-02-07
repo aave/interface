@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
-import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';

@@ -12,12 +12,13 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, WalletType, WatchModeOnlyConnector } from './WalletOptions';
+import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
   address: string;
@@ -29,7 +30,7 @@ export type ERC20TokenType = {
 
 export type Web3Data = {
   connectWallet: (wallet: WalletType) => Promise<void>;
-  connectWatchModeOnly: (address: string) => Promise<void>;
+  connectReadOnlyMode: (address: string) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
@@ -45,7 +46,8 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
-  watchModeOnlyAddress: string | undefined;
+  readOnlyModeAddress: string | undefined;
+  readOnlyMode: boolean;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -67,8 +69,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
+  const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+  const setAccount = useRootStore((store) => store.setAccount);
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -114,9 +118,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setSwitchNetworkError(undefined);
   }, [provider, connector]);
 
-  const connectWatchModeOnly = (address: string): Promise<void> => {
-    localStorage.setItem('watchModeOnlyAddress', address);
-    return connectWallet(WalletType.WATCH_MODE_ONLY);
+  const connectReadOnlyMode = (address: string): Promise<void> => {
+    localStorage.setItem('readOnlyModeAddress', address);
+    return connectWallet(WalletType.READ_ONLY_MODE);
   };
 
   // connect to the wallet specified by wallet type
@@ -125,6 +129,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setLoading(true);
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId);
+
+        if (connector instanceof ReadOnlyModeConnector) {
+          setReadOnlyMode(true);
+        } else {
+          setReadOnlyMode(false);
+        }
 
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
@@ -405,12 +415,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
+  // inject account into zustand as long as aave itnerface is using old web3 providers
+  useEffect(() => {
+    setAccount(account?.toLowerCase());
+  }, [account]);
+
   return (
     <Web3Context.Provider
       value={{
         web3ProviderData: {
           connectWallet,
-          connectWatchModeOnly,
+          connectReadOnlyMode,
           disconnectWallet,
           provider,
           connected: active,
@@ -425,8 +440,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          watchModeOnlyAddress:
-            connector instanceof WatchModeOnlyConnector ? account?.toLowerCase() : undefined,
+          readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
+          readOnlyMode,
         },
       }}
     >

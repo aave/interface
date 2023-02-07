@@ -10,6 +10,12 @@ import {
   Skeleton,
   styled,
   SvgIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
   useMediaQuery,
   useTheme,
@@ -32,6 +38,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
+import { VotersListContainer } from 'src/modules/governance/proposal/VotersListContainer';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import {
   enhanceProposalWithTimes,
@@ -45,7 +52,6 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-// import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -166,7 +172,7 @@ export default function ProposalPage({
       <ContentContainer>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ px: 6, pt: 4, pb: 12 }}>
+            <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
@@ -177,7 +183,7 @@ export default function ProposalPage({
                   </Warning>
                 </Box>
               ) : (
-                <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                <Box sx={{ px: { md: 18 }, pt: 8, wordBreak: 'break-word' }}>
                   <Typography variant="h2" sx={{ mb: 6 }}>
                     {ipfs?.title || <Skeleton />}
                   </Typography>
@@ -198,6 +204,7 @@ export default function ProposalPage({
                           <FormattedProposalTime
                             state={proposal.state}
                             executionTime={proposal.executionTime}
+                            startTimestamp={proposal.startTimestamp}
                             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                             expirationTimestamp={proposal.expirationTimestamp}
                           />
@@ -238,7 +245,41 @@ export default function ProposalPage({
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        img({ src, alt }) {
+                        table({ node, ...props }) {
+                          return (
+                            <TableContainer component={Paper} variant="outlined">
+                              <Table {...props} sx={{ wordBreak: 'normal' }} />
+                            </TableContainer>
+                          );
+                        },
+                        tr({ node, ...props }) {
+                          return (
+                            <TableRow
+                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                              {...props}
+                            />
+                          );
+                        },
+                        td({ children, style }) {
+                          return <TableCell style={style}>{children}</TableCell>;
+                        },
+                        th({ children, style }) {
+                          return <TableCell style={style}>{children}</TableCell>;
+                        },
+                        tbody({ children }) {
+                          return <TableBody>{children}</TableBody>;
+                        },
+                        thead({ node, ...props }) {
+                          return <TableHead {...props} />;
+                        },
+                        img({ src: _src, alt }) {
+                          if (!_src) return null;
+                          const src = /^\.\.\//.test(_src)
+                            ? _src.replace(
+                                '../',
+                                'https://raw.githubusercontent.com/aave/aip/main/content/'
+                              )
+                            : _src;
                           return <CenterAlignedImage src={src} alt={alt} />;
                         },
                         a({ node, ...rest }) {
@@ -289,9 +330,10 @@ export default function ProposalPage({
                     loading={loading}
                   />
                   <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
+                  <VotersListContainer proposal={proposal} />
                   <Row
                     caption={<Trans>State</Trans>}
-                    sx={{ height: 48, mt: 10 }}
+                    sx={{ height: 48 }}
                     captionVariant="description"
                   >
                     <Box
@@ -302,9 +344,10 @@ export default function ProposalPage({
                       }}
                     >
                       <StateBadge state={proposal.state} loading={loading} />
-                      <Box sx={{ mt: '2px' }}>
+                      <Box sx={{ mt: 0.5 }}>
                         <FormattedProposalTime
                           state={proposal.state}
+                          startTimestamp={proposal.startTimestamp}
                           executionTime={proposal.executionTime}
                           expirationTimestamp={proposal.expirationTimestamp}
                           executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
@@ -341,12 +384,14 @@ export default function ProposalPage({
                       <FormattedNumber
                         value={yaeVotes}
                         visibleDecimals={2}
+                        roundDown
                         sx={{ display: 'block' }}
                       />
                       <FormattedNumber
                         variant="caption"
                         value={minQuorumVotes}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>
@@ -377,11 +422,17 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        value={diff}
+                        visibleDecimals={2}
+                        roundDown
+                        sx={{ display: 'block' }}
+                      />
                       <FormattedNumber
                         variant="caption"
                         value={requiredDiff}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>
@@ -565,10 +616,9 @@ export default function ProposalPage({
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        {page}
-        <GovVoteModal />
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      {page}
+      <GovVoteModal />
     </MainLayout>
   );
 };

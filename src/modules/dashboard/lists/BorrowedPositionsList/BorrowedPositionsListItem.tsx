@@ -1,11 +1,12 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
@@ -20,9 +21,10 @@ export const BorrowedPositionsListItem = ({
   stableBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
-}: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+}: DashboardReserve) => {
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const { borrowCap } = useAssetCaps();
   const {
     isActive,
     isFrozen,
@@ -41,6 +43,7 @@ export const BorrowedPositionsListItem = ({
       detailsAddress={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
     >
@@ -77,12 +80,12 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode)}
+          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode, isFrozen)}
         >
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen}
+          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
           onClick={() => openBorrow(reserve.underlyingAsset)}
         >

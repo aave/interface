@@ -21,6 +21,7 @@ export enum ModalType {
   Swap,
   GovDelegation,
   GovVote,
+  V3Migration,
 }
 
 export interface ModalArgsType {
@@ -32,6 +33,7 @@ export interface ModalArgsType {
   stakeAssetName?: string;
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
+  isFrozen?: boolean;
 }
 
 export type TxStateType = {
@@ -45,7 +47,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (underlyingAsset: string) => void;
   openWithdraw: (underlyingAsset: string) => void;
   openBorrow: (underlyingAsset: string) => void;
-  openRepay: (underlyingAsset: string, currentRateMode: InterestRate) => void;
+  openRepay: (underlyingAsset: string, currentRateMode: InterestRate, isFrozen: boolean) => void;
   openCollateralChange: (underlyingAsset: string) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
@@ -57,6 +59,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
+  openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
   type?: ModalType;
@@ -71,8 +74,6 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
-  retryWithApproval: boolean;
-  setRetryWithApproval: (permit: boolean) => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -86,7 +87,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   // contains arbitrary key-value pairs as a modal context
   const [args, setArgs] = useState<ModalArgsType>({});
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
-  const [retryWithApproval, setRetryWithApproval] = useState<boolean>(false);
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
@@ -107,9 +107,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
         },
-        openRepay: (underlyingAsset, currentRateMode) => {
+        openRepay: (underlyingAsset, currentRateMode, isFrozen) => {
           setType(ModalType.Repay);
-          setArgs({ underlyingAsset, currentRateMode });
+          setArgs({ underlyingAsset, currentRateMode, isFrozen });
         },
         openCollateralChange: (underlyingAsset) => {
           setType(ModalType.CollateralChange);
@@ -157,6 +157,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
         },
+        openV3Migration: () => {
+          setType(ModalType.V3Migration);
+        },
         close: () => {
           setType(undefined);
           setArgs({});
@@ -165,7 +168,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setTxError(undefined);
           setSwitchNetworkError(undefined);
-          setRetryWithApproval(false);
         },
         type,
         args,
@@ -179,8 +181,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setLoadingTxns,
         txError,
         setTxError,
-        retryWithApproval,
-        setRetryWithApproval,
       }}
     >
       {children}

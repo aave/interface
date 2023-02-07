@@ -3,9 +3,23 @@ import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
+export type FormattedProposal = {
+  id?: string;
+  totalVotes: number;
+  yaePercent: number;
+  yaeVotes: number;
+  nayPercent: number;
+  nayVotes: number;
+  minQuorumVotes: number;
+  quorumReached: boolean;
+  diff: number;
+  requiredDiff: number;
+  diffReached: boolean;
+};
+
 // The implementation replicates the validation in https://github.com/aave/governance-v2/blob/master/contracts/governance/ProposalValidator.sol#L17
 // 10000 in % calculations corresponds to 100 with 2 decimals precision
-export function formatProposal(proposal: Omit<Proposal, 'values'>) {
+export function formatProposal(proposal: Omit<Proposal, 'values'>): FormattedProposal {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
   const yaePercent = allVotes.gt(0)
     ? new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber()
@@ -52,6 +66,18 @@ const averageBlockTime = 12;
 
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);
+  if (proposal.state === ProposalState.Pending) {
+    const { timestamp: creationTimestamp } = await provider.getBlock(proposal.proposalCreated);
+    const currentBlock = await provider.getBlock('latest');
+    return {
+      ...proposal,
+      creationTimestamp,
+      startTimestamp:
+        currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
+      expirationTimestamp:
+        currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
+    };
+  }
   const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = await Promise.all([
     provider.getBlock(proposal.startBlock),
     provider.getBlock(proposal.proposalCreated),

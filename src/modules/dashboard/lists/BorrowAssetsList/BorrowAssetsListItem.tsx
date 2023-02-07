@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -11,7 +11,6 @@ import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
-import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsListItem = ({
   symbol,
@@ -27,14 +26,10 @@ export const BorrowAssetsListItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
-}: BorrowAssetsItem) => {
+}: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
-
-  // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const { borrowCap: borrowCapUsage, debtCeiling } = useAssetCaps();
-  if (borrowCapUsage.isMaxed || debtCeiling.isMaxed) return null;
 
   return (
     <ListItemWrapper

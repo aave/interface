@@ -69,9 +69,17 @@ export type FormattedReserveHistoryItem = {
   variableBorrowRate: number;
 };
 
+/**
+ * Broken Assets:
+ * A list of assets that currently are broken in some way, i.e. has bad data from either the subgraph or backend server
+ * Each item represents the ID of the asset, not the underlying address it's deployed to, appended with LendingPoolAddressProvider
+ * contract address it is held in. So each item in the array is essentially [underlyingAssetId + LendingPoolAddressProvider address].
+ */
 export const BROKEN_ASSETS = [
   // ampl https://governance.aave.com/t/arc-fix-ui-bugs-in-reserve-overview-for-ampl/5885/5?u=sakulstra
   '0xd46ba6d942050d489dbd938a2c909a5d5039a1610xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
+  // fei usd (v2 eth mainnet)
+  '0x956f47f50a910163d8bf957cf5846d573e7f87ca0xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
 ];
 
 // TODO: api need to be altered to expect chainId underlying asset and poolConfig

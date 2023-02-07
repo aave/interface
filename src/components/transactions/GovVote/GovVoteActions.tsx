@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -18,13 +18,13 @@ export const GovVoteActions = ({
   proposalId,
   support,
 }: GovVoteActionsProps) => {
-  const { governanceService } = useGovernanceDataProvider();
+  const submitVote = useRootStore((state) => state.submitVote);
   const { currentAccount } = useWeb3Context();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return governanceService.submitVote({
+      return submitVote({
         proposalId: Number(proposalId),
         user: currentAccount,
         support: support || false,

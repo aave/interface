@@ -3,10 +3,10 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -31,9 +31,12 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
-  const data = useStakeData();
-  const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const [stakeGeneralResult, stakeUserResult] = useRootStore((state) => [
+    state.stakeGeneralResult,
+    state.stakeUserResult,
+  ]);
+  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -42,8 +45,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountRef = useRef<string>();
 
   const walletBalance = normalize(
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance ||
-      '0',
+    stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance || '0',
     18
   );
 
@@ -60,7 +62,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountInUsd =
     Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
+      Number(normalize(stakeGeneralResult?.usdPriceEth || 1, 18)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
@@ -97,7 +99,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   return (
     <>
       <TxModalTitle title="Unstake" symbol={icon} />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput
@@ -113,6 +115,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         ]}
         isMaxSelected={isMaxSelected}
         maxValue={walletBalance}
+        balanceText={<Trans>Staking balance</Trans>}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">

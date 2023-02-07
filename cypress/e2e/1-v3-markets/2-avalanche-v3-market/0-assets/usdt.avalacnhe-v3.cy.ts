@@ -59,7 +59,7 @@ const testData = {
         asset: assets.avalancheV3Market.USDT,
         apyType: constants.apyType.stable,
         amount: 2,
-        hasApproval: true,
+        hasApproval: false,
         repayOption: constants.repayType.default,
       },
       {
@@ -69,6 +69,13 @@ const testData = {
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
+      },
+      {
+        asset: assets.avalancheV3Market.USDT,
+        apyType: constants.apyType.stable,
+        amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
       },
     ],
     withdraw: {
@@ -94,14 +101,14 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheV3Market.USDT.shortName,
-        amount: 16.0,
+        amount: 14.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 //limit
-describe.skip('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+describe('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 

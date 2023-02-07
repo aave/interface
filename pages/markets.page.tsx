@@ -1,15 +1,14 @@
+import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
-import AssetsList from 'src/modules/markets/AssetsList';
+import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
-
-import { ContentContainer } from '../src/components/ContentContainer';
 
 export default function Markets() {
   return (
     <>
       <MarketsTopPanel />
       <ContentContainer>
-        <AssetsList />
+        <MarketAssetsListContainer />
       </ContentContainer>
     </>
   );

@@ -59,14 +59,13 @@ const testData = {
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
-      // {
-      //   asset: assets.aaveMarket.REN,
-      //   apyType: constants.apyType.stable,
-      //   amount: 20,
-      //   hasApproval: false,
-      //   repayOption: constants.repayType.collateral,
-      //   assetForRepay: assets.aaveMarket.BAT,
-      // },
+      {
+        asset: assets.aaveMarket.REN,
+        apyType: constants.apyType.stable,
+        amount: 20,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
     ],
     withdraw: {
       asset: assets.aaveMarket.REN,
@@ -81,7 +80,6 @@ const testData = {
         type: constants.dashboardTypes.deposit,
         assetName: assets.aaveMarket.REN.shortName,
         wrapped: assets.aaveMarket.REN.wrapped,
-        // amount: 60,
         amount: 80,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
@@ -90,15 +88,14 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.aaveMarket.REN.shortName,
         wrapped: assets.aaveMarket.REN.wrapped,
-        // amount: 160,
-        amount: 180,
+        amount: 160,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
-
-describe('REN INTEGRATION SPEC, AAVE V2 MARKET', () => {
+//skipped because it was disabled on ETH V2 Market
+describe.skip('REN INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);
