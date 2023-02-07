@@ -43,8 +43,9 @@ export const SuppliedPositionsListItem = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
-        }`}
+      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
+        canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
+      }`}
       showSupplyCapTooltips
       showDebtCeilingTooltips
     >
