@@ -52,8 +52,13 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-    useBackgroundDataProvider();
+  const {
+    refetchWalletBalances,
+    refetchPoolData,
+    refetchIncentiveData,
+    refetchGhoData,
+    refetchStakeData,
+  } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
@@ -105,7 +110,9 @@ export const useTransactionHandler = ({
 
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
+        refetchGhoData && refetchGhoData();
         refetchIncentiveData && refetchIncentiveData();
+        refetchStakeData && refetchStakeData();
       } catch (e) {
         // TODO: what to do with this error?
         try {
