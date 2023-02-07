@@ -163,7 +163,14 @@ export const GhoDiscountCalculator = () => {
       return (
         <Typography variant="caption" component="p" color="text.secondary">
           <Trans>
-            You may borrow up to {discountableGhoAmount} GHO at{' '}
+            You may borrow up to{' '}
+            <FormattedNumber
+              value={discountableGhoAmount}
+              variant="caption"
+              color="text.secondary"
+              visibleDecimals={2}
+            />{' '}
+            GHO at{' '}
             <FormattedNumber
               value={rateSelection.rateAfterMaxDiscount}
               percent
@@ -213,7 +220,17 @@ export const GhoDiscountCalculator = () => {
               <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
                 <AddIcon />
               </SvgIcon>
-              <Trans>Add</Trans> {additionalStkAaveToReachMax} stkAAVE
+              <Trans>
+                Add{' '}
+                <FormattedNumber
+                  value={additionalStkAaveToReachMax}
+                  variant="caption"
+                  symbolsColor="text.secondary"
+                  visibleDecimals={2}
+                  sx={{ '.MuiTypography-root': { ml: 0 } }}
+                />{' '}
+                stkAAVE
+              </Trans>
             </Typography>{' '}
             <Trans>
               to borrow at{' '}
@@ -245,6 +262,7 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="GHO"
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
+            sliderMin={1}
             helperTextComponent={<BorrowAmountHelperText />}
           />
         </Box>
@@ -290,6 +308,7 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="GHO"
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
+            sliderMin={1}
             helperTextComponent={<BorrowAmountHelperText />}
           />
         </Box>

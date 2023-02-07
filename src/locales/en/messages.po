@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <3/> (max discount)"
-msgstr "<0><1><2/></1>Add {additionalStkAaveToReachMax} stkAAVE</0> to borrow at <3/> (max discount)"
+msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
+msgstr "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -2440,8 +2440,8 @@ msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You may borrow up to {discountableGhoAmount} GHO at <0/> (max discount)"
-msgstr "You may borrow up to {discountableGhoAmount} GHO at <0/> (max discount)"
+msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
+msgstr "You may borrow up to <0/> GHO at <1/> (max discount)"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"

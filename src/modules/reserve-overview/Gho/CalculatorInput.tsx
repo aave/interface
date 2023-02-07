@@ -35,6 +35,7 @@ interface CalculatorInputProps {
   disabled: boolean;
   tokenSymbol: 'AAVE' | 'GHO';
   sliderMax: number;
+  sliderMin?: number;
   onValueChanged: (value: number | null) => void;
   helperTextComponent: React.ReactNode;
 }
@@ -45,6 +46,7 @@ export const CalculatorInput = ({
   disabled,
   tokenSymbol,
   sliderMax,
+  sliderMin = 0,
   onValueChanged,
   helperTextComponent,
 }: CalculatorInputProps) => {
@@ -68,6 +70,11 @@ export const CalculatorInput = ({
             ? onValueChanged(null)
             : onValueChanged(Number(e.target.value))
         }
+        onBlur={(e) => {
+          if (e.target.value === '' || Number(e.target.value) <= 0) {
+            onValueChanged(sliderMin);
+          }
+        }}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         inputComponent={NumberFormatCustom as any}
       />
@@ -77,10 +84,16 @@ export const CalculatorInput = ({
         value={value ?? 0}
         onChange={(_, val) => onValueChanged(Number(val))}
         step={5}
-        min={0}
+        min={sliderMin}
         max={sliderMax}
         marks={[
-          { value: 0, label: '0' },
+          {
+            value: sliderMin,
+            label: new Intl.NumberFormat('en-US', {
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
+            }).format(sliderMin),
+          },
           {
             value: sliderMax,
             label: new Intl.NumberFormat('en-US', {
