@@ -32,8 +32,8 @@
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.12.3-2121fd5fea18911d583b1c18372b90f8a923ee52.0",
-    "@aave/math-utils": "1.12.3-2121fd5fea18911d583b1c18372b90f8a923ee52.0",
+    "@aave/contract-helpers": "1.13.6-b2b7613127eb1278aa61a20d618e3b6d95782bb2.0",
+    "@aave/math-utils": "1.13.6-b2b7613127eb1278aa61a20d618e3b6d95782bb2.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",

@@ -23,7 +23,7 @@ const getGoerliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
   return {
     market: marketsData[market],
     ghoTokenAddress: '0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211'.toLowerCase(),
-    uiGhoDataProviderAddress: '0xE914D574975a1Cd273388035Db4413dda788c0E5'.toLowerCase(),
+    uiGhoDataProviderAddress: '0xeb939bA0D4CFA94a401569dD1056161ed2b49798'.toLowerCase(),
   };
 };
 
@@ -66,7 +66,7 @@ export const createGhoSlice: StateCreator<
       aaveFacilitatorBucketMaxCapacity: '0',
     },
     ghoUserData: {
-      userGhoDiscountRate: '0',
+      userGhoDiscountPercent: '0',
       userDiscountTokenBalance: '0',
       userPreviousGhoBorrowIndex: '0',
       userGhoScaledBorrowBalance: '0',
