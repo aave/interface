@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-01-26 18:04\n"
+"PO-Revision-Date: 2023-02-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -31,7 +31,7 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -92,7 +92,7 @@ msgid "Aave Governance"
 msgstr "Gouvernance Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
@@ -290,6 +290,10 @@ msgstr "Actifs disponibles"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Available liquidity"
 msgstr "Liquidités disponibles"
+
+#: src/components/ChainAvailabilityText.tsx
+msgid "Available on"
+msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Available rewards"
@@ -2499,13 +2503,13 @@ msgstr ""
 msgid "copy the error"
 msgstr "copier l'erreur"
 
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "documentation"
+msgstr ""
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "Prend fin"
-
-#: src/modules/governance/GovernanceTopPanel.tsx
-msgid "here."
-msgstr "ici."
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -2529,6 +2533,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
+msgstr ""
+
+#: src/modules/migration/StETHMigrationWarning.tsx
+msgid "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to supply balance change after migration: {0}"
 msgstr ""
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx

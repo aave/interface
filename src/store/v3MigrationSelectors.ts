@@ -83,6 +83,7 @@ export type V3Rates = {
   aIncentivesData?: ReserveIncentiveResponse[];
   vIncentivesData?: ReserveIncentiveResponse[];
   sIncentivesData?: ReserveIncentiveResponse[];
+  priceInUSD: string;
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
@@ -93,7 +94,7 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
       if (userReserve.reserve.stableBorrowAPY == '0') {
         increasedAmount = addPercent(increasedAmount);
       } else {
-        increasedAmount = add1HourBorrowAPY(
+        increasedAmount = add1WeekBorrowAPY(
           userReserve.stableBorrows,
           userReserve.reserve.stableBorrowAPY
         );
@@ -111,7 +112,7 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
       if (userReserve.reserve.variableBorrowAPY === '0') {
         increasedAmount = addPercent(increasedAmount);
       } else {
-        increasedAmount = add1HourBorrowAPY(
+        increasedAmount = add1WeekBorrowAPY(
           userReserve.variableBorrows,
           userReserve.reserve.variableBorrowAPY
         );
@@ -285,7 +286,10 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         definitiveAssets[0]
       );
       const definitiveAsset = v3ReservesMap[underlyingAssetAddress];
-      if (definitiveAsset.reserve.usageAsCollateralEnabled && definitiveAsset.reserve.isIsolated) {
+      if (
+        definitiveAsset.reserve.reserveLiquidationThreshold !== '0' &&
+        definitiveAsset.reserve.isIsolated
+      ) {
         isolatedReserveV3 = { ...definitiveAsset.reserve, enteringIsolationMode: true };
       }
     }
@@ -317,6 +321,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         aIncentivesData: v3SupplyAsset.reserve.aIncentivesData,
         vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
         sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
+        priceInUSD: v3SupplyAsset.reserve.priceInUSD,
       };
       if (v3SupplyAsset.reserve.isFrozen) {
         migrationDisabled = MigrationDisabled.ReserveFrozen;
@@ -368,6 +373,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         aIncentivesData: v3BorrowAsset.reserve.aIncentivesData,
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
+        priceInUSD: v3BorrowAsset.reserve.priceInUSD,
       };
       const notEnoughLiquidityOnV3 = valueToBigNumber(
         valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
@@ -518,13 +524,13 @@ const addPercent = (amount: string) => {
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
 };
 
-// adding  30 min of variable or either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/useSwap.ts#L72-L78
-const add1HourBorrowAPY = (amount: string, borrowAPY: string) => {
+// adding  7 days of either stable or variable debt APY similar to swap
+// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
+const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
   const convertedAmount = valueToBigNumber(amount);
   const convertedBorrowAPY = valueToBigNumber(borrowAPY);
   return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 * 48))
+    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
     .toString();
 };
 
