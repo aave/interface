@@ -702,7 +702,7 @@ export const migration = (
     } else {
       supplies.forEach(($asset) => {
         it(`Choose supply asset ${$asset.shortName}`, () => {
-          cy.get(`[data-cy="migration-borrow-${$asset.shortName}"]`)
+          cy.get(`[data-cy="migration-supply-${$asset.shortName}"]`)
             .find(`[data-cy="migration-checkbox"]`)
             .click();
         });
@@ -716,8 +716,8 @@ export const migration = (
       borrows.forEach(($asset) => {
         it(`Choose borrow asset ${$asset.shortName}`, () => {
           cy.get(
-            `[data-cy="migration-supply-${$asset.shortName}${
-              $asset.isStable ? 'Stable' : 'Variable'
+            `[data-cy="migration-borrow-${$asset.isStable ? 'Stable' : 'Variable'}-${
+              $asset.shortName
             }"]`
           )
             .find(`[data-cy="migration-checkbox"]`)

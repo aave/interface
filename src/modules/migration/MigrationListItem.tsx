@@ -103,9 +103,9 @@ export const MigrationListItem = ({
   return (
     <ListItem
       sx={{ flexDirection: 'column', pl: 0 }}
-      data-cy={`migration-${borrowApyType != undefined ? 'borrow' : 'supply'}-${
+      data-cy={`migration-${borrowApyType !== undefined ? 'borrow-' + borrowApyType : 'supply'}-${
         userReserve.reserve.symbol
-      }${borrowApyType != undefined ? '-' + borrowApyType : ''}`}
+      }`}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', py: 4 }}>
