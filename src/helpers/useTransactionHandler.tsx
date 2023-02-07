@@ -30,7 +30,7 @@ interface UseTransactionHandlerProps {
 export type Approval = {
   amount: string;
   underlyingAsset: string;
-  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3';
+  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3' | 'STAKE';
 };
 
 export const useTransactionHandler = ({
@@ -62,11 +62,11 @@ export const useTransactionHandler = ({
   const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
     (state) => state.generatePermitPayloadForMigrationBorrowAsset
   );
-  const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
+  const [signPoolERC20Approval, walletApprovalMethodPreference, signStakingApproval] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
+    state.signStakingApproval,
   ]);
-
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
@@ -140,14 +140,21 @@ export const useTransactionHandler = ({
                   deadline,
                 })
               );
-            } else if (approval.permitType == 'SUPPLY_MIGRATOR_V3') {
+            } else if (approval.permitType === 'SUPPLY_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
                 generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
               );
-            } else if (approval.permitType == 'BORROW_MIGRATOR_V3') {
+            } else if (approval.permitType === 'BORROW_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
                 generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
               );
+            } else if (approval.permitType === 'STAKE'){
+              unsignedPromisePayloads.push(
+                signStakingApproval({
+                token: approval.underlyingAsset,
+                amount: approval.amount,
+                })
+              )
             }
           }
           try {
