@@ -2180,6 +2180,20 @@
       "ipfsHash": "QmTfuMCCRakFXEkwkqiuLCZwfG4pBUNoEAaA77ASzEdtUV",
       "originalHash": "0x4f3905da8ccd469111977b3057fa544bec56880a6039c7977dbc68aeaba48536",
       "id": 151
+    },
+    {
+      "title": "Add USDT to Aave Ethereum V3 pool",
+      "author": "Marc Zeller (@marczeller), Aave-Chan Inititative",
+      "shortDescription": "Onboard USDT Aave Eth V3",
+      "discussions": "https://governance.aave.com/t/arfc-add-usdt-to-ethereum-v3-market/11536",
+      "created": "2023-02-07T00:00:00.000Z",
+      "updated": "2023-02-07T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "USDTETHV3",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to onboard USDT to the Ethereum v3 Liquidity Pool.\n\n## Motivation\nSupporting stablecoin diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Tether or any entity to present this ARC.\n\nThe risk parameters provided introduce USDT as a non-collateral asset.\n\nThe Interest rate Strategy curve is the same as for USDT in V2. for now.\nThe ACI is supportive of onboarding USDT as it was in V2.\nFor now, the ACI doesn’t consider V3 mature enough to activate a USD stablecoins emode and consider USDT in it.\nAlso, supply and borrow caps are suggested for this asset to limit risk exposure.\n\n## Specification\n\nTicker: USDT\n\nContract Address: [0xdAC17F958D2ee523a2206206994597C13D831ec7](https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7)\n\n|Risk Parameter|Value|\n| --- | --- |\n|Isolation Mode|NO|\n|Enable Borrow|YES|\n|Enable Collateral|NO|\n|Loan To Value|N/A|\n|Liquidation Threshold|N/A|\n|Liquidation Bonus|N/A|\n|Reserve Factor|10%|\n|Liquidation Protocol Fee|10%|\n|Borrow Cap|185M|\n|Supply Cap|200M|\n|Debt Ceiling|N/A|\n|Base|0%|\n|Slope1|4%|\n|Uoptimal|90%|\n|Slope2|72%|\n\nThe proposal payload uses the [GenericListingEngine](https://etherscan.io/address/0xC51e6E38d406F98049622Ca54a6096a23826B426#code) to perform a new asset listing with the following parameters:\n\n```solidity\nIGenericV3ListingEngine.Listing({\n      asset: USDT,\n      assetSymbol: 'USDT',\n      priceFeed: USDT_USD_FEED,\n      rateStrategy: 0xdd1BAC6A713c5b0EC42bA39D0c5e4582975DE6D6,\n      enabledToBorrow: true,\n      stableRateModeEnabled: false,\n      borrowableInIsolation: false,\n      withSiloedBorrowing: false,\n      flashloanable: true,\n      ltv: 0,\n      liqThreshold: 0,\n      liqBonus: 0,\n      reserveFactor: 10_00,\n      supplyCap: 200_000_000,\n      borrowCap: 185_000_000,\n      debtCeiling: 0,\n      liqProtocolFee: 10_00,\n      eModeCategory: 0\n    });\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-add-usdt-to-ethereum-v3-market/11536)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/mainnet/AaveV3USDTETHPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/mainnet/AaveV3EthUSDTPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by[Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3EthUSDTPayload: ProposalPayload](https://etherscan.io/address/0x3b45bbc2b69fafab95fd91b10f39ccb5dd92facb#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).",
+      "ipfsHash": "QmWzPXzvSDMyPA7JJBsKFaYWS5mW8YJqm6NVAHXPr6MPbR",
+      "originalHash": "0x808868979965100b100d66218d024cb4a3dbde566bd6f4f0530141f42cf97f74",
+      "id": 152
     }
   ]
 }
