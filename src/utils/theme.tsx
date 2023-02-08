@@ -124,7 +124,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     mode === 'dark' ? darkColor : lightColor;
 
   return {
-    'custom--variable': 123,
     breakpoints: {
       keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
       values: { xs: 0, xsm: 640, sm: 760, md: 960, lg: 1280, xl: 1575, xxl: 1800 },
