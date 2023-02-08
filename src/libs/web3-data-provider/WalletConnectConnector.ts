@@ -3,6 +3,8 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import invariant from 'tiny-invariant';
 
+export const URI_AVAILABLE = 'URI_AVAILABLE';
+
 type WalletConnectProviderOptions = Parameters<typeof WalletConnectProvider.init>[0];
 
 export interface WalletConnectConnectorArguments
@@ -52,6 +54,10 @@ export class WalletConnectConnector extends AbstractConnector {
     this.emitDeactivate();
   }
 
+  private handleDisplayURI = (uri: string): void => {
+    this.emit(URI_AVAILABLE, uri);
+  };
+
   public async activate(): Promise<ConnectorUpdate> {
     if (!this.walletConnectProvider) {
       const walletConnectProviderFactory = await import('@walletconnect/ethereum-provider').then(
@@ -63,11 +69,16 @@ export class WalletConnectConnector extends AbstractConnector {
     this.walletConnectProvider.on('chainChanged', this.handleChainChanged);
     this.walletConnectProvider.on('accountsChanged', this.handleAccountsChanged);
     this.walletConnectProvider.on('disconnect', this.handleDisconnect);
+    this.walletConnectProvider.on('display_uri', this.handleDisplayURI);
     try {
+      console.log('entro');
       const accounts = await this.walletConnectProvider.enable();
+      console.log('salio');
+      console.log(accounts);
       const defaultAccount = accounts[0];
       return { provider: this.walletConnectProvider, account: defaultAccount };
     } catch (error) {
+      console.log(error);
       if (error.message === 'User closed modal') {
         throw new UserRejectedRequestError();
       }

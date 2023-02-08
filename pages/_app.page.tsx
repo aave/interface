@@ -1,4 +1,5 @@
 import '/public/fonts/inter/inter.css';
+import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { Web3ReactProvider } from '@web3-react/core';
