@@ -101,7 +101,12 @@ export const MigrationListItem = ({
       />
     );
   return (
-    <ListItem sx={{ flexDirection: 'column', pl: 0 }}>
+    <ListItem
+      sx={{ flexDirection: 'column', pl: 0 }}
+      data-cy={`migration-${borrowApyType !== undefined ? 'borrow-' + borrowApyType : 'supply'}-${
+        userReserve.reserve.symbol
+      }`}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', py: 4 }}>
           <ListColumn align="center" maxWidth={64} minWidth={64}>
@@ -129,6 +134,7 @@ export const MigrationListItem = ({
                 justifyContent: 'center',
               })}
               onClick={disabled !== undefined ? undefined : onCheckboxClick}
+              data-cy={`migration-checkbox`}
             >
               {disabled === undefined && (
                 <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>

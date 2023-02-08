@@ -13,6 +13,7 @@ export default defineConfig({
       '/**/usdt.polygon-v2.cy.ts',
       '/**/swap.polygon-v2.cy.ts',
       '/**/critical-conditions.polygon-v2.cy.ts',
+      '/**/migration.polygon-v2.cy.ts',
     ],
   },
 });

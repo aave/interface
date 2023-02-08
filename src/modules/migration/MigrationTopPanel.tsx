@@ -45,6 +45,7 @@ export const MigrationTopPanel = () => {
                 router.push(ROUTES.dashboard);
               }}
               sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
+              data-cy={`goBack-btn`}
             >
               <Trans>Go Back</Trans>
             </Button>

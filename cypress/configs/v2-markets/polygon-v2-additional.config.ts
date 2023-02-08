@@ -10,6 +10,7 @@ export default defineConfig({
     specPattern: [
       folder + 'swap.polygon-v2.cy.ts',
       folder + 'critical-conditions.polygon-v2.cy.ts',
+      folder + 'migration.polygon-v2.cy.ts',
     ],
   },
 });
