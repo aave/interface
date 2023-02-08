@@ -159,6 +159,7 @@ describe(`GHO MODAL APY TESTING`, () => {
     it(`Open Modal, and save values`, () => {
       cy.doSwitchToDashboardBorrowView();
       DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
+      cy.wait(5000); //TODO: upgrade to waitUntil
       DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
         maxAPYRange = $val;
       });
@@ -170,7 +171,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
     it(`Verify modal with max discount for this case, no amount`, () => {
-      cy.wait(5000); //TODO: upgrade to waitUntil
+      cy.wait(2000); //TODO: upgrade to waitUntil
       ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.eql(borrowedAPY);
         expect($val).to.be.eql(minAPYRage);
@@ -178,7 +179,7 @@ describe(`GHO MODAL APY TESTING`, () => {
     });
     it(`Verify modal with some discount for this case, some amount`, () => {
       ModalHelpers.setAmount(20);
-      cy.wait(5000); //TODO: upgrade to waitUntil
+      cy.wait(2000); //TODO: upgrade to waitUntil
       ModalHelpers.getApyOld().then(($val) => {
         expect($val).to.be.eql(borrowedAPY);
         expect($val).to.be.eql(minAPYRage);
@@ -191,7 +192,7 @@ describe(`GHO MODAL APY TESTING`, () => {
     });
     it(`Verify modal with max discount for this case, max amount`, () => {
       ModalHelpers.setAmount(20, true);
-      cy.wait(5000); //TODO: upgrade to waitUntil
+      cy.wait(2000); //TODO: upgrade to waitUntil
       ModalHelpers.getApyOld().then(($val) => {
         expect($val).to.be.eql(borrowedAPY);
         expect($val).to.be.eql(minAPYRage);
