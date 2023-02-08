@@ -30,7 +30,7 @@ export const SuppliedPositionsListItem = ({
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
-    reserve.usageAsCollateralEnabled &&
+    reserve.reserveLiquidationThreshold !== '0' &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));

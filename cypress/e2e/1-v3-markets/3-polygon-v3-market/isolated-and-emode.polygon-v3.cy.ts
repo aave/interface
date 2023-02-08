@@ -15,7 +15,7 @@ const testData = {
   testCases: {
     depositMATIC: {
       asset: assets.polygonV3Market.MATIC,
-      amount: 50,
+      amount: 20,
       hasApproval: true,
     },
     swapMATIC: {
@@ -31,7 +31,7 @@ const testData = {
       amount: 28,
       apyType: constants.borrowAPYType.default,
       hasApproval: true,
-      isMaxAmount: false,
+      isMaxAmount: true,
       isRisk: true,
     },
     checkBorrowTypeBlocked1: {

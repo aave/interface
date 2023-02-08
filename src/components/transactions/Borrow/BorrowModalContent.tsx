@@ -54,7 +54,7 @@ export const BorrowModalContent = ({
 }: BorrowModalContentProps) => {
   const { gasLimit, txError } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { borrowCap, debtCeiling } = useAssetCaps();
+  const { borrowCap } = useAssetCaps();
 
   const incentive =
     interestRateMode === InterestRate.Stable
@@ -64,7 +64,6 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
       <AssetInput
         value={amount}
         onChange={onAmountChange}

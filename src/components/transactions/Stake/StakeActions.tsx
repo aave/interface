@@ -40,7 +40,7 @@ export const StakeActions = ({
         return stakeWithPermit({
           token: selectedToken,
           amount: amountToStake.toString(),
-          signature,
+          signature: signature[0],
         });
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
@@ -57,7 +57,7 @@ export const StakeActions = ({
       amount={amountToStake}
       handleAction={action}
       handleApproval={() =>
-        approval({ amount: amountToStake, underlyingAsset: selectedToken, permitType: 'STAKING' })
+        approval([{ amount: amountToStake, underlyingAsset: selectedToken, permitType: 'STAKE' }])
       }
       symbol={symbol}
       requiresAmount

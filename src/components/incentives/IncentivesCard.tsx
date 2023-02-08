@@ -13,6 +13,7 @@ interface IncentivesCardProps {
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
   align?: 'center' | 'flex-end';
+  color?: string;
   tooltip?: ReactNode;
 }
 
@@ -23,6 +24,7 @@ export const IncentivesCard = ({
   variant = 'secondary14',
   symbolsVariant,
   align,
+  color,
   tooltip,
 }: IncentivesCardProps) => {
   return (
@@ -43,11 +45,13 @@ export const IncentivesCard = ({
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
+            color={color}
+            symbolsColor={color}
           />
           {tooltip}
         </Box>
       ) : (
-        <NoData variant={variant} color="text.secondary" />
+        <NoData variant={variant} color={color || 'text.secondary'} />
       )}
 
       <IncentivesButton incentives={incentives} symbol={symbol} />

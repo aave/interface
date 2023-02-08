@@ -18,6 +18,7 @@ import { CollateralChangeModal } from 'src/components/transactions/CollateralCha
 import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
+import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
 import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
@@ -93,6 +94,7 @@ export default function MyApp(props: MyAppProps) {
                               <EmodeModal />
                               <SwapModal />
                               <FaucetModal />
+                              <MigrateV3Modal />
                             </GasStationProvider>
                           </AppDataProvider>
                         </BackgroundDataProvider>

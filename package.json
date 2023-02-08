@@ -34,6 +34,7 @@
   "dependencies": {
     "@aave/contract-helpers": "1.13.6-b2b7613127eb1278aa61a20d618e3b6d95782bb2.0",
     "@aave/math-utils": "1.13.6-b2b7613127eb1278aa61a20d618e3b6d95782bb2.0",
+    "@bgd-labs/aave-address-book": "^1.13.1",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",

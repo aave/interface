@@ -900,6 +900,83 @@
       "wrapped": false
     }
   },
+  "ethereumV3Market": {
+    "ETH": {
+      "fullName": "ETH",
+      "shortName": "ETH",
+      "wrapped": true
+    },
+    "WETH": {
+      "fullName": "WETH",
+      "shortName": "WETH",
+      "wrapped": true
+    },
+    "aWETH": {
+      "fullName": "aWETH",
+      "shortName": "aWETH",
+      "wrapped": true
+    },
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aDAI": {
+      "fullName": "aDAI",
+      "shortName": "aDAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "USDC": {
+      "fullName": "USD Coin",
+      "shortName": "USDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aUSDC": {
+      "fullName": "aUSD",
+      "shortName": "aUSDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WBTC": {
+      "fullName": "WBTC Coin",
+      "shortName": "WBTC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aWBTC": {
+      "fullName": "AAVA WBTC Coin",
+      "shortName": "aWBTC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "LINK": {
+      "fullName": "LINK Coin",
+      "shortName": "LINK",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aLINK": {
+      "fullName": "aLINK Coin",
+      "shortName": "aLINK",
+      "collateral": true,
+      "wrapped": false
+    },
+    "wstETH": {
+      "fullName": "wstETH",
+      "shortName": "wstETH",
+      "collateral": true,
+      "wrapped": false
+    },
+    "awstETH": {
+      "fullName": "awstETH",
+      "shortName": "awstETH",
+      "collateral": true,
+      "wrapped": false
+    }
+  },
   "ghoV3Market": {
     "ETH": {
       "fullName": "Ethereum",

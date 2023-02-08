@@ -6,7 +6,6 @@ import {
   formatReservesAndIncentives,
   FormattedGhoReserveData,
   FormattedGhoUserData,
-  formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
   formatUserSummaryWithDiscount,
   USD_DECIMALS,
@@ -18,7 +17,6 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { isGhoAndSupported, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
@@ -28,6 +26,8 @@ import {
   selectCurrentUserEmodeCategoryId,
   selectCurrentUserReserves,
   selectEmodes,
+  selectFormattedReserves,
+  selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -85,57 +85,30 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
+  const { currentMarket } = useProtocolDataContext();
   const [
     reserves,
     baseCurrencyData,
     userReserves,
     userEmodeCategoryId,
-    reserveIncentiveData,
-    userIncentiveData,
     eModes,
     ghoReserveData,
     ghoUserData,
     ghoReserveDataFetched,
+    formattedPoolReserves,
+    userSummary,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
     selectCurrentUserReserves(state),
     selectCurrentUserEmodeCategoryId(state),
-    state.reserveIncentiveData,
-    state.userIncentiveData,
     selectEmodes(state),
     state.ghoReserveData,
     state.ghoUserData,
     state.ghoReserveDataFetched,
+    selectFormattedReserves(state, currentTimestamp),
+    selectUserSummaryAndIncentives(state, currentTimestamp),
   ]);
-
-  const formattedPoolReserves = formatReservesAndIncentives({
-    reserves,
-    currentTimestamp,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: reserveIncentiveData || [],
-  })
-    .map((r) => ({
-      ...r,
-      ...fetchIconSymbolAndName(r),
-      isEmodeEnabled: r.eModeCategoryId !== 0,
-      isWrappedBaseAsset:
-        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
-    }))
-    .sort(reserveSortFn);
-
-  let user = formatUserSummaryAndIncentives({
-    currentTimestamp,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    userReserves,
-    formattedReserves: formattedPoolReserves,
-    userEmodeCategoryId: userEmodeCategoryId,
-    reserveIncentives: reserveIncentiveData || [],
-    userIncentives: userIncentiveData || [],
-  });
 
   const formattedGhoReserveData: FormattedGhoReserveData = formatGhoReserveData({
     ghoReserveData,
@@ -146,6 +119,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     currentTimestamp,
   });
 
+  let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields
   if (formattedGhoUserData.userDiscountedGhoInterest > 0) {
     const userSummaryWithDiscount = formatUserSummaryWithDiscount({

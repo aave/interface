@@ -42,11 +42,11 @@ export const SupplyActions = ({
           blocked,
         });
       },
-      handleGetPermitTxns: async (signature, deadline) => {
+      handleGetPermitTxns: async (signatures, deadline) => {
         return supplyWithPermit({
           reserve: poolAddress,
           amount: amountToSupply,
-          signature,
+          signature: signatures[0],
           deadline,
         });
       },
@@ -66,12 +66,7 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() =>
-        approval({
-          amount: amountToSupply,
-          underlyingAsset: poolAddress,
-        })
-      }
+      handleApproval={() => approval([{ amount: amountToSupply, underlyingAsset: poolAddress }])}
       handleAction={action}
       requiresApproval={requiresApproval}
       tryPermit={usingPermit}

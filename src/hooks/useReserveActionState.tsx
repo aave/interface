@@ -44,12 +44,13 @@ export const useReserveActionState = ({
   const isGho = isGhoAndSupported({ symbol: reserve.symbol, currentMarket });
 
   return {
-    disableSupplyButton: balance === '0' || isGho,
+    disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
       isolationModeBorrowDisabled ||
-      eModeBorrowDisabled,
+      eModeBorrowDisabled ||
+      maxAmountToBorrow === '0',
     alerts: (
       <Stack gap={3}>
         {balance === '0' && !isGho && (

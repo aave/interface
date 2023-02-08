@@ -17,16 +17,25 @@ const testCases = [
   },
 ];
 
+const waitStakedAmount = (assetName: string, checkAmount: string) => {
+  cy.get(`[data-cy="stakedBox_${assetName}"]`)
+    .find(`[data-cy="amountNative"]`)
+    .then(($amount) => {
+      cy.waitUntil(() => $amount.text() == checkAmount, {
+        errorMsg: "staked amount wasn't updated",
+        timeout: 70000,
+        interval: 500,
+      });
+    });
+};
+
 testCases.forEach(
-  (
-    testCase: {
-      assetName: { fullName: string; shortName: string; address: string };
-      amount: number;
-      checkAmount: string;
-      tabValue: string;
-    },
-    timeout = 10000
-  ) => {
+  (testCase: {
+    assetName: { fullName: string; shortName: string; address: string };
+    amount: number;
+    checkAmount: string;
+    tabValue: string;
+  }) => {
     describe(`STAKE INTEGRATION SPEC, ${testCase.assetName.shortName} V2 MARKET`, () => {
       configEnvWithTenderlyMainnetFork({
         tokens: [{ tokenAddress: testCase.assetName.address }],
@@ -51,7 +60,7 @@ testCases.forEach(
         });
         doCloseModal();
         it(`Check staked amount`, () => {
-          cy.wait(timeout);
+          waitStakedAmount(testCase.assetName.shortName, testCase.checkAmount);
           cy.get(`[data-cy="stakedBox_${testCase.assetName.shortName}"]`)
             .find(`[data-cy="amountNative"]`)
             .should('have.text', testCase.checkAmount);
@@ -85,10 +94,9 @@ testCases.forEach(
         });
         doCloseModal();
         it(`Check cooldown activation`, () => {
-          cy.wait(timeout);
-          cy.get(`[data-cy="awaitCoolDownBtn_${testCase.assetName.shortName}"]`).should(
-            'be.disabled'
-          );
+          cy.get(`[data-cy="awaitCoolDownBtn_${testCase.assetName.shortName}"]`, {
+            timeout: 70000,
+          }).should('be.visible', { timeout: 50000 });
         });
       });
     });

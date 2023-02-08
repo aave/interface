@@ -618,6 +618,7 @@ export const emodeActivating = (
     turnOn: boolean;
     multipleEmodes?: boolean;
     emodeOption?: string;
+    emodeName?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
