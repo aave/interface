@@ -19,6 +19,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from '../ReservePanels';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 
@@ -71,11 +72,11 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               component={Link}
               variant="outlined"
               size="small"
-              href="https://governance.aave.com/uploads/short-url/6B2t8gC8Sf4WOafAcgOrdCg0Nka.pdf"
+              href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
             >
               <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                <Trans>Whitepaper</Trans>
+                <Trans>Techpaper</Trans>
               </Typography>
               <SvgIcon sx={{ fontSize: 14 }}>
                 <ExternalLinkIcon />
@@ -85,7 +86,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               component={Link}
               variant="outlined"
               size="small"
-              href="https://gho.money"
+              href="https://gho.xyz"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
             >
               <Typography sx={{ mr: 1, fontSize: '10px' }}>
@@ -99,7 +100,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               component={Link}
               variant="outlined"
               size="small"
-              href="https://governance.aave.com/t/introducing-gho/8730"
+              href="https://docs.gho.xyz/concepts/faq"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
             >
               <Typography sx={{ mr: 1, fontSize: '10px' }}>
@@ -207,12 +208,18 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Box>
         </Box>
       </PanelRow>
+      {reserve.eModeCategoryId !== 0 && (
+        <>
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
+          <ReserveEModePanel reserve={reserve} />
+        </>
+      )}
       <Divider sx={{ my: { xs: 6, sm: 10 } }} />
       <PanelRow id="discount">
         <PanelTitle>
           <Trans>Staking incentive</Trans>
         </PanelTitle>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <GhoDiscountCalculator />
         </Box>
       </PanelRow>

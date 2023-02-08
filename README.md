@@ -13,7 +13,7 @@
 
 # Aave protocol interface :ghost:
 
-An open source interface for the decentralized liquidity protocol Aave
+An open source interface for the decentralized liquidity protocol Aave.
 
 Enabling users to:
 

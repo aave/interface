@@ -11,7 +11,7 @@ export enum ESupportedTimeRanges {
   FiveYears = '5y',
 }
 
-interface TimeRangeSelectorProps {
+export interface TimeRangeSelectorProps {
   disabled?: boolean;
   timeRanges: ESupportedTimeRanges[];
   selectedTimeRange: ESupportedTimeRanges;

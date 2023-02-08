@@ -51,7 +51,7 @@ export const WithdrawActions = ({
       actionInProgressText={<Trans>Withdrawing {symbol}</Trans>}
       actionText={<Trans>Withdraw {symbol}</Trans>}
       handleAction={action}
-      handleApproval={() => approval({ amount: amountToWithdraw, underlyingAsset: poolAddress })}
+      handleApproval={() => approval([{ amount: amountToWithdraw, underlyingAsset: poolAddress }])}
       requiresApproval={requiresApproval}
       sx={sx}
     />

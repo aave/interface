@@ -15,16 +15,10 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
-export type Approval = {
-  amount: string;
-  underlyingAsset: string;
-  permitType?: 'POOL' | 'MIGRATOR' | 'STAKING';
-};
-
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   handleGetPermitTxns?: (
-    signature: SignatureLike,
+    signatures: SignatureLike[],
     deadline: string
   ) => Promise<EthereumTransactionTypeExtended[]>;
   tryPermit?: boolean;
@@ -32,6 +26,12 @@ interface UseTransactionHandlerProps {
   skip?: boolean;
   deps?: DependencyList;
 }
+
+export type Approval = {
+  amount: string;
+  underlyingAsset: string;
+  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3' | 'STAKE';
+};
 
 export const useTransactionHandler = ({
   handleGetTxns,
@@ -59,11 +59,22 @@ export const useTransactionHandler = ({
     refetchGhoData,
     refetchStakeData,
   } = useBackgroundDataProvider();
-  const [signature, setSignature] = useState<SignatureLike>();
+  const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const { signERC20Approval, walletApprovalMethodPreference, signStakingApproval } = useRootStore();
-
-  const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
+    (state) => state.generatePermitPayloadForMigrationSupplyAsset
+  );
+  const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
+    (state) => state.generatePermitPayloadForMigrationBorrowAsset
+  );
+  const [signPoolERC20Approval, walletApprovalMethodPreference, signStakingApproval] = useRootStore(
+    (state) => [
+      state.signERC20Approval,
+      state.walletApprovalMethodPreference,
+      state.signStakingApproval,
+    ]
+  );
+  const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
@@ -121,98 +132,129 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async ({ amount, underlyingAsset, permitType }: Approval) => {
-    if (usePermit && amount && underlyingAsset) {
-      setApprovalTxState({ ...approvalTxState, loading: true });
-      try {
-        // deadline is an hour after signature
-        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-        let unsignedPayload = '';
-        if (!permitType || permitType === 'POOL') {
-          unsignedPayload = await signERC20Approval({
-            reserve: underlyingAsset,
-            amount,
-            deadline,
-          });
-        } else {
-          unsignedPayload = await signStakingApproval({
-            token: underlyingAsset,
-            amount,
-          });
-        }
+  const approval = async (approvals?: Approval[]) => {
+    if (approvalTxes) {
+      if (usePermit && approvals && approvals?.length > 0) {
+        setApprovalTxState({ ...approvalTxState, loading: true });
         try {
-          const signature = await signTxData(unsignedPayload);
-          if (!mounted.current) return;
-          setSignature(signature);
-          setSignatureDeadline(deadline);
-          setApprovalTxState({
-            txHash: MOCK_SIGNED_HASH,
-            loading: false,
-            success: true,
-          });
-          setTxError(undefined);
+          // deadline is an hour after signature
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          const unsignedPromisePayloads: Promise<string>[] = [];
+          for (const approval of approvals) {
+            if (!approval.permitType || approval.permitType == 'POOL') {
+              unsignedPromisePayloads.push(
+                signPoolERC20Approval({
+                  reserve: approval.underlyingAsset,
+                  amount: approval.amount,
+                  deadline,
+                })
+              );
+            } else if (approval.permitType === 'SUPPLY_MIGRATOR_V3') {
+              unsignedPromisePayloads.push(
+                generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
+              );
+            } else if (approval.permitType === 'BORROW_MIGRATOR_V3') {
+              unsignedPromisePayloads.push(
+                generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
+              );
+            } else if (approval.permitType === 'STAKE') {
+              unsignedPromisePayloads.push(
+                signStakingApproval({
+                  token: approval.underlyingAsset,
+                  amount: approval.amount,
+                })
+              );
+            }
+          }
+          try {
+            const signatures: SignatureLike[] = [];
+            const unsignedPayloads = await Promise.all(unsignedPromisePayloads);
+            for (const unsignedPayload of unsignedPayloads) {
+              signatures.push(await signTxData(unsignedPayload));
+            }
+            if (!mounted.current) return;
+            setSignatures(signatures);
+            setSignatureDeadline(deadline);
+            setApprovalTxState({
+              txHash: MOCK_SIGNED_HASH,
+              loading: false,
+              success: true,
+            });
+            setTxError(undefined);
+          } catch (error) {
+            if (!mounted.current) return;
+            const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+            setTxError(parsedError);
+
+            setApprovalTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          }
         } catch (error) {
           if (!mounted.current) return;
-          const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-          setTxError(parsedError);
 
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
           setApprovalTxState({
             txHash: undefined,
             loading: false,
           });
         }
-      } catch (error) {
-        if (!mounted.current) return;
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setApprovalTxState({
-          txHash: undefined,
-          loading: false,
-        });
-      }
-    } else if (approvalTx) {
-      try {
-        setApprovalTxState({ ...approvalTxState, loading: true });
-        const params = await approvalTx.tx();
-        delete params.gasPrice;
-        await processTx({
-          tx: () => sendTx(params),
-          successCallback: (txnResponse: TransactionResponse) => {
-            setApprovalTxState({
-              txHash: txnResponse.hash,
-              loading: false,
-              success: true,
-            });
-            setTxError(undefined);
-          },
-          errorCallback: (error, hash) => {
-            const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-            setTxError(parsedError);
-            setApprovalTxState({
-              txHash: hash,
-              loading: false,
-            });
-          },
-          action: TxAction.APPROVAL,
-        });
-      } catch (error) {
-        if (!mounted.current) return;
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setApprovalTxState({
-          txHash: undefined,
-          loading: false,
-        });
+      } else {
+        try {
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          const params = await Promise.all(approvalTxes.map((approvalTx) => approvalTx.tx()));
+          const approvalResponses = await Promise.all(
+            params.map(
+              (param) =>
+                new Promise<TransactionResponse>(async (resolve, reject) => {
+                  delete param.gasPrice;
+                  processTx({
+                    tx: () => sendTx(param),
+                    successCallback: (txnResponse: TransactionResponse) => {
+                      resolve(txnResponse);
+                    },
+                    errorCallback: (error, hash) => {
+                      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+                      setTxError(parsedError);
+                      setApprovalTxState({
+                        txHash: hash,
+                        loading: false,
+                      });
+                      reject();
+                    },
+                    // TODO: add error callback
+                    action: TxAction.APPROVAL,
+                  });
+                })
+            )
+          );
+
+          setApprovalTxState({
+            txHash: approvalResponses[0].hash,
+            loading: false,
+            success: true,
+          });
+        } catch (error) {
+          if (!mounted.current) return;
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
+          setApprovalTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
       }
     }
   };
 
   const action = async () => {
     if (usePermit && handleGetPermitTxns) {
-      if (!signature || !signatureDeadline) throw new Error('signature needed');
+      if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const txns = await handleGetPermitTxns(signature, signatureDeadline);
+        const txns = await handleGetPermitTxns(signatures, signatureDeadline);
         const params = await txns[0].tx();
         delete params.gasPrice;
         return processTx({
@@ -236,6 +278,7 @@ export const useTransactionHandler = ({
           action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
+        console.log(error, 'error');
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
@@ -244,7 +287,7 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTx) && actionTx) {
+    if ((!usePermit || !approvalTxes) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
@@ -271,6 +314,7 @@ export const useTransactionHandler = ({
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        console.log(error, parsedError);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
@@ -290,13 +334,16 @@ export const useTransactionHandler = ({
         return handleGetTxns()
           .then(async (txs) => {
             if (!mounted.current) return;
-            const approvalTransaction = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
+            const approvalTransactions = txs.filter((tx) => tx.txType == 'ERC20_APPROVAL');
+            if (approvalTransactions.length > 0) {
+              setApprovalTxes(approvalTransactions);
+            }
             const preferPermit =
               tryPermit &&
               walletApprovalMethodPreference === ApprovalMethod.PERMIT &&
               handleGetPermitTxns &&
               permitAction;
-            if (approvalTransaction && preferPermit) {
+            if (approvalTransactions.length > 0 && preferPermit) {
               // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
               setUsePermit(true);
               const gas = gasLimitRecommendations[permitAction];
@@ -309,7 +356,9 @@ export const useTransactionHandler = ({
             } else {
               setUsePermit(false);
               // For approval flow, set approval/action status and gas limit accordingly
-              setApprovalTx(approvalTransaction);
+              if (approvalTransactions.length > 0) {
+                setApprovalTxes(approvalTransactions);
+              }
               setActionTx(
                 txs.find((tx) =>
                   [
@@ -320,6 +369,7 @@ export const useTransactionHandler = ({
                     'STAKE_ACTION',
                     'GOV_DELEGATION_ACTION',
                     'GOVERNANCE_ACTION',
+                    'V3_MIGRATION_ACTION',
                   ].includes(tx.txType)
                 )
               );
@@ -332,7 +382,7 @@ export const useTransactionHandler = ({
                 for (const tx of txs) {
                   const txGas = await tx.gas();
                   // If permit is available, use regular action for estimation but exclude the approval tx
-                  if (txGas && txGas.gasLimit && !(tryPermit && tx.txType === 'ERC20_APPROVAL')) {
+                  if (txGas && txGas.gasLimit) {
                     gasLimit = gasLimit + Number(txGas.gasLimit);
                   }
                 }
@@ -356,7 +406,7 @@ export const useTransactionHandler = ({
       }, 1000);
       return () => clearTimeout(timeout);
     } else {
-      setApprovalTx(undefined);
+      setApprovalTxes(undefined);
       setActionTx(undefined);
     }
   }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
@@ -365,7 +415,8 @@ export const useTransactionHandler = ({
     approval,
     action,
     loadingTxns,
-    requiresApproval: !!approvalTx || usePermit,
+    setUsePermit,
+    requiresApproval: !!approvalTxes || usePermit,
     approvalTxState,
     mainTxState,
     usePermit,

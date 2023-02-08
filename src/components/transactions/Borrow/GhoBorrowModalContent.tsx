@@ -4,9 +4,13 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import {
+  GhoIncentivesCard,
+  GhoIncentivesCardProps,
+} from 'src/components/incentives/GhoIncentivesCard';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
+import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -66,7 +70,6 @@ export const GhoBorrowModalContent = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  const showNoAPYData = !hasGhoBorrowPositions && discountAvailable && amount === '';
 
   /**
    * Calculates the discount rate based off amount of GHO being borrowed, taking into consideration how much has been borrowed previously as well as discountable and non-discountable amounts.
@@ -87,7 +90,11 @@ export const GhoBorrowModalContent = ({
       );
 
       // compare rounded values for differing apy since we only show 2 decimal places for percentage
-      setApyDiffers(currentBorrowAPY.toFixed(4) !== newRate.toFixed(4));
+      if (hasGhoBorrowPositions && currentBorrowAPY.toFixed(4) !== newRate.toFixed(4)) {
+        setApyDiffers(true);
+      } else {
+        setApyDiffers(false);
+      }
       setCalculatedFutureBorrowAPY(newRate);
     }
   };
@@ -99,22 +106,94 @@ export const GhoBorrowModalContent = ({
     }
   }, [amount]);
 
-  const IncentivesWithBorrowAmount = () => (
-    <GhoIncentivesCard
-      value={ghoLoadingData ? -1 : calculatedFutureBorrowAPY}
-      incentives={userReserve.reserve.vIncentivesData}
-      symbol={userReserve.reserve.symbol}
-      data-cy="apyType"
-      borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
-      baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
-      discountPercent={ghoReserveData.ghoDiscountRate * -1}
-      discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-      stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
-      ghoRoute={
-        ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount'
-      }
-    />
-  );
+  const BorrowAPY = () => {
+    if (ghoLoadingData || (!hasGhoBorrowPositions && amount === '' && discountAvailable)) {
+      return <NoData variant="secondary14" color="text.secondary" />;
+    }
+
+    type SharedIncentiveProps = Omit<GhoIncentivesCardProps, 'value' | 'borrowAmount'> & {
+      'data-cy': string;
+    };
+
+    const sharedIncentiveProps: SharedIncentiveProps = {
+      incentives: userReserve.reserve.vIncentivesData,
+      symbol: userReserve.reserve.symbol,
+      baseApy: ghoReserveData.ghoBaseVariableBorrowRate,
+      discountPercent: ghoReserveData.ghoDiscountRate * -1,
+      discountableAmount: ghoUserData.userGhoAvailableToBorrowAtDiscount,
+      stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
+      ghoRoute:
+        ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',
+      'data-cy': `apyType`,
+    };
+
+    if (!hasGhoBorrowPositions && amount !== '') {
+      return (
+        <GhoIncentivesCard
+          value={calculatedFutureBorrowAPY}
+          borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
+          {...sharedIncentiveProps}
+        />
+      );
+    }
+
+    if (hasGhoBorrowPositions && amount === '') {
+      return (
+        <GhoIncentivesCard
+          value={currentBorrowAPY}
+          borrowAmount={userReserve.totalBorrows}
+          onMoreDetailsClick={() => close()}
+          {...sharedIncentiveProps}
+        />
+      );
+    }
+
+    if (!discountAvailable) {
+      return (
+        <GhoIncentivesCard
+          value={currentBorrowAPY}
+          borrowAmount={(Number(amount) + Number(userReserve.totalBorrows)).toString()}
+          onMoreDetailsClick={() => close()}
+          {...sharedIncentiveProps}
+        />
+      );
+    }
+
+    if (discountAvailable) {
+      return (
+        <>
+          <GhoIncentivesCard
+            value={currentBorrowAPY}
+            borrowAmount={
+              apyDiffers
+                ? userReserve.totalBorrows
+                : amount !== ''
+                ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
+                : userReserve.totalBorrows
+            }
+            onMoreDetailsClick={() => close()}
+            {...sharedIncentiveProps}
+          />
+          {apyDiffers && (
+            <>
+              {hasGhoBorrowPositions && (
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+              )}
+              <GhoIncentivesCard
+                value={ghoLoadingData ? -1 : calculatedFutureBorrowAPY}
+                borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
+                {...sharedIncentiveProps}
+              />
+            </>
+          )}
+        </>
+      );
+    }
+
+    return <NoData variant="secondary14" color="text.secondary" />;
+  };
 
   return (
     <>
@@ -137,7 +216,7 @@ export const GhoBorrowModalContent = ({
                 href={`/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${currentMarket}`}
                 underline="always"
               >
-                Learn details
+                Learn more
               </Link>
             </Trans>
           </Typography>
@@ -177,42 +256,7 @@ export const GhoBorrowModalContent = ({
         >
           <Box sx={{ textAlign: 'right' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              {!hasGhoBorrowPositions ? (
-                <IncentivesWithBorrowAmount />
-              ) : (
-                <>
-                  <GhoIncentivesCard
-                    value={ghoLoadingData || showNoAPYData ? -1 : currentBorrowAPY}
-                    incentives={userReserve.reserve.vIncentivesData}
-                    symbol={userReserve.reserve.symbol}
-                    data-cy={`apyType`}
-                    borrowAmount={
-                      apyDiffers
-                        ? userReserve.totalBorrows
-                        : amount !== ''
-                        ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
-                        : userReserve.totalBorrows
-                    }
-                    baseApy={ghoReserveData.ghoBaseVariableBorrowRate}
-                    discountPercent={ghoReserveData.ghoDiscountRate * -1}
-                    discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
-                    stkAaveBalance={ghoUserData.userDiscountTokenBalance || 0}
-                    ghoRoute={
-                      ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) +
-                      '/#discount'
-                    }
-                    onMoreDetailsClick={() => close()}
-                  />
-                  {apyDiffers && (
-                    <>
-                      <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                        <ArrowNarrowRightIcon />
-                      </SvgIcon>
-                      <IncentivesWithBorrowAmount />
-                    </>
-                  )}
-                </>
-              )}
+              <BorrowAPY />
             </Box>
           </Box>
         </Row>

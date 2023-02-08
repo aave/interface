@@ -57,7 +57,7 @@ export const BorrowActions = ({
       handleAction={action}
       actionText={<Trans>Borrow {symbol}</Trans>}
       actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
-      handleApproval={() => approval({ amount: amountToBorrow, underlyingAsset: poolAddress })}
+      handleApproval={() => approval([{ amount: amountToBorrow, underlyingAsset: poolAddress }])}
       requiresApproval={requiresApproval}
       preparingTransactions={loadingTxns}
       sx={sx}

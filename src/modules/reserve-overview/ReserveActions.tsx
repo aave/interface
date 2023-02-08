@@ -38,6 +38,7 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { amountToUsd } from 'src/utils/utils';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -110,22 +111,22 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     ).toString();
   }
 
-  const maxAmountToBorrowUSD = amountToUSD(
+  const maxAmountToBorrowUsd = amountToUsd(
     maxAmountToBorrow,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
-  );
+  ).toString();
 
   const maxAmountToSupplyUSD = amountToUSD(
     maxAmountToSupply,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
-  );
+  ).toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
     balance: balance?.amount || '0',
-    maxAmountToSupply,
-    maxAmountToBorrow,
+    maxAmountToSupply: maxAmountToSupply.toString(),
+    maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
   });
 
@@ -182,8 +183,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               />
             )}
             <BorrowAction
-              value={maxAmountToBorrow}
-              usdValue={maxAmountToBorrowUSD}
+              value={maxAmountToBorrow.toString()}
+              usdValue={maxAmountToBorrowUsd}
               symbol={selectedAsset}
               disable={disableBorrowButton}
               onActionClicked={() => openBorrow(reserve.underlyingAsset)}

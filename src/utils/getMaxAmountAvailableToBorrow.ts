@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
 
 import {
   ComputedReserveData,
@@ -21,11 +22,22 @@ export function getMaxAmountAvailableToBorrow(
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
 
+  const availableBorrowCap =
+    poolReserve.borrowCap === '0'
+      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
+          valueToBigNumber(poolReserve.totalDebt)
+        );
+  const availableLiquidity = BigNumber.max(
+    BigNumber.min(poolReserve.availableLiquidity, availableBorrowCap),
+    0
+  );
+
   let maxUserAmountToBorrow = BigNumber.min(
     valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0).div(
       poolReserve.formattedPriceInMarketReferenceCurrency
     ),
-    poolReserve.formattedAvailableLiquidity
+    availableLiquidity.toString()
   );
 
   if (rateMode === InterestRate.Stable) {

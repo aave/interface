@@ -18,7 +18,7 @@ export const configEnvWithTenderly = ({
 }: {
   chainId: number;
   market: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
   unpause?: boolean;
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
@@ -26,6 +26,9 @@ export const configEnvWithTenderly = ({
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
+  let provider: JsonRpcProvider;
+  let signer: Wallet;
+  let auth: Cypress.AUTWindow;
   before(async () => {
     await tenderly.init();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -38,18 +41,26 @@ export const configEnvWithTenderly = ({
 
     if (tokens) {
       await Promise.all(
-        tokens.map((token) => tenderly.getERC20Token(walletAddress, token.address))
+        tokens.map((token) =>
+          tenderly.getERC20Token(
+            walletAddress,
+            token.tokenAddress,
+            token.donorAddress,
+            token.tokenCount
+          )
+        )
       );
     }
   });
   before('Open main page', () => {
     const rpc = tenderly.get_rpc_url();
-    const provider = new JsonRpcProvider(rpc, 3030);
-    const signer = new Wallet(privateKey, provider);
+    provider = new JsonRpcProvider(rpc, 3030);
+    signer = new Wallet(privateKey, provider);
     cy.visit(URL, {
       onBeforeLoad(win) {
         // eslint-disable-next-line
         (win as any).ethereum = new CustomizedBridge(signer, provider);
+        auth = win;
         win.localStorage.setItem('forkEnabled', 'true');
         // forks are always expected to run on chainId 3030
         win.localStorage.setItem('forkNetworkId', '3030');
@@ -61,6 +72,19 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('testnetsEnabled', enableTestnet.toString());
       },
     });
+  });
+  before('Save env variables', () => {
+    window.tenderly = tenderly;
+    window.address = walletAddress;
+    window.chainId = chainId.toString();
+    window.rpc = tenderly.get_rpc_url();
+    window.market = market;
+    window.testnetsEnabled = enableTestnet.toString();
+    window.url = URL;
+    window.privateKey = privateKey;
+    window.provider = provider;
+    window.signer = signer;
+    window.auth = auth;
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
@@ -77,7 +101,7 @@ export const configEnvWithTenderlyMainnetFork = ({
   wallet,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
   wallet?: { address: string; privateKey: string };
 }) => {
@@ -90,7 +114,7 @@ export const configEnvWithTenderlyPolygonFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens, unpause: v3 });
@@ -102,7 +126,7 @@ export const configEnvWithTenderlyAvalancheFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens, unpause: v3 });
@@ -114,59 +138,10 @@ export const configEnvWithTenderlyAvalancheFujiFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyRinkebyFork = ({
-  market = `fork_proto_eth_rinkeby_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { address: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({
-    chainId: ChainId.rinkeby,
-    market,
-    tokens,
-    unpause: v3,
-    enableTestnet: true,
-  });
-};
-
-// TODO: this is wrong
-export const configEnvWithTenderlyMumbaiFork = ({
-  market = `fork_proto_eth_rinkeby_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { address: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.mumbai, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyOptimismKovanFork = ({
-  market = `fork_proto_optimism_kovan_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { address: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({
-    chainId: ChainId.optimism_kovan,
-    market,
-    tokens,
-    unpause: v3,
-    enableTestnet: true,
-  });
 };
 
 export const configEnvWithTenderlyOptimismFork = ({
@@ -175,7 +150,7 @@ export const configEnvWithTenderlyOptimismFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.optimism, market, tokens, unpause: v3 });
@@ -187,7 +162,7 @@ export const configEnvWithTenderlyFantomFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.fantom, market, tokens, unpause: v3 });
@@ -199,10 +174,22 @@ export const configEnvWithTenderlyArbitrumFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens, unpause: v3 });
+};
+
+export const configEnvWithTenderlyAEthereumV3Fork = ({
+  market = `fork_proto_mainnet_v3`,
+  tokens,
+  v3,
+}: {
+  market?: string;
+  tokens?: { tokenAddress: string }[];
+  v3?: boolean;
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyGoerliGhoFork = ({
@@ -211,7 +198,7 @@ export const configEnvWithTenderlyGoerliGhoFork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { address: string }[];
+  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
   v3?: boolean;
 }) => {
   configEnvWithTenderly({

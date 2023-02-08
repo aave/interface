@@ -9,7 +9,7 @@ import { Link } from '../primitives/Link';
 import { NoData } from '../primitives/NoData';
 import { IncentivesButton } from './IncentivesButton';
 
-interface GhoIncentivesCardProps {
+export interface GhoIncentivesCardProps {
   symbol: string;
   value: string | number;
   useApyRange?: boolean;
@@ -61,10 +61,12 @@ export const GhoIncentivesCard = ({
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
+            data-cy={'apy'}
           />
         </Box>
       ) : (
         <Tooltip
+          enterTouchDelay={0}
           title={
             <Box
               sx={{
@@ -164,6 +166,7 @@ export const GhoIncentivesCard = ({
                 percent
                 variant={variant}
                 symbolsVariant={symbolsVariant}
+                data-cy={'apy'}
               />
             )}
           </Box>

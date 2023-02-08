@@ -1,7 +1,6 @@
 import '/public/fonts/inter/inter.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import * as FullStory from '@fullstory/browser';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { NextPage } from 'next';
@@ -9,7 +8,6 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import * as React from 'react';
-import { useEffect } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
@@ -18,6 +16,7 @@ import { CollateralChangeModal } from 'src/components/transactions/CollateralCha
 import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
+import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
 import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
@@ -52,22 +51,7 @@ interface MyAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 
-// FullStory flags
-let didInit = false;
-const useFullStory =
-  process.env.NEXT_PUBLIC_ENABLE_2FA === 'true' && process.env.NODE_ENV === 'production';
-
 export default function MyApp(props: MyAppProps) {
-  // Load FullStory for the live production environment only
-  useEffect(() => {
-    if (useFullStory) {
-      if (didInit) return;
-
-      FullStory.init({ orgId: 'VBTDS' });
-      didInit = true;
-    }
-  }, []);
-
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
 
@@ -104,6 +88,7 @@ export default function MyApp(props: MyAppProps) {
                           <EmodeModal />
                           <SwapModal />
                           <FaucetModal />
+                          <MigrateV3Modal />
                         </GasStationProvider>
                       </AppDataProvider>
                     </BackgroundDataProvider>

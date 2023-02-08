@@ -60,8 +60,9 @@ export const CollateralChangeModalContent = ({
   if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
     blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;
   } else if (
-    (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
-    !poolReserve.usageAsCollateralEnabled
+    (!userReserve.usageAsCollateralEnabledOnUser &&
+      poolReserve.reserveLiquidationThreshold === '0') ||
+    poolReserve.reserveLiquidationThreshold === '0'
   ) {
     blockingError = ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL;
   } else if (
@@ -127,8 +128,8 @@ export const CollateralChangeModalContent = ({
 
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
-          symbol={symbol}
-          iconSymbol={symbol}
+          symbol={poolReserve.symbol}
+          iconSymbol={poolReserve.iconSymbol}
           description={<Trans>Supply balance</Trans>}
           value={userReserve.underlyingBalance}
         />

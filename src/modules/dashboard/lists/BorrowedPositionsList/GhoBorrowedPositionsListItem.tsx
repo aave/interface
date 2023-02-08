@@ -5,6 +5,7 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -25,6 +26,7 @@ export const GhoBorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
+  const { ghoUserDataFetched } = useRootStore();
   const { isActive, isFrozen, borrowingEnabled, stableBorrowRateEnabled, variableBorrowAPY } =
     reserve;
 
@@ -51,10 +53,9 @@ export const GhoBorrowedPositionsListItem = ({
         value={ghoUserData.userGhoBorrowBalance}
         subValue={ghoUserData.userGhoBorrowBalance}
       />
-
       <ListColumn>
         <GhoIncentivesCard
-          value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
+          value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
           incentives={reserve.vIncentivesData}
           symbol={reserve.symbol}
           data-cy={`apyType`}
@@ -66,7 +67,6 @@ export const GhoBorrowedPositionsListItem = ({
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </ListColumn>
-
       <ListColumn>
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
@@ -79,7 +79,6 @@ export const GhoBorrowedPositionsListItem = ({
           currentMarket={currentMarket}
         />
       </ListColumn>
-
       <ListButtonsColumn>
         <Button
           disabled={!isActive}

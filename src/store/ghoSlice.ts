@@ -22,8 +22,8 @@ interface GhoMarketConfig {
 const getGoerliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
   return {
     market: marketsData[market],
-    ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
-    uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+    ghoTokenAddress: '0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211'.toLowerCase(),
+    uiGhoDataProviderAddress: '0xeb939bA0D4CFA94a401569dD1056161ed2b49798'.toLowerCase(),
   };
 };
 
@@ -32,8 +32,8 @@ const getGoerliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
 const getMainnetGhoConfig = (market: CustomMarket): GhoMarketConfig => {
   return {
     market: marketsData[market],
-    ghoTokenAddress: '0x52aD6AE8445cc415fff00b9Af5594B292045867f'.toLowerCase(),
-    uiGhoDataProviderAddress: '0x6098d4c9505f9a08b3ae65416b16437119b5faba'.toLowerCase(),
+    ghoTokenAddress: '0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211'.toLowerCase(),
+    uiGhoDataProviderAddress: '0xE914D574975a1Cd273388035Db4413dda788c0E5'.toLowerCase(),
   };
 };
 
@@ -66,7 +66,7 @@ export const createGhoSlice: StateCreator<
       aaveFacilitatorBucketMaxCapacity: '0',
     },
     ghoUserData: {
-      userGhoDiscountRate: '0',
+      userGhoDiscountPercent: '0',
       userDiscountTokenBalance: '0',
       userPreviousGhoBorrowIndex: '0',
       userGhoScaledBorrowBalance: '0',

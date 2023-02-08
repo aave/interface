@@ -7,7 +7,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useRootStore } from 'src/store/root';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
@@ -19,7 +18,6 @@ const FieldSet = styled('fieldset')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const { currentMarket, ghoMarketConfig } = useRootStore();
 
   const styles = {
     desktop: {
@@ -43,26 +41,9 @@ export const GhoDiscountProgram = () => {
   return (
     <Box sx={downToXsm ? styles.mobile : styles.desktop}>
       <Box display="flex" justifyContent={downToXsm ? 'center' : 'flex-start'}>
-        <TextWithTooltip
-          text={<Trans>Stake AAVE and borrow GHO at a lower rate</Trans>}
-          variant="subheader1"
-        >
-          <>
-            <Trans>
-              For each staked AAVE Safety Module participants may borrow GHO with lower interest
-              rate.
-            </Trans>{' '}
-            <Link
-              href={
-                ROUTES.reserveOverview(ghoMarketConfig().ghoTokenAddress, currentMarket) +
-                '/#discount'
-              }
-              underline="always"
-            >
-              <Trans>Learn more</Trans>
-            </Link>
-          </>
-        </TextWithTooltip>
+        <Typography variant="subheader1">
+          <Trans>Stake AAVE and borrow GHO at a lower rate</Trans>
+        </Typography>
       </Box>
       <FieldSet sx={{ mt: 2, px: 4, py: downToXsm ? 4 : 3 }}>
         {downToXsm ? <GhoDiscountProgramMobile /> : <GhoDiscountProgramDesktop />}

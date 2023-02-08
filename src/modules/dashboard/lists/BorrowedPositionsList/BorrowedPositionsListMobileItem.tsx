@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
@@ -21,6 +22,7 @@ export const BorrowedPositionsListMobileItem = ({
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { borrowCap } = useAssetCaps();
   const {
     symbol,
     iconSymbol,
@@ -94,7 +96,7 @@ export const BorrowedPositionsListMobileItem = ({
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen}
+          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth
