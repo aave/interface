@@ -170,6 +170,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
     it(`Verify modal with max discount for this case, no amount`, () => {
+      cy.wait(5000); //TODO: upgrade to waitUntil
       ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.eql(borrowedAPY);
         expect($val).to.be.eql(minAPYRage);
