@@ -71,14 +71,10 @@ export class WalletConnectConnector extends AbstractConnector {
     this.walletConnectProvider.on('disconnect', this.handleDisconnect);
     this.walletConnectProvider.on('display_uri', this.handleDisplayURI);
     try {
-      console.log('entro');
       const accounts = await this.walletConnectProvider.enable();
-      console.log('salio');
-      console.log(accounts);
       const defaultAccount = accounts[0];
       return { provider: this.walletConnectProvider, account: defaultAccount };
     } catch (error) {
-      console.log(error);
       if (error.message === 'User closed modal') {
         throw new UserRejectedRequestError();
       }
