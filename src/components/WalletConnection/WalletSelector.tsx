@@ -106,7 +106,7 @@ export const WalletSelector = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const mainnetProvider = getENSProvider();
-  const [unsTlds, setUnsTlds] = useState([]);
+  const [unsTlds, setUnsTlds] = useState<string[]>([]);
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -123,11 +123,14 @@ export const WalletSelector = () => {
   }
 
   // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
-  useEffect(async () => {
-    const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
-    const response = await fetch(url);
-    const data = await response.json();
-    setUnsTlds(data['tlds']);
+  useEffect(() => {
+    const unsTlds = async () => {
+      const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
+      const response = await fetch(url);
+      const data = await response.json();
+      setUnsTlds(data['tlds']);
+    };
+    unsTlds();
   }, []);
 
   const handleBlocking = () => {
@@ -158,7 +161,7 @@ export const WalletSelector = () => {
         } else {
           setValidAddressError(true);
         }
-      } else if (unsTlds.includes(inputMockWalletAddress.split('.').pop())) {
+      } else if (unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)) {
         // Handle UNS names
         const url = 'https://resolve.unstoppabledomains.com/domains/' + inputMockWalletAddress;
         const options = {
@@ -245,7 +248,7 @@ export const WalletSelector = () => {
           disabled={
             !utils.isAddress(inputMockWalletAddress) &&
             inputMockWalletAddress.slice(-4) !== '.eth' &&
-            !unsTlds.includes(inputMockWalletAddress.split('.').pop())
+            !unsTlds.includes(inputMockWalletAddress.split('.').pop() as string)
           }
           aria-label="read-only mode address"
         >
