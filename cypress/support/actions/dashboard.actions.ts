@@ -33,6 +33,7 @@ export class DashboardActions {
         default:
           break;
       }
+      cy.wait(1000); //upload some data
       cy.setAmount(amount, isMaxAmount);
       if (isRisk) {
         cy.get('[data-cy=Modal]').find(`[data-cy="risk-checkbox"]`).click();
