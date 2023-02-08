@@ -125,7 +125,7 @@ export const DashboardTopPanel = () => {
               <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
-                    <Typography variant="buttonS">
+                    <Typography variant="buttonS" data-cy={`migration-button`}>
                       <Trans>Migrate to v3</Trans>
                     </Typography>
                   </Button>

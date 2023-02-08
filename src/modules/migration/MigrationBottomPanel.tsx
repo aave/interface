@@ -144,6 +144,7 @@ export const MigrationBottomPanel = ({
               justifyContent: 'center',
               mb: 4,
             }}
+            data-cy={`migration-risk-checkbox`}
           >
             <FormControlLabel
               sx={{ margin: 0 }}
@@ -170,6 +171,7 @@ export const MigrationBottomPanel = ({
             sx={{ width: '100%', height: '44px' }}
             variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}
             size="medium"
+            data-cy={`migration-button`}
           >
             <Trans>Preview tx and migrate</Trans>
           </Button>
