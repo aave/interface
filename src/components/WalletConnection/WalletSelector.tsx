@@ -2,11 +2,11 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
-import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
 import { utils } from 'ethers';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 

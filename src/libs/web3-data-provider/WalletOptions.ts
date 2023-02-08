@@ -6,10 +6,11 @@ import { FrameConnector } from '@web3-react/frame-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
+
+import { WalletConnectConnector } from './WalletConnectConnector';
 
 export enum WalletType {
   INJECTED = 'injected',
@@ -93,13 +94,12 @@ export const getWallet = (
       });
     case WalletType.WALLET_CONNECT:
       return new WalletConnectConnector({
-        rpc: supportedChainIds.reduce((acc, network) => {
+        rpcMap: supportedChainIds.reduce((acc, network) => {
           const config = getNetworkConfig(network);
           acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
           return acc;
         }, {} as { [networkId: number]: string }),
-        bridge: 'https://aave.bridge.walletconnect.org',
-        qrcode: true,
+        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
       });
     case WalletType.GNOSIS:
       if (window) {

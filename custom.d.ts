@@ -13,5 +13,6 @@ namespace NodeJS {
     NEXT_PUBLIC_FORK_BASE_CHAIN_ID?: string;
     NEXT_PUBLIC_FORK_CHAIN_ID?: string;
     NEXT_PUBLIC_FORK_URL_RPC?: string;
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
   }
 }
