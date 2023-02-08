@@ -181,7 +181,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
     });
     TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 2 }));
     it(`Check that borrowed APY was grow after unstake`, () => {
-      cy.wait(1000); //wait update of dashboard
+      cy.wait(5000); //wait update of dashboard
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
         expect($val).to.be.greaterThan(gho.apy.min);
         expect($val).to.be.greaterThan(stepBackAPY);
@@ -190,7 +190,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
     });
     TenderlyActions.tenderlyTokenWithdraw(tokenSet({ stkAave: 1 }));
     it(`Check that borrowed APY was grow after fullunstake`, () => {
-      cy.wait(1000); //wait update of dashboard
+      cy.wait(5000); //wait update of dashboard
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {
         expect($val).to.be.eql(gho.apy.max);
         expect($val).to.be.greaterThan(stepBackAPY);
