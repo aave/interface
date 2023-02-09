@@ -72,8 +72,8 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
         onSearchTermChange={handleSearchQueryChange}
         searchPlaceholder="Search proposals"
       />
-      <Box>
-        <Typography mb={2}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <Typography>
           <Trans>Filter</Trans>
         </Typography>
         <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
