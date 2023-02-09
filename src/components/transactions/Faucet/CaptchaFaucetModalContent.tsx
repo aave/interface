@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { selectCurrentReserves } from 'src/store/poolSelectors';
@@ -89,6 +90,9 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
       <Typography variant="h2" sx={{ mb: 6 }}>
         <Trans>Faucet</Trans> {poolReserve.symbol}
       </Typography>
+      <Warning severity="error">
+        Faucet minting errors may occur due to high traffic volume. Please try again shortly.
+      </Warning>
       <Box
         sx={(theme) => ({
           p: 3,
