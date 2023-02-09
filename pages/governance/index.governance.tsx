@@ -19,18 +19,23 @@ export const getStaticProps = async () => {
     const ipfs = IpfsFetcher.get(id);
     const proposal = ProposalFetcher.get(id);
     return {
-      ipfs: { title: ipfs.title, id: ipfs.id, originalHash: ipfs.originalHash },
+      ipfs: {
+        title: ipfs.title,
+        id: ipfs.id,
+        originalHash: ipfs.originalHash,
+        shortDescription: ipfs.shortDescription,
+      },
       proposal,
       prerendered: true,
     };
   });
 
-  return { props: { proposals } };
+  return { props: { proposals: proposals.slice().reverse() } };
 };
 
 export type GovernancePageProps = {
   proposals: {
-    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash'>;
+    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash' | 'shortDescription'>;
     proposal: CustomProposalType;
     prerendered: boolean;
   }[];

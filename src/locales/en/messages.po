@@ -136,7 +136,8 @@ msgstr "All Assets"
 msgid "All done!"
 msgstr "All done!"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "All proposals"
 
@@ -461,7 +462,7 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/components/TitleWithSearchBar.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -860,7 +861,8 @@ msgstr "Faucet {0}"
 msgid "Fetching data..."
 msgstr "Fetching data..."
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
 
@@ -1247,10 +1249,10 @@ msgstr "No assets selected to migrate."
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "No search results for"
-msgstr "No search results for"
+#: src/components/NoSearchResults.tsx
+#: src/components/NoSearchResults.tsx
+msgid "No search results{0}"
+msgstr "No search results{0}"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1404,7 +1406,8 @@ msgstr "Proposal details"
 msgid "Proposal overview"
 msgstr "Proposal overview"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Proposals"
 
@@ -2303,10 +2306,6 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2486,7 +2485,7 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "assets"
 
@@ -2609,6 +2608,10 @@ msgstr "{networkName} Faucet"
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
+
+#: src/components/NoSearchResults.tsx
+msgid "{subtitle}"
+msgstr "{subtitle}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
