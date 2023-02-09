@@ -1,33 +1,33 @@
 // TODO only for testnet removing market selections, ADD BACK for MAIN
 
-import { ChevronDownIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
+// import { ChevronDownIcon } from '@heroicons/react/outline';
+// import { Trans } from '@lingui/macro';
 import {
   Box,
-  ListItemText,
-  MenuItem,
-  SvgIcon,
+  // ListItemText,
+  // MenuItem,
+  // SvgIcon,
   TextField,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
-  availableMarkets,
+  // availableMarkets,
   CustomMarket,
-  ENABLE_TESTNET,
+  // ENABLE_TESTNET,
   MarketDataType,
   marketsData,
   networkConfigs,
-  STAGING_ENV,
+  // STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
-import StyledToggleButton from './StyledToggleButton';
-import StyledToggleButtonGroup from './StyledToggleButtonGroup';
+// import StyledToggleButton from './StyledToggleButton';
+// import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -92,27 +92,27 @@ export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   );
 };
 
-enum SelectedMarketVersion {
-  V2,
-  V3,
-}
+// enum SelectedMarketVersion {
+//   V2,
+//   V3,
+// }
 
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    SelectedMarketVersion.V3
-  );
+  // const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
+  //   SelectedMarketVersion.V3
+  // );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const isV3MarketsAvailable = availableMarkets
-    .map((marketId: CustomMarket) => {
-      const { market } = getMarketInfoById(marketId);
+  // const isV3MarketsAvailable = availableMarkets
+  //   .map((marketId: CustomMarket) => {
+  //     const { market } = getMarketInfoById(marketId);
 
-      return market.v3;
-    })
-    .some((item) => !!item);
+  //     return market.v3;
+  //   })
+  //   .some((item) => !!item);
 
   return (
     <TextField
@@ -130,7 +130,7 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => null, // Todo remove on main
+        IconComponent: () => null, // Todo remove on main
         // <SvgIcon fontSize="medium" {...props}>
         //   <ChevronDownIcon />
         // </SvgIcon>
