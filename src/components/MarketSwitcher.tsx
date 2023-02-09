@@ -104,7 +104,10 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const isV3MarketsAvailable = availableMarkets
+  // TODO: Remove for Mainnet
+  const filteredMarkets = availableMarkets.filter((m) => m === 'proto_goerli_gho_v3');
+
+  const isV3MarketsAvailable = filteredMarkets
     .map((marketId: CustomMarket) => {
       const { market } = getMarketInfoById(marketId);
 
@@ -252,7 +255,9 @@ export const MarketSwitcher = () => {
                 <Trans>Version 3</Trans>
               </Typography>
             </StyledToggleButton>
-            <StyledToggleButton
+            {/* // TODO: ADD for Mainnet */}
+
+            {/* <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -280,11 +285,11 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton>
+            </StyledToggleButton> */}
           </StyledToggleButtonGroup>
         </Box>
       )}
-      {availableMarkets.map((marketId: CustomMarket) => {
+      {filteredMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (

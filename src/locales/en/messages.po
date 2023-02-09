@@ -2403,10 +2403,6 @@ msgid "Variable interest rate will <0>fluctuate</0> based on the market conditio
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
 
 #: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Version 2"
-
-#: src/components/MarketSwitcher.tsx
 msgid "Version 3"
 msgstr "Version 3"
 
