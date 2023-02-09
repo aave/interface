@@ -14,8 +14,8 @@ export function VotingPowerInfoPanel() {
   // TODO: if not logged in & loading, show some placeholder
   return (
     <>
-      <Box sx={{ px: 6, py: 4 }}>
-        <Typography variant="h3" gutterBottom>
+      <Box sx={{ px: 6, py: 6 }}>
+        <Typography variant="h3" sx={{ height: '36px', display: 'flex', alignItems: 'center' }}>
           <Trans>Your info</Trans>
         </Typography>
         {currentAccount && (
