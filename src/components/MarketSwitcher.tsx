@@ -1,3 +1,5 @@
+// TODO only for testnet removing market selections, ADD BACK for MAIN
+
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -104,10 +106,7 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  // TODO: Remove for Mainnet
-  const filteredMarkets = availableMarkets.filter((m) => m === 'proto_goerli_gho_v3');
-
-  const isV3MarketsAvailable = filteredMarkets
+  const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
       const { market } = getMarketInfoById(marketId);
 
@@ -131,11 +130,10 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => (
-          <SvgIcon fontSize="medium" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        ),
+        IconComponent: (props) => null, // Todo remove on main
+        // <SvgIcon fontSize="medium" {...props}>
+        //   <ChevronDownIcon />
+        // </SvgIcon>
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
           return (
@@ -188,6 +186,7 @@ export const MarketSwitcher = () => {
           PaperProps: {
             style: {
               minWidth: 240,
+              display: 'none', // Todo remove on main
             },
             variant: 'outlined',
             elevation: 0,
@@ -195,15 +194,15 @@ export const MarketSwitcher = () => {
         },
       }}
     >
-      <Box>
+      {/* <Box>
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
           </Trans>
         </Typography>
-      </Box>
+      </Box> */}
 
-      {isV3MarketsAvailable && (
+      {/* {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
           <StyledToggleButtonGroup
             value={selectedMarketVersion}
@@ -255,9 +254,7 @@ export const MarketSwitcher = () => {
                 <Trans>Version 3</Trans>
               </Typography>
             </StyledToggleButton>
-            {/* // TODO: ADD for Mainnet */}
-
-            {/* <StyledToggleButton
+            <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -285,11 +282,11 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton> */}
+            </StyledToggleButton>
           </StyledToggleButtonGroup>
         </Box>
-      )}
-      {filteredMarkets.map((marketId: CustomMarket) => {
+      )} */}
+      {/* {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (
@@ -321,7 +318,7 @@ export const MarketSwitcher = () => {
             </ListItemText>
           </MenuItem>
         );
-      })}
+      })} */}
     </TextField>
   );
 };
