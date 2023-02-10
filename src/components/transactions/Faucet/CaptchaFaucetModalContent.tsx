@@ -20,6 +20,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
   const [captchaToken, setCaptchaToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [captchaLoading, setCaptchaLoading] = useState<boolean>(true);
+  const [estimatedTxTime, setEstimatedTxTime] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -61,7 +62,9 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
       if (!response.ok) {
         throw new Error(data.msg);
       }
-      setTxHash(data.msg);
+      // TODO: only for gho testnet
+      // setTxHash(data.msg);
+      setEstimatedTxTime((data.estimatedTimeMs / 1000).toFixed(0));
     } catch (e: unknown) {
       if (e instanceof Error && e.message) {
         setError(e.message);
@@ -110,13 +113,26 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
           value={normalizedAmount}
         />
       </Box>
+      {estimatedTxTime !== '' && !error && (
+        <Typography variant="helperText" color="success.main">
+          Your transaction was successfully queued. Estimated time until transaction is submitted:{' '}
+          {estimatedTxTime}
+          {' seconds'}
+        </Typography>
+      )}
       <Typography variant="helperText" color="error.main">
         {error}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
         <Button
           variant="contained"
-          disabled={loading || !captchaToken || readOnlyModeAddress !== undefined}
+          disabled={
+            estimatedTxTime !== '' ||
+            error !== '' ||
+            loading ||
+            !captchaToken ||
+            readOnlyModeAddress !== undefined
+          }
           onClick={faucet}
           size="large"
           sx={{ minHeight: '44px' }}
