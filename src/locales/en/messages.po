@@ -914,6 +914,10 @@ msgstr "Go Back"
 msgid "Go to Balancer Pool"
 msgstr "Go to Balancer Pool"
 
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Go to V3 Dashboard"
+msgstr "Go to V3 Dashboard"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -1610,6 +1614,10 @@ msgstr "Select v2 borrows to migrate"
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
+msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"

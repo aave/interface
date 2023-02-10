@@ -1,5 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import { useCallback } from 'react';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
@@ -10,7 +11,7 @@ import {
   selectedUserSupplyReservesForMigration,
   selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -23,6 +24,7 @@ import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 export const MigrateV3ModalContent = () => {
   const currentTimeStamp = useCurrentTimestamp(10);
+
   const { supplyPositions, borrowPositions } = useRootStore(
     useCallback(
       (state) => ({
@@ -34,7 +36,7 @@ export const MigrateV3ModalContent = () => {
   );
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, setCurrentMarket, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -68,7 +70,35 @@ export const MigrateV3ModalContent = () => {
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (migrateTxState.success) return <TxSuccessView action={<Trans>Migrated</Trans>} />;
+
+  const handleRoute = (e) => {
+    e.preventDefault();
+    if (currentMarket === 'proto_polygon') {
+      setCurrentMarket('proto_polygon_v3' as CustomMarket);
+      window.location.href = '/?marketName=proto_polygon_v3';
+    } else if (currentMarket === 'proto_avalanche') {
+      setCurrentMarket('proto_avalanche_v3' as CustomMarket);
+      window.location.href = '/?marketName=proto_avalanche_v3';
+    } else {
+      setCurrentMarket('proto_mainnet_v3' as CustomMarket);
+      window.location.href = '/?marketName=proto_mainnet_v3';
+    }
+  };
+
+  if (migrateTxState.success) {
+    return (
+      <TxSuccessView
+        migratedAction={
+          <Box mt={5}>
+            <Button variant="gradient" size="medium" onClick={handleRoute}>
+              <Trans>Go to V3 Dashboard</Trans>
+            </Button>
+          </Box>
+        }
+        action={<Trans>Migrated</Trans>}
+      />
+    );
+  }
 
   return (
     <>
