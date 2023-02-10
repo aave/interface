@@ -6,8 +6,9 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { AddressBlockedModal } from './AddressBlockedModal';
 
 export const AddressBlocked = ({ children }: { children: ReactNode }) => {
-  const { currentAccount, disconnectWallet, readOnlyMode, loading } = useWeb3Context();
-  const screenAddress = readOnlyMode || loading ? '' : currentAccount;
+  const { currentAccount, disconnectWallet } = useWeb3Context();
+  // TODO just disabling for gho testnet
+  const screenAddress = ''; // readOnlyMode || loading ? '' : currentAccount;
   const { isAllowed } = useAddressAllowed(screenAddress);
 
   if (!isAllowed) {
