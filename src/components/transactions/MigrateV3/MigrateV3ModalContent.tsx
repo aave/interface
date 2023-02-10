@@ -71,8 +71,7 @@ export const MigrateV3ModalContent = () => {
     return <TxErrorView txError={txError} />;
   }
 
-  const handleRoute = (e) => {
-    e.preventDefault();
+  const handleRoute = () => {
     if (currentMarket === 'proto_polygon') {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);
       window.location.href = '/?marketName=proto_polygon_v3';
