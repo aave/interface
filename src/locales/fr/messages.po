@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-02 18:05\n"
+"PO-Revision-Date: 2023-02-09 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -141,7 +141,8 @@ msgstr ""
 msgid "All done!"
 msgstr "Tout est fait !"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "Toutes les propositions"
 
@@ -466,7 +467,7 @@ msgstr "Peut être collatéral"
 msgid "Can be executed"
 msgstr "Peut être exécuté"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/components/TitleWithSearchBar.tsx
 msgid "Cancel"
 msgstr ""
 
@@ -865,7 +866,8 @@ msgstr "Faucet {0}"
 msgid "Fetching data..."
 msgstr ""
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filtrer"
 
@@ -1252,9 +1254,9 @@ msgstr ""
 msgid "No rewards to claim"
 msgstr "Aucune récompense à réclamer"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "No search results for"
+#: src/components/NoSearchResults.tsx
+#: src/components/NoSearchResults.tsx
+msgid "No search results{0}"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -1409,7 +1411,8 @@ msgstr "Détails de la proposition"
 msgid "Proposal overview"
 msgstr "Aperçu de la proposition"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Les propositions"
 
@@ -2308,10 +2311,6 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr ""
-
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr ""
@@ -2491,7 +2490,7 @@ msgstr ""
 msgid "Zero address not valid"
 msgstr "Adresse zéro non-valide"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "actifs"
 
@@ -2613,6 +2612,10 @@ msgstr ""
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
+msgstr ""
+
+#: src/components/NoSearchResults.tsx
+msgid "{subtitle}"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
