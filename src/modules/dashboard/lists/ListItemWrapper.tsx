@@ -1,6 +1,7 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
@@ -46,6 +47,7 @@ export const ListItemWrapper = ({
   const showFrozenTooltip = frozen && symbol !== 'renFIL';
   const showRenFilTooltip = frozen && symbol === 'renFIL';
   const showAmplTooltip = !frozen && symbol === 'AMPL';
+  const showstETHTooltip = symbol == 'stETH';
   const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
 
   return (
@@ -66,6 +68,7 @@ export const ListItemWrapper = ({
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
+        {showstETHTooltip && <StETHCollateralToolTip />}
         {showBorrowDisabledTooltip && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}

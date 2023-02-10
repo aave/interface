@@ -4,8 +4,10 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -222,6 +224,12 @@ export const SwapModalContent = ({
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
+      )}
+
+      {swapTarget.reserve.symbol === 'stETH' && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <StETHCollateralWarning />
+        </Warning>
       )}
 
       <TxModalDetails

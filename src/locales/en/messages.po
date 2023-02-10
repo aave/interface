@@ -732,6 +732,10 @@ msgstr "Discord channel"
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
+#: src/components/Warnings/StETHCollateralWarning.tsx
+msgid "Due to stETH contracts limitations stETH supply position cannot be swapped to another asset. Also, borrow positions cannot be repaid with stETH collateral."
+msgstr "Due to stETH contracts limitations stETH supply position cannot be swapped to another asset. Also, borrow positions cannot be repaid with stETH collateral."
+
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."

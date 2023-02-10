@@ -48,7 +48,8 @@ export function CollateralRepayModalContent({
     .filter(
       (userReserve) =>
         userReserve.underlyingBalance !== '0' &&
-        userReserve.underlyingAsset !== poolReserve.underlyingAsset
+        userReserve.underlyingAsset !== poolReserve.underlyingAsset &&
+        userReserve.reserve.symbol !== 'stETH'
     )
     .map((userReserve) => ({
       address: userReserve.underlyingAsset,

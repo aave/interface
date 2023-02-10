@@ -10,6 +10,7 @@ import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
+import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -227,6 +228,11 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
+      {poolReserve.symbol === 'stETH' && (
+        <Warning severity="warning">
+          <StETHCollateralWarning />
+        </Warning>
+      )}
 
       <AssetInput
         value={amount}
