@@ -2226,8 +2226,8 @@ msgid "To continue, you need to grant Aave smart contracts permission to move yo
 msgstr "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
-msgstr "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
+msgstr "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
