@@ -11,6 +11,7 @@ export const permitByChainAndToken: {
     '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': false,
     '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false,
     '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true,
+    '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': true,
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
@@ -19,7 +20,8 @@ export const permitByChainAndToken: {
     '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': true,
     '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': true,
     '0xba5ddd1f9d7f570dc94a51479a000e3bce967196': true,
-    '0xd22a58f79e9481d1a88e00c343885a588b34b68b': false, // eurs
+    '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1': true,
+    '0xd22a58f79e9481d1a88e00c343885a588b34b68b': true,
   },
   [ChainId.fantom]: {
     '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e': true,
@@ -34,12 +36,17 @@ export const permitByChainAndToken: {
   },
   [ChainId.polygon]: {
     '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': true,
+    '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': true,
   },
   [ChainId.harmony]: {},
   [ChainId.avalanche]: {
     '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7': true,
+    '0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64': true,
+    '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e': true,
   },
   [ChainId.optimism]: {
-    '0x76fb31fb4af56892a25e32cfc43de717950c9278': false, // aave
+    '0x4200000000000000000000000000000000000042': true,
+    '0x76fb31fb4af56892a25e32cfc43de717950c9278': true,
+    '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1': true,
   },
 };
