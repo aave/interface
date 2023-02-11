@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-09 18:05\n"
+"PO-Revision-Date: 2023-02-10 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1257,7 +1257,7 @@ msgstr "No hay recompensas para reclamar"
 #: src/components/NoSearchResults.tsx
 #: src/components/NoSearchResults.tsx
 msgid "No search results{0}"
-msgstr ""
+msgstr "Sin resultados de búsqueda{0}"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -2616,7 +2616,7 @@ msgstr "{numSelected}/{numAvailable} activos seleccionados"
 
 #: src/components/NoSearchResults.tsx
 msgid "{subtitle}"
-msgstr ""
+msgstr "{subtitle}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
