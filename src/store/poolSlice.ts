@@ -159,8 +159,8 @@ export const createPoolSlice: StateCreator<
             .getReservesHumanized({
               lendingPoolAddressProvider,
             })
-            .then((reservesResponse) =>
-              set((state) =>
+            .then((reservesResponse) => {
+              return set((state) =>
                 produce(state, (draft) => {
                   if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
                   if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
@@ -177,9 +177,10 @@ export const createPoolSlice: StateCreator<
                       reservesResponse.baseCurrencyData;
                   }
                 })
-              )
-            )
+              );
+            })
         );
+
         promises.push(
           uiIncentiveDataProviderContract
             .getReservesIncentivesDataHumanized({
@@ -236,7 +237,7 @@ export const createPoolSlice: StateCreator<
         }
         await Promise.all(promises);
       } catch (e) {
-        console.log('error fetching pool data', e);
+        console.log('error fetching pool data... ', e);
       }
     },
     refreshPoolV3Data: async () => {

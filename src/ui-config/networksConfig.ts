@@ -51,6 +51,24 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [97]: {
+    name: 'BSC Testnet',
+    publicJsonRPCUrl: [
+      'https://data-seed-prebsc-1-s1.binance.org:8545/',
+      // 'https://data-seed-prebsc-1-s3.binance.org:8545',
+      // 'https://data-seed-prebsc-2-s3.binance.org:8545',
+      // 'https://data-seed-prebsc-2-s1.binance.org:8545',
+    ],
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'BNB',
+    wrappedBaseAssetSymbol: 'WBNB',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://testnet.bscscan.com/',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     publicJsonRPCUrl: [
