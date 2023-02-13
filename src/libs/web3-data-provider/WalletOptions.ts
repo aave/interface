@@ -99,7 +99,7 @@ export const getWallet = (
           acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
           return acc;
         }, {} as { [networkId: number]: string }),
-        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+        projectId: '686adbae41fe74595dc2bc1df829fcfe',
       });
     case WalletType.GNOSIS:
       if (window) {
