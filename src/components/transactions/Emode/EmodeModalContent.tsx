@@ -119,7 +119,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
             <Typography variant="caption">
               <Trans>
                 To enable E-mode for the {selectedEmode && getEmodeMessage(selectedEmode.label)}{' '}
-                category, all borrow positions outside of this cateogry must be closed.
+                category, all borrow positions outside of this category must be closed.
               </Trans>
             </Typography>
           </Warning>
