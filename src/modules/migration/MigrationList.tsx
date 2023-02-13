@@ -118,11 +118,19 @@ export const MigrationList = ({
             </ListColumn>
 
             {withCollateral && (
-              <ListColumn align="right">
-                <ListHeaderTitle>
-                  <Trans>Collateral change</Trans>
-                </ListHeaderTitle>
-              </ListColumn>
+              <>
+                <ListColumn align="right">
+                  <ListHeaderTitle>
+                    <Trans>Collateral change</Trans>
+                  </ListHeaderTitle>
+                </ListColumn>
+
+                <ListColumn align="right">
+                  <ListHeaderTitle>
+                    <Trans>Max LTV</Trans>
+                  </ListHeaderTitle>
+                </ListColumn>
+              </>
             )}
 
             <ListColumn align="right">
@@ -132,11 +140,19 @@ export const MigrationList = ({
             </ListColumn>
 
             {withBorrow && (
-              <ListColumn align="right">
-                <ListHeaderTitle>
-                  <Trans>APY type change</Trans>
-                </ListHeaderTitle>
-              </ListColumn>
+              <>
+                <ListColumn align="right">
+                  <ListHeaderTitle>
+                    <Trans>APY type change</Trans>
+                  </ListHeaderTitle>
+                </ListColumn>
+
+                <ListColumn align="right">
+                  <ListHeaderTitle>
+                    <Trans>Liquidation Threshold</Trans>
+                  </ListHeaderTitle>
+                </ListColumn>
+              </>
             )}
 
             <ListColumn align="right" maxWidth={150} minWidth={150}>

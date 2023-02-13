@@ -1075,6 +1075,10 @@ msgstr "Links"
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
+#: src/modules/migration/MigrationList.tsx
+msgid "Liquidation Threshold"
+msgstr "Liquidation Threshold"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/migration/HFChange.tsx
 msgid "Liquidation at"
@@ -1128,6 +1132,7 @@ msgstr "Markets"
 msgid "Max"
 msgstr "Max"
 
+#: src/modules/migration/MigrationList.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"

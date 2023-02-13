@@ -205,7 +205,32 @@ export const MigrationListItem = ({
             </Box>
           </ListColumn>
         )}
-
+        {!!v3Rates?.ltv && (
+          <ListColumn align="right">
+            <Box sx={{ display: 'flex' }}>
+              <FormattedNumber
+                value={userReserve.reserve.formattedBaseLTVasCollateral}
+                percent
+                variant="secondary14"
+                color={baseColor}
+              />
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+              <FormattedNumber
+                value={v3Rates.ltv}
+                percent
+                variant="secondary14"
+                color={baseColor}
+              />
+            </Box>
+          </ListColumn>
+        )}
         <ListColumn align="right">
           <Box sx={{ display: 'flex' }}>
             <IncentivesCard
@@ -264,6 +289,33 @@ export const MigrationListItem = ({
                   Variable
                 </Typography>
               </Button>
+            </Box>
+          </ListColumn>
+        )}
+
+        {!!v3Rates?.liquidationThreshold && (
+          <ListColumn align="right">
+            <Box sx={{ display: 'flex' }}>
+              <FormattedNumber
+                value={userReserve.reserve.formattedReserveLiquidationThreshold}
+                percent
+                variant="secondary14"
+                color={baseColor}
+              />
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+              <FormattedNumber
+                value={v3Rates.liquidationThreshold}
+                percent
+                variant="secondary14"
+                color={baseColor}
+              />
             </Box>
           </ListColumn>
         )}
