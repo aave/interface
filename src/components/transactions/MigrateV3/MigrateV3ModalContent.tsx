@@ -72,15 +72,15 @@ export const MigrateV3ModalContent = () => {
   }
 
   const handleRoute = () => {
-    if (currentMarket === 'proto_polygon') {
+    if (currentMarket === CustomMarket.proto_polygon) {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);
-      window.location.href = '/?marketName=proto_polygon_v3';
-    } else if (currentMarket === 'proto_avalanche') {
+      window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
+    } else if (currentMarket === CustomMarket.proto_avalanche) {
       setCurrentMarket('proto_avalanche_v3' as CustomMarket);
-      window.location.href = '/?marketName=proto_avalanche_v3';
+      window.location.href = `/?marketName=${CustomMarket.proto_avalanche_v3}`;
     } else {
       setCurrentMarket('proto_mainnet_v3' as CustomMarket);
-      window.location.href = '/?marketName=proto_mainnet_v3';
+      window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
     }
   };
 
