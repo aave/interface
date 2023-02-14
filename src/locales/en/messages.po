@@ -50,6 +50,7 @@ msgid "APY"
 msgstr "APY"
 
 #: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "APY change"
 msgstr "APY change"
@@ -620,6 +621,7 @@ msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
 #: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
 msgstr "Current v2 balance"
 
@@ -1098,6 +1100,7 @@ msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
@@ -1133,6 +1136,7 @@ msgid "Max"
 msgstr "Max"
 
 #: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"

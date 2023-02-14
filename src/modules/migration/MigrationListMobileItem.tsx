@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, Stack, SvgIcon, Typography, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
@@ -139,141 +139,44 @@ export const MigrationListMobileItem = ({
         </ListColumn>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12 }}>
-        <Typography variant="description" color={baseColorSecondary}>
-          <Trans>Current v2 Balance</Trans>
-        </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-            <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
-          </Box>
-          <FormattedNumber
-            value={amountInUSD}
-            variant="secondary12"
-            color={baseColorSecondary}
-            symbolsColor={baseColorSecondary}
-            symbol="USD"
-          />
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-          pl: 12,
-          py: 2,
-        }}
-      >
-        <Typography variant="description" color={baseColorSecondary}>
-          <Trans>APY change</Trans>
-        </Typography>
-
-        <Box sx={{ display: 'flex' }}>
-          <IncentivesCard
-            value={v2APY}
-            symbol={userReserve.reserve.symbol}
-            incentives={v2Incentives}
-            variant="main14"
-            color={baseColorPrimary}
-          />
-          <SvgIcon sx={{ px: 1.5 }}>
-            <ArrowNarrowRightIcon
-              fontSize="14px"
-              color={
-                disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
-              }
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2, pb: 4, pl: 12 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="description" color={baseColorSecondary}>
+            <Trans>Current v2 Balance</Trans>
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
+              <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
+            </Box>
+            <FormattedNumber
+              value={amountInUSD}
+              variant="secondary12"
+              color={baseColorSecondary}
+              symbolsColor={baseColorSecondary}
+              symbol="USD"
             />
-          </SvgIcon>
-          <IncentivesCard
-            value={v3APY}
-            symbol={userReserve.reserve.symbol}
-            incentives={v3Incentives}
-            variant="main14"
-            color={baseColorPrimary}
-          />
+          </Box>
         </Box>
-      </Box>
 
-      {!!enableAsCollateral && (
         <Box
           sx={{
             display: 'flex',
+            alignItems: 'center',
             justifyContent: 'space-between',
-            width: '100%',
-            pl: 12,
-            pb: 4,
           }}
         >
           <Typography variant="description" color={baseColorSecondary}>
-            <Trans>Collateral change</Trans>
+            <Trans>APY change</Trans>
           </Typography>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {userReserve.usageAsCollateralEnabledOnUser &&
-            userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
-              <CheckRoundedIcon fontSize="small" color="success" />
-            ) : (
-              <NoData variant="main14" color={baseColorSecondary} />
-            )}
-
-            <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon
-                fontSize="14px"
-                color={
-                  disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
-                }
-              />
-            </SvgIcon>
-
-            {showCollateralToggle ? (
-              <MigrationListItemToggler
-                enableAsCollateral={enableAsCollateral}
-                enabledAsCollateral={enabledAsCollateral}
-              />
-            ) : !enabledAsCollateral ? (
-              <NoData variant="main14" color={baseColorSecondary} />
-            ) : isIsolated ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
-                  <ExclamationCircleIcon />
-                </SvgIcon>
-                <IsolatedBadge />
-              </Box>
-            ) : (
-              <CheckRoundedIcon fontSize="small" color="success" />
-            )}
-          </Box>
-        </Box>
-      )}
-
-      {!!borrowApyType && (
-        <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', pl: 12, pb: 4 }}
-        >
-          <Typography variant="description" color={baseColorSecondary}>
-            <Trans>APY type change</Trans>
-          </Typography>
           <Box sx={{ display: 'flex' }}>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{ width: '50px', background: 'white' }}
-              disabled
-            >
-              <Typography variant="buttonS" color={baseColorPrimary}>
-                {borrowApyType}
-              </Typography>
-            </Button>
+            <IncentivesCard
+              value={v2APY}
+              symbol={userReserve.reserve.symbol}
+              incentives={v2Incentives}
+              variant="main14"
+              color={baseColorPrimary}
+            />
             <SvgIcon sx={{ px: 1.5 }}>
               <ArrowNarrowRightIcon
                 fontSize="14px"
@@ -282,20 +185,191 @@ export const MigrationListMobileItem = ({
                 }
               />
             </SvgIcon>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{ width: '50px', background: 'white' }}
-              disabled
-            >
-              <Typography variant="buttonS" color={baseColorPrimary}>
-                Variable
-              </Typography>
-            </Button>
+            <IncentivesCard
+              value={v3APY}
+              symbol={userReserve.reserve.symbol}
+              incentives={v3Incentives}
+              variant="main14"
+              color={baseColorPrimary}
+            />
           </Box>
         </Box>
-      )}
 
+        {!!enableAsCollateral && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="description" color={baseColorSecondary}>
+              <Trans>Collateral change</Trans>
+            </Typography>
+
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {userReserve.usageAsCollateralEnabledOnUser &&
+              userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
+                <CheckRoundedIcon fontSize="small" color="success" />
+              ) : (
+                <NoData variant="main14" color={baseColorSecondary} />
+              )}
+
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+
+              {showCollateralToggle ? (
+                <MigrationListItemToggler
+                  enableAsCollateral={enableAsCollateral}
+                  enabledAsCollateral={enabledAsCollateral}
+                />
+              ) : !enabledAsCollateral ? (
+                <NoData variant="main14" color={baseColorSecondary} />
+              ) : isIsolated ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
+                    <ExclamationCircleIcon />
+                  </SvgIcon>
+                  <IsolatedBadge />
+                </Box>
+              ) : (
+                <CheckRoundedIcon fontSize="small" color="success" />
+              )}
+            </Box>
+          </Box>
+        )}
+
+        {!!borrowApyType && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="description" color={baseColorSecondary}>
+              <Trans>APY type change</Trans>
+            </Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Button
+                variant="outlined"
+                size="small"
+                sx={{ width: '50px', background: 'white' }}
+                disabled
+              >
+                <Typography variant="buttonS" color={baseColorPrimary}>
+                  {borrowApyType}
+                </Typography>
+              </Button>
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+              <Button
+                variant="outlined"
+                size="small"
+                sx={{ width: '50px', background: 'white' }}
+                disabled
+              >
+                <Typography variant="buttonS" color={baseColorPrimary}>
+                  Variable
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+        )}
+
+        {!!v3Rates?.ltv && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="description" color={baseColorSecondary}>
+              <Trans>Max LTV</Trans>
+            </Typography>
+
+            <Box sx={{ display: 'flex' }}>
+              <FormattedNumber
+                value={userReserve.reserve.formattedBaseLTVasCollateral}
+                percent
+                variant="main14"
+                color={baseColorPrimary}
+              />
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+              <FormattedNumber
+                value={v3Rates.ltv}
+                percent
+                variant="main14"
+                color={baseColorPrimary}
+              />
+            </Box>
+          </Box>
+        )}
+
+        {!!v3Rates?.liquidationThreshold && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="description" color={baseColorSecondary}>
+              <Trans>Liquidation threshold</Trans>
+            </Typography>
+
+            <Box sx={{ display: 'flex' }}>
+              <FormattedNumber
+                value={userReserve.reserve.formattedReserveLiquidationThreshold}
+                percent
+                variant="main14"
+                color={baseColorPrimary}
+              />
+              <SvgIcon sx={{ px: 1.5 }}>
+                <ArrowNarrowRightIcon
+                  fontSize="14px"
+                  color={
+                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                  }
+                />
+              </SvgIcon>
+              <FormattedNumber
+                value={v3Rates.liquidationThreshold}
+                percent
+                variant="main14"
+                color={baseColorPrimary}
+              />
+            </Box>
+          </Box>
+        )}
+      </Box>
       {userReserve.reserve.symbol === 'stETH' && (
         <Box sx={{ pl: '16px', width: '100%' }}>
           <StETHMigrationWarning
