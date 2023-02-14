@@ -5,15 +5,11 @@ import { Button, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
 import { Link } from '../components/primitives/Link';
 import { moreNavigation } from '../ui-config/menu-items';
 
 export function MoreMenu() {
   const { i18n } = useLingui();
-  const { currentAccount: walletAddress } = useWeb3Context();
-
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,7 +56,7 @@ export function MoreMenu() {
         {moreNavigation.map((item, index) => (
           <MenuItem
             component={Link}
-            href={item.makeLink ? item.makeLink(walletAddress) : item.link}
+            href={item.link}
             key={index}
           >
             <ListItemIcon>

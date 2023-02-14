@@ -8,6 +8,7 @@ import DiscordIcon from '/public/icons/discord.svg';
 import GithubIcon from '/public/icons/github.svg';
 
 import { MarketDataType } from '../marketsConfig';
+import { RampWidget } from 'src/layouts/RampWidget';
 
 interface Navigation {
   link: string;
@@ -52,9 +53,41 @@ export const navigation: Navigation[] = [
   },
 ];
 
+type BuySellCryptoMenuItem = {
+  onClick: typeof RampWidget;
+  title: string;
+  icon: ReactNode;
+  type: 'WIDGET'
+} & Omit<Navigation , 'link'>
+
+const widgetMenuItems: BuySellCryptoMenuItem[] = [
+  {
+    type:'WIDGET',
+    onClick: (walletAddress) =>  RampWidget(walletAddress),
+    title: t`Buy/sell crypto with Ramp`,
+    icon: <CreditCardIcon />,
+  },
+]
+
+interface HostedMenuItems extends Navigation {
+  type: 'HOSTED'
+  icon: ReactNode;
+  makeLink: (walletAddress: string) => string;
+}
+
+const hostedMenuItems: HostedMenuItems[] = [
+  {
+    type: 'HOSTED',
+    link: 'https://global.transak.com',
+    makeLink: (walletAddress) =>
+      `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
+    title: t`Buy crypto with Transak`,
+    icon: <CreditCardIcon />,
+  },
+]
+
 interface MoreMenuItem extends Navigation {
   icon: ReactNode;
-  makeLink?: (walletAddress: string) => string;
 }
 
 const moreMenuItems: MoreMenuItem[] = [
@@ -78,19 +111,15 @@ const moreMenuItems: MoreMenuItem[] = [
     title: t`Github`,
     icon: <GithubIcon />,
   },
-  {
-    link: 'https://global.transak.com',
-    makeLink: (walletAddress) =>
-      `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
-    title: t`Buy Crypto With Fiat`,
-    icon: <CreditCardIcon />,
-  },
 ];
+
 
 export const moreMenuExtraItems: MoreMenuItem[] = [];
 export const moreMenuMobileOnlyItems: MoreMenuItem[] = [];
 
 export const moreNavigation: MoreMenuItem[] = [...moreMenuItems, ...moreMenuExtraItems];
+
+export const buySellCryptoNavigation = [...widgetMenuItems, ...hostedMenuItems];
 
 export const mobileNavigation: Navigation[] = [
   ...navigation,

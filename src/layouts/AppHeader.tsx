@@ -93,7 +93,7 @@ export function AppHeader() {
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
-          zIndex: theme.zIndex.appBar,
+          zIndex: 1,
           bgcolor: theme.palette.background.header,
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
