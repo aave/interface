@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Link } from '../../components/primitives/Link';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { navigation } from '../../ui-config/menu-items';
+import { BuySellCryptoMenu } from '../BuySellCryptoMenu';
 import { MoreMenu } from '../MoreMenu';
 
 interface NavItemsProps {
@@ -81,6 +82,10 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             )}
           </ListItem>
         ))}
+
+      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
+        <BuySellCryptoMenu />
+      </ListItem>
 
       <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
         <MoreMenu />
