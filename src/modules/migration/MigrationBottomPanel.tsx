@@ -112,7 +112,8 @@ export const MigrationBottomPanel = ({
       case ErrorType.INSUFFICIENT_LTV:
         return (
           <Trans>
-            The amount of migrated collateral is not enough to cover the amount of migrated debt
+            The loan to value of the migrated positions would cause liquidation. Increase migrated
+            collateral or reduce migrated borrow to continue.
           </Trans>
         );
       default:
