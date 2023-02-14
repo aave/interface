@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-09 18:05\n"
+"PO-Revision-Date: 2023-02-13 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1257,7 +1257,7 @@ msgstr "No hay recompensas para reclamar"
 #: src/components/NoSearchResults.tsx
 #: src/components/NoSearchResults.tsx
 msgid "No search results{0}"
-msgstr ""
+msgstr "Sin resultados de búsqueda{0}"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -2062,8 +2062,8 @@ msgid "To continue, you need to grant Aave smart contracts permission to move yo
 msgstr "Para continuar, necesitas otorgar permiso a los contratos inteligentes de Aave para mover tus fondos de tu cartera. Según el activo y la cartera que uses, se hace firmando el mensaje de permiso (sin coste de gas), o enviando una transacción de aprobación (requiere coste de gas). <0>Aprende más</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
-msgstr "Para habilitar el E-mode para la categoría {0}, todas las posiciones prestadas fuera de esta categoría deben ser cerradas."
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
@@ -2616,7 +2616,7 @@ msgstr "{numSelected}/{numAvailable} activos seleccionados"
 
 #: src/components/NoSearchResults.tsx
 msgid "{subtitle}"
-msgstr ""
+msgstr "{subtitle}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
