@@ -58,6 +58,7 @@ export const MigrationListBorrowItem = ({
       borrowApyType={userReserve.interestRate}
       v3Rates={v3Rates}
       enteringIsolation={enteringIsolation}
+      isSupplyList={false}
     />
   );
 };

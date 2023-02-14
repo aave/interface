@@ -35,6 +35,7 @@ interface MigrationListItemProps {
   v3Rates?: V3Rates;
   enteringIsolation: boolean;
   userControlledCollateral?: boolean;
+  isSupplyList: boolean;
 }
 
 export const MigrationListItem = ({
@@ -52,6 +53,7 @@ export const MigrationListItem = ({
   v3Rates,
   userControlledCollateral,
   canBeEnforced,
+  isSupplyList,
 }: MigrationListItemProps) => {
   const theme = useTheme();
   const { currentMarket, currentMarketData } = useRootStore();
@@ -59,6 +61,8 @@ export const MigrationListItem = ({
 
   const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
+
+  const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -225,32 +229,37 @@ export const MigrationListItem = ({
             </Box>
           </ListColumn>
         )}
-        {!!v3Rates?.ltv && (
-          <ListColumn>
-            <Box sx={{ display: 'flex' }}>
-              <FormattedNumber
-                value={userReserve.reserve.formattedBaseLTVasCollateral}
-                percent
-                variant="secondary14"
-                color={baseColor}
-              />
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
+        {isSupplyList &&
+          (loadingRates ? (
+            <ListColumn>
+              <NoData variant="main14" color="text.secondary" />
+            </ListColumn>
+          ) : (
+            <ListColumn>
+              <Box sx={{ display: 'flex' }}>
+                <FormattedNumber
+                  value={userReserve.reserve.formattedBaseLTVasCollateral}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
                 />
-              </SvgIcon>
-              <FormattedNumber
-                value={v3Rates.ltv}
-                percent
-                variant="secondary14"
-                color={baseColor}
-              />
-            </Box>
-          </ListColumn>
-        )}
+                <SvgIcon sx={{ px: 1.5 }}>
+                  <ArrowNarrowRightIcon
+                    fontSize="14px"
+                    color={
+                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                    }
+                  />
+                </SvgIcon>
+                <FormattedNumber
+                  value={v3Rates?.ltv ?? -1}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+              </Box>
+            </ListColumn>
+          ))}
 
         {!!borrowApyType && (
           <ListColumn>
@@ -287,32 +296,37 @@ export const MigrationListItem = ({
           </ListColumn>
         )}
 
-        {!!v3Rates?.liquidationThreshold && (
-          <ListColumn>
-            <Box sx={{ display: 'flex' }}>
-              <FormattedNumber
-                value={userReserve.reserve.formattedReserveLiquidationThreshold}
-                percent
-                variant="secondary14"
-                color={baseColor}
-              />
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
+        {!isSupplyList &&
+          (loadingRates ? (
+            <ListColumn>
+              <NoData variant="main14" color="text.secondary" />
+            </ListColumn>
+          ) : (
+            <ListColumn>
+              <Box sx={{ display: 'flex' }}>
+                <FormattedNumber
+                  value={userReserve.reserve.formattedReserveLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
                 />
-              </SvgIcon>
-              <FormattedNumber
-                value={v3Rates.liquidationThreshold}
-                percent
-                variant="secondary14"
-                color={baseColor}
-              />
-            </Box>
-          </ListColumn>
-        )}
+                <SvgIcon sx={{ px: 1.5 }}>
+                  <ArrowNarrowRightIcon
+                    fontSize="14px"
+                    color={
+                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                    }
+                  />
+                </SvgIcon>
+                <FormattedNumber
+                  value={v3Rates?.liquidationThreshold ?? -1}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+              </Box>
+            </ListColumn>
+          ))}
 
         <ListColumn>
           <FormattedNumber value={amount} variant="secondary14" color={baseColor} />

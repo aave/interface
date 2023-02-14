@@ -156,6 +156,7 @@ export default function V3Migration() {
                       enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
                       v3Rates={reserve.v3Rates}
                       disabled={reserve.migrationDisabled}
+                      isSupplyList
                     />
                   ))
                 ) : (
