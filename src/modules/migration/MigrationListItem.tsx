@@ -97,6 +97,7 @@ export const MigrationListItem = ({
         userReserve={userReserve}
         v3Rates={v3Rates}
         showCollateralToggle={showCollateralToggle}
+        isSupplyList={isSupplyList}
       />
     );
   return (
@@ -258,7 +259,7 @@ export const MigrationListItem = ({
                   />
                 </SvgIcon>
                 <FormattedNumber
-                  value={v3Rates?.ltv ?? -1}
+                  value={v3Rates?.ltv || 0}
                   percent
                   variant="secondary14"
                   color={baseColor}

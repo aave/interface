@@ -36,6 +36,7 @@ interface MigrationListMobileItemProps {
   userReserve: ComputedUserReserveData;
   v3Rates?: V3Rates;
   showCollateralToggle?: boolean;
+  isSupplyList: boolean;
 }
 
 export const MigrationListMobileItem = ({
@@ -52,6 +53,7 @@ export const MigrationListMobileItem = ({
   userReserve,
   v3Rates,
   showCollateralToggle,
+  isSupplyList,
 }: MigrationListMobileItemProps) => {
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -72,6 +74,8 @@ export const MigrationListMobileItem = ({
   const theme = useTheme();
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
   const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
+
+  const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
   return (
     <ListItem sx={{ display: 'flex', flexDirection: 'column', pl: 0 }}>
@@ -296,7 +300,7 @@ export const MigrationListMobileItem = ({
           </Box>
         )}
 
-        {!!v3Rates?.ltv && (
+        {isSupplyList && (
           <Box
             sx={{
               display: 'flex',
@@ -309,31 +313,39 @@ export const MigrationListMobileItem = ({
             </Typography>
 
             <Box sx={{ display: 'flex' }}>
-              <FormattedNumber
-                value={userReserve.reserve.formattedBaseLTVasCollateral}
-                percent
-                variant="main14"
-                color={baseColorPrimary}
-              />
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
-              <FormattedNumber
-                value={v3Rates.ltv}
-                percent
-                variant="main14"
-                color={baseColorPrimary}
-              />
+              {loadingRates ? (
+                <NoData variant="main14" color="text.secondary" />
+              ) : (
+                <>
+                  <FormattedNumber
+                    value={userReserve.reserve.formattedBaseLTVasCollateral}
+                    percent
+                    variant="main14"
+                    color={baseColorPrimary}
+                  />
+                  <SvgIcon sx={{ px: 1.5 }}>
+                    <ArrowNarrowRightIcon
+                      fontSize="14px"
+                      color={
+                        disabled === undefined
+                          ? theme.palette.text.secondary
+                          : theme.palette.text.muted
+                      }
+                    />
+                  </SvgIcon>
+                  <FormattedNumber
+                    value={v3Rates?.ltv || 0}
+                    percent
+                    variant="main14"
+                    color={baseColorPrimary}
+                  />
+                </>
+              )}
             </Box>
           </Box>
         )}
 
-        {!!v3Rates?.liquidationThreshold && (
+        {!isSupplyList && (
           <Box
             sx={{
               display: 'flex',
@@ -346,26 +358,34 @@ export const MigrationListMobileItem = ({
             </Typography>
 
             <Box sx={{ display: 'flex' }}>
-              <FormattedNumber
-                value={userReserve.reserve.formattedReserveLiquidationThreshold}
-                percent
-                variant="main14"
-                color={baseColorPrimary}
-              />
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
-              <FormattedNumber
-                value={v3Rates.liquidationThreshold}
-                percent
-                variant="main14"
-                color={baseColorPrimary}
-              />
+              {loadingRates ? (
+                <NoData variant="main14" color="text.secondary" />
+              ) : (
+                <>
+                  <FormattedNumber
+                    value={userReserve.reserve.formattedReserveLiquidationThreshold}
+                    percent
+                    variant="main14"
+                    color={baseColorPrimary}
+                  />
+                  <SvgIcon sx={{ px: 1.5 }}>
+                    <ArrowNarrowRightIcon
+                      fontSize="14px"
+                      color={
+                        disabled === undefined
+                          ? theme.palette.text.secondary
+                          : theme.palette.text.muted
+                      }
+                    />
+                  </SvgIcon>
+                  <FormattedNumber
+                    value={v3Rates?.liquidationThreshold || 0}
+                    percent
+                    variant="main14"
+                    color={baseColorPrimary}
+                  />
+                </>
+              )}
             </Box>
           </Box>
         )}
