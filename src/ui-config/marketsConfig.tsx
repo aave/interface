@@ -84,7 +84,6 @@ export const marketsData: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
     v3: true,
-    disableCharts: true,
     enabledFeatures: {
       governance: true,
       staking: true,
