@@ -66,12 +66,6 @@ export const SwapModalContent = ({
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
 
-  const remainingCapUsd = amountToUsd(
-    remainingCap(swapTarget.reserve),
-    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  );
-
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
@@ -122,8 +116,15 @@ export const SwapModalContent = ({
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
+  const remainingSupplyCap = remainingCap(swapTarget.reserve);
+  const remainingCapUsd = amountToUsd(
+    remainingSupplyCap,
+    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
+
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingCapUsd.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
+  if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
