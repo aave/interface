@@ -78481,7 +78481,6 @@ var marketsData = {
     marketTitle: 'Ethereum',
     chainId: import_contract_helpers2.ChainId.mainnet,
     v3: true,
-    disableCharts: true,
     enabledFeatures: {
       governance: true,
       staking: true,
