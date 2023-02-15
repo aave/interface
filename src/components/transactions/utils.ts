@@ -6,6 +6,7 @@ export enum ErrorType {
   HF_BELOW_ONE,
   FLASH_LOAN_NOT_AVAILABLE,
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
+  TARGET_RESERVE_IS_FROZEN,
 }
 
 export const useFlashloan = (healthFactor: string, hfEffectOfFromAmount: string) => {

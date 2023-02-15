@@ -188,12 +188,18 @@ export function CollateralRepayModalContent({
     priceImpact = '0.00';
   }
 
+  const selectedTokenToRepayWithIsFrozen = user.userReservesData.find(
+    (r) => r.reserve.underlyingAsset === tokenToRepayWith.address
+  )?.reserve.isFrozen;
+
   let blockingError: ErrorType | undefined = undefined;
 
   if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
+  } else if (selectedTokenToRepayWithIsFrozen && !shouldUseFlashloan) {
+    blockingError = ErrorType.TARGET_RESERVE_IS_FROZEN;
   }
 
   const handleBlocked = () => {
@@ -205,6 +211,13 @@ export function CollateralRepayModalContent({
           <Trans>
             Due to a precision bug in the stETH contract, this asset can not be used in flashloan
             transactions
+          </Trans>
+        );
+      case ErrorType.TARGET_RESERVE_IS_FROZEN:
+        return (
+          <Trans>
+            This asset cannot be used as collateral to repay with because it is frozen due to an
+            Aave Protocol Governance decision.
           </Trans>
         );
       default:

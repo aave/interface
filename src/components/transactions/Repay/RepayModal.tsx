@@ -35,7 +35,6 @@ export const RepayModal = () => {
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
         userReserve.underlyingAsset !== args.underlyingAsset &&
-        !args.isFrozen &&
         userReserve.underlyingAsset !== stETHAddress
     );
 
