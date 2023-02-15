@@ -2208,6 +2208,20 @@
       "ipfsHash": "QmSRm3Ca4esmiPMNCHChs6Cp4UBWSaRdWQBzvWEdqFkqKX",
       "originalHash": "0x3cbdcee6462df843a8ef50dc2130c02ac974ec884e09e60b36857278c98e310a",
       "id": 153
+    },
+    {
+      "title": "Add LUSD to Aave Ethereum V3 pool",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "Onboard LUSD on Aave Eth V3",
+      "discussions": "https://governance.aave.com/t/arc-add-lusd-to-ethereum-v3-market/11522",
+      "created": "2023-02-14T00:00:00.000Z",
+      "updated": "2023-02-15T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "LUSDETHV3",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to onboard LUSD to the Ethereum v3 Liquidity Pool.\n\n## Motivation\nSupporting stablecoin diversity diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Liquity or any entity to present this AIP.\n\nThe risk parameters provided introduce LUSD as a non-collateral asset.\n\nSupply and borrow caps are suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: LUSD\n\nContract Address: [0x5f98805A4E8be255a32880FDeC7F6728C6568bA0](https://etherscan.io/token/0x5f98805A4E8be255a32880FDeC7F6728C6568bA0)\n\n|Risk Parameter|Value|\n| --- | --- |\n|Isolation Mode|NO|\n|Enable Borrow|YES|\n|Enable Collateral|NO|\n|Loan To Value|N/A|\n|Liquidation Threshold|N/A|\n|Liquidation Bonus|N/A|\n|Reserve Factor|10%|\n|Liquidation Protocol Fee|10%|\n|Borrow Cap|1,210k|\n|Supply Cap|3,000K|\n|Debt Ceiling|N/A|\n|Base|0%|\n|Slope1|4%|\n|Uoptimal|80%|\n|Slope2|87%|\n\nThe proposal payload uses the [GenericListingEngine](https://etherscan.io/address/0xC51e6E38d406F98049622Ca54a6096a23826B426#code) to perform a new asset listing with the following parameters:\n\n```solidity\nIGenericV3ListingEngine.Listing({\n      asset: LUSD,\n      assetSymbol: 'LUSD',\n      priceFeed: LUSD_USD_FEED,\n      rateStrategy: 0x349684Da30f8c9Affeaf21AfAB3a1Ad51f5d95A3,\n      enabledToBorrow: true,\n      stableRateModeEnabled: false,\n      borrowableInIsolation: false,\n      withSiloedBorrowing: false,\n      flashloanable: true,\n      ltv: 0,\n      liqThreshold: 0,\n      liqBonus: 0,\n      reserveFactor: 10_00,\n      supplyCap: 3_000_000,\n      borrowCap: 1_210_000,\n      debtCeiling: 0,\n      liqProtocolFee: 10_00,\n      eModeCategory: 0\n    });\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arc-add-lusd-to-ethereum-v3-market/11522)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/mainnet/AaveV3EthLUSDPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/mainnet/AaveV3EthLusdPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3EthLUSDPayload: ProposalPayload](https://etherscan.io/address/0x9d4948be10dce66c0f584a6c42fd7d985786b439#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmQr8bJcseENueP1rM235S6YyZVyZKsWiAKfcppAVMNdyw",
+      "originalHash": "0x2544be91c00601ccaf3824eaa990c4ba92b2c2652f21713de2c7d46eb8c848be",
+      "id": 154
     }
   ]
 }
