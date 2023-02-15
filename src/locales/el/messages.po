@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-13 18:05\n"
+"PO-Revision-Date: 2023-02-14 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -919,6 +919,10 @@ msgstr "Πηγαίνετε Πίσω"
 msgid "Go to Balancer Pool"
 msgstr ""
 
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Go to V3 Dashboard"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Διακυβέρνηση"
@@ -1614,6 +1618,10 @@ msgstr ""
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 supplies to migrate"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
