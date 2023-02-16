@@ -23,7 +23,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ErrorType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -107,13 +107,6 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
-  const disableFlashLoan =
-    shouldUseFlashloan &&
-    flashLoanNotAvailable(
-      userReserve.underlyingAsset,
-      currentNetworkConfig.underlyingChainId || currentChainId
-    );
-
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   const remainingSupplyCap = remainingCap(swapTarget.reserve);
@@ -128,8 +121,6 @@ export const SwapModalContent = ({
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
-  } else if (disableFlashLoan) {
-    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const handleBlocked = () => {
@@ -140,13 +131,6 @@ export const SwapModalContent = ({
         return (
           <Trans>
             The effects on the health factor would cause liquidation. Try lowering the amount.
-          </Trans>
-        );
-      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
-        return (
-          <Trans>
-            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
-            transactions
           </Trans>
         );
       default:
