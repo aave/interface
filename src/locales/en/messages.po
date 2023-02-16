@@ -1995,14 +1995,6 @@ msgstr "This action will reduce your health factor. Please be mindful of the inc
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "This address is blocked on app.aave.com because it is associated with one or more"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "This asset cannot be used as collateral to repay with because it is frozen due to an Aave Protocol Governance decision."
-msgstr "This asset cannot be used as collateral to repay with because it is frozen due to an Aave Protocol Governance decision."
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "This asset cannot be used to swap to because it is frozen due to an Aave Protocol Governance decision."
-msgstr "This asset cannot be used to swap to because it is frozen due to an Aave Protocol Governance decision."
-
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."

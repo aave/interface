@@ -8,7 +8,6 @@ import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import {
   ComputedReserveData,
-  ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SwapVariant } from 'src/hooks/paraswap/common';
@@ -147,7 +146,7 @@ export function CollateralRepayModalContent({
   // to use flashloan path
   const repayWithUserReserve = userReserves.find(
     (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedUserReserveData;
+  );
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
     amountToReceiveAfterSwap: outputAmount,
     amountToSwap: inputAmount,
@@ -158,7 +157,11 @@ export function CollateralRepayModalContent({
     debt,
   });
 
-  const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString());
+  // If the selected collateral asset is frozen, a flashloan must be used. When a flashloan isn't used,
+  // the remaining amount after the swap is deposited into the pool, which will fail for frozen assets.
+  const shouldUseFlashloan =
+    useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
+    collateralReserveData?.isFrozen;
 
   const disableFlashLoan =
     shouldUseFlashloan &&
@@ -188,18 +191,12 @@ export function CollateralRepayModalContent({
     priceImpact = '0.00';
   }
 
-  const selectedTokenToRepayWithIsFrozen = user.userReservesData.find(
-    (r) => r.reserve.underlyingAsset === tokenToRepayWith.address
-  )?.reserve.isFrozen;
-
   let blockingError: ErrorType | undefined = undefined;
 
   if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
-  } else if (selectedTokenToRepayWithIsFrozen && !shouldUseFlashloan) {
-    blockingError = ErrorType.TARGET_RESERVE_IS_FROZEN;
   }
 
   const handleBlocked = () => {
@@ -211,13 +208,6 @@ export function CollateralRepayModalContent({
           <Trans>
             Due to a precision bug in the stETH contract, this asset can not be used in flashloan
             transactions
-          </Trans>
-        );
-      case ErrorType.TARGET_RESERVE_IS_FROZEN:
-        return (
-          <Trans>
-            This asset cannot be used as collateral to repay with because it is frozen due to an
-            Aave Protocol Governance decision.
           </Trans>
         );
       default:
