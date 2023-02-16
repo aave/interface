@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-14 18:05\n"
+"PO-Revision-Date: 2023-02-15 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2071,7 +2071,7 @@ msgstr "Para continuar, necesitas otorgar permiso a los contratos inteligentes d
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
-msgstr ""
+msgstr "Para habilitar el E-mode para la categoría {0}, todas las posiciones de préstamo fuera de esta categoría deben estar cerradas."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
