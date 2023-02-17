@@ -56,6 +56,8 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  bsc_testnet_v3 = 'bsc_testnet_v3',
+
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -80,6 +82,27 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
+  [CustomMarket.bsc_testnet_v3]: {
+    v3: true,
+    marketTitle: 'BSC',
+    chainId: 97,
+    enabledFeatures: {},
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xbBFC6b0189a127D4DC7F891CD9E528E0B75e32f5',
+      LENDING_POOL: '0xB5cfcD7E73634460D06bFc4f6059962d079567a7',
+      WETH_GATEWAY: '0xb3322833eD4e52b7B9a83d6Dc71C6a6D1B3464E5',
+      SWAP_COLLATERAL_ADAPTER: '',
+      REPAY_WITH_COLLATERAL_ADAPTER: '',
+      FAUCET: '',
+      PERMISSION_MANAGER: '',
+      WALLET_BALANCE_PROVIDER: '0x517766582B8159F9C378FF047d1448C2Bf4Da5Ff',
+      L2_ENCODER: '',
+      UI_POOL_DATA_PROVIDER: '0xa35B1B57ab6D7cCF102dcCFFCE9A05a86C0450D3',
+      UI_INCENTIVE_DATA_PROVIDER: '0x12B2750cebF9f8B321349cf79fED70429d358Fd2',
+      COLLECTOR: '0x4dcF1f04F9Bf5f13727C5CFD1d961ccae5A88714',
+      V3_MIGRATOR: '',
+    },
+  },
   [CustomMarket.proto_mainnet_v3]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
