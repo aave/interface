@@ -2275,6 +2275,20 @@
       "ipfsHash": "QmaixGxRFicLEPHyrEuxE9JVW63UvzUu9MJT8SbeVjnMGg",
       "originalHash": "0xb802e21e7ca82e5e4c49bd21e7d7c80d723bcd475b2fb9be1a4e2620e0da90c5",
       "id": 158
+    },
+    {
+      "title": "onboard WSTETH to Aave Optimism V3 pool",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "add WSTETH to Aave Op V3 pool",
+      "discussions": "https://governance.aave.com/t/arc-add-wsteth-to-aave-v3-on-optimism/10932",
+      "created": "2023-02-17T00:00:00.000Z",
+      "updated": "2023-02-17T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "ADD-OPV3WSTETH",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to onboard wstETH to the optimism v3 Liquidity Pool.\n\n## Motivation\nSupporting LSD diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Optimism or any entity to present this AIP.\n\nThe risk parameters provided introduce wstETH as a collateral asset.\n\nSupply and borrow caps are suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: wstETH\n\nContract Address: [0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb](https://optimistic.etherscan.io/address/0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb)\n\n|Risk Parameter|Value|\n| --- | --- |\n|Isolation Mode|NO|\n|Enable Borrow|YES|\n|Enable Collateral|YES|\n|Loan To Value|70%|\n|Liquidation Threshold|79%|\n|Liquidation Bonus|7.2%|\n|Reserve Factor|15%|\n|Liquidation Protocol Fee|10%|\n|Borrow Cap|940|\n|Supply Cap|6000|\n|Debt Ceiling|N/A|\n|Base|0.25%|\n|Slope1|4.5%|\n|Uoptimal|45%|\n|Slope2|80%|\n\nThe proposal payload uses the [GenericListingEngine](https://optimistic.etherscan.io/address/0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D#code) to perform a new asset listing with the following parameters:\n\n```solidity\nIGenericV3ListingEngine.Listing({\n      asset: WSTETH,\n      assetSymbol: 'wstETH',\n      priceFeed: WSTETH_USD_FEED,\n      rateStrategy: https://optimistic.etherscan.io/address/0x6ba97468e2e6a3711a6dd05f0075d48e878c910e,\n      enabledToBorrow: true,\n      stableRateModeEnabled: false,\n      borrowableInIsolation: false,\n      withSiloedBorrowing: false,\n      flashloanable: false,\n      ltv: 70_00,\n      liqThreshold: 79_00,\n      liqBonus: 7_20,\n      reserveFactor: 15_00,\n      supplyCap: 6_000,\n      borrowCap: 940,\n      debtCeiling: 0,\n      liqProtocolFee: 10_00,\n      eModeCategory: 0\n    });\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arc-add-wsteth-to-aave-v3-on-optimism/10932)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/optimism/AaveV3OPWSTETHPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/optimism/AaveV3OPWSTETHPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3OPWSTETHPayload: ProposalPayload](https://optimistic.etherscan.io/address/0x84893ee84e773e4a7a5738bd903dbe2a6e636b9e)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "Qmcz39mBSdi2w9gvD9EFU5tLXpsuTt5sEpL5kUEcgRKs1K",
+      "originalHash": "0xd9977b87efa9c8be6c30c4422ec588bc95133cbe1912310afcffaba67ba6010a",
+      "id": 159
     }
   ]
 }
