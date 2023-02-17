@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-14 18:05\n"
+"PO-Revision-Date: 2023-02-16 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -640,7 +640,7 @@ msgstr "Modo oscuro"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
-msgstr "Panel"
+msgstr "Panel de control"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
@@ -921,7 +921,7 @@ msgstr "Ir al pool de Balancer"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Go to V3 Dashboard"
-msgstr ""
+msgstr "Ir al panel de control V3"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -1622,7 +1622,7 @@ msgstr "Selecciona suministros de v2 para migrar"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
-msgstr ""
+msgstr "Los activos seleccionados se han migrado correctamente. Visita el panel de control del mercado para verlos."
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
@@ -2071,7 +2071,7 @@ msgstr "Para continuar, necesitas otorgar permiso a los contratos inteligentes d
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
-msgstr ""
+msgstr "Para habilitar el E-mode para la categoría {0}, todas las posiciones de préstamo fuera de esta categoría deben estar cerradas."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
