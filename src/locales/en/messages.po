@@ -918,6 +918,10 @@ msgstr "Go Back"
 msgid "Go to Balancer Pool"
 msgstr "Go to Balancer Pool"
 
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Go to V3 Dashboard"
+msgstr "Go to V3 Dashboard"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -1615,6 +1619,10 @@ msgstr "Select v2 borrows to migrate"
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
 
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
+msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"
@@ -2061,8 +2069,8 @@ msgid "To continue, you need to grant Aave smart contracts permission to move yo
 msgstr "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
-msgstr "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
+msgstr "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
