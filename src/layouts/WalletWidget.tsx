@@ -1,10 +1,5 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ExclamationIcon,
-  ExternalLinkIcon,
-} from '@heroicons/react/solid';
+import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -23,13 +18,16 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import makeBlockie from 'ethereum-blockies-base64';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { AvatarSize } from 'src/components/Avatar';
+import { BadgeSize, ExclamationBadge } from 'src/components/badges/ExclamationBadge';
+import { ConnectedUserAvatar } from 'src/components/ConnectedUserAvatar';
+import { ConnectedUserNameText } from 'src/components/ConnectedUserName';
 import { Warning } from 'src/components/primitives/Warning';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
-import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
@@ -53,21 +51,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
 
-  const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
+  const defaultDomain = useRootStore((store) => store.defaultDomain);
+
+  const ensName = defaultDomain?.name;
+
   const ensNameAbbreviated = ensName
     ? ensName.length > 18
       ? textCenterEllipsis(ensName, 12, 3)
       : ensName
     : undefined;
 
-  const [useBlockie, setUseBlockie] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-
-  useEffect(() => {
-    if (ensAvatar) {
-      setUseBlockie(false);
-    }
-  }, [ensAvatar]);
 
   const networkConfig = getNetworkConfig(chainId);
   let networkColor = '';
@@ -84,7 +78,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!connected && !readOnlyModeAddress) {
+    if (!connected) {
       setWalletModalOpen(true);
     } else {
       setOpen(true);
@@ -112,39 +106,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
 
   const accountAvatar = (
-    <Box
-      sx={{
-        width: 22,
-        height: 22,
-        borderRadius: '50%',
-        border: '1px solid #FAFBFC1F',
-        img: { width: '100%', height: '100%', borderRadius: '50%' },
-      }}
-    >
-      <img
-        src={
-          useBlockie ? makeBlockie(currentAccount !== '' ? currentAccount : 'default') : ensAvatar
-        }
-        alt=""
-        onError={() => setUseBlockie(true)}
-      />
-      {readOnlyModeAddress && (
-        <SvgIcon
-          color="warning"
-          sx={{
-            width: 15,
-            height: 15,
-            position: 'absolute',
-            top: '20px',
-            left: '20px',
-            borderRadius: '50%',
-            background: '#383D51',
-          }}
-        >
-          <ExclamationIcon />
-        </SvgIcon>
-      )}
-    </Box>
+    <ConnectedUserAvatar
+      badge={<ExclamationBadge size={BadgeSize.SM} />}
+      invisibleBadge={!readOnlyModeAddress}
+      avatarProps={{ sx: { border: '1px solid #FAFBFC1F' }, size: AvatarSize.SM }}
+    />
   );
 
   let buttonContent = <></>;
@@ -152,7 +118,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     if (hideWalletAccountText) {
       buttonContent = <Box sx={{ margin: '1px 0' }}>{accountAvatar}</Box>;
     } else {
-      buttonContent = <>{ensNameAbbreviated ?? textCenterEllipsis(currentAccount, 4, 4)}</>;
+      buttonContent = <ConnectedUserNameText />;
     }
   } else {
     buttonContent = <Trans>Connect wallet</Trans>;
@@ -174,50 +140,23 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
       <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                border: '1px solid #FAFBFC1F',
-                mr: 3,
-                img: { width: '100%', height: '100%', borderRadius: '50%' },
-              }}
-            >
-              {readOnlyModeAddress && (
-                <SvgIcon
-                  color="warning"
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    position: 'absolute',
-                    top: '35px',
-                    left: '40px',
-                    borderRadius: '50%',
-                    background: md ? '#383D51' : palette.background.paper,
-                  }}
-                >
-                  <ExclamationIcon />
-                </SvgIcon>
-              )}
-              <img
-                src={
-                  useBlockie
-                    ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
-                    : ensAvatar
-                }
-                alt=""
-                onError={() => setUseBlockie(true)}
-              />
-            </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <ConnectedUserAvatar
+              avatarProps={{ sx: { border: '1px solid #FAFBFC1F' }, size: AvatarSize.LG }}
+              badge={
+                <ExclamationBadge
+                  size={BadgeSize.MD}
+                  iconProps={{ sx: { background: md ? '#383D51' : palette.background.paper } }}
+                />
+              }
+              invisibleBadge={!readOnlyModeAddress}
+            />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               {ensNameAbbreviated && (
                 <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
                   {ensNameAbbreviated}
                 </Typography>
               )}
-
               <Typography
                 variant={ensNameAbbreviated ? 'caption' : 'h4'}
                 color={
@@ -389,13 +328,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && (connected || readOnlyModeAddress) && open ? (
+      {md && connected && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
-          variant={connected || readOnlyModeAddress ? 'surface' : 'gradient'}
+          variant={connected ? 'surface' : 'gradient'}
           aria-label="wallet"
           id="wallet-button"
           aria-controls={open ? 'wallet-button' : undefined}
@@ -403,12 +342,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected || readOnlyModeAddress ? '5px 8px' : undefined,
+            p: connected ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
-          startIcon={(connected || readOnlyModeAddress) && !hideWalletAccountText && accountAvatar}
+          startIcon={connected && accountAvatar}
           endIcon={
-            (connected || readOnlyModeAddress) &&
+            connected &&
             !hideWalletAccountText &&
             !md && (
               <SvgIcon
