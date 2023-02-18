@@ -12,7 +12,6 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
-import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -79,11 +78,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               <AMPLWarning />
             </Warning>
           )
-        )}
-        {reserve.symbol === 'stETH' && (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
-            <StETHCollateralWarning />
-          </Warning>
         )}
       </Box>
 
