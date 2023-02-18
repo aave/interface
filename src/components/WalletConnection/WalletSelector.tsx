@@ -19,7 +19,7 @@ export type WalletRowProps = {
 };
 
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
-  const { connectWallet } = useWeb3Context();
+  const { connectWallet, loading } = useWeb3Context();
 
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
@@ -75,6 +75,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
 
   return (
     <Button
+      disabled={loading}
       variant="outlined"
       sx={{
         display: 'flex',
