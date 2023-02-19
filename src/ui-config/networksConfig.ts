@@ -54,7 +54,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [97]: {
     name: 'BSC Testnet',
     publicJsonRPCUrl: [
-      'https://rpc.ankr.com/bsc',
       'https://data-seed-prebsc-1-s1.binance.org:8545/',
       'https://data-seed-prebsc-1-s3.binance.org:8545',
       'https://data-seed-prebsc-2-s3.binance.org:8545',
