@@ -19,7 +19,7 @@ jobs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
       - name: Download PR info
-        uses: dawidd6/action-download-artifact@7847792dd435a50521b8e3bd3576dae7459d1fa8 # v2.22.0
+        uses: dawidd6/action-download-artifact@b59d8c6a6c5c6c6437954f470d963c0b20ea7415 # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: '${{ github.event.workflow_run.id }}'
@@ -116,7 +116,7 @@ jobs:
           persist-credentials: false
 
       - name: Download static build
-        uses: dawidd6/action-download-artifact@7847792dd435a50521b8e3bd3576dae7459d1fa8 # v2.22.0
+        uses: dawidd6/action-download-artifact@b59d8c6a6c5c6c6437954f470d963c0b20ea7415 # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: ${{ github.event.workflow_run.id }}
