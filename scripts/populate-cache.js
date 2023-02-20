@@ -79123,7 +79123,7 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
     // usdMarket: true,
-    networkLogoPath: '/icons/networks/optimism.svg',
+    networkPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
       name: 'Optimism Bridge',
