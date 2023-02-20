@@ -48,14 +48,14 @@ export default function Governance(props: GovernancePageProps) {
 
       <ContentContainer>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Paper>
-              <VotingPowerInfoPanel />
-            </Paper>
-          </Grid>
           <Grid item xs={12} md={8}>
             <Paper>
               <ProposalsList {...props} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper>
+              <VotingPowerInfoPanel />
             </Paper>
           </Grid>
         </Grid>
