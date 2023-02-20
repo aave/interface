@@ -2289,6 +2289,19 @@
       "ipfsHash": "Qmcz39mBSdi2w9gvD9EFU5tLXpsuTt5sEpL5kUEcgRKs1K",
       "originalHash": "0xd9977b87efa9c8be6c30c4422ec588bc95133cbe1912310afcffaba67ba6010a",
       "id": 159
+    },
+    {
+      "title": "Update xSushi price feed on Aave V2",
+      "author": "BGD Labs (@bgdlabs)",
+      "shortDescription": "Swap xSushi price feed on Aave V2 pool on Mainnet",
+      "discussions": "https://governance.aave.com/t/bgd-swap-of-price-feed-of-xsushi-on-aave-v2-ethereum/11901",
+      "created": "2023-02-10T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis proposal changes the current price feed for …",
+      "basename": "XSUSHI_PRICE_FEED_SWAP",
+      "description": "\n\n## Simple Summary\n\nThis proposal changes the current price feed for xSushi (adapter) to a Chainlink calculated oracle, on Aave V2 Ethereum.\n\n## Motivation\n\nCurrently, a custom [price feed](https://etherscan.io/address/0x9b26214bEC078E68a394AaEbfbffF406Ce14893F) is used for xSushi, which calculates the price based on `SUSHI / ETH` oracle and `SUSHI / xSUSHI` ratio on-chain. It is more effective in terms of technical support and gas cost to use the [feed](https://etherscan.io/address/0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB) deployed by Chainlink, which does this calculations off-chain. In addition, any risk of on-chain manipulation, even if not applicable at the moment with the asset not enabled for borrowing, gets removed.\n\n## Specification\n\nUpon execution the proposal will:\n\n- call `ORACLE.setAssetSources(0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, 0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB)` to replace the price source for xSushi\n\n## Security and additional considerations\n\nTo have extra assurances on the feed swap, we did the following:\n\n- **Historical Feeds Comparison**: Comparing the answers from the current feed with the new one for the last year with a 2-hour step gave the following results:\n  - 24.88% of results differ for less than 0.1%\n  - 55.63% have between 0.1% and 1% difference\n  - 19.49% is between 1% and 2%\n\nPrice deviation for both feeds is 2%, which means that the price difference is withing the norm.\n\n## References\n\n- [AaveV2SwapxSushiPriceFeedPayload](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/mainnet/AaveV2SwapxSushiPriceFeedPayload.sol)\n- [Test suite](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/mainnet/AaveV2SwapxSushiPriceFeedPayloadTest.t.sol)\n\n## Contracts\n\n- [xSushi](https://etherscan.io/token/0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272)\n- [Current price feed](https://etherscan.io/address/0x9b26214bEC078E68a394AaEbfbffF406Ce14893F)\n- [Chainlink's price feed](https://etherscan.io/address/0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB)\n- [AaveV2SwapxSushiPriceFeedPayload: ProposalPayload](https://etherscan.io/address/0x3105c276558dd4cf7e7be71d73be8d33bd18f211)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmUzqsRgg4CZdm6eoWrjYsdhCfbruTAn47syAoo1PJn1q7",
+      "originalHash": "0x62eecfcd8fa8264bf4c95014fbf3e4cc7bce8d91d1e58cede18de038660ea8be",
+      "id": 160
     }
   ]
 }
