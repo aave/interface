@@ -1,20 +1,111 @@
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+
+type DelegatedPowerProps = {
+  user: string;
+  aavePower: string;
+  stkAavePower: string;
+  aaveDelegatee: string;
+  stkAaveDelegatee: string;
+};
+
+const DelegatedPower: React.FC<DelegatedPowerProps> = ({
+  user,
+  aavePower,
+  stkAavePower,
+  aaveDelegatee,
+  stkAaveDelegatee,
+}) => {
+  const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
+  // const stkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
+  if (aaveDelegatee === stkAaveDelegatee) {
+    return (
+      <Row
+        caption={
+          isAaveSelfDelegated ? (
+            <Typography variant="subheader1">
+              <Trans>Self delegation</Trans>
+            </Typography>
+          ) : (
+            <Typography variant="subheader1">{user}</Typography>
+          )
+        }
+      >
+        <FormattedNumber value={aavePower + stkAavePower} />
+      </Row>
+    );
+  } else {
+    return (
+      <Row
+        caption={
+          isAaveSelfDelegated ? (
+            <Typography variant="subheader1">
+              <Trans>Self delegation</Trans>
+            </Typography>
+          ) : (
+            <Typography variant="subheader1">{user}</Typography>
+          )
+        }
+      >
+        <FormattedNumber value={aavePower + stkAavePower} />
+      </Row>
+    );
+  }
+};
 
 export const DelegatedInfoPanel = () => {
   const powers = useVotingPower();
+  const {
+    daveTokens: { aave, stkAave },
+  } = useAaveTokensProviderContext();
+  const address = useRootStore((store) => store.account);
   const { openGovDelegation } = useModalContext();
+
+  if (!powers || !address) return null;
 
   return (
     <Box>
-      <Box sx={{ px: 6, pt: 4, pb: 6, display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography>Delegate your power</Typography>
-        </Box>
+      <Typography typography="h3">
+        <Trans>Delegating to</Trans>
+      </Typography>
+      <Typography typography="description">
+        <Trans>
+          Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won&apos;t
+          send any tokens, only voting/proposition rights, and you can re-delegate it at any time.
+          Learn more
+        </Trans>
+      </Typography>
+      <Typography typography="description">
+        <Trans>Voting power</Trans>
+      </Typography>
+      <DelegatedPower
+        aavePower={aave}
+        stkAavePower={stkAave}
+        aaveDelegatee={powers.aaveVotingDelegatee}
+        stkAaveDelegatee={powers.stkAaveVotingDelegatee}
+        user={address}
+      />
+      <Typography typography="description">
+        <Trans>Proposition power</Trans>
+      </Typography>
+      <DelegatedPower
+        aavePower={aave}
+        stkAavePower={stkAave}
+        aaveDelegatee={powers.aavePropositionDelegatee}
+        stkAaveDelegatee={powers.stkAavePropositionDelegatee}
+        user={address}
+      />
+      <Divider />
+      <Box sx={{ padding: 6 }}>
         <Button
+          sx={{ width: '100%' }}
           variant="contained"
           disabled={
             powers?.votingPower === '0' &&

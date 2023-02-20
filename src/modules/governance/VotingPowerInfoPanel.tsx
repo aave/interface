@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { UserDisplay } from 'src/components/UserDisplay';
@@ -36,12 +36,6 @@ export function VotingPowerInfoPanel() {
             </Box>
           </Box>
         )}
-      </Box>
-      <Divider />
-      <Box sx={{ px: 6, pt: 4, pb: 6, display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography>Delegate your power</Typography>
-        </Box>
       </Box>
     </>
   );

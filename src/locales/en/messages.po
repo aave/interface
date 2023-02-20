@@ -662,9 +662,17 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 msgid "Delegate"
 msgstr "Delegate"
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
+msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
+
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
 msgstr "Delegating"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegating to"
+msgstr "Delegating to"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegation"
@@ -1411,6 +1419,7 @@ msgid "Proposals"
 msgstr "Proposals"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Proposition power"
@@ -1617,6 +1626,11 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Self delegation"
+msgstr "Self delegation"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2279,6 +2293,7 @@ msgstr "Votes"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
