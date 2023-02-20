@@ -20,17 +20,14 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
-import { BadgeSize, ExclamationBadge } from 'src/components/badges/ExclamationBadge';
-import { ConnectedUserAvatar } from 'src/components/ConnectedUserAvatar';
-import { ConnectedUserNameText } from 'src/components/ConnectedUserName';
+import { AddressCompactMode } from 'src/components/ConnectedUserName';
 import { Warning } from 'src/components/primitives/Warning';
+import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 
 import { Link } from '../components/primitives/Link';
-import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
@@ -50,16 +47,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
-
-  const defaultDomain = useRootStore((store) => store.defaultDomain);
-
-  const ensName = defaultDomain?.name;
-
-  const ensNameAbbreviated = ensName
-    ? ensName.length > 18
-      ? textCenterEllipsis(ensName, 12, 3)
-      : ensName
-    : undefined;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
@@ -105,25 +92,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
 
-  const accountAvatar = (
-    <ConnectedUserAvatar
-      badge={<ExclamationBadge size={BadgeSize.SM} />}
-      invisibleBadge={!readOnlyModeAddress}
-      avatarProps={{ sx: { border: '1px solid #FAFBFC1F' }, size: AvatarSize.SM }}
-    />
-  );
-
-  let buttonContent = <></>;
-  if (currentAccount) {
-    if (hideWalletAccountText) {
-      buttonContent = <Box sx={{ margin: '1px 0' }}>{accountAvatar}</Box>;
-    } else {
-      buttonContent = <ConnectedUserNameText />;
-    }
-  } else {
-    buttonContent = <Trans>Connect wallet</Trans>;
-  }
-
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography
@@ -140,35 +108,19 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
       <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <ConnectedUserAvatar
-              avatarProps={{ sx: { border: '1px solid #FAFBFC1F' }, size: AvatarSize.LG }}
-              badge={
-                <ExclamationBadge
-                  size={BadgeSize.MD}
-                  iconProps={{ sx: { background: md ? '#383D51' : palette.background.paper } }}
-                />
-              }
-              invisibleBadge={!readOnlyModeAddress}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              {ensNameAbbreviated && (
-                <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
-                  {ensNameAbbreviated}
-                </Typography>
-              )}
-              <Typography
-                variant={ensNameAbbreviated ? 'caption' : 'h4'}
-                color={
-                  ensNameAbbreviated
-                    ? { xs: '#A5A8B6', md: 'text.secondary' }
-                    : { xs: '#F1F1F3', md: 'text.primary' }
-                }
-              >
-                {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
-              </Typography>
-            </Box>
-          </Box>
+          <UserDisplay
+            avatarProps={{ size: AvatarSize.XL }}
+            titleProps={{
+              typography: 'h4',
+              compact: true,
+              addressCompactMode: AddressCompactMode.MD,
+            }}
+            subtitleProps={{
+              compact: true,
+              addressCompactMode: AddressCompactMode.LG,
+              typography: 'caption',
+            }}
+          />
           {readOnlyModeAddress && (
             <Warning
               icon={false}
@@ -345,7 +297,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             p: connected ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
-          startIcon={connected && accountAvatar}
           endIcon={
             connected &&
             !hideWalletAccountText &&
@@ -360,7 +311,15 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             )
           }
         >
-          {buttonContent}
+          {connected ? (
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              titleProps={{ compact: true }}
+              oneLiner={true}
+            />
+          ) : (
+            <Trans>Connect wallet</Trans>
+          )}
         </Button>
       )}
 

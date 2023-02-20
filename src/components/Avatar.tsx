@@ -10,7 +10,8 @@ export enum AvatarSize {
   XS = 20,
   SM = 22,
   MD = 24,
-  LG = 40,
+  LG = 32,
+  XL = 40,
 }
 
 export interface AvatarProps extends Omit<MaterialAvatarProps, 'src'> {
@@ -39,7 +40,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   ) : (
     <MaterialAvatar
       src={useFallbackImage || !image ? fallbackImage : image}
-      sx={{ width: size, height: size, ...sx }}
+      sx={{ width: size, height: size, border: '1px solid #FAFBFC1F', ...sx }}
       alt="avatar"
       imgProps={{
         onError: () => setUseFallbackImage(true),

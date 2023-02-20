@@ -1,18 +1,18 @@
 import { Skeleton, Typography, TypographyProps } from '@mui/material';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 
-interface CompactableTypographyProps extends TypographyProps {
+export interface CompactableTypographyProps extends TypographyProps {
   children: string;
-  from: number;
-  to: number;
+  from?: number;
+  to?: number;
   compact: boolean;
   loading: boolean;
   skeletonWidth?: number;
 }
 
 export const CompactableTypography = ({
-  from,
-  to,
+  from = 0,
+  to = 0,
   compact,
   children,
   loading,

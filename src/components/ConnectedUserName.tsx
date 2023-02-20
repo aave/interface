@@ -4,13 +4,13 @@ import shallow from 'zustand/shallow';
 
 import { CompactableTypography } from './CompactableTypography';
 
-enum AddressCompactMode {
+export enum AddressCompactMode {
   SM,
   MD,
   LG,
 }
 
-enum DomainCompactMode {
+export enum DomainCompactMode {
   LG,
 }
 
@@ -36,16 +36,18 @@ const domainCompactModeMap = {
   },
 };
 
-interface ConnectedUserNameProps extends TypographyProps {
+export interface ConnectedUserNameProps extends TypographyProps {
   addressCompactMode?: AddressCompactMode;
   domainCompactMode?: DomainCompactMode;
   compact?: boolean;
+  showDomain?: boolean;
 }
 
 export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({
   addressCompactMode = AddressCompactMode.SM,
   domainCompactMode = DomainCompactMode.LG,
   compact = false,
+  showDomain = true,
   ...rest
 }) => {
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
@@ -66,16 +68,18 @@ export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({
   const selectedAddressCompactMode = addressCompactModeMap[addressCompactMode];
   const selectedDomainCompactMode = domainCompactModeMap[domainCompactMode];
 
+  const domainMode = !!domainName && showDomain;
+
   return (
     <CompactableTypography
       {...rest}
-      from={domainName ? selectedDomainCompactMode.from : selectedAddressCompactMode.from}
-      to={domainName ? selectedDomainCompactMode.from : selectedAddressCompactMode.to}
-      compact={compact && shouldCompact}
+      from={domainMode ? selectedDomainCompactMode.from : selectedAddressCompactMode.from}
+      to={domainMode ? selectedDomainCompactMode.from : selectedAddressCompactMode.to}
+      compact={compact && (shouldCompact || !domainMode)}
       loading={domainsLoading || accountLoading}
       skeletonWidth={100}
     >
-      {domainName || account}
+      {domainMode ? domainName : account}
     </CompactableTypography>
   );
 };

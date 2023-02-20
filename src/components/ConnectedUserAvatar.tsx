@@ -6,16 +6,15 @@ import shallow from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
 
-type ConnectedUserAvatarProps = {
+export interface ConnectedUserAvatarProps extends AvatarProps {
   badge?: ReactNode;
   invisibleBadge?: boolean;
-  avatarProps?: AvatarProps;
-};
+}
 
 export const ConnectedUserAvatar: React.FC<ConnectedUserAvatarProps> = ({
   badge,
   invisibleBadge = true,
-  avatarProps = {},
+  ...avatarProps
 }) => {
   const { defaultDomain, address, loading } = useRootStore(
     (state) => ({
