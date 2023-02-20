@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
@@ -32,12 +32,20 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         {!oneLiner && defaultDomain?.name ? (
           <>
-            <ConnectedUserNameText {...titleProps} />
-            <ConnectedUserNameText {...subtitleProps} showDomain={false} />
+            <ConnectedUserNameText typography="h4" compact={true} {...titleProps} />
+            <ConnectedUserNameText
+              typography="caption"
+              compact={true}
+              {...subtitleProps}
+              showDomain={false}
+            />
           </>
         ) : (
-          <ConnectedUserNameText {...titleProps} />
+          <ConnectedUserNameText typography="h4" compact={true} {...titleProps} />
         )}
+      </Box>
+      <Box>
+        <Typography />
       </Box>
     </Box>
   );

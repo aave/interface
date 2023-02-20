@@ -3,6 +3,7 @@ import { GovDelegationModal } from 'src/components/transactions/GovDelegation/Go
 import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { DelegatedInfoPanel } from 'src/modules/governance/DelegatedInfoPanel';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
@@ -56,6 +57,9 @@ export default function Governance(props: GovernancePageProps) {
           <Grid item xs={12} md={4}>
             <Paper>
               <VotingPowerInfoPanel />
+            </Paper>
+            <Paper>
+              <DelegatedInfoPanel />
             </Paper>
           </Grid>
         </Grid>
