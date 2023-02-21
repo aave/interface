@@ -1,6 +1,6 @@
 import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import * as React from 'react';
+import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
@@ -19,6 +19,11 @@ export const DelegationTokenSelector = ({
   delegationTokenAddress,
 }: DelegationTokenSelectorProps) => {
   const tokensWithBalance = delegationTokens.filter((elem) => elem.amount != '0');
+
+  useEffect(() => {
+    if (tokensWithBalance.length === 1) setDelegationToken(tokensWithBalance[0].address);
+  }, [tokensWithBalance, setDelegationToken]);
+
   if (tokensWithBalance.length === 1) {
     const selectedToken = tokensWithBalance[0];
     return (
