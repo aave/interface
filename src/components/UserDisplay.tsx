@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, TypographyProps } from '@mui/material';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -6,12 +6,7 @@ import { useRootStore } from 'src/store/root';
 import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
 import { ConnectedUserAvatar } from './ConnectedUserAvatar';
-import {
-  ConnectedUserNameProps,
-  ConnectedUserNameText,
-  UserNameText,
-  UserNameTextProps,
-} from './ConnectedUserName';
+import { ConnectedUserNameProps, ConnectedUserNameText, UserNameText } from './ConnectedUserName';
 
 type UserDisplayProps = {
   oneLiner?: boolean;
@@ -52,7 +47,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
 
 interface ExternalUserDisplayProps {
   avatarProps?: AvatarProps;
-  titleProps?: UserNameTextProps;
+  titleProps?: TypographyProps;
   address: string;
 }
 
@@ -66,7 +61,7 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Avatar image={avatar} {...avatarProps} />
-      <UserNameText {...titleProps} variant="h4" address={address} domainName={name} />
+      <UserNameText variant="h4" address={address} domainName={name} {...titleProps} />
     </Box>
   );
 };

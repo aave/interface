@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button, Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
@@ -26,8 +27,6 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 }) => {
   const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
   const isStkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
-  console.log(aaveDelegatee);
-  console.log(stkAaveDelegatee);
   if (aaveDelegatee === stkAaveDelegatee || (isAaveSelfDelegated && isStkAaveSelfDelegated)) {
     return (
       <Row
@@ -37,42 +36,58 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               <Trans>Self delegation</Trans>
             </Typography>
           ) : (
-            <ExternalUserDisplay address={aaveDelegatee} />
+            <ExternalUserDisplay
+              avatarProps={{ size: AvatarSize.XS }}
+              titleProps={{ variant: 'subheader1' }}
+              address={aaveDelegatee}
+            />
           )
         }
       >
-        <FormattedNumber value={aavePower + stkAavePower} />
+        <FormattedNumber value={Number(aavePower) + Number(stkAavePower)} />
       </Row>
     );
   } else {
     return (
-      <Box>
-        <Row
-          caption={
-            isAaveSelfDelegated ? (
-              <Typography variant="subheader1">
-                <Trans>Self delegation</Trans>
-              </Typography>
-            ) : (
-              <ExternalUserDisplay address={aaveDelegatee} />
-            )
-          }
-        >
-          <FormattedNumber value={aavePower} />
-        </Row>
-        <Row
-          caption={
-            isStkAaveSelfDelegated ? (
-              <Typography variant="subheader1">
-                <Trans>Self delegation</Trans>
-              </Typography>
-            ) : (
-              <ExternalUserDisplay address={stkAaveDelegatee} />
-            )
-          }
-        >
-          <FormattedNumber value={stkAavePower} />
-        </Row>
+      <Box sx={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
+        {aavePower != '0' && (
+          <Row
+            caption={
+              isAaveSelfDelegated ? (
+                <Typography variant="subheader1">
+                  <Trans>Self delegation</Trans>
+                </Typography>
+              ) : (
+                <ExternalUserDisplay
+                  avatarProps={{ size: AvatarSize.XS }}
+                  titleProps={{ variant: 'subheader1' }}
+                  address={aaveDelegatee}
+                />
+              )
+            }
+          >
+            <FormattedNumber value={aavePower} />
+          </Row>
+        )}
+        {stkAavePower != '0' && (
+          <Row
+            caption={
+              isStkAaveSelfDelegated ? (
+                <Typography variant="subheader1">
+                  <Trans>Self delegation</Trans>
+                </Typography>
+              ) : (
+                <ExternalUserDisplay
+                  avatarProps={{ size: AvatarSize.XS }}
+                  titleProps={{ variant: 'subheader1' }}
+                  address={stkAaveDelegatee}
+                />
+              )
+            }
+          >
+            <FormattedNumber value={stkAavePower} />
+          </Row>
+        )}
       </Box>
     );
   }
@@ -89,18 +104,18 @@ export const DelegatedInfoPanel = () => {
   if (!powers || !address) return null;
 
   return (
-    <Box>
+    <Box sx={{ px: 6, py: 6, mt: 2 }}>
       <Typography typography="h3">
         <Trans>Delegating to</Trans>
       </Typography>
-      <Typography typography="description">
+      <Typography typography="description" sx={{ mb: 6, mt: 1 }}>
         <Trans>
           Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won&apos;t
           send any tokens, only voting/proposition rights, and you can re-delegate it at any time.
           Learn more
         </Trans>
       </Typography>
-      <Typography typography="description">
+      <Typography typography="caption" sx={{ mb: 5 }}>
         <Trans>Voting power</Trans>
       </Typography>
       <DelegatedPower
@@ -110,7 +125,7 @@ export const DelegatedInfoPanel = () => {
         stkAaveDelegatee={powers.stkAaveVotingDelegatee}
         user={address}
       />
-      <Typography typography="description">
+      <Typography typography="caption" sx={{ mb: 5, mt: 8 }}>
         <Trans>Proposition power</Trans>
       </Typography>
       <DelegatedPower
@@ -120,8 +135,8 @@ export const DelegatedInfoPanel = () => {
         stkAaveDelegatee={powers.stkAavePropositionDelegatee}
         user={address}
       />
-      <Divider />
-      <Box sx={{ padding: 6 }}>
+      <Divider sx={{ mt: 6 }} />
+      <Box sx={{ pt: 6 }}>
         <Button
           sx={{ width: '100%' }}
           variant="contained"

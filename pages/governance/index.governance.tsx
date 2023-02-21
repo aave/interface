@@ -1,5 +1,7 @@
-import { Grid, Paper } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Grid, Paper, Typography } from '@mui/material';
 import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -9,6 +11,7 @@ import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
 
@@ -43,6 +46,8 @@ export type GovernancePageProps = {
 };
 
 export default function Governance(props: GovernancePageProps) {
+  const account = useRootStore((store) => store.account);
+
   return (
     <>
       <GovernanceTopPanel />
@@ -55,12 +60,26 @@ export default function Governance(props: GovernancePageProps) {
             </Paper>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Paper>
-              <VotingPowerInfoPanel />
-            </Paper>
-            <Paper>
-              <DelegatedInfoPanel />
-            </Paper>
+            {account ? (
+              <>
+                <Paper>
+                  <VotingPowerInfoPanel />
+                </Paper>
+                <Paper>
+                  <DelegatedInfoPanel />
+                </Paper>
+              </>
+            ) : (
+              <Paper sx={{ p: 6 }}>
+                <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+                  <Trans>Your info</Trans>
+                </Typography>
+                <Typography sx={{ mb: 6 }} color="text.secondary">
+                  <Trans>Please connect a wallet to view your personal information here.</Trans>
+                </Typography>
+                <ConnectWalletButton />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </ContentContainer>
