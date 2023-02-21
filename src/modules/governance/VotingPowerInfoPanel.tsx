@@ -20,7 +20,7 @@ export function VotingPowerInfoPanel() {
       </Typography>
       <UserDisplay avatarProps={{ size: AvatarSize.LG }} />
       {currentAccount && (
-        <Box sx={{ display: 'flex', mt: 6, justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', mt: 6, gap: 35 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <TextWithTooltip text="Voting power" variant="description" textColor="text.secondary">
               <>

@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
@@ -71,7 +72,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               )
             }
           >
-            <FormattedNumber value={aavePower} />
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <TokenIcon symbol="AAVE" sx={{ width: 16, height: 16 }} />
+              <FormattedNumber value={aavePower} />
+            </Box>
           </Row>
         )}
         {stkAavePower != '0' && (
@@ -90,7 +94,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               )
             }
           >
-            <FormattedNumber value={stkAavePower} />
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <TokenIcon symbol="stkAAVE" sx={{ width: 16, height: 16 }} />
+              <FormattedNumber value={stkAavePower} />
+            </Box>
           </Row>
         )}
       </Box>
