@@ -86,6 +86,15 @@ export type V3Rates = {
   priceInUSD: string;
 };
 
+type ReserveDebtApprovalPayload = {
+  [underlyingAsset: string]: {
+    variableDebtTokenAddress: string;
+    decimals: number;
+    stableDebtAmount: string;
+    variableDebtAmount: string;
+  };
+};
+
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
@@ -658,37 +667,65 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
   );
 };
 
+/**
+ * Returns the required approval/permit payload to migrate the selected borrow reserves.
+ * The amount to migrate is the sum of the variable debt and the stable debt positions for an asset.
+ * Since all debt migrated to V3 becomes variable, the credit delegation approval/permit will be for the variable debt token address.
+ * @param store - root store
+ * @param timestamp - current timestamp
+ * @returns array of approval payloads
+ */
 export const selectMigrationBorrowPermitPayloads = (
   store: RootStore,
   timestamp: number
 ): Approval[] => {
-  const borrowUserReserves = selectSelectedBorrowReservesForMigrationV3(store, timestamp);
+  const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
+  const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp);
 
-  const stableUserReserves: Record<string, MigrationUserReserve> = {};
-  borrowUserReserves
-    .filter((userReserve) => userReserve.interestRate == InterestRate.Stable)
-    .forEach((item) => {
-      stableUserReserves[item.underlyingAsset] = item;
-    });
+  const reserveDebts: ReserveDebtApprovalPayload = {};
 
-  return borrowUserReserves
-    .filter((userReserve) => userReserve.interestRate == InterestRate.Variable)
-    .map(({ increasedVariableBorrows, underlyingAsset, debtKey, reserve }) => {
-      const stableUserReserve = stableUserReserves[underlyingAsset];
-      let combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows);
-      if (stableUserReserve) {
-        const increasedStableBorrows = stableUserReserve.increasedStableBorrows;
-        combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows).plus(
-          valueToBigNumber(increasedStableBorrows)
-        );
+  selectedUserReserves
+    .filter((userReserve) => userReserve.migrationDisabled === undefined)
+    .forEach((userReserve) => {
+      const borrowReserveV3 = userReservesDataV3.find(
+        (v3Reserve) => v3Reserve.underlyingAsset === userReserve.underlyingAsset
+      );
+      if (!borrowReserveV3) {
+        return;
       }
-      const combinedAmountInWei = valueToWei(combinedIncreasedAmount.toString(), reserve.decimals);
-      return {
-        amount: combinedAmountInWei,
-        underlyingAsset: debtKey,
-        permitType: 'BORROW_MIGRATOR_V3',
-      };
+
+      if (!reserveDebts[userReserve.underlyingAsset]) {
+        reserveDebts[userReserve.underlyingAsset] = {
+          variableDebtTokenAddress: borrowReserveV3.reserve.variableDebtTokenAddress,
+          decimals: borrowReserveV3.reserve.decimals,
+          stableDebtAmount: '0',
+          variableDebtAmount: '0',
+        };
+      }
+
+      const debt = reserveDebts[userReserve.underlyingAsset];
+
+      if (userReserve.interestRate === InterestRate.Stable) {
+        debt.stableDebtAmount = valueToBigNumber(debt.stableDebtAmount)
+          .plus(valueToBigNumber(userReserve.increasedStableBorrows))
+          .toString();
+      } else if (userReserve.interestRate === InterestRate.Variable) {
+        debt.variableDebtAmount = valueToBigNumber(debt.variableDebtAmount)
+          .plus(valueToBigNumber(userReserve.increasedVariableBorrows))
+          .toString();
+      }
     });
+
+  return Object.keys(reserveDebts).map<Approval>((key) => {
+    const debt = reserveDebts[key];
+    const totalDebt = valueToBigNumber(debt.stableDebtAmount).plus(debt.variableDebtAmount);
+    const combinedAmountInWei = valueToWei(totalDebt.toString(), debt.decimals);
+    return {
+      amount: combinedAmountInWei,
+      underlyingAsset: debt.variableDebtTokenAddress,
+      permitType: 'BORROW_MIGRATOR_V3',
+    };
+  });
 };
 
 export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
