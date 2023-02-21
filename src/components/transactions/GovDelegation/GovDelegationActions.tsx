@@ -22,10 +22,17 @@ export const GovDelegationActions = ({
   delegate,
 }: GovDelegationActionsProps) => {
   const delegateByType = useRootStore((state) => state.delegateByType);
+  const delegateFunc = useRootStore((state) => state.delegate);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
+      if (delegationType === DelegationType.BOTH) {
+        return delegateFunc({
+          delegatee: delegate,
+          governanceToken: (delegationToken as DelegationToken).address,
+        });
+      }
       return delegateByType({
         delegatee: delegate,
         delegationType,
