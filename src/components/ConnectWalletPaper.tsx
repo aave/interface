@@ -2,7 +2,8 @@ import { Trans } from '@lingui/macro';
 import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
-import LoveGhost from '/public/loveGhost.svg';
+//@Modified
+import LoveManeki from '/public/loveManeki.svg';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
@@ -31,7 +32,7 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <LoveGhost style={{ marginBottom: '16px' }} />
+      <LoveManeki style={{ marginBottom: '16px', width: '100px', height: 'auto' }} />
       <>
         {loading ? (
           <CircularProgress />

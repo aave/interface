@@ -14,6 +14,10 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/ui-config/menu-items/index.tsx
+msgid "Airdrop"
+msgstr "Airdrop"
+
+#: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr "Buy Crypto With Fiat"
 

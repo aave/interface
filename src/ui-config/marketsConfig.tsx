@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import * as markets from '@bgd-labs/aave-address-book';
+// import * as markets from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
 // Enable for premissioned market
@@ -50,13 +50,19 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks, all v3.0.1 with permissioned faucet
+  /*
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  */
+
   // v3 mainnets
+  bsc_testnet_v3 = 'bsc_testnet_v3',
+
+  /*
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -65,17 +71,21 @@ export enum CustomMarket {
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   // proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
+  */
+
   // v2
-  proto_mainnet = 'proto_mainnet',
+
+  // proto_mainnet = 'proto_mainnet',
+  /*
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
+  */
   // external
   // permissioned_market = 'permissioned_market',
-  bsc_testnet_v3 = 'bsc_testnet_v3',
 }
 
 export const marketsData: {
@@ -88,7 +98,7 @@ export const marketsData: {
     enabledFeatures: {},
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xbBFC6b0189a127D4DC7F891CD9E528E0B75e32f5',
-      LENDING_POOL: '0xc8797D7A184Cea8c096182EBcFd7a3806a6DAF0a',
+      LENDING_POOL: '0xB5cfcD7E73634460D06bFc4f6059962d079567a7',
       WETH_GATEWAY: '0xb3322833eD4e52b7B9a83d6Dc71C6a6D1B3464E5',
       SWAP_COLLATERAL_ADAPTER: '',
       REPAY_WITH_COLLATERAL_ADAPTER: '',
@@ -96,12 +106,13 @@ export const marketsData: {
       PERMISSION_MANAGER: '',
       WALLET_BALANCE_PROVIDER: '0x517766582B8159F9C378FF047d1448C2Bf4Da5Ff',
       L2_ENCODER: '',
-      UI_POOL_DATA_PROVIDER: '0x1Bb5390ABbE8e347c85373178709Fae216D32829',
+      UI_POOL_DATA_PROVIDER: '0xa35B1B57ab6D7cCF102dcCFFCE9A05a86C0450D3',
       UI_INCENTIVE_DATA_PROVIDER: '0x12B2750cebF9f8B321349cf79fED70429d358Fd2',
-      COLLECTOR: '0x4dcF1f04F9Bf5f13727C5CFD1d961ccae5A88714',
+      // COLLECTOR: '0x4dcF1f04F9Bf5f13727C5CFD1d961ccae5A88714',
       V3_MIGRATOR: '',
     },
   },
+  /*
   [CustomMarket.proto_mainnet_v3]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
@@ -130,33 +141,36 @@ export const marketsData: {
     //   marketName: 'aavev3',
     // },
   },
-  [CustomMarket.proto_mainnet]: {
-    marketTitle: 'Ethereum',
-    chainId: ChainId.mainnet,
-    enabledFeatures: {
-      governance: true,
-      staking: true,
-      liquiditySwap: true,
-      collateralRepay: true,
-      incentives: true,
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Ethereum.POOL,
-      WETH_GATEWAY: markets.AaveV2Ethereum.WETH_GATEWAY,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.SWAP_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Ethereum.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV2Ethereum.COLLECTOR,
-      V3_MIGRATOR: markets.AaveV2Ethereum.MIGRATION_HELPER,
-    },
-    halIntegration: {
-      URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-      marketName: 'aavev2',
-    },
-  },
+
+  */
+  // [CustomMarket.proto_mainnet]: {
+  //   marketTitle: 'Ethereum',
+  //   chainId: ChainId.mainnet,
+  //   enabledFeatures: {
+  //     governance: true,
+  //     staking: true,
+  //     liquiditySwap: true,
+  //     collateralRepay: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Ethereum.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Ethereum.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV2Ethereum.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Ethereum.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV2Ethereum.COLLECTOR,
+  //     V3_MIGRATOR: markets.AaveV2Ethereum.MIGRATION_HELPER,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
+  //     marketName: 'aavev2',
+  //   },
+  // },
+  /*
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -543,4 +557,5 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
+  */
 } as const;
