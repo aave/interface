@@ -104,7 +104,7 @@ export const GovDelegationModalContent = () => {
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
-      <Typography variant="description" color="text.secondary">
+      <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
         <Trans>Power to delegate</Trans>
       </Typography>
       <DelegationTypeSelector
@@ -112,12 +112,16 @@ export const GovDelegationModalContent = () => {
         setDelegationType={setDelegationType}
       />
 
+      <Typography variant="description" color="text.secondary" sx={{ mt: 6, mb: 2 }}>
+        <Trans>Balance to delegate</Trans>
+      </Typography>
+
       <DelegationTokenSelector
         setDelegationToken={setDelegationToken}
         delegationTokenAddress={delegationToken}
         delegationTokens={tokens}
       />
-      <Typography variant="description">
+      <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
         <Trans>Recipient address</Trans>
       </Typography>
       <FormControl error={delegateAddressBlockingError !== undefined} variant="standard" fullWidth>

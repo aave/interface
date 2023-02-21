@@ -314,6 +314,10 @@ msgstr "Back to Dashboard"
 msgid "Balance"
 msgstr "Balance"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Balance to delegate"
+msgstr "Balance to delegate"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
