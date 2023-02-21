@@ -100,24 +100,22 @@ export const GovDelegationModalContent = () => {
   if (txState.success) return <TxSuccessView action={<Trans>Delegation</Trans>} />;
   return (
     <>
-      <TxModalTitle title="Delegate your power" />
+      <TxModalTitle title="Set up delegation" />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
-      <Typography variant="description">
-        <Trans>Asset to delegate</Trans>
-      </Typography>
-      <DelegationTokenSelector
-        setDelegationToken={setDelegationToken}
-        delegationTokenAddress={delegationToken}
-        delegationTokens={tokens}
-      />
-      <Typography variant="description">
-        <Trans>Type of delegation</Trans>
+      <Typography variant="description" color="text.secondary">
+        <Trans>Power to delegate</Trans>
       </Typography>
       <DelegationTypeSelector
         delegationType={delegationType}
         setDelegationType={setDelegationType}
+      />
+
+      <DelegationTokenSelector
+        setDelegationToken={setDelegationToken}
+        delegationTokenAddress={delegationToken}
+        delegationTokens={tokens}
       />
       <Typography variant="description">
         <Trans>Recipient address</Trans>

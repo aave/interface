@@ -249,10 +249,6 @@ msgstr "Asset is not listed"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Asset to delegate"
-msgstr "Asset to delegate"
-
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -430,6 +426,10 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
+
+#: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Both"
+msgstr "Both"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
@@ -1390,6 +1390,10 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Power to delegate"
+msgstr "Power to delegate"
+
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Powered by"
 msgstr "Powered by"
@@ -1420,6 +1424,9 @@ msgid "Proposals"
 msgstr "Proposals"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Proposition"
+msgstr "Proposition"
+
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Proposition power"
@@ -2152,10 +2159,6 @@ msgstr "Transaction failed"
 msgid "Transaction overview"
 msgstr "Transaction overview"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Type of delegation"
-msgstr "Type of delegation"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKE {symbol}"
@@ -2305,6 +2308,9 @@ msgid "Votes"
 msgstr "Votes"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Voting"
+msgstr "Voting"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
