@@ -22,7 +22,7 @@ export function VotingPowerInfoPanel() {
       {currentAccount && (
         <Box sx={{ display: 'flex', mt: 6, justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <TextWithTooltip text="Voting power" variant="description">
+            <TextWithTooltip text="Voting power" variant="description" textColor="text.secondary">
               <>
                 <p>
                   <Trans>
@@ -37,7 +37,11 @@ export function VotingPowerInfoPanel() {
             <FormattedNumber value={powers?.votingPower || 0} variant="h2" visibleDecimals={2} />
           </Box>
           <Box>
-            <TextWithTooltip text="Proposition power" variant="description">
+            <TextWithTooltip
+              text="Proposition power"
+              variant="description"
+              textColor="text.secondary"
+            >
               <>
                 <p>
                   <Trans>

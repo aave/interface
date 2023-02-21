@@ -44,7 +44,12 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
           )
         }
       >
-        <FormattedNumber value={Number(aavePower) + Number(stkAavePower)} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <FormattedNumber value={Number(aavePower) + Number(stkAavePower)} color="text.primary" />
+          <Typography variant="helperText" color="text.secondary">
+            AAVE + stkAAVE
+          </Typography>
+        </Box>
       </Row>
     );
   } else {
@@ -108,14 +113,14 @@ export const DelegatedInfoPanel = () => {
       <Typography typography="h3">
         <Trans>Delegating to</Trans>
       </Typography>
-      <Typography typography="description" sx={{ mb: 6, mt: 1 }}>
+      <Typography typography="description" sx={{ mb: 6, mt: 1 }} color="text.secondary">
         <Trans>
           Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won&apos;t
           send any tokens, only voting/proposition rights, and you can re-delegate it at any time.
           Learn more
         </Trans>
       </Typography>
-      <Typography typography="caption" sx={{ mb: 5 }}>
+      <Typography typography="caption" sx={{ mb: 5 }} color="text.secondary">
         <Trans>Voting power</Trans>
       </Typography>
       <DelegatedPower
@@ -125,7 +130,7 @@ export const DelegatedInfoPanel = () => {
         stkAaveDelegatee={powers.stkAaveVotingDelegatee}
         user={address}
       />
-      <Typography typography="caption" sx={{ mb: 5, mt: 8 }}>
+      <Typography typography="caption" sx={{ mb: 5, mt: 8 }} color="text.secondary">
         <Trans>Proposition power</Trans>
       </Typography>
       <DelegatedPower

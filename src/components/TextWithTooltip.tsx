@@ -13,10 +13,12 @@ export interface TextWithTooltipProps extends TypographyProps {
   color?: string;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
+  textColor?: string;
 }
 
 export const TextWithTooltip = ({
   text,
+  textColor,
   icon,
   iconSize = 14,
   iconMargin,
@@ -28,7 +30,11 @@ export const TextWithTooltip = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {text && <Typography {...rest}>{text}</Typography>}
+      {text && (
+        <Typography color={textColor} {...rest}>
+          {text}
+        </Typography>
+      )}
 
       <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={setOpen}>
         <IconButton
