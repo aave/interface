@@ -3,6 +3,7 @@ import { Button, Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { ExternalUserDisplay } from 'src/components/UserDisplay';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 import { useModalContext } from 'src/hooks/useModal';
@@ -24,8 +25,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
   stkAaveDelegatee,
 }) => {
   const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
-  // const stkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
-  if (aaveDelegatee === stkAaveDelegatee) {
+  const isStkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
+  console.log(aaveDelegatee);
+  console.log(stkAaveDelegatee);
+  if (aaveDelegatee === stkAaveDelegatee || (isAaveSelfDelegated && isStkAaveSelfDelegated)) {
     return (
       <Row
         caption={
@@ -34,7 +37,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               <Trans>Self delegation</Trans>
             </Typography>
           ) : (
-            <Typography variant="subheader1">{user}</Typography>
+            <ExternalUserDisplay address={aaveDelegatee} />
           )
         }
       >
@@ -43,19 +46,34 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
     );
   } else {
     return (
-      <Row
-        caption={
-          isAaveSelfDelegated ? (
-            <Typography variant="subheader1">
-              <Trans>Self delegation</Trans>
-            </Typography>
-          ) : (
-            <Typography variant="subheader1">{user}</Typography>
-          )
-        }
-      >
-        <FormattedNumber value={aavePower + stkAavePower} />
-      </Row>
+      <Box>
+        <Row
+          caption={
+            isAaveSelfDelegated ? (
+              <Typography variant="subheader1">
+                <Trans>Self delegation</Trans>
+              </Typography>
+            ) : (
+              <ExternalUserDisplay address={aaveDelegatee} />
+            )
+          }
+        >
+          <FormattedNumber value={aavePower} />
+        </Row>
+        <Row
+          caption={
+            isStkAaveSelfDelegated ? (
+              <Typography variant="subheader1">
+                <Trans>Self delegation</Trans>
+              </Typography>
+            ) : (
+              <ExternalUserDisplay address={stkAaveDelegatee} />
+            )
+          }
+        >
+          <FormattedNumber value={stkAavePower} />
+        </Row>
+      </Box>
     );
   }
 };

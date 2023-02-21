@@ -1629,6 +1629,7 @@ msgstr "Selected supply assets"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/governance/DelegatedInfoPanel.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Self delegation"
 msgstr "Self delegation"
 

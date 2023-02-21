@@ -1,18 +1,12 @@
-import { Badge } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { ReactNode, useMemo } from 'react';
+import { useMemo } from 'react';
+import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useRootStore } from 'src/store/root';
 import shallow from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
 
-export interface ConnectedUserAvatarProps extends AvatarProps {
-  badge?: ReactNode;
-  invisibleBadge?: boolean;
-}
-
-export const ConnectedUserAvatar: React.FC<ConnectedUserAvatarProps> = ({
-  badge,
+export const ConnectedUserAvatar: React.FC<AvatarProps> = ({
   invisibleBadge = true,
   ...avatarProps
 }) => {
@@ -26,18 +20,23 @@ export const ConnectedUserAvatar: React.FC<ConnectedUserAvatarProps> = ({
   );
   const fallbackImage = useMemo(() => (address ? makeBlockie(address) : undefined), [address]);
   return (
-    <Badge
-      overlap="circular"
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      badgeContent={badge}
-      invisible={invisibleBadge || loading}
-    >
-      <Avatar
-        image={defaultDomain?.avatar}
-        fallbackImage={fallbackImage}
-        {...avatarProps}
-        loading={loading}
-      />
-    </Badge>
+    <Avatar
+      image={defaultDomain?.avatar}
+      fallbackImage={fallbackImage}
+      loading={loading}
+      invisibleBadge={invisibleBadge}
+      {...avatarProps}
+    />
   );
+};
+
+export interface UserAvatar extends AvatarProps {
+  address: string;
+}
+
+export const UserAvatar: React.FC<UserAvatar> = ({ address, ...avatarProps }) => {
+  const { avatar } = useGetEns(address);
+  const fallbackImage = useMemo(() => (address ? makeBlockie(address) : undefined), [address]);
+
+  return <Avatar image={avatar} fallbackImage={fallbackImage} {...avatarProps} />;
 };

@@ -1,10 +1,11 @@
 import {
   Avatar as MaterialAvatar,
   AvatarProps as MaterialAvatarProps,
+  Badge,
   Skeleton,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 export enum AvatarSize {
   XS = 20,
@@ -19,6 +20,8 @@ export interface AvatarProps extends Omit<MaterialAvatarProps, 'src'> {
   fallbackImage?: string;
   size?: AvatarSize | number;
   loading?: boolean;
+  badge?: ReactNode;
+  invisibleBadge?: boolean;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
@@ -26,7 +29,9 @@ export const Avatar: React.FC<AvatarProps> = ({
   fallbackImage = makeBlockie('default'),
   size = AvatarSize.MD,
   sx,
-  loading,
+  loading = false,
+  invisibleBadge = false,
+  badge,
   ...rest
 }) => {
   const [useFallbackImage, setUseFallbackImage] = useState(false);
@@ -38,14 +43,21 @@ export const Avatar: React.FC<AvatarProps> = ({
   return loading ? (
     <Skeleton variant="circular" width={size} height={size} />
   ) : (
-    <MaterialAvatar
-      src={useFallbackImage || !image ? fallbackImage : image}
-      sx={{ width: size, height: size, border: '1px solid #FAFBFC1F', ...sx }}
-      alt="avatar"
-      imgProps={{
-        onError: () => setUseFallbackImage(true),
-      }}
-      {...rest}
-    />
+    <Badge
+      overlap="circular"
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      badgeContent={badge}
+      invisible={invisibleBadge || loading}
+    >
+      <MaterialAvatar
+        src={useFallbackImage || !image ? fallbackImage : image}
+        sx={{ width: size, height: size, border: '1px solid #FAFBFC1F', ...sx }}
+        alt="avatar"
+        imgProps={{
+          onError: () => setUseFallbackImage(true),
+        }}
+        {...rest}
+      />
+    </Badge>
   );
 };

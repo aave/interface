@@ -1,14 +1,21 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
+import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
+import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
-import { ConnectedUserAvatar, ConnectedUserAvatarProps } from './ConnectedUserAvatar';
-import { ConnectedUserNameProps, ConnectedUserNameText } from './ConnectedUserName';
+import { ConnectedUserAvatar } from './ConnectedUserAvatar';
+import {
+  ConnectedUserNameProps,
+  ConnectedUserNameText,
+  UserNameText,
+  UserNameTextProps,
+} from './ConnectedUserName';
 
 type UserDisplayProps = {
   oneLiner?: boolean;
-  avatarProps?: ConnectedUserAvatarProps;
+  avatarProps?: AvatarProps;
   titleProps?: ConnectedUserNameProps;
   subtitleProps?: ConnectedUserNameProps;
 };
@@ -32,21 +39,34 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         {!oneLiner && defaultDomain?.name ? (
           <>
-            <ConnectedUserNameText typography="h4" compact={true} {...titleProps} />
-            <ConnectedUserNameText
-              typography="caption"
-              compact={true}
-              {...subtitleProps}
-              showDomain={false}
-            />
+            <ConnectedUserNameText typography="h4" {...titleProps} />
+            <ConnectedUserNameText typography="caption" {...subtitleProps} />
           </>
         ) : (
-          <ConnectedUserNameText typography="h4" compact={true} {...titleProps} />
+          <ConnectedUserNameText typography="h4" {...titleProps} />
         )}
       </Box>
-      <Box>
-        <Typography />
-      </Box>
+    </Box>
+  );
+};
+
+interface ExternalUserDisplayProps {
+  avatarProps?: AvatarProps;
+  titleProps?: UserNameTextProps;
+  address: string;
+}
+
+export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
+  avatarProps,
+  titleProps,
+  address,
+}) => {
+  const { name, avatar } = useGetEns(address);
+
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Avatar image={avatar} {...avatarProps} />
+      <UserNameText {...titleProps} variant="h4" address={address} domainName={name} />
     </Box>
   );
 };

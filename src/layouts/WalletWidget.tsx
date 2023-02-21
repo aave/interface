@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
-import { AddressCompactMode } from 'src/components/ConnectedUserName';
+import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
@@ -112,12 +112,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             avatarProps={{ size: AvatarSize.XL }}
             titleProps={{
               typography: 'h4',
-              compact: true,
-              addressCompactMode: AddressCompactMode.MD,
+              addressCompactMode: CompactMode.MD,
             }}
             subtitleProps={{
-              compact: true,
-              addressCompactMode: AddressCompactMode.LG,
+              addressCompactMode: CompactMode.LG,
               typography: 'caption',
             }}
           />
@@ -312,11 +310,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           }
         >
           {connected ? (
-            <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
-              titleProps={{ compact: true }}
-              oneLiner={true}
-            />
+            <UserDisplay avatarProps={{ size: AvatarSize.SM }} oneLiner={true} />
           ) : (
             <Trans>Connect wallet</Trans>
           )}

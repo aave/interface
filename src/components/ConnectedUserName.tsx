@@ -1,55 +1,48 @@
 import { TypographyProps } from '@mui/material';
+import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useRootStore } from 'src/store/root';
 import shallow from 'zustand/shallow';
 
-import { CompactableTypography } from './CompactableTypography';
+import { CompactableTypography, CompactMode } from './CompactableTypography';
 
-export enum AddressCompactMode {
-  SM,
-  MD,
-  LG,
+export interface UserNameTextProps extends TypographyProps {
+  addressCompactMode?: CompactMode;
+  domainCompactMode?: CompactMode;
+  domainName?: string;
+  loading?: boolean;
+  address: string;
 }
 
-export enum DomainCompactMode {
-  LG,
-}
+export const UserNameText: React.FC<UserNameTextProps> = ({
+  addressCompactMode = CompactMode.SM,
+  domainCompactMode = CompactMode.LG,
+  loading,
+  domainName,
+  address,
+  ...rest
+}) => {
+  const isDomainNameLong = Boolean(domainName && domainName?.length > 18);
 
-const addressCompactModeMap = {
-  [AddressCompactMode.SM]: {
-    from: 4,
-    to: 4,
-  },
-  [AddressCompactMode.MD]: {
-    from: 7,
-    to: 4,
-  },
-  [AddressCompactMode.LG]: {
-    from: 12,
-    to: 4,
-  },
-};
+  const shouldCompact = !domainName || isDomainNameLong;
 
-const domainCompactModeMap = {
-  [DomainCompactMode.LG]: {
-    from: 12,
-    to: 3,
-  },
+  return (
+    <CompactableTypography
+      compactMode={domainName ? domainCompactMode : addressCompactMode}
+      compact={shouldCompact}
+      loading={loading}
+      {...rest}
+    >
+      {domainName ? domainName : address}
+    </CompactableTypography>
+  );
 };
 
 export interface ConnectedUserNameProps extends TypographyProps {
-  addressCompactMode?: AddressCompactMode;
-  domainCompactMode?: DomainCompactMode;
-  compact?: boolean;
-  showDomain?: boolean;
+  addressCompactMode?: CompactMode;
+  domainCompactMode?: CompactMode;
 }
 
-export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({
-  addressCompactMode = AddressCompactMode.SM,
-  domainCompactMode = DomainCompactMode.LG,
-  compact = false,
-  showDomain = true,
-  ...rest
-}) => {
+export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({ ...props }) => {
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
     (state) => ({
       account: state.account,
@@ -60,26 +53,23 @@ export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({
     shallow
   );
 
-  const domainName = defaultDomain?.name;
-  const isDomainNameLong = Boolean(domainName && domainName?.length > 18);
-
-  const shouldCompact = !domainName || isDomainNameLong;
-
-  const selectedAddressCompactMode = addressCompactModeMap[addressCompactMode];
-  const selectedDomainCompactMode = domainCompactModeMap[domainCompactMode];
-
-  const domainMode = !!domainName && showDomain;
-
   return (
-    <CompactableTypography
-      {...rest}
-      from={domainMode ? selectedDomainCompactMode.from : selectedAddressCompactMode.from}
-      to={domainMode ? selectedDomainCompactMode.from : selectedAddressCompactMode.to}
-      compact={compact && (shouldCompact || !domainMode)}
+    <UserNameText
+      address={account}
+      domainName={defaultDomain?.name}
       loading={domainsLoading || accountLoading}
-      skeletonWidth={100}
-    >
-      {domainMode ? domainName : account}
-    </CompactableTypography>
+      {...props}
+    />
   );
+};
+
+export interface ExternalUserNameTextProps extends TypographyProps {
+  addressCompactMode?: CompactMode;
+  domainCompactMode?: CompactMode;
+  address: string;
+}
+
+export const ExternalUserNameText: React.FC<ExternalUserNameTextProps> = ({ address, ...rest }) => {
+  const { name } = useGetEns(address);
+  return <UserNameText address={address} domainName={name} {...rest} />;
 };
