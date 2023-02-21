@@ -1,6 +1,6 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
-import { FormControl, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import { utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
@@ -35,7 +35,7 @@ export enum ErrorType {
 }
 
 export const GovDelegationModalContent = () => {
-  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
@@ -94,6 +94,10 @@ export const GovDelegationModalContent = () => {
 
   const networkConfig = getNetworkConfig(govChain);
 
+  const handleDelegateToSelf = () => {
+    setDelegate(currentAccount);
+  };
+
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
@@ -121,9 +125,16 @@ export const GovDelegationModalContent = () => {
         delegationTokenAddress={delegationToken}
         delegationTokens={tokens}
       />
-      <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
-        <Trans>Recipient address</Trans>
-      </Typography>
+      <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="description" color="text.secondary">
+          <Trans>Recipient address</Trans>
+        </Typography>
+        <Button variant="text" onClick={handleDelegateToSelf}>
+          <Typography variant="buttonS" color="info.main">
+            <Trans>DELEGATE TO SELF</Trans>
+          </Typography>
+        </Button>
+      </Box>
       <FormControl error={delegateAddressBlockingError !== undefined} variant="standard" fullWidth>
         <TextField
           variant="outlined"

@@ -632,6 +632,10 @@ msgstr "Current v2 balance"
 msgid "Current votes"
 msgstr "Current votes"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "DELEGATE TO SELF"
+msgstr "DELEGATE TO SELF"
+
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
