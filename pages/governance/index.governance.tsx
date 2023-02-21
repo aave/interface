@@ -54,7 +54,7 @@ export default function Governance(props: GovernancePageProps) {
 
       <ContentContainer>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} sx={{ order: { xs: 1, md: 0 } }}>
             <Paper>
               <ProposalsList {...props} />
             </Paper>
