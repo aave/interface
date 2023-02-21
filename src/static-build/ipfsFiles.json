@@ -2275,6 +2275,47 @@
       "ipfsHash": "QmaixGxRFicLEPHyrEuxE9JVW63UvzUu9MJT8SbeVjnMGg",
       "originalHash": "0xb802e21e7ca82e5e4c49bd21e7d7c80d723bcd475b2fb9be1a4e2620e0da90c5",
       "id": 158
+    },
+    {
+      "title": "onboard WSTETH to Aave Optimism V3 pool",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "add WSTETH to Aave Op V3 pool",
+      "discussions": "https://governance.aave.com/t/arc-add-wsteth-to-aave-v3-on-optimism/10932",
+      "created": "2023-02-17T00:00:00.000Z",
+      "updated": "2023-02-17T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "ADD-OPV3WSTETH",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to onboard wstETH to the optimism v3 Liquidity Pool.\n\n## Motivation\nSupporting LSD diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Optimism or any entity to present this AIP.\n\nThe risk parameters provided introduce wstETH as a collateral asset.\n\nSupply and borrow caps are suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: wstETH\n\nContract Address: [0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb](https://optimistic.etherscan.io/address/0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb)\n\n|Risk Parameter|Value|\n| --- | --- |\n|Isolation Mode|NO|\n|Enable Borrow|YES|\n|Enable Collateral|YES|\n|Loan To Value|70%|\n|Liquidation Threshold|79%|\n|Liquidation Bonus|7.2%|\n|Reserve Factor|15%|\n|Liquidation Protocol Fee|10%|\n|Borrow Cap|940|\n|Supply Cap|6000|\n|Debt Ceiling|N/A|\n|Base|0.25%|\n|Slope1|4.5%|\n|Uoptimal|45%|\n|Slope2|80%|\n\nThe proposal payload uses the [GenericListingEngine](https://optimistic.etherscan.io/address/0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D#code) to perform a new asset listing with the following parameters:\n\n```solidity\nIGenericV3ListingEngine.Listing({\n      asset: WSTETH,\n      assetSymbol: 'wstETH',\n      priceFeed: WSTETH_USD_FEED,\n      rateStrategy: https://optimistic.etherscan.io/address/0x6ba97468e2e6a3711a6dd05f0075d48e878c910e,\n      enabledToBorrow: true,\n      stableRateModeEnabled: false,\n      borrowableInIsolation: false,\n      withSiloedBorrowing: false,\n      flashloanable: false,\n      ltv: 70_00,\n      liqThreshold: 79_00,\n      liqBonus: 7_20,\n      reserveFactor: 15_00,\n      supplyCap: 6_000,\n      borrowCap: 940,\n      debtCeiling: 0,\n      liqProtocolFee: 10_00,\n      eModeCategory: 0\n    });\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arc-add-wsteth-to-aave-v3-on-optimism/10932)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/optimism/AaveV3OPWSTETHPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/optimism/AaveV3OPWSTETHPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3OPWSTETHPayload: ProposalPayload](https://optimistic.etherscan.io/address/0x84893ee84e773e4a7a5738bd903dbe2a6e636b9e)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "Qmcz39mBSdi2w9gvD9EFU5tLXpsuTt5sEpL5kUEcgRKs1K",
+      "originalHash": "0xd9977b87efa9c8be6c30c4422ec588bc95133cbe1912310afcffaba67ba6010a",
+      "id": 159
+    },
+    {
+      "title": "Update xSushi price feed on Aave V2",
+      "author": "BGD Labs (@bgdlabs)",
+      "shortDescription": "Swap xSushi price feed on Aave V2 pool on Mainnet",
+      "discussions": "https://governance.aave.com/t/bgd-swap-of-price-feed-of-xsushi-on-aave-v2-ethereum/11901",
+      "created": "2023-02-10T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis proposal changes the current price feed for …",
+      "basename": "XSUSHI_PRICE_FEED_SWAP",
+      "description": "\n\n## Simple Summary\n\nThis proposal changes the current price feed for xSushi (adapter) to a Chainlink calculated oracle, on Aave V2 Ethereum.\n\n## Motivation\n\nCurrently, a custom [price feed](https://etherscan.io/address/0x9b26214bEC078E68a394AaEbfbffF406Ce14893F) is used for xSushi, which calculates the price based on `SUSHI / ETH` oracle and `SUSHI / xSUSHI` ratio on-chain. It is more effective in terms of technical support and gas cost to use the [feed](https://etherscan.io/address/0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB) deployed by Chainlink, which does this calculations off-chain. In addition, any risk of on-chain manipulation, even if not applicable at the moment with the asset not enabled for borrowing, gets removed.\n\n## Specification\n\nUpon execution the proposal will:\n\n- call `ORACLE.setAssetSources(0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, 0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB)` to replace the price source for xSushi\n\n## Security and additional considerations\n\nTo have extra assurances on the feed swap, we did the following:\n\n- **Historical Feeds Comparison**: Comparing the answers from the current feed with the new one for the last year with a 2-hour step gave the following results:\n  - 24.88% of results differ for less than 0.1%\n  - 55.63% have between 0.1% and 1% difference\n  - 19.49% is between 1% and 2%\n\nPrice deviation for both feeds is 2%, which means that the price difference is withing the norm.\n\n## References\n\n- [AaveV2SwapxSushiPriceFeedPayload](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/contracts/mainnet/AaveV2SwapxSushiPriceFeedPayload.sol)\n- [Test suite](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/master/src/test/mainnet/AaveV2SwapxSushiPriceFeedPayloadTest.t.sol)\n\n## Contracts\n\n- [xSushi](https://etherscan.io/token/0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272)\n- [Current price feed](https://etherscan.io/address/0x9b26214bEC078E68a394AaEbfbffF406Ce14893F)\n- [Chainlink's price feed](https://etherscan.io/address/0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB)\n- [AaveV2SwapxSushiPriceFeedPayload: ProposalPayload](https://etherscan.io/address/0x3105c276558dd4cf7e7be71d73be8d33bd18f211)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmUzqsRgg4CZdm6eoWrjYsdhCfbruTAn47syAoo1PJn1q7",
+      "originalHash": "0x62eecfcd8fa8264bf4c95014fbf3e4cc7bce8d91d1e58cede18de038660ea8be",
+      "id": 160
+    },
+    {
+      "title": "increase supply cap for cbETH Aave Ethereum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "increase supply cap for cbETH Aave Ethereum V3",
+      "discussions": "https://governance.aave.com/t/arfc-increase-supply-cap-for-cbeth-aave-ethereum-v3/11869",
+      "created": "2023-02-20T00:00:00.000Z",
+      "updated": "2023-02-20T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "cbEThETHCapUpdate",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to increase cbETH supply cap on the Ethereum v3 Liquidity Pool.\n\n## Motivation\n\nSupporting LSDs diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Coinbase or any entity to present this AIP.\n\nSupply cap is suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: cbETH\n\nContract Address: 0xbe9895146f7af43049ca1c1ae358b0541ea49704\n\n|Risk Parameter|Value|\n| --- | --- |\n|Supply Cap|20K|\n\n\n\n```solidity\ncontract AaveV3EthCbETHCapsPayload is IProposalGenericExecutor {\n  address public constant CBETH = AaveV3EthereumAssets.cbETH_UNDERLYING;\n\n  uint256 public constant CBETH_SUPPLY_CAP = 20_000;\n\n  function execute() external {\n    IPoolConfigurator configurator = AaveV3Ethereum.POOL_CONFIGURATOR;\n\n    configurator.setSupplyCap(CBETH, CBETH_SUPPLY_CAP);\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-increase-supply-cap-for-cbeth-aave-ethereum-v3/11869)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/mainnet/cbethV3EthCapsPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/mainnet/AaveV3EthCBETHCapsPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3EthCbETHCapsPayload: ProposalPayload](https://etherscan.io/address/0x4e3728f85818780451e1f44fa3689c85a1229801)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "Qmf1TjjDkQpYQ6DeGrv6qXrinNYhEsK1brs2423AaHiCQS",
+      "originalHash": "0xf7ac3c7b7252b6ca6ee17efb10f9f31c9f22bfb737573085b3e57d89456be123",
+      "id": 161
     }
   ]
 }
