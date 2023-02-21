@@ -1421,7 +1421,6 @@ msgstr "Proposals"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/modules/governance/DelegatedInfoPanel.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Proposition power"
 
@@ -2114,6 +2113,10 @@ msgstr "Total emission per day"
 msgid "Total market size"
 msgstr "Total market size"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
+
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2124,6 +2127,10 @@ msgstr "Total supplied"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Total voting power"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Total voting power based on your AAVE/stkAAVE balance and received delegations."
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2184,6 +2191,10 @@ msgstr "Unstake window"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Use it to vote for or against active proposals."
+msgstr "Use it to vote for or against active proposals."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -2296,7 +2307,6 @@ msgstr "Votes"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/DelegatedInfoPanel.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Voting power"
@@ -2431,6 +2441,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "You need at least 80.00K power to submit a proposal."
+msgstr "You need at least 80.00K power to submit a proposal."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
