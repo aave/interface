@@ -35,7 +35,7 @@ export const SuppliedPositionsListItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const disableSwap = !isActive || isFrozen || reserve.symbol == 'stETH';
+  const disableSwap = !isActive || reserve.symbol == 'stETH';
 
   return (
     <ListItemWrapper

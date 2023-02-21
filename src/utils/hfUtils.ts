@@ -2,6 +2,7 @@ import {
   BigNumberValue,
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
+  UserReserveData,
   valueToBigNumber,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
@@ -25,7 +26,7 @@ interface CalculateHFAfterSwapRepayProps {
   fromAssetData: ComputedReserveData;
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
-  repayWithUserReserve?: ComputedUserReserve;
+  repayWithUserReserve?: UserReserveData;
   debt: string;
 }
 

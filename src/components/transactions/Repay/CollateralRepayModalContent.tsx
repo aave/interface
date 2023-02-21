@@ -8,7 +8,6 @@ import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import {
   ComputedReserveData,
-  ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SwapVariant } from 'src/hooks/paraswap/common';
@@ -27,7 +26,7 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ErrorType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
 
@@ -147,7 +146,7 @@ export function CollateralRepayModalContent({
   // to use flashloan path
   const repayWithUserReserve = userReserves.find(
     (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedUserReserveData;
+  );
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
     amountToReceiveAfterSwap: outputAmount,
     amountToSwap: inputAmount,
@@ -158,14 +157,11 @@ export function CollateralRepayModalContent({
     debt,
   });
 
-  const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString());
-
-  const disableFlashLoan =
-    shouldUseFlashloan &&
-    flashLoanNotAvailable(
-      userReserve.underlyingAsset,
-      currentNetworkConfig.underlyingChainId || currentChainId
-    );
+  // If the selected collateral asset is frozen, a flashloan must be used. When a flashloan isn't used,
+  // the remaining amount after the swap is deposited into the pool, which will fail for frozen assets.
+  const shouldUseFlashloan =
+    useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
+    collateralReserveData?.isFrozen;
 
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
@@ -192,21 +188,12 @@ export function CollateralRepayModalContent({
 
   if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
-  } else if (disableFlashLoan) {
-    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH:
         return <Trans>Not enough collateral to repay this amount of debt with</Trans>;
-      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
-        return (
-          <Trans>
-            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
-            transactions
-          </Trans>
-        );
       default:
         return null;
     }

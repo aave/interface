@@ -727,11 +727,6 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
-msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
-
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to stETH contracts limitations stETH supply position cannot be swapped to another asset. Also, borrow positions cannot be repaid with stETH collateral."
 msgstr "Due to stETH contracts limitations stETH supply position cannot be swapped to another asset. Also, borrow positions cannot be repaid with stETH collateral."
