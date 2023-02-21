@@ -20,6 +20,7 @@ export type SuccessTxViewProps = {
   collateral?: boolean;
   rate?: InterestRate;
   addToken?: ERC20TokenType;
+  migratedAction?: ReactNode;
 };
 
 const ExtLinkIcon = () => (
@@ -36,6 +37,7 @@ export const TxSuccessView = ({
   collateral,
   rate,
   addToken,
+  migratedAction,
 }: SuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const { addERC20Token } = useWeb3Context();
@@ -91,6 +93,15 @@ export const TxSuccessView = ({
                 You {action}{' '}
                 <FormattedNumber value={Number(amount)} compact variant="secondary14" /> {symbol}
               </Trans>
+            </Typography>
+          )}
+
+          {migratedAction && (
+            <Typography>
+              <Trans>
+                Selected assets have successfully migrated. Visit the Market Dashboard to see them.
+              </Trans>
+              {migratedAction}
             </Typography>
           )}
 
