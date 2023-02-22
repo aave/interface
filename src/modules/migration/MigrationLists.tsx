@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode, useCallback } from 'react';
 import { useRootStore } from 'src/store/root';
 import {
@@ -33,9 +33,6 @@ export const MigrationLists = ({
   isBorrowPositionsAvailable,
   emodeCategoryId,
 }: MigrationListsProps) => {
-  const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('xl'));
-
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
@@ -58,9 +55,9 @@ export const MigrationLists = ({
   return (
     <Box
       sx={{
-        display: isDesktop ? 'flex' : 'block',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
       }}
     >
       <MigrationList
@@ -84,7 +81,6 @@ export const MigrationLists = ({
         onSelectAllClick={onSelectAllBorrows}
         allSelected={activeBorrowUnselected.length === 0}
         isAvailable={isBorrowPositionsAvailable}
-        isBottomOnMobile
         withBorrow
         disabled={allBorrowsDisabled}
         titleComponent={<Trans>Select v2 borrows to migrate</Trans>}

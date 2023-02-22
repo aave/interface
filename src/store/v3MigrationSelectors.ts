@@ -84,6 +84,8 @@ export type V3Rates = {
   vIncentivesData?: ReserveIncentiveResponse[];
   sIncentivesData?: ReserveIncentiveResponse[];
   priceInUSD: string;
+  ltv?: string;
+  liquidationThreshold?: string;
 };
 
 type ReserveDebtApprovalPayload = {
@@ -323,6 +325,15 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       const availableSupplies = valueToBigNumber(v3SupplyAsset.reserve.supplyCap).minus(
         v3SupplyAsset.reserve.totalLiquidity
       );
+
+      let ltv = v3SupplyAsset.reserve.formattedBaseLTVasCollateral;
+      if (
+        userEmodeCategoryId !== 0 &&
+        v3SupplyAsset.reserve.eModeCategoryId !== userEmodeCategoryId
+      ) {
+        ltv = v3SupplyAsset.reserve.formattedEModeLtv;
+      }
+
       v3Rates = {
         stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
         variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
@@ -331,6 +342,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
         sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
         priceInUSD: v3SupplyAsset.reserve.priceInUSD,
+        ltv,
       };
       if (v3SupplyAsset.reserve.isFrozen) {
         migrationDisabled = MigrationDisabled.ReserveFrozen;
@@ -370,11 +382,17 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (isolatedReserveV3 && !selectedReserve.borrowableInIsolation) {
       disabledForMigration = MigrationDisabled.IsolationModeBorrowDisabled;
     }
-    if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
-      disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
-    }
+
     const v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+
     if (v3BorrowAsset) {
+      let liquidationThreshold = v3BorrowAsset.reserve.formattedReserveLiquidationThreshold;
+
+      if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+        disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
+        liquidationThreshold = v3BorrowAsset.reserve.formattedEModeLiquidationThreshold;
+      }
+
       v3Rates = {
         stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
         variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
@@ -383,6 +401,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
         priceInUSD: v3BorrowAsset.reserve.priceInUSD,
+        liquidationThreshold,
       };
       const notEnoughLiquidityOnV3 = valueToBigNumber(
         valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
@@ -815,6 +834,10 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   // return the smallest object possible for migration page
   return {
     healthFactor: formattedUserSummary.healthFactor,
+    currentLoanToValue: formattedUserSummary.currentLoanToValue,
+    totalCollateralMarketReferenceCurrency:
+      formattedUserSummary.totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency: formattedUserSummary.totalBorrowsMarketReferenceCurrency,
   };
 };
 

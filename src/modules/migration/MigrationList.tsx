@@ -13,9 +13,22 @@ import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 import { MigrationMobileList } from './MigrationMobileList';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
 
+const supplyListHeaders = [
+  { title: <Trans>APY change</Trans> },
+  { title: <Trans>Collateral change</Trans> },
+  { title: <Trans>Max LTV</Trans> },
+  { title: <Trans>Current v2 balance</Trans> },
+];
+
+const borrowListHeaders = [
+  { title: <Trans>APY change</Trans> },
+  { title: <Trans>APY type change</Trans> },
+  { title: <Trans>Liquidation Threshold</Trans> },
+  { title: <Trans>Current v2 balance</Trans> },
+];
+
 interface MigrationListProps {
   titleComponent: ReactNode;
-  isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
   loading?: boolean;
@@ -32,7 +45,6 @@ interface MigrationListProps {
 
 export const MigrationList = ({
   titleComponent,
-  isBottomOnMobile,
   children,
   onSelectAllClick,
   loading,
@@ -50,18 +62,11 @@ export const MigrationList = ({
   const marketName = currentMarketData.marketTitle;
   const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
 
-  const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  const isMobile = useMediaQuery(theme.breakpoints.down(655));
-
-  const assetColumnWidth = isDesktop ? 120 : 80;
-
-  const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
-
+  const isMobile = useMediaQuery(theme.breakpoints.down(1125));
   if (isMobile) {
     return (
       <MigrationMobileList
         titleComponent={titleComponent}
-        isBottomOnMobile={isBottomOnMobile}
         onSelectAllClick={onSelectAllClick}
         loading={loading}
         isAvailable={isAvailable}
@@ -76,7 +81,7 @@ export const MigrationList = ({
   }
 
   return (
-    <Box sx={{ width: paperWidth, mt: { xs: isBottomOnMobile ? 2 : 0, xl: 0 } }}>
+    <Box sx={{ width: '100%' }}>
       <ListWrapper
         titleComponent={
           <Box display="block">
@@ -111,39 +116,25 @@ export const MigrationList = ({
               />
             </ListColumn>
 
-            <ListColumn isRow maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
+            <ListColumn isRow maxWidth={250} minWidth={170}>
               <ListHeaderTitle>
                 <Trans>Assets</Trans>
               </ListHeaderTitle>
             </ListColumn>
 
-            {withCollateral && (
-              <ListColumn align="right">
-                <ListHeaderTitle>
-                  <Trans>Collateral change</Trans>
-                </ListHeaderTitle>
-              </ListColumn>
-            )}
+            {withCollateral &&
+              supplyListHeaders.map((header, index) => (
+                <ListColumn key={index}>
+                  <ListHeaderTitle>{header.title}</ListHeaderTitle>
+                </ListColumn>
+              ))}
 
-            <ListColumn align="right">
-              <ListHeaderTitle>
-                <Trans>APY change</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
-
-            {withBorrow && (
-              <ListColumn align="right">
-                <ListHeaderTitle>
-                  <Trans>APY type change</Trans>
-                </ListHeaderTitle>
-              </ListColumn>
-            )}
-
-            <ListColumn align="right" maxWidth={150} minWidth={150}>
-              <ListHeaderTitle>
-                <Trans>Current v2 balance</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
+            {withBorrow &&
+              borrowListHeaders.map((header, index) => (
+                <ListColumn key={index}>
+                  <ListHeaderTitle>{header.title}</ListHeaderTitle>
+                </ListColumn>
+              ))}
           </ListHeaderWrapper>
         )}
 

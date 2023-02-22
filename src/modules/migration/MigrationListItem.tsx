@@ -11,7 +11,6 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
-import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -36,6 +35,7 @@ interface MigrationListItemProps {
   v3Rates?: V3Rates;
   enteringIsolation: boolean;
   userControlledCollateral?: boolean;
+  isSupplyList: boolean;
 }
 
 export const MigrationListItem = ({
@@ -53,17 +53,16 @@ export const MigrationListItem = ({
   v3Rates,
   userControlledCollateral,
   canBeEnforced,
+  isSupplyList,
 }: MigrationListItemProps) => {
   const theme = useTheme();
   const { currentMarket, currentMarketData } = useRootStore();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  const isTablet = useMediaQuery(theme.breakpoints.up(655));
-  const isMobile = useMediaQuery(theme.breakpoints.down(655));
+  const isMobile = useMediaQuery(theme.breakpoints.down(1125));
 
-  const assetColumnWidth =
-    isMobile && !isTablet ? 45 : isTablet && !isDesktop ? 80 : isDesktop ? 120 : 80;
   const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
+
+  const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
   const v2APY = borrowApyType
     ? borrowApyType === InterestRate.Stable
@@ -98,6 +97,7 @@ export const MigrationListItem = ({
         userReserve={userReserve}
         v3Rates={v3Rates}
         showCollateralToggle={showCollateralToggle}
+        isSupplyList={isSupplyList}
       />
     );
   return (
@@ -107,66 +107,91 @@ export const MigrationListItem = ({
         userReserve.reserve.symbol
       }`}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', py: 4 }}>
-          <ListColumn align="center" maxWidth={64} minWidth={64}>
-            <Box
-              sx={(theme) => ({
-                border: `2px solid ${
-                  disabled !== undefined
-                    ? theme.palette.action.disabled
-                    : theme.palette.text.secondary
-                }`,
-                background:
-                  disabled !== undefined
-                    ? theme.palette.background.disabled
-                    : checked
-                    ? theme.palette.text.secondary
-                    : theme.palette.background.paper,
-                width: 16,
-                height: 16,
-                borderRadius: '2px',
-                '&:hover': {
-                  cursor: disabled !== undefined ? 'not-allowed' : 'pointer',
-                },
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              })}
-              onClick={disabled !== undefined ? undefined : onCheckboxClick}
-              data-cy={`migration-checkbox`}
-            >
-              {disabled === undefined && (
-                <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
-            </Box>
-          </ListColumn>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', my: 4 }}
+      >
+        <ListColumn align="center" maxWidth={64} minWidth={64}>
+          <Box
+            sx={(theme) => ({
+              border: `2px solid ${
+                disabled !== undefined
+                  ? theme.palette.action.disabled
+                  : theme.palette.text.secondary
+              }`,
+              background:
+                disabled !== undefined
+                  ? theme.palette.background.disabled
+                  : checked
+                  ? theme.palette.text.secondary
+                  : theme.palette.background.paper,
+              width: 16,
+              height: 16,
+              borderRadius: '2px',
+              '&:hover': {
+                cursor: disabled !== undefined ? 'not-allowed' : 'pointer',
+              },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+            onClick={disabled !== undefined ? undefined : onCheckboxClick}
+            data-cy={`migration-checkbox`}
+          >
+            {disabled === undefined && (
+              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+                <CheckIcon />
+              </SvgIcon>
+            )}
+          </Box>
+        </ListColumn>
 
-          <ListColumn align="left" maxWidth={assetColumnWidth} minWidth={assetColumnWidth}>
-            <Row>
-              <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
+        <ListColumn isRow maxWidth={250} minWidth={170}>
+          <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
-              <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
-                <Typography variant="subheader1" color={baseColor} noWrap sx={{ pr: 1 }}>
-                  {userReserve.reserve.symbol}
-                </Typography>
-                {disabled !== undefined && (
-                  <MigrationDisabledTooltip
-                    dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
-                    marketName={currentMarketData.marketTitle}
-                    warningType={disabled}
-                    isolatedV3={!enteringIsolation}
-                  />
-                )}
-              </Box>
-            </Row>
-          </ListColumn>
-        </Box>
+          <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
+            <Typography variant="subheader1" color={baseColor} noWrap sx={{ pr: 1 }}>
+              {userReserve.reserve.symbol}
+            </Typography>
+            {disabled !== undefined && (
+              <MigrationDisabledTooltip
+                dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
+                marketName={currentMarketData.marketTitle}
+                warningType={disabled}
+                isolatedV3={!enteringIsolation}
+              />
+            )}
+          </Box>
+        </ListColumn>
+
+        <ListColumn>
+          <Box sx={{ display: 'flex' }}>
+            <IncentivesCard
+              value={v2APY}
+              symbol={userReserve.reserve.symbol}
+              incentives={v2Incentives}
+              variant="main14"
+              color={baseColor}
+            />
+            <SvgIcon sx={{ px: 1.5 }}>
+              <ArrowNarrowRightIcon
+                fontSize="14px"
+                color={
+                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                }
+              />
+            </SvgIcon>
+            <IncentivesCard
+              value={v3APY}
+              symbol={userReserve.reserve.symbol}
+              incentives={v3Incentives}
+              variant="main14"
+              color={baseColor}
+            />
+          </Box>
+        </ListColumn>
 
         {!!enableAsCollateral && (
-          <ListColumn align="right">
+          <ListColumn>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {userReserve.usageAsCollateralEnabledOnUser &&
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
@@ -211,36 +236,40 @@ export const MigrationListItem = ({
             </Box>
           </ListColumn>
         )}
-
-        <ListColumn align="right">
-          <Box sx={{ display: 'flex' }}>
-            <IncentivesCard
-              value={v2APY}
-              symbol={userReserve.reserve.symbol}
-              incentives={v2Incentives}
-              variant="main14"
-              color={baseColor}
-            />
-            <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon
-                fontSize="14px"
-                color={
-                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                }
-              />
-            </SvgIcon>
-            <IncentivesCard
-              value={v3APY}
-              symbol={userReserve.reserve.symbol}
-              incentives={v3Incentives}
-              variant="main14"
-              color={baseColor}
-            />
-          </Box>
-        </ListColumn>
+        {isSupplyList &&
+          (loadingRates ? (
+            <ListColumn>
+              <NoData variant="main14" color="text.secondary" />
+            </ListColumn>
+          ) : (
+            <ListColumn>
+              <Box sx={{ display: 'flex' }}>
+                <FormattedNumber
+                  value={userReserve.reserve.formattedBaseLTVasCollateral}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+                <SvgIcon sx={{ px: 1.5 }}>
+                  <ArrowNarrowRightIcon
+                    fontSize="14px"
+                    color={
+                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                    }
+                  />
+                </SvgIcon>
+                <FormattedNumber
+                  value={v3Rates?.ltv || 0}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+              </Box>
+            </ListColumn>
+          ))}
 
         {!!borrowApyType && (
-          <ListColumn align="right">
+          <ListColumn>
             <Box sx={{ display: 'flex' }}>
               <Button
                 variant="outlined"
@@ -274,19 +303,47 @@ export const MigrationListItem = ({
           </ListColumn>
         )}
 
-        <ListColumn align="right" maxWidth={150} minWidth={150}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-              <FormattedNumber value={amount} variant="secondary14" color={baseColor} />
-            </Box>
-            <FormattedNumber
-              value={amountInUSD}
-              variant="secondary12"
-              color={baseColor}
-              symbol="USD"
-              symbolsColor={baseColor}
-            />
-          </Box>
+        {!isSupplyList &&
+          (loadingRates ? (
+            <ListColumn>
+              <NoData variant="main14" color="text.secondary" />
+            </ListColumn>
+          ) : (
+            <ListColumn>
+              <Box sx={{ display: 'flex' }}>
+                <FormattedNumber
+                  value={userReserve.reserve.formattedReserveLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+                <SvgIcon sx={{ px: 1.5 }}>
+                  <ArrowNarrowRightIcon
+                    fontSize="14px"
+                    color={
+                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
+                    }
+                  />
+                </SvgIcon>
+                <FormattedNumber
+                  value={v3Rates?.liquidationThreshold ?? -1}
+                  percent
+                  variant="secondary14"
+                  color={baseColor}
+                />
+              </Box>
+            </ListColumn>
+          ))}
+
+        <ListColumn>
+          <FormattedNumber value={amount} variant="secondary14" color={baseColor} />
+          <FormattedNumber
+            value={amountInUSD}
+            variant="secondary12"
+            color={baseColor}
+            symbol="USD"
+            symbolsColor={baseColor}
+          />
         </ListColumn>
       </Box>
 

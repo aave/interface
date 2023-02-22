@@ -156,6 +156,7 @@ export default function V3Migration() {
                       enteringIsolation={isolatedReserveV3?.enteringIsolationMode || false}
                       v3Rates={reserve.v3Rates}
                       disabled={reserve.migrationDisabled}
+                      isSupplyList
                     />
                   ))
                 ) : (
@@ -198,7 +199,7 @@ export default function V3Migration() {
             hfV2Current={v2HealthFactorBeforeMigration}
             hfV2AfterChange={v2UserSummaryAfterMigration.healthFactor}
             hfV3Current={v3UserSummaryBeforeMigration.healthFactor}
-            hfV3AfterChange={v3UserSummaryAfterMigration.healthFactor}
+            v3SummaryAfterMigration={v3UserSummaryAfterMigration}
             disableButton={
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }
