@@ -18,10 +18,10 @@ export function VotingPowerInfoPanel() {
       >
         <Trans>Your info</Trans>
       </Typography>
-      <UserDisplay avatarProps={{ size: AvatarSize.LG }} />
+      <UserDisplay avatarProps={{ size: AvatarSize.LG }} titleProps={{ variant: 'h4' }} />
       {currentAccount && (
-        <Box sx={{ display: 'flex', mt: 6, gap: 35 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', mt: 6 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', mr: '25%' }}>
             <TextWithTooltip text="Voting power" variant="description" textColor="text.secondary">
               <>
                 <p>

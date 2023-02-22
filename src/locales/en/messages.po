@@ -663,8 +663,8 @@ msgid "Delegate"
 msgstr "Delegate"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
-msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
+msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
+msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
@@ -1066,6 +1066,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx

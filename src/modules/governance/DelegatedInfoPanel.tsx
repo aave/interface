@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Divider, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -124,8 +124,15 @@ export const DelegatedInfoPanel = () => {
         <Trans>
           Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won&apos;t
           send any tokens, only voting/proposition rights, and you can re-delegate it at any time.
-          Learn more
         </Trans>
+        <Link
+          href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
+          underline="always"
+          target="_blank"
+          sx={{ ml: 1 }}
+        >
+          <Trans>Learn more</Trans>
+        </Link>
       </Typography>
       <Typography typography="caption" sx={{ mb: 5 }} color="text.secondary">
         <Trans>Voting power</Trans>

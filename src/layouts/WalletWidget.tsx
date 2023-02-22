@@ -310,7 +310,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           }
         >
           {connected ? (
-            <UserDisplay avatarProps={{ size: AvatarSize.SM }} oneLiner={true} />
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              oneLiner={true}
+              titleProps={{ variant: 'buttonM' }}
+            />
           ) : (
             <Trans>Connect wallet</Trans>
           )}
