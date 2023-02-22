@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-14 18:05\n"
+"PO-Revision-Date: 2023-02-22 00:16\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1925,7 +1925,7 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr ""
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
