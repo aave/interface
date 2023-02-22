@@ -63,7 +63,13 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
             />
           </>
         ) : (
-          <UserNameText address={account} loading={loading} variant="h4" {...titleProps} />
+          <UserNameText
+            address={account}
+            domainName={defaultDomain?.name}
+            loading={loading}
+            variant="h4"
+            {...titleProps}
+          />
         )}
       </Box>
     </Box>

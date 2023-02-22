@@ -1360,7 +1360,7 @@ msgstr "Per the community, the Fantom market has been frozen."
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
-#: pages/governance/index.governance.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
@@ -1419,6 +1419,7 @@ msgstr "Proposal details"
 msgid "Proposal overview"
 msgstr "Proposal overview"
 
+#: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
@@ -2490,6 +2491,7 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 
 #: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx

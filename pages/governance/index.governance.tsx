@@ -1,17 +1,17 @@
 import { Trans } from '@lingui/macro';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useState } from 'react';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { DelegatedInfoPanel } from 'src/modules/governance/DelegatedInfoPanel';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
-import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
+import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
-import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
 
@@ -37,6 +37,11 @@ export const getStaticProps = async () => {
   return { props: { proposals: proposals.slice().reverse() } };
 };
 
+enum Tabs {
+  PROPOSALS,
+  INFORMATION,
+}
+
 export type GovernancePageProps = {
   proposals: {
     ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash' | 'shortDescription'>;
@@ -46,42 +51,53 @@ export type GovernancePageProps = {
 };
 
 export default function Governance(props: GovernancePageProps) {
-  const account = useRootStore((store) => store.account);
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
+  const [mode, setMode] = useState(Tabs.PROPOSALS);
 
   return (
     <>
       <GovernanceTopPanel />
-
       <ContentContainer>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8} sx={{ order: { xs: 1, md: 0 } }}>
-            <Paper>
+        <StyledToggleButtonGroup
+          color="primary"
+          value={mode}
+          exclusive
+          onChange={(_, value) => setMode(value)}
+          sx={{
+            width: { xs: '100%', xsm: '359px' },
+            height: '44px',
+            mb: 4,
+            display: { xs: 'flex', lg: 'none' },
+          }}
+        >
+          <StyledToggleButton value={Tabs.PROPOSALS} disabled={mode === Tabs.PROPOSALS}>
+            <Typography variant="subheader1">
+              <Trans>Proposals</Trans>
+            </Typography>
+          </StyledToggleButton>
+          <StyledToggleButton value={Tabs.INFORMATION} disabled={mode === Tabs.INFORMATION}>
+            <Typography variant="subheader1">
+              <Trans>Your info</Trans>
+            </Typography>
+          </StyledToggleButton>
+        </StyledToggleButtonGroup>
+        {isMobile ? (
+          mode === Tabs.PROPOSALS ? (
+            <ProposalsList {...props} />
+          ) : (
+            <UserGovernanceInfo />
+          )
+        ) : (
+          <Grid container spacing={4}>
+            <Grid item md={8}>
               <ProposalsList {...props} />
-            </Paper>
+            </Grid>
+            <Grid item md={4}>
+              <UserGovernanceInfo />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4}>
-            {account ? (
-              <>
-                <Paper>
-                  <VotingPowerInfoPanel />
-                </Paper>
-                <Paper>
-                  <DelegatedInfoPanel />
-                </Paper>
-              </>
-            ) : (
-              <Paper sx={{ p: 6 }}>
-                <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
-                  <Trans>Your info</Trans>
-                </Typography>
-                <Typography sx={{ mb: 6 }} color="text.secondary">
-                  <Trans>Please connect a wallet to view your personal information here.</Trans>
-                </Typography>
-                <ConnectWalletButton />
-              </Paper>
-            )}
-          </Grid>
-        </Grid>
+        )}
       </ContentContainer>
     </>
   );

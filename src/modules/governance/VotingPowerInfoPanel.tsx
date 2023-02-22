@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -11,7 +11,7 @@ export function VotingPowerInfoPanel() {
   const { currentAccount } = useWeb3Context();
   const powers = useVotingPower();
   return (
-    <Box sx={{ px: 6, py: 6 }}>
+    <Paper sx={{ px: 6, py: 6 }}>
       <Typography
         variant="h3"
         sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}
@@ -62,6 +62,6 @@ export function VotingPowerInfoPanel() {
           </Box>
         </Box>
       )}
-    </Box>
+    </Paper>
   );
 }
