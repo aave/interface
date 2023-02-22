@@ -213,12 +213,15 @@ export const repay = (
     it(`Choose ${repayOption} repay option`, () => {
       switch (repayOption) {
         case constants.repayType.collateral:
-          cy.get('[data-cy=Modal] button').contains('Collateral').click().should('not.be.disabled');
+          cy.get('[data-cy=Modal] button')
+            .contains('Collateral')
+            .click({ force: true })
+            .should('not.be.disabled');
           break;
         case constants.repayType.wallet:
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
-            .click()
+            .click({ force: true })
             .should('not.be.disabled');
           break;
         case constants.repayType.default:
@@ -226,7 +229,7 @@ export const repay = (
         default:
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
-            .click()
+            .click({ force: true })
             .should('not.be.disabled');
           break;
       }

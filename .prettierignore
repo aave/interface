@@ -4,6 +4,7 @@
 .eslintignore
 node_modules/
 public/
+scripts/
 
 # Artifacts
 .next/
