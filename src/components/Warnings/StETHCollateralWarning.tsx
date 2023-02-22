@@ -3,8 +3,8 @@ import { Trans } from '@lingui/macro';
 export const StETHCollateralWarning = () => {
   return (
     <Trans>
-      Due to stETH contracts limitations stETH supply position cannot be swapped to another asset.
-      Also, borrow positions cannot be repaid with stETH collateral.
+      Due to internal stETH mechanics required for rebasing support, it is not possible to perform a
+      collateral swap where stETH is the source token.
     </Trans>
   );
 };
