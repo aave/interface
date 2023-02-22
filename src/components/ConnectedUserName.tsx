@@ -1,7 +1,5 @@
 import { TypographyProps } from '@mui/material';
 import useGetEns from 'src/libs/hooks/use-get-ens';
-import { useRootStore } from 'src/store/root';
-import shallow from 'zustand/shallow';
 
 import { CompactableTypography, CompactMode } from './CompactableTypography';
 
@@ -34,32 +32,6 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
     >
       {domainName ? domainName : address}
     </CompactableTypography>
-  );
-};
-
-export interface ConnectedUserNameProps extends TypographyProps {
-  addressCompactMode?: CompactMode;
-  domainCompactMode?: CompactMode;
-}
-
-export const ConnectedUserNameText: React.FC<ConnectedUserNameProps> = ({ ...props }) => {
-  const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
-    (state) => ({
-      account: state.account,
-      defaultDomain: state.defaultDomain,
-      domainsLoading: state.domainsLoading,
-      accountLoading: state.accountLoading,
-    }),
-    shallow
-  );
-
-  return (
-    <UserNameText
-      address={account}
-      domainName={defaultDomain?.name}
-      loading={domainsLoading || accountLoading}
-      {...props}
-    />
   );
 };
 

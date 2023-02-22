@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Divider, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
@@ -71,7 +72,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               )
             }
           >
-            <FormattedNumber value={aavePower} />
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <TokenIcon symbol="AAVE" sx={{ width: 16, height: 16 }} />
+              <FormattedNumber value={aavePower} />
+            </Box>
           </Row>
         )}
         {stkAavePower != '0' && (
@@ -90,7 +94,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
               )
             }
           >
-            <FormattedNumber value={stkAavePower} />
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <TokenIcon symbol="stkAAVE" sx={{ width: 16, height: 16 }} />
+              <FormattedNumber value={stkAavePower} />
+            </Box>
           </Row>
         )}
       </Box>
@@ -117,8 +124,15 @@ export const DelegatedInfoPanel = () => {
         <Trans>
           Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won&apos;t
           send any tokens, only voting/proposition rights, and you can re-delegate it at any time.
-          Learn more
         </Trans>
+        <Link
+          href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
+          underline="always"
+          target="_blank"
+          sx={{ ml: 1 }}
+        >
+          <Trans>Learn more</Trans>
+        </Link>
       </Typography>
       <Typography typography="caption" sx={{ mb: 5 }} color="text.secondary">
         <Trans>Voting power</Trans>

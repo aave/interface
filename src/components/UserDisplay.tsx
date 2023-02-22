@@ -1,18 +1,20 @@
 import { Box, TypographyProps } from '@mui/material';
+import makeBlockie from 'ethereum-blockies-base64';
+import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import shallow from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
-import { ConnectedUserAvatar } from './ConnectedUserAvatar';
-import { ConnectedUserNameProps, ConnectedUserNameText, UserNameText } from './ConnectedUserName';
+import { UserNameText, UserNameTextProps } from './ConnectedUserName';
 
 type UserDisplayProps = {
   oneLiner?: boolean;
   avatarProps?: AvatarProps;
-  titleProps?: ConnectedUserNameProps;
-  subtitleProps?: ConnectedUserNameProps;
+  titleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
+  subtitleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
 };
 
 export const UserDisplay: React.FC<UserDisplayProps> = ({
@@ -21,12 +23,24 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   titleProps,
   subtitleProps,
 }) => {
-  const defaultDomain = useRootStore((state) => state.defaultDomain);
+  const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
+    (state) => ({
+      account: state.account,
+      defaultDomain: state.defaultDomain,
+      domainsLoading: state.domainsLoading,
+      accountLoading: state.accountLoading,
+    }),
+    shallow
+  );
   const { readOnlyMode } = useWeb3Context();
+  const fallbackImage = useMemo(() => (account ? makeBlockie(account) : undefined), [account]);
+  const loading = domainsLoading || accountLoading;
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <ConnectedUserAvatar
+      <Avatar
+        fallbackImage={fallbackImage}
+        loading={loading}
         badge={<ExclamationBadge size={BadgeSize.SM} />}
         invisibleBadge={!readOnlyMode}
         {...avatarProps}
@@ -34,11 +48,22 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         {!oneLiner && defaultDomain?.name ? (
           <>
-            <ConnectedUserNameText typography="h4" {...titleProps} />
-            <ConnectedUserNameText typography="caption" {...subtitleProps} />
+            <UserNameText
+              address={account}
+              loading={loading}
+              domainName={defaultDomain.name}
+              variant="h4"
+              {...titleProps}
+            />
+            <UserNameText
+              address={account}
+              loading={loading}
+              variant="caption"
+              {...subtitleProps}
+            />
           </>
         ) : (
-          <ConnectedUserNameText typography="h4" {...titleProps} />
+          <UserNameText address={account} loading={loading} variant="h4" {...titleProps} />
         )}
       </Box>
     </Box>
@@ -58,9 +83,10 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
 }) => {
   const { name, avatar } = useGetEns(address);
 
+  const fallbackImage = useMemo(() => (address ? makeBlockie(address) : undefined), [address]);
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <Avatar image={avatar} {...avatarProps} />
+      <Avatar image={avatar} fallbackImage={fallbackImage} {...avatarProps} />
       <UserNameText variant="h4" address={address} domainName={name} {...titleProps} />
     </Box>
   );

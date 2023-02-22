@@ -671,8 +671,8 @@ msgid "Delegate"
 msgstr "Delegate"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
-msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time. Learn more"
+msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
+msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
@@ -929,6 +929,10 @@ msgstr "Go Back"
 msgid "Go to Balancer Pool"
 msgstr "Go to Balancer Pool"
 
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Go to V3 Dashboard"
+msgstr "Go to V3 Dashboard"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -1070,6 +1074,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1634,6 +1639,10 @@ msgstr "Select v2 borrows to migrate"
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
 
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
+msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"
@@ -1945,8 +1954,8 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
-msgstr "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgstr "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
