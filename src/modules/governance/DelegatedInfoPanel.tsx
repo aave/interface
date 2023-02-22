@@ -157,6 +157,7 @@ export const DelegatedInfoPanel = () => {
       <Divider sx={{ mt: 6 }} />
       <Box sx={{ pt: 6 }}>
         <Button
+          size="large"
           sx={{ width: '100%' }}
           variant="contained"
           disabled={

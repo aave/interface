@@ -1,5 +1,5 @@
-import { TypographyProps } from '@mui/material';
-import useGetEns from 'src/libs/hooks/use-get-ens';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { Box, Link, SvgIcon, TypographyProps } from '@mui/material';
 
 import { CompactableTypography, CompactMode } from './CompactableTypography';
 
@@ -9,6 +9,8 @@ export interface UserNameTextProps extends TypographyProps {
   domainName?: string;
   loading?: boolean;
   address: string;
+  link?: string;
+  iconSize?: number;
 }
 
 export const UserNameText: React.FC<UserNameTextProps> = ({
@@ -17,6 +19,8 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
   loading,
   domainName,
   address,
+  link,
+  iconSize = 16,
   ...rest
 }) => {
   const isDomainNameLong = Boolean(domainName && domainName?.length > 18);
@@ -24,24 +28,22 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
   const shouldCompact = !domainName || isDomainNameLong;
 
   return (
-    <CompactableTypography
-      compactMode={domainName ? domainCompactMode : addressCompactMode}
-      compact={shouldCompact}
-      loading={loading}
-      {...rest}
-    >
-      {domainName ? domainName : address}
-    </CompactableTypography>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <CompactableTypography
+        compactMode={domainName ? domainCompactMode : addressCompactMode}
+        compact={shouldCompact}
+        loading={loading}
+        {...rest}
+      >
+        {domainName ? domainName : address}
+      </CompactableTypography>
+      {link && (
+        <Link href={link} target="_blank" sx={{ display: 'flex' }}>
+          <SvgIcon sx={{ fontSize: iconSize }}>
+            <ExternalLinkIcon />
+          </SvgIcon>
+        </Link>
+      )}
+    </Box>
   );
-};
-
-export interface ExternalUserNameTextProps extends TypographyProps {
-  addressCompactMode?: CompactMode;
-  domainCompactMode?: CompactMode;
-  address: string;
-}
-
-export const ExternalUserNameText: React.FC<ExternalUserNameTextProps> = ({ address, ...rest }) => {
-  const { name } = useGetEns(address);
-  return <UserNameText address={address} domainName={name} {...rest} />;
 };

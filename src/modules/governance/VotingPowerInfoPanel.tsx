@@ -18,7 +18,11 @@ export function VotingPowerInfoPanel() {
       >
         <Trans>Your info</Trans>
       </Typography>
-      <UserDisplay avatarProps={{ size: AvatarSize.LG }} titleProps={{ variant: 'h4' }} />
+      <UserDisplay
+        withLink={true}
+        avatarProps={{ size: AvatarSize.LG }}
+        titleProps={{ variant: 'h4' }}
+      />
       {currentAccount && (
         <Box sx={{ display: 'flex', mt: 6 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', mr: '25%' }}>
