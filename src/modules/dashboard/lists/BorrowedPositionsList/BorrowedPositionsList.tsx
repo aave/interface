@@ -46,6 +46,7 @@ const head = [
   },
   {
     title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    sortKey: 'typeAPY',
   },
 ];
 

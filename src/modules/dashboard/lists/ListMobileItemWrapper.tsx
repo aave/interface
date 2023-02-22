@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -41,12 +42,14 @@ export const ListMobileItemWrapper = ({
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
     const showRenFilTooltip = frozen && symbol === 'renFIL';
     const showAmplTooltip = !frozen && symbol === 'AMPL';
+    const showstETHTooltip = symbol == 'stETH';
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
     return (
       <>
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
+        {showstETHTooltip && <StETHCollateralToolTip />}
         {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
