@@ -1632,6 +1632,10 @@ msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Setup notifications about your Health Factor using the Hal app."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Share on Lens"
+msgstr "Share on Lens"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
 msgstr "Share on twitter"
 
