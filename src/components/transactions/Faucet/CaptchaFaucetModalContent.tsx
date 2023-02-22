@@ -13,7 +13,7 @@ import { DetailsNumberLine } from '../FlowCommons/TxModalDetails';
 import Turnstile from './Turnstile';
 import { getNormalizedMintAmount } from './utils';
 
-const MAX_GAS_PRICE = 25;
+const MAX_GAS_PRICE = 75;
 
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { readOnlyModeAddress } = useWeb3Context();
