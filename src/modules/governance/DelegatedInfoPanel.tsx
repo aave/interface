@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider, Link, Typography } from '@mui/material';
+import { Button, Divider, Link, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { AvatarSize } from 'src/components/Avatar';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -116,7 +116,7 @@ export const DelegatedInfoPanel = () => {
   if (!powers || !address) return null;
 
   return (
-    <Box sx={{ px: 6, py: 6, mt: 2 }}>
+    <Paper sx={{ px: 6, py: 6, mt: 2 }}>
       <Typography typography="h3">
         <Trans>Delegating to</Trans>
       </Typography>
@@ -157,6 +157,7 @@ export const DelegatedInfoPanel = () => {
       <Divider sx={{ mt: 6 }} />
       <Box sx={{ pt: 6 }}>
         <Button
+          size="large"
           sx={{ width: '100%' }}
           variant="contained"
           disabled={
@@ -172,6 +173,6 @@ export const DelegatedInfoPanel = () => {
           <Trans>Set up delegation</Trans>
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 };

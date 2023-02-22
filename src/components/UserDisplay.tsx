@@ -1,4 +1,4 @@
-import { Box, TypographyProps } from '@mui/material';
+import { Box } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
 import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
@@ -15,6 +15,7 @@ type UserDisplayProps = {
   avatarProps?: AvatarProps;
   titleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
   subtitleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
+  withLink?: boolean;
 };
 
 export const UserDisplay: React.FC<UserDisplayProps> = ({
@@ -22,6 +23,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   avatarProps,
   titleProps,
   subtitleProps,
+  withLink,
 }) => {
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
     (state) => ({
@@ -53,6 +55,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
               loading={loading}
               domainName={defaultDomain.name}
               variant="h4"
+              link={withLink ? `https://etherscan.io/address/${account}` : undefined}
               {...titleProps}
             />
             <UserNameText
@@ -63,7 +66,14 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
             />
           </>
         ) : (
-          <UserNameText address={account} loading={loading} variant="h4" {...titleProps} />
+          <UserNameText
+            address={account}
+            domainName={defaultDomain?.name}
+            loading={loading}
+            variant="h4"
+            link={withLink ? `https://etherscan.io/address/${account}` : undefined}
+            {...titleProps}
+          />
         )}
       </Box>
     </Box>
@@ -72,7 +82,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
 
 interface ExternalUserDisplayProps {
   avatarProps?: AvatarProps;
-  titleProps?: TypographyProps;
+  titleProps?: Omit<UserNameTextProps, 'address'>;
   address: string;
 }
 
@@ -87,7 +97,14 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Avatar image={avatar} fallbackImage={fallbackImage} {...avatarProps} />
-      <UserNameText variant="h4" address={address} domainName={name} {...titleProps} />
+      <UserNameText
+        variant="h4"
+        address={address}
+        domainName={name}
+        link={`https://etherscan.io/address/${address}`}
+        iconSize={14}
+        {...titleProps}
+      />
     </Box>
   );
 };
