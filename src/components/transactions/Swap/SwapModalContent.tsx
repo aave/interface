@@ -4,8 +4,10 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -21,7 +23,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ErrorType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -41,7 +43,7 @@ export const SwapModalContent = ({
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
-    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
+    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
@@ -63,12 +65,6 @@ export const SwapModalContent = ({
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
-
-  const remainingCapUsd = amountToUsd(
-    remainingCap(swapTarget.reserve),
-    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  );
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -111,22 +107,20 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
-  const disableFlashLoan =
-    shouldUseFlashloan &&
-    flashLoanNotAvailable(
-      userReserve.underlyingAsset,
-      currentNetworkConfig.underlyingChainId || currentChainId
-    );
-
   // consider caps
   // we cannot check this in advance as it's based on the swap result
+  const remainingSupplyCap = remainingCap(swapTarget.reserve);
+  const remainingCapUsd = amountToUsd(
+    remainingSupplyCap,
+    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
+
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingCapUsd.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
+  if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
-  } else if (disableFlashLoan) {
-    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const handleBlocked = () => {
@@ -137,13 +131,6 @@ export const SwapModalContent = ({
         return (
           <Trans>
             The effects on the health factor would cause liquidation. Try lowering the amount.
-          </Trans>
-        );
-      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
-        return (
-          <Trans>
-            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
-            transactions
           </Trans>
         );
       default:
@@ -222,6 +209,12 @@ export const SwapModalContent = ({
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
+      )}
+
+      {swapTarget.reserve.symbol === 'stETH' && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <StETHCollateralWarning />
+        </Warning>
       )}
 
       <TxModalDetails
