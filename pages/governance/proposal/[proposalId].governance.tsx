@@ -164,8 +164,6 @@ export default function ProposalPage({
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
 
-  console.log('url', url);
-
   return (
     <>
       {ipfs && (
