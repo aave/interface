@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-22 00:16\n"
+"PO-Revision-Date: 2023-02-23 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -54,6 +54,7 @@ msgstr "APR"
 msgid "APY"
 msgstr "APY"
 
+#: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "APY change"
@@ -626,6 +627,7 @@ msgid "Current v2 Balance"
 msgstr ""
 
 #: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
 msgstr ""
 
@@ -732,9 +734,8 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr ""
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+#: src/components/Warnings/StETHCollateralWarning.tsx
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -1086,6 +1087,10 @@ msgstr "Σύνδεσμοι"
 msgid "Liquidation <0/> threshold"
 msgstr "Ρευστοποίηση <0/> κατώτατο όριο"
 
+#: src/modules/migration/MigrationList.tsx
+msgid "Liquidation Threshold"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/migration/HFChange.tsx
 msgid "Liquidation at"
@@ -1105,6 +1110,7 @@ msgid "Liquidation risk parameters"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
@@ -1139,6 +1145,8 @@ msgstr "Αγορές"
 msgid "Max"
 msgstr "Μεγιστο"
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
@@ -1936,6 +1944,10 @@ msgstr "Η περίοδος ψύξης είναι {0}. Μετά την {1} πε�
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "Οι επιπτώσεις στον συντελεστή υγείας θα προκαλούσαν ρευστοποίηση. Προσπαθήστε να μειώσετε το ποσό."
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
