@@ -14,6 +14,7 @@ export enum CompactMode {
   MD,
   LG,
   XL,
+  XXL,
 }
 
 const compactModeMap = {
@@ -32,6 +33,10 @@ const compactModeMap = {
   [CompactMode.XL]: {
     from: 12,
     to: 3,
+  },
+  [CompactMode.XXL]: {
+    from: 14,
+    to: 7,
   },
 };
 
