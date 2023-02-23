@@ -48,7 +48,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: reserve.isFrozen || reserve.symbol == 'AMPL' ? '0px' : '36px',
+          mb:
+            reserve.isFrozen || reserve.symbol == 'AMPL' || reserve.symbol === 'stETH'
+              ? '0px'
+              : '36px',
         }}
       >
         <Typography variant="h3">
