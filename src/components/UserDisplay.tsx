@@ -8,7 +8,7 @@ import shallow from 'zustand/shallow';
 
 import { Avatar, AvatarProps } from './Avatar';
 import { BadgeSize, ExclamationBadge } from './badges/ExclamationBadge';
-import { UserNameText, UserNameTextProps } from './ConnectedUserName';
+import { UserNameText, UserNameTextProps } from './UserNameText';
 
 type UserDisplayProps = {
   oneLiner?: boolean;

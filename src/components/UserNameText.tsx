@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Box, Link, SvgIcon, TypographyProps } from '@mui/material';
 
 import { CompactableTypography, CompactMode } from './CompactableTypography';
+import { DarkTooltip } from './infoTooltips/DarkTooltip';
 
 export interface UserNameTextProps extends TypographyProps {
   addressCompactMode?: CompactMode;
@@ -38,11 +39,13 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
         {domainName ? domainName : address}
       </CompactableTypography>
       {link && (
-        <Link href={link} target="_blank" sx={{ display: 'flex' }}>
-          <SvgIcon sx={{ fontSize: iconSize }}>
-            <ExternalLinkIcon />
-          </SvgIcon>
-        </Link>
+        <DarkTooltip title="View on Etherscan">
+          <Link href={link} target="_blank" sx={{ display: 'flex' }}>
+            <SvgIcon sx={{ fontSize: iconSize }}>
+              <ExternalLinkIcon />
+            </SvgIcon>
+          </Link>
+        </DarkTooltip>
       )}
     </Box>
   );
