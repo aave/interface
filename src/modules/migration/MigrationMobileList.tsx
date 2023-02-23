@@ -9,7 +9,6 @@ import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationMobileListProps {
   titleComponent: ReactNode;
-  isBottomOnMobile?: boolean;
   children: ReactNode;
   onSelectAllClick: () => void;
   loading?: boolean;
@@ -23,7 +22,6 @@ interface MigrationMobileListProps {
 
 export const MigrationMobileList = ({
   titleComponent,
-  isBottomOnMobile,
   children,
   onSelectAllClick,
   loading,
@@ -34,7 +32,7 @@ export const MigrationMobileList = ({
   disabled,
 }: MigrationMobileListProps) => {
   return (
-    <Box sx={{ width: '100%', mt: { xs: isBottomOnMobile ? 2 : 0, lg: 0 } }}>
+    <Box sx={{ width: '100%' }}>
       <ListWrapper
         titleComponent={
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>

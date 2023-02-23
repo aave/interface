@@ -35,6 +35,8 @@ export const SuppliedPositionsListMobileItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
+  const disableSwap = !isActive || reserve.symbol == 'stETH';
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -94,7 +96,7 @@ export const SuppliedPositionsListMobileItem = ({
 
         {isSwapButton ? (
           <Button
-            disabled={!isActive || isFrozen}
+            disabled={disableSwap}
             variant="outlined"
             onClick={() => openSwap(underlyingAsset)}
             fullWidth
