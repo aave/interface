@@ -1615,10 +1615,6 @@ msgstr "Select v2 borrows to migrate"
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
 
-#: src/components/transactions/FlowCommons/Success.tsx
-msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
-msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
-
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"
@@ -1632,6 +1628,7 @@ msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Setup notifications about your Health Factor using the Hal app."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Share on Lens"
 msgstr "Share on Lens"
 
@@ -2259,10 +2256,6 @@ msgstr "View details"
 msgid "View on Explorer"
 msgstr "View on Explorer"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr "Vote"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Vote NAY"
@@ -2599,6 +2592,10 @@ msgstr "{0}{name}"
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 msgid "{currentMethod}"
 msgstr "{currentMethod}"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "{customText}"
+msgstr "{customText}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
