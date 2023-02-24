@@ -99,6 +99,10 @@ msgstr "Aave per month"
 msgid "Account"
 msgstr "Account"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Accumulating Data"
+msgstr "Accumulating Data"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
@@ -640,8 +644,8 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
-msgid "Data couldn't be fetched, please reload graph."
-msgstr "Data couldn't be fetched, please reload graph."
+msgid "Data is still being indexed, try reloading or check back shortly."
+msgstr "Data is still being indexed, try reloading or check back shortly."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -1668,7 +1672,6 @@ msgid "Some migrated assets will not be used as collateral due to enabled isolat
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
 #: pages/500.page.tsx
-#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 

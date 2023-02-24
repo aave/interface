@@ -104,10 +104,10 @@ export const ApyGraphContainer = ({
       }}
     >
       <Typography variant="subheader1">
-        <Trans>Something went wrong</Trans>
+        <Trans>Accumulating Data</Trans>
       </Typography>
       <Typography variant="caption" sx={{ mb: 3 }}>
-        <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
+        <Trans>Data is still being indexed, try reloading or check back shortly.</Trans>
       </Typography>
       <Button variant="outlined" color="primary" onClick={refetch}>
         <Trans>Reload</Trans>
