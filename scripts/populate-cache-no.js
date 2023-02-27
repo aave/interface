@@ -21731,7 +21731,7 @@ var require_lib27 = __commonJS({
           }
           return Promise.resolve(result);
         } catch (error) {
-          logger2.throwError('processing response error', logger_1.Logger.errors.SERVER_ERROR, {
+          logger2.throwError('processing response error1', logger_1.Logger.errors.SERVER_ERROR, {
             body: bodyify(dataMatch[1], dataMatch[2]),
             error,
             requestBody: null,
@@ -21905,7 +21905,7 @@ var require_lib27 = __commonJS({
               case 17:
                 runningTimeout.cancel();
                 logger2.throwError(
-                  'processing response error',
+                  'processing response error2',
                   logger_1.Logger.errors.SERVER_ERROR,
                   {
                     body: bodyify(

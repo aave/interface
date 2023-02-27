@@ -21,7 +21,7 @@
     "lint": "yarn lint:code && yarn lint:formatting",
     "lint:fix": "yarn lint:code:fix && yarn lint:formatting:fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
-    "i18n:extract": "NODE_ENV=development lingui extract --clean --overwrite --locale en",
+    "i18n:extract": "lingui extract --clean --overwrite --locale en",
     "i18n:compile": "lingui compile",
     "i18n": "yarn i18n:extract && yarn i18n:compile",
     "prepare": "husky install",

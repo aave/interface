@@ -18,14 +18,14 @@ interface Navigation {
 
 export const navigation: Navigation[] = [
   {
-    link: ROUTES.dashboard,
-    title: t`Dashboard`,
-    dataCy: 'menuDashboard',
-  },
-  {
     link: ROUTES.markets,
     title: t`Markets`,
     dataCy: 'menuMarkets',
+  },
+  {
+    link: ROUTES.dashboard,
+    title: t`Dashboard`,
+    dataCy: 'menuDashboard',
   },
   {
     link: ROUTES.staking,
@@ -35,6 +35,11 @@ export const navigation: Navigation[] = [
       process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
       process.env.NEXT_PUBLIC_ENV === 'prod' &&
       !ENABLE_TESTNET,
+  },
+  {
+    link: ROUTES.airdrop,
+    title: t`Airdrop`,
+    dataCy: 'menuAirdrop',
   },
   {
     link: ROUTES.governance,
