@@ -673,16 +673,12 @@ msgid "Delegate"
 msgstr "Delegate"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
-msgstr "Delegate your voting/proposition power using your AAVE and stkAAVE balance. You won't send any tokens, only voting/proposition rights, and you can re-delegate it at any time."
+msgid "Delegated power"
+msgstr "Delegated power"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
 msgstr "Delegating"
-
-#: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Delegating to"
-msgstr "Delegating to"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegation"
@@ -1452,10 +1448,6 @@ msgstr "Proposals"
 msgid "Proposition"
 msgstr "Proposition"
 
-#: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Proposition power"
-msgstr "Proposition power"
-
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
@@ -1662,12 +1654,6 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
-
-#: src/modules/governance/DelegatedInfoPanel.tsx
-#: src/modules/governance/DelegatedInfoPanel.tsx
-#: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Self delegation"
-msgstr "Self delegation"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2232,6 +2218,10 @@ msgstr "Unstaked"
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
+msgstr "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -2345,7 +2335,6 @@ msgid "Voting"
 msgstr "Voting"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Voting power"
@@ -2476,6 +2465,10 @@ msgstr "You do not have supplies in this currency"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "You have no AAVE/stkAAVE balance to delegate."
+msgstr "You have no AAVE/stkAAVE balance to delegate."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
@@ -2691,6 +2684,10 @@ msgstr "{subtitle}"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "{title}"
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
