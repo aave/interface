@@ -1,10 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import LensIcon from '/public/icons/lens-logo.svg';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -73,7 +77,28 @@ export const GovVoteModalContent = ({
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action={<Trans>Vote</Trans>} />;
+
+  if (txState.success)
+    return (
+      <TxSuccessView
+        customAction={
+          <Box mt={5}>
+            <Button
+              component="a"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://lenster.xyz/?url=${
+                window.location.href
+              }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
+              startIcon={<LensIcon />}
+            >
+              <Trans>Share on Lens</Trans>
+            </Button>
+          </Box>
+        }
+        customText={<Trans>Thank you for voting!!</Trans>}
+      />
+    );
 
   return (
     <>

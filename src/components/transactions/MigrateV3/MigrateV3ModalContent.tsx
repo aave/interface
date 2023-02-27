@@ -87,12 +87,17 @@ export const MigrateV3ModalContent = () => {
   if (migrateTxState.success) {
     return (
       <TxSuccessView
-        migratedAction={
+        customAction={
           <Box mt={5}>
             <Button variant="gradient" size="medium" onClick={handleRoute}>
               <Trans>Go to V3 Dashboard</Trans>
             </Button>
           </Box>
+        }
+        customText={
+          <Trans>
+            Selected assets have successfully migrated. Visit the Market Dashboard to see them.
+          </Trans>
         }
         action={<Trans>Migrated</Trans>}
       />
