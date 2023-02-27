@@ -21,7 +21,7 @@ export type SuccessTxViewProps = {
   rate?: InterestRate;
   addToken?: ERC20TokenType;
   customAction?: ReactNode;
-  customText?: string;
+  customText?: ReactNode;
 };
 
 const ExtLinkIcon = () => (
@@ -100,7 +100,7 @@ export const TxSuccessView = ({
 
           {customAction && (
             <Typography>
-              <Trans>{customText}</Trans>
+              {customText}
               {customAction}
             </Typography>
           )}

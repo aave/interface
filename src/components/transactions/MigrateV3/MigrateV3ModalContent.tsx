@@ -94,7 +94,11 @@ export const MigrateV3ModalContent = () => {
             </Button>
           </Box>
         }
-        customText={`Selected assets have successfully migrated. Visit the Market Dashboard to see them.`}
+        customText={
+          <Trans>
+            Selected assets have successfully migrated. Visit the Market Dashboard to see them.
+          </Trans>
+        }
         action={<Trans>Migrated</Trans>}
       />
     );

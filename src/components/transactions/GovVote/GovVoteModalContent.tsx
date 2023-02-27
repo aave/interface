@@ -96,7 +96,7 @@ export const GovVoteModalContent = ({
             </Button>
           </Box>
         }
-        customText={`Thank you for voting!!`}
+        customText={<Trans>Thank you for voting!!</Trans>}
       />
     );
 
