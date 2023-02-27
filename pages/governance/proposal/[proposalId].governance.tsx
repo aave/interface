@@ -51,6 +51,8 @@ import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
+import LensIcon from '/public/icons/lens-logo.svg';
+
 import { ContentContainer } from '../../../src/components/ContentContainer';
 
 export async function getStaticPaths() {
@@ -234,6 +236,15 @@ export default function ProposalPage({
                         startIcon={<Twitter />}
                       >
                         {xsmUp && <Trans>Share on twitter</Trans>}
+                      </Button>
+                      <Button
+                        component="a"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://lenster.xyz/?url=${url}&text=${ipfs.title}&hashtags=Aave&preview=true`}
+                        startIcon={<LensIcon />}
+                      >
+                        {xsmUp && <Trans>Share on Lens</Trans>}
                       </Button>
                     </Box>
                   ) : (
