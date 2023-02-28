@@ -77,12 +77,6 @@ export const GovVoteModalContent = ({
     return <TxErrorView txError={txError} />;
   }
 
-  let colorMode;
-
-  if (typeof window !== 'undefined') {
-    colorMode = localStorage.getItem('colorMode');
-  }
-
   if (txState.success)
     return (
       <TxSuccessView
@@ -97,7 +91,7 @@ export const GovVoteModalContent = ({
               }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
               startIcon={
                 <LensIcon
-                  color={colorMode === 'dark' ? palette.primary.light : palette.text.primary}
+                  color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
                 />
               }
             >

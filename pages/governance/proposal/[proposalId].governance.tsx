@@ -164,12 +164,6 @@ export default function ProposalPage({
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
 
-  let colorMode;
-
-  if (typeof window !== 'undefined') {
-    colorMode = localStorage.getItem('colorMode');
-  }
-
   return (
     <>
       {ipfs && (
@@ -250,11 +244,11 @@ export default function ProposalPage({
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://lenster.xyz/?url=${url}&text=${ipfs.title}&hashtags=Aave&preview=true`}
+                        href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance {Governance title} - ${ipfs.title}&hashtags=Aave&preview=true`}
                         startIcon={
                           <LensIcon
                             color={
-                              colorMode === 'dark' ? palette.primary.light : palette.text.primary
+                              palette.mode === 'dark' ? palette.primary.light : palette.text.primary
                             }
                           />
                         }
