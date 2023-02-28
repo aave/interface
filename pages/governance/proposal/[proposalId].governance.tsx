@@ -51,9 +51,8 @@ import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
-import LensIcon from '/public/icons/lens-logo.svg';
-
 import { ContentContainer } from '../../../src/components/ContentContainer';
+import { LensIcon } from '../../../src/components/icons/LensIcon';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -113,8 +112,8 @@ export default function ProposalPage({
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
-  const { breakpoints } = useTheme();
-  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
+  const { breakpoints, palette } = useTheme();
+  const lgUp = useMediaQuery(breakpoints.up('lg'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -215,6 +214,7 @@ export default function ProposalPage({
                       <Box sx={{ flexGrow: 1 }} />
                       <Button
                         component="a"
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener"
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
@@ -224,10 +224,11 @@ export default function ProposalPage({
                           </SvgIcon>
                         }
                       >
-                        {xsmUp && <Trans>Raw-Ipfs</Trans>}
+                        {lgUp && <Trans>Raw-Ipfs</Trans>}
                       </Button>
                       <Button
                         component="a"
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -235,16 +236,23 @@ export default function ProposalPage({
                         )}&url=${url}`}
                         startIcon={<Twitter />}
                       >
-                        {xsmUp && <Trans>Share on twitter</Trans>}
+                        {lgUp && <Trans>Share on twitter</Trans>}
                       </Button>
                       <Button
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://lenster.xyz/?url=${url}&text=${ipfs.title}&hashtags=Aave&preview=true`}
-                        startIcon={<LensIcon />}
+                        href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
+                        startIcon={
+                          <LensIcon
+                            color={
+                              palette.mode === 'dark' ? palette.primary.light : palette.text.primary
+                            }
+                          />
+                        }
                       >
-                        {xsmUp && <Trans>Share on Lens</Trans>}
+                        {lgUp && <Trans>Share on Lens</Trans>}
                       </Button>
                     </Box>
                   ) : (
