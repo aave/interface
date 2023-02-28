@@ -113,8 +113,7 @@ export default function ProposalPage({
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints, palette } = useTheme();
-  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
-  const mdUp = useMediaQuery(breakpoints.up('md'));
+  const lgUp = useMediaQuery(breakpoints.up('lg'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -215,7 +214,7 @@ export default function ProposalPage({
                       <Box sx={{ flexGrow: 1 }} />
                       <Button
                         component="a"
-                        sx={{ minWidth: mdUp ? '160px' : '' }}
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener"
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
@@ -225,11 +224,11 @@ export default function ProposalPage({
                           </SvgIcon>
                         }
                       >
-                        {xsmUp && <Trans>Raw-Ipfs</Trans>}
+                        {lgUp && <Trans>Raw-Ipfs</Trans>}
                       </Button>
                       <Button
                         component="a"
-                        sx={{ minWidth: mdUp ? '160px' : '' }}
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -237,10 +236,10 @@ export default function ProposalPage({
                         )}&url=${url}`}
                         startIcon={<Twitter />}
                       >
-                        {xsmUp && <Trans>Share on twitter</Trans>}
+                        {lgUp && <Trans>Share on twitter</Trans>}
                       </Button>
                       <Button
-                        sx={{ minWidth: mdUp ? '160px' : '' }}
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -253,7 +252,7 @@ export default function ProposalPage({
                           />
                         }
                       >
-                        {xsmUp && <Trans>Share on Lens</Trans>}
+                        {lgUp && <Trans>Share on Lens</Trans>}
                       </Button>
                     </Box>
                   ) : (
