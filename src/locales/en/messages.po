@@ -316,8 +316,8 @@ msgid "Balance"
 msgstr "Balance"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Balance to delegate"
-msgstr "Balance to delegate"
+msgid "Balance to revoke"
+msgstr "Balance to revoke"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -479,6 +479,10 @@ msgstr "Cannot disable E-Mode"
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
+msgstr "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
@@ -634,10 +638,6 @@ msgstr "Current v2 balance"
 msgid "Current votes"
 msgstr "Current votes"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "DELEGATE TO SELF"
-msgstr "DELEGATE TO SELF"
-
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
@@ -668,7 +668,7 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegate"
 msgstr "Delegate"
 
@@ -676,13 +676,9 @@ msgstr "Delegate"
 msgid "Delegated power"
 msgstr "Delegated power"
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegating"
 msgstr "Delegating"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegation"
-msgstr "Delegation"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1410,10 +1406,6 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Power to delegate"
-msgstr "Power to delegate"
-
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Powered by"
 msgstr "Powered by"
@@ -1582,6 +1574,18 @@ msgstr "Review tx"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
 msgstr "Review tx details"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Revoke"
+msgstr "Revoke"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Revoke power"
+msgstr "Revoke power"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Revoking"
+msgstr "Revoking"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
@@ -2628,6 +2632,8 @@ msgstr "withdrew"
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
