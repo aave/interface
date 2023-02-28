@@ -114,6 +114,7 @@ export default function ProposalPage({
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints, palette } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
+  const mdUp = useMediaQuery(breakpoints.up('md'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -220,7 +221,7 @@ export default function ProposalPage({
                       <Box sx={{ flexGrow: 1 }} />
                       <Button
                         component="a"
-                        sx={{ minWidth: '160px' }}
+                        sx={{ minWidth: mdUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener"
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
@@ -234,7 +235,7 @@ export default function ProposalPage({
                       </Button>
                       <Button
                         component="a"
-                        sx={{ minWidth: '160px' }}
+                        sx={{ minWidth: mdUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -245,7 +246,7 @@ export default function ProposalPage({
                         {xsmUp && <Trans>Share on twitter</Trans>}
                       </Button>
                       <Button
-                        sx={{ minWidth: '160px' }}
+                        sx={{ minWidth: mdUp ? '160px' : '' }}
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
