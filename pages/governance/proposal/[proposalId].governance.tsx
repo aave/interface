@@ -51,9 +51,8 @@ import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
-import LensIcon from '/public/icons/lens-logo.svg';
-
 import { ContentContainer } from '../../../src/components/ContentContainer';
+import { LensIcon } from '../../../src/components/icons/LensIcon';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -113,7 +112,7 @@ export default function ProposalPage({
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
@@ -163,6 +162,12 @@ export default function ProposalPage({
   const proposalHasExpired: boolean = proposal
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
+
+  let colorMode;
+
+  if (typeof window !== 'undefined') {
+    colorMode = localStorage.getItem('colorMode');
+  }
 
   return (
     <>
@@ -215,6 +220,7 @@ export default function ProposalPage({
                       <Box sx={{ flexGrow: 1 }} />
                       <Button
                         component="a"
+                        sx={{ minWidth: '160px' }}
                         target="_blank"
                         rel="noopener"
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
@@ -228,6 +234,7 @@ export default function ProposalPage({
                       </Button>
                       <Button
                         component="a"
+                        sx={{ minWidth: '160px' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -238,11 +245,18 @@ export default function ProposalPage({
                         {xsmUp && <Trans>Share on twitter</Trans>}
                       </Button>
                       <Button
+                        sx={{ minWidth: '160px' }}
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://lenster.xyz/?url=${url}&text=${ipfs.title}&hashtags=Aave&preview=true`}
-                        startIcon={<LensIcon />}
+                        startIcon={
+                          <LensIcon
+                            color={
+                              colorMode === 'dark' ? palette.primary.light : palette.text.primary
+                            }
+                          />
+                        }
                       >
                         {xsmUp && <Trans>Share on Lens</Trans>}
                       </Button>

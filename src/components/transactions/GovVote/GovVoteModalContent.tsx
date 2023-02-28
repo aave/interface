@@ -1,15 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import LensIcon from '/public/icons/lens-logo.svg';
-
+// import LensIcon from '/public/icons/lens-logo.svg';
+import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -43,6 +41,7 @@ export const GovVoteModalContent = ({
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { palette } = useTheme();
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -78,6 +77,12 @@ export const GovVoteModalContent = ({
     return <TxErrorView txError={txError} />;
   }
 
+  let colorMode;
+
+  if (typeof window !== 'undefined') {
+    colorMode = localStorage.getItem('colorMode');
+  }
+
   if (txState.success)
     return (
       <TxSuccessView
@@ -90,7 +95,11 @@ export const GovVoteModalContent = ({
               href={`https://lenster.xyz/?url=${
                 window.location.href
               }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
-              startIcon={<LensIcon />}
+              startIcon={
+                <LensIcon
+                  color={colorMode === 'dark' ? palette.primary.light : palette.text.primary}
+                />
+              }
             >
               <Trans>Share on Lens</Trans>
             </Button>
