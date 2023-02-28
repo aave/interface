@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-27 18:05\n"
+"PO-Revision-Date: 2023-02-28 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1628,7 +1628,7 @@ msgstr "Selecciona préstamos de v2 para migrar"
 msgid "Select v2 supplies to migrate"
 msgstr "Selecciona suministros de v2 para migrar"
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "Los activos seleccionados se han migrado correctamente. Visita el panel de control del mercado para verlos."
 
@@ -1643,6 +1643,11 @@ msgstr "Activos de suministro seleccionados"
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Configura notificaciones sobre tu factor de salud usando la aplicación Hal."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Share on Lens"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1891,6 +1896,10 @@ msgstr "Testnet mode"
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
 msgstr "Testnet mode está ON"
+
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting!!"
+msgstr ""
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -2271,10 +2280,6 @@ msgstr "Ver detalles"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "Ver en el explorador"
-
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr "Votar"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
