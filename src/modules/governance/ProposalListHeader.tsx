@@ -108,7 +108,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
     <Box
       sx={{
         px: 6,
-        py: 6,
+        py: 4,
         display: 'flex',
         flexDirection: {
           xs: 'column',

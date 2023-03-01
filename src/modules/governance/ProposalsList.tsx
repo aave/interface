@@ -1,4 +1,4 @@
-import { LinearProgress } from '@mui/material';
+import { LinearProgress, Paper } from '@mui/material';
 import Fuse from 'fuse.js';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useMemo, useRef, useState } from 'react';
@@ -123,7 +123,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   };
 
   return (
-    <div>
+    <Paper>
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}
@@ -148,6 +148,6 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       ) : (
         <NoSearchResults searchTerm={searchQuery} />
       )}
-    </div>
+    </Paper>
   );
 }

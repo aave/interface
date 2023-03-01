@@ -13,6 +13,7 @@ import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
+import { createWalletDomainsSlice, WalletDomainsSlice } from './walletDomains';
 import { createWalletSlice, WalletSlice } from './walletSlice';
 
 enableMapSet();
@@ -23,7 +24,8 @@ export type RootStore = StakeSlice &
   PoolSlice &
   IncentiveSlice &
   GovernanceSlice &
-  V3MigrationSlice;
+  V3MigrationSlice &
+  WalletDomainsSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -36,6 +38,7 @@ export const useRootStore = create<RootStore>()(
         ...createIncentiveSlice(...args),
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
+        ...createWalletDomainsSlice(...args),
       };
     })
   )
@@ -113,6 +116,18 @@ useRootStore.subscribe(
         });
     } else {
       setFaucetPermissioned(false);
+    }
+  },
+  { fireImmediately: true }
+);
+
+useRootStore.subscribe(
+  (state) => state.account,
+  (account) => {
+    if (account) {
+      useRootStore.getState().fetchConnectedWalletDomains();
+    } else {
+      useRootStore.getState().clearWalletDomains();
     }
   },
   { fireImmediately: true }

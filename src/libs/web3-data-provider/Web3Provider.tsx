@@ -73,6 +73,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
+  const setAccountLoading = useRootStore((store) => store.setAccountLoading);
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -419,6 +420,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     setAccount(account?.toLowerCase());
   }, [account]);
+
+  useEffect(() => {
+    setAccountLoading(loading);
+  }, [loading]);
 
   return (
     <Web3Context.Provider
