@@ -65,7 +65,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://testnet.bscscan.com/',
     isTestnet: false,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/bsc.svg',
   },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
