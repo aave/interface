@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-28 00:18\n"
+"PO-Revision-Date: 2023-03-01 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -666,8 +666,11 @@ msgid "Debt ceiling limits the amount possible to borrow against this asset by p
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Delegate"
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegated power"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
@@ -1079,6 +1082,10 @@ msgstr ""
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr ""
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Learn more."
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr ""
@@ -1365,6 +1372,7 @@ msgstr ""
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr ""
 
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr ""
@@ -1423,13 +1431,13 @@ msgstr ""
 msgid "Proposal overview"
 msgstr ""
 
+#: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr ""
 
@@ -1638,6 +1646,10 @@ msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Set up delegation"
 msgstr ""
 
 #: src/components/HALLink.tsx
@@ -2129,6 +2141,10 @@ msgstr ""
 msgid "Total market size"
 msgstr ""
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
+
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2138,6 +2154,10 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
+msgstr ""
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -2198,6 +2218,14 @@ msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
+msgstr ""
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Use it to vote for or against active proposals."
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2306,7 +2334,6 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr ""
@@ -2438,8 +2465,16 @@ msgstr ""
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr ""
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "You have no AAVE/stkAAVE balance to delegate."
+msgstr ""
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
+msgstr ""
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "You need at least 80.00K power to submit a proposal."
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
@@ -2475,7 +2510,9 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
+#: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2645,6 +2682,10 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "{title}"
 msgstr ""
 
 #: src/components/CircleIcon.tsx
