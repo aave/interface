@@ -95,7 +95,7 @@ export interface PoolSlice {
     }
   ) => Promise<EthereumTransactionTypeExtended[]>;
   supplyBundle: (
-    args: LPSupplyParamsBundleType
+    args: Omit<LPSupplyParamsBundleType, 'user'>
   ) => Promise<ActionBundle>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
