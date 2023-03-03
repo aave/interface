@@ -241,7 +241,7 @@ export const marketsData: {
   [CustomMarket.proto_sepolia_v3]: {
     marketTitle: 'Ethereum Sepolia',
     v3: true,
-    chainId: '11155111',
+    chainId: ChainId.sepolia,
     enabledFeatures: {
       faucet: true,
     },
@@ -251,7 +251,7 @@ export const marketsData: {
       WETH_GATEWAY: '0xe70cDC67C91d5519DD4682cA162E40480773255a', // markets.AaveV3Sepolia.WETH_GATEWAY,
       FAUCET: '0x1f885520b7BD528E46b390040F12E753Dce43004', // markets.AaveV3Sepolia.FAUCET,
       WALLET_BALANCE_PROVIDER: '0x4f04218ECC7D2756f84836D2DC267293504cAbCc', // markets.AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0x7cE1062e0688BC3D7699987A38bba84353F69881', // markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
+      UI_POOL_DATA_PROVIDER: '0xe38c93180a6CE4173d88793c0671AD1Dd417c7d8', // markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: '0x7cE1062e0688BC3D7699987A38bba84353F69881', // markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
