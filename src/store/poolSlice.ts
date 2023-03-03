@@ -18,6 +18,10 @@ import {
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
+  LPSupplyParamsBundleType,
+  ActionBundle,
+  PoolBundle,
+  LendingPoolBundle,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -78,9 +82,6 @@ export interface PoolSlice {
   paraswapRepayWithCollateral: (
     args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  supplyWithPermit: (
-    args: Omit<LPSupplyWithPermitType, 'user'>
-  ) => Promise<EthereumTransactionTypeExtended[]>;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
@@ -93,16 +94,9 @@ export interface PoolSlice {
       deadline: string;
     }
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  supply: (
-    args: Omit<SupplyActionProps, 'poolReserve'>
-  ) => Promise<EthereumTransactionTypeExtended[]>;
-  // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
-  generateSignatureRequst: (args: {
-    token: string;
-    amount: string;
-    deadline: string;
-    spender: string;
-  }) => Promise<string>;
+  supplyBundle: (
+    args: LPSupplyParamsBundleType
+  ) => Promise<ActionBundle>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -127,6 +121,26 @@ export const createPoolSlice: StateCreator<
       });
     } else {
       return new LendingPool(provider, {
+        LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
+        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
+        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+      });
+    }
+  }
+  function getCorrectPoolBundle() {
+    const currentMarketData = get().currentMarketData;
+    const provider = get().jsonRpcProvider();
+    if (currentMarketData.v3) {
+      return new PoolBundle(provider, {
+        POOL: currentMarketData.addresses.LENDING_POOL,
+        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
+        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+      });
+    } else {
+      return new LendingPoolBundle(provider, {
         LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
         REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
         SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
@@ -369,33 +383,24 @@ export const createPoolSlice: StateCreator<
         deadline,
       });
     },
-    supply: ({ poolAddress, amountToSupply }) => {
-      const pool = getCorrectPool();
+    supplyBundle: ({ reserve, amount }) => {
+      const poolBundle = getCorrectPoolBundle();
       const currentAccount = get().account;
-      if (pool instanceof Pool) {
-        return pool.supply({
+      if (poolBundle instanceof PoolBundle) {
+        return poolBundle.supplyBundle({
           user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToSupply,
+          reserve,
+          amount,
           useOptimizedPath: get().useOptimizedPath(),
         });
       } else {
-        const lendingPool = pool as LendingPool;
-        return lendingPool.deposit({
+        const lendingPoolBundle = poolBundle as LendingPoolBundle;
+        return lendingPoolBundle.depositBundle({
           user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToSupply,
+          reserve,
+          amount,
         });
       }
-    },
-    supplyWithPermit: (args) => {
-      const pool = getCorrectPool() as Pool;
-      const user = get().account;
-      return pool.supplyWithPermit({
-        ...args,
-        user,
-        useOptimizedPath: get().useOptimizedPath(),
-      });
     },
     swapCollateral: async ({
       poolReserve,
@@ -508,47 +513,6 @@ export const createPoolSlice: StateCreator<
     },
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
-    },
-    // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
-    generateSignatureRequst: async ({ token, amount, deadline, spender }) => {
-      const provider = get().jsonRpcProvider();
-      const tokenERC20Service = new ERC20Service(provider);
-      const tokenERC2612Service = new ERC20_2612Service(provider);
-      const { name } = await tokenERC20Service.getTokenData(token);
-      const { chainId } = await provider.getNetwork();
-      const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
-      const typeData = {
-        types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-          ],
-          Permit: [
-            { name: 'owner', type: 'address' },
-            { name: 'spender', type: 'address' },
-            { name: 'value', type: 'uint256' },
-            { name: 'nonce', type: 'uint256' },
-            { name: 'deadline', type: 'uint256' },
-          ],
-        },
-        primaryType: 'Permit',
-        domain: {
-          name,
-          version: '1',
-          chainId,
-          verifyingContract: token,
-        },
-        message: {
-          owner: get().account,
-          spender: spender,
-          value: amount,
-          nonce,
-          deadline,
-        },
-      };
-      return JSON.stringify(typeData);
     },
     poolComputed: {
       get minRemainingBaseTokenBalance() {
