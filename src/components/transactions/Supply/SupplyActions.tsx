@@ -1,10 +1,9 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useTransactionBundleHandler } from 'src/helpers/useTransactionBundleHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
-
-import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface SupplyActionProps extends BoxProps {
@@ -26,28 +25,17 @@ export const SupplyActions = ({
   blocked,
   ...props
 }: SupplyActionProps) => {
-  const { supply, supplyWithPermit, tryPermit } = useRootStore();
+  const { supplyBundle, tryPermit } = useRootStore();
   const usingPermit = tryPermit(poolAddress);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
-    useTransactionHandler({
+    useTransactionBundleHandler({
       tryPermit: usingPermit,
-      permitAction: ProtocolAction.supplyWithPermit,
-      handleGetTxns: async () => {
-        return supply({
-          amountToSupply,
-          isWrongNetwork,
-          poolAddress,
-          symbol,
-          blocked,
-        });
-      },
-      handleGetPermitTxns: async (signatures, deadline) => {
-        return supplyWithPermit({
-          reserve: poolAddress,
+      signedAction: ProtocolAction.supplyWithPermit,
+      handleGetBundle: async () => {
+        return supplyBundle({
           amount: amountToSupply,
-          signature: signatures[0],
-          deadline,
+          reserve: poolAddress,
         });
       },
       skip: !amountToSupply || parseFloat(amountToSupply) === 0,
@@ -66,7 +54,7 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval([{ amount: amountToSupply, underlyingAsset: poolAddress }])}
+      handleApproval={() => approval()}
       handleAction={action}
       requiresApproval={requiresApproval}
       tryPermit={usingPermit}
