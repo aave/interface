@@ -51,24 +51,6 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
-  [ChainId.goerli]: {
-    name: 'Ethereum Görli',
-    publicJsonRPCUrl: [
-      'https://eth-goerli.public.blastapi.io',
-      'https://rpc.ankr.com/eth_goerli',
-      'https://goerli.prylabs.net',
-    ],
-    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://goerli.etherscan.io',
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-  },
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
     publicJsonRPCUrl: [
@@ -78,6 +60,24 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://www.sepoliarpc.space',
     ],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.etherscan.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
+  [ChainId.goerli]: {
+    name: 'Ethereum Görli',
+    publicJsonRPCUrl: [
+      'https://eth-goerli.public.blastapi.io',
+      'https://rpc.ankr.com/eth_goerli',
+      'https://goerli.prylabs.net',
+    ],
+    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
