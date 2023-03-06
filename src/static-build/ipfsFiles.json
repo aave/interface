@@ -2412,6 +2412,20 @@
       "ipfsHash": "QmUn8EEUfznbC8Qb1chC26UeiLrC7GCuhUasApGXmD2Z1c",
       "originalHash": "0x5facc2129293778f8b9f474ee578d3368adc34a0bb4a1ba5e3f2e0b3b3f1a50b",
       "id": 168
+    },
+    {
+      "title": "increase supply cap for wstETH Aave Arbitrum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "increase supply cap for wstETH Aave Arbitrum V3",
+      "discussions": "https://governance.aave.com/t/arfc-increase-supply-cap-for-wsteth-aave-arbitrum-v3/12163",
+      "created": "2023-03-05T00:00:00.000Z",
+      "updated": "2023-03-05T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "WSTETH-ARB-CAP-UPDATE",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to increase wstETH supply cap on the Arbitrum v3 Liquidity Pool.\n\n## Motivation\n\nwstETH has reached approximately 95% of its supply cap on Aave V3 Arbitrum.\n\nIncreasing this supply cap will enable new Aave users to utilize Aave V3 and allow current users to increase the size of their positions.\n\nThe proposed increase is set at a level that allows the market to find a new equilibrium while maintaining a conservative approach.\n\n## Specification\n\nTicker: wstETH (wstETH)\n\nContract Address: 0x5979d7b546e38e414f7e9822514be443a4800529\n\n| Parameter | Current | Proposed |\n| --- | --- | --- |\n| Supply Cap | 1200 | 2400 |\n\n\n```solidity\ncontract AaveV3ArbwstETHCapsPayload is IProposalGenericExecutor {\n  uint256 public constant WSTETH_CAP = 2_400;\n\n  function execute() external {\n    AaveV3Arbitrum.POOL_CONFIGURATOR.setSupplyCap(\n      AaveV3ArbitrumAssets.wstETH_UNDERLYING,\n      WSTETH_CAP\n    );\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-increase-supply-cap-for-wsteth-aave-arbitrum-v3/12163)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/mainnet/AaveV3ArbwstETHSupplyCapsPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/arbitrum/AaveV3ArbwstETHSupplyCapsPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Deployed Contracts\n\n- [AaveV3ArbwstETHCapsPayload: ProposalPayload](https://arbiscan.io/address/0xcdb9ea7f9443fa9e8ba6ebc9ef41c3ed75939663#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmXWe3eH94wX4YAabNpBErJ1dwha6ERSDUryBfCSTDnHoq",
+      "originalHash": "0x88483d979386f2743b5801e8875b6157d4ff776ca89e45173a5da22229b816a4",
+      "id": 169
     }
   ]
 }
