@@ -23,6 +23,14 @@ export type EmodeCategory = {
   assets: string[];
 };
 
+// airdrop type
+export type AirdropEntry = {
+  address: string;
+  index: number;
+  amount: number;
+  claimIndex: number;
+};
+
 export enum DelegationType {
   VOTING = '0',
   PROPOSITION_POWER = '1',
