@@ -74,7 +74,8 @@ export const TxActionsWrapper = ({
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
-    if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
+    if (preparingTransactions || isEmpty(mainTxState))
+      return { disabled: true, loading: true, content: <Trans>Loading</Trans> };
     // if (hasApprovalError && handleRetry)
     //   return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)

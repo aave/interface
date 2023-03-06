@@ -22,6 +22,7 @@ export enum ModalType {
   GovDelegation,
   GovVote,
   V3Migration,
+  AirDrop,
 }
 
 export interface ModalArgsType {
@@ -61,6 +62,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
+  openAirDrop: () => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -159,6 +161,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openV3Migration: () => {
           setType(ModalType.V3Migration);
+        },
+        openAirDrop: () => {
+          setType(ModalType.AirDrop);
         },
         close: () => {
           setType(undefined);

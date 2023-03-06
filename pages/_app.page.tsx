@@ -28,7 +28,9 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 
+import { AirdropModal } from '../src/components/transactions/Airdrop/AirdropModal';
 import createEmotionCache from '../src/createEmotionCache';
+import { AirdropDataProvider } from '../src/hooks/airdrop-data-provider/AirdropDataProvider';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
@@ -74,20 +76,23 @@ export default function MyApp(props: MyAppProps) {
                   <ModalContextProvider>
                     <BackgroundDataProvider>
                       <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <MigrateV3Modal />
-                        </GasStationProvider>
+                        <AirdropDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <AirdropModal />
+                            <MigrateV3Modal />
+                          </GasStationProvider>
+                        </AirdropDataProvider>
                       </AppDataProvider>
                     </BackgroundDataProvider>
                   </ModalContextProvider>
