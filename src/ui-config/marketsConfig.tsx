@@ -221,23 +221,6 @@ export const marketsData: {
     },
   },
   // v3
-  [CustomMarket.proto_goerli_v3]: {
-    marketTitle: 'Ethereum Görli',
-    v3: true,
-    chainId: ChainId.goerli,
-    enabledFeatures: {
-      faucet: true,
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Goerli.POOL,
-      WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
-      FAUCET: markets.AaveV3Goerli.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Goerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Goerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
-    },
-  },
   [CustomMarket.proto_sepolia_v3]: {
     marketTitle: 'Ethereum Sepolia',
     v3: true,
@@ -255,6 +238,24 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
+  [CustomMarket.proto_goerli_v3]: {
+    marketTitle: 'Ethereum Görli',
+    v3: true,
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Goerli.POOL,
+      WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
+      FAUCET: markets.AaveV3Goerli.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Goerli.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Goerli.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
+    },
+  },
+
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     v3: true,
