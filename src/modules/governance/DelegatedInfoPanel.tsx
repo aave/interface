@@ -107,7 +107,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 export const DelegatedInfoPanel = () => {
   const powers = useVotingPower();
   const {
-    daveTokens: { aave, stkAave },
+    aaveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
   const address = useRootStore((store) => store.account);
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
