@@ -62,6 +62,7 @@ export const useTransactionHandler = ({
   const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
     (state) => state.generatePermitPayloadForMigrationBorrowAsset
   );
+  const prepareDelegateSignature = useRootStore((state) => state.prepareDelegateSignature);
   const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
@@ -123,7 +124,17 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (approvals?: Approval[]) => {
+  type DelegateSignData = {
+    delegatee: string;
+    nonce: string;
+    permitType: 'DELEGATE';
+    governanceToken: string;
+    governanceTokenName: string;
+  };
+
+  type GenericApproval = Approval | DelegateSignData;
+
+  const approval = async (approvals?: GenericApproval[]) => {
     if (approvalTxes) {
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
@@ -147,6 +158,11 @@ export const useTransactionHandler = ({
             } else if (approval.permitType == 'BORROW_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
                 generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
+              );
+            } else if (approval.permitType === 'DELEGATE') {
+              console.log(4);
+              unsignedPromisePayloads.push(
+                prepareDelegateSignature({ ...approval, expiry: deadline })
               );
             }
           }
@@ -308,6 +324,9 @@ export const useTransactionHandler = ({
     }
   };
 
+  const clearApprovalTransactions = () => {
+    setApprovalTxes(undefined);
+  };
   // populate txns
   // fetches standard txs (optional aproval + action), then based off availability and user preference, set tx flow and gas estimation to permit or approve
   useEffect(() => {
@@ -318,7 +337,10 @@ export const useTransactionHandler = ({
         return handleGetTxns()
           .then(async (txs) => {
             if (!mounted.current) return;
-            const approvalTransactions = txs.filter((tx) => tx.txType == 'ERC20_APPROVAL');
+            const approvalTransactions = txs.filter(
+              (tx) =>
+                tx.txType == 'ERC20_APPROVAL' || (tx.txType == 'GOV_DELEGATION_ACTION' && tryPermit)
+            );
             if (approvalTransactions.length > 0) {
               setApprovalTxes(approvalTransactions);
             }
@@ -404,5 +426,6 @@ export const useTransactionHandler = ({
     approvalTxState,
     mainTxState,
     usePermit,
+    clearApprovalTransactions,
   };
 };

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { DelegationType } from 'src/helpers/types';
+import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
 
@@ -14,167 +15,118 @@ export type DelegationToken = {
   symbol: string;
   votingDelegatee?: string;
   propositionDelegatee?: string;
+  type: DelegationTokenType;
 };
+
+export enum DelegationTokenType {
+  BOTH = 0,
+  AAVE,
+  STKAAVE,
+}
 
 export type DelegationTokenSelectorProps = {
   delegationTokens: DelegationToken[];
-  setDelegationToken: (token: string) => void;
-  delegationTokenAddress: string;
+  setDelegationTokenType: (type: DelegationTokenType) => void;
+  delegationTokenType: DelegationTokenType;
   delegationType: DelegationType;
   filter: boolean;
 };
 
+type TokenRowProps = {
+  symbol: string[] | string;
+  amount: string | number;
+};
+
+export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
+  return (
+    <Row
+      sx={{ alignItems: 'center', width: '100%' }}
+      caption={
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          {Array.isArray(symbol) ? (
+            symbol.map((token, index) => (
+              <>
+                <TokenIcon symbol={token} sx={{ width: 16, height: 16 }} />
+                <Typography variant="subheader1">{token}</Typography>
+                {index < symbol.length - 1 && <Typography variant="subheader1">+</Typography>}
+              </>
+            ))
+          ) : (
+            <>
+              <TokenIcon symbol={symbol} sx={{ width: 16, height: 16 }} />
+              <Typography variant="subheader1">{symbol}</Typography>
+            </>
+          )}
+        </Box>
+      }
+    >
+      <FormattedNumber variant="secondary14" color="text.secondary" value={amount} />
+    </Row>
+  );
+};
+
+const filterTokens = (
+  tokens: DelegationToken[],
+  delegationType: DelegationType
+): DelegationToken[] => {
+  if (delegationType === DelegationType.VOTING) {
+    return tokens.filter((token) => token.votingDelegatee !== '');
+  } else if (delegationType === DelegationType.PROPOSITION_POWER) {
+    return tokens.filter((token) => token.propositionDelegatee !== '');
+  }
+  return tokens.filter(
+    (token) => token.propositionDelegatee !== '' || token.votingDelegatee !== ''
+  );
+};
+
 export const DelegationTokenSelector = ({
   delegationTokens,
-  setDelegationToken,
-  delegationTokenAddress,
+  setDelegationTokenType,
+  delegationTokenType,
   delegationType,
   filter,
 }: DelegationTokenSelectorProps) => {
-  const votingTokensNotSelfDelegated = delegationTokens.filter(
-    (token) => token.votingDelegatee !== ''
-  );
-  const propositionTokensNotSelfDelegated = delegationTokens.filter(
-    (token) => token.propositionDelegatee !== ''
-  );
+  const {
+    daveTokens: { aave, stkAave },
+  } = useAaveTokensProviderContext();
 
-  const filteredTokens = delegationTokens.filter(
-    (token) => token.propositionDelegatee !== '' || token.votingDelegatee !== ''
-  );
-
-  const isFilteredVotingTab =
-    filter && delegationType === DelegationType.VOTING && votingTokensNotSelfDelegated.length === 1;
-  const isFilteredPropositionTab =
-    filter &&
-    delegationType === DelegationType.PROPOSITION_POWER &&
-    propositionTokensNotSelfDelegated.length === 1;
-  const isFilteredBothTab =
-    filter && delegationType === DelegationType.BOTH && filteredTokens.length === 1;
-
-  const defaultFilteredVotingTabAddress = votingTokensNotSelfDelegated[0]?.address;
-  const defaultFilteredPropositionTabAddress = propositionTokensNotSelfDelegated[0]?.address;
-
-  const defaultFilteredAddress = filteredTokens[0]?.address;
-
-  const defaultAddress = delegationTokens[0]?.address;
+  const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;
+  const isOneLiner = filter && filteredTokens.length === 1;
 
   useEffect(() => {
-    if (isFilteredVotingTab) setDelegationToken(defaultFilteredVotingTabAddress);
-    else if (isFilteredPropositionTab) setDelegationToken(defaultFilteredPropositionTabAddress);
-    else if (isFilteredBothTab) setDelegationToken(defaultFilteredAddress);
-    else setDelegationToken(defaultAddress);
-  }, [
-    setDelegationToken,
-    isFilteredPropositionTab,
-    isFilteredVotingTab,
-    isFilteredBothTab,
-    defaultFilteredPropositionTabAddress,
-    defaultFilteredVotingTabAddress,
-    defaultFilteredAddress,
-    defaultAddress,
-  ]);
+    if (isOneLiner) setDelegationTokenType(filteredTokens[0].type);
+  }, [isOneLiner, filteredTokens, setDelegationTokenType]);
 
-  if (isFilteredVotingTab) {
-    return (
-      <Row
-        sx={{ alignItems: 'center', width: '100%' }}
-        caption={
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <TokenIcon
-              symbol={votingTokensNotSelfDelegated[0].symbol}
-              sx={{ width: 16, height: 16 }}
-            />
-            <Typography variant="subheader1">{votingTokensNotSelfDelegated[0].symbol}</Typography>
-          </Box>
-        }
-      >
-        <FormattedNumber
-          variant="secondary14"
-          color="text.secondary"
-          value={votingTokensNotSelfDelegated[0].amount}
-        />
-      </Row>
-    );
-  }
-
-  if (isFilteredPropositionTab) {
-    return (
-      <Row
-        sx={{ alignItems: 'center', width: '100%' }}
-        caption={
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <TokenIcon
-              symbol={propositionTokensNotSelfDelegated[0].symbol}
-              sx={{ width: 16, height: 16 }}
-            />
-            <Typography variant="subheader1">
-              {propositionTokensNotSelfDelegated[0].symbol}
-            </Typography>
-          </Box>
-        }
-      >
-        <FormattedNumber
-          variant="secondary14"
-          color="text.secondary"
-          value={propositionTokensNotSelfDelegated[0].amount}
-        />
-      </Row>
-    );
-  }
-
-  if (isFilteredBothTab) {
-    return (
-      <Row
-        sx={{ alignItems: 'center', width: '100%' }}
-        caption={
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <TokenIcon symbol={filteredTokens[0].symbol} sx={{ width: 16, height: 16 }} />
-            <Typography variant="subheader1">{filteredTokens[0].symbol}</Typography>
-          </Box>
-        }
-      >
-        <FormattedNumber
-          variant="secondary14"
-          color="text.secondary"
-          value={filteredTokens[0].amount}
-        />
-      </Row>
-    );
+  if (isOneLiner) {
+    return <TokenRow symbol={filteredTokens[0].symbol} amount={filteredTokens[0].amount} />;
   }
 
   return (
     <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
       <RadioGroup
-        value={delegationTokenAddress}
-        onChange={(e) => setDelegationToken(e.target.value)}
+        value={delegationTokenType}
+        onChange={(e) =>
+          setDelegationTokenType(Number(e.target.value) as unknown as DelegationTokenType)
+        }
       >
-        {delegationTokens.map((token) => {
-          return (
-            <FormControlLabel
-              value={token.address}
-              key={token.address}
-              control={<Radio size="small" />}
-              componentsProps={{ typography: { width: '100%' } }}
-              label={
-                <Row
-                  sx={{ alignItems: 'center', width: '100%' }}
-                  caption={
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <TokenIcon symbol={token.symbol} sx={{ width: 16, height: 16 }} />
-                      <Typography variant="subheader1">{token.symbol}</Typography>
-                    </Box>
-                  }
-                >
-                  <FormattedNumber
-                    variant="secondary14"
-                    color="text.secondary"
-                    value={token.amount}
-                  />
-                </Row>
-              }
-            />
-          );
-        })}
+        <FormControlLabel
+          value={DelegationTokenType.BOTH}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol={['AAVE', 'stkAAVE']} amount={Number(aave) + Number(stkAave)} />}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.AAVE}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="AAVE" amount={aave} />}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.STKAAVE}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="stkAAVE" amount={stkAave} />}
+        />
       </RadioGroup>
     </FormControl>
   );
