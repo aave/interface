@@ -8,21 +8,15 @@ import { DelegationType } from 'src/helpers/types';
 export type DelegationTypeSelectorProps = {
   delegationType: DelegationType;
   setDelegationType: React.Dispatch<React.SetStateAction<DelegationType>>;
-  disableVoting: boolean;
-  disableProposing: boolean;
 };
 
 export const DelegationTypeSelector = ({
   delegationType,
   setDelegationType,
-  disableVoting,
-  disableProposing,
 }: DelegationTypeSelectorProps) => {
   useEffect(() => {
-    if (disableProposing) setDelegationType(DelegationType.VOTING);
-    else if (disableVoting) setDelegationType(DelegationType.PROPOSITION_POWER);
-    else setDelegationType(DelegationType.BOTH);
-  }, [disableProposing, disableVoting, setDelegationType]);
+    setDelegationType(DelegationType.BOTH);
+  }, [setDelegationType]);
 
   return (
     <StyledToggleButtonGroup
@@ -34,7 +28,7 @@ export const DelegationTypeSelector = ({
     >
       <StyledToggleButton
         value={DelegationType.BOTH}
-        disabled={disableVoting || disableProposing || delegationType === DelegationType.BOTH}
+        disabled={delegationType === DelegationType.BOTH}
       >
         <Typography variant="subheader1" sx={{ mr: 1 }}>
           <Trans>Both</Trans>
@@ -43,7 +37,7 @@ export const DelegationTypeSelector = ({
 
       <StyledToggleButton
         value={DelegationType.VOTING}
-        disabled={disableVoting || delegationType === DelegationType.VOTING}
+        disabled={delegationType === DelegationType.VOTING}
       >
         <Typography variant="subheader1" sx={{ mr: 1 }}>
           <Trans>Voting</Trans>
@@ -52,7 +46,7 @@ export const DelegationTypeSelector = ({
 
       <StyledToggleButton
         value={DelegationType.PROPOSITION_POWER}
-        disabled={disableProposing || delegationType === DelegationType.PROPOSITION_POWER}
+        disabled={delegationType === DelegationType.PROPOSITION_POWER}
       >
         <Typography variant="subheader1" sx={{ mr: 1 }}>
           <Trans>Proposition</Trans>

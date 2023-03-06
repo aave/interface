@@ -43,7 +43,7 @@ type GovDelegationModalContentProps = {
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const {
-    daveTokens: { aave, stkAave },
+    aaveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -57,6 +57,20 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
+
+  const onlyOnePowerToRevoke =
+    isRevokeModal &&
+    !!powers &&
+    ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
+      (powers.aavePropositionDelegatee === '' && powers.stkAavePropositionDelegatee === ''));
+
+  useEffect(() => {
+    if (onlyOnePowerToRevoke) {
+      if (powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '')
+        setDelegationType(DelegationType.PROPOSITION_POWER);
+      else setDelegationType(DelegationType.VOTING);
+    }
+  }, [onlyOnePowerToRevoke, powers]);
 
   useEffect(() => {
     setDelegate(isRevokeModal ? currentAccount : '');
@@ -127,25 +141,21 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
-      <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
-        <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
-      </Typography>
-      <DelegationTypeSelector
-        disableVoting={
-          isRevokeModal &&
-          !!powers &&
-          powers.aaveVotingDelegatee === '' &&
-          powers.stkAaveVotingDelegatee === ''
-        }
-        disableProposing={
-          isRevokeModal &&
-          !!powers &&
-          powers.aavePropositionDelegatee === '' &&
-          powers.stkAavePropositionDelegatee === ''
-        }
-        delegationType={delegationType}
-        setDelegationType={setDelegationType}
-      />
+      {(isRevokeModal &&
+        !!powers &&
+        ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
+          (powers.aavePropositionDelegatee === '' &&
+            powers.stkAavePropositionDelegatee === ''))) || (
+        <>
+          <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
+            <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
+          </Typography>
+          <DelegationTypeSelector
+            delegationType={delegationType}
+            setDelegationType={setDelegationType}
+          />
+        </>
+      )}
 
       {isRevokeModal ? (
         <Typography variant="description" color="text.secondary" sx={{ mt: 6, mb: 2 }}>

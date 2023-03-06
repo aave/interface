@@ -36,7 +36,8 @@ export function VotingPowerInfoPanel() {
               <>
                 <Typography variant="subheader2">
                   <Trans>
-                    Total voting power based on your AAVE/stkAAVE balance and received delegations.
+                    Your voting power is based on your AAVE/stkAAVE balance and received
+                    delegations.
                   </Trans>
                 </Typography>
                 <Typography variant="subheader2" mt={4}>
@@ -55,12 +56,16 @@ export function VotingPowerInfoPanel() {
               <>
                 <Typography variant="subheader2">
                   <Trans>
-                    Total proposition power based on your AAVE/stkAAVE balance and received
+                    Your proposition power is based on your AAVE/stkAAVE balance and received
                     delegations.
                   </Trans>
                 </Typography>
                 <Typography variant="subheader2" mt={4}>
-                  <Trans>You need at least 80.00K power to submit a proposal.</Trans>
+                  <Trans>
+                    To submit a proposal for minor changes to the protocol, you&apos;ll need at
+                    least 80.00K power. If you want to change the core code base, you&apos;ll need
+                    320k power. Learn more
+                  </Trans>
                 </Typography>
               </>
             </TextWithTooltip>

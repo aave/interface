@@ -1647,7 +1647,7 @@ msgstr "Select v2 borrows to migrate"
 msgid "Select v2 supplies to migrate"
 msgstr "Select v2 supplies to migrate"
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 
@@ -1666,6 +1666,11 @@ msgstr "Set up delegation"
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Setup notifications about your Health Factor using the Hal app."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Share on Lens"
+msgstr "Share on Lens"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1915,6 +1920,10 @@ msgstr "Testnet mode"
 msgid "Testnet mode is ON"
 msgstr "Testnet mode is ON"
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting!!"
+msgstr "Thank you for voting!!"
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -2116,6 +2125,10 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power. Learn more"
+msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power. Learn more"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
@@ -2143,10 +2156,6 @@ msgstr "Total emission per day"
 msgid "Total market size"
 msgstr "Total market size"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
-msgstr "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2157,10 +2166,6 @@ msgstr "Total supplied"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Total voting power"
-
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
-msgstr "Total voting power based on your AAVE/stkAAVE balance and received delegations."
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2306,10 +2311,6 @@ msgstr "View details"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "View on Explorer"
-
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr "Vote"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -2478,10 +2479,6 @@ msgstr "You have no AAVE/stkAAVE balance to delegate."
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "You need at least 80.00K power to submit a proposal."
-msgstr "You need at least 80.00K power to submit a proposal."
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -2524,6 +2521,10 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 msgid "Your info"
 msgstr "Your info"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
 msgstr "Your reward balance is 0"
@@ -2536,6 +2537,10 @@ msgstr "Your supplies"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
 msgstr "Your voting info"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
