@@ -79,7 +79,7 @@
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
     "react-markdown": "^8.0.3",
-    "react-number-format": "^4.9.1",
+    "react-number-format": "^5.1.4",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "web3-ledgerhq-frame-connector": "^1.0.1",
