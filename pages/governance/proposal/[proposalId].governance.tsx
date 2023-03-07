@@ -21,7 +21,6 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -50,6 +49,8 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
+import AaveMetaImage from '/aaveMetaLogo-min.jpg';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { LensIcon } from '../../../src/components/icons/LensIcon';
