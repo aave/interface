@@ -80,7 +80,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
         setFaucetSuccessMsg(
           `Your transaction was successfully queued. Estimated time until transaction is submitted: ${(
             data.estimatedTimeMs / 1000
-          ).toFixed(0)}`
+          ).toFixed(0)} seconds`
         );
       }
     } catch (e: unknown) {
