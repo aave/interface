@@ -215,9 +215,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         delegationTokenType={delegationTokenType}
         delegatee={delegate}
         isWrongNetwork={isWrongNetwork}
-        actionText={isRevokeModal ? <Trans>Revoke</Trans> : <Trans>Delegate</Trans>}
-        actionInProgressText={isRevokeModal ? <Trans>Revoking</Trans> : <Trans>Delegating</Trans>}
         blocked={delegateAddressBlockingError !== undefined || delegate === '' || !delegationType}
+        isRevoke={isRevokeModal}
       />
     </>
   );

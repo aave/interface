@@ -6,7 +6,6 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { utils } from 'ethers';
-import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { DelegationTokenType } from 'src/components/transactions/GovDelegation/DelegationTokenSelector';
 import { useModalContext } from 'src/hooks/useModal';
@@ -16,6 +15,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { DelegationType } from './types';
+import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
 export const useGovernanceDelegate = (
   delegationTokenType: DelegationTokenType,
@@ -31,6 +31,7 @@ export const useGovernanceDelegate = (
   const user = useRootStore((state) => state.account);
   const { signTxData, sendTx, getTxError } = useWeb3Context();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
+  const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [aaveNonce, setAaveNonce] = useState(0);
   const [stkAaveNonce, setStkAaveNonce] = useState(0);
   const [deadline, setDeadline] = useState(Math.floor(Date.now() / 1000 + 3600).toString());
@@ -38,6 +39,8 @@ export const useGovernanceDelegate = (
   const prepateDelegateByTypeSignature = useRootStore(
     (state) => state.prepareDelegateByTypeSignature
   );
+
+  const isSignatureAction = delegationTokenType === DelegationTokenType.BOTH;
 
   const {
     approvalTxState,
@@ -47,6 +50,7 @@ export const useGovernanceDelegate = (
     loadingTxns,
     setLoadingTxns,
     setTxError,
+    setApprovalTxState,
   } = useModalContext();
 
   const processTx = async ({
@@ -83,7 +87,7 @@ export const useGovernanceDelegate = (
   };
 
   const action = async () => {
-    if (delegationTokenType === DelegationTokenType.BOTH) {
+    if (isSignatureAction) {
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
       const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
       let txs: EthereumTransactionTypeExtended[] = [];
@@ -166,11 +170,36 @@ export const useGovernanceDelegate = (
         },
         action: TxAction.MAIN_ACTION,
       });
+    } else if (actionTx) {
+      setMainTxState({ ...mainTxState, loading: true });
+      const params = await actionTx.tx();
+      delete params.gasPrice;
+      return processTx({
+        tx: () => sendTx(params),
+        successCallback: (txnResponse: TransactionResponse) => {
+          setMainTxState({
+            txHash: txnResponse.hash,
+            loading: false,
+            success: true,
+          });
+          setTxError(undefined);
+        },
+        errorCallback: (error, hash) => {
+          const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: hash,
+            loading: false,
+          });
+        },
+        action: TxAction.MAIN_ACTION,
+      });
     }
   };
 
   const signMetaTxs = async () => {
     if (delegationTokenType === DelegationTokenType.BOTH) {
+      setApprovalTxState({ ...approvalTxState, loading: true });
       const aaveNonce = await getTokenNonce(user, governanceConfig.aaveTokenAddress);
       const stkAaveNonce = await getTokenNonce(user, governanceConfig.stkAaveTokenAddress);
       const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
@@ -203,20 +232,38 @@ export const useGovernanceDelegate = (
           unsignedPayloads.push(payload);
         }
       }
-      const signedPayload: SignatureLike[] = [];
-      for (const unsignedPayload of unsignedPayloads) {
-        signedPayload.push(await signTxData(unsignedPayload));
+      try {
+        const signedPayload: SignatureLike[] = [];
+        for (const unsignedPayload of unsignedPayloads) {
+          signedPayload.push(await signTxData(unsignedPayload));
+        }
+        setApprovalTxState({
+          txHash: MOCK_SIGNED_HASH,
+          loading: false,
+          success: true,
+        });
+        setTxError(undefined);
+        setSignatures(signedPayload);
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
       }
-      setSignatures(signedPayload);
     }
   };
 
   useEffect(() => {
     if (skip) {
+      setLoadingTxns(false);
+      setSignatures([]);
+      setActionTx(undefined);
       return;
     }
     setLoadingTxns(true);
-    const { cancel } = debounce(async () => {
+    const timeout = setTimeout(async () => {
       if (delegationTokenType === DelegationTokenType.BOTH) {
         const gas = gasLimitRecommendations[ProtocolAction.default];
         setGasLimit(gas.limit);
@@ -245,6 +292,8 @@ export const useGovernanceDelegate = (
                 : governanceConfig.stkAaveTokenAddress,
           });
         }
+        setMainTxState({ txHash: undefined });
+        setTxError(undefined);
         let gasLimit = 0;
         try {
           for (const tx of txs) {
@@ -260,9 +309,9 @@ export const useGovernanceDelegate = (
         setGasLimit(gasLimit.toString() || '');
         setLoadingTxns(false);
       }
-    });
-    return () => cancel();
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, [delegationTokenType, delegationType, delegatee, skip]);
 
-  return { approvalTxState, signMetaTxs, mainTxState, loadingTxns, action };
+  return { approvalTxState, signMetaTxs, mainTxState, loadingTxns, action, isSignatureAction };
 };

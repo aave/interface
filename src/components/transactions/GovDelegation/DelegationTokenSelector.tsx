@@ -87,7 +87,7 @@ export const DelegationTokenSelector = ({
   filter,
 }: DelegationTokenSelectorProps) => {
   const {
-    daveTokens: { aave, stkAave },
+    aaveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
 
   const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;

@@ -160,7 +160,6 @@ export const useTransactionHandler = ({
                 generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
               );
             } else if (approval.permitType === 'DELEGATE') {
-              console.log(4);
               unsignedPromisePayloads.push(
                 prepareDelegateSignature({ ...approval, expiry: deadline })
               );
