@@ -50,8 +50,6 @@ import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
-import AaveMetaImage from '/aaveMetaLogo-min.jpg';
-
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { LensIcon } from '../../../src/components/icons/LensIcon';
 
@@ -167,7 +165,11 @@ export default function ProposalPage({
   return (
     <>
       {ipfs && (
-        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+        <Meta
+          imageUrl={'/aaveMetaLogo-min.jpg'}
+          title={ipfs.title}
+          description={ipfs.shortDescription}
+        />
       )}
       <ProposalTopPanel />
 
