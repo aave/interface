@@ -52,6 +52,7 @@ export function ProposalListItem({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
           <StateBadge state={proposal.state} loading={mightBeStale} />
           <FormattedProposalTime
+            targets={proposal.targets}
             state={proposal.state}
             startTimestamp={proposal.startTimestamp}
             executionTime={proposal.executionTime}

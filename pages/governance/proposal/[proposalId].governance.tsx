@@ -203,6 +203,7 @@ export default function ProposalPage({
                         </Box>
                         {!loading && (
                           <FormattedProposalTime
+                            targets={proposal.targets}
                             state={proposal.state}
                             executionTime={proposal.executionTime}
                             startTimestamp={proposal.startTimestamp}
@@ -365,6 +366,7 @@ export default function ProposalPage({
                       <StateBadge state={proposal.state} loading={loading} />
                       <Box sx={{ mt: 0.5 }}>
                         <FormattedProposalTime
+                          targets={proposal.targets}
                           state={proposal.state}
                           startTimestamp={proposal.startTimestamp}
                           executionTime={proposal.executionTime}
