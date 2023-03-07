@@ -1,5 +1,6 @@
+import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -15,8 +16,9 @@ export function ProposalListItem({
   prerendered,
   ipfs,
 }: GovernancePageProps['proposals'][0]) {
-  const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
+  const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached, minQuorumVotes } =
     formatProposal(proposal);
+  const { palette } = useTheme();
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
   return (
@@ -64,6 +66,17 @@ export function ProposalListItem({
             checked={diffReached}
             loading={mightBeStale}
           />
+          {minQuorumVotes === 1040000 ? ( // Long executor
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
+                Long Executor
+              </Typography>
+              <ShieldExclamationIcon
+                color={quorumReached ? palette.success.main : palette.warning.main}
+                height="16"
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
       <Box
