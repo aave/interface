@@ -98,7 +98,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         {showDebtTokenHeader && (
           <Box sx={{ px: 4, pt: 3, pb: 2 }}>
             <Typography variant="secondary12" color="text.secondary">
-              <Trans>Aave Debt Token</Trans>
+              <Trans>Aave debt token</Trans>
             </Typography>
           </Box>
         )}
