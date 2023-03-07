@@ -71,6 +71,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
  * Generates network configs based on marketsData & fork settings.
  * Fork markets are generated for all markets on the underlying base chain.
  */
+
 export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
   acc[value] = _marketsData[value as keyof typeof CustomMarket];
   if (
@@ -114,6 +115,7 @@ export function getSupportedChainIds(): number[] {
 /**
  * selectable markets (markets in a available network + forks when enabled)
  */
+
 export const availableMarkets = Object.keys(marketsData).filter((key) =>
   getSupportedChainIds().includes(marketsData[key as keyof typeof CustomMarket].chainId)
 ) as CustomMarket[];
