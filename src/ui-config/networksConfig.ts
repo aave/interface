@@ -110,7 +110,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     bridge: {
       icon: '/icons/bridge/polygon.svg',
       name: 'Polygon PoS Bridge',
-      url: 'https://wallet.matic.network/bridge/',
+      url: 'https://wallet.polygon.technology/polygon/bridge',
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
