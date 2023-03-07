@@ -306,7 +306,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
   // If we used current account then the tx could get executed
-  const sendTx = async (txData: transactionType): Promise<TransactionResponse> => {
+  const sendTx = async (
+    txData: transactionType | PopulatedTransaction
+  ): Promise<TransactionResponse> => {
     if (provider) {
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);

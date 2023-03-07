@@ -1,4 +1,5 @@
 import {
+  ActionBundle,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
@@ -9,19 +10,18 @@ import {
   IncentivesControllerV2Interface,
   InterestRate,
   LendingPool,
+  LendingPoolBundle,
+  LPSupplyParamsBundleType,
   PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
+  PoolBundle,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
-  LPSupplyParamsBundleType,
-  ActionBundle,
-  PoolBundle,
-  LendingPoolBundle,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -29,10 +29,7 @@ import {
   LPSwapBorrowRateMode,
   LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
-import {
-  LPSignERC20ApprovalType,
-  LPSupplyWithPermitType,
-} from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import { LPSignERC20ApprovalType } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { Signature } from 'ethers';
@@ -41,7 +38,6 @@ import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
-import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
@@ -94,12 +90,16 @@ export interface PoolSlice {
       deadline: string;
     }
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  supplyBundle: (
-    args: Omit<LPSupplyParamsBundleType, 'user'>
-  ) => Promise<ActionBundle>;
+  supplyBundle: (args: Omit<LPSupplyParamsBundleType, 'user'>) => Promise<ActionBundle>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
+  generateSignatureRequest: (args: {
+    token: string;
+    amount: string;
+    deadline: string;
+    spender: string;
+  }) => Promise<string>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -522,6 +522,46 @@ export const createPoolSlice: StateCreator<
         const min = minBaseTokenRemainingByNetwork[chainId];
         return min || '0.001';
       },
+    },
+    generateSignatureRequest: async ({ token, amount, deadline, spender }) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      const tokenERC2612Service = new ERC20_2612Service(provider);
+      const { name } = await tokenERC20Service.getTokenData(token);
+      const { chainId } = await provider.getNetwork();
+      const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
+      const typeData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          Permit: [
+            { name: 'owner', type: 'address' },
+            { name: 'spender', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'Permit',
+        domain: {
+          name,
+          version: '1',
+          chainId,
+          verifyingContract: token,
+        },
+        message: {
+          owner: get().account,
+          spender: spender,
+          value: amount,
+          nonce,
+          deadline,
+        },
+      };
+      return JSON.stringify(typeData);
     },
   };
 };
