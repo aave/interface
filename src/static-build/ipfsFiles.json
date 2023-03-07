@@ -2479,6 +2479,19 @@
       "ipfsHash": "QmTfMDsHJDUy9Be1pMCh1SwwYMUbhfcbwXggDcb4ZQDoMz",
       "originalHash": "0x4f14b29139a93f1169afd329f5f7b9f5e8d8e55a252747c18ad50b23e9d1e249",
       "id": 173
+    },
+    {
+      "title": "Risk Parameter Updates for MKR - Aave V2 Ethereum",
+      "shortDescription": "Update Liquidation Threshold (LT) and Loan-To-Value (LTV) of MKR on AAVE v2 Ethereum",
+      "author": "Chaos Labs (@ori-chaoslabs, @yhayun)",
+      "discussions": "https://governance.aave.com/t/arc-chaos-labs-risk-parameter-updates-mkr-on-aave-v2-ethereum-2023-02-17/11948",
+      "created": "2023-02-17T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nA proposal to adjust two (2) total risk …",
+      "basename": "LT-LTV-UPDATES-V2-MKR-02-26-2023",
+      "description": "\n\n# Simple Summary\n\nA proposal to adjust two (2) total risk parameters, including Liquidation Threshold (LT) and Loan-To-Value (LTV), for one (1) asset on Aave V2 Ethereum.\n\n\n# Motivation\nThis proposal is a continuation of a series of proposals ([AIP-136](https://app.aave.com/governance/proposal/136/), [AIP-137](https://app.aave.com/governance/proposal/137/)) intended to reduce the viability of different attack vectors on V2 assets.\n\nAt Chaos Labs, we continuously monitor markets and utilize our [Asset Protection Tool](https://chaoslabs.xyz/posts/chaos-labs-asset-protection-tool) to assess potential attack vectors on the protocol and suggest parameter and configuration updates accordingly (Supply/Borrow Caps, Liquidation Threshold updates, freezing of assets, listing in isolation mode, etc.)\n\nCapital efficiency reductions on V2 assets will further mitigate attack vectors by increasing the capital required to wage a price manipulation attack on Aave. In addition, these changes will act as an effective motivation to shift usage to V3, where users can enjoy the benefits of enhanced risk mitigation mechanisms.\n\nAs Liquidation Threshold reductions may lead to user accounts being eligible for liquidations upon their approval, we want to clarify the full implications to the community at each step. To minimize this impact, we suggest reaching the desired settings by a series of incremental decreases, following the Risk-Off Framework previously approved by the community, with a reduction of up to 3% in any given AIP.\n\nTo avoid liquidations, Chaos Labs will communicate the planned amendments before their on-chain execution via all available avenues (Twitter, forums, Nansen Connect, and Blockscan Chat).\n\nBelow, we share data to quantify the effect of the recommended reductions on protocol users.\n\nAt the time of this proposal, none of the current positions will be eligible for liquidation due to the proposed change.\n\n$MKR\nZero (0) accounts are eligible for liquidation.\n\n# Specification\n\nThe following risk parameter proposal is presented below:\n| Asset | Parameter | Current | Recommended | Change |\n| --- | --- | --- | --- | --- |\n| MKR | Liquidation Threshold | 67% | 64% | -3% |\n| MKR | Loan-to-Value | 62% | 59% | -3% |\n\n\n# References\n[Forum Post](https://governance.aave.com/t/arc-chaos-labs-risk-parameter-updates-mkr-on-aave-v2-ethereum-2023-02-17/11948)\n\n[Tests](https://github.com/ChaosLabsInc/aave-v2-payloads/blob/main/src/tests/MKRPayload-Feb26.t.sol)\n\n[Proposal payload implementation](https://github.com/ChaosLabsInc/aave-v2-payloads/blob/main/src/payloads/MKRPayload-Feb26.sol)\n\n[Deployed proposal payload](https://etherscan.io/address/0x014b2fc091cad41f5d6a8eeb2fef27852f4a97e7#code) \n\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "Qmc8VGLwTp5qahhPiKetjXSpN9JYwHBnwN8NSpLpoPCs58",
+      "originalHash": "0xcce5f7fcad7db1ff6ac26c62dcb85cca41186d8a8eb3e770689ac0aba267d60f",
+      "id": 174
     }
   ]
 }
