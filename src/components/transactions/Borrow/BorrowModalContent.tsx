@@ -63,8 +63,7 @@ const BorrowModeSwitch = ({
         />
       }
       captionVariant="description"
-      mb={1}
-      pt={5}
+      mb={5}
       flexDirection="column"
       align="flex-start"
       captionColor="text.secondary"
@@ -205,13 +204,18 @@ export const BorrowModalContent = ({
     decimals: poolReserve.decimals,
   };
 
+  const iconSymbol =
+    borrowUnWrapped && poolReserve.isWrappedBaseAsset
+      ? currentNetworkConfig.baseAssetSymbol
+      : poolReserve.iconSymbol;
+
   if (borrowTxState.success)
     return (
       <TxSuccessView
         action={<Trans>Borrowed</Trans>}
         amount={amountRef.current}
-        symbol={poolReserve.symbol}
-        addToken={addToken}
+        symbol={iconSymbol}
+        addToken={borrowUnWrapped && poolReserve.isWrappedBaseAsset ? undefined : addToken}
       />
     );
 
@@ -222,6 +226,16 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
+
+      {poolReserve.stableBorrowRateEnabled && (
+        <BorrowModeSwitch
+          interestRateMode={interestRateMode}
+          setInterestRateMode={setInterestRateMode}
+          variableRate={poolReserve.variableBorrowAPY}
+          stableRate={poolReserve.stableBorrowAPY}
+        />
+      )}
+
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -229,11 +243,8 @@ export const BorrowModalContent = ({
         assets={[
           {
             balance: formattedMaxAmountToBorrow,
-            symbol: symbol,
-            iconSymbol:
-              borrowUnWrapped && poolReserve.isWrappedBaseAsset
-                ? currentNetworkConfig.baseAssetSymbol
-                : poolReserve.iconSymbol,
+            symbol,
+            iconSymbol,
           },
         ]}
         symbol={symbol}
@@ -249,24 +260,17 @@ export const BorrowModalContent = ({
         </Typography>
       )}
 
-      {poolReserve.stableBorrowRateEnabled && (
-        <BorrowModeSwitch
-          interestRateMode={interestRateMode}
-          setInterestRateMode={setInterestRateMode}
-          variableRate={poolReserve.variableBorrowAPY}
-          stableRate={poolReserve.stableBorrowAPY}
+      {poolReserve.isWrappedBaseAsset && (
+        <DetailsUnwrapSwitch
+          unwrapped={borrowUnWrapped}
+          setUnWrapped={setBorrowUnWrapped}
+          label={
+            <Typography>{`Unwrap ${poolReserve.symbol} (to borrow ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
+          }
         />
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        {poolReserve.isWrappedBaseAsset && (
-          <DetailsUnwrapSwitch
-            unwrapped={borrowUnWrapped}
-            setUnWrapped={setBorrowUnWrapped}
-            symbol={poolReserve.symbol}
-            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
-        )}
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
           visibleHfChange={!!_amount}

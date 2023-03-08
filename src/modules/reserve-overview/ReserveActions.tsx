@@ -140,13 +140,15 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
-            <BorrowAction
-              value={maxAmountToBorrow.toString()}
-              usdValue={maxAmountToBorrowUsd}
-              symbol={selectedAsset}
-              disable={disableBorrowButton}
-              onActionClicked={() => openBorrow(reserve.underlyingAsset)}
-            />
+            {reserve.borrowingEnabled && (
+              <BorrowAction
+                value={maxAmountToBorrow.toString()}
+                usdValue={maxAmountToBorrowUsd}
+                symbol={selectedAsset}
+                disable={disableBorrowButton}
+                onActionClicked={() => openBorrow(reserve.underlyingAsset)}
+              />
+            )}
             {alerts}
           </Stack>
         </>
@@ -285,7 +287,7 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
 };
 
 const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
-  return !disable ? (
+  return (
     <Stack>
       <AvailableTooltip
         variant="description"
@@ -320,7 +322,7 @@ const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
         </Button>
       </Stack>
     </Stack>
-  ) : null;
+  );
 };
 
 const WrappedBaseAssetSelector = ({

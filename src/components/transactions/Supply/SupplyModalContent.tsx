@@ -48,7 +48,6 @@ export const SupplyModalContent = ({
   isWrongNetwork,
   nativeBalance,
   tokenBalance,
-  symbol,
 }: ModalWrapperProps) => {
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
@@ -276,7 +275,7 @@ export const SupplyModalContent = ({
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
         poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
-        symbol={symbol}
+        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         blocked={blockingError !== undefined}
       />
     </>

@@ -104,15 +104,16 @@ export const AddTokenDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
+        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
           <Typography variant="secondary12" color="text.secondary">
-            <Trans>Select token to add</Trans>
+            <Trans>Underlying token</Trans>
           </Typography>
         </Box>
 
         <MenuItem
           key="underlying"
           value="underlying"
+          divider
           onClick={() => {
             if (currentChainId !== connectedChainId) {
               switchNetwork(currentChainId).then(() => {
@@ -134,7 +135,11 @@ export const AddTokenDropdown = ({
             {poolReserve.symbol}
           </Typography>
         </MenuItem>
-
+        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+          <Typography variant="secondary12" color="text.secondary">
+            <Trans>Aave aToken</Trans>
+          </Typography>
+        </Box>
         <MenuItem
           key="atoken"
           value="atoken"

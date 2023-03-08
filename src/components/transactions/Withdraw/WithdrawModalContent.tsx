@@ -201,15 +201,17 @@ export const WithdrawModalContent = ({
         </Typography>
       )}
 
+      {poolReserve.isWrappedBaseAsset && (
+        <DetailsUnwrapSwitch
+          unwrapped={withdrawUnWrapped}
+          setUnWrapped={setWithdrawUnWrapped}
+          label={
+            <Typography>{`Unwrap ${poolReserve.symbol} (to withdraw ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
+          }
+        />
+      )}
+
       <TxModalDetails gasLimit={gasLimit}>
-        {poolReserve.isWrappedBaseAsset && (
-          <DetailsUnwrapSwitch
-            unwrapped={withdrawUnWrapped}
-            setUnWrapped={setWithdrawUnWrapped}
-            symbol={poolReserve.symbol}
-            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
-        )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(amount || '0').toString(10)}

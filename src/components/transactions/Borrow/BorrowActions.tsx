@@ -43,7 +43,7 @@ export const BorrowActions = ({
         });
       },
       skip: !amountToBorrow || amountToBorrow === '0' || blocked,
-      deps: [amountToBorrow, interestRateMode],
+      deps: [amountToBorrow, interestRateMode, poolAddress],
     });
 
   return (
