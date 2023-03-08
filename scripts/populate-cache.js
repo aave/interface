@@ -33679,7 +33679,8 @@ var require_types2 = __commonJS({
       69: "optimism_kovan",
       420: "optimism_goerli",
       16666e5: "harmony",
-      16667e5: "harmony_testnet"
+      16667e5: "harmony_testnet",
+      11155111: "sepolia"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33704,6 +33705,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["harmony"] = 16666e5] = "harmony";
       ChainId7[ChainId7["harmony_testnet"] = 16667e5] = "harmony_testnet";
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
+      ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -53397,6 +53399,35 @@ var require_AaveV2Goerli = __commonJS({
   }
 });
 
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.js
+var require_AaveV3Sepolia = __commonJS({
+  "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.POOL_ADDRESSES_PROVIDER = "0x0496275d34753A48320CA58103d5220d394FF77F";
+    exports2.POOL = "0xE7EC1B0015eb2ADEedb1B7f9F1Ce82F9DAD6dF08";
+    exports2.POOL_CONFIGURATOR = "0x9EB3fd3b5b405c29825dD5eEB7b31A08f9510397";
+    exports2.ORACLE = "0x132C06E86CcCf93Afef7B33f0FF3e2E97EECf8f6";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xC7832d5ACDDbdA5a7c9d1Fa9F677f9a84b7a4125";
+    exports2.ACL_MANAGER = "0x3F7E88aD1938634150A3480ac5a58706F7a7655A";
+    exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
+    exports2.COLLECTOR = "0x3246D6476dCc255b64342911D267F6CA3013068d";
+    exports2.COLLECTOR_CONTROLLER = "0x50BAA7eEA31c82F829d5a41DC086391D827bd829";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x74269d0f5f1C2C44663f0214f2EE42c00a144460";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x177F4611B27Cb66f5E6A51B4DD956f37A75F883B";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xfbC748B4f6FFB9997B8dcC10Fb7494620747a82c";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x61e11abA0Ea933700A74155C845b8ED6C200aCc8";
+    exports2.CHAIN_ID = 11155111;
+    exports2.EMISSION_MANAGER = "0x139D4efdDAaC44dfbF1Fbe9b23A635663ebfD4Af";
+    exports2.WETH_GATEWAY = "0xe70cDC67C91d5519DD4682cA162E40480773255a";
+    exports2.FAUCET = "0x1f885520b7BD528E46b390040F12E753Dce43004";
+    exports2.WALLET_BALANCE_PROVIDER = "0x4f04218ECC7D2756f84836D2DC267293504cAbCc";
+    exports2.UI_POOL_DATA_PROVIDER = "0xe38c93180a6CE4173d88793c0671AD1Dd417c7d8";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0x7cE1062e0688BC3D7699987A38bba84353F69881";
+  }
+});
+
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Goerli.js
 var require_AaveV3Goerli = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Goerli.js"(exports2) {
@@ -53423,6 +53454,35 @@ var require_AaveV3Goerli = __commonJS({
     exports2.WALLET_BALANCE_PROVIDER = "0xe0bb4593f74B804B9aBd9a2Ec6C71663cEE64E29";
     exports2.UI_POOL_DATA_PROVIDER = "0xb00A75686293Fea5DA122E8361f6815A0B0AF48E";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0xf4Ce3624c8D047aF8b069D044f00bF6774B4dEc0";
+  }
+});
+
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3GoerliGho.js
+var require_AaveV3GoerliGho = __commonJS({
+  "node_modules/@bgd-labs/aave-address-book/dist/AaveV3GoerliGho.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.POOL_ADDRESSES_PROVIDER = "0x4dd5ab8Fb385F2e12aDe435ba7AFA812F1d364D0";
+    exports2.POOL = "0x617Cf26407193E32a771264fB5e9b8f09715CdfB";
+    exports2.POOL_CONFIGURATOR = "0x04eA6B2a9E82Bd58bC95B8eA2b90496356dD969F";
+    exports2.ORACLE = "0xcb601629B36891c43943e3CDa2eB18FAc38B5c4e";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xB7d8ff9949dB06D8387C28332045b8F734641755";
+    exports2.ACL_MANAGER = "0x9C94757E231AdF6c90f89259DFA0841a1bf8172f";
+    exports2.ACL_ADMIN = "0x2892e37624Ec31CC42502f297821109700270971";
+    exports2.COLLECTOR = "0x1A47958e231848C664863D213bC27b018934477D";
+    exports2.COLLECTOR_CONTROLLER = "0x32ceB13aDe3D8B6951Fd00cE3cFaB6B7204B3d68";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x8688FEF353f4940061b4893d563de1C487Aa92Fd";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x877880d5E01b483add2f3223B709a26b622F0852";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x46Dbc9aeF756a594a61fcbB35902F24103044cBf";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0xAc08Af18C2E9b7B62facacd048d2F89a25024474";
+    exports2.CHAIN_ID = 5;
+    exports2.EMISSION_MANAGER = "0xC9f3b10c05a3e2a49F8165AC29b9275f85DE06cD";
+    exports2.WETH_GATEWAY = "0x9c402E3b0D123323F0FCed781b8184Ec7E02Dd31";
+    exports2.FAUCET = "0x1265305F033156bbF8Ba54fE45DD5685BEc4Cc44";
+    exports2.WALLET_BALANCE_PROVIDER = "0x03C8d0c46834921c4468C15A03E5d76Ae5CA3133";
+    exports2.UI_POOL_DATA_PROVIDER = "0x3De59b6901e7Ad0A19621D49C5b52cC9a4977e52";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0xF67B25977cEFf3563BF7F24A531D6CEAe6870a9d";
   }
 });
 
@@ -53518,7 +53578,7 @@ var require_AaveV3Polygon = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
@@ -53538,6 +53598,7 @@ var require_AaveV3Polygon = __commonJS({
     exports2.WETH_GATEWAY = "0x1e4b7A6b903680eab0c5dAbcb8fD429cD2a9598c";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x10D2fA27166d94894d850a9a851EE06870F14b09";
     exports2.SWAP_COLLATERAL_ADAPTER = "0x6a4b2b595d369c963493Fc704CF48e42FAd8260b";
+    exports2.LISTING_ENGINE = "0xEDaD55FB5F4020bF51016614B3301B1FEff8BE46";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xC69728f11E9E6127733751c8410432913123acf1";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x874313A46e4957D29FAAC43BF5Eb2B144894f557";
@@ -53613,8 +53674,8 @@ var require_AaveV2Avalanche = __commonJS({
     exports2.LENDING_RATE_ORACLE = "0xc34254642B504484465F38Cb1CC396d45a9c7c80";
     exports2.ORACLE = "0xdC336Cd4769f4cC7E9d726DA53e6d3fC710cEB89";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x65285E9dfab318f57051ab2b139ccCf232945451";
-    exports2.POOL_ADMIN = "0x01244E7842254e3FD229CD263472076B1439D1Cd";
-    exports2.EMERGENCY_ADMIN = "0x01244E7842254e3FD229CD263472076B1439D1Cd";
+    exports2.POOL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
+    exports2.EMERGENCY_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.COLLECTOR = "0x467b92aF281d14cB6809913AD016a607b5ba8A36";
     exports2.COLLECTOR_CONTROLLER = "address(0)";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9";
@@ -53638,7 +53699,7 @@ var require_AaveV3Avalanche = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
@@ -53658,6 +53719,7 @@ var require_AaveV3Avalanche = __commonJS({
     exports2.WETH_GATEWAY = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x4fB0Ba43a5415f312cf5FA10d16Ff6dbA697d9aA";
     exports2.SWAP_COLLATERAL_ADAPTER = "0x00e39085C877328619FDB2a47d995c516a5fA869";
+    exports2.LISTING_ENGINE = "0x165e90Bd0a41d08fA1891CcDCEe315D7b83B3419";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xF71DBe0FAEF1473ffC607d4c555dfF0aEaDb878d";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x265d414f80b0fca9505710e6F16dB4b67555D365";
@@ -53671,14 +53733,14 @@ var require_AaveV3Arbitrum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-    exports2.ACL_ADMIN = "0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb";
+    exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
     exports2.COLLECTOR_CONTROLLER = "0xC3301b30f4EcBfd59dE0d74e89690C1a70C6f21B";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
@@ -53691,6 +53753,7 @@ var require_AaveV3Arbitrum = __commonJS({
     exports2.WETH_GATEWAY = "0xB5Ee21786D28c5Ba61661550879475976B707099";
     exports2.SWAP_COLLATERAL_ADAPTER = "0xb20bd14259089e63d1f49d8d887ABA783Ce5dAc2";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0xB0526BFb4047aE1147DC7caAF3F1653904C2D568";
+    exports2.LISTING_ENGINE = "0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
@@ -53822,14 +53885,14 @@ var require_AaveV3Optimism = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-    exports2.ACL_ADMIN = "0xE50c8C619d05ff98b22Adf991F17602C774F785c";
+    exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
     exports2.COLLECTOR_CONTROLLER = "0xA77E4A084d7d4f064E326C0F6c0aCefd47A5Cb21";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
@@ -53842,6 +53905,7 @@ var require_AaveV3Optimism = __commonJS({
     exports2.WETH_GATEWAY = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
     exports2.SWAP_COLLATERAL_ADAPTER = "0xBC2Ff189e0349Ca73D9b78c172FC2B40025abE2a";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x66d340EB9D3dCe0f78e813E2F991B7CE54a1a28c";
+    exports2.LISTING_ENGINE = "0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
@@ -53916,7 +53980,7 @@ var require_AaveAddressBook = __commonJS({
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.AaveV3OptimismGoerli = exports2.AaveV3Optimism = exports2.AaveV3Harmony = exports2.AaveV3Fantom = exports2.AaveV3FantomTestnet = exports2.AaveV3ArbitrumGoerli = exports2.AaveV3Arbitrum = exports2.AaveV3Avalanche = exports2.AaveV2Avalanche = exports2.AaveV3Fuji = exports2.AaveV2Fuji = exports2.AaveV3Polygon = exports2.AaveV2Polygon = exports2.AaveV3Mumbai = exports2.AaveV2Mumbai = exports2.AaveV3Goerli = exports2.AaveV2Goerli = exports2.AaveV2EthereumArc = exports2.AaveV2EthereumAMM = exports2.AaveV3Ethereum = exports2.AaveV2Ethereum = exports2.AaveSafetyModule = exports2.AaveGovernanceV2 = void 0;
+    exports2.AaveV3OptimismGoerli = exports2.AaveV3Optimism = exports2.AaveV3Harmony = exports2.AaveV3Fantom = exports2.AaveV3FantomTestnet = exports2.AaveV3ArbitrumGoerli = exports2.AaveV3Arbitrum = exports2.AaveV3Avalanche = exports2.AaveV2Avalanche = exports2.AaveV3Fuji = exports2.AaveV2Fuji = exports2.AaveV3Polygon = exports2.AaveV2Polygon = exports2.AaveV3Mumbai = exports2.AaveV2Mumbai = exports2.AaveV3GoerliGho = exports2.AaveV3Goerli = exports2.AaveV3Sepolia = exports2.AaveV2Goerli = exports2.AaveV2EthereumArc = exports2.AaveV2EthereumAMM = exports2.AaveV3Ethereum = exports2.AaveV2Ethereum = exports2.AaveSafetyModule = exports2.AaveGovernanceV2 = void 0;
     exports2.AaveGovernanceV2 = __importStar2(require_AaveGovernanceV2());
     exports2.AaveSafetyModule = __importStar2(require_AaveSafetyModule());
     exports2.AaveV2Ethereum = __importStar2(require_AaveV2Ethereum());
@@ -53924,7 +53988,9 @@ var require_AaveAddressBook = __commonJS({
     exports2.AaveV2EthereumAMM = __importStar2(require_AaveV2EthereumAMM());
     exports2.AaveV2EthereumArc = __importStar2(require_AaveV2EthereumArc());
     exports2.AaveV2Goerli = __importStar2(require_AaveV2Goerli());
+    exports2.AaveV3Sepolia = __importStar2(require_AaveV3Sepolia());
     exports2.AaveV3Goerli = __importStar2(require_AaveV3Goerli());
+    exports2.AaveV3GoerliGho = __importStar2(require_AaveV3GoerliGho());
     exports2.AaveV2Mumbai = __importStar2(require_AaveV2Mumbai());
     exports2.AaveV3Mumbai = __importStar2(require_AaveV3Mumbai());
     exports2.AaveV2Polygon = __importStar2(require_AaveV2Polygon());
@@ -63164,6 +63230,23 @@ var marketsData = {
     }
   },
   // v3
+  ["proto_sepolia_v3" /* proto_sepolia_v3 */]: {
+    marketTitle: "Ethereum Sepolia",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.sepolia,
+    enabledFeatures: {
+      faucet: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Sepolia.POOL,
+      WETH_GATEWAY: markets.AaveV3Sepolia.WETH_GATEWAY,
+      FAUCET: markets.AaveV3Sepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER
+    }
+  },
   ["proto_goerli_v3" /* proto_goerli_v3 */]: {
     marketTitle: "Ethereum G\xF6rli",
     v3: true,
@@ -63468,6 +63551,25 @@ var marketsData = {
 // src/ui-config/networksConfig.ts
 var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
+  [import_contract_helpers3.ChainId.sepolia]: {
+    name: "Ethereum Sepolia",
+    publicJsonRPCUrl: [
+      "https://rpc.sepolia.org",
+      "https://rpc2.sepolia.org",
+      "https://rpc.sepolia.online",
+      "https://www.sepoliarpc.space"
+    ],
+    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://sepolia.etherscan.io",
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/ethereum.svg"
+  },
   [import_contract_helpers3.ChainId.goerli]: {
     name: "Ethereum G\xF6rli",
     publicJsonRPCUrl: [
@@ -63527,7 +63629,7 @@ var networkConfigs = {
     bridge: {
       icon: "/icons/bridge/polygon.svg",
       name: "Polygon PoS Bridge",
-      url: "https://wallet.matic.network/bridge/"
+      url: "https://wallet.polygon.technology/polygon/bridge"
     },
     ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
   },
