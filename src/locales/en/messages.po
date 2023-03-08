@@ -2123,8 +2123,8 @@ msgid "To request access for this permissioned market, please visit: <0>Acces Pr
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power. Learn more"
-msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power. Learn more"
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
+msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
