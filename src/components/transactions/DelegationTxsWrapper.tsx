@@ -71,7 +71,7 @@ export const DelegationTxsWrapper = ({
   }
 
   function getSignatureParams() {
-    if (!requiresSignature || isWrongNetwork || preparingTransactions) return null;
+    if (!requiresSignature || isWrongNetwork || preparingTransactions || blocked) return null;
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Signing</Trans> };
     if (approvalTxState?.success)

@@ -40,7 +40,7 @@ export const governanceConfig: GovernanceConfig = {
     AAVE_GOVERNANCE_V2: '0xEC568fffba86c094cf06b22134B23074DFE2252c',
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7',
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
-    AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
+    AAVE_GOVERNANCE_V2_HELPER: '0xbf2d3c94a7b3fc3f0f7c57ac1e59c4706d4f7550',
   },
   ipfsGateway: 'https://cloudflare-ipfs.com/ipfs',
   fallbackIpfsGateway: 'https://ipfs.io/ipfs',

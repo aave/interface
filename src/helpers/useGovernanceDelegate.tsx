@@ -88,6 +88,7 @@ export const useGovernanceDelegate = (
 
   const action = async () => {
     if (isSignatureAction) {
+      setMainTxState({ ...mainTxState, loading: true });
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
       const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
       let txs: EthereumTransactionTypeExtended[] = [];
@@ -100,21 +101,17 @@ export const useGovernanceDelegate = (
               delegatee,
               nonce: aaveNonce,
               expiry: deadline,
-              signature: {
-                v: v1,
-                r: r1,
-                s: s1,
-              },
+              v: v1,
+              r: r1,
+              s: s1,
             },
             {
               delegatee,
               nonce: stkAaveNonce,
               expiry: deadline,
-              signature: {
-                v: v2,
-                r: r2,
-                s: s2,
-              },
+              v: v2,
+              r: r2,
+              s: s2,
             },
           ],
         });
@@ -128,22 +125,18 @@ export const useGovernanceDelegate = (
               nonce: aaveNonce,
               expiry: deadline,
               delegationType,
-              signature: {
-                v: v1,
-                r: r1,
-                s: s1,
-              },
+              v: v1,
+              r: r1,
+              s: s1,
             },
             {
               delegatee,
               nonce: stkAaveNonce,
               expiry: deadline,
               delegationType,
-              signature: {
-                v: v2,
-                r: r2,
-                s: s2,
-              },
+              v: v2,
+              r: r2,
+              s: s2,
             },
           ],
         });
@@ -211,14 +204,14 @@ export const useGovernanceDelegate = (
           delegatee,
           nonce: String(aaveNonce),
           governanceToken: governanceConfig.aaveTokenAddress,
-          governanceTokenName: 'AAVE',
+          governanceTokenName: 'Aave Token',
           expiry: deadline,
         },
         {
           delegatee,
           nonce: String(stkAaveNonce),
           governanceToken: governanceConfig.stkAaveTokenAddress,
-          governanceTokenName: 'stkAAVE',
+          governanceTokenName: 'Staked Aave',
           expiry: deadline,
         },
       ];
@@ -292,6 +285,7 @@ export const useGovernanceDelegate = (
                 : governanceConfig.stkAaveTokenAddress,
           });
         }
+        setActionTx(txs[0]);
         setMainTxState({ txHash: undefined });
         setTxError(undefined);
         let gasLimit = 0;
