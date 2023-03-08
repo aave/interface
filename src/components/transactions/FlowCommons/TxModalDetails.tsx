@@ -137,7 +137,7 @@ export const DetailsNumberLineWithSub = ({
           </>
         ) : (
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: { xs: 'block', lg: 'flex' }, alignItems: 'center' }}>
               {value && (
                 <>
                   <FormattedNumber value={value} variant="secondary14" color={color} />
