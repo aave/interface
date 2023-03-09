@@ -6,8 +6,7 @@ interface IconProps {
 
 export const LensIcon = ({ color }: IconProps) => {
   return (
-    <SvgIcon xmlns="http://www.w3.org/2000/svg" aria-labelledby="title">
-      <title>Lens icon</title>
+    <SvgIcon xmlns="http://www.w3.org/2000/svg" aria-label="Lens">
       <svg
         width="24"
         height="24"
