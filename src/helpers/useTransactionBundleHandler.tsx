@@ -1,12 +1,6 @@
-import {
-  ActionBundle,
-  gasLimitRecommendations,
-  ProtocolAction,
-  SignedActionRequest,
-} from '@aave/contract-helpers';
+import { ActionBundle, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { PopulatedTransaction } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
@@ -56,12 +50,7 @@ export const useTransactionBundleHandler = ({
   const [walletApprovalMethodPreference] = useRootStore((state) => [
     state.walletApprovalMethodPreference,
   ]);
-
-  const [approvalTxes, setApprovalTxes] = useState<PopulatedTransaction[] | undefined>();
-  const [signatureRequests, setSignatureRequests] = useState<string[] | undefined>();
-  const [generateSignedAction, setGenerateSignedAction] =
-    useState<({ signatures }: SignedActionRequest) => Promise<PopulatedTransaction>>();
-  const [actionTx, setActionTx] = useState<PopulatedTransaction | undefined>();
+  const [bundle, setBundle] = useState<ActionBundle>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
 
@@ -117,13 +106,12 @@ export const useTransactionBundleHandler = ({
   };
 
   const approval = async () => {
-    if (approvalTxes) {
-      if (usePermit && signatureRequests && signatureRequests.length > 0) {
+    if (bundle && bundle?.approvals.length > 0) {
+      if (usePermit && bundle.signatureRequests.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
-
         try {
           const signatures: SignatureLike[] = [];
-          for (const unsignedPayload of signatureRequests) {
+          for (const unsignedPayload of bundle.signatureRequests) {
             signatures.push(await signTxData(unsignedPayload));
           }
           if (!mounted.current) return;
@@ -147,32 +135,34 @@ export const useTransactionBundleHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
-          if (approvalTxes) {
-            await Promise.all(
-              approvalTxes.map(
-                (param) =>
-                  new Promise<TransactionResponse>(async (resolve, reject) => {
-                    processTx({
-                      tx: () => sendTx(param),
-                      successCallback: (txnResponse: TransactionResponse) => {
-                        resolve(txnResponse);
-                      },
-                      errorCallback: (error, hash) => {
-                        const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
-                        setTxError(parsedError);
-                        setApprovalTxState({
-                          txHash: hash,
-                          loading: false,
-                        });
-                        reject();
-                      },
-                      // TODO: add error callback
-                      action: TxAction.APPROVAL,
-                    });
-                  })
-              )
-            );
-          }
+          const approvalResponses = await Promise.all(
+            bundle.approvals.map(
+              (approval) =>
+                new Promise<TransactionResponse>(async (resolve, reject) => {
+                  processTx({
+                    tx: () => sendTx(approval),
+                    successCallback: (txnResponse: TransactionResponse) => {
+                      resolve(txnResponse);
+                    },
+                    errorCallback: (error, hash) => {
+                      const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
+                      setTxError(parsedError);
+                      setApprovalTxState({
+                        txHash: hash,
+                        loading: false,
+                      });
+                      reject();
+                    },
+                    action: TxAction.APPROVAL,
+                  });
+                })
+            )
+          );
+          setApprovalTxState({
+            txHash: approvalResponses[0].hash,
+            loading: false,
+            success: true,
+          });
         } catch (error) {
           if (!mounted.current) return;
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -187,74 +177,82 @@ export const useTransactionBundleHandler = ({
   };
 
   const action = async () => {
-    if (usePermit && generateSignedAction) {
-      if (!signatures.length) throw new Error('signature needed');
-      try {
-        setMainTxState({ ...mainTxState, loading: true });
-        const signatureStrings = signatures.map((signature: SignatureLike) => signature.toString());
-        const txn = await generateSignedAction({ signatures: signatureStrings });
-        return processTx({
-          tx: () => sendTx(txn),
-          successCallback: (txnResponse: TransactionResponse) => {
-            setMainTxState({
-              txHash: txnResponse.hash,
-              loading: false,
-              success: true,
-            });
-            setTxError(undefined);
-          },
-          errorCallback: (error, hash) => {
-            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
-            setTxError(parsedError);
-            setMainTxState({
-              txHash: hash,
-              loading: false,
-            });
-          },
-          action: TxAction.MAIN_ACTION,
-        });
-      } catch (error) {
-        console.log(error, 'error');
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setMainTxState({
-          txHash: undefined,
-          loading: false,
-        });
+    if (bundle) {
+      // Using signed action
+      if (usePermit && bundle?.signatureRequests.length > 0) {
+        if (!signatures.length) throw new Error('signature needed');
+        try {
+          setMainTxState({ ...mainTxState, loading: true });
+          const signatureStrings = signatures.map((signature: SignatureLike) =>
+            signature.toString()
+          );
+          // Generate signed action using signatures and callback function from bundle
+          const txn = await bundle.generateSignedAction({ signatures: signatureStrings });
+          return processTx({
+            tx: () => sendTx(txn),
+            successCallback: (txnResponse: TransactionResponse) => {
+              setMainTxState({
+                txHash: txnResponse.hash,
+                loading: false,
+                success: true,
+              });
+              setTxError(undefined);
+            },
+            errorCallback: (error, hash) => {
+              const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+              setTxError(parsedError);
+              setMainTxState({
+                txHash: hash,
+                loading: false,
+              });
+            },
+            action: TxAction.MAIN_ACTION,
+          });
+        } catch (error) {
+          console.log(error, 'error');
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
+      } else {
+        // Not using signed action
+        try {
+          setMainTxState({ ...mainTxState, loading: true });
+          return processTx({
+            tx: () => sendTx(bundle.action),
+            successCallback: (txnResponse: TransactionResponse) => {
+              setMainTxState({
+                txHash: txnResponse.hash,
+                loading: false,
+                success: true,
+              });
+              setTxError(undefined);
+            },
+            errorCallback: (error, hash) => {
+              const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+              setTxError(parsedError);
+              setMainTxState({
+                txHash: hash,
+                loading: false,
+              });
+            },
+            action: TxAction.MAIN_ACTION,
+          });
+        } catch (error) {
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+          console.log(error, parsedError);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        }
       }
-    }
-    if ((!usePermit || !approvalTxes) && actionTx) {
-      try {
-        setMainTxState({ ...mainTxState, loading: true });
-        return processTx({
-          tx: () => sendTx(actionTx),
-          successCallback: (txnResponse: TransactionResponse) => {
-            setMainTxState({
-              txHash: txnResponse.hash,
-              loading: false,
-              success: true,
-            });
-            setTxError(undefined);
-          },
-          errorCallback: (error, hash) => {
-            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
-            setTxError(parsedError);
-            setMainTxState({
-              txHash: hash,
-              loading: false,
-            });
-          },
-          action: TxAction.MAIN_ACTION,
-        });
-      } catch (error) {
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        console.log(error, parsedError);
-        setTxError(parsedError);
-        setMainTxState({
-          txHash: undefined,
-          loading: false,
-        });
-      }
+    } else {
+      throw new Error('Transaction bundle not defined');
     }
   };
 
@@ -267,14 +265,9 @@ export const useTransactionBundleHandler = ({
         setLoadingTxns(true);
         return handleGetBundle()
           .then(async (bundle) => {
-            // TODO: Remove
-            console.log('BUNDLE');
-            console.log(bundle);
             if (!mounted.current) return;
+            setBundle(bundle);
             const approvalTransactions = bundle.approvals;
-            if (approvalTransactions.length > 0) {
-              setApprovalTxes(approvalTransactions);
-            }
             const preferPermit =
               bundle.signatureRequests.length > 0 &&
               tryPermit &&
@@ -292,12 +285,6 @@ export const useTransactionBundleHandler = ({
               setLoadingTxns(false);
             } else {
               setUsePermit(false);
-              setApprovalTxes(undefined);
-              setSignatureRequests(undefined);
-              if (bundle.signatureRequests.length > 0) {
-                setGenerateSignedAction(bundle.generateSignedAction);
-              }
-              setActionTx(bundle.action);
               setMainTxState({
                 txHash: undefined,
               });
@@ -330,8 +317,7 @@ export const useTransactionBundleHandler = ({
       }, 1000);
       return () => clearTimeout(timeout);
     } else {
-      setApprovalTxes(undefined);
-      setActionTx(undefined);
+      setBundle(undefined);
     }
   }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
 
@@ -340,7 +326,7 @@ export const useTransactionBundleHandler = ({
     action,
     loadingTxns,
     setUsePermit,
-    requiresApproval: !!approvalTxes || usePermit,
+    requiresApproval: !!bundle && bundle.approvals.length > 0,
     approvalTxState,
     mainTxState,
     usePermit,
