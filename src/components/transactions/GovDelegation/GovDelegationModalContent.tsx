@@ -202,6 +202,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
               placeholder={t`Enter ETH address`}
               error={delegateAddressBlockingError !== undefined}
               helperText={handleDelegateAddressError()}
+              data-cy={`delegationAddress`}
             />
           </FormControl>
         </>

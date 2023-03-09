@@ -46,7 +46,12 @@ export function VotingPowerInfoPanel() {
                 </Typography>
               </>
             </TextWithTooltip>
-            <FormattedNumber value={powers?.votingPower || 0} variant="h2" visibleDecimals={2} />
+            <FormattedNumber
+              data-cy={`voting-power`}
+              value={powers?.votingPower || 0}
+              variant="h2"
+              visibleDecimals={2}
+            />
           </Box>
           <Box>
             <TextWithTooltip
@@ -79,6 +84,7 @@ export function VotingPowerInfoPanel() {
               </>
             </TextWithTooltip>
             <FormattedNumber
+              data-cy={`proposition-power`}
               value={powers?.propositionPower || 0}
               variant="h2"
               visibleDecimals={2}

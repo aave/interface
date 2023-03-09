@@ -157,6 +157,7 @@ export const DelegationTokenSelector = ({
               componentsProps={{ typography: { width: '100%' } }}
               label={
                 <Row
+                  data-cy={`delegate-token-${token.symbol}`}
                   sx={{ alignItems: 'center', width: '100%' }}
                   caption={
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
