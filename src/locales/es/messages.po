@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-01 18:04\n"
+"PO-Revision-Date: 2023-03-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -91,6 +91,15 @@ msgstr "El balance de AToken no es cero"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Gobierno de Aave"
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -671,7 +680,7 @@ msgstr "Delegar"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
-msgstr ""
+msgstr "Poder delegado"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
@@ -1084,7 +1093,7 @@ msgstr "Aprende más en nuestra guía <0>Preguntas frecuentes</0>"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
-msgstr ""
+msgstr "Aprende más."
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -1620,14 +1629,6 @@ msgstr "Seleccionar idioma"
 msgid "Select slippage tolerance"
 msgstr "Seleccionar tolerancia de deslizamiento"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr "Selecciona token para añadir"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
-msgstr "Selecciona token para ver en el explorador de bloques"
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr "Selecciona préstamos de v2 para migrar"
@@ -1650,7 +1651,7 @@ msgstr "Activos de suministro seleccionados"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
-msgstr ""
+msgstr "Configurar la delegación"
 
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
@@ -2143,7 +2144,7 @@ msgstr "Tamaño total del mercado"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
+msgstr "Poder total de proposición basado en tu balance de AAVE/stkAAVE y delegaciones recibidas."
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2158,7 +2159,7 @@ msgstr "Poder total de votación"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
+msgstr "Poder total de proposición basado en tu balance de AAVE/stkAAVE y delegaciones recibidas."
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2208,6 +2209,11 @@ msgstr "El límite de minteo sin respaldo ha sido excedido"
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr "El activo subyacente no existe en el mercado v3 de {marketName}, por lo tanto, esta posición no se puede migrar."
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstakea ahora"
@@ -2222,11 +2228,11 @@ msgstr "Unstakeado"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
-msgstr ""
+msgstr "Úsalo para votar a favor o en contra de propuestas activas."
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
-msgstr ""
+msgstr "Utiliza tu balance de AAVE y stkAAVE para delegar tu voto y poder de proposición. No enviarás ningún token, solo los derechos de votar y proponer cambios en el protocolo. Puedes volver a delegar o revocar el poder a sí mismo en cualquier momento."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -2467,7 +2473,7 @@ msgstr "No tienes suficientes fondos en tu cartera para pagar la cantidad total.
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "You have no AAVE/stkAAVE balance to delegate."
-msgstr ""
+msgstr "No tienes balance de AAVE/stkAAVE para delegar."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
@@ -2475,7 +2481,7 @@ msgstr "Aún no has tomado prestado usando este activo"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "You need at least 80.00K power to submit a proposal."
-msgstr ""
+msgstr "Necesitas al menos 80.00K de poder para enviar una propuesta."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2686,7 +2692,7 @@ msgstr "{s}s"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "{title}"
-msgstr ""
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"

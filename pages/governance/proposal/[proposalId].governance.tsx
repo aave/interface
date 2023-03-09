@@ -21,7 +21,6 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -166,7 +165,11 @@ export default function ProposalPage({
   return (
     <>
       {ipfs && (
-        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+        <Meta
+          imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
+          title={ipfs.title}
+          description={ipfs.shortDescription}
+        />
       )}
       <ProposalTopPanel />
 
