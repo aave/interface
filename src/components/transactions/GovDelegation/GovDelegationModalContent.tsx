@@ -52,8 +52,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // error states
 
   // selector states
-  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.AAVE);
-  const [delegationType, setDelegationType] = useState(DelegationType.VOTING);
+  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.BOTH);
+  const [delegationType, setDelegationType] = useState(DelegationType.BOTH);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;

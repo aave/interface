@@ -11,8 +11,8 @@ import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -69,32 +69,32 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <StyledToggleButtonGroup
+      <StyledTxModalToggleGroup
         color="primary"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', height: '36px', p: '2px', mt: 0.5 }}
+        sx={{ mt: 0.5 }}
       >
-        <StyledToggleButton
+        <StyledTxModalToggleButton
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+          <Typography variant="buttonM" sx={{ mr: 1 }}>
             <Trans>Variable</Trans>
           </Typography>
           <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-        <StyledToggleButton
+        </StyledTxModalToggleButton>
+        <StyledTxModalToggleButton
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+          <Typography variant="buttonM" sx={{ mr: 1 }}>
             <Trans>Stable</Trans>
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-      </StyledToggleButtonGroup>
+        </StyledTxModalToggleButton>
+      </StyledTxModalToggleGroup>
     </Row>
   );
 };
