@@ -36,10 +36,7 @@ export const SupplyActions = ({
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
-          isWrongNetwork,
           poolAddress,
-          symbol,
-          blocked,
         });
       },
       handleGetPermitTxns: async (signatures, deadline) => {
