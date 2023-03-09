@@ -44,6 +44,7 @@ export const getMarketHelpData = (marketName: string) => {
     'Testnet',
     'Kovan',
     'Rinkeby',
+    'zkEVM',
   ];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);

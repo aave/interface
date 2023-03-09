@@ -57,6 +57,7 @@ export enum CustomMarket {
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
+  proto_zkevm_v3 = 'proto_zkevm_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -488,6 +489,25 @@ export const marketsData: {
     },
     v3: true,
   },
+  [CustomMarket.proto_zkevm_v3]: {
+    marketTitle: 'Polygon ZK EVM',
+    chainId: 1442,
+    enabledFeatures: {
+      incentives: true,
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x0496275d34753A48320CA58103d5220d394FF77F',
+      LENDING_POOL: '0xE7EC1B0015eb2ADEedb1B7f9F1Ce82F9DAD6dF08',
+      WETH_GATEWAY: '0x3D51166D2ACffE577933F733229b824c3E8b731a',
+      FAUCET: '0x1f885520b7BD528E46b390040F12E753Dce43004',
+      WALLET_BALANCE_PROVIDER: '0x9f47095D52ca0c0A819efCddC43156A2b738276d',
+      UI_POOL_DATA_PROVIDER: '0x6D09af48575BacfbAafF1e32d3e102929D2a8a6B',
+      UI_INCENTIVE_DATA_PROVIDER: '0x17263735b1687BDdfe9115e6Ca389e1b312ef3e4',
+    },
+    v3: true,
+  },
+
   [CustomMarket.proto_goerli]: {
     marketTitle: 'Ethereum Görli',
     chainId: ChainId.goerli,
