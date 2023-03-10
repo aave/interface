@@ -75,7 +75,7 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
-  proto_zkevm_testnet = 'proto_zkevm_testnet',
+  // proto_zkevm_testnet = 'proto_zkevm_testnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
