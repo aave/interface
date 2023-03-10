@@ -44,7 +44,7 @@ export const ListMobileItemWrapper = ({
     const showRenFilTooltip = frozen && symbol === 'renFIL';
     const showAmplTooltip = !frozen && symbol === 'AMPL';
     const showstETHTooltip = symbol == 'stETH';
-    const showBUSDOffBoardingTooltio = symbol == 'BUSD';
+    const showBUSDOffBoardingTooltip = symbol == 'BUSD';
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
     return (
       <>
@@ -52,7 +52,7 @@ export const ListMobileItemWrapper = ({
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
         {showstETHTooltip && <StETHCollateralToolTip />}
-        {showBUSDOffBoardingTooltio && <BUSDOffBoardingTooltip />}
+        {showBUSDOffBoardingTooltip && <BUSDOffBoardingTooltip />}
         {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
