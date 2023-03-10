@@ -371,6 +371,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer.public.zkevm-test.net',
     // usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/polygon.svg',
   },
 } as const;

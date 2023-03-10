@@ -75,6 +75,7 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
+  proto_zkevm_testnet = 'proto_zkevm_testnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -489,6 +490,7 @@ export const marketsData: {
     },
     v3: true,
   },
+
   [CustomMarket.proto_zkevm_v3]: {
     marketTitle: 'Polygon ZK EVM',
     chainId: 1442,
@@ -497,11 +499,11 @@ export const marketsData: {
       faucet: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x0496275d34753A48320CA58103d5220d394FF77F',
-      LENDING_POOL: '0xE7EC1B0015eb2ADEedb1B7f9F1Ce82F9DAD6dF08',
-      WETH_GATEWAY: '0x3D51166D2ACffE577933F733229b824c3E8b731a',
-      FAUCET: '0x1f885520b7BD528E46b390040F12E753Dce43004',
-      WALLET_BALANCE_PROVIDER: '0x9f47095D52ca0c0A819efCddC43156A2b738276d',
+      LENDING_POOL_ADDRESS_PROVIDER: '0xa7945c8Fbde87F847DC2058074fb7b7E469Bf23a',
+      LENDING_POOL: '0x4412c92f6579D9FC542D108382c8D1d6D2Be63d9',
+      WETH_GATEWAY: '0xD82940E16D25aB1349914e1C369eF1b287d457BF',
+      FAUCET: '0xfC6382A09CD24affee09c5eb80e853568A2db22b',
+      WALLET_BALANCE_PROVIDER: '0x0da6DCAd2bE4801b644AEE679e0AdE008bB4bc6b',
       UI_POOL_DATA_PROVIDER: '0x6D09af48575BacfbAafF1e32d3e102929D2a8a6B',
       UI_INCENTIVE_DATA_PROVIDER: '0x17263735b1687BDdfe9115e6Ca389e1b312ef3e4',
     },
@@ -559,4 +561,22 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
+  // [CustomMarket.proto_zkevm_testnet]: {
+  //   marketTitle: 'Polygon zkEVM Testnet',
+  //   chainId: ChainId.zkevm_testnet,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   rpcOnly: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '0xb18d016cDD2d9439A19f15633005A6b2cd6Aa774'.toLowerCase(),
+  //     LENDING_POOL: '0xFb11d704EF73973f9c8aEB1f0B14205a95bB7D3F',
+  //     WETH_GATEWAY: '0x086b7D9d45952bEE21bAcAE396Ad9714c24DEfFc',
+  //     FAUCET: '0x58EC1aDcb0bB734cCdc5248d8be3DadE1f25d2dD',
+  //     WALLET_BALANCE_PROVIDER: '0x17e7097C6Db59B13Da3f894A28946a3ec23502E0',
+  //     UI_POOL_DATA_PROVIDER: '0x1aDe1619d4448D05812e0F53E7bA6A7D88d3D5C2',
+  //     UI_INCENTIVE_DATA_PROVIDER: '0xF7844Dc72031Bd9E6aCE18b09509792401D8c9c5',
+  //   },
+  // },
 } as const;
