@@ -65,8 +65,6 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     const pendingProposals = proposals.filter(
       ({ proposal }) => !isProposalStateImmutable(proposal)
     );
-    console.log('update pending proposals', pendingProposals.length);
-
     try {
       if (pendingProposals.length) {
         const updatedProposals = await Promise.all(
@@ -95,9 +93,20 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 30000, false, [proposals.length]);
 
   const filteredByState = useMemo(() => {
-    const filtered = proposals.filter(
-      (item) => proposalFilter === 'all' || item.proposal.state === proposalFilter
-    );
+    const filtered = proposals
+      .filter((item) => proposalFilter === 'all' || item.proposal.state === proposalFilter)
+      .sort((a, b) => {
+        // Add Long exector to the top while active
+        if (
+          a.proposal.state === 'Active' &&
+          a.proposal.minimumQuorum !== b.proposal.minimumQuorum &&
+          b.proposal.state === 'Active'
+        ) {
+          return Number(b.proposal.minimumQuorum) - Number(a.proposal.minimumQuorum);
+        } else {
+          return a.proposal.creationTimestamp;
+        }
+      });
     searchEngineRef.current.setCollection(filtered);
     return filtered;
   }, [proposals, proposalFilter]);
