@@ -1,3 +1,4 @@
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -16,7 +17,7 @@ export function ProposalListItem({
   prerendered,
   ipfs,
 }: GovernancePageProps['proposals'][0]) {
-  const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached, minQuorumVotes } =
+  const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
     formatProposal(proposal);
   const { palette } = useTheme();
 
@@ -66,7 +67,7 @@ export function ProposalListItem({
             checked={diffReached}
             loading={mightBeStale}
           />
-          {minQuorumVotes === 1040000 ? ( // Long executor
+          {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
                 Long Executor
