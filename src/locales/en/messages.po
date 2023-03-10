@@ -87,6 +87,15 @@ msgstr "AToken supply is not zero"
 msgid "Aave Governance"
 msgstr "Aave Governance"
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr "Aave aToken"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr "Aave debt token"
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
 msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -1615,14 +1624,6 @@ msgstr "Select language"
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr "Select token to add"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
-msgstr "Select token to view in block explorer"
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr "Select v2 borrows to migrate"
@@ -2206,6 +2207,11 @@ msgstr "Unbacked mint cap is exceeded"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
+msgstr "Underlying token"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
