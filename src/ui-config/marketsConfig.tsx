@@ -54,6 +54,7 @@ export enum CustomMarket {
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
+  proto_avax_subnet = 'proto_avax_subnet',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
@@ -342,6 +343,24 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: markets.AaveV3Fuji.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV3Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER,
+    },
+  },
+  [CustomMarket.proto_avax_subnet]: {
+    marketTitle: 'Avax Subnet',
+    v3: true,
+    chainId: 424242,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x6AA6E34Ee6fFdF566538E49ec0BE491a9B4bed3E',
+      LENDING_POOL: '0x704a14d43726412c336d6cD0f0621943Df2E7749',
+      WETH_GATEWAY: '0x38974A895cfcD017742Fc9f439D925AeD505c6cb',
+      FAUCET: '0x96269b8De52174a622dC6B7e7eBC3650880e26EB',
+      WALLET_BALANCE_PROVIDER: '0x747fb19809165DD5BC149c909Aa5e73779656FE4',
+      UI_POOL_DATA_PROVIDER: '0xBB680C9B16aFAFD68660223876A2BE43f640551E',
+      UI_INCENTIVE_DATA_PROVIDER: '0x0A7d31E50070214bAc1415f9e8C44817Dc41e6b8',
     },
   },
   [CustomMarket.proto_optimism_goerli_v3]: {

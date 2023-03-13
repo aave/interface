@@ -244,6 +244,28 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
+  [424242]: {
+    // avax subnet
+    name: 'Avalanche Fuji',
+    publicJsonRPCUrl: [
+      'https://api-insti-1-testnet-us-west-2.avax-test.network/ext/bc/Ue98aQ3AoP1EqH8LwX496W6h1d8hUHNHG7AFGvRe4PSJVkQw1/rpc',
+    ],
+    // publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'AVAX',
+    wrappedBaseAssetSymbol: 'WAVAX',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://cchain.explorer.avax-test.network',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/avalanche.svg',
+    bridge: {
+      icon: '/icons/bridge/avalanche.svg',
+      name: 'Avalanche Bridge',
+      url: 'https://bridge.avax.network/',
+    },
+  },
   [ChainId.harmony]: {
     name: 'Harmony',
     privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
