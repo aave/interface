@@ -26,7 +26,7 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { ErrorType, useFlashloan } from '../utils';
+import { ErrorType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
 
@@ -184,16 +184,30 @@ export function CollateralRepayModalContent({
     priceImpact = '0.00';
   }
 
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
   let blockingError: ErrorType | undefined = undefined;
 
-  if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
+  if (
+    assetsBlockingWithdraw.length > 0 &&
+    !assetsBlockingWithdraw.includes(tokenToRepayWith.symbol)
+  ) {
+    blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+  } else if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   }
 
-  const handleBlocked = () => {
+  const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH:
         return <Trans>Not enough collateral to repay this amount of debt with</Trans>;
+      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
+        return (
+          <Trans>
+            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
+            collateral to perform this action
+          </Trans>
+        );
       default:
         return null;
     }
@@ -254,7 +268,7 @@ export function CollateralRepayModalContent({
       )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
+          <BlockingError />
         </Typography>
       )}
 
