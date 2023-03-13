@@ -23,7 +23,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, useFlashloan } from '../utils';
+import { ErrorType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -116,14 +116,18 @@ export const SwapModalContent = ({
     marketReferencePriceInUsd
   );
 
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
+  if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+    blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+  } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
   }
 
-  const handleBlocked = () => {
+  const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.SUPPLY_CAP_REACHED:
         return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
@@ -131,6 +135,13 @@ export const SwapModalContent = ({
         return (
           <Trans>
             The effects on the health factor would cause liquidation. Try lowering the amount.
+          </Trans>
+        );
+      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
+        return (
+          <Trans>
+            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
+            collateral to perform this action
           </Trans>
         );
       default:
@@ -207,7 +218,7 @@ export const SwapModalContent = ({
       )}
       {!error && blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
+          <BlockingError />
         </Typography>
       )}
 
