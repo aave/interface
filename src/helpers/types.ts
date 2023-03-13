@@ -26,6 +26,7 @@ export type EmodeCategory = {
 export enum DelegationType {
   VOTING = '0',
   PROPOSITION_POWER = '1',
+  BOTH = '2',
 }
 
 export enum CollateralType {

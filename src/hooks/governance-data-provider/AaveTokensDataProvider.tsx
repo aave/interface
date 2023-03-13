@@ -9,7 +9,7 @@ import { usePolling } from '../usePolling';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
 type WalletBalanceProviderContext = {
-  daveTokens: { aave: string; aAave: string; stkAave: string };
+  aaveTokens: { aave: string; aAave: string; stkAave: string };
   loading: boolean;
 };
 
@@ -69,7 +69,7 @@ export const AaveTokensBalanceProvider: React.FC = ({ children }) => {
   return (
     <Context.Provider
       value={{
-        daveTokens: aaveTokens,
+        aaveTokens,
         loading: aaveTokensLoading,
       }}
     >

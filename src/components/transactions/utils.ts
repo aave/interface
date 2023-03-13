@@ -21,7 +21,8 @@ export const zeroLTVBlockingWithdraw = (user: ExtendedFormattedUser): string[] =
     if (
       Number(userReserve.scaledATokenBalance) > 0 &&
       userReserve.reserve.baseLTVasCollateral === '0' &&
-      userReserve.usageAsCollateralEnabledOnUser
+      userReserve.usageAsCollateralEnabledOnUser &&
+      userReserve.reserve.reserveLiquidationThreshold !== '0'
     ) {
       zeroLTVBlockingWithdraw.push(userReserve.reserve.symbol);
     }
