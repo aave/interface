@@ -275,6 +275,13 @@ msgstr "Assets to borrow"
 msgid "Assets to supply"
 msgstr "Assets to supply"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
 msgstr "Author"

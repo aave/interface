@@ -18,10 +18,10 @@ describe('Manipulation on the wallet connect', () => {
     configEnvWithTenderlyMainnetFork({});
 
     it('step1:Disconnect wallet', () => {
-      cy.wait(1000);
+      cy.wait(2000);
       cy.get(walletButtonlocator).click();
-      cy.wait(3000);
-      cy.contains('Disconnect').click();
+      cy.wait(7000);
+      cy.get(`[data-cy="disconnect-wallet"]`).click();
       cy.contains('Please, connect your wallet').should('be.visible');
     });
 
