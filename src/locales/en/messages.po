@@ -2076,6 +2076,10 @@ msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
 
+#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
