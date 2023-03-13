@@ -59,13 +59,14 @@ const testData = {
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
-      {
-        asset: assets.aaveMarket.DAI,
-        apyType: constants.apyType.stable,
-        amount: 10,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
+      //skip while paraswap block dai swap
+      // {
+      //   asset: assets.aaveMarket.DAI,
+      //   apyType: constants.apyType.stable,
+      //   amount: 10,
+      //   hasApproval: false,
+      //   repayOption: constants.repayType.collateral,
+      // },
     ],
     withdraw: {
       asset: assets.aaveMarket.DAI,
