@@ -12,6 +12,7 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
+import { BUSDOffBoardingWarning } from 'src/components/Warnings/BUSDOffBoardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -60,7 +61,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       </Box>
 
       <Box>
-        {reserve.isFrozen ? (
+        {reserve.isFrozen && reserve.symbol != 'BUSD' ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
@@ -71,6 +72,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Trans>More details</Trans>
               </Link>
             </Trans>
+          </Warning>
+        ) : reserve.symbol === 'BUSD' ? (
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+            <BUSDOffBoardingWarning />
           </Warning>
         ) : (
           reserve.symbol == 'AMPL' && (
