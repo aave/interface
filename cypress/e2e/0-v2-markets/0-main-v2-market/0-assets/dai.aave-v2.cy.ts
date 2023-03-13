@@ -89,7 +89,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.aaveMarket.DAI.shortName,
         wrapped: assets.aaveMarket.DAI.wrapped,
-        amount: 80,
+        amount: 90, // 80
         apyType: constants.borrowAPYType.stable,
       },
     ],
