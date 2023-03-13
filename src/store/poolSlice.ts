@@ -94,7 +94,7 @@ export interface PoolSlice {
     }
   ) => Promise<EthereumTransactionTypeExtended[]>;
   supply: (
-    args: Omit<SupplyActionProps, 'poolReserve'>
+    args: Pick<SupplyActionProps, 'poolAddress' | 'amountToSupply'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
   generateSignatureRequst: (args: {
