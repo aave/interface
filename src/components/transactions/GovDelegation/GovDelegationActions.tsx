@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro';
+import { ReactNode } from 'react';
 import { DelegationType } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useRootStore } from 'src/store/root';
@@ -12,6 +12,8 @@ export type GovDelegationActionsProps = {
   delegationType: DelegationType;
   delegationToken?: DelegationToken;
   delegate: string;
+  actionText: ReactNode;
+  actionInProgressText: ReactNode;
 };
 
 export const GovDelegationActions = ({
@@ -20,12 +22,21 @@ export const GovDelegationActions = ({
   delegationType,
   delegationToken,
   delegate,
+  actionText,
+  actionInProgressText,
 }: GovDelegationActionsProps) => {
   const delegateByType = useRootStore((state) => state.delegateByType);
+  const delegateFunc = useRootStore((state) => state.delegate);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
+      if (delegationType === DelegationType.BOTH) {
+        return delegateFunc({
+          delegatee: delegate,
+          governanceToken: (delegationToken as DelegationToken).address,
+        });
+      }
       return delegateByType({
         delegatee: delegate,
         delegationType,
@@ -45,8 +56,8 @@ export const GovDelegationActions = ({
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
       handleAction={action}
-      actionText={<Trans>Delegate</Trans>}
-      actionInProgressText={<Trans>Delegating</Trans>}
+      actionText={actionText}
+      actionInProgressText={actionInProgressText}
     />
   );
 };
