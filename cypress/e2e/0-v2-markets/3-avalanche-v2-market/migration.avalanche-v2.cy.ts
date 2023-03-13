@@ -2,7 +2,7 @@ import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
-import { borrow, changeCollateral, migration, supply } from '../../../support/steps/main.steps';
+import { borrow, migration, supply } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 
 const testData = {
@@ -13,12 +13,13 @@ const testData = {
       hasApproval: true,
     },
     borrow: [
-      {
-        asset: assets.avalancheMarket.DAI,
-        amount: 50,
-        apyType: constants.borrowAPYType.default,
-        hasApproval: true,
-      },
+      //due DAI frozen
+      // {
+      //   asset: assets.avalancheMarket.DAI,
+      //   amount: 50,
+      //   apyType: constants.borrowAPYType.default,
+      //   hasApproval: true,
+      // },
       {
         asset: assets.avalancheMarket.AVAX,
         amount: 100,
@@ -63,21 +64,22 @@ const testData = {
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
-      {
-        type: constants.dashboardTypes.deposit,
-        assetName: assets.avalancheMarket.DAI.shortName,
-        wrapped: assets.avalancheMarket.DAI.wrapped,
-        amount: 50,
-        collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
-      },
-      {
-        type: constants.dashboardTypes.borrow,
-        assetName: assets.avalancheMarket.DAI.shortName,
-        wrapped: assets.avalancheMarket.DAI.wrapped,
-        amount: 50,
-        apyType: constants.borrowAPYType.variable,
-      },
+      //due DAI frozen
+      // {
+      //   type: constants.dashboardTypes.deposit,
+      //   assetName: assets.avalancheMarket.DAI.shortName,
+      //   wrapped: assets.avalancheMarket.DAI.wrapped,
+      //   amount: 50,
+      //   collateralType: constants.collateralType.isCollateral,
+      //   isCollateral: true,
+      // },
+      // {
+      //   type: constants.dashboardTypes.borrow,
+      //   assetName: assets.avalancheMarket.DAI.shortName,
+      //   wrapped: assets.avalancheMarket.DAI.wrapped,
+      //   amount: 50,
+      //   apyType: constants.borrowAPYType.variable,
+      // },
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheMarket.AVAX.shortName,
@@ -97,10 +99,11 @@ describe('MIGRATION, AVALANCHE V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
     testData.v2Market.borrow.forEach(($borrow) => {
       borrow($borrow, skipTestState, true);
     });
-    testData.v2Market.supply.forEach(($supply) => {
-      supply($supply, skipTestState, true);
-    });
-    changeCollateral(testData.v2Market.collateral.switchOff, skipTestState, false);
+    //due DAI frozen
+    // testData.v2Market.supply.forEach(($supply) => {
+    //   supply($supply, skipTestState, true);
+    // });
+    // changeCollateral(testData.v2Market.collateral.switchOff, skipTestState, false);
   });
   migration(testData.migration, skipTestState, true);
   describe(`Open v3 market`, () => {

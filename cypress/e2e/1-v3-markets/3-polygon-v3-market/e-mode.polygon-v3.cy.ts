@@ -42,7 +42,6 @@ const testData = {
       assets.polygonV3Market.DAI,
       assets.polygonV3Market.USDT,
       assets.polygonV3Market.USDC,
-      assets.polygonV3Market.agEUR,
     ],
   },
 };

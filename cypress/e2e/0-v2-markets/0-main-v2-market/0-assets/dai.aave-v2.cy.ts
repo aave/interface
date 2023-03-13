@@ -59,13 +59,14 @@ const testData = {
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
-      {
-        asset: assets.aaveMarket.DAI,
-        apyType: constants.apyType.stable,
-        amount: 10,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
+      //skip while paraswap block dai swap
+      // {
+      //   asset: assets.aaveMarket.DAI,
+      //   apyType: constants.apyType.stable,
+      //   amount: 10,
+      //   hasApproval: false,
+      //   repayOption: constants.repayType.collateral,
+      // },
     ],
     withdraw: {
       asset: assets.aaveMarket.DAI,
@@ -88,7 +89,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.aaveMarket.DAI.shortName,
         wrapped: assets.aaveMarket.DAI.wrapped,
-        amount: 80,
+        amount: 90, // 80
         apyType: constants.borrowAPYType.stable,
       },
     ],

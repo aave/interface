@@ -150,6 +150,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             }}
             size="small"
             onClick={handleDisconnect}
+            data-cy={`disconnect-wallet`}
           >
             Disconnect
           </Button>
