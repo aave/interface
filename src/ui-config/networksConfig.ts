@@ -51,6 +51,25 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [ChainId.sepolia]: {
+    name: 'Ethereum Sepolia',
+    publicJsonRPCUrl: [
+      'https://rpc.sepolia.org',
+      'https://rpc2.sepolia.org',
+      'https://rpc.sepolia.online',
+      'https://www.sepoliarpc.space',
+    ],
+    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.etherscan.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     publicJsonRPCUrl: [
@@ -110,7 +129,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     bridge: {
       icon: '/icons/bridge/polygon.svg',
       name: 'Polygon PoS Bridge',
-      url: 'https://wallet.matic.network/bridge/',
+      url: 'https://wallet.polygon.technology/polygon/bridge',
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },

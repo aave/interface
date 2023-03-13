@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-23 00:18\n"
+"PO-Revision-Date: 2023-03-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -91,6 +91,15 @@ msgstr "Η προσφορά AToken δεν είναι μηδενική"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Διακυβέρνηση Aave"
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -666,9 +675,12 @@ msgid "Debt ceiling limits the amount possible to borrow against this asset by p
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Delegate"
 msgstr "Εκπρόσωπος"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegated power"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
@@ -1079,6 +1091,10 @@ msgstr "Μάθετε περισσότερα για τους κινδύνους"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών Ερωτήσεων</0>"
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Learn more."
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Σύνδεσμοι"
@@ -1365,6 +1381,7 @@ msgstr ""
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr ""
 
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Παρακαλούμε συνδέστε ένα πορτοφόλι για να δείτε τις προσωπικές σας πληροφορίες εδώ."
@@ -1423,13 +1440,13 @@ msgstr "Λεπτομέρειες πρότασης"
 msgid "Proposal overview"
 msgstr "Επισκόπηση πρότασης"
 
+#: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Προτάσεις"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Ισχύς πρότασης"
 
@@ -1612,14 +1629,6 @@ msgstr "Επιλέξτε γλώσσα"
 msgid "Select slippage tolerance"
 msgstr ""
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr ""
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
-msgstr ""
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr ""
@@ -1628,7 +1637,7 @@ msgstr ""
 msgid "Select v2 supplies to migrate"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr ""
 
@@ -1640,8 +1649,17 @@ msgstr ""
 msgid "Selected supply assets"
 msgstr ""
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Set up delegation"
+msgstr ""
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Share on Lens"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -1893,6 +1911,10 @@ msgstr "Λειτουργία Testnet"
 msgid "Testnet mode is ON"
 msgstr ""
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting!!"
+msgstr ""
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "Το % της συνολικής δανειοληπτικής σας δύναμης που χρησιμοποιείται. Αυτό βασίζεται στο ποσό της παρεχόμενης εξασφάλισής σας και στο συνολικό ποσό που μπορείτε να δανειστείτε."
@@ -2121,6 +2143,10 @@ msgstr "Συνολικές εκπομπές ανά ημέρα"
 msgid "Total market size"
 msgstr "Συνολικό μέγεθος της αγοράς"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
+
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2131,6 +2157,10 @@ msgstr "Σύνολο παρεχόμενων"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Συνολική δύναμη ψήφου"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2180,6 +2210,11 @@ msgstr "Υπέρβαση του ανώτατου ορίου νομισματοκ
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr ""
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Ξεκλειδώστε τώρα"
@@ -2190,6 +2225,14 @@ msgstr "Παράθυρο ξεκλειδώματος"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
+msgstr ""
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Use it to vote for or against active proposals."
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2273,10 +2316,6 @@ msgstr "Προβολή λεπτομερειών"
 msgid "View on Explorer"
 msgstr "Προβολή στον Explorer"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr ""
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Ψηφίστε ΚΑΤΑ"
@@ -2302,7 +2341,6 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Δύναμη ψήφου"
@@ -2434,9 +2472,17 @@ msgstr "Δεν έχετε προμήθειες σε αυτό το νόμισμα
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "Δεν έχετε αρκετά χρήματα στο πορτοφόλι σας για να αποπληρώσετε ολόκληρο το ποσό. Εάν προχωρήσετε στην αποπληρωμή με το τρέχον ποσό των χρημάτων σας, θα εξακολουθείτε να έχετε μια μικρή θέση δανεισμού στο ταμπλό σας."
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "You have no AAVE/stkAAVE balance to delegate."
+msgstr ""
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "Δεν έχετε δανειστεί ακόμα χρησιμοποιώντας αυτό το νόμισμα"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "You need at least 80.00K power to submit a proposal."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2471,7 +2517,9 @@ msgstr "Το τρέχον δάνειο προς αξία με βάση τις π
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr "Ο συντελεστής υγείας και το δάνειο προς αξία καθορίζουν τη διασφάλιση των εξασφαλίσεών σας. Για να αποφύγετε τις ρευστοποιήσεις μπορείτε να παράσχετε περισσότερες εξασφαλίσεις ή να εξοφλήσετε δανειακές θέσεις."
 
+#: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2642,6 +2690,10 @@ msgstr ""
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}δ"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "{title}"
+msgstr ""
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"

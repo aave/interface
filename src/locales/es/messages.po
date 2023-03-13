@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-23 00:18\n"
+"PO-Revision-Date: 2023-03-10 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -91,6 +91,15 @@ msgstr "El balance de AToken no es cero"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Gobierno de Aave"
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr "aToken de Aave"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr "Token de deuda de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -666,9 +675,12 @@ msgid "Debt ceiling limits the amount possible to borrow against this asset by p
 msgstr "El límite de deuda limita la cantidad posible que los usuarios del protocolo pueden tomar prestado contra este activo. El límite de deuda es específico para los activos en isolation mode y se indica en USD."
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Delegate"
 msgstr "Delegar"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegated power"
+msgstr "Poder delegado"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
@@ -736,7 +748,7 @@ msgstr "Canal de Discord"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
-msgstr ""
+msgstr "Debido a la mecánica interna de stETH requerida para el soporte del rebase, no es posible realizar un intercambio de garantías donde stETH es el token de origen."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
@@ -1079,6 +1091,10 @@ msgstr "Aprende más sobre los riesgos involucrados"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Aprende más en nuestra guía <0>Preguntas frecuentes</0>"
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Learn more."
+msgstr "Aprende más."
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Enlaces"
@@ -1089,7 +1105,7 @@ msgstr "Umbral <0/> de liquidación"
 
 #: src/modules/migration/MigrationList.tsx
 msgid "Liquidation Threshold"
-msgstr ""
+msgstr "Umbral de liquidación"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/migration/HFChange.tsx
@@ -1365,6 +1381,7 @@ msgstr "De acuerdo con la comunidad, el mercado de Fantom ha sido congelado."
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Por favor ten siempre en cuenta tu <0>factor de salud (HF)</0> cuando migres parcialmente una posición y que tus tasas serán actualizadas a tasas de la V3."
 
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Por favor conecta una billetera para ver tu información personal aquí."
@@ -1423,13 +1440,13 @@ msgstr "Detalles de la propuesta"
 msgid "Proposal overview"
 msgstr "Resumen de la propuesta"
 
+#: pages/governance/index.governance.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Propuestas"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Poder de proposición"
 
@@ -1612,14 +1629,6 @@ msgstr "Seleccionar idioma"
 msgid "Select slippage tolerance"
 msgstr "Seleccionar tolerancia de deslizamiento"
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr "Selecciona token para añadir"
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
-msgstr "Selecciona token para ver en el explorador de bloques"
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr "Selecciona préstamos de v2 para migrar"
@@ -1628,7 +1637,7 @@ msgstr "Selecciona préstamos de v2 para migrar"
 msgid "Select v2 supplies to migrate"
 msgstr "Selecciona suministros de v2 para migrar"
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "Los activos seleccionados se han migrado correctamente. Visita el panel de control del mercado para verlos."
 
@@ -1640,9 +1649,18 @@ msgstr "Activos de préstamo seleccionados"
 msgid "Selected supply assets"
 msgstr "Activos de suministro seleccionados"
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Set up delegation"
+msgstr "Configurar la delegación"
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Configura notificaciones sobre tu factor de salud usando la aplicación Hal."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Share on Lens"
+msgstr "Compartir en Lens"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1892,6 +1910,10 @@ msgstr "Testnet mode"
 msgid "Testnet mode is ON"
 msgstr "Testnet mode está ON"
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting!!"
+msgstr "¡Gracias por votar!"
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "El % de tu poder de préstamo total utilizado. Esto se basa en la cantidad de tu garantía suministrada y la cantidad total que puedes pedir prestado."
@@ -1934,7 +1956,7 @@ msgstr "La garantía elegida no puede ser liquidada"
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
-msgstr ""
+msgstr "El período de cooldown es el tiempo requerido antes de unstakear tus tokens (10 días). Solo puedes retirar tus activos del Módulo de Seguridad después del período de cooldown y dentro de la ventana de tiempo de unstakeo.<0>Aprende más</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -1946,7 +1968,7 @@ msgstr "Los efectos en el factor de salud podrían causar liquidación. Intenta 
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
-msgstr ""
+msgstr "La relación préstamo-valor de las posiciones migradas provocaría la liquidación. Aumenta la garantía migrada o reduce el préstamo migrado para continuar."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
@@ -2120,6 +2142,10 @@ msgstr "Emisiones totales por día"
 msgid "Total market size"
 msgstr "Tamaño total del mercado"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Poder total de proposición basado en tu balance de AAVE/stkAAVE y delegaciones recibidas."
+
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2130,6 +2156,10 @@ msgstr "Total suministrado"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Poder total de votación"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
+msgstr "Poder total de proposición basado en tu balance de AAVE/stkAAVE y delegaciones recibidas."
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2179,6 +2209,11 @@ msgstr "El límite de minteo sin respaldo ha sido excedido"
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr "El activo subyacente no existe en el mercado v3 de {marketName}, por lo tanto, esta posición no se puede migrar."
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
+msgstr "Token subyacente"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstakea ahora"
@@ -2190,6 +2225,14 @@ msgstr "Ventana de unstakeo"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstakeado"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Use it to vote for or against active proposals."
+msgstr "Úsalo para votar a favor o en contra de propuestas activas."
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
+msgstr "Utiliza tu balance de AAVE y stkAAVE para delegar tu voto y poder de proposición. No enviarás ningún token, solo los derechos de votar y proponer cambios en el protocolo. Puedes volver a delegar o revocar el poder a sí mismo en cualquier momento."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -2272,10 +2315,6 @@ msgstr "Ver detalles"
 msgid "View on Explorer"
 msgstr "Ver en el explorador"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr "Votar"
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Votar NO"
@@ -2301,7 +2340,6 @@ msgstr "Votos"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Poder de votación"
@@ -2433,9 +2471,17 @@ msgstr "No tienes suministros en este activo"
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "No tienes suficientes fondos en tu cartera para pagar la cantidad total. Si procedes a pagar con tu cantidad actual de fondos, aún tendrás un pequeño préstamo en tu panel de control."
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "You have no AAVE/stkAAVE balance to delegate."
+msgstr "No tienes balance de AAVE/stkAAVE para delegar."
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "Aún no has tomado prestado usando este activo"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "You need at least 80.00K power to submit a proposal."
+msgstr "Necesitas al menos 80.00K de poder para enviar una propuesta."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2470,7 +2516,9 @@ msgstr "Tu actual relación préstamo-valor basado en tu garantía suministrada.
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr "Tu factor de salud y la relación préstamo-valor determinan la seguridad de tu garantía. Para evitar liquidaciones, puedes suministrar más garantía o pagar las posiciones de préstamo."
 
+#: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2641,6 +2689,10 @@ msgstr "{subtitle}"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "{title}"
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
