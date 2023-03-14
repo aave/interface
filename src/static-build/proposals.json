@@ -7064,10 +7064,10 @@
       "executionTime": 1678806419,
       "forVotes": "620187222954843160439436",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1679238419,
@@ -7077,6 +7077,76 @@
       "startTimestamp": 1678486571,
       "creationTimestamp": 1678398719,
       "expirationTimestamp": 1678716971
+    },
+    {
+      "id": 178,
+      "creator": "0x55B16934C3661E1990939bC57322554d9B09f262",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x158a6bC04F0828318821baE797f50B0A1299d45b"
+      ],
+      "signatures": [
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x0000000000000000000000006b5af634e20eaa5fc85f9943913aa46a088ac29e"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 16834739,
+      "endBlock": 16853939,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 16827539,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x3e8bc6a263be31e0fe385a4420cc03c2a1fd067ad644a55f43e9825039d7a51e",
+      "creationTimestamp": 1678813211,
+      "startTimestamp": 1678899683,
+      "expirationTimestamp": 1679130083
+    },
+    {
+      "id": 179,
+      "creator": "0xbC540e0729B732fb14afA240aA5A047aE9ba7dF0",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x158a6bC04F0828318821baE797f50B0A1299d45b"
+      ],
+      "signatures": [
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x00000000000000000000000060bcd1caf97c3fcbc35bf92a8852728420c34fb5"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 16834833,
+      "endBlock": 16854033,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 16827633,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x94cd6fdec271930902d9785b81c337b9895a3edd75555cc4107f6922adff7622",
+      "creationTimestamp": 1678814375,
+      "startTimestamp": 1678900811,
+      "expirationTimestamp": 1679131211
     }
   ]
 }
