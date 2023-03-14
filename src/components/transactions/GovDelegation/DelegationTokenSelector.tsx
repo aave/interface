@@ -1,89 +1,182 @@
-import { Box, Typography } from '@mui/material';
+import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-import * as React from 'react';
+import { useEffect } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { DelegationType } from 'src/helpers/types';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+export type DelegationToken = {
+  address: string;
+  name: string;
+  amount: string;
+  symbol: string;
+  votingDelegatee?: string;
+  propositionDelegatee?: string;
 };
-
-export type DelegationToken = { address: string; name: string; amount: string; symbol: string };
 
 export type DelegationTokenSelectorProps = {
   delegationTokens: DelegationToken[];
   setDelegationToken: (token: string) => void;
   delegationTokenAddress: string;
+  delegationType: DelegationType;
+  filter: boolean;
 };
 
 export const DelegationTokenSelector = ({
   delegationTokens,
   setDelegationToken,
   delegationTokenAddress,
+  delegationType,
+  filter,
 }: DelegationTokenSelectorProps) => {
+  const votingTokensNotSelfDelegated = delegationTokens.filter(
+    (token) => token.votingDelegatee !== ''
+  );
+  const propositionTokensNotSelfDelegated = delegationTokens.filter(
+    (token) => token.propositionDelegatee !== ''
+  );
+
+  const filteredTokens = delegationTokens.filter(
+    (token) => token.propositionDelegatee !== '' || token.votingDelegatee !== ''
+  );
+
+  const isFilteredVotingTab =
+    filter && delegationType === DelegationType.VOTING && votingTokensNotSelfDelegated.length === 1;
+  const isFilteredPropositionTab =
+    filter &&
+    delegationType === DelegationType.PROPOSITION_POWER &&
+    propositionTokensNotSelfDelegated.length === 1;
+  const isFilteredBothTab =
+    filter && delegationType === DelegationType.BOTH && filteredTokens.length === 1;
+
+  const defaultFilteredVotingTabAddress = votingTokensNotSelfDelegated[0]?.address;
+  const defaultFilteredPropositionTabAddress = propositionTokensNotSelfDelegated[0]?.address;
+
+  const defaultFilteredAddress = filteredTokens[0]?.address;
+
+  const defaultAddress = delegationTokens[0]?.address;
+
+  useEffect(() => {
+    if (isFilteredVotingTab) setDelegationToken(defaultFilteredVotingTabAddress);
+    else if (isFilteredPropositionTab) setDelegationToken(defaultFilteredPropositionTabAddress);
+    else if (isFilteredBothTab) setDelegationToken(defaultFilteredAddress);
+    else setDelegationToken(defaultAddress);
+  }, [
+    setDelegationToken,
+    isFilteredPropositionTab,
+    isFilteredVotingTab,
+    isFilteredBothTab,
+    defaultFilteredPropositionTabAddress,
+    defaultFilteredVotingTabAddress,
+    defaultFilteredAddress,
+    defaultAddress,
+  ]);
+
+  if (isFilteredVotingTab) {
+    return (
+      <Row
+        sx={{ alignItems: 'center', width: '100%' }}
+        caption={
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <TokenIcon
+              symbol={votingTokensNotSelfDelegated[0].symbol}
+              sx={{ width: 16, height: 16 }}
+            />
+            <Typography variant="subheader1">{votingTokensNotSelfDelegated[0].symbol}</Typography>
+          </Box>
+        }
+      >
+        <FormattedNumber
+          variant="secondary14"
+          color="text.secondary"
+          value={votingTokensNotSelfDelegated[0].amount}
+        />
+      </Row>
+    );
+  }
+
+  if (isFilteredPropositionTab) {
+    return (
+      <Row
+        sx={{ alignItems: 'center', width: '100%' }}
+        caption={
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <TokenIcon
+              symbol={propositionTokensNotSelfDelegated[0].symbol}
+              sx={{ width: 16, height: 16 }}
+            />
+            <Typography variant="subheader1">
+              {propositionTokensNotSelfDelegated[0].symbol}
+            </Typography>
+          </Box>
+        }
+      >
+        <FormattedNumber
+          variant="secondary14"
+          color="text.secondary"
+          value={propositionTokensNotSelfDelegated[0].amount}
+        />
+      </Row>
+    );
+  }
+
+  if (isFilteredBothTab) {
+    return (
+      <Row
+        sx={{ alignItems: 'center', width: '100%' }}
+        caption={
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <TokenIcon symbol={filteredTokens[0].symbol} sx={{ width: 16, height: 16 }} />
+            <Typography variant="subheader1">{filteredTokens[0].symbol}</Typography>
+          </Box>
+        }
+      >
+        <FormattedNumber
+          variant="secondary14"
+          color="text.secondary"
+          value={filteredTokens[0].amount}
+        />
+      </Row>
+    );
+  }
+
   return (
     <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
-      <Select
-        fullWidth
+      <RadioGroup
         value={delegationTokenAddress}
         onChange={(e) => setDelegationToken(e.target.value)}
-        input={<OutlinedInput />}
-        MenuProps={MenuProps}
-        native={false}
-        displayEmpty
-        sx={{
-          '& .MuiSvgIcon-root': {
-            right: '12px',
-          },
-        }}
-        renderValue={(selectedToken) => {
-          if (!selectedToken)
-            return (
-              <Box sx={{ display: 'flex', flexDirection: 'row', pr: '12px' }}>
-                <Typography variant="buttonM">Select ...</Typography>
-              </Box>
-            );
-          const token = delegationTokens.find(
-            (token) => token.address === delegationTokenAddress
-          ) as DelegationToken;
-          return (
-            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', pr: '12px' }}>
-              <TokenIcon symbol={token.symbol} />
-              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
-                {token.name}
-              </Typography>
-              <Typography variant="buttonM">{token.amount}</Typography>
-            </Box>
-          );
-        }}
       >
-        {delegationTokens.map((token) => (
-          <MenuItem
-            key={`delegation-token-${token.address}`}
-            value={token.address}
-            disabled={token.amount === '0'}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-              <TokenIcon symbol={token.symbol} sx={{ mx: '4px' }} />
-              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
-                {token.name}
-              </Typography>
-              <Typography variant="buttonM">{token.amount}</Typography>
-            </Box>
-          </MenuItem>
-        ))}
-      </Select>
+        {delegationTokens.map((token) => {
+          return (
+            <FormControlLabel
+              value={token.address}
+              key={token.address}
+              control={<Radio size="small" />}
+              componentsProps={{ typography: { width: '100%' } }}
+              label={
+                <Row
+                  data-cy={`delegate-token-${token.symbol}`}
+                  sx={{ alignItems: 'center', width: '100%' }}
+                  caption={
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                      <TokenIcon symbol={token.symbol} sx={{ width: 16, height: 16 }} />
+                      <Typography variant="subheader1">{token.symbol}</Typography>
+                    </Box>
+                  }
+                >
+                  <FormattedNumber
+                    variant="secondary14"
+                    color="text.secondary"
+                    value={token.amount}
+                  />
+                </Row>
+              }
+            />
+          );
+        })}
+      </RadioGroup>
     </FormControl>
   );
 };
