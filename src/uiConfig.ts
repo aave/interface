@@ -4,5 +4,5 @@
 // };
 
 export const uiConfig = {
-  appLogo: '/manekiLogo.png',
+  appLogo: '/Maneki.svg',
 };
