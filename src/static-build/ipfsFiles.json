@@ -2559,6 +2559,32 @@
       "ipfsHash": "QmYMWjmyb8ihZQs4qduFdC1x5Rr5DRRW874GA83iQAp8tH",
       "originalHash": "0x94cd6fdec271930902d9785b81c337b9895a3edd75555cc4107f6922adff7622",
       "id": 179
+    },
+    {
+      "title": "OP Emission_Admin for Optimism v3 Liquidity Pool",
+      "author": "Llama",
+      "discussions": "https://governance.aave.com/t/arfc-grant-op-emission-admin-for-optimism-v3-liquidity-pool-to-lido-dao/11905",
+      "shortDescription": "Enable Lido DAO to distribute OP rewards across the Aave v3 Optimism Liquidity Pool.",
+      "created": "2023-03-14T00:00:00.000Z",
+      "preview": "# Summary\n\nThis proposal is to enable Lido DAO to distribute OP …",
+      "basename": "AAVE-V3-OPTIMISM-OP-REWARDS-EMISSION-ADMIN",
+      "description": "\n\n# Summary\n\nThis proposal is to enable Lido DAO to distribute OP rewards across the Aave v3 Optimism Liquidity Pool.\n\nThe `Emission_Admin` role for OP on Optimism is currently assigned to the Optimism team and is to be transferred to Lido DAO.\n\n# Abstract\n\nLido DAO seeks to distribute OP rewards across to the Aave v3 Optimism deployment. To achieve this, the `EmissionManager` function reassigns an owner to the `Emission_Admin` role for OP.\n\nThe wallet with `Emission Admin` permission for OP then controls the distribution of OP and LDO rewards on the Optimism Liquidity Pool. This proposal will enable LDO and OP rewards to be distributed across the Optimism v3 deployment. \n\n# Motivation\n\nLido DAO has received a grant nominated in OP tokens that are to be used for bootstrapping the adoption of wstETH on the Optimism network. A portion of these rewards are to be distributed on the Aave v3 deployment. \n\nThe Lido Liquidity Mining Committee (LMC) will be determining the emission rate and duration that OP rewards are offered on the Aave v3 deployment.\n\nTypically, the LMC meets and determines the next 30 days rewards to be distributed on a rolling basis. This means each month, the committee will determine if to extend the OP rewards, or change the amount of OP being offered across the Aave v3 Liquidity Pools on Optimism.\n\n# Specification\n\nThe `EmissionManager`, a governance controlled function, assigns the `Emission_Admin` role for a specified token, OP, on each respective network. \n\nThe `Emission_Admin` role controls the distribution of the specified token, OP, across the specified Aave deployment.\n\nThe `Emission_Admin` can distribute OP anywhere across the Aave v3 on the Optimism Liquidity Pool.\n\nEmission Admin: `0x5033823F27c5f977707B58F0351adcD732C955Dd`\n\n# Implementation\n\nsetEmissionAdmin(address reward, address admin)\n\nOP Address Reward: [0x4200000000000000000000000000000000000042](https://optimistic.etherscan.io/address/0x4200000000000000000000000000000000000042)\n\nOP Address Admin: [0x5033823F27c5f977707B58F0351adcD732C955Dd](https://optimistic.etherscan.io/address/0x5033823F27c5f977707B58F0351adcD732C955Dd)\n\nThe relevant links for this proposal are shown:\n\n  * [Test Cases](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/optimism/AaveV3OptOPEmissionAdminPayloadTest.t.sol)\n  * [Payload Implementation](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/optimism/AaveV3OptOPEmissionAdminPayload.sol)\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n\n",
+      "ipfsHash": "QmX655AVVawUCfNEuDBybNUt84Bup9VD3PX7k5UpR2VE8G",
+      "originalHash": "0x81fd0481eb4a61b19e35127e22f5da5b58d8aca66cb633fc2212d23603c9e829",
+      "id": 180
+    },
+    {
+      "title": "Supply and Borrow Caps Update - LUSD - v3 Ethereum",
+      "shortDescription": "Increase supply and borrow caps for LUSD on Aave Ethereum V3",
+      "author": "Chaos Labs (@ori-chaoslabs, @yonikesel)",
+      "discussions": "https://governance.aave.com/t/arfc-supply-and-borrow-caps-update-lusd-v3-ethereum/12289",
+      "created": "2023-03-15T00:00:00.000Z",
+      "preview": "# Summary\n\nA proposal to increase the LUSD supply cap to 6M and the …",
+      "basename": "LUSD_ETH_V3_CAP_UPDATE",
+      "description": "\n\n# Summary\n\nA proposal to increase the LUSD supply cap to 6M and the borrow cap to 2.4M.\n\n# Motivation\n\nLUSD is currently at ~96% of its supply cap and ~89% of its borrow cap on Aave V3 Ethereum. This increase in supply and borrow has happened over the past few days following the de-peg events of several stablecoins, including LUSD.\n\nGiven the on-chain liquidity levels, current conservative caps set, and the fact that LUSD is a non-collateral asset, we recommend doubling the supply and borrow cap.\n\nThe proposal represents a 100% increase from the current caps, making this ARFC compliant with the “direct-to-AIP” framework.\n\n# Specification\n\nTicker: LUSD (LUSD)\n\nContract Address: [0x5f98805A4E8be255a32880FDeC7F6728C6568bA0](https://etherscan.io/address/0x5f98805A4E8be255a32880FDeC7F6728C6568bA0)\n\n| Parameter  | Current | Proposed |\n| ---------- | ------- | -------- |\n| Supply Cap | 3M      | 6M       |\n| Borrow Cap | 1.2M    | 2.4M     |\n\n# References\n\n- [Forum Post](https://governance.aave.com/t/arfc-supply-and-borrow-caps-update-lusd-v3-ethereum/12289)\n\n- [Proposal payload implementation](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/mainnet/AaveV3EthLusdCapsPayload-Mar15.sol)\n\n- [Tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/mainnet/AaveV3EthLusdCapsPayload-Mar15.t.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmXAN1xWm5epzGBoDZvQG6qutGQKQHRizSZKaMSATzFSvf",
+      "originalHash": "0x83168013487d273f357ff2d04a8711ef9e1fb9fd440b0471726f6ef535e3426c",
+      "id": 181
     }
   ]
 }
