@@ -1,3 +1,4 @@
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { LinearProgress, Paper } from '@mui/material';
 import Fuse from 'fuse.js';
 import { GovernancePageProps } from 'pages/governance/index.governance';
@@ -93,16 +94,21 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 30000, false, [proposals.length]);
 
   const filteredByState = useMemo(() => {
-    const filtered = proposals.reduce(
-      (
-        accumulator: GovernancePageProps['proposals'],
-        current: GovernancePageProps['proposals'][0]
-      ) =>
-        current.proposal.state === 'Active' && current.proposal.minimumQuorum === '600'
-          ? [current, ...accumulator]
-          : [...accumulator, current],
-      []
-    );
+    // filters by proposal state and pins large executors at the top
+
+    const filtered = proposals
+      .filter((item) => proposalFilter === 'all' || item.proposal.state === proposalFilter)
+      .reduce(
+        (
+          accumulator: GovernancePageProps['proposals'],
+          current: GovernancePageProps['proposals'][0]
+        ) =>
+          current.proposal.state === 'Active' &&
+          current.proposal.executor === AaveGovernanceV2.LONG_EXECUTOR
+            ? [current, ...accumulator]
+            : [...accumulator, current],
+        []
+      );
 
     searchEngineRef.current.setCollection(filtered);
     return filtered;
