@@ -1,4 +1,4 @@
-import { ActionBundle, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import { ActionBundle } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { formatUnits } from 'ethers/lib/utils';
@@ -12,25 +12,22 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
+interface SkipChecks {
+  skipApprovalChecks?: boolean;
+  skipGasEstimation?: boolean;
+}
+
 interface UseTransactionBundleHandlerProps {
-  handleGetBundle: () => Promise<ActionBundle>;
-  signedAction?: ProtocolAction;
+  handleGetBundle: ({ skipApprovalChecks, skipGasEstimation }: SkipChecks) => Promise<ActionBundle>;
   tryPermit?: boolean;
-  skip?: boolean;
+  nullState?: boolean;
   deps?: DependencyList;
 }
 
-export type Approval = {
-  amount: string;
-  underlyingAsset: string;
-  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3';
-};
-
 export const useTransactionBundleHandler = ({
   handleGetBundle,
-  skip,
   tryPermit,
-  signedAction,
+  nullState,
   deps = [],
 }: UseTransactionBundleHandlerProps) => {
   const {
@@ -39,9 +36,9 @@ export const useTransactionBundleHandler = ({
     mainTxState,
     setMainTxState,
     setGasLimit,
-    loadingTxns,
     setLoadingTxns,
     setTxError,
+    loadingTxns,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
@@ -256,70 +253,92 @@ export const useTransactionBundleHandler = ({
     }
   };
 
+  useEffect(() => {
+    handleGetBundle({}).then(async (fetchedBundle) => {
+      setBundle(fetchedBundle);
+      const approvalTransactions = fetchedBundle.approvals;
+      const preferPermit =
+        fetchedBundle.signatureRequests.length > 0 &&
+        tryPermit &&
+        walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+      if (approvalTransactions.length > 0 && preferPermit) {
+        // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
+        setUsePermit(true);
+        const gas = fetchedBundle.signedActionGasEstimate;
+        setGasLimit(gas);
+      } else {
+        setUsePermit(false);
+      }
+      setMainTxState({
+        txHash: undefined,
+      });
+    });
+  }, []);
+
   // populate txns
   // fetches standard txs (optional aproval + action), then based off availability and user preference, set tx flow and gas estimation to permit or approve
   useEffect(() => {
-    if (!skip) {
+    if (!nullState) {
       setLoadingTxns(true);
-      const timeout = setTimeout(() => {
-        setLoadingTxns(true);
-        return handleGetBundle()
-          .then(async (bundle) => {
-            if (!mounted.current) return;
-            setBundle(bundle);
-            const approvalTransactions = bundle.approvals;
-            const preferPermit =
-              bundle.signatureRequests.length > 0 &&
-              tryPermit &&
-              signedAction &&
-              walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-            if (approvalTransactions.length > 0 && preferPermit) {
-              // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
-              setUsePermit(true);
-              const gas = gasLimitRecommendations[signedAction];
-              setGasLimit(gas.limit || '');
-              setMainTxState({
-                txHash: undefined,
-              });
-              setTxError(undefined);
-              setLoadingTxns(false);
-            } else {
-              setUsePermit(false);
-              setMainTxState({
-                txHash: undefined,
-              });
-              setTxError(undefined);
-              let gasLimit = 0;
-              for (const approval of bundle.approvals) {
-                const approvalTxGas = approval.gasLimit;
-                // If permit is available, use regular action for estimation but exclude the approval tx
-                if (approvalTxGas) {
-                  gasLimit += Number(formatUnits(approvalTxGas, 18));
-                }
-              }
-              const actionTxGas = bundle.action.gasLimit;
-              if (actionTxGas) {
-                gasLimit += actionTxGas.toNumber();
-              }
-              setGasLimit(gasLimit.toString() || '');
-              setLoadingTxns(false);
-            }
-          })
-          .catch((error) => {
-            if (!mounted.current) return;
-            setMainTxState({
-              txHash: undefined,
-            });
-            const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-            setTxError(parsedError);
-            setLoadingTxns(false);
-          });
-      }, 1000);
-      return () => clearTimeout(timeout);
-    } else {
-      setBundle(undefined);
     }
-  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
+    handleGetBundle({})
+      .then(async (fetchedBundle) => {
+        setBundle(fetchedBundle);
+        const approvalTransactions = fetchedBundle.approvals;
+        const preferPermit =
+          fetchedBundle.signatureRequests.length > 0 &&
+          tryPermit &&
+          walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+        if (approvalTransactions.length > 0 && preferPermit) {
+          // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
+          setUsePermit(true);
+          setMainTxState({
+            txHash: undefined,
+          });
+          setTxError(undefined);
+        } else {
+          setUsePermit(false);
+          setMainTxState({
+            txHash: undefined,
+          });
+          setTxError(undefined);
+        }
+
+        let gasLimit = 0;
+
+        if (usePermit) {
+          const gas = fetchedBundle.signedActionGasEstimate;
+          setGasLimit(gas);
+        } else {
+          for (const approval of fetchedBundle.approvals) {
+            const approvalTxGas = approval.gasLimit;
+            // If permit is available, use regular action for estimation but exclude the approval tx
+            if (approvalTxGas) {
+              gasLimit += Number(formatUnits(approvalTxGas, 18));
+            }
+          }
+          const actionTxGas = fetchedBundle.action.gasLimit;
+          if (actionTxGas) {
+            gasLimit += actionTxGas.toNumber();
+          }
+          setGasLimit(gasLimit.toString() || '');
+        }
+
+        nullState ? setGasLimit('') : setLoadingTxns(false);
+      })
+      .catch((error) => {
+        console.log('Error building transaction bundle', error);
+        if (!mounted.current) return;
+        setMainTxState({
+          txHash: undefined,
+        });
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        if (!nullState) {
+          setTxError(parsedError);
+          setLoadingTxns(false);
+        }
+      });
+  }, [...deps, tryPermit, walletApprovalMethodPreference]);
 
   return {
     approval,
