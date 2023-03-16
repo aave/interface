@@ -178,8 +178,12 @@ export function CollateralRepayModalContent({
   // calculate impact based on $ difference
   let priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
+      ? new BigNumber(1)
+          .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
+          .times(100)
+          .toFixed(2)
       : '0';
+
   if (priceImpact === '-0.00') {
     priceImpact = '0.00';
   }
