@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-14 00:16\n"
+"PO-Revision-Date: 2023-03-15 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -285,7 +285,7 @@ msgstr "Activos a suministrar"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
-msgstr ""
+msgstr "Los activos con cero LTV ({assetsBlockingWithdraw}) deben retirarse o inhabilitarse como garantía para realizar esta acción"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
@@ -338,7 +338,7 @@ msgstr "Balance"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Balance to revoke"
-msgstr ""
+msgstr "Balance a revocar"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -455,7 +455,7 @@ msgstr "Tomando prestado {symbol}"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
-msgstr ""
+msgstr "Ambos"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
@@ -502,7 +502,7 @@ msgstr "Límite alcanzado. Menos cantidad de suministro"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
-msgstr ""
+msgstr "Elije cuánto poder de voto/proposición otorgar a otra persona delegando parte de tu balance de AAVE o stkAAVE. Tus tokens permanecerán en tu cuenta, pero tu delegado podrá votar o proponer en tu lugar. Si tu balance de AAVE o stkAAVE cambia, el poder de voto/proposición de tu delegado se ajustará automáticamente."
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -1459,7 +1459,7 @@ msgstr "Propuestas"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Proposition"
-msgstr ""
+msgstr "Proposición"
 
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
@@ -1598,15 +1598,15 @@ msgstr "Revisar detalles de la tx"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Revoke"
-msgstr ""
+msgstr "Revocar"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Revoke power"
-msgstr ""
+msgstr "Revocar poder"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Revoking"
-msgstr ""
+msgstr "Revocando"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
@@ -2083,7 +2083,7 @@ msgstr "Este activo está congelado debido a una decisión de la comunidad de Aa
 
 #: src/components/Warnings/BUSDOffBoardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr ""
+msgstr "Está previsto que este activo se desvincule debido a una decisión del Gobierno del Protocolo Aave. <0>Más detalles</0>"
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -2144,7 +2144,7 @@ msgstr "Para solicitar acceso a este mercado, porfavor visita: <0>Nombre del pro
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
-msgstr ""
+msgstr "Para enviar una propuesta de cambios menores al protocolo, necesitarás al menos 80K de poder. Si deseas cambiar la base central del código, necesitarás un poder de 320K.<0>Aprende más</0>"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
@@ -2359,7 +2359,7 @@ msgstr "Votos"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Voting"
-msgstr ""
+msgstr "Votando"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
@@ -2545,7 +2545,7 @@ msgstr "Tu información"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
+msgstr "Tu poder de proposición se basa en tu balance de AAVE/stkAAVE y delegaciones recibidas."
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
@@ -2562,7 +2562,7 @@ msgstr "Tu información de voto"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
+msgstr "Tu poder de voto se basa en tu balance de AAVE/stkAAVE y delegaciones recibidas."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
