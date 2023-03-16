@@ -4,6 +4,7 @@ import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
 interface StateBadgeProps {
   state: ProposalState;
   loading?: boolean;
+  crossChainBridge?: string;
 }
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
@@ -40,7 +41,11 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   });
 });
 
-export function StateBadge({ state, loading }: StateBadgeProps) {
+export function StateBadge({ state, loading, crossChainBridge }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
-  return <Badge state={state}>{state}</Badge>;
+  return (
+    <Badge state={state}>
+      {state} {crossChainBridge ? crossChainBridge : ''}
+    </Badge>
+  );
 }
