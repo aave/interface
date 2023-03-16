@@ -176,10 +176,14 @@ export function CollateralRepayModalContent({
   );
 
   // calculate impact based on $ difference
+  const exactOutputAmount = swapVariant === 'exactIn' ? outputAmount : repayAmount;
+  const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
+  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
   let priceImpact =
-    outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
+    inputAmountUSD && inputAmountUSD !== '0'
+      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
       : '0';
+
   if (priceImpact === '-0.00') {
     priceImpact = '0.00';
   }
@@ -224,9 +228,9 @@ export function CollateralRepayModalContent({
   return (
     <>
       <AssetInput
-        value={swapVariant === 'exactIn' ? outputAmount : repayAmount}
+        value={exactOutputAmount}
         onChange={handleRepayAmountChange}
-        usdValue={swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue}
+        usdValue={exactOutputUsd}
         symbol={poolReserve.symbol}
         assets={[
           {
