@@ -1,5 +1,7 @@
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
+import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -17,6 +19,7 @@ export function ProposalListItem({
 }: GovernancePageProps['proposals'][0]) {
   const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
     formatProposal(proposal);
+  const { palette } = useTheme();
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
   return (
@@ -49,7 +52,7 @@ export function ProposalListItem({
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {ipfs.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
           <StateBadge state={proposal.state} loading={mightBeStale} />
           <FormattedProposalTime
             state={proposal.state}
@@ -64,6 +67,17 @@ export function ProposalListItem({
             checked={diffReached}
             loading={mightBeStale}
           />
+          {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
+                Long Executor
+              </Typography>
+              <ShieldExclamationIcon
+                color={quorumReached ? palette.success.main : palette.warning.main}
+                height="16"
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
       <Box

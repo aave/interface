@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-01 18:04\n"
+"PO-Revision-Date: 2023-03-14 00:16\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -91,6 +91,15 @@ msgstr "L'approvisionnement en aTokens n'est pas nul"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Gouvernance Aave"
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -255,10 +264,6 @@ msgstr "L'actif n'est pas répertorié"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Asset to delegate"
-msgstr "Actif à déléguer"
-
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -274,6 +279,13 @@ msgstr "Actifs à emprunter"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
 msgstr "Actifs à déposer"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
@@ -323,6 +335,10 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Balance"
 msgstr "Solde"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Balance to revoke"
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -437,6 +453,10 @@ msgstr "Emprunter ce montant réduira votre facteur santé et augmentera le risq
 msgid "Borrowing {symbol}"
 msgstr "Emprunter {symbole}"
 
+#: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Both"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr ""
@@ -479,6 +499,10 @@ msgstr ""
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap atteint. Quantité d'approvisionnement inférieure"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
+msgstr ""
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -665,7 +689,7 @@ msgstr "Le plafond de la dette n'est pas nul"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegate"
 msgstr "Déléguer"
 
@@ -673,13 +697,9 @@ msgstr "Déléguer"
 msgid "Delegated power"
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegating"
 msgstr "Déléguant"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegation"
-msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1438,8 +1458,8 @@ msgid "Proposals"
 msgstr "Les propositions"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
-msgid "Proposition power"
-msgstr "Pouvoir de proposition"
+msgid "Proposition"
+msgstr ""
 
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
@@ -1576,6 +1596,18 @@ msgstr "Réviser tx"
 msgid "Review tx details"
 msgstr "Examiner les détails de la transaction"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Revoke"
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Revoke power"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Revoking"
+msgstr ""
+
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
 msgstr "Récompense(s) à réclamer"
@@ -1618,14 +1650,6 @@ msgstr "Choisir la langue"
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
-msgstr ""
-
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr ""
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
 msgstr ""
 
 #: src/modules/migration/MigrationLists.tsx
@@ -2057,6 +2081,10 @@ msgstr ""
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
 
+#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr ""
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Ce calcul de gaz n'est qu'une estimation. Votre portefeuille fixera le prix de la transaction. Vous pouvez modifier les paramètres de gaz directement depuis votre fournisseur de portefeuille."
@@ -2114,6 +2142,10 @@ msgstr "Pour rembourser au nom d'un utilisateur, un montant explicite à rembour
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "Pour demander l'accès à ce marché autorisé, veuillez consulter : <0>Nom du fournisseur d'accès</0>"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
+msgstr ""
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
 msgstr ""
@@ -2141,10 +2173,6 @@ msgstr "Émission totale par jour"
 msgid "Total market size"
 msgstr "Taille totale du marché"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Total proposition power based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2155,10 +2183,6 @@ msgstr "Total fourni"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Pouvoir de vote total"
-
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Total voting power based on your AAVE/stkAAVE balance and received delegations."
-msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
@@ -2179,10 +2203,6 @@ msgstr "La transaction a échoué"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Aperçu des transactions"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Type of delegation"
-msgstr "Type de délégation"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2206,6 +2226,11 @@ msgstr "Le plafond de mintage non soutenu est dépassé"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
+msgstr ""
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
@@ -2333,6 +2358,9 @@ msgid "Votes"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Voting"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -2473,10 +2501,6 @@ msgstr ""
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "You need at least 80.00K power to submit a proposal."
-msgstr ""
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "Vous êtes passé au tarif {0}"
@@ -2519,6 +2543,10 @@ msgstr "Votre facteur de santé et votre prêt à la valeur déterminent l'assur
 msgid "Your info"
 msgstr "Vos informations"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
 msgstr "Votre solde de récompenses est de 0"
@@ -2531,6 +2559,10 @@ msgstr "Vos ressources"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
 msgstr "Vos informations de vote"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
@@ -2627,6 +2659,8 @@ msgstr ""
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
