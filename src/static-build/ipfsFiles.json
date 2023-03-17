@@ -2611,6 +2611,20 @@
       "ipfsHash": "QmX655AVVawUCfNEuDBybNUt84Bup9VD3PX7k5UpR2VE8G",
       "originalHash": "0x81fd0481eb4a61b19e35127e22f5da5b58d8aca66cb633fc2212d23603c9e829",
       "id": 183
+    },
+    {
+      "title": "Activate Emode for cbETH Aave Ethereum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "Activate Emode for cbETH Aave Ethereum V3",
+      "discussions": "https://governance.aave.com/t/arfc-activate-emode-for-cbeth-aave-ethereum-v3/12074",
+      "created": "2023-03-10T00:00:00.000Z",
+      "updated": "2023-03-10T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "CBETH_ETH_V3_EMODE_ACTIVATION_AIP",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to activate emode for cbETH on the Ethereum v3 Liquidity Pool.\n\n## Motivation\n\nSupporting LSDs diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\ncbETH is currently the second largest ETH Liquid staking derivative of the V3 market.\n\nAllowing the activation of emode has a clear use-case for leveraged strategies based on cbETH as collateral to both “long” cbETH currently at a small discount on secondary markets and increased staking yield via loops strategies.\n\nWith the current supply and borrowing caps, this activation can be done while keeping a conservative approach.\n\nThe ACI does not have any link nor is paid by Coinbase or any entity to present this AIP.\n\n## Specification\n\nTicker: cbETH\n\nContract Address: 0xbe9895146f7af43049ca1c1ae358b0541ea49704\n\n|Risk Parameter| Current Value| Proposed Value|\n| --- | --- | --- |\n|Emode Category|0| 1 |\n\n\n\n```solidity\ncontract AaveV3EthCBETHEmodeActivation is IProposalGenericExecutor {\n  address public constant CBETH = AaveV3EthereumAssets.cbETH_UNDERLYING;\n\n  uint8 public constant EMODE_CATEGORY = 1;\n\n  function execute() external {\n    AaveV3Ethereum.POOL_CONFIGURATOR.setAssetEModeCategory(CBETH, EMODE_CATEGORY);\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-activate-emode-for-cbeth-aave-ethereum-v3/12074)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/mainnet/AaveV3EthCBETHEmodeActivationTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/mainnet/AaveV3EthCBETHEmodeActivation.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmXnBWJuqQRhrVbMU1brYXR8Nr9tmBZfZyQgdEPpAKZ7nL",
+      "originalHash": "0x8c43863eb45efe9d794f07cf717a3f71d8fc315f693d42dff0f681e839d1419d",
+      "id": 184
     }
   ]
 }
