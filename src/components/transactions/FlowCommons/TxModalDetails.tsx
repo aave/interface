@@ -2,7 +2,16 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  Skeleton,
+  SvgIcon,
+  Switch,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { CollateralType } from 'src/helpers/types';
@@ -122,6 +131,8 @@ export const DetailsNumberLineWithSub = ({
   tokenIcon,
   loading = false,
 }: DetailsNumberLineWithSubProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('xsm'));
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -137,10 +148,15 @@ export const DetailsNumberLineWithSub = ({
           </>
         ) : (
           <>
-            <Box sx={{ display: { xs: 'block', lg: 'flex' }, alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {value && (
                 <>
-                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  <FormattedNumber
+                    value={value}
+                    variant="secondary14"
+                    color={color}
+                    isMobile={isMobile}
+                  />
                   {!hideSymbolSuffix && (
                     <Typography ml={1} variant="secondary14">
                       {symbol}
@@ -150,7 +166,12 @@ export const DetailsNumberLineWithSub = ({
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+              <FormattedNumber
+                value={futureValue}
+                variant="secondary14"
+                color={color}
+                isMobile={isMobile}
+              />
               {!hideSymbolSuffix && (
                 <Typography ml={1} variant="secondary14">
                   {symbol}

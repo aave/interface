@@ -50,6 +50,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsColor?: string;
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
+  isMobile?: boolean;
 }
 
 export function FormattedNumber({
@@ -61,6 +62,7 @@ export function FormattedNumber({
   symbolsVariant,
   symbolsColor,
   roundDown,
+  isMobile,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
@@ -80,7 +82,6 @@ export function FormattedNumber({
   const isSmallerThanMin = number !== 0 && Math.abs(number) < Math.abs(minValue);
   let formattedNumber = isSmallerThanMin ? minValue : number;
   const forceCompact = compact !== false && (compact || number > 99_999);
-
   // rounding occurs inside of CompactNumber as the prefix, not base number is rounded
   if (roundDown && !forceCompact) {
     formattedNumber = Math.trunc(Number(formattedNumber) * 10 ** decimals) / 10 ** decimals;
@@ -118,12 +119,13 @@ export function FormattedNumber({
           $
         </Typography>
       )}
-
-      {!forceCompact ? (
+      {!forceCompact && !isMobile ? (
         new Intl.NumberFormat('en-US', {
           maximumFractionDigits: decimals,
           minimumFractionDigits: decimals,
         }).format(formattedNumber)
+      ) : isMobile ? (
+        <CompactNumber value={formattedNumber} visibleDecimals={2} roundDown={roundDown} />
       ) : (
         <CompactNumber value={formattedNumber} visibleDecimals={decimals} roundDown={roundDown} />
       )}
