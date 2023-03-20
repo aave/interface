@@ -37,9 +37,16 @@ export function ProposalListItem({
     }
   }
 
-  // else {
-  //   exectutionTimeStamp = executionTime; // normal execution time
-  // }
+  // Note: We assume that the proposal will be executed two days later and add 3 hour buffer
+  const twoDayDelay = 172800;
+  const threeExtraHours = 10800;
+
+  const executedL2 =
+    proposal.executionTime > 0
+      ? proposal.executionTime + (twoDayDelay + threeExtraHours) > proposal.executionTime
+      : false;
+
+  const pendingL2 = proposal.executionTime === 0 && proposal.state !== 'Canceled';
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
   return (
@@ -64,6 +71,7 @@ export function ProposalListItem({
             xs: '100%',
             lg: '70%',
           },
+
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -72,14 +80,23 @@ export function ProposalListItem({
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {ipfs.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 3 }}>
           <StateBadge
             state={proposal.state}
             crossChainBridge={proposalCrosschainBridge ? 'L1' : ''}
             loading={mightBeStale}
           />
-          {proposalCrosschainBridge ? (
+          {proposalCrosschainBridge && executedL2 ? (
             <StateBadge crossChainBridge={'L2'} state={proposal.state} loading={mightBeStale} />
+          ) : (
+            ''
+          )}
+
+          {proposalCrosschainBridge && pendingL2 ? (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // state props ignored as we force pending to be shown on l2
+            <StateBadge crossChainBridge={'L2'} state={'Pending'} loading={mightBeStale} />
           ) : (
             ''
           )}
