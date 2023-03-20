@@ -2625,6 +2625,20 @@
       "ipfsHash": "QmXnBWJuqQRhrVbMU1brYXR8Nr9tmBZfZyQgdEPpAKZ7nL",
       "originalHash": "0x8c43863eb45efe9d794f07cf717a3f71d8fc315f693d42dff0f681e839d1419d",
       "id": 184
+    },
+    {
+      "title": "increase supply cap for cbETH Aave Ethereum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "increase supply cap for cbETH Aave Ethereum V3",
+      "discussions": "https://governance.aave.com/t/arfc-increase-supply-cap-for-cbeth-aave-ethereum-v3-20230317/12334",
+      "created": "2023-03-20T00:00:00.000Z",
+      "updated": "2023-03-20T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "CBETH_ETH_SUPPLY_CAP_UPDATE_20230320",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to increase cbETH supply cap on the Ethereum v3 Liquidity Pool.\n\n## Motivation\n\nSupporting LSDs diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Coinbase or any entity to present this AIP.\n\nSupply cap is suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: cbETH\n\nContract Address: 0xbe9895146f7af43049ca1c1ae358b0541ea49704\n\n|Risk Parameter| Current Value| Proposed Value|\n| --- | --- | --- |\n|Supply Cap|20K| 30K|\n\n\n\n```solidity\ncontract AaveV3EthCbETHCapsPayload is IProposalGenericExecutor {\n  address public constant CBETH = AaveV3EthereumAssets.cbETH_UNDERLYING;\n\n  uint256 public constant CBETH_SUPPLY_CAP = 30_000;\n\n  function execute() external {\n    IPoolConfigurator configurator = AaveV3Ethereum.POOL_CONFIGURATOR;\n\n    configurator.setSupplyCap(CBETH, CBETH_SUPPLY_CAP);\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-increase-supply-cap-for-cbeth-aave-ethereum-v3-20230317/12334)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/mainnet/cbethV3EthSupplyCapsPayloadTest.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/mainnet/AaveV3EthCBETHSupplyCapsPayload.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmQmm18YkTM4sUoBUmnxg88FPs4fZxZqSLqbKSDKNqx8Nv",
+      "originalHash": "0x2426029bb07fa6f4c7c60d427f63abbca45cf592822b01c3f7910f3735560c2b",
+      "id": 185
     }
   ]
 }
