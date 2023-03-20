@@ -2639,6 +2639,19 @@
       "ipfsHash": "QmQmm18YkTM4sUoBUmnxg88FPs4fZxZqSLqbKSDKNqx8Nv",
       "originalHash": "0x2426029bb07fa6f4c7c60d427f63abbca45cf592822b01c3f7910f3735560c2b",
       "id": 185
+    },
+    {
+      "title": "Supply/Borrow Cap Updates V3 Polygon and Arbitrum",
+      "shortDescription": "Update Supply and Borrow Caps on Aave V3 Polygon and Arbitrum",
+      "author": "Chaos Labs (@ori-chaoslabs, @yonikesel)",
+      "discussions": "https://governance.aave.com/t/arfc-supply-and-borrow-caps-update-wsteth-v3-arbitrum/12309",
+      "created": "2023-3-17",
+      "preview": "# Simple Summary\n\nA proposal to adjust five (5) total risk …",
+      "basename": "AIP-SUPPLY-CAPS-POLYGON-ARBITRUM-V3",
+      "description": "\n\n# Simple Summary\n\nA proposal to adjust five (5) total risk parameters, including Supply Cap and Borrow Cap, across three (3) Aave V3 Polygon and Arbitrum assets.\n\n# Motivation\n\nThe objective of this proposal is to recommend updated supply and borrow caps for V3 assets that have reached high utilization of either cap. The recommendations provided in this proposal were derived using Chaos Labs’ Updated Supply and Borrow Cap Methodology\n\nThe respective governance forum discussion is linked below:\n\n- [[ARFC] - Supply and Borrow Caps Update - wstETH - V3 Arbitrum](https://governance.aave.com/t/arfc-supply-and-borrow-caps-update-wsteth-v3-arbitrum/12309)\n- [[ARFC] - Chaos Labs Supply and Borrow Cap Updates - Aave V3 Polygon - 2023.03.16](https://governance.aave.com/t/arfc-chaos-labs-supply-and-borrow-cap-updates-aave-v3-polygon-2023-03-16/12310)\n\n# Specification\n\nThe following risk parameter proposal is presented below:\n\n### Arbitrum\n\n| Asset  | Current Supply Cap | Recommended Supply Cap | Current Borrow Cap | Recommended Borrow Cap |\n| ------ | ------------------ | ---------------------- | ------------------ | ---------------------- |\n| wstETH | 2,400              | 4,650                  | 190                | 400                    |\n\n### Polygon\n\n| Asset   | Current Supply Cap | Recommended Supply Cap | Current Borrow Cap | Recommended Borrow Cap |\n| ------- | ------------------ | ---------------------- | ------------------ | ---------------------- |\n| MAI     | 1,100,000          | 2,200,000              | 600,000            | 1,200,000              |\n| stMATIC | 15,000,000         | 21,000,000             | N/A                | N/A                    |\n\n# References\n\nForum Posts: [Arbitrum](https://governance.aave.com/t/arfc-supply-and-borrow-caps-update-wsteth-v3-arbitrum/12309), [Polygon](https://governance.aave.com/t/arfc-chaos-labs-supply-and-borrow-cap-updates-aave-v3-polygon-2023-03-16/12310)\n\nTests: [Arbitrum-stETH](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/arbitrum/AaveV3ArbwstETHSupplyCapsPayloadTest-Mar16.t.sol), [Polygon-MAI/stMATIC](https://github.com/bgd-labs/aave-proposals/blob/master/src/test/polygon/AaveV3PolCapsPayloadTest-Mar17.t.sol)\n\nProposal payload implementation: [Arbitrum-stETH](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/arbitrum/AaveV3ArbwstETHSupplyCapsPayload-Mar16.sol), [Polygon-MAI/stMATIC](https://github.com/bgd-labs/aave-proposals/blob/master/src/contracts/polygon/AaveV3PolCapsPayload-Mar17.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmaLFhvkiRF97BDcx81bdxqcaiwj4x6zFts7AhS3KgYcfp",
+      "originalHash": "0xb2323bc2ec23771a8e717c51e02debd7b72ec25f97cbbc5f66a8dbc979acff3f",
+      "id": 186
     }
   ]
 }
