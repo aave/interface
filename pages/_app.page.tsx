@@ -25,8 +25,8 @@ import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDa
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
+import MixpanelProvider from 'src/libs/Mixpanel/MixpanelProvider';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-import { initMixpanel } from 'src/utils/mixPanel';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -53,10 +53,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
-
-  React.useEffect(() => {
-    initMixpanel();
-  }, []);
+  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -70,38 +67,40 @@ export default function MyApp(props: MyAppProps) {
         }
         imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
       />
-      <LanguageProvider>
-        <Web3ReactProvider getLibrary={getWeb3Library}>
-          <Web3ContextProvider>
-            <AppGlobalStyles>
-              <AddressBlocked>
-                <PermissionProvider>
-                  <ModalContextProvider>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <MigrateV3Modal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </ModalContextProvider>
-                </PermissionProvider>
-              </AddressBlocked>
-            </AppGlobalStyles>
-          </Web3ContextProvider>
-        </Web3ReactProvider>
-      </LanguageProvider>
+      <MixpanelProvider mixpanelToken={MIXPANEL_TOKEN}>
+        <LanguageProvider>
+          <Web3ReactProvider getLibrary={getWeb3Library}>
+            <Web3ContextProvider>
+              <AppGlobalStyles>
+                <AddressBlocked>
+                  <PermissionProvider>
+                    <ModalContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <MigrateV3Modal />
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </ModalContextProvider>
+                  </PermissionProvider>
+                </AddressBlocked>
+              </AppGlobalStyles>
+            </Web3ContextProvider>
+          </Web3ReactProvider>
+        </LanguageProvider>
+      </MixpanelProvider>
     </CacheProvider>
   );
 }

@@ -1,17 +1,22 @@
-import mixpanel from 'mixpanel-browser';
+import { useContext } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import MixpanelContext from 'src/libs/Mixpanel/MixpanelContext';
 
-const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
+const useMixpanelTrack = () => {
+  const { currentAccount: walletAddress } = useWeb3Context();
+  const mixpanel = useContext(MixpanelContext);
 
-const initMixpanel = (): void => {
-  if (typeof window !== 'undefined' && MIXPANEL_TOKEN) {
-    mixpanel.init(MIXPANEL_TOKEN);
-  }
+  const trackEvent = (eventName: string, eventProperties: Record<string, unknown> = {}): void => {
+    if (mixpanel) {
+      const properties = {
+        ...eventProperties,
+        walletAddress: walletAddress,
+      };
+      mixpanel.track(eventName, properties);
+    }
+  };
+
+  return trackEvent;
 };
 
-const trackEvent = (eventName: string, eventProperties: Record<string, unknown> = {}): void => {
-  if (typeof window !== 'undefined' && MIXPANEL_TOKEN) {
-    mixpanel.track(eventName, eventProperties);
-  }
-};
-
-export { initMixpanel, trackEvent };
+export default useMixpanelTrack;
