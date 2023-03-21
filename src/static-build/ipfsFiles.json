@@ -2652,6 +2652,21 @@
       "ipfsHash": "QmaLFhvkiRF97BDcx81bdxqcaiwj4x6zFts7AhS3KgYcfp",
       "originalHash": "0xb2323bc2ec23771a8e717c51e02debd7b72ec25f97cbbc5f66a8dbc979acff3f",
       "id": 186
+    },
+    {
+      "aip": 172,
+      "title": "Aave V3 Interest Rate Curve Changes",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Egan, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-gauntlet-interest-rate-curve-changes-for-aave-v3-markets-feb-2023/11851/3",
+      "created": "2023-03-07T00:00:00.000Z",
+      "preview": "## Summary\n\n A proposal to make parameter changes on Aave V3 markets …",
+      "basename": "AIP-160",
+      "description": "## Summary\n\nA proposal to make parameter changes on Aave V3 markets.\n\nFor full details, refer to the [forum post](https://governance.aave.com/t/arc-gauntlet-interest-rate-curve-changes-for-aave-v3-markets-feb-2023/11851).\n\n## Abstract\n\nGiven the significant shifts in crypto markets, Gauntlet’s platform has evaluated all assets on Aave V3 and has identified opportunities to adjust parameters for certain assets for the benefit of the protocol.\n\n\n## Motivation\n\nAmong other factors, there are two primary reasons to adjust an interest rate curve:\n\n1. mitigate the risk of 100% utilization in a pool\n2. build reserves via protocol revenue to cover insolvencies or other expenses in the future\n\n## Specification\n\nBGD Labs, in collaboration with Gauntlet, prepared the proposal payload. We appreciate BGD's support throughout this proposal process.\n\nShould this AIP pass, we will implement the Avalanche market changes from a separate payload because AIPs currently do not support Avalanche changes. \n\n![](https://hackmd.io/_uploads/HkGJgnXk2.png)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*",
+      "ipfsHash": "QmSLXntYGnn5CeAed5GZwndtGZRQx6YXnQg1xZAthyvmNz",
+      "originalHash": "0x3b66ed0fa57bec842608cb1be68f97ca0c241cd3744a860086762f76cc0ae933",
+      "id": 187
     }
   ]
 }
