@@ -131,9 +131,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: getColor('#383D51', '#EAEBEF'),
-        light: getColor('#62677B', '#F1F1F3'),
-        dark: getColor('#292E41', '#D2D4DC'),
+        main: getColor('#F7931A', '#EAEBEF'),
+        light: getColor('#f8a23a', '#F1F1F3'),
+        dark: getColor('#dd7d08', '#D2D4DC'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
@@ -169,16 +169,16 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
-        primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
-        disabled: getColor('#D2D4DC', '#62677B'),
-        muted: getColor('#A5A8B6', '#8E92A3'),
+        primary: getColor('#121418', '#F1F1F3'),
+        secondary: getColor('#27282B', '#A5A8B6'),
+        disabled: getColor('#2f2f37', '#62677B'),
+        muted: getColor('#2f2f37', '#8E92A3'),
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
+        default: getColor('#FFFFFF', '#1B2030'),
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
+        header: getColor('#FFEDEB', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
@@ -212,6 +212,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(32),
+        color: '#121418',
       },
       h1: {
         fontFamily: FONT,
@@ -219,6 +220,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(28),
+        color: '#121418',
       },
       h2: {
         fontFamily: FONT,
@@ -226,6 +228,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: 'unset',
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
+        color: '#121418',
       },
       h3: {
         fontFamily: FONT,
@@ -247,6 +250,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
         fontSize: pxToRem(14),
+        color: '#121418',
       },
       subheader2: {
         fontFamily: FONT,
@@ -437,6 +441,13 @@ export function getThemedComponents(theme: Theme) {
             style: {
               background: theme.palette.background.surface,
               borderColor: theme.palette.divider,
+              color: 'black',
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'contained' },
+            style: {
+              color: 'black',
             },
           },
         ],
