@@ -12,8 +12,8 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
-import useMixpanelTrack from 'src/utils/mixPanel';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
@@ -114,7 +114,7 @@ export const MarketSwitcher = () => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const trackEvent = useMixpanelTrack();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
