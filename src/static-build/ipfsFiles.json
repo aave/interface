@@ -2682,6 +2682,19 @@
       "ipfsHash": "QmPXUscf8yHpynJxWAnFVqYexLM8jfmmVPDqLpaCZLfTmw",
       "originalHash": "0x11a1f4443dd21c76734e1302c889815bab750e28f6c8f69d110596f36270ca36",
       "id": 188
+    },
+    {
+      "title": "Freeze DPI on V2 Ethereum",
+      "shortDescription": "Freeze DPI on V2 Ethereum",
+      "author": "Chaos Labs (@ori-chaoslabs, @yonikesel)",
+      "discussions": "https://governance.aave.com/t/arfc-add-dpi-to-v3-ethereum-and-freeze-on-v2-ethereum/12354",
+      "created": "2023-3-20",
+      "preview": "# Simple Summary\n\nA proposal to to freeze DPI on the Aave V2 …",
+      "basename": "AIP-FREEZE-DPI-V2-ETH",
+      "description": "\n\n# Simple Summary\n\nA proposal to to freeze DPI on the Aave V2 Ethereum market.\n\n# Motivation\n\nDPI is an index token redeemable for a basket of ERC-20s. Due to an extremely low market cap and trading volumes, combined with centralization considerations, we recommend freezing DPI on Aave V2.\nThrough 2021 DPI held a market cap between $100M and $200M with daily trading volumes in the $Ms. However, throughout 2022 the market cap has decreased drastically, staying between $10M-$30M for the past three months, with daily trading volume rarely crossing the $200K mark. On top of the low market cap and low trading volume, there is also implied centralization risk of DPI compared with the direct holding of the basket of underlying assets.\nThe respective governance forum discussion is linked below:\n\n- [[ARFC] - Add DPI to V3 Ethereum and Freeze on V2 Ethereum](https://governance.aave.com/t/arfc-add-dpi-to-v3-ethereum-and-freeze-on-v2-ethereum/12354)\n\n# Specification\n\nTicker: DPI\n\nContract Address: 0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b\n\nThe proposal payload simply executes setReserveBorrowing(false) on the Aave V2 Ethereum LendingPoolConfigurator for DPI.\n\n# References\n\n[Forum Post](https://governance.aave.com/t/arfc-add-dpi-to-v3-ethereum-and-freeze-on-v2-ethereum/12354)\n\n[Tests](https://github.com/ChaosLabsInc/aave-v2-payloads/blob/main/src/tests/AaveV2FreezeDPIPayloadTest.t.sol)\n\n[Proposal payload implementation](https://github.com/ChaosLabsInc/aave-v2-payloads/blob/main/src/payloads/AaveV2FreezeDPIPayload.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmcfAW5jU8F2u2LkDCbaPQeLwYe8qQN92W4GggimawuLev",
+      "originalHash": "0xd4c1c21b50d76e454ec719e637734d1f5e3921a18c3c231ec2a92a32d9993fe3",
+      "id": 189
     }
   ]
 }
