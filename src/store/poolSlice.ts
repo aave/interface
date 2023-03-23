@@ -1,23 +1,25 @@
 import {
-  ActionBundle,
+  ApproveType,
+  DEFAULT_DEADLINE,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
+  IERC20ServiceInterface,
   IncentivesController,
   IncentivesControllerV2,
   IncentivesControllerV2Interface,
   InterestRate,
   LendingPool,
   LendingPoolBundle,
-  LPSupplyParamsBundleType,
   PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   PoolBundle,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
+  SignedApproveType,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -29,10 +31,14 @@ import {
   LPSwapBorrowRateMode,
   LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
-import { LPSignERC20ApprovalType } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import {
+  LPSignERC20ApprovalType,
+  LPSupplyParamsType,
+  LPSupplyWithPermitType,
+} from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { Signature } from 'ethers';
+import { PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
@@ -90,7 +96,6 @@ export interface PoolSlice {
       deadline: string;
     }
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  supplyBundle: (args: Omit<LPSupplyParamsBundleType, 'user'>) => Promise<ActionBundle>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -100,6 +105,11 @@ export interface PoolSlice {
     deadline: string;
     spender: string;
   }) => Promise<string>;
+  // PoolBundle and LendingPoolBundle methods
+  supply: (args: LPSupplyParamsType) => PopulatedTransaction;
+  supplyWithPermit: (args: LPSupplyWithPermitType) => PopulatedTransaction;
+  approvedAmount: (args: ApproveType) => Promise<number>;
+  generatePermitSignatureRequest: (args: SignedApproveType) => Promise<string>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -134,16 +144,12 @@ export const createPoolSlice: StateCreator<
     if (currentMarketData.v3) {
       return new PoolBundle(provider, {
         POOL: currentMarketData.addresses.LENDING_POOL,
-        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
-        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
         WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
         L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
       });
     } else {
       return new LendingPoolBundle(provider, {
         LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
-        REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
-        SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
         WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
       });
     }
@@ -258,6 +264,62 @@ export const createPoolSlice: StateCreator<
       get().refreshPoolData(v3MarketData);
     },
     isFaucetPermissioned: true,
+    supply: (args: LPSupplyParamsType) => {
+      const poolBundle = getCorrectPoolBundle();
+      const currentAccount = get().account;
+      if (poolBundle instanceof PoolBundle) {
+        return poolBundle.supplyTxBuilder.generateTxData({
+          user: currentAccount,
+          reserve: args.reserve,
+          amount: args.amount,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
+      } else {
+        const lendingPool = poolBundle as LendingPoolBundle;
+        return lendingPool.depositTxBuilder.generateTxData({
+          user: currentAccount,
+          reserve: args.reserve,
+          amount: args.amount,
+        });
+      }
+    },
+    supplyWithPermit: (args: LPSupplyWithPermitType) => {
+      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const user = get().account;
+      const signature = utils.joinSignature(args.signature);
+      return poolBundle.supplyTxBuilder.generateSignedTxData({
+        reserve: args.reserve,
+        amount: args.amount,
+        user,
+        deadline: DEFAULT_DEADLINE,
+        useOptimizedPath: get().useOptimizedPath(),
+        signature,
+      });
+    },
+    approvedAmount: async (args: ApproveType) => {
+      const provider = get().jsonRpcProvider();
+      const erc20Service: IERC20ServiceInterface = new ERC20Service(provider);
+      const user = get().account;
+
+      const approvedAmount: number = await erc20Service.approvedAmount({
+        user,
+        token: args.token,
+        spender: args.spender,
+      });
+      return approvedAmount;
+    },
+    generatePermitSignatureRequest: (args: SignedApproveType) => {
+      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const user = get().account;
+
+      return poolBundle.supplyTxBuilder.generateApprovalSignatureData({
+        user: user,
+        token: args.token,
+        amount: args.amount,
+        spender: args.spender,
+        deadline: args.deadline,
+      });
+    },
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
       const { jsonRpcProvider, currentMarketData, account: userAddress } = get();
@@ -382,25 +444,6 @@ export const createPoolSlice: StateCreator<
         useOptimizedPath: get().useOptimizedPath(),
         deadline,
       });
-    },
-    supplyBundle: ({ reserve, amount }) => {
-      const poolBundle = getCorrectPoolBundle();
-      const currentAccount = get().account;
-      if (poolBundle instanceof PoolBundle) {
-        return poolBundle.supplyBundle({
-          user: currentAccount,
-          reserve,
-          amount,
-          useOptimizedPath: get().useOptimizedPath(),
-        });
-      } else {
-        const lendingPoolBundle = poolBundle as LendingPoolBundle;
-        return lendingPoolBundle.depositBundle({
-          user: currentAccount,
-          reserve,
-          amount,
-        });
-      }
     },
     swapCollateral: async ({
       poolReserve,
