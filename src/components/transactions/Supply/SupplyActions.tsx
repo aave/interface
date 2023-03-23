@@ -1,3 +1,4 @@
+import { LendingPoolBundle, PoolBundle } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import React from 'react';
@@ -25,17 +26,13 @@ export const SupplyActions = React.memo(
     blocked,
     ...props
   }: SupplyActionProps) => {
-    const { supplyBundle, tryPermit } = useRootStore();
+    const { getCorrectPoolBundle, tryPermit } = useRootStore();
+    const poolBundle: PoolBundle | LendingPoolBundle = getCorrectPoolBundle();
     const usingPermit = tryPermit(poolAddress);
     const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
       useTransactionBundleHandler({
         tryPermit: usingPermit,
-        handleGetBundle: async () => {
-          return supplyBundle({
-            amount: !!amountToSupply ? amountToSupply : '1',
-            reserve: poolAddress,
-          });
-        },
+        supplyTxBuilder,
         nullState: !amountToSupply || parseFloat(amountToSupply) === 0,
         deps: [amountToSupply, poolAddress],
       });
