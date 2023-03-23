@@ -2667,6 +2667,21 @@
       "ipfsHash": "QmSLXntYGnn5CeAed5GZwndtGZRQx6YXnQg1xZAthyvmNz",
       "originalHash": "0x3b66ed0fa57bec842608cb1be68f97ca0c241cd3744a860086762f76cc0ae933",
       "id": 187
+    },
+    {
+      "aip": 188,
+      "title": "Risk Parameter Updates for Aave V3 ETH Market (2023-03-18)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-gauntlet-recommendations-for-wsteth-and-reth-on-eth-v3/12349",
+      "created": "2023-03-22T00:00:00.000Z",
+      "preview": "## Summary\n\n A proposal to make parameter changes on Aave V3 ETH …",
+      "basename": "AIP-188",
+      "description": "## Summary\n\nA proposal to make parameter changes on Aave V3 ETH. For more details, see Gauntlet's full forum post [here](https://governance.aave.com/t/arc-gauntlet-recommendations-for-wsteth-and-reth-on-eth-v3/12349).\n\n\n## Motivation\n\nThis set of parameter updates follows Gauntlet's supply and borrow cap [methodology](https://governance.aave.com/t/gauntlet-methodologies-borrow-and-supply-cap/11487). \n\n\n\n## Specification\n\n* Increase wstETH Borrow Cap from 3k to 6k.\n* Increase rETH Borrow Cap from 1.2k to 2.4k.\n\n## Implementation\n\nThis proposal changes wstETH and rETH borrow caps via the following pre-deployed payload: [0xf4d1352b3e9e99fca6aa20f62fe95192a26c9527](https://etherscan.io/address/0xf4d1352b3e9e99fca6aa20f62fe95192a26c9527)\n\nThe payload code and tests can be found [here](https://github.com/bgd-labs/aave-proposals/pull/104)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*\n\n\n\n",
+      "ipfsHash": "QmPXUscf8yHpynJxWAnFVqYexLM8jfmmVPDqLpaCZLfTmw",
+      "originalHash": "0x11a1f4443dd21c76734e1302c889815bab750e28f6c8f69d110596f36270ca36",
+      "id": 188
     }
   ]
 }
