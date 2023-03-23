@@ -6,7 +6,6 @@ import {
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
-  IERC20ServiceInterface,
   IncentivesController,
   IncentivesControllerV2,
   IncentivesControllerV2Interface,
@@ -106,10 +105,10 @@ export interface PoolSlice {
     spender: string;
   }) => Promise<string>;
   // PoolBundle and LendingPoolBundle methods
-  supply: (args: LPSupplyParamsType) => PopulatedTransaction;
-  supplyWithPermit: (args: LPSupplyWithPermitType) => PopulatedTransaction;
-  approvedAmount: (args: ApproveType) => Promise<number>;
-  generatePermitSignatureRequest: (args: SignedApproveType) => Promise<string>;
+  supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
+  supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
+  getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
+  generatePermitSignatureRequest: (args: Omit<SignedApproveType, 'user'>) => Promise<string>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -264,7 +263,7 @@ export const createPoolSlice: StateCreator<
       get().refreshPoolData(v3MarketData);
     },
     isFaucetPermissioned: true,
-    supply: (args: LPSupplyParamsType) => {
+    supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
@@ -283,7 +282,7 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    supplyWithPermit: (args: LPSupplyWithPermitType) => {
+    supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle() as PoolBundle;
       const user = get().account;
       const signature = utils.joinSignature(args.signature);
@@ -296,19 +295,13 @@ export const createPoolSlice: StateCreator<
         signature,
       });
     },
-    approvedAmount: async (args: ApproveType) => {
-      const provider = get().jsonRpcProvider();
-      const erc20Service: IERC20ServiceInterface = new ERC20Service(provider);
+    getApprovedAmount: async (args: { token: string }) => {
+      const poolBundle = getCorrectPoolBundle() as PoolBundle;
       const user = get().account;
 
-      const approvedAmount: number = await erc20Service.approvedAmount({
-        user,
-        token: args.token,
-        spender: args.spender,
-      });
-      return approvedAmount;
+      return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
     },
-    generatePermitSignatureRequest: (args: SignedApproveType) => {
+    generatePermitSignatureRequest: (args: Omit<SignedApproveType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle() as PoolBundle;
       const user = get().account;
 
