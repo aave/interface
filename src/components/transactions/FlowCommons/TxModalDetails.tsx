@@ -303,7 +303,7 @@ export const DetailsHFLine = ({
                   {ArrowRightIcon}
 
                   <HealthFactorNumber
-                    value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                    value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
                     variant="secondary14"
                   />
                 </>
