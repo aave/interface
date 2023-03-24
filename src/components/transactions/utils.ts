@@ -1,5 +1,10 @@
 import { BigNumber } from 'bignumber.js';
-import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { CollateralType } from 'src/helpers/types';
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,
@@ -28,4 +33,55 @@ export const zeroLTVBlockingWithdraw = (user: ExtendedFormattedUser): string[] =
     }
   });
   return zeroLTVBlockingWithdraw;
+};
+
+export const getAssetCollateralType = (
+  userReserve: ComputedUserReserveData,
+  poolReserve: ComputedReserveData,
+  userTotalCollateralUSD: string,
+  userIsInIsolationMode: boolean,
+  debtCeilingIsMaxed: boolean
+) => {
+  // collateralization state
+  let collateralType: CollateralType = CollateralType.ENABLED;
+  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
+  const userHasCollateral = userTotalCollateralUSD !== '0';
+
+  if (!poolReserve.usageAsCollateralEnabled) {
+    collateralType = CollateralType.DISABLED;
+  } else if (poolReserve.isIsolated) {
+    if (debtCeilingIsMaxed) {
+      collateralType = CollateralType.UNAVAILABLE;
+    } else if (userIsInIsolationMode) {
+      if (userHasSuppliedReserve) {
+        collateralType = userReserve.usageAsCollateralEnabledOnUser
+          ? CollateralType.ISOLATED_ENABLED
+          : CollateralType.ISOLATED_DISABLED;
+      } else {
+        if (userHasCollateral) {
+          collateralType = CollateralType.ISOLATED_DISABLED;
+        }
+      }
+    } else {
+      if (userHasCollateral) {
+        collateralType = CollateralType.ISOLATED_DISABLED;
+      } else {
+        collateralType = CollateralType.ISOLATED_ENABLED;
+      }
+    }
+  } else {
+    if (userIsInIsolationMode) {
+      collateralType = CollateralType.DISABLED;
+    } else {
+      if (userHasSuppliedReserve) {
+        collateralType = userReserve.usageAsCollateralEnabledOnUser
+          ? CollateralType.ENABLED
+          : CollateralType.DISABLED;
+      } else {
+        collateralType = CollateralType.ENABLED;
+      }
+    }
+  }
+
+  return collateralType;
 };

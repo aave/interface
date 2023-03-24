@@ -1,7 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -11,8 +11,14 @@ import {
   DetailsIncentivesLine,
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { CollateralType } from 'src/helpers/types';
+import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
+import { getAssetCollateralType } from '../utils';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
@@ -35,23 +41,25 @@ export const SwapModalDetails = ({
   fromAmount,
   loading,
 }: SupplyModalDetailsProps) => {
-  const { palette } = useTheme();
+  const { user } = useAppDataContext();
 
-  const parseUsageString = (usage: boolean) => {
-    if (usage) {
-      return (
-        <Typography variant="secondary14" color={palette.success.main}>
-          <Trans>Yes</Trans>
-        </Typography>
-      );
-    } else {
-      return (
-        <Typography variant="secondary14" color={palette.error.main}>
-          <Trans>No</Trans>
-        </Typography>
-      );
-    }
-  };
+  const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  const swapSourceCollateralType = getAssetCollateralType(
+    swapSource,
+    swapSource.reserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    sourceDebtCeiling
+  );
+
+  const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  const swapTargetCollateralType = getAssetCollateralType(
+    swapTarget,
+    swapTarget.reserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    targetDebtCeiling
+  );
 
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
@@ -72,6 +80,38 @@ export const SwapModalDetails = ({
       />
     </>
   );
+
+  const CanBeCollateral = ({ collateralType }: { collateralType: CollateralType }) => {
+    return (
+      <Stack>
+        {collateralType === CollateralType.UNAVAILABLE && (
+          <Typography variant="description" color="error.main">
+            <Trans>Unavailable</Trans>
+          </Typography>
+        )}
+        {collateralType === CollateralType.ENABLED && (
+          <Typography variant="description" color="success.main">
+            <Trans>Yes</Trans>
+          </Typography>
+        )}
+        {collateralType === CollateralType.ISOLATED_ENABLED && (
+          <Typography variant="description" color="warning.main">
+            <Trans>In isolation</Trans>
+          </Typography>
+        )}
+        {collateralType === CollateralType.DISABLED && (
+          <Typography variant="description" color="grey">
+            <Trans>Disabled</Trans>
+          </Typography>
+        )}
+        {collateralType === CollateralType.ISOLATED_DISABLED && (
+          <Typography variant="description" color="grey">
+            <Trans>Disabled</Trans>
+          </Typography>
+        )}
+      </Stack>
+    );
+  };
 
   return (
     <>
@@ -96,13 +136,13 @@ export const SwapModalDetails = ({
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              {parseUsageString(swapSource.reserve.reserveLiquidationThreshold !== '0')}
+              <CanBeCollateral collateralType={swapSourceCollateralType} />
 
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
               </SvgIcon>
 
-              {parseUsageString(swapTarget.reserve.usageAsCollateralEnabled)}
+              <CanBeCollateral collateralType={swapTargetCollateralType} />
             </>
           )}
         </Box>
