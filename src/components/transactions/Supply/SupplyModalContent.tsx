@@ -97,9 +97,9 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-          .multipliedBy(user.currentLiquidationThreshold)
-          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
 
     let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
@@ -212,6 +212,7 @@ export const SupplyModalContent = React.memo(
         poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
         symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
         blocked: blockingError !== undefined,
+        decimals: poolReserve.decimals,
       };
     }, [
       amount,
@@ -221,6 +222,7 @@ export const SupplyModalContent = React.memo(
       poolReserve.symbol,
       currentNetworkConfig.baseAssetSymbol,
       blockingError,
+      poolReserve.decimals,
     ]);
 
     if (supplyTxState.success)
