@@ -6,6 +6,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DelegationType } from 'src/helpers/types';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -47,8 +48,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const powers = useRootStore((state) => state.powers);
-  const refreshGovernanceData = useRootStore((state) => state.refreshGovernanceData);
+  const user = useRootStore((state) => state.account);
+  const { data: powers, refetch } = usePowers({ user });
   // error states
 
   // selector states
@@ -117,8 +118,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   };
 
   useEffect(() => {
-    if (txState.success) refreshGovernanceData();
-  }, [txState.success, refreshGovernanceData]);
+    if (txState.success) refetch();
+  }, [txState.success, refetch]);
 
   // is Network mismatched
   const govChain =
