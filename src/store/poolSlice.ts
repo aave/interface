@@ -18,7 +18,7 @@ import {
   PoolBundle,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
-  SignedApproveType,
+  SUPER_BIG_ALLOWANCE_NUMBER,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -105,10 +105,10 @@ export interface PoolSlice {
     spender: string;
   }) => Promise<string>;
   // PoolBundle and LendingPoolBundle methods
+  generateApproval: (args: ApproveType) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
   getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
-  generatePermitSignatureRequest: (args: Omit<SignedApproveType, 'user'>) => Promise<string>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -263,6 +263,11 @@ export const createPoolSlice: StateCreator<
       get().refreshPoolData(v3MarketData);
     },
     isFaucetPermissioned: true,
+    generateApproval: (args: ApproveType) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      return tokenERC20Service.approveTxData({ ...args, amount: SUPER_BIG_ALLOWANCE_NUMBER });
+    },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle();
       const currentAccount = get().account;
@@ -296,22 +301,13 @@ export const createPoolSlice: StateCreator<
       });
     },
     getApprovedAmount: async (args: { token: string }) => {
-      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const poolBundle = getCorrectPoolBundle();
       const user = get().account;
-
-      return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
-    },
-    generatePermitSignatureRequest: (args: Omit<SignedApproveType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle() as PoolBundle;
-      const user = get().account;
-
-      return poolBundle.supplyTxBuilder.generateApprovalSignatureData({
-        user: user,
-        token: args.token,
-        amount: args.amount,
-        spender: args.spender,
-        deadline: args.deadline,
-      });
+      if (poolBundle instanceof PoolBundle) {
+        return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
+      } else {
+        return poolBundle.depositTxBuilder.getApprovedAmount({ user, token: args.token });
+      }
     },
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
