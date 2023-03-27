@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
 import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
-import MERKLE_DIST_ABI from '../../../modules/airdrop/MerkleDistAbi';
+import MERKLE_DIST_ABI from '../../../maneki/modules/airdrop/MerkleDistAbi';
 import { TxAction } from '../../../ui-config/errorMapping';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
