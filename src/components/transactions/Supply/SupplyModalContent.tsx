@@ -163,7 +163,6 @@ export const SupplyModalContent = ({
   // collateralization state
   const collateralType = getAssetCollateralType(
     userReserve,
-    poolReserve,
     user.totalCollateralUSD,
     user.isInIsolationMode,
     debtCeiling.isMaxed

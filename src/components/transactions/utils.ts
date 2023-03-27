@@ -1,7 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import { CollateralType } from 'src/helpers/types';
 import {
-  ComputedReserveData,
   ComputedUserReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -37,26 +36,28 @@ export const zeroLTVBlockingWithdraw = (user: ExtendedFormattedUser): string[] =
 
 export const getAssetCollateralType = (
   userReserve: ComputedUserReserveData,
-  poolReserve: ComputedReserveData,
   userTotalCollateralUSD: string,
   userIsInIsolationMode: boolean,
   debtCeilingIsMaxed: boolean
 ) => {
-  // collateralization state
+  const poolReserve = userReserve.reserve;
+
+  if (!poolReserve.usageAsCollateralEnabled) {
+    return CollateralType.UNAVAILABLE;
+  }
+
   let collateralType: CollateralType = CollateralType.ENABLED;
   const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = userTotalCollateralUSD !== '0';
 
-  if (!poolReserve.usageAsCollateralEnabled) {
-    collateralType = CollateralType.DISABLED;
-  } else if (poolReserve.isIsolated) {
+  if (poolReserve.isIsolated) {
     if (debtCeilingIsMaxed) {
       collateralType = CollateralType.UNAVAILABLE;
     } else if (userIsInIsolationMode) {
       if (userHasSuppliedReserve) {
         collateralType = userReserve.usageAsCollateralEnabledOnUser
           ? CollateralType.ISOLATED_ENABLED
-          : CollateralType.ISOLATED_DISABLED;
+          : CollateralType.DISABLED;
       } else {
         if (userHasCollateral) {
           collateralType = CollateralType.ISOLATED_DISABLED;
@@ -71,7 +72,7 @@ export const getAssetCollateralType = (
     }
   } else {
     if (userIsInIsolationMode) {
-      collateralType = CollateralType.DISABLED;
+      collateralType = CollateralType.UNAVAILABLE;
     } else {
       if (userHasSuppliedReserve) {
         collateralType = userReserve.usageAsCollateralEnabledOnUser

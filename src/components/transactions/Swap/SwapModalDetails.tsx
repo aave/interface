@@ -1,8 +1,10 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { IsolatedTooltip } from 'src/components/isolationMode/IsolatedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -12,20 +14,15 @@ import {
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
-import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 
-import {
-  ComputedUserReserveData,
-  useAppDataContext,
-} from '../../../hooks/app-data-provider/useAppDataProvider';
-import { getAssetCollateralType } from '../utils';
+import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
   healthFactor: string;
   healthFactorAfterSwap: string;
-  swapSource: ComputedUserReserveData;
-  swapTarget: ComputedUserReserveData;
+  swapSource: ComputedUserReserveData & { collateralType: CollateralType };
+  swapTarget: ComputedUserReserveData & { collateralType: CollateralType };
   toAmount: string;
   fromAmount: string;
   loading: boolean;
@@ -41,26 +38,6 @@ export const SwapModalDetails = ({
   fromAmount,
   loading,
 }: SupplyModalDetailsProps) => {
-  const { user } = useAppDataContext();
-
-  const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
-  const swapSourceCollateralType = getAssetCollateralType(
-    swapSource,
-    swapSource.reserve,
-    user.totalCollateralUSD,
-    user.isInIsolationMode,
-    sourceDebtCeiling
-  );
-
-  const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
-  const swapTargetCollateralType = getAssetCollateralType(
-    swapTarget,
-    swapTarget.reserve,
-    user.totalCollateralUSD,
-    user.isInIsolationMode,
-    targetDebtCeiling
-  );
-
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
   );
@@ -81,38 +58,6 @@ export const SwapModalDetails = ({
     </>
   );
 
-  const CanBeCollateral = ({ collateralType }: { collateralType: CollateralType }) => {
-    return (
-      <Stack>
-        {collateralType === CollateralType.UNAVAILABLE && (
-          <Typography variant="description" color="error.main">
-            <Trans>Unavailable</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.ENABLED && (
-          <Typography variant="description" color="success.main">
-            <Trans>Yes</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.ISOLATED_ENABLED && (
-          <Typography variant="description" color="warning.main">
-            <Trans>In isolation</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.ISOLATED_DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-      </Stack>
-    );
-  };
-
   return (
     <>
       {healthFactorAfterSwap && (
@@ -130,19 +75,19 @@ export const SwapModalDetails = ({
         percent
         loading={loading}
       />
-      <Row caption={<Trans>Can be collateral</Trans>} captionVariant="description" mb={4}>
+      <Row caption={<Trans>Collateral</Trans>} captionVariant="description" mb={4}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              <CanBeCollateral collateralType={swapSourceCollateralType} />
+              <CollateralState collateralType={swapSource.collateralType} />
 
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
               </SvgIcon>
 
-              <CanBeCollateral collateralType={swapTargetCollateralType} />
+              <CollateralState collateralType={swapTarget.collateralType} />
             </>
           )}
         </Box>
@@ -247,5 +192,61 @@ export const SwapModalDetails = ({
         </Box>
       </Row>
     </>
+  );
+};
+
+const CollateralState = ({ collateralType }: { collateralType: CollateralType }) => {
+  return (
+    <Stack>
+      {collateralType === CollateralType.UNAVAILABLE && (
+        <>
+          <ContentWithTooltip
+            tooltipContent={<Trans>Collateral usage is limited because of Isolation mode.</Trans>}
+          >
+            <Stack direction="row" sx={{ alignItems: 'center' }}>
+              <Trans>Unavailable</Trans>
+              <SvgIcon
+                sx={{
+                  ml: '3px',
+                  color: 'text.muted',
+                  fontSize: '14px',
+                }}
+              >
+                <InformationCircleIcon />
+              </SvgIcon>
+            </Stack>
+          </ContentWithTooltip>
+        </>
+      )}
+      {collateralType === CollateralType.ENABLED && (
+        <Typography variant="description" color="success.main">
+          <Trans>Enabled</Trans>
+        </Typography>
+      )}
+      {(collateralType === CollateralType.ISOLATED_ENABLED ||
+        collateralType === CollateralType.ISOLATED_DISABLED) && (
+        <ContentWithTooltip tooltipContent={<IsolatedTooltip />}>
+          <Stack direction="row" sx={{ alignItems: 'center' }}>
+            <Typography color="warning.main">
+              <Trans>In isolation</Trans>
+            </Typography>
+            <SvgIcon
+              sx={{
+                ml: '3px',
+                color: 'text.muted',
+                fontSize: '14px',
+              }}
+            >
+              <InformationCircleIcon />
+            </SvgIcon>
+          </Stack>
+        </ContentWithTooltip>
+      )}
+      {collateralType === CollateralType.DISABLED && (
+        <Typography color="text.primary">
+          <Trans>Disabled</Trans>
+        </Typography>
+      )}
+    </Stack>
   );
 };
