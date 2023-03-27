@@ -1,8 +1,8 @@
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 
-import { AirdropContainer } from '../src/modules/airdrop/AirdropContainer';
-import { AirdropTopPanel } from '../src/modules/airdrop/AirdropTopPanel';
+import { AirdropContainer } from '../src/maneki/modules/airdrop/AirdropContainer';
+import { AirdropTopPanel } from '../src/maneki/modules/airdrop/AirdropTopPanel';
 
 export default function Airdrops() {
   return (
