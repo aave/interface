@@ -194,13 +194,35 @@ export const SwapModalContent = ({
 
   // If the user is swapping all of their isolated asset to an asset that is not supplied,
   // then the swap target will be enabled as collateral as part of the swap.
-  if (isMaxSelected && swapSourceCollateralType === CollateralType.ISOLATED_ENABLED) {
-    if (swapTarget.underlyingBalance === '0') {
-      if (swapTarget.reserve.isIsolated) {
-        swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
-      } else {
-        swapTargetCollateralType = CollateralType.ENABLED;
-      }
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ISOLATED_ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    if (swapTarget.reserve.isIsolated) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+    } else {
+      swapTargetCollateralType = CollateralType.ENABLED;
+    }
+  }
+
+  // If the user is swapping all of their enabled asset to an isolated asset that is not supplied,
+  // and no other supplied assets are being used as collateral,
+  // then the swap target will be enabled as collateral and the user will be in isolation mode.
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    const reservesAsCollateral = user.userReservesData.filter(
+      (r) => r.usageAsCollateralEnabledOnUser
+    );
+
+    if (
+      reservesAsCollateral.length === 1 &&
+      reservesAsCollateral[0].underlyingAsset === userReserve.underlyingAsset
+    ) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
     }
   }
 
