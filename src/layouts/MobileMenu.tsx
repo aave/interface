@@ -76,7 +76,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             <MenuItemsWrapper title={<Trans>Global settings</Trans>}>
               <List>
                 <DarkModeSwitcher />
-                {PROD_ENV && <TestNetModeSwitcher />}
+                {false && PROD_ENV && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
               </List>
             </MenuItemsWrapper>
