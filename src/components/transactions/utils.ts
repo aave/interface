@@ -12,3 +12,5 @@ export const useFlashloan = (healthFactor: string, hfEffectOfFromAmount: string)
     new BigNumber(healthFactor).minus(new BigNumber(hfEffectOfFromAmount)).lt('1.05')
   );
 };
+
+export const APPROVAL_GAS_LIMIT = 65000;

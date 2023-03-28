@@ -1,4 +1,4 @@
-import { ApproveType } from '@aave/contract-helpers';
+import { ApproveType, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -13,6 +13,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVAL_GAS_LIMIT } from '../utils';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
@@ -56,6 +57,7 @@ export const SupplyActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
       setMainTxState,
+      setGasLimit,
       setTxError,
     } = useModalContext();
     const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
@@ -87,6 +89,21 @@ export const SupplyActions = React.memo(
     useEffect(() => {
       fetchApprovedAmount();
     }, [fetchApprovedAmount]);
+
+    useEffect(() => {
+      let supplyGasLimit = 0;
+      if (usePermit) {
+        supplyGasLimit = Number(
+          gasLimitRecommendations[ProtocolAction.supplyWithPermit].recommended
+        );
+      } else {
+        supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
+        if (requiresApproval && !approvalTxState.success) {
+          supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
+        }
+      }
+      setGasLimit(supplyGasLimit.toString());
+    }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
 
     useEffect(() => {
       const preferPermit =
