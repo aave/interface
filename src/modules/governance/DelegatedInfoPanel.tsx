@@ -7,8 +7,8 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
@@ -105,10 +105,10 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 };
 
 export const DelegatedInfoPanel = () => {
-  const {
-    aaveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
   const address = useRootStore((store) => store.account);
+  const {
+    data: { aave, stkAave },
+  } = useGovernanceTokens({ user: address });
   const { data: powers } = usePowers({ user: address });
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
 

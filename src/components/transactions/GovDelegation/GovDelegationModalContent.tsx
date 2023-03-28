@@ -6,8 +6,8 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DelegationType } from 'src/helpers/types';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -43,12 +43,12 @@ type GovDelegationModalContentProps = {
 
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
-  const {
-    aaveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const user = useRootStore((state) => state.account);
+  const {
+    data: { aave, stkAave },
+  } = useGovernanceTokens({ user });
   const { data: powers, refetch } = usePowers({ user });
   // error states
 
