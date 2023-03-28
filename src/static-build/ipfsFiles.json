@@ -2695,6 +2695,21 @@
       "ipfsHash": "QmcfAW5jU8F2u2LkDCbaPQeLwYe8qQN92W4GggimawuLev",
       "originalHash": "0xd4c1c21b50d76e454ec719e637734d1f5e3921a18c3c231ec2a92a32d9993fe3",
       "id": 189
+    },
+    {
+      "aip": 190,
+      "title": "Risk Parameter Updates for Aave V3 ETH and V3 Arbitrum (2023-03-27)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Walter Li, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-gauntlet-recommendations-for-aave-link-and-weth-on-v3-arbitrum-2023-03-21/12394/2",
+      "created": "2023-03-27T00:00:00.000Z",
+      "preview": "## Summary\n\n A proposal to make parameter changes on Aave V3 ETH and V3 Arbitrum …",
+      "basename": "AIP-190",
+      "description": "## Summary\n\nA proposal to make parameter changes on Aave V3 ETH and V3 Arbitrum. For more details, please refer to this [forum post](https://governance.aave.com/t/arc-gauntlet-recommendations-for-aave-link-and-weth-on-v3-arbitrum-2023-03-21/12394/2?u=pauljlei) and Gauntlet's methodology for [borrow and supply caps](https://governance.aave.com/t/gauntlet-methodologies-borrow-and-supply-cap/11487).\n\n\n\n## Specification\n\n**V3 Arbitrum:**\n* Increase WETH’s Supply Cap from 35,280 to 45,000\n\n**V3 ETH:**\n* Increase rETH’s Supply Cap from 10,000 to 20,000\n* Decrease CRV's Supply Cap from 62,500,000 to 51,000,000\n\n## Implementation\n\nThe proposal implements supply cap updates through two pre-deployed payloads, one for Ethereum and the other for Arbitrum:\n  - Ethereum Payload: [`0x142DCAEC322aAA25141B2597bf348487aDBd596d`](https://etherscan.io/address/0x142DCAEC322aAA25141B2597bf348487aDBd596d)\n  - Arbitrum Payload: [`0x4c68fDA91bfb4683eAB90017d9B76a99F2d77Eed`](https://arbiscan.io/address/0x4c68fDA91bfb4683eAB90017d9B76a99F2d77Eed)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*\n\n\n\n\n",
+      "ipfsHash": "Qme3bpeMgGemjtHFhCwhiQLx6V4VL5fUntiuWtfDJuGPuz",
+      "originalHash": "0xe95cda38231468aed501ed1d748b41f19a7888350fa5384cecf2dc76f8285351",
+      "id": 190
     }
   ]
 }
