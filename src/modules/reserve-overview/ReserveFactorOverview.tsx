@@ -5,19 +5,27 @@ import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorT
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { useRootStore } from 'src/store/root';
 import { ExplorerLinkBuilderProps } from 'src/ui-config/networksConfig';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 interface ReserveFactorOverviewProps {
   collectorContract: string;
   explorerLinkBuilder: (props: ExplorerLinkBuilderProps) => string;
   reserveFactor: string;
+  reserveName: string;
+  reserveAsset: string;
 }
 
 export const ReserveFactorOverview = ({
   collectorContract,
   explorerLinkBuilder,
   reserveFactor,
+  reserveName,
+  reserveAsset,
 }: ReserveFactorOverviewProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Box
       sx={{
@@ -29,6 +37,13 @@ export const ReserveFactorOverview = ({
       <ReserveOverviewBox
         title={
           <ReserveFactorTooltip
+            event={{
+              eventName: RESERVE_DETAILS.RESERVE_FACTOR_INFO,
+              eventParams: {
+                asset: reserveAsset,
+                assetName: reserveName,
+              },
+            }}
             text={<Trans>Reserve factor</Trans>}
             key="res_factor"
             variant="description"
@@ -53,6 +68,12 @@ export const ReserveFactorOverview = ({
         }
       >
         <Link
+          onClick={() => {
+            trackEvent(RESERVE_DETAILS.COLLECTOR_CONTRACT, {
+              asset: reserveAsset,
+              assetName: reserveName,
+            });
+          }}
           href={explorerLinkBuilder({
             address: collectorContract,
           })}

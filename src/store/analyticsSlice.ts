@@ -3,7 +3,7 @@ import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
-type TrackEventProperties = {
+export type TrackEventProperties = {
   [key: string]: string | number | boolean | Date | undefined;
 };
 

@@ -17,6 +17,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';
@@ -81,7 +82,15 @@ export const SupplyInfo = ({
               title={
                 <Box display="flex" alignItems="center">
                   <Trans>Total supplied</Trans>
-                  <TextWithTooltip>
+                  <TextWithTooltip
+                    event={{
+                      eventName: RESERVE_DETAILS.TOTAL_SUPPLY_INFO_ICON,
+                      eventParams: {
+                        asset: reserve.underlyingAsset,
+                        assetName: reserve.name,
+                      },
+                    }}
+                  >
                     <>
                       <Trans>
                         Asset supply is limited to a certain amount to reduce protocol exposure to
@@ -212,7 +221,19 @@ export const SupplyInfo = ({
           }}
         >
           <ReserveOverviewBox
-            title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+            title={
+              <MaxLTVTooltip
+                event={{
+                  eventName: RESERVE_DETAILS.MAX_LTV_INFO_ICON,
+                  eventParams: {
+                    asset: reserve.underlyingAsset,
+                    assetName: reserve.name,
+                  },
+                }}
+                variant="description"
+                text={<Trans>Max LTV</Trans>}
+              />
+            }
           >
             <FormattedNumber
               value={reserve.formattedBaseLTVasCollateral}
@@ -225,6 +246,13 @@ export const SupplyInfo = ({
           <ReserveOverviewBox
             title={
               <LiquidationThresholdTooltip
+                event={{
+                  eventName: RESERVE_DETAILS.LIQUIDATION_THRESHOLD_INFO_ICON,
+                  eventParams: {
+                    asset: reserve.underlyingAsset,
+                    assetName: reserve.name,
+                  },
+                }}
                 variant="description"
                 text={<Trans>Liquidation threshold</Trans>}
               />
@@ -241,6 +269,13 @@ export const SupplyInfo = ({
           <ReserveOverviewBox
             title={
               <LiquidationPenaltyTooltip
+                event={{
+                  eventName: RESERVE_DETAILS.LIQUIDATION_PENALTY_INFO_ICON,
+                  eventParams: {
+                    asset: reserve.underlyingAsset,
+                    assetName: reserve.name,
+                  },
+                }}
                 variant="description"
                 text={<Trans>Liquidation penalty</Trans>}
               />

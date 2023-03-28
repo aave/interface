@@ -18,6 +18,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -38,6 +40,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -251,6 +254,13 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           ) : (
             <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
               <Link
+                onClick={() =>
+                  trackEvent(RESERVE_DETAILS.ORACLE_PRICE, {
+                    oracle: poolReserve?.priceOracle,
+                    assetName: poolReserve.name,
+                    asset: poolReserve.underlyingAsset,
+                  })
+                }
                 href={currentNetworkConfig.explorerLinkBuilder({
                   address: poolReserve?.priceOracle,
                 })}

@@ -8,6 +8,9 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
+
 interface TokenLinkDropdownProps {
   poolReserve: ComputedReserveData;
   downToSM: boolean;
@@ -15,10 +18,19 @@ interface TokenLinkDropdownProps {
 
 export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { currentNetworkConfig } = useProtocolDataContext();
+
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const open = Boolean(anchorEl);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_DROPDOWN, {
+      assetName: poolReserve.name,
+      asset: poolReserve.underlyingAsset,
+      aToken: poolReserve.aTokenAddress,
+      market: currentMarket,
+      variableDebtToken: poolReserve.variableDebtTokenAddress,
+    });
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -63,6 +75,15 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         </Box>
 
         <MenuItem
+          onClick={() => {
+            trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_UNDERLYING, {
+              assetName: poolReserve.name,
+              asset: poolReserve.underlyingAsset,
+              aToken: poolReserve.aTokenAddress,
+              market: currentMarket,
+              variableDebtToken: poolReserve.variableDebtTokenAddress,
+            });
+          }}
           component="a"
           href={currentNetworkConfig.explorerLinkBuilder({
             address: poolReserve?.underlyingAsset,
@@ -84,6 +105,15 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
 
         <MenuItem
           component="a"
+          onClick={() => {
+            trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_ATOKEN, {
+              assetName: poolReserve.name,
+              asset: poolReserve.underlyingAsset,
+              aToken: poolReserve.aTokenAddress,
+              market: currentMarket,
+              variableDebtToken: poolReserve.variableDebtTokenAddress,
+            });
+          }}
           href={currentNetworkConfig.explorerLinkBuilder({
             address: poolReserve?.aTokenAddress,
           })}
@@ -109,6 +139,15 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
               address: poolReserve?.variableDebtTokenAddress,
             })}
             target="_blank"
+            onClick={() => {
+              trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_DEBT_TOKEN, {
+                assetName: poolReserve.name,
+                asset: poolReserve.underlyingAsset,
+                aToken: poolReserve.aTokenAddress,
+                market: currentMarket,
+                variableDebtToken: poolReserve.variableDebtTokenAddress,
+              });
+            }}
           >
             <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
@@ -123,6 +162,16 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
               address: poolReserve?.stableDebtTokenAddress,
             })}
             target="_blank"
+            onClick={() => {
+              trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_STABLE_DEBT_TOKEN, {
+                assetName: poolReserve.name,
+                asset: poolReserve.underlyingAsset,
+                aToken: poolReserve.aTokenAddress,
+                market: currentMarket,
+                variableDebtToken: poolReserve.variableDebtTokenAddress,
+                stableDebtToken: poolReserve.stableDebtTokenAddress,
+              });
+            }}
           >
             <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>

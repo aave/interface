@@ -17,6 +17,8 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -40,6 +42,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -146,7 +149,19 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 }}
               >
                 <ReserveOverviewBox
-                  title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+                  title={
+                    <MaxLTVTooltip
+                      event={{
+                        eventName: RESERVE_DETAILS.EMODE_MAX_LTV_INFO_ICON,
+                        eventParams: {
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
+                      variant="description"
+                      text={<Trans>Max LTV</Trans>}
+                    />
+                  }
                 >
                   <FormattedNumber
                     value={reserve.formattedEModeLtv}
@@ -158,6 +173,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ReserveOverviewBox
                   title={
                     <LiquidationThresholdTooltip
+                      event={{
+                        eventName: RESERVE_DETAILS.EMODE_LIQUIDATION_THRESHOLD_INFO_ICON,
+                        eventParams: {
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
                       variant="description"
                       text={<Trans>Liquidation threshold</Trans>}
                     />
@@ -173,6 +195,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ReserveOverviewBox
                   title={
                     <LiquidationPenaltyTooltip
+                      event={{
+                        eventName: RESERVE_DETAILS.EMODE_LIQUIDATION_PENALTY_INFO_ICON,
+                        eventParams: {
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
                       variant="description"
                       text={<Trans>Liquidation penalty</Trans>}
                     />
@@ -250,6 +279,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   />
                 </PanelItem>
                 <Button
+                  onClick={() => {
+                    trackEvent(RESERVE_DETAILS.VIEW_INTEREST_STRATEGY, {
+                      asset: reserve.underlyingAsset,
+                      assetName: reserve.name,
+                    });
+                  }}
                   href={currentNetworkConfig.explorerLinkBuilder({
                     address: reserve.interestRateStrategyAddress,
                   })}

@@ -50,35 +50,37 @@ export const MARKETS = {
 };
 
 export const RESERVE_DETAILS = {
-  RESERVE_TOKENS_DROPDOWN: 'View reserve tokens',
-  RESERVE_TOKENS_UNDERLYING: 'View underlying reserve token: ',
-  RESERVE_TOKENS_ATOKEN: 'View underlying aTOKEN: ',
-  RESERVE_TOKENS_DEBT_TOKEN: 'View underlying debt token: ',
-  ORACLE_PRICE: 'View oracle price: ',
-  ADD_TOKEN_TO_WALLET_DROPDWON: 'View add token to wallet dropdown',
-  ADD_UNDERLYING_TO_WALLET: 'Add underlying token to wallet reserve page: ',
-  ADD_ATOKEN_TO_WALLET: 'Add aToken to wallet reserve page: ',
-  TOTAL_SUPPLY_INFO_ICON: 'View Total Supply info: ',
-  MAX_LTV_INFO_ICON: 'View Max LTV info reserve page: ',
-  LIQUIDATION_THRESHOLD_INFO_ICON: 'View liquidation threshold info reserve page: ',
-  LIQUIDATION_PENALTY_INFO_ICON: 'View liquidation penalty info reserve page: ',
-  TOTAL_BORROW_INFO_ICON: 'View Total Borrow info reserve page: ',
-  BORROW_APY_V_INFO: 'View borrow APY variable info reserve page',
-  BORROW_APY_S_INFO: 'View borrow APY stable info reserve page',
-  RESERVE_FACTOR_INFO: 'View reserve factor info reserve page',
-  COLLECTOR_CONTRACT: 'View collector contract reserve page',
-  EMODE_MAX_LTV_INFO_ICON: 'View E-Mode Max LTV info reserve page: ',
-  EMODE_LIQUIDATION_THRESHOLD_INFO_ICON: 'View E-Mode liquidation threshold info reserve page: ',
-  EMODE_LIQUIDATION_PENALTY_INFO_ICON: 'View E-Mode liquidation penalty info reserve page: ',
-  VIEW_INTEREST_STRATEGY: 'View interest rate strategy link reserve page',
+  RESERVE_TOKENS_DROPDOWN: 'View reserve tokens', // done
+  RESERVE_TOKENS_UNDERLYING: 'View underlying reserve token: ', //done
+  RESERVE_TOKENS_ATOKEN: 'View underlying aTOKEN: ', //done
+  RESERVE_TOKENS_DEBT_TOKEN: 'View underlying debt token: ', //done
+  RESERVE_TOKENS_STABLE_DEBT_TOKEN: 'View underlying stable debt token: ', //done
+
+  ORACLE_PRICE: 'View oracle price: ', //done
+  ADD_TOKEN_TO_WALLET_DROPDOWN: 'View add token to wallet dropdown', //done
+  ADD_UNDERLYING_TO_WALLET: 'Add underlying token to wallet reserve page: ', //done
+  ADD_ATOKEN_TO_WALLET: 'Add aToken to wallet reserve page: ', // done
+  TOTAL_SUPPLY_INFO_ICON: 'View Total Supply info: ', // done
+  MAX_LTV_INFO_ICON: 'View Max LTV info reserve page: ', // done
+  LIQUIDATION_THRESHOLD_INFO_ICON: 'View liquidation threshold info reserve page: ', // done
+  LIQUIDATION_PENALTY_INFO_ICON: 'View liquidation penalty info reserve page: ', // done
+  TOTAL_BORROW_INFO_ICON: 'View Total Borrow info reserve page: ', // done
+  BORROW_APY_V_INFO: 'View borrow APY variable info reserve page', //done
+  BORROW_APY_S_INFO: 'View borrow APY stable info reserve page', //done
+  RESERVE_FACTOR_INFO: 'View reserve factor info reserve page', //done
+  COLLECTOR_CONTRACT: 'View collector contract reserve page', // done
+  EMODE_MAX_LTV_INFO_ICON: 'View E-Mode Max LTV info reserve page: ', //done
+  EMODE_LIQUIDATION_THRESHOLD_INFO_ICON: 'View E-Mode liquidation threshold info reserve page: ', //done
+  EMODE_LIQUIDATION_PENALTY_INFO_ICON: 'View E-Mode liquidation penalty info reserve page: ', //done
+  VIEW_INTEREST_STRATEGY: 'View interest rate strategy link reserve page', //done
 };
 
 export const YOUR_INFO_RESERVE_DETAILS = {
-  BRIDGE_LINK: 'L2 bridge link your info reserve page',
-  SUPPLY_INFO_ICON: 'View supply info icon your info reserve page',
-  BORROW_INFO_ICON: 'View borrow info icon your info reserve page',
-  SUPPLY: 'Supply assets your info reserve page',
-  BORROW: 'Borrow assets your info reserve page',
+  BRIDGE_LINK_RESERVE: 'L2 bridge link your info reserve page',
+  SUPPLY_INFO_ICON: 'View supply info icon your info reserve page', // done
+  BORROW_INFO_ICON: 'View borrow info icon your info reserve page', // done
+  SUPPLY_RESERVE: 'Supply assets your info reserve page', // done
+  BORROW_RESERVE: 'Borrow assets your info reserve page', // done
 };
 
 export const SUPPLY_MODAL = {
