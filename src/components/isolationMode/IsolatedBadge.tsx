@@ -80,7 +80,7 @@ export const UnavailableDueToIsolationBadge = () => {
     <ContentWithTooltip
       tooltipContent={
         <IsolationModeTooltipTemplate
-          content={<Trans>Collateral usage is limited because of Isolation mode.</Trans>}
+          content={<Trans>Collateral usage is limited because of isolation mode.</Trans>}
         />
       }
     >

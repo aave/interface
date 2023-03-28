@@ -575,10 +575,13 @@ msgstr "Collateral to repay with"
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
-#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr "Collateral usage is limited because of isolation mode."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
