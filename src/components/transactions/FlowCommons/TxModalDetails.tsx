@@ -1,10 +1,14 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import {
+  IsolatedBadge,
+  IsolatedDisabledBadge,
+  UnavailableDueToIsolationBadge,
+} from 'src/components/isolationMode/IsolatedBadge';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -180,50 +184,43 @@ export interface DetailsCollateralLine {
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
   return (
     <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {collateralType === CollateralType.UNAVAILABLE && (
-          <>
-            <SvgIcon sx={{ color: 'error.main', fontSize: 16, mr: '2px' }}>
-              <ExclamationIcon />
-            </SvgIcon>
-            <Typography variant="description" color="error.main">
-              <Trans>Unavailable</Trans>
-            </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
+      <CollateralState collateralType={collateralType} />
+    </Row>
+  );
+};
+
+interface CollateralStateProps {
+  collateralType: CollateralType;
+}
+
+export const CollateralState = ({ collateralType }: CollateralStateProps) => {
+  return (
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      {
+        {
+          [CollateralType.ENABLED]: (
             <Typography variant="description" color="success.main">
               <Trans>Enabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.ISOLATED_ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'warning.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
-            <Typography variant="description" color="warning.main">
-              <Trans>Enabled in isolation</Trans>
+          ),
+          [CollateralType.ISOLATED_ENABLED]: (
+            <IsolatedBadge typographyProps={{ variant: 'description', color: 'warning.main' }} />
+          ),
+          [CollateralType.DISABLED]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Disabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-        {(collateralType === CollateralType.ISOLATED_DISABLED ||
-          collateralType === CollateralType.UNAVAILABLE_DUE_TO_ISOLATION) && (
-          <Typography variant="description" color="grey">
-            <Trans>Unavailable</Trans>
-          </Typography>
-        )}
-      </Box>
-    </Row>
+          ),
+          [CollateralType.UNAVAILABLE]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Unavailable</Trans>
+            </Typography>
+          ),
+          [CollateralType.ISOLATED_DISABLED]: <IsolatedDisabledBadge />,
+          [CollateralType.UNAVAILABLE_DUE_TO_ISOLATION]: <UnavailableDueToIsolationBadge />,
+        }[collateralType]
+      }
+    </Box>
   );
 };
 

@@ -1,14 +1,13 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowNarrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Skeleton, SvgIcon } from '@mui/material';
 import React from 'react';
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { IsolatedTooltip } from 'src/components/isolationMode/IsolatedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
+  CollateralState,
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
@@ -75,19 +74,28 @@ export const SwapModalDetails = ({
         percent
         loading={loading}
       />
-      <Row caption={<Trans>Collateral</Trans>} captionVariant="description" mb={4}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+          }}
+        >
           {loading ? (
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
               <CollateralState collateralType={swapSource.collateralType} />
 
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
 
-              <CollateralState collateralType={swapTarget.collateralType} />
+                <CollateralState collateralType={swapTarget.collateralType} />
+              </Box>
             </>
           )}
         </Box>
@@ -192,70 +200,5 @@ export const SwapModalDetails = ({
         </Box>
       </Row>
     </>
-  );
-};
-
-const CollateralState = ({ collateralType }: { collateralType: CollateralType }) => {
-  return (
-    <Stack>
-      {collateralType === CollateralType.UNAVAILABLE && (
-        <Typography color="error.main">
-          <Trans>Unavailable</Trans>
-        </Typography>
-      )}
-      {collateralType === CollateralType.ISOLATED_DISABLED && (
-        <Typography color="text.primary">
-          <Trans>Unavailable</Trans>
-        </Typography>
-      )}
-      {collateralType === CollateralType.UNAVAILABLE_DUE_TO_ISOLATION && (
-        <>
-          <ContentWithTooltip
-            tooltipContent={<Trans>Collateral usage is limited because of Isolation mode.</Trans>}
-          >
-            <Stack direction="row" sx={{ alignItems: 'center' }}>
-              <Trans>Unavailable</Trans>
-              <SvgIcon
-                sx={{
-                  ml: '3px',
-                  color: 'text.muted',
-                  fontSize: '14px',
-                }}
-              >
-                <InformationCircleIcon />
-              </SvgIcon>
-            </Stack>
-          </ContentWithTooltip>
-        </>
-      )}
-      {collateralType === CollateralType.ENABLED && (
-        <Typography variant="description" color="success.main">
-          <Trans>Enabled</Trans>
-        </Typography>
-      )}
-      {collateralType === CollateralType.ISOLATED_ENABLED && (
-        <ContentWithTooltip tooltipContent={<IsolatedTooltip />}>
-          <Stack direction="row" sx={{ alignItems: 'center' }}>
-            <Typography color="warning.main">
-              <Trans>In isolation</Trans>
-            </Typography>
-            <SvgIcon
-              sx={{
-                ml: '3px',
-                color: 'text.muted',
-                fontSize: '14px',
-              }}
-            >
-              <InformationCircleIcon />
-            </SvgIcon>
-          </Stack>
-        </ContentWithTooltip>
-      )}
-      {collateralType === CollateralType.DISABLED && (
-        <Typography color="text.primary">
-          <Trans>Disabled</Trans>
-        </Typography>
-      )}
-    </Stack>
   );
 };
