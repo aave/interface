@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { GovernanceService } from 'src/Services/GovernanceService';
+import { GovernanceService } from 'src/services/GovernanceService';
 import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';

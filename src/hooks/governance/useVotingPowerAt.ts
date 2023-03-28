@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-
-export const USE_VOTING_POWER_AT_KEY = 'USE_VOTING_POWER_AT';
 
 type UseVotingPowerAtArgs = {
   strategy: string;
@@ -9,11 +8,15 @@ type UseVotingPowerAtArgs = {
   user: string;
 };
 
-export const useVotingPowerAt = ({ strategy, block, user }: UseVotingPowerAtArgs) => {
+export const useVotingPowerAt = ({
+  strategy,
+  block,
+  user,
+}: UseVotingPowerAtArgs): UseQueryResult<string, Error> => {
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getVotingPowerAt({ user, strategy, block }),
-    queryKey: [USE_VOTING_POWER_AT_KEY, user, strategy, block],
+    queryKey: [QueryKeys.VOTING_POWER_AT, user, strategy, block],
     enabled: !!user,
   });
 };

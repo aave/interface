@@ -1,0 +1,7 @@
+export enum QueryKeys {
+  USE_POWERS = 'USE_POWERS',
+  VOTE_ON_PROPOSAL = 'VOTE_ON_PROPOSAL',
+  VOTING_POWER_AT = 'VOTING_POWER_AT',
+}
+
+export const POOLING_INTERVAL = 60000;
