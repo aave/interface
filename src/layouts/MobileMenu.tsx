@@ -85,10 +85,10 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                 {moreNavigation.map((item, index) => (
                   <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
                     <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
-                      <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>
+                      <SvgIcon sx={{ fontSize: '20px', color: 'inherit' }}>{item.icon}</SvgIcon>
                     </ListItemIcon>
 
-                    <ListItemText>{i18n._(item.title)}</ListItemText>
+                    <ListItemText sx={{ color: '#F1F1F3' }}>{i18n._(item.title)}</ListItemText>
                   </ListItem>
                 ))}
               </List>

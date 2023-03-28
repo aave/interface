@@ -420,7 +420,7 @@ export function getThemedComponents(theme: Theme) {
               borderColor: '#EBEBED1F',
               backgroundColor: '#383D51',
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
+                backgroundColor: '#484E68',
               },
             },
           },

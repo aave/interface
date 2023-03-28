@@ -25,21 +25,21 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
       component={component}
       onClick={colorMode.toggleColorMode}
       sx={{
-        color: { xs: '#F1F1F3', md: 'text.primary' },
+        color: '#F1F1F3',
         py: { xs: 1.5, md: 2 },
       }}
     >
-      <ListItemText>
+      <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
         <Trans>Dark mode</Trans>
       </ListItemText>
       <FormControlLabel
-        sx={{ mr: 0 }}
+        sx={{ mr: 0, color: { xs: '#F1F1F3', md: 'text.primary' } }}
         value="darkmode"
         control={
           <Switch
             disableRipple
             checked={theme.palette.mode === 'dark'}
-            sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
+            sx={{ '.MuiSwitch-track': { bgcolor: { xs: 'primary.light', md: 'primary.light' } } }}
           />
         }
         label={theme.palette.mode === 'dark' ? 'On' : 'Off'}

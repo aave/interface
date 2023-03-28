@@ -320,7 +320,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
-        <ListItemText>
+        <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
           <Trans>Copy address</Trans>
         </ListItemText>
       </Box>
@@ -346,7 +346,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 <ExternalLinkIcon />
               </SvgIcon>
             </ListItemIcon>
-            <ListItemText>
+            <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
               <Trans>View on Explorer</Trans>
             </ListItemText>
           </Box>

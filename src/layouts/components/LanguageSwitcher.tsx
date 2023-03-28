@@ -34,7 +34,7 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
       onClick={onClick}
       sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
     >
-      <ListItemText>
+      <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
         <Trans>Language</Trans>
       </ListItemText>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -69,7 +69,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           </SvgIcon>
         </ListItemIcon>
         <ListItemText disableTypography>
-          <Typography variant="subheader2">
+          <Typography variant="subheader2" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>
@@ -91,7 +91,9 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           >
             <img src={`/icons/flags/${lang}.svg`} width="100%" height="100%" alt={`${lang} icon`} />
           </ListItemIcon>
-          <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
+          <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+            {i18n._(langMap[lang as keyof typeof langMap])}
+          </ListItemText>
           {lang === i18n.locale && (
             <ListItemIcon sx={{ m: 0 }}>
               <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
