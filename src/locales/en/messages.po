@@ -2212,6 +2212,8 @@ msgstr "UNSTAKING {symbol}"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
 

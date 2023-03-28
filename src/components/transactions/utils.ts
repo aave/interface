@@ -60,7 +60,7 @@ export const getAssetCollateralType = (
           : CollateralType.DISABLED;
       } else {
         if (userHasCollateral) {
-          collateralType = CollateralType.ISOLATED_DISABLED;
+          collateralType = CollateralType.UNAVAILABLE_DUE_TO_ISOLATION;
         }
       }
     } else {
@@ -72,7 +72,7 @@ export const getAssetCollateralType = (
     }
   } else {
     if (userIsInIsolationMode) {
-      collateralType = CollateralType.UNAVAILABLE;
+      collateralType = CollateralType.UNAVAILABLE_DUE_TO_ISOLATION;
     } else {
       if (userHasSuppliedReserve) {
         collateralType = userReserve.usageAsCollateralEnabledOnUser

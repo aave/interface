@@ -195,11 +195,13 @@ export const SwapModalContent = ({
   // If the user is swapping all of their isolated asset to an asset that is not supplied,
   // then the swap target will be enabled as collateral as part of the swap.
   if (isMaxSelected && swapSourceCollateralType === CollateralType.ISOLATED_ENABLED) {
-    if (
-      user.userReservesData.find((r) => r.underlyingAsset === targetReserve.address)
-        ?.underlyingBalance === '0'
-    )
-      swapTargetCollateralType = CollateralType.ENABLED;
+    if (swapTarget.underlyingBalance === '0') {
+      if (swapTarget.reserve.isIsolated) {
+        swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+      } else {
+        swapTargetCollateralType = CollateralType.ENABLED;
+      }
+    }
   }
 
   return (

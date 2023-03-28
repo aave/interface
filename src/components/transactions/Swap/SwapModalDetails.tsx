@@ -199,6 +199,16 @@ const CollateralState = ({ collateralType }: { collateralType: CollateralType })
   return (
     <Stack>
       {collateralType === CollateralType.UNAVAILABLE && (
+        <Typography color="error.main">
+          <Trans>Unavailable</Trans>
+        </Typography>
+      )}
+      {collateralType === CollateralType.ISOLATED_DISABLED && (
+        <Typography color="text.primary">
+          <Trans>Unavailable</Trans>
+        </Typography>
+      )}
+      {collateralType === CollateralType.UNAVAILABLE_DUE_TO_ISOLATION && (
         <>
           <ContentWithTooltip
             tooltipContent={<Trans>Collateral usage is limited because of Isolation mode.</Trans>}
@@ -223,8 +233,7 @@ const CollateralState = ({ collateralType }: { collateralType: CollateralType })
           <Trans>Enabled</Trans>
         </Typography>
       )}
-      {(collateralType === CollateralType.ISOLATED_ENABLED ||
-        collateralType === CollateralType.ISOLATED_DISABLED) && (
+      {collateralType === CollateralType.ISOLATED_ENABLED && (
         <ContentWithTooltip tooltipContent={<IsolatedTooltip />}>
           <Stack direction="row" sx={{ alignItems: 'center' }}>
             <Typography color="warning.main">

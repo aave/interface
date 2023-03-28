@@ -216,7 +216,8 @@ export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine)
             <Trans>Disabled</Trans>
           </Typography>
         )}
-        {collateralType === CollateralType.ISOLATED_DISABLED && (
+        {(collateralType === CollateralType.ISOLATED_DISABLED ||
+          collateralType === CollateralType.UNAVAILABLE_DUE_TO_ISOLATION) && (
           <Typography variant="description" color="grey">
             <Trans>Unavailable</Trans>
           </Typography>
