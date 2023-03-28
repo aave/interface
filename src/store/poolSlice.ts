@@ -1,6 +1,5 @@
 import {
   ApproveType,
-  DEFAULT_DEADLINE,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
@@ -295,7 +294,7 @@ export const createPoolSlice: StateCreator<
         reserve: args.reserve,
         amount: args.amount,
         user,
-        deadline: DEFAULT_DEADLINE,
+        deadline: args.deadline,
         useOptimizedPath: get().useOptimizedPath(),
         signature,
       });

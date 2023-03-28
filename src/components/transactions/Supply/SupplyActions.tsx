@@ -24,6 +24,11 @@ export interface SupplyActionProps extends BoxProps {
   decimals: number;
 }
 
+interface SignedParams {
+  signature: SignatureLike;
+  deadline: string;
+}
+
 export const SupplyActions = React.memo(
   ({
     amountToSupply,
@@ -61,7 +66,7 @@ export const SupplyActions = React.memo(
     const [usePermit, setUsePermit] = useState(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
-    const [signature, setSignature] = useState<SignatureLike | undefined>();
+    const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
     const fetchApprovedAmount = useCallback(async () => {
       if (!approvedAmount) {
@@ -101,7 +106,7 @@ export const SupplyActions = React.memo(
             });
 
             const response = await signTxData(signatureRequest);
-            setSignature(response);
+            setSignatureParams({ signature: response, deadline });
             setApprovalTxState({
               txHash: MOCK_SIGNED_HASH,
               loading: false,
@@ -132,13 +137,12 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        if (requiresApproval && usePermit && signature) {
-          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+        if (requiresApproval && usePermit && signatureParams) {
           const signedTxData = supplyWithPermit({
-            signature,
+            signature: signatureParams.signature,
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
-            deadline,
+            deadline: signatureParams.deadline,
           });
 
           const response = await sendTx(signedTxData);
