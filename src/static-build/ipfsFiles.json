@@ -2710,6 +2710,20 @@
       "ipfsHash": "Qme3bpeMgGemjtHFhCwhiQLx6V4VL5fUntiuWtfDJuGPuz",
       "originalHash": "0xe95cda38231468aed501ed1d748b41f19a7888350fa5384cecf2dc76f8285351",
       "id": 190
+    },
+    {
+      "title": "Add LUSD to Aave Optimism V3 pool",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative, Alyra Promo Satoshi",
+      "shortDescription": "Onboard LUSD on Aave OP V3",
+      "discussions": "https://governance.aave.com/t/arfc-add-lusd-to-optimism-v3-market/12113",
+      "created": "2023-03-28T00:00:00.000Z",
+      "updated": "2023-03-28T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "LUSD_OP_V3",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to onboard LUSD to the Optimism v3 Liquidity Pool.\n\n## Motivation\nSupporting stablecoin diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Liquity or any entity to present this AIP.\n\nThe risk parameters provided introduce LUSD as a non-collateral asset.\n\nSupply and borrow caps are suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: LUSD\n\nContract Address: [0xc40f949f8a4e094d1b49a23ea9241d289b7b2819](https://optimistic.etherscan.io/address/0xc40f949f8a4e094d1b49a23ea9241d289b7b2819)\n\n|Risk Parameter|Value|\n| --- | --- |\n|Isolation Mode|NO|\n|Enable Borrow|YES|\n|Enable Collateral|NO|\n|Loan To Value|N/A|\n|Liquidation Threshold|N/A|\n|Liquidation Bonus|N/A|\n|Reserve Factor|10%|\n|Liquidation Protocol Fee|10%|\n|Borrow Cap|1,210k|\n|Supply Cap|3,000K|\n|Debt Ceiling|N/A|\n|Base|0%|\n|Slope1|4%|\n|Uoptimal|80%|\n|Slope2|87%|\n\nThe proposal payload uses the IEngine to perform a new asset listing with the following parameters:\n\n```solidity\nIEngine.Listing({\n      asset: LUSD,\n      assetSymbol: 'LUSD',\n      priceFeed: LUSD_USD_FEED,\n      rateStrategyParams: Rates.RateStrategyParams({\n        optimalUsageRatio: _bpsToRay(80_00),\n        baseVariableBorrowRate: 0,\n        variableRateSlope1: _bpsToRay(4_00),\n        variableRateSlope2: _bpsToRay(87_00),\n        stableRateSlope1: _bpsToRay(4_00),\n        stableRateSlope2: _bpsToRay(87_00),\n        baseStableRateOffset: _bpsToRay(1_00),\n        stableRateExcessOffset: _bpsToRay(8_00),\n        optimalStableToTotalDebtRatio: _bpsToRay(20_00)\n      }),\n      enabledToBorrow: EngineFlags.ENABLED,\n      stableRateModeEnabled: EngineFlags.DISABLED,\n      borrowableInIsolation: EngineFlags.DISABLED,\n      withSiloedBorrowing: EngineFlags.DISABLED,\n      flashloanable: EngineFlags.DISABLED,\n      ltv: 0,\n      liqThreshold: 0,\n      liqBonus: 0,\n      reserveFactor: 10_00,\n      supplyCap: 3_000_000,\n      borrowCap: 1_210_000,\n      debtCeiling: 0,\n      liqProtocolFee: 0,\n      eModeCategory: 0\n    });\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-add-lusd-to-optimism-v3-market/12113)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3OPNewListings_20230327/AaveV3OPNewListings_20230327_test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3OPNewListings_20230327/AaveV3OPNewListings_20230327.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmfAuoSgou76Ma7nTErrUsCqHqkzTfTQXKoEWcDqEhiWRU",
+      "originalHash": "0xfa17ef2b6d70703ca5f2919932559937352590b637cc8f1425bd6615311079a7",
+      "id": 191
     }
   ]
 }
