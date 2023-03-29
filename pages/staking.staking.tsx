@@ -65,6 +65,31 @@ export default function Staking() {
 
   const isStakeAAVE = mode === 'aave';
 
+  const handleOpenStake = () => {
+    openStake('aave', 'AAVE');
+  };
+  const handleOpenCoolDown = () => {
+    openStakeCooldown('aave');
+  };
+
+  const handleOpenOnUnstake = () => {
+    openUnstake('aave', 'AAVE');
+  };
+  const handleOpenClaimStakingRewards = () => {
+    openStakeRewardsClaim('aave');
+  };
+  const handleOpenStakeABPT = () => {
+    openStake('bpt', 'stkBPT');
+  };
+  const handleOpenCoolDownAPBT = () => {
+    openStakeCooldown('bpt');
+  };
+  const handleOpenOnUnstakeABPT = () => {
+    openUnstake('bpt', 'stkBPT');
+  };
+  const handleOpenClaimStakingRewardsABPT = () => {
+    openStakeRewardsClaim('bpt');
+  };
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
@@ -114,11 +139,17 @@ export default function Staking() {
                   stakeData={stakeGeneralResult?.aave}
                   stakeUserData={stakeUserResult?.aave}
                   ethUsdPrice={stakeGeneralResult?.usdPriceEth}
-                  onStakeAction={() => openStake('aave', 'AAVE')}
-                  onCooldownAction={() => openStakeCooldown('aave')}
-                  onUnstakeAction={() => openUnstake('aave', 'AAVE')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
-                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
+                  onStakeAction={handleOpenStake}
+                  onCooldownAction={handleOpenCoolDown}
+                  onUnstakeAction={handleOpenOnUnstake}
+                  onStakeRewardClaimAction={handleOpenClaimStakingRewards}
+                  headerAction={
+                    <BuyWithFiat
+                      cryptoSymbol="AAVE"
+                      networkMarketName={network}
+                      funnel={'AAVE Staking'}
+                    />
+                  }
                 />
               </Grid>
               <Grid
@@ -135,10 +166,10 @@ export default function Staking() {
                   stakeData={stakeGeneralResult?.bpt}
                   stakeUserData={stakeUserResult?.bpt}
                   ethUsdPrice={stakeGeneralResult?.usdPriceEth}
-                  onStakeAction={() => openStake('bpt', 'stkBPT')}
-                  onCooldownAction={() => openStakeCooldown('bpt')}
-                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                  onStakeAction={handleOpenStakeABPT}
+                  onCooldownAction={handleOpenCoolDownAPBT}
+                  onUnstakeAction={handleOpenOnUnstakeABPT}
+                  onStakeRewardClaimAction={handleOpenClaimStakingRewardsABPT}
                   headerAction={<GetABPToken />}
                 />
               </Grid>

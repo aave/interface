@@ -9,6 +9,13 @@ export const AUTH = {
   VIEW_EXPLORER: 'View explorer',
 };
 
+export const GENERAL = {
+  SWITCH_NETWORK: 'Switch network',
+  OPEN_BUY_WITH_FIAT: 'Open buy with fiat modal', //done
+  BUY_WITH_FIAT: 'Navigate to fiat onramp', //done
+  ETHERSCAN_LINK: 'Open etherscan of address', //done
+};
+
 export const DASHBOARD = {
   CHANGE_MARKET: 'Change market on dashboard',
   VIEW_MARKETS: 'View markets on dashboard',
@@ -100,64 +107,53 @@ export const BORROW_MODAL = {
 };
 
 export const STAKE = {
-  BUY_AAVE_WITH_FIAT: 'Buy AAVE with FIAT staking page',
-  STAKE_BUTTON: 'Open stake AAVE modal staking page',
-  STAKE_BUTTON_MODAL: 'Stake AAVE button staking modal',
-  COOLDOWN_WARNING_LINK: 'Cooldown warning link staking modal',
+  OPEN_STAKE_MODAL: 'Open stake modal staking page', //done
+  OPEN_UNSTAKE_MODAL: 'Open unstake modal staking page', //done
+  STAKE_TOKEN: 'Stake Action',
+  COOLDOWN_WARNING_LINK: 'Cooldown warning link staking modal', //done
   MAX_AMOUNT_AAVE: 'Max amount of AAVE to stake in staking modal',
-  COOLDOWN_INFO: 'Cooldown info icon staking page',
-  COOLDOWN_BUTTON: 'Open cooldown modal staking page',
-  COOLDOWN_LEARN_MORE: 'Learn more link cooldown modal',
-  ACCEPT_COOLDOWN_CHECKBOX: 'Accept cooldown risks cooldwon modal',
-  ACTIVATE_COOLDOWN_MODAL: 'Activate cooldown button cooldown modal',
-  OPEN_CLAIM_STAKE_REWARDS: 'Open claim stake rewards modal staking page',
-  CLAIM_STAKE_REWARDS: 'Claim staking rewards button claim aave modal',
-  GET_ABP_TOKEN: 'Get abp token link staking page',
-  STAKE_ABPT_BUTTON: 'Open stake ABPT modal staking page',
-  STAKE_ABPT_BUTTON_MODAL: 'Stake ABPT button staking modal',
-  COOLDOWN_ABPT_INFO: 'Cooldown info ABPT icon staking page',
-  COOLDOWN_ABPT_BUTTON: 'Open cooldown ABPT modal staking page',
-  COOLDOWN_ABPT_LEARN_MORE: 'Learn more link ABPT cooldown modal',
-  ACCEPT_ABPT_COOLDOWN_CHECKBOX: 'Accept cooldown risks ABPT cooldwon modal',
-  ACTIVATE_ABPT_COOLDOWN_MODAL: 'Activate cooldown button ABPT cooldown modal',
-  OPEN_CLAIM_ABPT_STAKE_REWARDS: 'Open ABPT claim stake rewards modal staking page',
-  CLAIM_STAKE_ABPT_REWARDS: 'Claim ABPT staking rewards button claim aave modal',
-  STAKING_RISKS_LINK: 'Staking risks link staking page',
+  COOLDOWN_INFO: 'Cooldown info icon staking page', //done
+  OPEN_COOLDOWN_MODAL: 'Open cooldown modal staking page', //done
+  COOLDOWN_LEARN_MORE: 'Learn more link cooldown modal', //done
+  ACCEPT_COOLDOWN_CHECKBOX: 'Accept cooldown risks cooldwon modal', //done
+  ACTIVATE_COOLDOWN: 'Activate cooldown button cooldown modal',
+  OPEN_CLAIM_STAKE_REWARDS: 'Open claim stake rewards modal staking page', //done
+  CLAIM_STAKE_REWARDS: 'Claim staking rewards button',
+  OPEN_GET_ABP_TOKEN: 'Open get abpt token', //done
+  GET_ABP_TOKEN: 'Navigate to Balancer for ABP Tokens',
+  STAKING_RISKS_LINK: 'Staking risks link staking page', //done
+  CONNECT_WALLET_STAKING: 'Connect wallet staking page', //--done
 };
 
 export const GOVERNANCE_PAGE = {
-  GOVERNANCE_DOCS_LINK: 'Governance documentation governance page',
-  SNAPSHOT_LINK: 'Snapshot link governance page',
-  GOVERNANCE_FORUM_LINK: 'Governance forum link governance page',
-  FAQ_LINK: 'FAQ link governance page',
-  FILTER: 'Filter governance page',
-  SEARCH_GOVERNANCE_PAGE: 'Search governance page: Term = ',
-  VIEW_AIP: 'View aip information governance page',
-  YOUR_INFO_ETHERSCAN_LINK: 'Open etherscan of your address governance page',
-  VOTING_POWER_INFO_ICON: 'View voting power info governance page',
-  PROP_POWER_INFO_ICON: 'View prop power info governance page',
-  SET_UP_DELEGATION_BUTTON: 'Set up delegation governance page',
-  REVOKE_POWER_BUTTON: 'Revoke power button governance page',
+  AIP_EXTERNAL_LINKS: 'Navigate to external link from AIP', //done
+  FILTER: 'Filter governance page', // done
+  SEARCH_GOVERNANCE_PAGE: 'Search governance page: Term = ', //not sure how to do this
+  VIEW_AIP: 'View aip information governance page', //done
+  VOTING_POWER_INFO_ICON: 'View voting power info governance page', //done
+  PROP_POWER_INFO_ICON: 'View prop power info governance page', //done
+  SET_UP_DELEGATION_BUTTON: 'Set up delegation governance page', //done
+  REVOKE_POWER_BUTTON: 'Revoke power button governance page', //done
+  LEARN_MORE_DELEGATION: 'Learn More Delgation Panel', //done
 };
 
 export const AIP = {
-  RAW_IPFS_LINK: 'Raw IPFS link AIP page',
-  SHARE_ON_TWITTER: 'Share on twitter AIP page',
-  SHARE_ON_LENS: 'Share on lens AIP page',
-  FORUM_DISCUSSION: 'Forum discussion link AIP page',
-  VIEW_ALL_VOTES: 'View all votes modal AIP page',
-  VOTE_YAE: 'Vote yae button AIP page',
-  VOTE_NAE: 'Vote nae button AIP page',
-  VOTE_BUTTON_MODAL: 'Vote on AIP modal',
+  RAW_IPFS_LINK: 'Raw IPFS link AIP page', //done
+  SHARE_ON_TWITTER: 'Share on twitter AIP page', //done
+  SHARE_ON_LENS: 'Share on lens AIP page', //done
+  FORUM_DISCUSSION: 'Forum discussion link AIP page', //doine
+  VIEW_ALL_VOTES: 'View all votes modal AIP page', //done (not sure why we don't use normal modal context)
+  VOTE: 'Vote on proposal transaction', //need help
+  VOTE_BUTTON_MODAL: 'Vote on AIP modal', //done
+  SEATBELT_REPORT: 'Open Seatbelt Report', //done
+  GO_BACK: 'GO Back: AIP', //done
+  SHARE_VOTE_ON_LENS: 'Share vote to lens: Vote Modal', //done
 };
 
 export const DELEGATION = {
-  POWER_TO_DELEGATE: 'Power to delegate toggle delegation modal: ',
-  BALANCE_TO_DELEGATE_INFO_ICON: 'Balance to delegate info icon delegation modal',
-  BALANCE_TO_DELEGATE_SELECTON: 'Balance to delegate option delegation modal: ',
-  RECPIPIENT_ADDRESS: 'Address of recipient of delegation modal: ',
-  DELEGATE_BUTTON: 'Delegate power button delegation modal',
-  REVOKE_POWER: 'Revoke power button revoke modal',
+  BALANCE_TO_DELEGATE_INFO_ICON: 'Balance to delegate info icon delegation modal', // done
+  DELEGATE_BUTTON: 'Delegate power', //will be in the txhander section
+  REVOKE_POWER: 'Revoke power', //will be in the txhandler section
 };
 
 export const NAV_BAR = {

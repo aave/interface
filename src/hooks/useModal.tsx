@@ -2,7 +2,9 @@ import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
+import { AIP, GOVERNANCE_PAGE, STAKE } from 'src/utils/mixPanelEvents';
 
 export enum ModalType {
   Supply,
@@ -93,6 +95,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
   const [txError, setTxError] = useState<TxErrorType>();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <ModalContext.Provider
@@ -122,22 +125,27 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ underlyingAsset, currentRateMode });
         },
         openStake: (stakeAssetName, icon) => {
+          trackEvent(STAKE.OPEN_STAKE_MODAL, { assetName: stakeAssetName });
           setType(ModalType.Stake);
           setArgs({ stakeAssetName, icon });
         },
         openUnstake: (stakeAssetName, icon) => {
+          trackEvent(STAKE.OPEN_UNSTAKE_MODAL, { assetName: stakeAssetName });
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
         openStakeCooldown: (stakeAssetName) => {
+          trackEvent(STAKE.OPEN_COOLDOWN_MODAL, { assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
           setArgs({ stakeAssetName });
         },
         openStakeRewardsClaim: (stakeAssetName) => {
+          trackEvent(STAKE.OPEN_CLAIM_STAKE_REWARDS, { assetName: stakeAssetName });
           setType(ModalType.StakeRewardClaim);
           setArgs({ stakeAssetName });
         },
         openClaimRewards: () => {
+          trackEvent(STAKE.OPEN_CLAIM_STAKE_REWARDS);
           setType(ModalType.ClaimRewards);
         },
         openEmode: (mode) => {
@@ -153,12 +161,18 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
+          trackEvent(GOVERNANCE_PAGE.SET_UP_DELEGATION_BUTTON);
           setType(ModalType.GovDelegation);
         },
         openRevokeGovDelegation: () => {
+          trackEvent(GOVERNANCE_PAGE.REVOKE_POWER_BUTTON);
           setType(ModalType.RevokeGovDelegation);
         },
         openGovVote: (proposalId, support, power) => {
+          trackEvent(AIP.VOTE_BUTTON_MODAL, {
+            proposalId: proposalId,
+            voteSide: support,
+          });
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
         },

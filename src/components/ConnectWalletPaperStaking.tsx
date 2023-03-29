@@ -45,7 +45,7 @@ export const ConnectWalletPaperStaking = ({
                 </Trans>
               )}
             </Typography>
-            <ConnectWalletButton />
+            <ConnectWalletButton funnel={'Staking page'} />
             <Grid container spacing={1} pt={6} sx={{ maxWidth: '543px', textAlign: 'right' }}>
               <Grid item xs={12} sm={6}>
                 <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />

@@ -2,17 +2,29 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Warning } from '../../primitives/Warning';
 
 export type ChangeNetworkWarningProps = {
+  funnel?: string;
   networkName: string;
   chainId: ChainId;
 };
 
-export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarningProps) => {
+export const ChangeNetworkWarning = ({
+  networkName,
+  chainId,
+  funnel,
+}: ChangeNetworkWarningProps) => {
   const { switchNetwork, switchNetworkError } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
+  const handleSwitchNetwork = () => {
+    trackEvent(GENERAL.SWITCH_NETWORK, { funnel: funnel });
+    switchNetwork(chainId);
+  };
   return (
     <Warning severity="error" icon={false}>
       {switchNetworkError ? (
@@ -28,7 +40,7 @@ export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarn
           <Button
             variant="text"
             sx={{ ml: '2px', verticalAlign: 'top' }}
-            onClick={() => switchNetwork(chainId)}
+            onClick={handleSwitchNetwork}
             disableRipple
           >
             <Typography variant="description">

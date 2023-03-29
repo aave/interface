@@ -8,6 +8,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
+import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';
@@ -261,7 +262,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
           valueUSD={stakedUSD}
           dataCy={`stakedBox_${stakedToken}`}
-          // TODO: need fix text
           bottomLineTitle={
             <TextWithTooltip
               variant="caption"
@@ -274,6 +274,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   <Trans>Cooldown period</Trans>
                 )
               }
+              event={{
+                eventName: STAKE.COOLDOWN_INFO,
+                eventParams: {
+                  funnel: 'Staking Page',
+                  assetName: stakedToken,
+                },
+              }}
             >
               <>
                 {isCooldownActive && !isUnstakeWindowActive ? (

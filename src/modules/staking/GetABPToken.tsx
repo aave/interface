@@ -3,14 +3,18 @@ import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { useRootStore } from 'src/store/root';
+import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { GetABPTokenModal } from './GetABPTokenModal';
 
 export const GetABPToken = () => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    trackEvent(STAKE.GET_ABP_TOKEN, {});
     setAnchorEl(event.currentTarget);
   };
 
