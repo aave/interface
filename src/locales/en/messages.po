@@ -108,6 +108,10 @@ msgstr "Aave per month"
 msgid "Account"
 msgstr "Account"
 
+#: src/modules/history/TransactionsList.tsx
+msgid "Action"
+msgstr "Action"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
@@ -1100,6 +1104,10 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
 msgstr "Learn more."
+
+#: src/modules/history/TransactionsList.tsx
+msgid "Link"
+msgstr "Link"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -2195,9 +2203,17 @@ msgstr "Track wallet balance in read-only mode"
 msgid "Transaction failed"
 msgstr "Transaction failed"
 
+#: src/layouts/WalletWidget.tsx
+msgid "Transaction history"
+msgstr "Transaction history"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Transaction overview"
+
+#: src/modules/history/TransactionsList.tsx
+msgid "Transactions"
+msgstr "Transactions"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2671,6 +2687,10 @@ msgstr "{0} Balance"
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
+
+#: src/modules/history/HistoryTopPanel.tsx
+msgid "{0} History"
+msgstr "{0} History"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
