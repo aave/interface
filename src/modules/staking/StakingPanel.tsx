@@ -7,7 +7,7 @@ import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
+import { StakeGeneralUiData, StakeUserUiData } from 'src/Services/UiStakeDataService';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';

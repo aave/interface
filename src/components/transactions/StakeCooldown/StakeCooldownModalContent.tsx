@@ -5,6 +5,8 @@ import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/mater
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -34,13 +36,14 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
-  const [stakeUserResult, stakeGeneralResult] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.stakeGeneralResult,
-  ]);
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+
+  const user = useRootStore((state) => state.account);
+
+  const { data: stakeUserResult } = useUserStakeUiData({ user });
+  const { data: stakeGeneralResult } = useGeneralStakeUiData();
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);

@@ -3,6 +3,8 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -31,14 +33,14 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
-  const [stakeGeneralResult, stakeUserResult] = useRootStore((state) => [
-    state.stakeGeneralResult,
-    state.stakeUserResult,
-  ]);
-  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const user = useRootStore((state) => state.account);
+
+  const { data: stakeUserResult } = useUserStakeUiData({ user });
+  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // states
   const [_amount, setAmount] = useState('');
