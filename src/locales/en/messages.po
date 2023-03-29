@@ -211,7 +211,6 @@ msgid "Asset"
 msgstr "Asset"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
-#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 msgstr "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 
@@ -1064,6 +1063,10 @@ msgstr "Isolated"
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Isolated Debt Ceiling"
 msgstr "Isolated Debt Ceiling"
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
+msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"

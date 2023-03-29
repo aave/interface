@@ -5,8 +5,8 @@ import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@m
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import {
-  IsolatedBadge,
   IsolatedDisabledBadge,
+  IsolatedEnabledBadge,
   UnavailableDueToIsolationBadge,
 } from 'src/components/isolationMode/IsolatedBadge';
 import { CollateralType } from 'src/helpers/types';
@@ -204,7 +204,9 @@ export const CollateralState = ({ collateralType }: CollateralStateProps) => {
             </Typography>
           ),
           [CollateralType.ISOLATED_ENABLED]: (
-            <IsolatedBadge typographyProps={{ variant: 'description', color: 'warning.main' }} />
+            <IsolatedEnabledBadge
+              typographyProps={{ variant: 'description', color: 'warning.main' }}
+            />
           ),
           [CollateralType.DISABLED]: (
             <Typography variant="description" color="error.main">

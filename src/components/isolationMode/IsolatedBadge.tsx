@@ -26,7 +26,11 @@ const InfoIcon = () => (
   </SvgIcon>
 );
 
-export const IsolatedBadge = ({ typographyProps }: { typographyProps?: TypographyProps }) => {
+export const IsolatedEnabledBadge = ({
+  typographyProps,
+}: {
+  typographyProps?: TypographyProps;
+}) => {
   return (
     <ContentWithTooltip
       withoutHover
@@ -34,8 +38,8 @@ export const IsolatedBadge = ({ typographyProps }: { typographyProps?: Typograph
         <IsolationModeTooltipTemplate
           content={
             <Trans>
-              Asset can be only used as collateral in isolation mode with limited borrowing power.
-              To enter isolation mode, disable all other collateral.
+              Isolated assets have limited borrowing power and other assets cannot be used as
+              collateral.
             </Trans>
           }
         />
