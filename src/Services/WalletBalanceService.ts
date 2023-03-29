@@ -7,6 +7,11 @@ type BatchBalanceOfArgs = {
   user: string;
 };
 
+type GetPoolWalletBalances = {
+  user: string;
+  poolAddress: string;
+};
+
 export class WalletBalanceService {
   private readonly walletBalanceService: WalletBalanceProvider;
 
@@ -31,5 +36,18 @@ export class WalletBalanceService {
       aAave: normalize(balances[1].toString(), 18),
       stkAave: normalize(balances[2].toString(), 18),
     };
+  }
+
+  async getPoolTokensBalances({ user, poolAddress }: GetPoolWalletBalances) {
+    const { 0: tokenAddresses, 1: balances } =
+      await this.walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
+        user,
+        poolAddress
+      );
+    const mappedBalances = tokenAddresses.map((address, ix) => ({
+      address: address.toLowerCase(),
+      amount: balances[ix].toString(),
+    }));
+    return mappedBalances;
   }
 }

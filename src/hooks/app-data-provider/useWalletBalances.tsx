@@ -4,7 +4,7 @@ import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
 import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
-import { selectCurrentWalletBalances } from '../../store/walletSelectors';
+import { usePoolTokensBalance } from '../pool/usePoolTokensBalance';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
 export interface WalletBalance {
@@ -14,8 +14,13 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const [balances, reserves, baseCurrencyData] = useRootStore((state) => [
-    selectCurrentWalletBalances(state),
+  const user = useRootStore((state) => state.account);
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const { data: balances } = usePoolTokensBalance({
+    user,
+    poolAddress: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+  const [reserves, baseCurrencyData] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
   ]);

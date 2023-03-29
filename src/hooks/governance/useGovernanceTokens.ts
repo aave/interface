@@ -7,9 +7,9 @@ type UseGovernanceTokensParams = {
 };
 
 export const useGovernanceTokens = ({ user }: UseGovernanceTokensParams) => {
-  const { governanceWalletBalanceService } = useSharedDependencies();
+  const { governanceTokensBalanceService } = useSharedDependencies();
   return useQuery({
-    queryFn: () => governanceWalletBalanceService.getGovernanceTokensBalance({ user }),
+    queryFn: () => governanceTokensBalanceService.getGovernanceTokensBalance({ user }),
     queryKey: [QueryKeys.GOVERNANCE_TOKENS, user],
     enabled: !!user,
     refetchInterval: POOLING_INTERVAL,

@@ -9,13 +9,15 @@ import { governanceConfig } from './governanceConfig';
 
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
-  governanceWalletBalanceService: WalletBalanceService;
+  governanceTokensBalanceService: WalletBalanceService;
+  poolTokensBalanceService: WalletBalanceService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const getJsonRpcProvider = useRootStore((state) => state.jsonRpcProvider);
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
@@ -24,14 +26,21 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const governanceProvider = isGovernanceFork
     ? currentProvider
     : getProvider(governanceConfig.chainId);
+
+  // services
+
   const governanceService = new GovernanceService(governanceProvider);
-  const governanceWalletBalanceService = new WalletBalanceService(
+  const governanceTokensBalanceService = new WalletBalanceService(
     governanceProvider,
     governanceConfig.walletBalanceProvider
   );
+  const poolTokensBalanceService = new WalletBalanceService(
+    currentProvider,
+    currentMarketData.addresses.WALLET_BALANCE_PROVIDER
+  );
   return (
     <SharedDependenciesContext.Provider
-      value={{ governanceService, governanceWalletBalanceService }}
+      value={{ governanceService, governanceTokensBalanceService, poolTokensBalanceService }}
     >
       {children}
     </SharedDependenciesContext.Provider>
