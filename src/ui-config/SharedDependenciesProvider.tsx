@@ -10,6 +10,7 @@ import { governanceConfig } from './governanceConfig';
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
   governanceWalletBalanceService: WalletBalanceService;
+  poolTokensBalanceService: WalletBalanceService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -35,9 +36,14 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     governanceConfig.walletBalanceProvider,
     governanceChainId
   );
+  const poolTokensBalanceService = new WalletBalanceService(
+    currentProvider,
+    currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
+    currentMarketData.chainId
+  );
   return (
     <SharedDependenciesContext.Provider
-      value={{ governanceService, governanceWalletBalanceService }}
+      value={{ governanceService, governanceWalletBalanceService, poolTokensBalanceService }}
     >
       {children}
     </SharedDependenciesContext.Provider>
