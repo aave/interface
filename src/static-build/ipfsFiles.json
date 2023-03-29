@@ -2724,6 +2724,19 @@
       "ipfsHash": "QmfAuoSgou76Ma7nTErrUsCqHqkzTfTQXKoEWcDqEhiWRU",
       "originalHash": "0xfa17ef2b6d70703ca5f2919932559937352590b637cc8f1425bd6615311079a7",
       "id": 191
+    },
+    {
+      "title": "increase supply cap for cbETH Aave Ethereum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "increase supply cap for cbETH Aave Ethereum V3",
+      "discussions": "https://governance.aave.com/t/arfc-increase-cbeth-supply-cap-03-26/12480",
+      "created": "2023-03-29T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis AIP proposal presents Aave with the …",
+      "basename": "CBETH_ETH_SUPPLY_CAP_UPDATE_20230329",
+      "description": "\n\n## Simple Summary\nThis AIP proposal presents Aave with the opportunity to increase cbETH supply cap on the Ethereum v3 Liquidity Pool.\n\n## Motivation\n\nSupporting LSDs diversity is part of the Aave-Chan Initiative (ACI) delegate platform.\n\nThe ACI does not have any link nor is paid by Coinbase or any entity to present this AIP.\n\nSupply cap is suggested for this asset to limit risk exposure, the caps have been proposed by a join collaboration between Gauntlet & Chaos Labs.\n\n## Specification\n\nTicker: cbETH\n\nContract Address: [0xbe9895146f7af43049ca1c1ae358b0541ea49704](https://etherscan.io/address/0xbe9895146f7af43049ca1c1ae358b0541ea49704)\n\n|Risk Parameter| Current Value| Proposed Value|\n| --- | --- | --- |\n|Supply Cap|30K| 60K|\n\n\n\n```solidity\ncontract AaveV3EthCBETHSupplyCapUpdate_20230328 is AaveV3PayloadEthereum {\n  function capsUpdates() public pure override returns (IEngine.CapsUpdate[] memory) {\n    IEngine.CapsUpdate[] memory capsUpdate = new IEngine.CapsUpdate[](1);\n\n    capsUpdate[0] = IEngine.CapsUpdate({\n      asset: AaveV3EthereumAssets.cbETH_UNDERLYING,\n      supplyCap: 60_000,\n      borrowCap: EngineFlags.KEEP_CURRENT\n    });\n\n    return capsUpdate;\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-increase-cbeth-supply-cap-03-26/12480)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3ETHCBETHSupplyCapUpdate_20230328/AaveV3EthCBETHSupplyCapUpdate_20230328_test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3ETHCBETHSupplyCapUpdate_20230328/AaveV3EthCBETHSupplyCapUpdate_20230328.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmVMivBCFi2S6qsm7FAHkN4N7ZTUPz5biBbaMk9wRebPp7",
+      "originalHash": "0x684825bca9aec1e56e63c1c5cbfcb322610f68d3a165342d307ed679d62c9be4",
+      "id": 192
     }
   ]
 }
