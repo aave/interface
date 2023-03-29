@@ -22,6 +22,7 @@ export type MarketDataType = {
   isFork?: boolean;
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
+  subgraphUrl?: string;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -92,6 +93,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Ethereum.POOL,
@@ -118,6 +120,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Ethereum.POOL,
@@ -160,6 +163,7 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2EthereumAMM.POOL,
@@ -178,6 +182,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Polygon.POOL,
@@ -203,6 +208,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Avalanche.POOL,
@@ -245,6 +251,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Goerli.POOL,
@@ -265,6 +272,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Arbitrum.POOL,
@@ -290,6 +298,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
@@ -310,6 +319,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Avalanche.POOL,
@@ -334,6 +344,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fuji.POOL,
@@ -352,6 +363,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
@@ -372,6 +384,7 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fantom.POOL,
@@ -396,6 +409,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom-testnet',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
@@ -413,6 +427,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-harmony',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Harmony.POOL,
@@ -432,6 +447,7 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Optimism.POOL,
@@ -454,6 +470,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Polygon.POOL,
@@ -477,6 +494,7 @@ export const marketsData: {
       incentives: true,
       faucet: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Mumbai.POOL,
@@ -494,7 +512,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
     },
-
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-goerli',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Goerli.POOL,
@@ -512,6 +530,7 @@ export const marketsData: {
       incentives: true,
       faucet: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Mumbai.POOL,
@@ -529,6 +548,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
+    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Fuji.POOL,
