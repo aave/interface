@@ -9,7 +9,7 @@ import { governanceConfig } from './governanceConfig';
 
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
-  walletBalanceService: WalletBalanceService;
+  governanceWalletBalanceService: WalletBalanceService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -20,13 +20,19 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
+  const currentProvider = getJsonRpcProvider();
   const governanceProvider = isGovernanceFork
-    ? getJsonRpcProvider()
+    ? currentProvider
     : getProvider(governanceConfig.chainId);
   const governanceService = new GovernanceService(governanceProvider);
-  const walletBalanceService = new WalletBalanceService(governanceProvider);
+  const governanceWalletBalanceService = new WalletBalanceService(
+    governanceProvider,
+    governanceConfig.walletBalanceProvider
+  );
   return (
-    <SharedDependenciesContext.Provider value={{ governanceService, walletBalanceService }}>
+    <SharedDependenciesContext.Provider
+      value={{ governanceService, governanceWalletBalanceService }}
+    >
       {children}
     </SharedDependenciesContext.Provider>
   );

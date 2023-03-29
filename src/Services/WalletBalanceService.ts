@@ -10,9 +10,9 @@ type BatchBalanceOfArgs = {
 export class WalletBalanceService {
   private readonly walletBalanceService: WalletBalanceProvider;
 
-  constructor(provider: Provider) {
+  constructor(provider: Provider, walletBalanceProviderAddress: string) {
     this.walletBalanceService = new WalletBalanceProvider({
-      walletBalanceProviderAddress: governanceConfig.walletBalanceProvider,
+      walletBalanceProviderAddress,
       provider,
     });
   }
