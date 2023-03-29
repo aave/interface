@@ -6,77 +6,85 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListItem } from 'src/components/lists/ListItem';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { Link, } from 'src/components/primitives/Link';
+import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+
 import { FaucetItemLoader } from '../faucet/FaucetItemLoader';
 import { FaucetMobileItemLoader } from '../faucet/FaucetMobileItemLoader';
-export default function TransactionsAssetsList({ transactions, loading }: { transactions: any[], loading: boolean }) {
 
-    const theme = useTheme();
-    const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-    const { currentNetworkConfig } = useRootStore();
+interface Transaction {
+  action: string;
+  txHash: string;
+}
 
-    return (
-        <ListWrapper
-            titleComponent={
-                <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-                    <Trans>Transactions</Trans>
-                </Typography>
-            }
-        >
-            <ListHeaderWrapper px={downToXSM ? 4 : 6}>
-                <ListColumn isRow>
-                    <ListHeaderTitle>
-                        <Trans>Link</Trans>
-                    </ListHeaderTitle>
-                </ListColumn>
+export default function TransactionsAssetsList({
+  transactions,
+  loading,
+}: {
+  transactions: Transaction[];
+  loading: boolean;
+}) {
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const { currentNetworkConfig } = useRootStore();
 
+  return (
+    <ListWrapper
+      titleComponent={
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+          <Trans>Transactions</Trans>
+        </Typography>
+      }
+    >
+      <ListHeaderWrapper px={downToXSM ? 4 : 6}>
+        <ListColumn isRow>
+          <ListHeaderTitle>
+            <Trans>Link</Trans>
+          </ListHeaderTitle>
+        </ListColumn>
 
-                <ListColumn isRow>
-                    <ListHeaderTitle>
-                        <Trans>Action</Trans>
-                    </ListHeaderTitle>
-                </ListColumn>
+        <ListColumn isRow>
+          <ListHeaderTitle>
+            <Trans>Action</Trans>
+          </ListHeaderTitle>
+        </ListColumn>
 
-                {/*         
+        {/*         
 Each action may have unique columns 
                 <ListColumn>
                     <ListHeaderTitle>
                         <Trans>Amount</Trans>
                     </ListHeaderTitle>
                 </ListColumn> */}
+      </ListHeaderWrapper>
 
-            </ListHeaderWrapper>
-
-            {loading ? (
-                downToXSM ? (
-                    <>
-                        <FaucetMobileItemLoader />
-                        <FaucetMobileItemLoader />
-                        <FaucetMobileItemLoader />
-                    </>
-                ) : (
-                    <>
-                        <FaucetItemLoader />
-                        <FaucetItemLoader />
-                        <FaucetItemLoader />
-                        <FaucetItemLoader />
-                    </>
-                )
-            ) : (
-                transactions.map((transaction) => (
-                    <ListItem px={downToXSM ? 4 : 6} key={transaction?.symbol ?? 'ETH'}>
-                        <ListColumn>
-                            <Link href={currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash })}>
-                                TX
-                            </Link>
-                        </ListColumn>
-                        <ListColumn>
-                            {transaction.action}
-                        </ListColumn>
-                    </ListItem>
-                ))
-            )}
-        </ListWrapper>
-    );
+      {loading ? (
+        downToXSM ? (
+          <>
+            <FaucetMobileItemLoader />
+            <FaucetMobileItemLoader />
+            <FaucetMobileItemLoader />
+          </>
+        ) : (
+          <>
+            <FaucetItemLoader />
+            <FaucetItemLoader />
+            <FaucetItemLoader />
+            <FaucetItemLoader />
+          </>
+        )
+      ) : (
+        transactions.map((transaction, key) => (
+          <ListItem px={downToXSM ? 4 : 6} key={key}>
+            <ListColumn>
+              <Link href={currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash })}>
+                TX
+              </Link>
+            </ListColumn>
+            <ListColumn>{transaction.action}</ListColumn>
+          </ListItem>
+        ))
+      )}
+    </ListWrapper>
+  );
 }
