@@ -33,7 +33,7 @@ export function MoreMenu() {
         aria-haspopup="true"
         onClick={handleClick}
         sx={{
-          color: '#121418',
+          color: 'text.primary',
           fontWeight: '600',
           fontSize: '14px',
           minWidth: 'unset',
@@ -68,7 +68,7 @@ export function MoreMenu() {
             <ListItemIcon>
               <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>
             </ListItemIcon>
-            <ListItemText>{i18n._(item.title)}</ListItemText>
+            <ListItemText sx={{ color: 'text.primary' }}>{i18n._(item.title)}</ListItemText>
           </MenuItem>
         ))}
       </Menu>

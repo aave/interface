@@ -164,7 +164,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         variant="subheader2"
         sx={{
           display: { xs: 'block', md: 'none' },
-          color: '#A5A8B6',
+          color: 'text.secondary',
           px: 4,
           py: 2,
         }}
@@ -213,18 +213,14 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               {ensNameAbbreviated && (
-                <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
+                <Typography variant="h4" color="text.primary">
                   {ensNameAbbreviated}
                 </Typography>
               )}
 
               <Typography
                 variant={ensNameAbbreviated ? 'caption' : 'h4'}
-                color={
-                  ensNameAbbreviated
-                    ? { xs: '#A5A8B6', md: 'text.secondary' }
-                    : { xs: '#F1F1F3', md: 'text.primary' }
-                }
+                color={ensNameAbbreviated ? 'text.secondary' : 'text.primary'}
               >
                 {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
               </Typography>
@@ -246,6 +242,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           <Button
             variant="outlined"
             sx={{
+              color: 'text.primary',
               padding: '0 5px',
               marginRight: '10px',
             }}
@@ -257,6 +254,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           <Button
             variant="outlined"
             sx={{
+              color: 'text.primary',
               padding: '0 5px',
             }}
             size="small"
@@ -266,7 +264,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Button>
         </Box>
       )}
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: 'divider' }} />
 
       <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -278,7 +276,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               mb: 1,
             }}
           >
-            <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
+            <Typography variant="caption" color={'text.secondary'}>
               <Trans>Network</Trans>
             </Typography>
           </Box>
@@ -293,60 +291,44 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 borderRadius: '50%',
               }}
             />
-            <Typography color={{ xs: '#F1F1F3', md: 'text.primary' }} variant="subheader1">
+            <Typography color="text.primary" variant="subheader1">
               {networkConfig.name}
             </Typography>
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: 'divider' }} />
 
-      <Box
-        component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-        onClick={handleCopy}
-      >
+      <Box component={component} onClick={handleCopy}>
         <ListItemIcon
           sx={{
-            color: {
-              xs: '#F1F1F3',
-              md: 'primary.light',
-              minWidth: 'unset',
-              marginRight: 12,
-            },
+            color: 'primary.light',
+            minWidth: 'unset',
           }}
         >
           <SvgIcon fontSize="small">
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
-        <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+        <ListItemText sx={{ color: 'text.primary' }}>
           <Trans>Copy address</Trans>
         </ListItemText>
       </Box>
 
       {networkConfig?.explorerLinkBuilder && (
         <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-          <Box
-            component={component}
-            sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-            onClick={handleClose}
-          >
+          <Box component={component} onClick={handleClose}>
             <ListItemIcon
               sx={{
-                color: {
-                  xs: '#F1F1F3',
-                  md: 'primary.light',
-                  minWidth: 'unset',
-                  marginRight: 12,
-                },
+                color: 'primary.light',
+                minWidth: 'unset',
               }}
             >
               <SvgIcon fontSize="small">
                 <ExternalLinkIcon />
               </SvgIcon>
             </ListItemIcon>
-            <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+            <ListItemText sx={{ color: 'text.primary' }}>
               <Trans>View on Explorer</Trans>
             </ListItemText>
           </Box>
@@ -354,29 +336,27 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       )}
       {md && (
         <>
-          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: 'divider' }} />
           <Box sx={{ padding: '16px 16px 10px' }}>
             <Button
               sx={{
                 marginBottom: '16px',
-                background: '#383D51',
-                color: '#F1F1F3',
+                color: 'text.primary',
               }}
               fullWidth
               size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              variant="outlined"
               onClick={handleSwitchWallet}
             >
               Switch wallet
             </Button>
             <Button
               sx={{
-                background: '#383D51',
-                color: '#F1F1F3',
+                color: 'text.primary',
               }}
               fullWidth
               size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              variant="outlined"
               onClick={handleDisconnect}
             >
               Disconnect

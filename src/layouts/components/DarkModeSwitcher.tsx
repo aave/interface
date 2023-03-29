@@ -29,11 +29,11 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
         py: { xs: 1.5, md: 2 },
       }}
     >
-      <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+      <ListItemText sx={{ color: 'text.primary' }}>
         <Trans>Dark mode</Trans>
       </ListItemText>
       <FormControlLabel
-        sx={{ mr: 0, color: { xs: '#F1F1F3', md: 'text.primary' } }}
+        sx={{ mr: 0, color: 'text.primary' }}
         value="darkmode"
         control={
           <Switch
