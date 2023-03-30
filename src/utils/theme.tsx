@@ -175,8 +175,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         muted: getColor('#2f2f37', '#8E92A3'),
       },
       background: {
-        default: getColor('#FFFFFF', '#1B2030'),
-        paper: getColor('#FFFFFF', '#292E41'),
+        default: getColor('#FEFEFE', '#1B2030'),
+        paper: getColor('#FEFEFE', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
         header: getColor('#FDD8D3', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
