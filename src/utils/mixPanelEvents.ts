@@ -43,17 +43,17 @@ export const DASHBOARD = {
 };
 
 export const MARKETS = {
-  SEARCH_ASSET: 'Search asset markets',
-  DETAILS_BUTTON: 'Details button markets page',
-  DETAILS_ROW_BUTTON: 'Details row markets page',
+  SEARCH_ASSET: 'Search asset markets', // how to handle
+  DETAILS_BUTTON: 'Details button markets page', // done
+  DETAILS_ROW_CLICK: 'Details row markets page', // done
   VIEW_LM_DETAILS_MARKETS: 'View LM details markets page',
-  SORT_ASSET_MARKET: 'Sort by asset on markets page',
-  SORT_SUPPLY_MARKET: 'Sort by supply on markets page',
-  SORT_SUPPY_APY_MARKET: 'Sort by supply APY on markets page',
-  SORT_BORROW_MARKET: 'Sort by borrow on markets page',
-  SORT_BORROW_APY_V_MARKET: 'Sort by borrow APY variable on markets page',
-  SORT_BORROW_APY_S_MARKET: 'Sort by borrow APY stable on markets page',
-  VIEW_FROZEN_GOV_POST_MARKET: 'View frozen gov post from markets page',
+  SORT_ASSET_MARKET: 'Sort by asset on markets page', // done
+  SORT_SUPPLY_MARKET: 'Sort by supply on markets page', // done
+  SORT_SUPPY_APY_MARKET: 'Sort by supply APY on markets page', //done
+  SORT_BORROW_MARKET: 'Sort by borrow on markets page', //done
+  SORT_BORROW_APY_V_MARKET: 'Sort by borrow APY variable on markets page', //done
+  SORT_BORROW_APY_S_MARKET: 'Sort by borrow APY stable on markets page', //done
+  VIEW_FROZEN_GOV_POST_MARKET: 'View frozen gov post from markets page', //done
 };
 
 export const RESERVE_DETAILS = {
