@@ -15,7 +15,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { i18n } = useLingui();
   const { currentMarketData } = useProtocolDataContext();
 
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
 
   return (
@@ -44,8 +44,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 href={item.link}
                 variant="h2"
-                color="text.primary"
-                sx={{ width: '100%', p: 4 }}
+                sx={{ color: palette.text.primary, width: '100%', p: 4 }}
                 onClick={() => (setOpen ? setOpen(false) : undefined)}
               >
                 {i18n._(item.title)}
@@ -56,6 +55,8 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 href={item.link}
                 sx={(theme) => ({
                   color: 'text.primary',
+                  fontWeight: '600',
+                  fontSize: '14px',
                   p: '6px 8px',
                   position: 'relative',
                   '.active&:after, &:hover&:after': {

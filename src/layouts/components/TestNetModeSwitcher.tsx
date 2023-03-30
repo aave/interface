@@ -29,7 +29,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
         py: { xs: 1.5, md: 2 },
       }}
     >
-      <ListItemText>
+      <ListItemText sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
         <Trans>Testnet mode</Trans>
       </ListItemText>
       <FormControlLabel
@@ -39,7 +39,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
           <Switch
             disableRipple
             checked={testnetsEnabled}
-            sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
+            sx={{ '.MuiSwitch-track': { bgcolor: { xs: 'primary.light', md: 'primary.light' } } }}
           />
         }
         label={testnetsEnabled ? 'On' : 'Off'}
