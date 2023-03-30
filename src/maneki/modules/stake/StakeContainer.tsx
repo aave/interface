@@ -26,7 +26,7 @@ export const StakeContainer = () => {
 
   return (
     <Paper>
-      {/* Main stake field */}
+      {/* Main stake input */}
       <StakeMain />
 
       {/* Stake info panel */}
