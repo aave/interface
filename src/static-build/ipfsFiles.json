@@ -2737,6 +2737,21 @@
       "ipfsHash": "QmVMivBCFi2S6qsm7FAHkN4N7ZTUPz5biBbaMk9wRebPp7",
       "originalHash": "0x684825bca9aec1e56e63c1c5cbfcb322610f68d3a165342d307ed679d62c9be4",
       "id": 192
+    },
+    {
+      "aip": 193,
+      "title": "Risk Parameter Updates for Aave V2 AMM Market (2023-03-29)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-add-gelato-s-g-uni-erc20-uniswap-v3-positions-as-collateral-to-aave-s-amm-market/5687",
+      "created": "2023-03-29T00:00:00.000Z",
+      "preview": "## Summary\n\n A proposal to make parameter changes on Aave V2 AMM market …",
+      "basename": "AIP-193",
+      "description": "## Summary\n\nA proposal to make parameter changes on Aave V2 AMM market.\n\n## Abstract\n\nThese parameter updates aim to balance risk in the Aave V2 AMM market.\n\n\n## Motivation\n\nGiven the low liquidity levels of G-UNI DAI/USDC and G-UNI USDC/USDT, we recommend freezing these assets out of an abundance of caution. We note that this pool is not particularly active or highly utilized. \n\nThis is a joint recommendation from Gauntlet, BGD Labs, Chaos Labs, and Aave Companies.\n\n## Specification\n\n* Freeze G-UNI DAI/USDC\n* Freeze G-UNI USDC/USDT\n\n## Implementation\n\nThis proposal uses the `freezeReserve` method on the AMM Pool Configurator to freeze the two specified reserves.\n\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances. The recommendations are provided as-is and without any guarantees or warranties. Gauntlet, BGD Labs, Chaos Labs, and Aave Companies do not assume any liability for the use of the recommendations or for any consequences that may arise from their implementation.*\n\n\n\n\n\n\n",
+      "ipfsHash": "QmdctLv3TPbizWbF4oH6RA81n93tSVYUmo7oa5jYkSeUxF",
+      "originalHash": "0xe30803793ff6ae0ad674cb9cda780af6183cf51c1757f807e37307069b3a6048",
+      "id": 193
     }
   ]
 }
