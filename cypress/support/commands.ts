@@ -61,7 +61,7 @@ declare global {
 Cypress.Commands.add('setAmount', (amount: number, max?: boolean) => {
   cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
   if (max) {
-    cy.wait(4000); //there is no way to know when real max amount will upload by UI
+    cy.wait(2000); //there is no way to know when real max amount will upload by UI
     cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
   } else {
     cy.get('[data-cy=Modal] input').first().type(amount.toString());
