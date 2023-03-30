@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
+// import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -130,47 +130,52 @@ export const MarketSwitcher = () => {
         className: 'MarketSwitcher__select',
         IconComponent: (props) => (
           <SvgIcon fontSize="medium" {...props}>
-            <ChevronDownIcon />
+            {/* <ChevronDownIcon /> */}
           </SvgIcon>
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
           return (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo
-                size={upToLG ? 32 : 28}
-                logo={network.networkLogoPath}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
-              />
-              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
-                <Typography
-                  variant={upToLG ? 'display1' : 'h1'}
-                  sx={{
-                    fontSize: downToXSM ? '1.55rem' : undefined,
-                    color: 'text.primary',
-                    mr: 1,
-                  }}
-                >
-                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                  {upToLG && ' Market'}
-                </Typography>
-                {market.v3 && (
-                  <Box
+            <>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <MarketLogo
+                  size={upToLG ? 42 : 28}
+                  logo={network.networkLogoPath}
+                  testChainName={getMarketHelpData(market.marketTitle).testChainName}
+                />
+                <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+                  <Typography
+                    variant={upToLG ? 'display1' : 'h1'}
                     sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
+                      fontSize: downToXSM ? '1.55rem' : undefined,
+                      color: 'text.primary',
+                      mr: 1,
                     }}
                   >
-                    <Typography variant="subheader2">Version 3</Typography>
-                  </Box>
-                )}
+                    {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+                    {upToLG && ' Market'}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
+              {market.v3 && (
+                <Box
+                  sx={{
+                    color: '#FEFEFE',
+                    px: 2,
+                    borderRadius: '12px',
+                    background: (theme) => theme.palette.gradients.aaveGradient,
+                    display: 'inline-block',
+                    mt: 2,
+                  }}
+                >
+                  <Typography variant="subheader2">Version 3</Typography>
+                </Box>
+              )}
+            </>
           );
         },
         sx: {
+          pointerEvents: 'none',
           '&.MarketSwitcher__select .MuiSelect-outlined': {
             p: 0,
             backgroundColor: 'transparent !important',
