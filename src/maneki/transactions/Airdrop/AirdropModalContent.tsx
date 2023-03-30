@@ -1,9 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 
-import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
-import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import {
+  DetailsNumberLine,
+  TxModalDetails,
+} from '../../../components/transactions/FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../../../components/transactions/FlowCommons/TxModalTitle';
+import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import { AirdropActions } from './AirdropActions';
 
 export const AirdropModalContent = () => {

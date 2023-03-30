@@ -28,11 +28,11 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 
-import { AirdropModal } from '../src/components/transactions/Airdrop/AirdropModal';
 import createEmotionCache from '../src/createEmotionCache';
-import { AirdropDataProvider } from '../src/hooks/airdrop-data-provider/AirdropDataProvider';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { AirdropDataProvider } from '../src/maneki/hooks/airdrop-data-provider/AirdropDataProvider';
+import { AirdropModal } from '../src/maneki/transactions/Airdrop/AirdropModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

@@ -5,9 +5,10 @@ import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
-import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
 import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
+import { marketsData } from '../../../ui-config/marketsConfig';
+import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import randomAddrs from './devRandAddr';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
 
@@ -19,7 +20,8 @@ interface entryType {
 }
 
 const empty = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const MERKLE_DIST_ADDR = '0xb774d3c78123f7171B7F3Ce31a4a90e1Ab9968a3';
+// DEV change this
+const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
 
 const padWidth = (str: string, width: number): string => {
   let res = '';

@@ -5,9 +5,15 @@ import * as React from 'react';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
+import { ManageMainActions } from './ManageMainActions';
+import { ManageQuickActions } from './ManageQuickActions';
 
 export const ManagePawContainer = () => {
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount, loading: web3Loading, chainId } = useWeb3Context();
+
+  if (chainId != 97) {
+    return <Paper> Please connect to bsc testnet </Paper>;
+  }
 
   if (!currentAccount || web3Loading) {
     return (
@@ -18,5 +24,13 @@ export const ManagePawContainer = () => {
     );
   }
 
-  return <Paper>manage PAW</Paper>;
+  return (
+    <Paper>
+      {/* QuickActions */}
+      <ManageQuickActions />
+
+      {/* Main actions  */}
+      <ManageMainActions />
+    </Paper>
+  );
 };

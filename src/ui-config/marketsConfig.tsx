@@ -23,6 +23,7 @@ export type MarketDataType = {
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
   addresses: {
+    MERKLE_DIST?: string;
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
     WETH_GATEWAY?: string;
@@ -164,6 +165,8 @@ export const marketsData: {
     chainId: parseInt(process.env.NEXT_PUBLIC_MANEKI_CHAINID as string) || 97,
     enabledFeatures: {},
     addresses: {
+      MERKLE_DIST:
+        process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIST || '0xb774d3c78123f7171B7F3Ce31a4a90e1Ab9968a3',
       LENDING_POOL_ADDRESS_PROVIDER:
         process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL_ADDRESS_PROVIDER ||
         '0x3FAbBFae42c365699b7dB355fdCeBb2b8761C01F',
