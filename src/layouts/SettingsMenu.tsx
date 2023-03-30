@@ -1,6 +1,6 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
@@ -12,6 +12,7 @@ export function SettingsMenu() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const theme = useTheme();
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -64,13 +65,13 @@ export function SettingsMenu() {
         keepMounted={true}
       >
         <MenuItem disabled sx={{ mb: '4px' }}>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color={theme.palette.text.secondary}>
             <Trans>Global settings</Trans>
           </Typography>
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
-        {PROD_ENV && <TestNetModeSwitcher />}
+        {false && PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>
 
