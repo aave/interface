@@ -135,11 +135,7 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem
-          icon={<WalletIcon stroke="#63400A" />}
-          title={<Trans>Net worth</Trans>}
-          loading={loading}
-        >
+        <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -156,7 +152,7 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         <TopInfoPanelItem
-          icon={<NetAPYIcon stroke="#4CAF50" />}
+          icon={<NetAPYIcon />}
           title={
             <div style={{ display: 'flex' }}>
               <Trans>Net APY</Trans>
@@ -181,7 +177,7 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem
-            icon={<EmptyHeartIcon stroke="#BC0000" />}
+            icon={<EmptyHeartIcon />}
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Trans>Health factor</Trans>

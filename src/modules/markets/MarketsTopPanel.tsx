@@ -35,7 +35,7 @@ export const MarketsTopPanel = () => {
   return (
     <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
       <TopInfoPanelItem
-        icon={<PieIcon stroke={'#9550B7'} />}
+        icon={<PieIcon />}
         title={<Trans>Total market size</Trans>}
         loading={loading}
       >
@@ -51,9 +51,7 @@ export const MarketsTopPanel = () => {
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
-        icon={
-          <TotalSupplyIcon stroke={'#16B251'} transform={downToSM ? 'scale(0.8)' : 'scale(1)'} />
-        }
+        icon={<TotalSupplyIcon />}
         title={<Trans>Total available</Trans>}
         loading={loading}
       >
@@ -69,9 +67,7 @@ export const MarketsTopPanel = () => {
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
-        icon={
-          <TotalBorrowIcon stroke={'#829F7C'} transform={downToSM ? 'scale(0.8)' : 'scale(1)'} />
-        }
+        icon={<TotalBorrowIcon />}
         title={<Trans>Total borrows</Trans>}
         loading={loading}
       >

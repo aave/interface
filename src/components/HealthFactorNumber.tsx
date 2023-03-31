@@ -57,7 +57,7 @@ export const HealthFactorNumber = ({
         <Button
           onClick={onInfoClick}
           size="small"
-          sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+          sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 }, '&:hover': { background: 'none' } }}
         >
           <InfoOutlinedIcon
             sx={{
