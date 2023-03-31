@@ -13,7 +13,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { APPROVAL_GAS_LIMIT } from '../utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
@@ -28,6 +28,7 @@ export interface SupplyActionProps extends BoxProps {
 interface SignedParams {
   signature: SignatureLike;
   deadline: string;
+  amount: string;
 }
 
 export const SupplyActions = React.memo(
@@ -69,22 +70,41 @@ export const SupplyActions = React.memo(
     const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-
-    const fetchApprovedAmount = useCallback(async () => {
-      if (!approvedAmount) {
-        setLoadingTxns(true);
-        const approvedAmount = await getApprovedAmount({ token: poolAddress });
-        setApprovedAmount(approvedAmount);
-
-        //TODO: more logic here
-        if (approvedAmount.amount !== '0') {
-          setRequiresApproval(false);
-        } else {
-          setRequiresApproval(true);
+    const fetchApprovedAmount = useCallback(
+      async (forceApprovalCheck?: boolean) => {
+        // Check approved amount on-chain on first load or if an action requires a re-check such as an approval being confirmed
+        if (!approvedAmount || forceApprovalCheck) {
+          setLoadingTxns(true);
+          const approvedAmount = await getApprovedAmount({ token: poolAddress });
+          setApprovedAmount(approvedAmount);
         }
-      }
-      setLoadingTxns(false);
-    }, [approvedAmount, getApprovedAmount, poolAddress, setLoadingTxns]);
+
+        if (approvedAmount) {
+          const requiresApproval = checkRequiresApproval({
+            approvedAmount: approvedAmount.amount,
+            amountToSupply,
+            signedAmount: signatureParams ? signatureParams.amount : '0',
+          });
+          if (requiresApproval) {
+            setRequiresApproval(false);
+          } else {
+            setRequiresApproval(true);
+            setApprovalTxState({});
+          }
+        }
+
+        setLoadingTxns(false);
+      },
+      [
+        approvedAmount,
+        setLoadingTxns,
+        getApprovedAmount,
+        poolAddress,
+        amountToSupply,
+        signatureParams,
+        setApprovalTxState,
+      ]
+    );
 
     useEffect(() => {
       fetchApprovedAmount();
@@ -123,7 +143,7 @@ export const SupplyActions = React.memo(
             });
 
             const response = await signTxData(signatureRequest);
-            setSignatureParams({ signature: response, deadline });
+            setSignatureParams({ signature: response, deadline, amount: amountToSupply });
             setApprovalTxState({
               txHash: MOCK_SIGNED_HASH,
               loading: false,
@@ -139,6 +159,7 @@ export const SupplyActions = React.memo(
               loading: false,
               success: true,
             });
+            fetchApprovedAmount(true);
           }
         }
       } catch (error) {
