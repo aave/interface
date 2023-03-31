@@ -80,17 +80,13 @@ export const SupplyActions = React.memo(
         }
 
         if (approvedAmount) {
-          const requiresApproval = checkRequiresApproval({
+          const fetchedRequiresApproval = checkRequiresApproval({
             approvedAmount: approvedAmount.amount,
             amountToSupply,
             signedAmount: signatureParams ? signatureParams.amount : '0',
           });
-          if (requiresApproval) {
-            setRequiresApproval(false);
-          } else {
-            setRequiresApproval(true);
-            setApprovalTxState({});
-          }
+          setRequiresApproval(fetchedRequiresApproval);
+          if (fetchedRequiresApproval) setApprovalTxState({});
         }
 
         setLoadingTxns(false);
