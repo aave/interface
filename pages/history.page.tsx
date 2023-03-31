@@ -6,13 +6,17 @@ import { HistoryTopPanel } from 'src/modules/history/HistoryTopPanel';
 import TransactionsList from 'src/modules/history/TransactionsList';
 
 export default function History() {
-  const { data: transactions, isLoading } = useTransactionHistory();
+  const { data: transactions, isLoading, fetchNextPage } = useTransactionHistory();
 
   return (
     <>
       <HistoryTopPanel />
       <ContentContainer>
-        <TransactionsList transactions={transactions} loading={isLoading} />
+        <TransactionsList
+          transactions={transactions}
+          loading={isLoading}
+          fetchNextPage={fetchNextPage}
+        />
       </ContentContainer>
     </>
   );

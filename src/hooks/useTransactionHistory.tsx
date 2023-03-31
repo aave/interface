@@ -1,8 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { USER_TRANSACTIONS_V2 } from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { QueryKeys } from 'src/ui-config/queries';
+
+export type TransactionHistoryItem = {
+  id: string;
+  txHash: string;
+  action: string;
+  pool: {
+    id: string;
+  };
+  timestamp: number;
+};
 
 export const useTransactionHistory = () => {
   const { currentMarketData, account } = useRootStore();
@@ -46,17 +56,47 @@ export const useTransactionHistory = () => {
     }
   };
 
-  return useQuery({
-    queryFn: () =>
-      fetchTransactionHistory({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+    error,
+  }: UseInfiniteQueryResult<TransactionHistoryItem[], Error> = useInfiniteQuery(
+    [QueryKeys.TRANSACTION_HISTORY, account, currentMarketData.subgraphUrl],
+    async ({ pageParam = 0 }) => {
+      const response = await fetchTransactionHistory({
         account,
         subgraphUrl: currentMarketData.subgraphUrl ?? '',
         first: 100,
-        skip: 0,
+        skip: pageParam,
         v3: !!currentMarketData.v3,
-      }),
-    queryKey: [QueryKeys.TRANSACTION_HISTORY, account, currentMarketData.subgraphUrl],
-    enabled: !!account && !!currentMarketData.subgraphUrl,
-    initialData: [],
-  });
+      });
+
+      return response;
+    },
+    {
+      enabled: !!account && !!currentMarketData.subgraphUrl,
+      getNextPageParam: (
+        lastPage: TransactionHistoryItem[],
+        allPages: TransactionHistoryItem[][]
+      ) => {
+        const moreDataAvailable = lastPage.length === 100;
+        if (!moreDataAvailable) {
+          return false;
+        }
+        return allPages.length * 100;
+      },
+    }
+  );
+
+  return {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+    error,
+  };
 };
