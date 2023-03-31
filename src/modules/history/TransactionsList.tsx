@@ -118,7 +118,7 @@ Each action may have unique columns
                     <Link
                       href={currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash })}
                     >
-                      TX + PAGE INDEX {pageIndex} TX INDEX {index}
+                      TX
                     </Link>
                   </ListColumn>
                   <ListColumn>{transaction.action}</ListColumn>
