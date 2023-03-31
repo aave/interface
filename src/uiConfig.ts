@@ -5,5 +5,5 @@
 
 export const uiConfig = {
   appLogo: '/Maneki.svg',
-  infoBackground: '/infoBackground.png',
+  infoBackground: '/cat-01.svg',
 };

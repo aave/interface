@@ -135,7 +135,11 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
+        <TopInfoPanelItem
+          icon={<WalletIcon stroke="#63400A" />}
+          title={<Trans>Net worth</Trans>}
+          loading={loading}
+        >
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -143,7 +147,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
-              symbolsColor="#A5A8B6"
+              symbolsColor={theme.palette.text.secondary}
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -152,7 +156,7 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         <TopInfoPanelItem
-          icon={<NetAPYIcon />}
+          icon={<NetAPYIcon stroke="#4CAF50" />}
           title={
             <div style={{ display: 'flex' }}>
               <Trans>Net APY</Trans>
@@ -167,7 +171,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
-              symbolsColor="#A5A8B6"
+              symbolsColor={theme.palette.text.secondary}
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -177,7 +181,7 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem
-            icon={<EmptyHeartIcon />}
+            icon={<EmptyHeartIcon stroke="#BC0000" />}
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Trans>Health factor</Trans>
@@ -231,7 +235,7 @@ export const DashboardTopPanel = () => {
                   visibleDecimals={2}
                   compact
                   symbol="USD"
-                  symbolsColor="#A5A8B6"
+                  symbolsColor={theme.palette.text.secondary}
                   symbolsVariant={noDataTypographyVariant}
                   data-cy={'Claim_Value'}
                 />

@@ -1,4 +1,4 @@
-import { Box, Container, useTheme } from '@mui/material';
+import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { uiConfig } from '../../uiConfig';
@@ -18,12 +18,14 @@ export const TopInfoPanel = ({
   children,
 }: TopInfoPanelProps) => {
   const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box
       sx={{
         backgroundImage: theme.palette.mode === 'dark' ? 'none' : `url(${uiConfig.infoBackground})`,
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'right bottom',
+        backgroundPosition: downToSM ? '80% 100%' : '200% 100%',
+        backgroundSize: downToSM ? '40% 40%' : '80% 80%',
         bgcolor: 'background.header',
         pt: { xs: 10, md: 12 },
         pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },

@@ -8,7 +8,6 @@ interface TopInfoPanelItemProps {
   children: ReactNode;
   hideIcon?: boolean;
   withoutIconWrapper?: boolean;
-  variant?: 'light' | 'dark' | undefined; // default dark
   withLine?: boolean;
   loading?: boolean;
 }

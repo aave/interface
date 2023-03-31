@@ -33,11 +33,11 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={{
+      sx={(theme) => ({
         mt: withTopMargin ? 4 : 0,
         borderRadius: '20px',
-        boxShadow: '0px 4px 250px #FFEDEB',
-      }}
+        boxShadow: `0px 4px 250px ${theme.palette.background.shadow}`,
+      })}
     >
       <Box
         sx={{

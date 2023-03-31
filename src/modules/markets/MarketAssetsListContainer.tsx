@@ -78,7 +78,7 @@ export const MarketAssetsListContainer = () => {
           </Typography>
           <Warning severity="info">
             <Trans>
-              These assets are temporarily frozen by Mineki community decisions, meaning that
+              These assets are temporarily frozen by Maneki community decisions, meaning that
               further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and
               debt repayments are allowed. Follow the{' '}
               <Link href="https://governance.maneki.com" underline="always">

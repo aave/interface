@@ -1,5 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
@@ -56,11 +56,18 @@ export const HealthFactorNumber = ({
       {onInfoClick && (
         <Button
           onClick={onInfoClick}
-          variant="surface"
           size="small"
           sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
         >
-          <Trans>Risk details</Trans>
+          <InfoOutlinedIcon
+            sx={{
+              width: '20px',
+              height: '20px',
+              color: 'action.active',
+              '&:hover': { color: 'info.main' },
+              transition: '0.3s',
+            }}
+          />
         </Button>
       )}
 

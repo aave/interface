@@ -32,6 +32,7 @@ declare module '@mui/material/styles/createPalette' {
     surface: string;
     header: string;
     disabled: string;
+    shadow: string;
   }
 
   interface Palette {
@@ -180,6 +181,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         surface: getColor('#F7F7F9', '#383D51'),
         header: getColor('#FFEDEB', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        shadow: getColor('#FFEDEB', '#EBEBEF4D'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
