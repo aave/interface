@@ -10,7 +10,6 @@ import BigNumber from 'bignumber.js';
 import React, { useMemo, useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
-import { CollateralType } from 'src/helpers/types';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -32,6 +31,7 @@ import {
   DetailsNumberLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
+import { getAssetCollateralType } from '../utils';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
@@ -164,46 +164,12 @@ export const SupplyModalContent = React.memo(
     };
 
     // collateralization state
-    let willBeUsedAsCollateral: CollateralType = CollateralType.ENABLED;
-    const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
-    const userHasCollateral = user.totalCollateralUSD !== '0';
-
-    if (!poolReserve.usageAsCollateralEnabled) {
-      willBeUsedAsCollateral = CollateralType.DISABLED;
-    } else if (poolReserve.isIsolated) {
-      // Note: is debt ceiling only used for isolated assets?
-      if (debtCeiling.isMaxed) {
-        willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
-      } else if (user.isInIsolationMode) {
-        if (userHasSuppliedReserve) {
-          willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
-            ? CollateralType.ISOLATED_ENABLED
-            : CollateralType.ISOLATED_DISABLED;
-        } else {
-          if (userHasCollateral) {
-            willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
-          }
-        }
-      } else {
-        if (userHasCollateral) {
-          willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
-        } else {
-          willBeUsedAsCollateral = CollateralType.ISOLATED_ENABLED;
-        }
-      }
-    } else {
-      if (user.isInIsolationMode) {
-        willBeUsedAsCollateral = CollateralType.DISABLED;
-      } else {
-        if (userHasSuppliedReserve) {
-          willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
-            ? CollateralType.ENABLED
-            : CollateralType.DISABLED;
-        } else {
-          willBeUsedAsCollateral = CollateralType.ENABLED;
-        }
-      }
-    }
+    const collateralType = getAssetCollateralType(
+      userReserve,
+      user.totalCollateralUSD,
+      user.isInIsolationMode,
+      debtCeiling.isMaxed
+    );
 
     const supplyActionsProps = useMemo(() => {
       return {
@@ -283,7 +249,7 @@ export const SupplyModalContent = React.memo(
             incentives={poolReserve.aIncentivesData}
             symbol={poolReserve.symbol}
           />
-          <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
+          <DetailsCollateralLine collateralType={collateralType} />
           <DetailsHFLine
             visibleHfChange={!!_amount}
             healthFactor={user ? user.healthFactor : '-1'}
