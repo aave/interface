@@ -50,6 +50,8 @@ export const TopInfoPanel = ({
               gap: { xs: 3, xsm: 8 },
               flexWrap: 'wrap',
               width: '100%',
+              filter: 'drop-shadow(0px 4px 44px rgba(0, 0, 0, 0.1))',
+              mt: '45px',
             }}
           >
             {children}

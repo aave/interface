@@ -50,6 +50,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsColor?: string;
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
+  isTopPanel?: boolean;
 }
 
 export function FormattedNumber({
@@ -61,6 +62,7 @@ export function FormattedNumber({
   symbolsVariant,
   symbolsColor,
   roundDown,
+  isTopPanel,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
@@ -94,7 +96,9 @@ export function FormattedNumber({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'relative',
-        mt: '8px',
+        mt: '12px',
+        ml: '12px',
+        ...(isTopPanel && { lineHeight: '36px', fontSize: '24px' }),
         ...rest.sx,
       }}
       noWrap

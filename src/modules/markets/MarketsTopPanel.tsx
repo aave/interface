@@ -47,6 +47,7 @@ export const MarketsTopPanel = () => {
           compact
           symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
@@ -64,6 +65,7 @@ export const MarketsTopPanel = () => {
           compact
           symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
@@ -81,6 +83,7 @@ export const MarketsTopPanel = () => {
           compact
           symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
     </TopInfoPanel>

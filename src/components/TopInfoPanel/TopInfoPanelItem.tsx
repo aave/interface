@@ -31,7 +31,7 @@ export const TopInfoPanelItem = ({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
+        width: { xs: 'calc(50% - 12px)', xsm: '238px' },
         padding: '20px',
         backgroundColor: theme.palette.background.surface,
         borderRadius: '8px',
@@ -74,7 +74,6 @@ export const TopInfoPanelItem = ({
           </Typography>
           {titleIcon && titleIcon}
         </Box>
-
         {loading ? <Skeleton height={upToSM ? 28 : 24} sx={{ background: '#383D51' }} /> : children}
       </Box>
     </Box>
