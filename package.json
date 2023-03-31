@@ -26,7 +26,7 @@
     "i18n": "yarn i18n:extract && yarn i18n:compile",
     "prepare": "husky install",
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open",
-    "test:headless": "DOTENV_CONFIG_PATH='.env.local' cypress run",
+    "test:headless": "export DOTENV_CONFIG_PATH='../../../.env.local' && cypress run --config-file './cypress/configs/local/full.config.ts'",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
@@ -133,7 +133,6 @@
   "contributors": [
     "Anastasia Khovaeva <anastasia@aave.com>",
     "Andrew Schmidt <andrew@aave.com>",
-    "Bojan Kopunovic Legetin <bojan@aave.com>",
     "David Racero <david.k@aave.com>",
     "Diego Prudencio <diego@aave.com>",
     "Drew Cook <drew.c@aave.com>",
