@@ -34,7 +34,7 @@ export const TopInfoPanelItem = ({
         width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
         padding: '20px',
         backgroundColor: theme.palette.background.surface,
-        borderRadius: '15px',
+        borderRadius: '8px',
       }}
     >
       {withLine && (
