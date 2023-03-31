@@ -97,9 +97,9 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-        .multipliedBy(user.currentLiquidationThreshold)
-        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+          .multipliedBy(user.currentLiquidationThreshold)
+          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
 
     let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
@@ -146,12 +146,12 @@ export const SupplyModalContent = React.memo(
         blockingError = ErrorType.CAP_REACHED;
       }
     }
-    const handleBlocked = () => {
+    const BlockingError: React.FC = () => {
       switch (blockingError) {
         case ErrorType.CAP_REACHED:
           return <Trans>Cap reached. Lower supply amount</Trans>;
         default:
-          return null;
+          return <></>;
       }
     };
 
@@ -273,11 +273,11 @@ export const SupplyModalContent = React.memo(
 
         {blockingError !== undefined && (
           <Typography variant="helperText" color="error.main">
-            {handleBlocked()}
+            <BlockingError />
           </Typography>
         )}
 
-        <TxModalDetails gasLimit={gasLimit}>
+        <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(_amount) === 0}>
           <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
           <DetailsIncentivesLine
             incentives={poolReserve.aIncentivesData}
