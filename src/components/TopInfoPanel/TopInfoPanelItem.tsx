@@ -48,25 +48,23 @@ export const TopInfoPanelItem = ({
           }}
         />
       )}
+      {/* {Temporary for unused props} */}
+      {!hideIcon && !withoutIconWrapper}
 
-      {!hideIcon &&
-        (withoutIconWrapper ? (
-          icon && icon
-        ) : (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'top' }}>
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               mr: 3,
+              width: '18px',
+              height: '18px',
             }}
           >
             {icon && icon}
           </Box>
-        ))}
-
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography
             sx={{ color: theme.palette.text.secondary }}
             variant="description"

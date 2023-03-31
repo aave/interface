@@ -35,7 +35,7 @@ export const MarketsTopPanel = () => {
   return (
     <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
       <TopInfoPanelItem
-        icon={<PieIcon stroke={'#9550B7'} transform={downToSM ? 'scale(0.8)' : 'scale(1)'} />}
+        icon={<PieIcon stroke={'#9550B7'} />}
         title={<Trans>Total market size</Trans>}
         loading={loading}
       >

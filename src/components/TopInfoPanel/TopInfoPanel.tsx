@@ -1,6 +1,7 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { uiConfig } from '../../uiConfig';
 import { PageTitle, PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
@@ -16,9 +17,13 @@ export const TopInfoPanel = ({
   bridge,
   children,
 }: TopInfoPanelProps) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
+        backgroundImage: theme.palette.mode === 'dark' ? 'none' : `url(${uiConfig.infoBackground})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'right bottom',
         bgcolor: 'background.header',
         pt: { xs: 10, md: 12 },
         pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },

@@ -94,6 +94,7 @@ export function FormattedNumber({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'relative',
+        mt: '8px',
         ...rest.sx,
       }}
       noWrap
@@ -111,7 +112,7 @@ export function FormattedNumber({
       {symbol?.toLowerCase() === 'usd' && !percent && (
         <Typography
           component="span"
-          sx={{ mr: 0.5 }}
+          sx={{ mr: 1 }}
           variant={symbolsVariant || rest.variant}
           color={symbolsColor || 'text.secondary'}
         >
