@@ -1301,6 +1301,10 @@ msgstr "No rewards to claim"
 msgid "No search results{0}"
 msgstr "No search results{0}"
 
+#: src/modules/history/TransactionsList.tsx
+msgid "No transactions found for this user and market."
+msgstr "No transactions found for this user and market."
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr "No voting power"
@@ -1412,6 +1416,10 @@ msgstr "Please connect your wallet to see migration tool."
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
+
+#: src/modules/history/TransactionsList.tsx
+msgid "Please connect your wallet to view transaction history."
+msgstr "Please connect your wallet to view transaction history."
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
