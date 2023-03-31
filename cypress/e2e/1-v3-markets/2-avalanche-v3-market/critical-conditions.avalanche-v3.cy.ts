@@ -13,11 +13,12 @@ const testData = {
       hasApproval: true,
     },
     borrow: {
-      asset: assets.avalancheV3Market.AVAX,
+      asset: assets.avalancheV3Market.DAI,
       amount: 1,
       apyType: constants.borrowAPYType.default,
-      hasApproval: false,
+      hasApproval: true,
       isRisk: true,
+      isMaxAmount: true,
     },
     deposit2: {
       asset: assets.avalancheV3Market.AVAX,

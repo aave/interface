@@ -35,8 +35,8 @@ const testData = {
     },
   },
 };
-
-describe('CRITICAL CONDITIONS SPEC, AAVE V2 MARKET', () => {
+//unstable with current state of market
+describe.skip('CRITICAL CONDITIONS SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
 

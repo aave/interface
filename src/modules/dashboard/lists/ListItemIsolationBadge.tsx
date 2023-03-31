@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { IsolatedBadge } from '../../../components/isolationMode/IsolatedBadge';
+import { IsolatedEnabledBadge } from '../../../components/isolationMode/IsolatedBadge';
 
 interface ListItemIsolationBadgeProps {
   children: ReactNode;
@@ -18,7 +18,7 @@ export const ListItemIsolationBadge = ({ children }: ListItemIsolationBadgeProps
       }}
     >
       {children}
-      <IsolatedBadge />
+      <IsolatedEnabledBadge />
     </Box>
   );
 };

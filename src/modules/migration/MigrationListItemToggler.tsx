@@ -1,7 +1,7 @@
 import { Box, Switch } from '@mui/material';
 import React from 'react';
 
-import { IsolatedBadge } from '../../components/isolationMode/IsolatedBadge';
+import { IsolatedEnabledBadge } from '../../components/isolationMode/IsolatedBadge';
 
 interface MigrationListItemTogglerProps {
   enableAsCollateral: () => void;
@@ -27,7 +27,7 @@ export const MigrationListItemToggler = ({
         checked={enabledAsCollateral}
         sx={{ mb: -1.5 }}
       />
-      <IsolatedBadge />
+      <IsolatedEnabledBadge />
     </Box>
   );
 };

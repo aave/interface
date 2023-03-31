@@ -90,8 +90,8 @@ const testData = {
     ],
   },
 };
-
-describe('MIGRATION, AVALANCHE V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
+//skip due v3 market borrow avax full
+describe.skip('MIGRATION, AVALANCHE V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({});
   describe(`Prepare v2 market`, () => {
