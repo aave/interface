@@ -2752,6 +2752,19 @@
       "ipfsHash": "QmdctLv3TPbizWbF4oH6RA81n93tSVYUmo7oa5jYkSeUxF",
       "originalHash": "0xe30803793ff6ae0ad674cb9cda780af6183cf51c1757f807e37307069b3a6048",
       "id": 193
+    },
+    {
+      "title": "Configure Isolation Mode Borrowable Assets on V3 Ethereum",
+      "shortDescription": "Configure Isolation Mode Borrowable Assets on V3 Ethereum",
+      "author": "Chaos Labs (@ori-chaoslabs, @Maltmark)",
+      "discussions": "https://governance.aave.com/t/arfc-configure-isolation-mode-borrowable-assets-v3-ethereum/12420/1",
+      "created": "2023-3-28",
+      "preview": "# Simple Summary\n\nAt the time of the launch of V3 Ethereum, no …",
+      "basename": "AIP-CONFIG-ISO-MODE-BORROWAABLE-ASSETES-V3-ETH",
+      "description": "\n\n# Simple Summary\n\nAt the time of the launch of V3 Ethereum, no assets were configured as borrowable in Isolation Mode. In this proposal, Chaos Labs recommends enabling all stablecoins listed on V3 Ethereum as borrowable in isolation mode 3.\n\n# Motivation\n\nThe motivation to list the stablecoins as borrowable assets in Isolation Mode is similar to previous deployments and is derived mainly from the low volatility of those assets. Given that Isolation Mode assets are susceptible to high volatility, we find it paramount to maintain the other side of the position stable in order to reduce liquidations and resulting bad debt.\nThe respective governance forum discussion is linked below:\n\n- [[ARFC] - Configure Isolation Mode Borrowable Assets - V3 Ethereum](https://governance.aave.com/t/arfc-configure-isolation-mode-borrowable-assets-v3-ethereum/12420/1)\n\n# Implementation\n\nWe recommend listing USDC, USDT, DAI, and LUSD as assets allowed for borrowing in Isolation Mode on Ethereum V3.\n\nThis proposal aims to implement a single AIP, which will simply call setBorrowableInIsolation() on the list of assets (USDC, DAI, USDT, LUSD) on the PoolConfigurator contract.\n\n# References\n\n- [Forum Post](https://governance.aave.com/t/arfc-configure-isolation-mode-borrowable-assets-v3-ethereum/12420/1)\n- [Tests](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3ETHIsoMode_20230330/AaveV3ETHIsoMode_20230330_Test.t.sol)\n- [Proposal payload implementation](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3ETHIsoMode_20230330/AaveV3ETHIsoMode_20230330.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmbtVe1tnjgfLSPRx3GEdmmzahhLqYLvu2kn2NQ1QPRPbm",
+      "originalHash": "0xc95042860f19868f3d7e57aea659418aaa4f8242ec3d47332ba5e49e1c9929f8",
+      "id": 194
     }
   ]
 }
