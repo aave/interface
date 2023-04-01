@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-14 00:16\n"
+"PO-Revision-Date: 2023-03-31 12:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -214,6 +214,10 @@ msgstr "Les paramètres de tableau devraient être de même longueur ne sont pas
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Actif"
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
+msgstr ""
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
@@ -477,7 +481,6 @@ msgstr "RÉCLAMATION {symbole}"
 msgid "CLAIMING {symbol}"
 msgstr "RÉCLAMATION {symbole}"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -580,11 +583,16 @@ msgstr "Usage de collatéral"
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "L'utilisation du collatéral est limitée en raison du mode d'isolation."
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr ""
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "L'utilisation de la garantie est limitée en raison du mode d'isolement. <0>En savoir plus</0>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Collateralization"
 msgstr "Collatéralisation"
 
@@ -733,7 +741,6 @@ msgstr "Désactiver {symbol} comme garantie"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr "Désactivé"
 
@@ -810,10 +817,6 @@ msgstr "Activer {symbol} comme collatéral"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Activé"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Enabled in isolation"
-msgstr "Activé en isolation"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -1066,7 +1069,7 @@ msgstr "Isolé"
 msgid "Isolated Debt Ceiling"
 msgstr ""
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Les actifs isolés ont un pouvoir d'emprunt limité et les autres actifs ne peuvent pas être utilisés comme garantie."
 
@@ -1098,7 +1101,7 @@ msgstr "Apprendre encore plus"
 msgid "Learn more about risks involved"
 msgstr "En savoir plus sur les risques encourus"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "En savoir plus dans notre <0>guide FAQ</0>"
 
@@ -1280,10 +1283,6 @@ msgstr "Réseau non pris en charge pour ce portefeuille"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "Nouveau APY"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "No"
-msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
@@ -2212,6 +2211,8 @@ msgstr "DÉPOSER {symbole}"
 msgid "UNSTAKING {symbol}"
 msgstr "Arrêter de staker {symbol}"
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Non disponible"
@@ -2436,10 +2437,6 @@ msgstr "Mauvais réseau"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Yes"
-msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"

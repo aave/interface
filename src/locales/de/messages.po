@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-14 00:16\n"
+"PO-Revision-Date: 2023-03-31 12:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -213,6 +213,10 @@ msgstr ""
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
+msgstr ""
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 msgstr ""
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -477,7 +481,6 @@ msgstr ""
 msgid "CLAIMING {symbol}"
 msgstr ""
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -580,11 +583,16 @@ msgstr ""
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr ""
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr ""
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Collateralization"
 msgstr ""
 
@@ -733,7 +741,6 @@ msgstr ""
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr ""
 
@@ -809,10 +816,6 @@ msgstr ""
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Enabled in isolation"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
@@ -1066,7 +1069,7 @@ msgstr ""
 msgid "Isolated Debt Ceiling"
 msgstr ""
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr ""
 
@@ -1098,7 +1101,7 @@ msgstr ""
 msgid "Learn more about risks involved"
 msgstr ""
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr ""
 
@@ -1279,10 +1282,6 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "No"
 msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
@@ -2212,6 +2211,8 @@ msgstr ""
 msgid "UNSTAKING {symbol}"
 msgstr ""
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr ""
@@ -2435,10 +2436,6 @@ msgstr ""
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Yes"
 msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
