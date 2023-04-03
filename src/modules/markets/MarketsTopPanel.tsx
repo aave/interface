@@ -16,7 +16,6 @@ export const MarketsTopPanel = () => {
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   const aggregatedStats = reserves.reduce(
     (acc, reserve) => {
       return {
@@ -46,8 +45,9 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
@@ -61,8 +61,9 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
       <TopInfoPanelItem
@@ -76,8 +77,9 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
+          isTopPanel
         />
       </TopInfoPanelItem>
     </TopInfoPanel>

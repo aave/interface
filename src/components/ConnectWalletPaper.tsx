@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 //@Modified
@@ -18,6 +18,7 @@ export const ConnectWalletPaper = ({
   sx,
   ...rest
 }: ConnectWalletPaperProps) => {
+  const theme = useTheme();
   return (
     <Paper
       {...rest}
@@ -32,13 +33,20 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <LoveManeki style={{ marginBottom: '16px', width: '100px', height: 'auto' }} />
+      <LoveManeki
+        style={{
+          marginBottom: '16px',
+          width: '100px',
+          height: 'auto',
+          fill: theme.palette.text.secondary,
+        }}
+      />
       <>
         {loading ? (
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 2 }}>
+            <Typography variant="h2" sx={{ mb: 2, color: 'text.secondary' }}>
               <Trans>Please, connect your wallet</Trans>
             </Typography>
             <Typography sx={{ mb: 6 }} color="text.secondary">
