@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -32,12 +33,20 @@ export const RepayActions = ({
   ...props
 }: RepayActionProps) => {
   const { repay, repayWithPermit, tryPermit } = useRootStore();
+  const { currentMarket } = useProtocolDataContext();
 
   const usingPermit = tryPermit(poolAddress);
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: usingPermit,
       permitAction: ProtocolAction.repayWithPermit,
+      protocolAction: ProtocolAction.repay,
+      eventTxInfo: {
+        amount: amountToRepay,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+        market: currentMarket,
+      },
       handleGetTxns: async () => {
         return repay({
           amountToRepay,

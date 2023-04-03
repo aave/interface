@@ -91,19 +91,31 @@ export const YOUR_INFO_RESERVE_DETAILS = {
 };
 
 export const SUPPLY_MODAL = {
-  SWITCH_NETWORK: 'Switch network supply modal',
-  MAX_SUPPLY: 'Max supply input supply modal',
+  SWITCH_NETWORK: 'Switch network supply modal', // done
+  MAX_SUPPLY: 'Max supply input supply modal', // done
   APPROVE_TOKEN: 'Approve token',
   SUPPLY_TOKEN: 'Supply token',
+  SUPPLY_WITH_PERMIT: 'Supply token with permit', // done
 };
 
 export const BORROW_MODAL = {
-  SWITCH_NETWORK: 'Switch network borrow modal',
-  MAX_BORROW: 'Max supply input borrow modal',
-  BORROW_TOKEN: 'Borrow token',
-  UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal',
-  GOV_LINK: 'Governance link borrow modal',
-  ACCEPT_RISK: 'Accept risk check box borrow modal',
+  SWITCH_NETWORK: 'Switch network borrow modal', // done
+  MAX_BORROW: 'Max supply input borrow modal', // done
+  BORROW_TOKEN: 'Borrow token', // done
+  UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal', //done
+  GOV_LINK: 'Governance link borrow modal', // done
+  ACCEPT_RISK: 'Accept risk check box borrow modal', // done
+};
+
+// TODO proper events here
+export const REPAY_MODAL = {
+  // SWITCH_NETWORK: 'Switch network borrow modal',
+  // MAX_BORROW: 'Max supply input borrow modal',
+  // BORROW_TOKEN: 'Borrow token',
+  // UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal',
+  // GOV_LINK: 'Governance link borrow modal',
+  // ACCEPT_RISK: 'Accept risk check box borrow modal',
+  REPAY_TOKEN: 'Repays borrowed position',
 };
 
 export const STAKE = {

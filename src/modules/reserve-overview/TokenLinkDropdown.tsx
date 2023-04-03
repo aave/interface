@@ -7,8 +7,8 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { useRootStore } from 'src/store/root';
+
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
 
 interface TokenLinkDropdownProps {

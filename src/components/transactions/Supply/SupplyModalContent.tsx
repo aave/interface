@@ -17,6 +17,7 @@ import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
@@ -52,6 +53,7 @@ export const SupplyModalContent = ({
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+
   const { supplyCap, debtCeiling } = useAssetCaps();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
@@ -212,6 +214,13 @@ export const SupplyModalContent = ({
         disabled={supplyTxState.loading}
         maxValue={maxAmountToSupply.toString(10)}
         balanceText={<Trans>Wallet balance</Trans>}
+        event={{
+          eventName: SUPPLY_MODAL.MAX_SUPPLY,
+          eventParams: {
+            asset: poolReserve.underlyingAsset,
+            assetName: poolReserve.name,
+          },
+        }}
       />
 
       {blockingError !== undefined && (

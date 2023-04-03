@@ -1,8 +1,9 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -27,6 +28,8 @@ export const BorrowActions = ({
   blocked,
   sx,
 }: BorrowActionsProps) => {
+  const { currentMarket } = useProtocolDataContext();
+
   const borrow = useRootStore((state) => state.borrow);
   const { action, loadingTxns, mainTxState, approval, requiresApproval, approvalTxState } =
     useTransactionHandler({
@@ -43,7 +46,14 @@ export const BorrowActions = ({
         });
       },
       skip: !amountToBorrow || amountToBorrow === '0' || blocked,
+      protocolAction: ProtocolAction.borrow,
       deps: [amountToBorrow, interestRateMode, poolAddress],
+      eventTxInfo: {
+        amount: amountToBorrow,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+        market: currentMarket,
+      },
     });
 
   return (

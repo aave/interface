@@ -24,7 +24,14 @@ interface UseTransactionHandlerProps {
   tryPermit?: boolean;
   permitAction?: ProtocolAction;
   skip?: boolean;
+  protocolAction?: ProtocolAction;
   deps?: DependencyList;
+  eventTxInfo?: {
+    amount?: string;
+    asset?: string;
+    market?: string;
+    assetName?: string;
+  };
 }
 
 export type Approval = {
@@ -39,7 +46,9 @@ export const useTransactionHandler = ({
   tryPermit = false,
   permitAction,
   skip,
+  protocolAction,
   deps = [],
+  eventTxInfo,
 }: UseTransactionHandlerProps) => {
   const {
     approvalTxState,
@@ -56,12 +65,14 @@ export const useTransactionHandler = ({
     useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
-    (state) => state.generatePermitPayloadForMigrationSupplyAsset
-  );
-  const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
-    (state) => state.generatePermitPayloadForMigrationBorrowAsset
-  );
+  const {
+    generatePermitPayloadForMigrationBorrowAsset,
+    generatePermitPayloadForMigrationSupplyAsset,
+    addTransaction,
+    updateTransaction,
+    currentChainId,
+  } = useRootStore();
+
   const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
@@ -98,9 +109,15 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
+        addTransaction(currentChainId, txnResult.hash, {
+          action: protocolAction || ProtocolAction.default,
+          txState: 'loading',
+        });
+
         await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
 
+        updateTransaction(currentChainId, txnResult.hash, { txState: 'success', ...eventTxInfo });
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
@@ -114,6 +131,8 @@ export const useTransactionHandler = ({
         } catch (e) {
           mounted.current && errorCallback && errorCallback(e, txnResult.hash);
           return;
+        } finally {
+          updateTransaction(currentChainId, txnResult.hash, { txState: 'failed' });
         }
       }
 

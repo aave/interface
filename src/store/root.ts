@@ -11,6 +11,7 @@ import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
+import { createTransactionsSlice, TransactionsSlice } from './transactionsSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
@@ -27,7 +28,8 @@ export type RootStore = StakeSlice &
   GovernanceSlice &
   V3MigrationSlice &
   WalletDomainsSlice &
-  AnalyticsSlice;
+  AnalyticsSlice &
+  TransactionsSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -42,6 +44,7 @@ export const useRootStore = create<RootStore>()(
         ...createV3MigrationSlice(...args),
         ...createWalletDomainsSlice(...args),
         ...createAnalyticsSlice(...args),
+        ...createTransactionsSlice(...args),
       };
     })
   )
