@@ -79,15 +79,13 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   LUSD: 'LUSD Stablecoin',
 };
 
-export function fetchIconSymbolAndName({
-  underlyingAsset,
-  symbol,
-  name,
-}: {
+export interface Erc20SymbolAndName {
   underlyingAsset: string;
   symbol: string;
   name?: string;
-}) {
+}
+
+export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: Erc20SymbolAndName) {
   // guni symbols are just broken (G-UNI for all tokens)
   if (
     underlyingAsset.toLowerCase() === '0x50379f632ca68d36e50cfbc8f78fe16bd1499d1e'.toLowerCase()

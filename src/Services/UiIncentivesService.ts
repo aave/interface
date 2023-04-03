@@ -24,7 +24,7 @@ export class UiIncentivesDataService {
     user,
     lendingPoolAddressProvider,
   }: UserReservesHelperInput) {
-    return this.uiIncentivesDataService.getUserReservesIncentivesData({
+    return this.uiIncentivesDataService.getUserReservesIncentivesDataHumanized({
       user,
       lendingPoolAddressProvider,
     });

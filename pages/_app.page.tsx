@@ -76,9 +76,9 @@ export default function MyApp(props: MyAppProps) {
                 <AddressBlocked>
                   <PermissionProvider>
                     <ModalContextProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          <SharedDependenciesProvider>
+                      <SharedDependenciesProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
                             {getLayout(<Component {...pageProps} />)}
                             <SupplyModal />
                             <WithdrawModal />
@@ -91,9 +91,9 @@ export default function MyApp(props: MyAppProps) {
                             <SwapModal />
                             <FaucetModal />
                             <MigrateV3Modal />
-                          </SharedDependenciesProvider>
-                        </GasStationProvider>
-                      </AppDataProvider>
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </SharedDependenciesProvider>
                     </ModalContextProvider>
                   </PermissionProvider>
                 </AddressBlocked>

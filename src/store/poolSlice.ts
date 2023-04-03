@@ -30,7 +30,6 @@ import {
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
-import dayjs from 'dayjs';
 import { Signature } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
@@ -43,7 +42,7 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData } from './poolSelectors';
 import { RootStore } from './root';
 
 // TODO: what is the better name for this type?
@@ -456,10 +455,8 @@ export const createPoolSlice: StateCreator<
         user,
       });
     },
-    claimRewards: async ({ selectedReward }) => {
+    claimRewards: async ({ selectedReward, reserves }) => {
       // TODO: think about moving timestamp from hook to EventEmitter
-      const timestamp = dayjs().unix();
-      const reserves = selectFormattedReserves(get(), timestamp);
       const currentAccount = get().account;
 
       const allReserves: string[] = [];

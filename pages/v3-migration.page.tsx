@@ -5,6 +5,7 @@ import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useUserPoolReserves } from 'src/hooks/pool/useUserPoolReserves';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -16,7 +17,7 @@ import { MigrationListItem } from 'src/modules/migration/MigrationListItem';
 import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItemLoader';
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
-import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
+import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 import {
   selectUserReservesForMigration,
@@ -27,10 +28,14 @@ import {
 
 export default function V3Migration() {
   const { loading } = useAppDataContext();
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const user = useRootStore((store) => store.account);
+  const currentChainIdV3MarketData = useRootStore((store) =>
+    selectCurrentChainIdV3MarketData(store)
+  );
 
   const currentTimeStamp = useCurrentTimestamp(10);
 
@@ -46,14 +51,16 @@ export default function V3Migration() {
     )
   );
 
+  const { data: poolReserveV3 } = useUserPoolReserves({
+    user,
+    lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+
   // health factor calculation
-  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration, poolReserveV3 } = useRootStore(
-    (state) => ({
-      v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
-      v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
-      poolReserveV3: selectCurrentChainIdV3PoolReserve(state),
-    })
-  );
+  const { v3UserSummaryBeforeMigration, v2UserSummaryAfterMigration } = useRootStore((state) => ({
+    v2UserSummaryAfterMigration: selectV2UserSummaryAfterMigration(state, currentTimeStamp),
+    v3UserSummaryBeforeMigration: selectV3UserSummary(state, currentTimeStamp),
+  }));
 
   const v3UserSummaryAfterMigration = useRootStore(
     useCallback(
@@ -108,7 +115,7 @@ export default function V3Migration() {
   return (
     <>
       <MigrationTopPanel />
-      {currentAccount && !isPermissionsLoading ? (
+      {user && !isPermissionsLoading ? (
         <ContentContainer>
           <MigrationLists
             loading={loading}

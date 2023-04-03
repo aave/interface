@@ -1,8 +1,18 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
-import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
+import {
+  PoolBaseCurrencyHumanized,
+  ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
+  UserReserveDataHumanized,
+  UserReservesIncentivesDataHumanized,
+} from '@aave/contract-helpers';
+import {
+  formatReservesAndIncentives,
+  formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives,
+} from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
 import { RootStore } from './root';
@@ -118,6 +128,32 @@ export const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string
 // TODO move formatUserSummaryAndIncentives
 // export const selectSortedCurrentUserReservesData = (state: RootStore) => {};
 
+export const formatReserves = (
+  reserves: ReserveDataHumanized[],
+  baseCurrencyData: PoolBaseCurrencyHumanized,
+  currentNetworkConfig: NetworkConfig,
+  currentTimestamp: number,
+  reserveIncentiveData: ReservesIncentiveDataHumanized[]
+): ComputedReserveData[] => {
+  const formattedPoolReserves = formatReservesAndIncentives({
+    reserves,
+    currentTimestamp,
+    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+    reserveIncentives: reserveIncentiveData,
+  })
+    .map((r) => ({
+      ...r,
+      ...fetchIconSymbolAndName(r),
+      isEmodeEnabled: r.eModeCategoryId !== 0,
+      isWrappedBaseAsset:
+        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
+    }))
+    .sort(reserveSortFn);
+
+  return formattedPoolReserves;
+};
+
 export const selectFormattedReserves = (state: RootStore, currentTimestamp: number) => {
   const reserves = selectCurrentReserves(state);
   const baseCurrencyData = selectCurrentBaseCurrencyData(state);
@@ -142,16 +178,17 @@ export const selectFormattedReserves = (state: RootStore, currentTimestamp: numb
   return formattedPoolReserves;
 };
 
-export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestamp: number) => {
-  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
-  const userReserves = selectCurrentUserReserves(state);
-  const formattedPoolReserves = selectFormattedReserves(state, currentTimestamp);
-  const userEmodeCategoryId = selectCurrentUserEmodeCategoryId(state);
-  const reserveIncentiveData = state.reserveIncentiveData;
-  const userIncentiveData = state.userIncentiveData;
-
+export const formatUserSummaryAndIncentives = (
+  currentTimestamp: number,
+  baseCurrencyData: PoolBaseCurrencyHumanized,
+  userReserves: UserReserveDataHumanized[],
+  formattedPoolReserves: ComputedReserveData[],
+  userIncentiveData: UserReservesIncentivesDataHumanized[],
+  userEmodeCategoryId: number,
+  reserveIncentiveData: ReservesIncentiveDataHumanized[]
+) => {
   // TODO: why <any>
-  return formatUserSummaryAndIncentives({
+  return _formatUserSummaryAndIncentives({
     currentTimestamp,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
@@ -163,26 +200,24 @@ export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestam
   });
 };
 
-export const selectUserNonEmtpySummaryAndIncentive = (
-  state: RootStore,
-  currentTimestamp: number
-) => {
-  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
-  const userReservesData = user.userReservesData.filter(
-    (userReserve) => userReserve.underlyingBalance !== '0'
-  );
-  return {
-    ...user,
-    userReservesData,
-  };
-};
+export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestamp: number) => {
+  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
+  const userReserves = selectCurrentUserReserves(state);
+  const formattedPoolReserves = selectFormattedReserves(state, currentTimestamp);
+  const userEmodeCategoryId = selectCurrentUserEmodeCategoryId(state);
+  const reserveIncentiveData = state.reserveIncentiveData;
+  const userIncentiveData = state.userIncentiveData;
 
-export const selectNonEmptyUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
-  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
-  const borrowedPositions = user.userReservesData.filter(
-    (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
-  );
-  return borrowedPositions;
+  return _formatUserSummaryAndIncentives({
+    currentTimestamp,
+    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+    userReserves,
+    formattedReserves: formattedPoolReserves,
+    userEmodeCategoryId: userEmodeCategoryId,
+    reserveIncentives: reserveIncentiveData || [],
+    userIncentives: userIncentiveData || [],
+  });
 };
 
 export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
@@ -202,14 +237,4 @@ export const formatEmodes = (reserves: ReserveDataHumanized[]) => {
   }, {} as Record<number, EmodeCategory>);
 
   return eModes;
-};
-
-export const selectEmodes = (state: RootStore) => {
-  const reserves = selectCurrentReserves(state);
-  return formatEmodes(reserves);
-};
-
-export const selectEmodesV3 = (state: RootStore) => {
-  const reserves = selectFormatReserves(selectCurrentChainIdV3PoolReserve(state));
-  return formatEmodes(reserves);
 };

@@ -3,7 +3,7 @@ import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
-import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
+import { usePoolReserves } from '../pool/usePoolReserves';
 import { usePoolTokensBalance } from '../pool/usePoolTokensBalance';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
@@ -20,10 +20,17 @@ export const useWalletBalances = () => {
     user,
     poolAddress: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
   });
-  const [reserves, baseCurrencyData] = useRootStore((state) => [
-    selectCurrentReserves(state),
-    selectCurrentBaseCurrencyData(state),
-  ]);
+  const { data: poolReserves } = usePoolReserves({
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+
+  const reserves = poolReserves?.reservesData || [];
+  const baseCurrencyData = poolReserves?.baseCurrencyData || {
+    marketReferenceCurrencyDecimals: 0,
+    marketReferenceCurrencyPriceInUsd: '0',
+    networkBaseTokenPriceInUsd: '0',
+    networkBaseTokenPriceDecimals: 0,
+  };
 
   // process data
   const walletBalances = balances || [];
