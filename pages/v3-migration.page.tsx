@@ -17,7 +17,7 @@ import { MigrationListItemLoader } from 'src/modules/migration/MigrationListItem
 import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
-import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
+import { useRootStore } from 'src/store/root';
 import {
   selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
@@ -86,8 +86,6 @@ export default function V3Migration() {
       resetMigrationSelectedAssets();
     }
   }, [resetMigrationSelectedAssets]);
-
-  usePoolDataV3Subscription();
 
   const enabledAsCollateral = (canBeEnforced: boolean, underlyingAsset: string) => {
     if (canBeEnforced) {

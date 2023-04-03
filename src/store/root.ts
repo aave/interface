@@ -10,7 +10,6 @@ import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
-import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
 import { createWalletDomainsSlice, WalletDomainsSlice } from './walletDomains';
@@ -61,18 +60,6 @@ if (typeof document !== 'undefined') {
     }
   };
 }
-
-export const usePoolDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshPoolData();
-}, 60000);
-
-export const usePoolDataV3Subscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshPoolV3Data();
-}, 60000);
-
-export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshIncentiveData();
-}, 60000);
 
 let latest: V3FaucetService;
 useRootStore.subscribe(
