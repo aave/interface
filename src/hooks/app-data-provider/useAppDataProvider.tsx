@@ -12,15 +12,15 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import {
+  formatEmodes,
+  formatReserves,
+  formatUserSummaryAndIncentives,
   reserveSortFn,
-  selectCurrentBaseCurrencyData,
-  selectCurrentReserves,
-  selectCurrentUserEmodeCategoryId,
-  selectCurrentUserReserves,
-  selectEmodes,
-  selectFormattedReserves,
-  selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
+import { useReserveIncentiveData } from '../incentive/useReserveIncentiveData';
+import { useUserIncentiveData } from '../incentive/useUserIncentiveData';
+import { usePoolReserves } from '../pool/usePoolReserves';
+import { useUserPoolReserves } from '../pool/useUserPoolReserves';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 
 /**
@@ -73,23 +73,52 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-  const [
+
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const account = useRootStore((store) => store.account);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+
+  const { data: userPoolReserves } = useUserPoolReserves({
+    user: account,
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+  const { data: poolReserves } = usePoolReserves({
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+  const { data: reservesIncentives } = useReserveIncentiveData({
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+  const { data: userIncentiveData } = useUserIncentiveData({
+    user: account,
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
+
+  const userEmodeCategoryId = userPoolReserves?.userEmodeCategoryId || 0;
+  const userReserves = userPoolReserves?.userReserves || [];
+  const reserves = poolReserves?.reservesData || [];
+  const baseCurrencyData = poolReserves?.baseCurrencyData || {
+    marketReferenceCurrencyDecimals: 0,
+    marketReferenceCurrencyPriceInUsd: '0',
+    networkBaseTokenPriceInUsd: '0',
+    networkBaseTokenPriceDecimals: 0,
+  };
+  const formattedPoolReserves = formatReserves(
     reserves,
     baseCurrencyData,
+    currentNetworkConfig,
+    currentTimestamp,
+    reservesIncentives ?? []
+  );
+  const user = formatUserSummaryAndIncentives(
+    currentTimestamp,
+    baseCurrencyData,
     userReserves,
-    userEmodeCategoryId,
-    eModes,
     formattedPoolReserves,
-    user,
-  ] = useRootStore((state) => [
-    selectCurrentReserves(state),
-    selectCurrentBaseCurrencyData(state),
-    selectCurrentUserReserves(state),
-    selectCurrentUserEmodeCategoryId(state),
-    selectEmodes(state),
-    selectFormattedReserves(state, currentTimestamp),
-    selectUserSummaryAndIncentives(state, currentTimestamp),
-  ]);
+    userIncentiveData ?? [],
+    userEmodeCategoryId,
+    reservesIncentives ?? []
+  );
+  const eModes = formatEmodes(reserves ?? []);
 
   const proportions = user.userReservesData.reduce(
     (acc, value) => {
@@ -166,7 +195,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         eModes,
         user: {
           ...user,
-          userEmodeCategoryId,
+          userEmodeCategoryId: userEmodeCategoryId || 0,
           isInEmode: userEmodeCategoryId !== 0,
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)

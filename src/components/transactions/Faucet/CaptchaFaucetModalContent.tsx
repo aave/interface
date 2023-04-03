@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { usePoolReserves } from 'src/hooks/pool/usePoolReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { selectCurrentReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -14,7 +14,9 @@ import { getNormalizedMintAmount } from './utils';
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { account, currentMarket, currentMarketData } = useRootStore();
-  const reserves = useRootStore((state) => selectCurrentReserves(state));
+  const { data: poolReserves } = usePoolReserves({
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  });
 
   const [captchaToken, setCaptchaToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +27,7 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
   const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
 
-  const poolReserve = reserves.find(
+  const poolReserve = poolReserves?.reservesData.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
