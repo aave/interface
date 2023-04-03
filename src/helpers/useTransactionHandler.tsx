@@ -7,7 +7,6 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { queryClient } from 'pages/_app.page';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -54,7 +53,6 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
@@ -103,8 +101,10 @@ export const useTransactionHandler = ({
         mounted.current && successCallback && successCallback(txnResult);
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_INCENTIVE_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.RESERVE_INCENTIVE_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES] });
       } catch (e) {
         // TODO: what to do with this error?
         try {

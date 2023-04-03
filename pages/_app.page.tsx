@@ -23,7 +23,6 @@ import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
-import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
@@ -77,26 +76,24 @@ export default function MyApp(props: MyAppProps) {
                 <AddressBlocked>
                   <PermissionProvider>
                     <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <GasStationProvider>
-                            <SharedDependenciesProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                            </SharedDependenciesProvider>
-                          </GasStationProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
+                      <AppDataProvider>
+                        <GasStationProvider>
+                          <SharedDependenciesProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <MigrateV3Modal />
+                          </SharedDependenciesProvider>
+                        </GasStationProvider>
+                      </AppDataProvider>
                     </ModalContextProvider>
                   </PermissionProvider>
                 </AddressBlocked>

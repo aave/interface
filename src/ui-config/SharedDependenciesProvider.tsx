@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 import { GovernanceService } from 'src/services/GovernanceService';
+import { UiIncentivesDataService } from 'src/Services/UiIncentivesService';
+import { UiPoolService } from 'src/Services/UiPoolService';
 import { UiStakeDataService } from 'src/Services/UiStakeDataService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -14,6 +16,8 @@ interface SharedDependenciesContext {
   governanceTokensBalanceService: WalletBalanceService;
   poolTokensBalanceService: WalletBalanceService;
   uiStakeDataService: UiStakeDataService;
+  uiIncentivesDataService?: UiIncentivesDataService;
+  uiPoolService: UiPoolService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -22,6 +26,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const getJsonRpcProvider = useRootStore((state) => state.jsonRpcProvider);
+  const currentChainId = useRootStore((state) => state.currentChainId);
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
@@ -48,6 +53,18 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     currentMarketData.addresses.WALLET_BALANCE_PROVIDER
   );
   const uiStakeDataService = new UiStakeDataService(stakeProvider, stakeConfig.stakeDataProvider);
+  const uiIncentivesDataService = currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER
+    ? new UiIncentivesDataService(
+        currentProvider,
+        currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER,
+        currentChainId
+      )
+    : undefined;
+  const uiPoolService = new UiPoolService(
+    currentProvider,
+    currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
+    currentChainId
+  );
 
   return (
     <SharedDependenciesContext.Provider
@@ -56,6 +73,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         governanceTokensBalanceService,
         poolTokensBalanceService,
         uiStakeDataService,
+        uiIncentivesDataService,
+        uiPoolService,
       }}
     >
       {children}
