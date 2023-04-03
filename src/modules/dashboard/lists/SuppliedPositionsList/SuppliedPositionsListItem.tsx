@@ -85,6 +85,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
+            sx={{ color: 'text.primary' }}
             onClick={() => openSwap(underlyingAsset)}
             data-cy={`swapButton`}
           >
@@ -94,6 +95,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
+            sx={{ color: 'text.primary' }}
             onClick={() => openSupply(underlyingAsset)}
           >
             <Trans>Supply</Trans>

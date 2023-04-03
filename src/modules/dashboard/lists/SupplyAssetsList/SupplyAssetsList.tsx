@@ -218,6 +218,7 @@ export const SupplyAssetsList = () => {
 
   return (
     <ListWrapper
+      isDashboard
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>

@@ -98,6 +98,7 @@ export const BorrowedPositionsListMobileItem = ({
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth
         >

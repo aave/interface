@@ -56,6 +56,7 @@ export const ListItemAPYButton = ({
     <>
       <Button
         variant="outlined"
+        sx={{ color: 'text.primary' }}
         onClick={handleClick}
         size="small"
         endIcon={
@@ -98,7 +99,10 @@ export const ListItemAPYButton = ({
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
+          <ListItemText
+            primaryTypographyProps={{ variant: 'description' }}
+            sx={{ color: 'text.primary' }}
+          >
             <Trans>APY, variable</Trans>
           </ListItemText>
           <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
@@ -117,7 +121,10 @@ export const ListItemAPYButton = ({
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
+          <ListItemText
+            primaryTypographyProps={{ variant: 'description' }}
+            sx={{ color: 'text.primary' }}
+          >
             <Trans>APY, stable</Trans>
           </ListItemText>
           <FormattedNumber value={Number(stableBorrowAPY)} percent variant="description" />

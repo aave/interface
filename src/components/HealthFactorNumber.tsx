@@ -49,6 +49,7 @@ export const HealthFactorNumber = ({
           sx={{ color: healthFactorColor, ...rest.sx }}
           visibleDecimals={2}
           compact
+          isTopPanel
           {...rest}
         />
       )}
@@ -58,6 +59,7 @@ export const HealthFactorNumber = ({
           onClick={onInfoClick}
           size="small"
           sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 }, '&:hover': { background: 'none' } }}
+          disableRipple
         >
           <InfoOutlinedIcon
             sx={{

@@ -100,6 +100,7 @@ export const SupplyAssetsListMobileItem = ({
         </Button>
         <Button
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth
