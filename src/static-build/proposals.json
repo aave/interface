@@ -7691,7 +7691,7 @@
       "ipfsHash": "0xc95042860f19868f3d7e57aea659418aaa4f8242ec3d47332ba5e49e1c9929f8",
       "startTimestamp": 1680450839,
       "creationTimestamp": 1680363299,
-      "expirationTimestamp": 1680682379
+      "expirationTimestamp": 1680682535
     },
     {
       "id": 195,
@@ -7729,8 +7729,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x0740d7ef3eb49c71eb3ebf573b35befb21090717ea6b485406518330cea571d6",
       "creationTimestamp": 1680463991,
-      "startTimestamp": 1680551291,
-      "expirationTimestamp": 1680781691
+      "startTimestamp": 1680551447,
+      "expirationTimestamp": 1680781847
     }
   ]
 }
