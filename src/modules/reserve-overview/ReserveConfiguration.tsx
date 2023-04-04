@@ -127,7 +127,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                   <LightningBoltGradient />
                 </SvgIcon>
-                <Typography variant="subheader1">{getEmodeMessage(reserve.eModeLabel)}</Typography>
+                <Typography variant="subheader1" color="text.primary">
+                  {getEmodeMessage(reserve.eModeLabel)}
+                </Typography>
               </Box>
               <Box
                 sx={{
