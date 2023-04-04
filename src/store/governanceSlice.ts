@@ -17,8 +17,6 @@ export interface GovernanceSlice {
     args: Omit<GovDelegateByType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
   submitVote: AaveGovernanceService['submitVote'];
-  getVoteOnProposal: AaveGovernanceService['getVoteOnProposal'];
-  getVotingPowerAt: AaveGovernanceService['getVotingPowerAt'];
 }
 
 export const createGovernanceSlice: StateCreator<
@@ -52,22 +50,6 @@ export const createGovernanceSlice: StateCreator<
         ipfsGateway: governanceConfig.ipfsGateway,
       });
       return governanceService.submitVote(args);
-    },
-    getVoteOnProposal: (args) => {
-      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
-        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
-        ipfsGateway: governanceConfig.ipfsGateway,
-      });
-      return governanceService.getVoteOnProposal(args);
-    },
-    getVotingPowerAt: (args) => {
-      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
-        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
-        ipfsGateway: governanceConfig.ipfsGateway,
-      });
-      return governanceService.getVotingPowerAt(args);
     },
   };
 };
