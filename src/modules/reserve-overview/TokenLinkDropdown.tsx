@@ -55,7 +55,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         data-cy="addToWaletSelector"
       >
         <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
-          <Typography variant="secondary12" color="primary.secondary">
+          <Typography variant="secondary12" color="text.secondary">
             <Trans>Select token to view in block explorer</Trans>
           </Typography>
         </Box>
