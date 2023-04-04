@@ -7691,7 +7691,7 @@
       "ipfsHash": "0xc95042860f19868f3d7e57aea659418aaa4f8242ec3d47332ba5e49e1c9929f8",
       "startTimestamp": 1680450839,
       "creationTimestamp": 1680363299,
-      "expirationTimestamp": 1680684395
+      "expirationTimestamp": 1680684635
     },
     {
       "id": 195,
@@ -7730,7 +7730,7 @@
       "ipfsHash": "0x0740d7ef3eb49c71eb3ebf573b35befb21090717ea6b485406518330cea571d6",
       "startTimestamp": 1680551711,
       "creationTimestamp": 1680463991,
-      "expirationTimestamp": 1680783707
+      "expirationTimestamp": 1680783947
     },
     {
       "id": 196,
@@ -7772,8 +7772,43 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x20e3d493585740b9e4e2c3a4238b979907f2a7de7fc200f7ac109c73a493a57f",
       "creationTimestamp": 1680599027,
-      "startTimestamp": 1680685679,
-      "expirationTimestamp": 1680916079
+      "startTimestamp": 1680685919,
+      "expirationTimestamp": 1680916319
+    },
+    {
+      "id": 197,
+      "creator": "0x62a43123FE71f9764f26554b3F5017627996816a",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0xf146c735F39281D35fffeE1a99E65b5307305a4f"
+      ],
+      "signatures": [
+        "execute()"
+      ],
+      "calldatas": [
+        "0x"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 16983467,
+      "endBlock": 17002667,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 16976267,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0xd304f4b8429fe996ea4b8e1cb4aaa71a72e11992892c9a80b91158193c7da84d",
+      "creationTimestamp": 1680620399,
+      "startTimestamp": 1680706811,
+      "expirationTimestamp": 1680937211
     }
   ]
 }
