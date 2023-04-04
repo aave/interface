@@ -2780,6 +2780,19 @@
       "ipfsHash": "QmNpxuozV3UdgXtZGZj1ZE7P4UEN1588JwdL9ZMS7R1eU5",
       "originalHash": "0x0740d7ef3eb49c71eb3ebf573b35befb21090717ea6b485406518330cea571d6",
       "id": 195
+    },
+    {
+      "title": "Add DeFi Saver to Aave V3 FlashBorrowers",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "Add DFS to Aave V3 FlashBorrowers",
+      "discussions": "https://governance.aave.com/t/arfc-add-defi-saver-to-flashborrowers-on-aave-v3/12410",
+      "created": "2023-04-04T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis proposal presents Aave governance with the …",
+      "basename": "ADD-DFS-FLASHBORROWERS",
+      "description": "\n\n## Simple Summary\nThis proposal presents Aave governance with the opportunity to whitelist DeFi Saver as part of FlashBorrowers of Aave V3 on Ethereum, Arbitrum & Optimism liquidity pools.\n\n## Motivation\nDeFi Saver has a long-standing history of synergies with the Aave Protocol, being one of the first third-party integrations of Aave V1 in 2020.\n\nCurrently, every flashloan has a 9 bps fee that rewards liquidity providers in Aave. While flashloans were created by Aave, the ecosystem as a whole has replicated this feature, and most protocols do not implement any fees.\n\nThe ACI does not support waiving the fees for flashloans in general, as we firmly believe that users’ funds used, even in the context of a single transaction, should be rewarded.\n\nHowever, some strategic use cases of V3, such as emode, are very fee-sensitive as they mobilize high leverage. Waiving the DeFi Saver flashloan fees is expected to make these strategies more convenient and profitable, leading to increased borrow volume and thus increased Aave DAO revenue.\n\nThis proposal presents Aave governance with the opportunity to whitelist DeFi Saver as a part of FlashBorrowers of Aave V3 on Ethereum, Arbitrum & Optimism liquidity pools.\n\n## Specification\n\nThis AIP aims to implement three similar payloads (one for each network), which will simply call addFlashBorrower() on the ACL_MANAGER contract.\n\nHere's one of these payloads for Ethereum:\n\n```solidity\n\ncontract AaveV3EthDFSFlashBorrowActivation is IProposalGenericExecutor {\n  address public constant FL_AAVE_V3 = 0xd9D8e68717Ce24CCbf162868aaad7E38d81b05d1;\n  address public constant FL_ACTION = 0x72915D41982DfCAf30b871290618E59C45Edba7F;\n\n  function execute() external {\n    AaveV3Ethereum.ACL_MANAGER.addFlashBorrower(FL_AAVE_V3);\n    AaveV3Ethereum.ACL_MANAGER.addFlashBorrower(FL_ACTION);\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-add-defi-saver-to-flashborrowers-on-aave-v3/12410)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3DFSFlashBorrow_20230403/AaveV3ETHDFSFlashBorrowActivation_20230403_test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3DFSFlashBorrow_20230403/AaveV3ETHDFSFlashBorrowActivation_20230403.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmQZ3FTwKARscXMm8gkd92zZFznGNUTbNatobg1V6P8xUE",
+      "originalHash": "0x20e3d493585740b9e4e2c3a4238b979907f2a7de7fc200f7ac109c73a493a57f",
+      "id": 196
     }
   ]
 }
