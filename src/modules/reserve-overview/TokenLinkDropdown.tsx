@@ -33,8 +33,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
-              color: '#A5A8B6',
-              '&:hover': { color: '#F1F1F3' },
+              color: 'action.active',
+              '&:hover': { color: 'info.main' },
               cursor: 'pointer',
             }}
           >
@@ -55,7 +55,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         data-cy="addToWaletSelector"
       >
         <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="secondary12" color="primary.secondary">
             <Trans>Select token to view in block explorer</Trans>
           </Typography>
         </Box>

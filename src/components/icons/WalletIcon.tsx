@@ -3,6 +3,7 @@ import { SvgIcon, SvgIconProps } from '@mui/material';
 export const WalletIcon = ({ sx, ...rest }: SvgIconProps) => {
   return (
     <SvgIcon
+      id="walletIcon"
       sx={{ fill: 'none', stroke: '#A5A8B6', ...sx }}
       viewBox="0 0 21 19"
       xmlns="http://www.w3.org/2000/svg"

@@ -97,7 +97,7 @@ export function FormattedNumber({
         alignItems: 'center',
         position: 'relative',
 
-        ...(isTopPanel && { lineHeight: '36px', fontSize: '24px', mt: '12px', ml: '12px' }),
+        ...(isTopPanel && { lineHeight: '36px', fontSize: '24px', mt: '8px', ml: '8px' }),
         ...rest.sx,
       }}
       noWrap

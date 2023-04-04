@@ -51,14 +51,22 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
   const ReserveIcon = () => {
     return (
-      <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box
+        mr={3}
+        sx={{
+          mr: '3px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {loading ? (
-          <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
+          <Skeleton variant="circular" width={32} height={32} sx={{ background: '#383D51' }} />
         ) : (
           <img
             src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
-            width="40px"
-            height="40px"
+            width="32px"
+            height="32px"
             alt=""
           />
         )}
@@ -69,8 +77,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const iconStyling = {
     display: 'inline-flex',
     alignItems: 'center',
-    color: '#A5A8B6',
-    '&:hover': { color: '#F1F1F3' },
+    color: 'action.active',
+    '&:hover': { color: 'info.main' },
     cursor: 'pointer',
   };
 
@@ -78,7 +86,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     return loading ? (
       <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
     ) : (
-      <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
+      <Typography sx={{ fontSize: '16px' }} variant={valueTypographyVariant}>
+        {poolReserve.name}
+      </Typography>
     );
   };
 
@@ -97,9 +107,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             }}
           >
             <Button
-              variant="surface"
+              variant="outlined"
               size="medium"
-              color="primary"
               startIcon={
                 <SvgIcon sx={{ fontSize: '20px' }}>
                   <ArrowBackRoundedIcon />
@@ -110,14 +119,19 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 if (history.state.idx !== 0) router.back();
                 else router.push('/markets');
               }}
-              sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
+              sx={{
+                mr: 3,
+                mb: downToSM ? '24px' : '0',
+                background: 'background.default',
+                color: 'text.primary',
+              }}
             >
               <Trans>Go Back</Trans>
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo size={20} logo={network.networkLogoPath} />
-              <Typography variant="subheader1" sx={{ color: 'common.white' }}>
+              <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
               {market.v3 && (
@@ -179,7 +193,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             icon={<ReserveIcon />}
             loading={loading}
           >
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', mt: '12px' }}>
               <ReserveName />
               {loading ? (
                 <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
@@ -213,7 +227,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
+          isTopPanel
         />
       </TopInfoPanelItem>
 
@@ -223,7 +238,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
+          isTopPanel
         />
       </TopInfoPanelItem>
 
@@ -233,7 +249,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           percent
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
+          symbolsColor={theme.palette.text.secondary}
+          isTopPanel
         />
       </TopInfoPanelItem>
 
@@ -244,7 +261,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             symbol="USD"
             variant={valueTypographyVariant}
             symbolsVariant={symbolsTypographyVariant}
-            symbolsColor="#A5A8B6"
+            symbolsColor={theme.palette.text.secondary}
+            isTopPanel
           />
           {loading ? (
             <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
@@ -256,7 +274,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 })}
                 sx={iconStyling}
               >
-                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
+                <SvgIcon
+                  sx={{
+                    fontSize: downToSM ? '12px' : '14px',
+                  }}
+                >
                   <ExternalLinkIcon />
                 </SvgIcon>
               </Link>
