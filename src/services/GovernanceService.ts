@@ -8,8 +8,7 @@ import {
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-
-import { GenericService } from './GenericService';
+import { Hashable } from 'src/utils/types';
 
 export interface Powers {
   votingPower: string;
@@ -29,7 +28,7 @@ interface GetPowersArgs {
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
   delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase() ? '' : delegatee;
 
-export class GovernanceService implements GenericService {
+export class GovernanceService implements Hashable {
   private readonly governanceService: AaveGovernanceService;
 
   constructor(provider: Provider, public readonly chainId: number) {

@@ -2,14 +2,13 @@ import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-
-import { GenericService } from './GenericService';
+import { Hashable } from 'src/utils/types';
 
 type BatchBalanceOfArgs = {
   user: string;
 };
 
-export class WalletBalanceService implements GenericService {
+export class WalletBalanceService implements Hashable {
   private readonly walletBalanceService: WalletBalanceProvider;
 
   constructor(
