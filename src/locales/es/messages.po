@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-31 12:06\n"
+"PO-Revision-Date: 2023-04-03 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -217,7 +217,7 @@ msgstr "Activo"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
-msgstr ""
+msgstr "Este activo solo se puede utilizar como garantía en isolation mode con poder de préstamo limitado. Para entrar en el isolation mode, deshabilita todas las demás garantías."
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
@@ -585,7 +585,7 @@ msgstr "El uso de garantías está limitado debido al Isolation mode."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Collateral usage is limited because of isolation mode."
-msgstr ""
+msgstr "El uso de garantías está limitado debido al isolation mode."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
