@@ -27,9 +27,9 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const governanceProvider = isGovernanceFork
     ? currentProvider
     : getProvider(governanceConfig.chainId);
-  const governanceService = new GovernanceService(governanceProvider, governanceChainId);
 
   // services
+  const governanceService = new GovernanceService(governanceProvider, governanceChainId);
   const governanceWalletBalanceService = new WalletBalanceService(
     governanceProvider,
     governanceConfig.walletBalanceProvider,

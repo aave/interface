@@ -11,7 +11,7 @@ export const usePowers = ({ user }: UsePowersArgs): UseQueryResult<Powers, Error
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getPowers({ user }),
-    queryKey: [QueryKeys.USE_POWERS, user, governanceService.toHash()],
+    queryKey: [QueryKeys.POWERS, user, governanceService.toHash()],
     enabled: !!user,
     refetchInterval: POLLING_INTERVAL,
   });
