@@ -31,7 +31,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.13.7-b19c0cbf15ed215a672710093a09f6d1937e2a5e.0",
+    "@aave/contract-helpers": "1.13.7",
     "@aave/math-utils": "1.13.6",
     "@bgd-labs/aave-address-book": "^1.19.0",
     "@emotion/cache": "11.10.3",
