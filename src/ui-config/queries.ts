@@ -5,4 +5,4 @@ export enum QueryKeys {
   GOVERNANCE_TOKENS = 'GOVERNANCE_TOKENS',
 }
 
-export const POOLING_INTERVAL = 60000;
+export const POLLING_INTERVAL = 60000;

@@ -16,7 +16,7 @@ export const useVotingPowerAt = ({
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getVotingPowerAt({ user, strategy, block }),
-    queryKey: [QueryKeys.VOTING_POWER_AT, user, strategy, block],
+    queryKey: [QueryKeys.VOTING_POWER_AT, user, strategy, block, governanceService.toHash()],
     enabled: !!user,
   });
 };

@@ -16,18 +16,24 @@ const SharedDependenciesContext = createContext<SharedDependenciesContext | null
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
-  const getJsonRpcProvider = useRootStore((state) => state.jsonRpcProvider);
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const currentProvider = getJsonRpcProvider();
+  const governanceChainId = isGovernanceFork ? currentMarketData.chainId : governanceConfig.chainId;
+
+  // providers
+  const currentProvider = getProvider(currentMarketData.chainId);
   const governanceProvider = isGovernanceFork
     ? currentProvider
     : getProvider(governanceConfig.chainId);
-  const governanceService = new GovernanceService(governanceProvider);
+  const governanceService = new GovernanceService(governanceProvider, governanceChainId);
+
+  // services
   const governanceWalletBalanceService = new WalletBalanceService(
     governanceProvider,
-    governanceConfig.walletBalanceProvider
+    governanceConfig.walletBalanceProvider,
+    currentMarketData.chainId
   );
   return (
     <SharedDependenciesContext.Provider

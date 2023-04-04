@@ -19,7 +19,7 @@ export const useVoteOnProposal = ({
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getVoteOnProposal({ proposalId, user }),
-    queryKey: [QueryKeys.VOTE_ON_PROPOSAL, user, proposalId],
+    queryKey: [QueryKeys.VOTE_ON_PROPOSAL, user, proposalId, governanceService.toHash()],
     enabled: !!user,
   });
 };
