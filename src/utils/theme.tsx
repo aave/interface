@@ -258,7 +258,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
         fontSize: pxToRem(14),
-        color: '#121418',
+        color: 'text.primary',
       },
       subheader2: {
         fontFamily: FONT,
