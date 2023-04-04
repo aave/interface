@@ -11,7 +11,6 @@ import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -45,11 +44,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const user = useRootStore((state) => state.account);
   const {
     data: { aave, stkAave },
-  } = useGovernanceTokens({ user });
-  const { data: powers, refetch } = usePowers({ user });
+  } = useGovernanceTokens();
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states

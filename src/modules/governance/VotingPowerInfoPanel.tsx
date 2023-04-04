@@ -8,12 +8,10 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 
 export function VotingPowerInfoPanel() {
   const { currentAccount } = useWeb3Context();
-  const user = useRootStore((state) => state.account);
-  const { data: powers } = usePowers({ user });
+  const { data: powers } = usePowers();
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography

@@ -108,8 +108,8 @@ export const DelegatedInfoPanel = () => {
   const address = useRootStore((store) => store.account);
   const {
     data: { aave, stkAave },
-  } = useGovernanceTokens({ user: address });
-  const { data: powers } = usePowers({ user: address });
+  } = useGovernanceTokens();
+  const { data: powers } = usePowers();
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
 
   if (!powers || !address) return null;

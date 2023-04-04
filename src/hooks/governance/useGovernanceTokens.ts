@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { useRootStore } from 'src/store/root';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-type UseGovernanceTokensParams = {
-  user: string;
-};
-
-export const useGovernanceTokens = ({ user }: UseGovernanceTokensParams) => {
+export const useGovernanceTokens = () => {
   const { governanceWalletBalanceService } = useSharedDependencies();
+  const user = useRootStore((store) => store.account);
   return useQuery({
     queryFn: () => governanceWalletBalanceService.getGovernanceTokensBalance({ user }),
     queryKey: [QueryKeys.GOVERNANCE_TOKENS, user, governanceWalletBalanceService.toHash()],
