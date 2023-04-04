@@ -70,9 +70,11 @@ export const SupplyActions = React.memo(
     const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+
+    // callback to fetch approved amount and determine execution path on dependency updates
     const fetchApprovedAmount = useCallback(
       async (forceApprovalCheck?: boolean) => {
-        // Check approved amount on-chain on first load or if an action requires a re-check such as an approval being confirmed
+        // Check approved amount on-chain on first load or if an action triggers a re-check such as an approval being confirmed
         if (!approvedAmount || forceApprovalCheck) {
           setLoadingTxns(true);
           const approvedAmount = await getApprovedAmount({ token: poolAddress });
@@ -102,10 +104,12 @@ export const SupplyActions = React.memo(
       ]
     );
 
+    // Run on first load to decide execution path
     useEffect(() => {
       fetchApprovedAmount();
     }, [fetchApprovedAmount]);
 
+    // Update gas estimation
     useEffect(() => {
       let supplyGasLimit = 0;
       if (usePermit) {
@@ -171,7 +175,9 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        if (requiresApproval && usePermit && signatureParams) {
+        // determine if approval is signature or transaction
+        // checking user preference is not sufficient because permit may be available but the user has an existing approval
+        if (usePermit && signatureParams) {
           const signedTxData = supplyWithPermit({
             signature: signatureParams.signature,
             amount: parseUnits(amountToSupply, decimals).toString(),
