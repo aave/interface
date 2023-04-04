@@ -8,6 +8,12 @@ type BatchBalanceOfArgs = {
   user: string;
 };
 
+interface GovernanceTokensBalance {
+  aave: string;
+  stkAave: string;
+  aAave: string;
+}
+
 export class WalletBalanceService implements Hashable {
   private readonly walletBalanceService: WalletBalanceProvider;
 
@@ -22,7 +28,7 @@ export class WalletBalanceService implements Hashable {
     });
   }
 
-  async getGovernanceTokensBalance({ user }: BatchBalanceOfArgs) {
+  async getGovernanceTokensBalance({ user }: BatchBalanceOfArgs): Promise<GovernanceTokensBalance> {
     const balances = await this.walletBalanceService.batchBalanceOf(
       [user],
       [

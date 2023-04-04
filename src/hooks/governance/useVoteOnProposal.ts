@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
@@ -7,15 +7,7 @@ type UseVoteOnProposalArgs = {
   user: string;
 };
 
-export interface VoteOnProposalData {
-  votingPower: string;
-  support: boolean;
-}
-
-export const useVoteOnProposal = ({
-  proposalId,
-  user,
-}: UseVoteOnProposalArgs): UseQueryResult<VoteOnProposalData, Error> => {
+export const useVoteOnProposal = ({ proposalId, user }: UseVoteOnProposalArgs) => {
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getVoteOnProposal({ proposalId, user }),

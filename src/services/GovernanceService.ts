@@ -10,7 +10,7 @@ import { Provider } from '@ethersproject/providers';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { Hashable } from 'src/utils/types';
 
-export interface Powers {
+interface Powers {
   votingPower: string;
   aaveTokenPower: Power;
   stkAaveTokenPower: Power;
@@ -19,6 +19,11 @@ export interface Powers {
   aavePropositionDelegatee: string;
   stkAaveVotingDelegatee: string;
   stkAavePropositionDelegatee: string;
+}
+
+interface VoteOnProposalData {
+  votingPower: string;
+  support: boolean;
 }
 
 interface GetPowersArgs {
@@ -42,14 +47,14 @@ export class GovernanceService implements Hashable {
   async getVotingPowerAt(request: GovGetVotingAtBlockType) {
     return this.governanceService.getVotingPowerAt(request);
   }
-  async getVoteOnProposal(request: GovGetVoteOnProposal) {
+  async getVoteOnProposal(request: GovGetVoteOnProposal): Promise<VoteOnProposalData> {
     const { votingPower, support } = await this.governanceService.getVoteOnProposal(request);
     return {
       votingPower: normalize(votingPower.toString(), 18),
       support,
     };
   }
-  async getPowers({ user }: GetPowersArgs) {
+  async getPowers({ user }: GetPowersArgs): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
     const [aaveTokenPower, stkAaveTokenPower] = await this.governanceService.getTokensPower({
       user: user,
