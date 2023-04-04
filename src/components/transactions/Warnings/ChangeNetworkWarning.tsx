@@ -2,6 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { TrackEventProperties } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -11,18 +12,23 @@ export type ChangeNetworkWarningProps = {
   funnel?: string;
   networkName: string;
   chainId: ChainId;
+  event?: {
+    eventName: string;
+    eventParams?: TrackEventProperties;
+  }; // TODO Fix
 };
 
 export const ChangeNetworkWarning = ({
   networkName,
   chainId,
+  event,
   funnel,
 }: ChangeNetworkWarningProps) => {
   const { switchNetwork, switchNetworkError } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleSwitchNetwork = () => {
-    trackEvent(GENERAL.SWITCH_NETWORK, { funnel: funnel });
+    trackEvent(GENERAL.SWITCH_NETWORK, { funnel, ...event?.eventParams, network: networkName });
     switchNetwork(chainId);
   };
   return (

@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -27,6 +28,7 @@ export const SupplyActions = ({
   ...props
 }: SupplyActionProps) => {
   const { supply, supplyWithPermit, tryPermit } = useRootStore();
+  const { currentMarket } = useProtocolDataContext();
   const usingPermit = tryPermit(poolAddress);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
@@ -48,7 +50,13 @@ export const SupplyActions = ({
         });
       },
       skip: !amountToSupply || parseFloat(amountToSupply) === 0,
+      protocolAction: ProtocolAction.supplyWithPermit,
       deps: [amountToSupply, poolAddress],
+      eventTxInfo: {
+        amount: amountToSupply,
+        asset: poolAddress,
+        market: currentMarket,
+      },
     });
 
   return (

@@ -10,6 +10,7 @@ import Head from 'next/head';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
+import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
 import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
@@ -97,6 +98,7 @@ export default function MyApp(props: MyAppProps) {
                           <SwapModal />
                           <FaucetModal />
                           <MigrateV3Modal />
+                          <TransactionEventHandler />
                         </GasStationProvider>
                       </AppDataProvider>
                     </BackgroundDataProvider>

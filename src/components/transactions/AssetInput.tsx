@@ -15,6 +15,8 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { TrackEventProperties } from 'src/store/analyticsSlice';
+import { useRootStore } from 'src/store/root';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
@@ -77,6 +79,10 @@ export interface AssetInputProps<T extends Asset = Asset> {
   inputTitle?: ReactNode;
   balanceText?: ReactNode;
   loading?: boolean;
+  event?: {
+    eventName: string;
+    eventParams?: TrackEventProperties;
+  };
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -94,7 +100,9 @@ export const AssetInput = <T extends Asset = Asset>({
   inputTitle,
   balanceText,
   loading = false,
+  event,
 }: AssetInputProps<T>) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
@@ -285,7 +293,13 @@ export const AssetInput = <T extends Asset = Asset>({
                 <Button
                   size="small"
                   sx={{ minWidth: 0, ml: '7px', p: 0 }}
-                  onClick={() => onChange('-1')}
+                  onClick={() => {
+                    if (event) {
+                      trackEvent(event.eventName, { ...event.eventParams });
+                    }
+
+                    onChange('-1');
+                  }}
                   disabled={disabled || isMaxSelected}
                 >
                   <Trans>Max</Trans>
