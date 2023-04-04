@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
@@ -8,11 +8,7 @@ type UseVotingPowerAtArgs = {
   user: string;
 };
 
-export const useVotingPowerAt = ({
-  strategy,
-  block,
-  user,
-}: UseVotingPowerAtArgs): UseQueryResult<string, Error> => {
+export const useVotingPowerAt = ({ strategy, block, user }: UseVotingPowerAtArgs) => {
   const { governanceService } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceService.getVotingPowerAt({ user, strategy, block }),
