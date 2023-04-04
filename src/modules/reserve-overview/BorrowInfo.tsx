@@ -185,7 +185,7 @@ export const BorrowInfo = ({
         sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
         paddingTop={'42px'}
       >
-        <Typography variant="subheader1" color="text.main">
+        <Typography variant="subheader1" color="text.secondary">
           <Trans>Collector Info</Trans>
         </Typography>
       </Box>

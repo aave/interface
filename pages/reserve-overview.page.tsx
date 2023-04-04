@@ -53,15 +53,15 @@ export default function ReserveOverview() {
             value={mode}
             exclusive
             onChange={(_, value) => setMode(value)}
-            sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+            sx={{ width: { xs: '100%', xsm: '359px' }, margin: { xsm: 'auto' }, height: '44px' }}
           >
-            <StyledToggleButton value="overview" disabled={mode === 'overview'}>
-              <Typography variant="subheader1">
+            <StyledToggleButton disableRipple value="overview" disabled={mode === 'overview'}>
+              <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
                 <Trans>Overview</Trans>
               </Typography>
             </StyledToggleButton>
-            <StyledToggleButton value="actions" disabled={mode === 'actions'}>
-              <Typography variant="subheader1">
+            <StyledToggleButton disableRipple value="actions" disabled={mode === 'actions'}>
+              <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
                 <Trans>Your info</Trans>
               </Typography>
             </StyledToggleButton>
