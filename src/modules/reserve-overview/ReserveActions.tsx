@@ -53,7 +53,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const {
     poolComputed: { minRemainingBaseTokenBalance },
@@ -102,11 +101,10 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   }
 
   const onSupplyClicked = () => {
-    trackEvent(YOUR_INFO_RESERVE_DETAILS.SUPPLY_RESERVE);
     if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase());
+      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve');
     } else {
-      openSupply(reserve.underlyingAsset);
+      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve');
     }
   };
 
@@ -153,9 +151,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 symbol={selectedAsset}
                 disable={disableBorrowButton}
                 onActionClicked={() => {
-                  trackEvent(YOUR_INFO_RESERVE_DETAILS.BORROW_RESERVE);
-
-                  openBorrow(reserve.underlyingAsset);
+                  openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve');
                 }}
               />
             )}

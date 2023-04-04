@@ -17,29 +17,35 @@ export const GENERAL = {
 };
 
 export const DASHBOARD = {
-  CHANGE_MARKET: 'Change market on dashboard',
-  VIEW_MARKETS: 'View markets on dashboard',
+  CHANGE_MARKET: 'Change market on dashboard', //done
+  VIEW_MARKETS: 'View markets on dashboard', // can be viewed in PAGEVIEW
   VIEW_RISK_DETAILS: 'View risk details on dashboard',
-  SUPPLY_DASHBOARD: 'Supply dashboard',
-  REPAY_DASHBOARD: 'Repay dashboard',
-  SWAP_DASHBOARD: 'Swap dashboard',
-  BORROW_DASHBOARD: 'Borrow dashboard',
-  DETAILS_DASHBOARD: 'Details dashboard',
-  DETAILS_BUTTON_DASHBOARD: 'Details button dashboard',
-  BRIDGE_LINK_DASHBOARD: 'L2 Bridge Link dashboard',
-  COLLATERAL_TOGGLE_DASHBOARD: 'Collateral toggle dashboard',
-  APY_DROPDWON_DASHBOARD: 'APY dropdown dashboard',
-  APY_CHANGE_DASHBOARD: 'Change APY type dashboard',
+  SUPPLY_DASHBOARD: 'Supply dashboard', //done
+  REPAY_DASHBOARD: 'Repay dashboard', // done
+  SWAP_DASHBOARD: 'Swap dashboard', //done
+  WITHDRAWL_DASHBOARD: 'Withdrawl dashboard', //done
+
+  BORROW_DASHBOARD: 'Borrow dashboard', // done
+  DETAILS_ROW_DASHBOARD: 'Details Row dashboard', // done
+  DETAILS_BUTTON_DASHBOARD: 'Details button dashboard', // done
+  BRIDGE_LINK_DASHBOARD: 'L2 Bridge Link dashboard', // done
+  COLLATERAL_TOGGLE_DASHBOARD: 'Collateral toggle dashboard', // done
+  APY_DROPDOWN_DASHBOARD: 'APY dropdown dashboard', // todo
+  APY_CHANGE_DASHBOARD: 'Change APY type dashboard', // todo
   APY_SEE_CHARTS_DASHBOARD: 'See APY charts dashboard',
-  E_MODE_INFO_DASHBOARD: 'E-Mode toggle dashboard',
-  E_MODE_ACTION_DASHBOARD: 'E-Mode action button dashboard',
-  VIEW_LM_DETAILS_DASHBOARD: 'View LM details dashboard',
-  NOTIFY_DASHBOARD: 'Notify dashboard',
-  HIDE_SUPPLY_TILE: 'Hide supply tile dashboard',
-  HIDE_BORROW_TILE: 'Hide borrow tile dashboard',
-  HIDE_YOUR_SUPPLY_TILE: 'Hide your supply tile dashboard',
-  HIDE_YOUR_BORROW_TILE: 'Hide your borrow tile dashboard',
-  SHOW_ASSETS_0_BALANCE: 'Show assets with zero balance dashboard',
+  E_MODE_INFO_DASHBOARD: 'E-Mode toggle dashboard', // done
+  E_MODE_ACTION_ENABLE_DASHBOARD: 'E-Mode action button enable dashboard', //done
+  E_MODE_ACTION_DISABLE_DASHBOARD: 'E-Mode action button disable dashboard', // done
+  E_MODE_ACTION_SWITCH_DASHBOARD: 'E-Mode action button switch dashboard', //done
+
+  VIEW_LM_DETAILS_DASHBOARD: 'View LM details dashboard', // done
+  NOTIFY_DASHBOARD: 'Notify dashboard', // done
+  HIDE_SUPPLY_TILE: 'Hide supply tile dashboard', // done
+  HIDE_BORROW_TILE: 'Hide borrow tile dashboard', // done
+  HIDE_YOUR_SUPPLY_TILE: 'Hide your supply tile dashboard', // done
+  HIDE_YOUR_BORROW_TILE: 'Hide your borrow tile dashboard', // done
+  SHOW_ASSETS_0_BALANCE: 'Show assets with zero balance dashboard', // done
+  DASHBOARD_RISK_DETAILS: 'Show risk details on HF', // todo
 };
 
 export const MARKETS = {
@@ -86,8 +92,8 @@ export const YOUR_INFO_RESERVE_DETAILS = {
   BRIDGE_LINK_RESERVE: 'L2 bridge link your info reserve page',
   SUPPLY_INFO_ICON: 'View supply info icon your info reserve page', // done
   BORROW_INFO_ICON: 'View borrow info icon your info reserve page', // done
-  SUPPLY_RESERVE: 'Supply assets your info reserve page', // done
-  BORROW_RESERVE: 'Borrow assets your info reserve page', // done
+  SUPPLY_RESERVE: 'Supply assets your info reserve page', // done removed for DASHBOARD.BORROW_DASHBOARD with funnel property
+  BORROW_RESERVE: 'Borrow assets your info reserve page', // done removed for DASHBOARD.BORROW_DASHBOARD with funnel property
 };
 
 export const SUPPLY_MODAL = {

@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -21,11 +23,15 @@ interface DashboardEModeButtonProps {
 export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButtonProps) => {
   const { openEmode } = useModalContext();
   const { eModes: _eModes } = useAppDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    trackEvent(DASHBOARD.E_MODE_INFO_DASHBOARD, { userEmodeCategoryId });
+
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -205,6 +211,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
               fullWidth
               variant={'gradient'}
               onClick={() => {
+                trackEvent(DASHBOARD.E_MODE_ACTION_ENABLE_DASHBOARD, { userEmodeCategoryId });
+
                 openEmode(EmodeModalType.ENABLE);
                 handleClose();
               }}
@@ -220,6 +228,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                   sx={{ mb: '6px' }}
                   variant={'outlined'}
                   onClick={() => {
+                    trackEvent(DASHBOARD.E_MODE_ACTION_SWITCH_DASHBOARD, { userEmodeCategoryId });
+
                     openEmode(EmodeModalType.SWITCH);
                     handleClose();
                   }}
@@ -232,6 +242,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                 fullWidth
                 variant={'outlined'}
                 onClick={() => {
+                  trackEvent(DASHBOARD.E_MODE_ACTION_DISABLE_DASHBOARD, { userEmodeCategoryId });
+
                   openEmode(EmodeModalType.DISABLE);
                   handleClose();
                 }}

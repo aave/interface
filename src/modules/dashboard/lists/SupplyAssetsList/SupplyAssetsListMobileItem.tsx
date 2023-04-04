@@ -92,7 +92,7 @@ export const SupplyAssetsListMobileItem = ({
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached}
           variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
+          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

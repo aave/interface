@@ -170,7 +170,7 @@ export const SupplyModalContent = ({
     debtCeiling.isMaxed
   );
 
-  if (supplyTxState.success)
+  if (supplyTxState.success) {
     return (
       <TxSuccessView
         action={<Trans>Supplied</Trans>}
@@ -179,6 +179,7 @@ export const SupplyModalContent = ({
         addToken={addToken}
       />
     );
+  }
 
   return (
     <>
