@@ -162,7 +162,7 @@ export const SupplyInfo = ({
       <div>
         {reserve.isIsolated ? (
           <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
+            <Typography variant="subheader1" color="text.secondary" paddingBottom={'12px'}>
               <Trans>Collateral usage</Trans>
             </Typography>
             <Warning severity="warning">
@@ -184,7 +184,7 @@ export const SupplyInfo = ({
             sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
             paddingTop={'42px'}
           >
-            <Typography variant="subheader1" color="text.main">
+            <Typography variant="subheader1" color="text.secondary">
               <Trans>Collateral usage</Trans>
             </Typography>
             <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
@@ -194,7 +194,7 @@ export const SupplyInfo = ({
           </Box>
         ) : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main">
+            <Typography variant="subheader1" color="text.secondary">
               <Trans>Collateral usage</Trans>
             </Typography>
             <Warning sx={{ my: '12px' }} severity="warning">

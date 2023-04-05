@@ -29,14 +29,19 @@ export const CircleIcon = ({ downToSM, tooltipText, children }: CircleIconProps)
       >
         <Box
           sx={{
-            bgcolor: '#383D51',
-            width: downToSM ? '18px' : '24px',
-            height: downToSM ? '18px' : '24px',
+            bgcolor: (theme) =>
+              downToSM && theme.palette.mode === 'light'
+                ? 'background.default'
+                : 'background.surface',
+            width: '24px',
+            height: '24px',
             borderRadius: '50%',
             display: 'flex',
             justifyContent: 'center',
             ml: '8px',
-            border: '0.5px solid rgba(235, 235, 237, 0.12)',
+            border: '0.5px solid',
+            borderColor: 'action.active',
+            '&:hover': { borderColor: 'info.main' },
           }}
         >
           {children}

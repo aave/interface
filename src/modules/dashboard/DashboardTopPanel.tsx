@@ -143,6 +143,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
+              isTopPanel
               symbolsColor={theme.palette.text.secondary}
               symbolsVariant={noDataTypographyVariant}
             />
@@ -167,6 +168,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
+              isTopPanel
               symbolsColor={theme.palette.text.secondary}
               symbolsVariant={noDataTypographyVariant}
             />

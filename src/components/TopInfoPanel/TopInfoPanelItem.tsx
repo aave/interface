@@ -25,7 +25,7 @@ export const TopInfoPanelItem = ({
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
   /* {Temporary for unused props} */
-  hideIcon && withoutIconWrapper;
+  withoutIconWrapper;
   return (
     <Box
       sx={{
@@ -53,7 +53,7 @@ export const TopInfoPanelItem = ({
         <Box sx={{ display: 'flex', alignItems: 'top' }}>
           <Box
             sx={{
-              display: 'flex',
+              display: hideIcon ? 'none' : 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               mr: 3,
