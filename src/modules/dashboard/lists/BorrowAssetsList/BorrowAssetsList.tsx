@@ -183,6 +183,7 @@ export const BorrowAssetsList = () => {
 
   return (
     <ListWrapper
+      isDashboard
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>

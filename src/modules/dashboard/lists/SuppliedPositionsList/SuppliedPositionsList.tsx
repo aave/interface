@@ -116,6 +116,7 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
+      isDashboard
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Your supplies</Trans>

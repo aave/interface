@@ -108,6 +108,7 @@ export const BorrowAssetsListMobileItem = ({
         </Button>
         <Button
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           fullWidth

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Menu, MenuItem, Typography, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
@@ -36,7 +36,7 @@ export const AddTokenDropdown = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const theme = useTheme();
   // The switchNetwork function has no return type, so to detect if a user successfully switched networks before adding token to wallet, check the selected vs connected chain id
   useEffect(() => {
     if (changingNetwork && currentChainId === connectedChainId) {
@@ -86,11 +86,24 @@ export const AddTokenDropdown = ({
               '&:hover': {
                 '.Wallet__icon': { opacity: '0 !important' },
                 '.Wallet__iconHover': { opacity: '1 !important' },
+                '& .MuiSvgIcon-root': {
+                  stroke: theme.palette.mode === 'light' ? '#0062D2' : '#29B6F6',
+                },
+              },
+              '& .MuiSvgIcon-root': {
+                stroke: theme.palette.mode === 'light' ? '#8E92A3' : '#EBEBEF8F',
               },
               cursor: 'pointer',
             }}
           >
-            <WalletIcon sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }} />
+            <WalletIcon
+              sx={{
+                width: '14px',
+                height: '14px',
+                // stroke: theme.palette.mode === 'light' ? '#8E92A3' : '#EBEBEF8F',
+                // '&:hover': { stroke: theme.palette.mode === 'light' ? '#0062D2' : '#29B6F6' },
+              }}
+            />
           </Box>
         </CircleIcon>
       </Box>

@@ -89,6 +89,7 @@ export const SupplyAssetsListItem = ({
         </Button>
         <Button
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
         >

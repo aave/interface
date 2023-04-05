@@ -96,6 +96,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
+            sx={{ color: 'text.primary' }}
             onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
@@ -105,6 +106,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
+            sx={{ color: 'text.primary' }}
             onClick={() => openSupply(underlyingAsset)}
             fullWidth
           >

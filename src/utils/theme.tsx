@@ -32,13 +32,16 @@ declare module '@mui/material/styles/createPalette' {
     surface: string;
     header: string;
     disabled: string;
-    shadow: string;
   }
 
   interface Palette {
     gradients: {
       aaveGradient: string;
       newGradient: string;
+    };
+    shadow: {
+      markets: string;
+      dashboard: string;
     };
   }
 
@@ -181,7 +184,10 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         surface: getColor('#F7F7F9', '#383D51'),
         header: getColor('#FFEDEB', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
-        shadow: getColor('#FFEDEB', '#EBEBEF1F'),
+      },
+      shadow: {
+        markets: getColor('#FFEDEB', '#EBEBEF1F'),
+        dashboard: getColor('#FFEDEB', 'none'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
@@ -252,7 +258,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
         fontSize: pxToRem(14),
-        color: '#121418',
+        color: 'text.primary',
       },
       subheader2: {
         fontFamily: FONT,

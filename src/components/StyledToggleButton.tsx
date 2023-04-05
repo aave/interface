@@ -8,7 +8,7 @@ const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) =
   borderRadius: '4px',
 
   '&.Mui-selected, &.Mui-selected:hover': {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FEFEFE',
     borderRadius: '4px !important',
   },
 
