@@ -102,7 +102,7 @@ export function AppHeader() {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'space-between',
-          boxShadow: '0px 0px 10px 0px rgba(100,100,100,0.3)',
+          boxShadow: '0px 0px 10px 0px rgba(100,100,100,0.2)',
         })}
       >
         <Box

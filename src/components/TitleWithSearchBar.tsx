@@ -50,7 +50,12 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
       }}
     >
       {showMarketTitle && (
-        <Typography component="div" variant="h2" sx={{ mr: 4 }} {...titleProps}>
+        <Typography
+          component="div"
+          variant="h2"
+          sx={{ mr: 4, color: 'text.primary' }}
+          {...titleProps}
+        >
           {title}
         </Typography>
       )}

@@ -8,7 +8,6 @@ interface TopInfoPanelItemProps {
   children: ReactNode;
   hideIcon?: boolean;
   withoutIconWrapper?: boolean;
-  variant?: 'light' | 'dark' | undefined; // default dark
   withLine?: boolean;
   loading?: boolean;
 }
@@ -19,20 +18,23 @@ export const TopInfoPanelItem = ({
   titleIcon,
   children,
   hideIcon,
-  variant = 'dark',
   withLine,
   loading,
   withoutIconWrapper,
 }: TopInfoPanelItemProps) => {
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
-
+  /* {Temporary for unused props} */
+  hideIcon && withoutIconWrapper;
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
+        width: { xs: 'calc(50% - 12px)', xsm: '238px' },
+        padding: '20px',
+        backgroundColor: theme.palette.background.surface,
+        borderRadius: '8px',
       }}
     >
       {withLine && (
@@ -47,40 +49,29 @@ export const TopInfoPanelItem = ({
         />
       )}
 
-      {!hideIcon &&
-        (withoutIconWrapper ? (
-          icon && icon
-        ) : (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'top' }}>
           <Box
             sx={{
-              display: { xs: 'none', md: 'flex' },
+              display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              border: '1px solid #EBEBED1F',
-              borderRadius: '12px',
-              bgcolor: '#383D51',
-              boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              width: 42,
-              height: 42,
               mr: 3,
+              width: '18px',
+              height: '18px',
             }}
           >
             {icon && icon}
           </Box>
-        ))}
-
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography
-            sx={{ color: variant === 'dark' ? '#A5A8B6' : '#62677B' }}
-            variant={upToSM ? 'description' : 'caption'}
+            sx={{ color: theme.palette.text.secondary }}
+            variant="description"
             component="div"
           >
             {title}
           </Typography>
           {titleIcon && titleIcon}
         </Box>
-
         {loading ? <Skeleton height={upToSM ? 28 : 24} sx={{ background: '#383D51' }} /> : children}
       </Box>
     </Box>
