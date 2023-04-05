@@ -36,7 +36,7 @@ export const useGovernanceDelegate = (
   const [stkAaveNonce, setStkAaveNonce] = useState(0);
   const [deadline, setDeadline] = useState(Math.floor(Date.now() / 1000 + 3600).toString());
   const prepareDelegateSignature = useRootStore((state) => state.prepareDelegateSignature);
-  const prepateDelegateByTypeSignature = useRootStore(
+  const prepareDelegateByTypeSignature = useRootStore(
     (state) => state.prepareDelegateByTypeSignature
   );
 
@@ -193,8 +193,10 @@ export const useGovernanceDelegate = (
   const signMetaTxs = async () => {
     if (delegationTokenType === DelegationTokenType.BOTH) {
       setApprovalTxState({ ...approvalTxState, loading: true });
-      const aaveNonce = await getTokenNonce(user, governanceConfig.aaveTokenAddress);
-      const stkAaveNonce = await getTokenNonce(user, governanceConfig.stkAaveTokenAddress);
+      const [aaveNonce, stkAaveNonce] = await Promise.all([
+        getTokenNonce(user, governanceConfig.aaveTokenAddress),
+        getTokenNonce(user, governanceConfig.stkAaveTokenAddress),
+      ]);
       const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
       setDeadline(deadline);
       setAaveNonce(aaveNonce);
@@ -218,7 +220,7 @@ export const useGovernanceDelegate = (
       const unsignedPayloads: string[] = [];
       for (const tx of txs) {
         if (delegationType !== DelegationType.BOTH) {
-          const payload = await prepateDelegateByTypeSignature({ ...tx, type: delegationType });
+          const payload = await prepareDelegateByTypeSignature({ ...tx, type: delegationType });
           unsignedPayloads.push(payload);
         } else {
           const payload = await prepareDelegateSignature(tx);
