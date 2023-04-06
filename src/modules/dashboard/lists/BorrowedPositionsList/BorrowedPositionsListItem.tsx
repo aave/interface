@@ -87,6 +87,7 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           onClick={() => openBorrow(reserve.underlyingAsset)}
         >
           <Trans>Borrow</Trans>

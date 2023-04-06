@@ -79,7 +79,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       </Box>
 
       <PanelRow>
-        <PanelTitle>Supply Info</PanelTitle>
+        <PanelTitle sx={{ color: 'text.secondary' }}>Supply Info</PanelTitle>
         <SupplyInfo
           reserve={reserve}
           currentMarketData={currentMarketData}
@@ -94,7 +94,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <>
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
-            <PanelTitle>Borrow info</PanelTitle>
+            <PanelTitle sx={{ color: 'text.secondary' }}>Borrow info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               {!reserve.borrowingEnabled && (
                 <Warning sx={{ mb: '40px' }} severity="error">
@@ -118,7 +118,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <>
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
-            <PanelTitle>E-Mode info</PanelTitle>
+            <PanelTitle sx={{ color: 'text.secondary' }}>E-Mode info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Typography variant="secondary14" color="text.secondary">
@@ -127,7 +127,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                   <LightningBoltGradient />
                 </SvgIcon>
-                <Typography variant="subheader1">{getEmodeMessage(reserve.eModeLabel)}</Typography>
+                <Typography variant="subheader1" color="text.primary">
+                  {getEmodeMessage(reserve.eModeLabel)}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -223,7 +225,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           <Divider sx={{ my: '40px' }} />
 
           <PanelRow>
-            <PanelTitle>Interest rate model</PanelTitle>
+            <PanelTitle sx={{ color: 'text.secondary' }}>Interest rate model</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               <Box
                 sx={{
@@ -253,7 +255,11 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   component={Link}
                   size="small"
                   variant="outlined"
-                  sx={{ verticalAlign: 'top' }}
+                  sx={{
+                    verticalAlign: 'top',
+                    color: 'text.secondary',
+                    background: (theme) => (theme.palette.mode === 'light' ? 'transparent' : ''),
+                  }}
                 >
                   <Trans>Interest rate strategy</Trans>
                 </Button>

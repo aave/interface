@@ -33,8 +33,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
-              color: '#A5A8B6',
-              '&:hover': { color: '#F1F1F3' },
+              color: 'action.active',
+              '&:hover': { color: 'info.main' },
               cursor: 'pointer',
             }}
           >

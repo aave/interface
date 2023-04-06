@@ -1,4 +1,4 @@
-import { Drawer } from '@mui/material';
+import { Drawer, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface DrawerWrapperProps {
@@ -9,6 +9,7 @@ interface DrawerWrapperProps {
 }
 
 export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
+  const theme = useTheme();
   return (
     <Drawer
       data-cy={`mobile-menu`}
@@ -19,7 +20,7 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
       sx={{ top: `${headerHeight}px` }}
       PaperProps={{
         sx: {
-          background: 'rgba(27, 32, 48, 0.98)',
+          bgcolor: theme.palette.background.paper,
           backdropFilter: 'blur(20px)',
           boxShadow: 'none',
           borderRadius: 'unset',

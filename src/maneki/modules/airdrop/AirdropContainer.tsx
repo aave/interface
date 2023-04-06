@@ -4,10 +4,10 @@ import { Box, Button, Paper } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
-import { ConnectWalletPaper } from '../../components/ConnectWalletPaper';
-import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
-import { useModalContext } from '../../hooks/useModal';
-import { useWeb3Context } from '../../libs/hooks/useWeb3Context';
+import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
+import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
+import { useModalContext } from '../../../hooks/useModal';
+import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import randomAddrs from './devRandAddr';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
 

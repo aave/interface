@@ -77,6 +77,7 @@ export const BorrowAssetsListItem = ({
         </Button>
         <Button
           variant="outlined"
+          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
         >

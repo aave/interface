@@ -13,6 +13,7 @@ interface ListWrapperProps {
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
+  isDashboard?: boolean;
 }
 
 export const ListWrapper = ({
@@ -24,6 +25,7 @@ export const ListWrapper = ({
   topInfo,
   withTopMargin,
   noData,
+  isDashboard,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -35,7 +37,10 @@ export const ListWrapper = ({
     <Paper
       sx={(theme) => ({
         mt: withTopMargin ? 4 : 0,
-        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: '20px',
+        boxShadow: isDashboard
+          ? `0px 4px 250px ${theme.palette.shadow.dashboard}`
+          : `0px 4px 250px ${theme.palette.shadow.markets}`,
       })}
     >
       <Box
