@@ -10,7 +10,7 @@ import { TopInfoPanelItem } from '../../../components/TopInfoPanel/TopInfoPanelI
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useStakingContext } from '../../hooks/staking-data-provider/StakingDataProvider';
-import MULTI_FEE_ABI from './MultiFeeABI';
+import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
 interface NumReturn {
   _hex: string;
@@ -21,24 +21,26 @@ export const StakeTopPanel = () => {
   const { stakedPAW, setStakedPAW, share, setShare, dailyRevenue, setDailyRevenue } =
     useStakingContext();
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { provider } = useWeb3Context();
+  const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
+  // eslint-disable-next-line prettier/prettier
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+    .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
+    if (!provider) return;
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
-
+    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
+    promises.push(contract.getUserLpStaked(currentAccount)); // staked paw
+    promises.push(contract.getUserSharePercentage(currentAccount)); // user share % dev : error execution reverted
+    promises.push(contract.getUserDailyRewardsInUsd(currentAccount)); // daily revenue dev : error execution reverted
 
     // call promise all and get data
     Promise.all(promises)
@@ -50,7 +52,8 @@ export const StakeTopPanel = () => {
         setLoading(false);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, [provider]);
+
   return (
     <TopInfoPanel pageTitle={<Trans>Stake</Trans>}>
       {/* Staked paw display */}

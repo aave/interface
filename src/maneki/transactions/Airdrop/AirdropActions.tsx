@@ -34,8 +34,6 @@ export const AirdropActions = ({
 
   const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
 
-  //   const merkleDistContract = new Contract(MERKLE_DIST_ADDR, MERKLE_DIST_ABI, provider);
-
   // claim action
   const claimAction = async () => {
     if (!merkleDistContract) {
@@ -54,19 +52,39 @@ export const AirdropActions = ({
     }
 
     try {
-      const transanctionUnsigned = await merkleDistContract.claim(
-        airdropCtx.claimIndex,
-        airdropCtx.index,
-        airdropCtx.entryAmount.toString(),
-        airdropCtx.receiver,
-        airdropCtx.proofs
-      );
+      // console.log({
+      //   claimIdx : airdropCtx.claimIndex,
+      //   index : airdropCtx.index,
+      //   entryAmount : airdropCtx.entryAmount.toString(),
+      //   receiver : airdropCtx.receiver,
+      //   proofs : airdropCtx.proofs
+      //  })
+      //  console.log(airdropCtx.proofs)
+      let transanctionUnsigned;
+      if (airdropCtx.currentSelectedAirdrop == 0) {
+        transanctionUnsigned = await merkleDistContract.claim(
+          airdropCtx.claimIndex,
+          airdropCtx.index,
+          airdropCtx.entryAmount.toString(),
+          airdropCtx.receiver,
+          airdropCtx.proofs
+        );
+        airdropCtx.setIsClaimed(true);
+      } else {
+        transanctionUnsigned = await merkleDistContract.claim(
+          airdropCtx.claimIndexSocmed,
+          airdropCtx.indexSocmed,
+          airdropCtx.entryAmountSocmed.toString(),
+          airdropCtx.receiverSocmed,
+          airdropCtx.proofsSocmed
+        );
+        airdropCtx.setIsClaimedSocmed(true);
+      }
       setMainTxState({
         loading: false,
         success: true,
         txHash: transanctionUnsigned.hash,
       });
-      airdropCtx.setIsClaimed(true);
     } catch (error) {
       console.log('====================================');
       console.log(error);

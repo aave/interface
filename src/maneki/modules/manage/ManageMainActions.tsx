@@ -5,6 +5,7 @@ import * as React from 'react';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
+import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
 interface NumReturn {
@@ -29,15 +30,17 @@ export const ManageMainActions = () => {
   const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(-1);
   const [totalLockedPAW, setTotalLockedPAW] = React.useState(-1);
   const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
-  const [totalClaimedValue, setTotalClaimedValue] = React.useState(-1);
   const [vests, setVests] = React.useState<VestEntry[]>([]);
+  const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
   const [locks, setLocks] = React.useState<VestEntry[]>([]);
+  const [totalLocksValue, setTotalLocksValue] = React.useState(-1);
   const [claimables, setClaimables] = React.useState<Claimables[]>([]);
-  const [claimeds, setClaimeds] = React.useState<Claimables[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { provider } = useWeb3Context();
+  const { provider, currentAccount } = useWeb3Context();
 
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
+  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+    .STAKING_DATA_PROVIDER as string;
 
   // handle unlock action
   const handleClaimUnlock = () => {
@@ -47,7 +50,7 @@ export const ManageMainActions = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.duration()); // getreward? dev : notfound
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -69,7 +72,7 @@ export const ManageMainActions = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.withdraw(vestedPAW + unlockedPAW)); // claim vested and unlocked
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -91,7 +94,7 @@ export const ManageMainActions = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.withdrawExpiredLocks()); // claim all expired locks
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -128,23 +131,26 @@ export const ManageMainActions = () => {
   };
 
   React.useEffect(() => {
+    if (!provider) return;
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
+    promises.push(contract.getUnlockedPaw(currentAccount)); // unlockedpaw
+    promises.push(contract.getVestingPaw(currentAccount)); // vestedpaw
+    promises.push(contract.getEarlyExitPenalty(currentAccount)); // exit penalty
+    promises.push(contract.getExpiredLockedPaw(currentAccount)); // expired locked paw
+    promises.push(contract.getTotalPawLocked(currentAccount)); // total locked paw
+    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // total claimable value dev missing?
+    promises.push(contract.getVestingScheduleArray(currentAccount)); // vests dev: format unknowne
+    promises.push(contract.getLockScheduleArray(currentAccount)); // locks dev: format unknowne
+    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // claimables
+    promises.push(contract.getTotalPawLockedValue(currentAccount)); // locked value
+    promises.push(contract.getTotalPawVestingValue(currentAccount)); // vesting value
+
+    // TODO add value for total locke and unlocked
 
     // call promise all and get data
     Promise.all(promises)
@@ -156,15 +162,15 @@ export const ManageMainActions = () => {
         setExpiredLockedPAW(parseInt(data[3]._hex, 16));
         setTotalLockedPAW(parseInt(data[4]._hex, 16));
         setTotalClaimableValue(parseInt(data[5]._hex, 16));
-        setTotalClaimedValue(parseInt(data[6]._hex, 16));
-        setVests([{ amount: parseInt(data[7]._hex, 16), expiry: '1-1-1111' }]);
-        setLocks([{ amount: parseInt(data[8]._hex, 16), expiry: '1-1-1111' }]);
-        setClaimables([{ amount: parseInt(data[9]._hex, 16), token: 'PAW' }]);
-        setClaimeds([{ amount: parseInt(data[10]._hex, 16), token: 'PAW' }]);
+        setVests([{ amount: parseInt(data[6]._hex, 16), expiry: '1-1-1111' }]);
+        setLocks([{ amount: parseInt(data[7]._hex, 16), expiry: '1-1-1111' }]);
+        setClaimables([{ amount: parseInt(data[8]._hex, 16), token: 'PAW' }]);
+        setTotalLocksValue(parseInt(data[9]._hex, 16));
+        setTotalVestsValue(parseInt(data[10]._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, [provider]);
 
   if (loading) return <Paper>loading...</Paper>;
 
@@ -192,6 +198,7 @@ export const ManageMainActions = () => {
             amount {vest.amount} exp {vest.expiry}
           </div>
         ))}
+        Total vested {totalVestsValue}
       </div>
 
       <div style={{ border: '1px solid black' }}>
@@ -201,7 +208,7 @@ export const ManageMainActions = () => {
             amount {lock.amount} exp {lock.expiry}
           </div>
         ))}
-        Total locked {totalLockedPAW}
+        Total locked {totalLockedPAW} value {totalLocksValue}
       </div>
 
       <div style={{ border: '1px solid black' }}>
@@ -212,16 +219,6 @@ export const ManageMainActions = () => {
           </div>
         ))}
         {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>
-      </div>
-
-      <div style={{ border: '1px solid black' }}>
-        Claimed fees
-        {claimeds.map((claimed, i) => (
-          <div key={i}>
-            amount {claimed.amount} token {claimed.token}
-          </div>
-        ))}
-        {totalClaimedValue}
       </div>
     </Paper>
   );

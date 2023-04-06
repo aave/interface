@@ -6,6 +6,7 @@ import * as React from 'react';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useStakingContext } from '../../hooks/staking-data-provider/StakingDataProvider';
+import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
 interface NumReturn {
@@ -22,9 +23,12 @@ export const StakeInfo = () => {
   const [totalDailyRewards, setTotalDailyRewards] = React.useState<number>(-1);
   const [loading, setLoading] = React.useState<boolean>(true);
 
-  const { provider } = useWeb3Context();
+  const { provider, currentAccount } = useWeb3Context();
 
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
+  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+  // eslint-disable-next-line prettier/prettier
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+    .STAKING_DATA_PROVIDER as string;
 
   // handle unstake action
   const handleUnstake = () => {
@@ -34,7 +38,7 @@ export const StakeInfo = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.lockDuration()); // unstake action dev: missing
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -56,7 +60,7 @@ export const StakeInfo = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.lockDuration()); // vest action dev: missing
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -72,16 +76,16 @@ export const StakeInfo = () => {
 
   React.useEffect(() => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
+    promises.push(contract.getVestingPaw(currentAccount)); // vested paw
+    promises.push(contract.getStakingAPR()); // stakingapr
+    promises.push(contract.getLpPrice()); // lpprice
+    promises.push(contract.getLpStaked()); // lpstaked
+    promises.push(contract.getTotalDailyRewards()); // totaldailyrewards
 
     // call promise all and get data
     Promise.all(promises)

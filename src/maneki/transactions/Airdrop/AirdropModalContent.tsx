@@ -10,8 +10,8 @@ import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropData
 import { AirdropActions } from './AirdropActions';
 
 export const AirdropModalContent = () => {
-  const { entryAmount } = useAirdropContext();
-
+  const { entryAmount, entryAmountSocmed, currentSelectedAirdrop } = useAirdropContext();
+  const trueValue = currentSelectedAirdrop == 0 ? entryAmount : entryAmountSocmed;
   return (
     <Box>
       <TxModalTitle title={<Trans>Claim airdrop</Trans>} />
@@ -20,11 +20,11 @@ export const AirdropModalContent = () => {
           description={<Trans>Amount</Trans>}
           iconSymbol={'PAW'}
           symbol={'PAW'}
-          value={entryAmount / 1000000000000000000}
+          value={trueValue / 1000000000000000000}
         />
       </TxModalDetails>
       <AirdropActions
-        amountToAirdrop={entryAmount.toString()}
+        amountToAirdrop={trueValue.toString()}
         isWrongNetwork={false} // TODO need to check this
         blocked={false}
         symbol="PAW"

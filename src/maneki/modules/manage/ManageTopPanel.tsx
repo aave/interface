@@ -10,7 +10,7 @@ import { TopInfoPanelItem } from '../../../components/TopInfoPanel/TopInfoPanelI
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
-import MULTI_FEE_ABI from './MultiFeeABI';
+import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
 interface NumReturn {
   _hex: string;
@@ -23,40 +23,43 @@ export const ManageTopPanel = () => {
   const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<number>(-1);
   const [dailyRevenue, setDailyRevenue] = React.useState<number>(-1);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { provider } = useWeb3Context();
+  const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
+  // eslint-disable-next-line prettier/prettier
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+    .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
+    if (!provider) return;
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
-    promises.push(contract.duration());
+    promises.push(contract.getUserLpStaked(currentAccount)); // staked paw
+    promises.push(contract.getTotalPawLocked(currentAccount)); // locked paw
+    promises.push(contract.getLpPrice()); // daily platform fees dev : missing
+    promises.push(contract.getUserDailyRewardsInUsd(currentAccount)); // daily revenue dev : error execution reverted
+    promises.push(contract.getLpPrice()); // daily penalty fees dev : missing
 
     // call promise all and get data
     Promise.all(promises)
       .then((data: NumReturn[]) => {
         // dev change data setting logic here
         setStakedPAW(parseInt(data[0]._hex, 16));
-        setDailyPlatformFees(parseInt(data[1]._hex, 16));
-        setDailyRevenue(parseInt(data[2]._hex, 16));
-        setDailyPenaltyFees(parseInt(data[3]._hex, 16));
-        setLockedPAW(parseInt(data[4]._hex, 16));
+        setLockedPAW(parseInt(data[1]._hex, 16));
+        setDailyPlatformFees(parseInt(data[2]._hex, 16));
+        setDailyRevenue(parseInt(data[3]._hex, 16));
+        setDailyPenaltyFees(parseInt(data[4]._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, [provider]);
   return (
     <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>}>
       {/* Staked paw display */}
