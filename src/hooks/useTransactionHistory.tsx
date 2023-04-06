@@ -61,6 +61,7 @@ export const useTransactionHistory = () => {
     fetchNextPage,
     hasNextPage,
     isLoading,
+    isFetchingNextPage,
     isError,
     error,
   }: UseInfiniteQueryResult<TransactionHistoryItem[], Error> = useInfiniteQuery(
@@ -94,6 +95,7 @@ export const useTransactionHistory = () => {
   return {
     data,
     fetchNextPage,
+    isFetchingNextPage,
     hasNextPage,
     isLoading,
     isError,

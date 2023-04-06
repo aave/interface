@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 interface ListItemProps extends BoxProps {
   children: ReactNode;
-  minHeight?: 71 | 76;
+  minHeight?: 68 | 71 | 76;
   px?: 4 | 6;
   button?: boolean;
 }
