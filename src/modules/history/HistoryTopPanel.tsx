@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -16,6 +16,11 @@ export const HistoryTopPanel = () => {
       pageTitle={<></>}
       titleComponent={
         <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h3" sx={{ color: '#A5A8B6' }}>
+              <Trans>Transaction history</Trans>
+            </Typography>
+          </Box>
           <PageTitle
             pageTitle={<Trans>{currentMarketData.marketTitle} History</Trans>}
             withMarketSwitcher={true}
