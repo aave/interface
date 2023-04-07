@@ -3,12 +3,13 @@ import { BoxProps } from '@mui/material';
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
 
-import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
+import { TxActionsWrapper } from '../../../components/transactions/TxActionsWrapper';
 import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
-import MERKLE_DIST_ABI from '../../../maneki/modules/airdrop/MerkleDistAbi';
 import { TxAction } from '../../../ui-config/errorMapping';
-import { TxActionsWrapper } from '../TxActionsWrapper';
+import { marketsData } from '../../../ui-config/marketsConfig';
+import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
+import MERKLE_DIST_ABI from '../../modules/airdrop/MerkleDistAbi';
 
 export interface AirdropActionProps extends BoxProps {
   amountToAirdrop: string;
@@ -31,9 +32,7 @@ export const AirdropActions = ({
   const airdropCtx = useAirdropContext();
   const [merkleDistContract, setMerkleDistContract] = useState<Contract | null>(null);
 
-  const MERKLE_DIST_ADDR = '0xb774d3c78123f7171B7F3Ce31a4a90e1Ab9968a3';
-
-  //   const merkleDistContract = new Contract(MERKLE_DIST_ADDR, MERKLE_DIST_ABI, provider);
+  const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
 
   // claim action
   const claimAction = async () => {
@@ -53,19 +52,39 @@ export const AirdropActions = ({
     }
 
     try {
-      const transanctionUnsigned = await merkleDistContract.claim(
-        airdropCtx.claimIndex,
-        airdropCtx.index,
-        airdropCtx.entryAmount.toString(),
-        airdropCtx.receiver,
-        airdropCtx.proofs
-      );
+      // console.log({
+      //   claimIdx : airdropCtx.claimIndex,
+      //   index : airdropCtx.index,
+      //   entryAmount : airdropCtx.entryAmount.toString(),
+      //   receiver : airdropCtx.receiver,
+      //   proofs : airdropCtx.proofs
+      //  })
+      //  console.log(airdropCtx.proofs)
+      let transanctionUnsigned;
+      if (airdropCtx.currentSelectedAirdrop == 0) {
+        transanctionUnsigned = await merkleDistContract.claim(
+          airdropCtx.claimIndex,
+          airdropCtx.index,
+          airdropCtx.entryAmount.toString(),
+          airdropCtx.receiver,
+          airdropCtx.proofs
+        );
+        airdropCtx.setIsClaimed(true);
+      } else {
+        transanctionUnsigned = await merkleDistContract.claim(
+          airdropCtx.claimIndexSocmed,
+          airdropCtx.indexSocmed,
+          airdropCtx.entryAmountSocmed.toString(),
+          airdropCtx.receiverSocmed,
+          airdropCtx.proofsSocmed
+        );
+        airdropCtx.setIsClaimedSocmed(true);
+      }
       setMainTxState({
         loading: false,
         success: true,
         txHash: transanctionUnsigned.hash,
       });
-      airdropCtx.setIsClaimed(true);
     } catch (error) {
       console.log('====================================');
       console.log(error);

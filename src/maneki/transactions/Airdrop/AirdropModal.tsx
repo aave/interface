@@ -1,9 +1,9 @@
 import React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 
-import { BasicModal } from '../../primitives/BasicModal';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
+import { BasicModal } from '../../../components/primitives/BasicModal';
+import { TxErrorView } from '../../../components/transactions/FlowCommons/Error';
+import { TxSuccessView } from '../../../components/transactions/FlowCommons/Success';
 import { AirdropModalContent } from './AirdropModalContent';
 
 export const AirdropModal = () => {
