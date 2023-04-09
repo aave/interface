@@ -23,6 +23,7 @@ export type MarketDataType = {
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
   addresses: {
+    MERKLE_DIST?: string;
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
     WETH_GATEWAY?: string;
@@ -165,6 +166,9 @@ export const marketsData: {
     chainId: parseInt(process.env.NEXT_PUBLIC_MANEKI_CHAINID as string) || 97,
     enabledFeatures: {},
     addresses: {
+      // MERKLE_DIST:
+      //   process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIST || '0xb774d3c78123f7171B7F3Ce31a4a90e1Ab9968a3',
+      MERKLE_DIST: '0xe3267CCF277a2C1dB29AB3A7f0583eCD6d2Bb635',
       LENDING_POOL_ADDRESS_PROVIDER:
         process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL_ADDRESS_PROVIDER ||
         '0x6553c873bfE523084A6073aCa9BbF84bD10c32D4',
@@ -189,7 +193,9 @@ export const marketsData: {
       COLLECTOR:
         process.env.NEXT_PUBLIC_MANEKI_COLLECTOR || '0x63FfdDCd645E3d91ceB84B5adE3f61851edb1560',
       V3_MIGRATOR: '',
-      STAKING_DATA_PROVIDER: '0x73115acAd6A22eAdFeEda0c5CFEe9A29BBdA7d05',
+      STAKING_DATA_PROVIDER:
+        process.env.NEXT_PUBLIC_MANEKI_STAKING_DATA_PROVIDER ||
+        '0x73115acAd6A22eAdFeEda0c5CFEe9A29BBdA7d05',
     },
   },
   /*

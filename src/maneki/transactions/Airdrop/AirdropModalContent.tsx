@@ -1,14 +1,17 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 
-import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
-import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import {
+  DetailsNumberLine,
+  TxModalDetails,
+} from '../../../components/transactions/FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../../../components/transactions/FlowCommons/TxModalTitle';
+import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import { AirdropActions } from './AirdropActions';
 
 export const AirdropModalContent = () => {
-  const { entryAmount } = useAirdropContext();
-
+  const { entryAmount, entryAmountSocmed, currentSelectedAirdrop } = useAirdropContext();
+  const trueValue = currentSelectedAirdrop == 0 ? entryAmount : entryAmountSocmed;
   return (
     <Box>
       <TxModalTitle title={<Trans>Claim airdrop</Trans>} />
@@ -17,11 +20,11 @@ export const AirdropModalContent = () => {
           description={<Trans>Amount</Trans>}
           iconSymbol={'PAW'}
           symbol={'PAW'}
-          value={entryAmount / 1000000000000000000}
+          value={trueValue / 1000000000000000000}
         />
       </TxModalDetails>
       <AirdropActions
-        amountToAirdrop={entryAmount.toString()}
+        amountToAirdrop={trueValue.toString()}
         isWrongNetwork={false} // TODO need to check this
         blocked={false}
         symbol="PAW"
