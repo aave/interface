@@ -2834,6 +2834,21 @@
       "ipfsHash": "QmUvHfCweg76my8XLqs1NuQ43zbkc1EZ77KfzxZwPs494U",
       "originalHash": "0x61c411588a88828064b4227c619e88e3e11fed626719cac28b808faeaeacabc1",
       "id": 199
+    },
+    {
+      "aip": 200,
+      "title": "Increase wstETH Borrow Cap on V3 Arbitrum (4/5/2023)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Sarah Chen",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-gauntlet-recommendations-for-wsteth-on-aave-v3-arbitrum/12675",
+      "created": "2023-04-10T00:00:00.000Z",
+      "preview": "## Summary\n\n Per our Methodology, Gauntlet would recommend …",
+      "basename": "AIP-200",
+      "description": "## Summary\n\nPer our [Methodology](https://governance.aave.com/t/gauntlet-methodologies-borrow-and-supply-cap/11487), Gauntlet would recommend the following changes to the caps on V3 Arbitrum:\n\n* Increase wstETH Borrow Cap from 400 to 800.\n\nFull forum post is [here](https://governance.aave.com/t/arc-gauntlet-recommendations-for-wsteth-on-aave-v3-arbitrum/12675).\n\n## Specification\n\n* Increase wstETH Borrow Cap from 400 to 800.\n\n## Implementation\n\nThis proposal updates the borrow cap of wstETH using a pre-deployed payload:\n  - Arbitrum: [`0x31976DC2Ea27E75cC5a3687ED594D17127f9b72E`](https://arbiscan.io/address/0x31976DC2Ea27E75cC5a3687ED594D17127f9b72E)\n\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*\n\n\n\n",
+      "ipfsHash": "QmT4wuZpMwpwKSs2StzNFFQd5XL3Gk2rxQwqfBacumTjEV",
+      "originalHash": "0x464496497d766fa1724c5fb3e6f501d7c89ed662109536184efdf6d925789186",
+      "id": 200
     }
   ]
 }
