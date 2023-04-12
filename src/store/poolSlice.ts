@@ -1,5 +1,7 @@
 import {
+  ApproveDelegationType,
   ApproveType,
+  BaseDebtToken,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
@@ -72,7 +74,6 @@ export interface PoolSlice {
   withdraw: (
     args: Omit<LPWithdrawParamsType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  borrow: (args: Omit<LPBorrowParamsType, 'user'>) => Promise<EthereumTransactionTypeExtended[]>;
   setUsageAsCollateral: (
     args: Omit<LPSetUsageAsCollateral, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -108,6 +109,9 @@ export interface PoolSlice {
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
   getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
+  borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
+  getCreditDelegationApprovedAmount: (args: Omit<ApproveDelegationType, 'user'>) => Promise<number>;
+  generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
 }
 
 export const createPoolSlice: StateCreator<
@@ -308,6 +312,39 @@ export const createPoolSlice: StateCreator<
         return poolBundle.depositTxBuilder.getApprovedAmount({ user, token: args.token });
       }
     },
+    borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
+      const poolBundle = getCorrectPoolBundle();
+      const currentAccount = get().account;
+      if (poolBundle instanceof PoolBundle) {
+        return poolBundle.borrowTxBuilder.generateTxData({
+          ...args,
+          user: currentAccount,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
+      } else {
+        const lendingPool = poolBundle as LendingPoolBundle;
+        return lendingPool.borrowTxBuilder.generateTxData({
+          ...args,
+          user: currentAccount,
+        });
+      }
+    },
+    getCreditDelegationApprovedAmount: async (args: Omit<ApproveDelegationType, 'user'>) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      const debtTokenService = new BaseDebtToken(provider, tokenERC20Service);
+      const approvedAmount = await debtTokenService.approvedDelegationAmount({
+        ...args,
+        user: get().account,
+      });
+      return approvedAmount;
+    },
+    generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      const debtTokenService = new BaseDebtToken(provider, tokenERC20Service);
+      return debtTokenService.generateApproveDelegationTxData({ ...args, user: get().account });
+    },
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
       const { jsonRpcProvider, currentMarketData, account: userAddress } = get();
@@ -334,11 +371,6 @@ export const createPoolSlice: StateCreator<
         user,
         useOptimizedPath: optimizedPath(get().currentChainId),
       });
-    },
-    borrow: async (args) => {
-      const pool = getCorrectPool();
-      const user = get().account;
-      return pool.borrow({ ...args, user, useOptimizedPath: get().useOptimizedPath() });
     },
     setUsageAsCollateral: async (args) => {
       const pool = getCorrectPool();
