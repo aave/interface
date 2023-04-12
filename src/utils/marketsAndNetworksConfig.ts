@@ -194,7 +194,8 @@ const ustDisableProposal = 'https://app.aave.com/governance/proposal/75';
 const kncDisableProposal = 'https://app.aave.com/governance/proposal/69';
 const v2MainnetDisableProposal = 'https://app.aave.com/governance/proposal/111';
 const v2MainnetDisableProposal2 = 'https://app.aave.com/governance/proposal/125';
-const v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/124';
+// TODO: Add for production
+// const v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/124';
 
 export const frozenProposalMap: Record<string, string> = {
   ['UST' + CustomMarket.proto_mainnet]: ustDisableProposal,
@@ -239,12 +240,13 @@ export const frozenProposalMap: Record<string, string> = {
   ['LINK' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
   ['UNI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
   ['SNX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
-  ['BAL' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
-  ['CRV' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
-  ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
-  ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
-  ['LINK' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
-  ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // TODO: Add for production
+  // ['BAL' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['CRV' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['LINK' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
 };
 
 // reexport so we can forbit config import

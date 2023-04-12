@@ -23,7 +23,15 @@ const getGoerliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
   return {
     market: marketsData[market],
     ghoTokenAddress: '0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211'.toLowerCase(),
-    uiGhoDataProviderAddress: '0xeb939bA0D4CFA94a401569dD1056161ed2b49798'.toLowerCase(),
+    uiGhoDataProviderAddress: '0xe9a16936340097B71370a973363176CA670D666C'.toLowerCase(),
+  };
+};
+
+const getSepoliGhoConfig = (market: CustomMarket): GhoMarketConfig => {
+  return {
+    market: marketsData[market],
+    ghoTokenAddress: '0x5d00fab5f2F97C4D682C1053cDCAA59c2c37900D'.toLowerCase(),
+    uiGhoDataProviderAddress: '0xCC3B9A84d5AbC04fb73B2a8Fa67Be4335d55D594'.toLowerCase(),
   };
 };
 
@@ -57,7 +65,6 @@ export const createGhoSlice: StateCreator<
       ghoBaseVariableBorrowRate: '0',
       ghoDiscountedPerToken: '0',
       ghoDiscountRate: '0',
-      ghoDiscountLockPeriod: '0',
       ghoMinDebtTokenBalanceForDiscount: '0',
       ghoMinDiscountTokenBalanceForDiscount: '0',
       ghoReserveLastUpdateTimestamp: '0',
@@ -70,21 +77,29 @@ export const createGhoSlice: StateCreator<
       userDiscountTokenBalance: '0',
       userPreviousGhoBorrowIndex: '0',
       userGhoScaledBorrowBalance: '0',
-      userDiscountLockPeriodEndTimestamp: '0',
     },
     ghoReserveDataFetched: false,
     ghoUserDataFetched: false,
     ghoMarketConfig: () => {
       const currentMarket = get().currentMarket;
+
       if (GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
         if (STAGING_ENV || ENABLE_TESTNET) {
-          return getGoerliGhoConfig(currentMarket);
+          if (currentMarket.endsWith('proto_sepolia_gho_v3')) {
+            return getSepoliGhoConfig(currentMarket);
+          } else {
+            return getGoerliGhoConfig(currentMarket);
+          }
         } else {
           return getMainnetGhoConfig(currentMarket);
         }
       } else {
         if (STAGING_ENV || ENABLE_TESTNET) {
-          return getGoerliGhoConfig(CustomMarket.proto_goerli_gho_v3);
+          if (currentMarket === 'proto_sepolia_gho_v3') {
+            return getSepoliGhoConfig(CustomMarket.proto_sepolia_gho_v3);
+          } else {
+            return getGoerliGhoConfig(CustomMarket.proto_goerli_gho_v3);
+          }
         } else {
           return getMainnetGhoConfig(CustomMarket.proto_mainnet);
         }
@@ -97,29 +112,40 @@ export const createGhoSlice: StateCreator<
       if (!STAGING_ENV || ENABLE_TESTNET) return;
 
       const account = get().account;
+
       const ghoService = new GhoService({
         provider: getProvider(ghoConfig.market.chainId),
         uiGhoDataProviderAddress: ghoConfig.uiGhoDataProviderAddress,
       });
 
       if (account) {
-        const [ghoReserveData, ghoUserData] = await Promise.all([
-          ghoService.getGhoReserveData(),
-          ghoService.getGhoUserData(account),
-        ]);
-        set({
-          ghoReserveData: ghoReserveData,
-          ghoUserData: ghoUserData,
-          ghoReserveDataFetched: true,
-          ghoUserDataFetched: true,
-        });
+        try {
+          const [ghoReserveData, ghoUserData] = await Promise.all([
+            ghoService.getGhoReserveData(),
+            ghoService.getGhoUserData(account),
+          ]);
+
+          set({
+            ghoReserveData: ghoReserveData,
+            ghoUserData: ghoUserData,
+            ghoReserveDataFetched: true,
+            ghoUserDataFetched: true,
+          });
+        } catch (err) {
+          console.log('error:', err);
+        }
       } else {
-        const ghoReserveData = await ghoService.getGhoReserveData();
-        set({
-          ghoReserveData: ghoReserveData,
-          ghoReserveDataFetched: true,
-          ghoUserDataFetched: false,
-        });
+        try {
+          const ghoReserveData = await ghoService.getGhoReserveData();
+
+          set({
+            ghoReserveData: ghoReserveData,
+            ghoReserveDataFetched: true,
+            ghoUserDataFetched: false,
+          });
+        } catch (err) {
+          console.log('error:', err);
+        }
       }
     },
   };

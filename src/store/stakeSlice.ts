@@ -4,7 +4,12 @@ import {
   UiStakeDataProvider,
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import {
+  goerliStakeConfig,
+  prodStakeConfig,
+  sepoliaStakeConfig,
+  StakeConfig,
+} from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
@@ -73,6 +78,8 @@ export interface StakeSlice {
     token: string;
     amount: string;
   }) => Promise<EthereumTransactionTypeExtended[]>;
+  getStakeConfig: () => StakeConfig;
+
   redeem: (token: string) => (amount: string) => Promise<EthereumTransactionTypeExtended[]>;
 }
 
@@ -82,20 +89,34 @@ export const createStakeSlice: StateCreator<
   [],
   StakeSlice
 > = (set, get) => {
+  function getCurrentStakeConfig() {
+    const currentNetworkConfig = get().currentNetworkConfig;
+
+    if (currentNetworkConfig.name === 'Ethereum Sepolia') {
+      return sepoliaStakeConfig;
+    }
+
+    if (currentNetworkConfig.name === 'Ethereum Görli') {
+      return goerliStakeConfig;
+    }
+
+    return prodStakeConfig;
+  }
+
   function getCorrectProvider() {
     const currentNetworkConfig = get().currentNetworkConfig;
     const isStakeFork =
       currentNetworkConfig.isFork &&
-      currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
+      currentNetworkConfig.underlyingChainId === getCurrentStakeConfig().chainId;
 
-    return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
+    return isStakeFork ? get().jsonRpcProvider() : getProvider(getCurrentStakeConfig().chainId);
   }
   return {
     stakeDataLoading: true,
     refetchStakeData: async () => {
       const uiStakeDataProvider = new UiStakeDataProvider({
         provider: getCorrectProvider(),
-        uiStakeDataProvider: stakeConfig.stakeDataProvider,
+        uiStakeDataProvider: getCurrentStakeConfig().stakeDataProvider,
       });
       const promises: Promise<void>[] = [];
       try {
@@ -126,17 +147,22 @@ export const createStakeSlice: StateCreator<
     signStakingApproval({ token, amount }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: getCurrentStakeConfig().tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
       return service.signStaking(currentUser, amount);
     },
+    getStakeConfig() {
+      const stakeConfig = getCurrentStakeConfig();
+
+      return stakeConfig;
+    },
     stakeWithPermit({ token, amount, signature }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: getCurrentStakeConfig().tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
       return service.stakeWithPermit(currentUser, amount, signature);
@@ -144,7 +170,7 @@ export const createStakeSlice: StateCreator<
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
       });
       const currentUser = get().account;
       return service.stake(currentUser, amount, onBehalfOf);
@@ -153,7 +179,7 @@ export const createStakeSlice: StateCreator<
       const provider = getCorrectProvider();
       const currentAccount = get().account;
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[tokenName].TOKEN_STAKING,
       });
       return service.cooldown(currentAccount);
     },
@@ -161,7 +187,7 @@ export const createStakeSlice: StateCreator<
       const currentAccount = get().account;
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
       });
       return service.claimRewards(currentAccount, amount);
     },
@@ -169,7 +195,7 @@ export const createStakeSlice: StateCreator<
       const provider = getCorrectProvider();
       const currentAccount = get().account;
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[tokenName].TOKEN_STAKING,
       });
       return (amount) => service.redeem(currentAccount, amount);
     },

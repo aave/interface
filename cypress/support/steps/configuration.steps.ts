@@ -209,3 +209,21 @@ export const configEnvWithTenderlyGoerliGhoFork = ({
     enableTestnet: true,
   });
 };
+
+export const configEnvWithTenderlySepoliaGhoFork = ({
+  market = `fork_proto_sepolia_gho_v3`,
+  tokens,
+  v3,
+}: {
+  market?: string;
+  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
+  v3?: boolean;
+}) => {
+  configEnvWithTenderly({
+    chainId: ChainId.sepolia,
+    market,
+    tokens,
+    unpause: v3,
+    enableTestnet: true,
+  });
+};

@@ -17,6 +17,8 @@ export const GHO_SUPPORTED_MARKETS = [
   'fork_proto_goerli_gho_v3',
   'proto_mainnet_v3',
   'fork_proto_mainnet_v3',
+  'proto_sepolia_gho_v3',
+  'fork_proto_sepolia_gho_v3',
 ];
 
 /**

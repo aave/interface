@@ -1,33 +1,32 @@
 // TODO only for testnet removing market selections, ADD BACK for MAIN
-
-// import { ChevronDownIcon } from '@heroicons/react/outline';
-// import { Trans } from '@lingui/macro';
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import { Trans } from '@lingui/macro';
 import {
   Box,
-  // ListItemText,
-  // MenuItem,
-  // SvgIcon,
+  ListItemText,
+  MenuItem,
+  SvgIcon,
   TextField,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
-  // availableMarkets,
+  availableMarkets,
   CustomMarket,
-  // ENABLE_TESTNET,
+  ENABLE_TESTNET,
   MarketDataType,
   marketsData,
   networkConfigs,
-  // STAGING_ENV,
+  STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
-// import StyledToggleButton from './StyledToggleButton';
-// import StyledToggleButtonGroup from './StyledToggleButtonGroup';
+import StyledToggleButton from './StyledToggleButton';
+import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -37,7 +36,16 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 };
 
 export const getMarketHelpData = (marketName: string) => {
-  const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
+  const testChains = [
+    'Görli',
+    'Sepolia',
+    'Ropsten',
+    'Mumbai',
+    'Fuji',
+    'Testnet',
+    'Kovan',
+    'Rinkeby',
+  ];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
   const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
@@ -92,27 +100,27 @@ export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   );
 };
 
-// enum SelectedMarketVersion {
-//   V2,
-//   V3,
-// }
+enum SelectedMarketVersion {
+  V2,
+  V3,
+}
 
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  // const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-  //   SelectedMarketVersion.V3
-  // );
+  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
+    SelectedMarketVersion.V3
+  );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  // const isV3MarketsAvailable = availableMarkets
-  //   .map((marketId: CustomMarket) => {
-  //     const { market } = getMarketInfoById(marketId);
+  const isV3MarketsAvailable = availableMarkets
+    .map((marketId: CustomMarket) => {
+      const { market } = getMarketInfoById(marketId);
 
-  //     return market.v3;
-  //   })
-  //   .some((item) => !!item);
+      return market.v3;
+    })
+    .some((item) => !!item);
 
   return (
     <TextField
@@ -130,12 +138,17 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: () => null, // Todo remove on main
+        IconComponent: (props) => (
+          <SvgIcon fontSize="medium" {...props}>
+            <ChevronDownIcon />
+          </SvgIcon>
+        ), // Todo remove on main
         // <SvgIcon fontSize="medium" {...props}>
         //   <ChevronDownIcon />
         // </SvgIcon>
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -152,7 +165,11 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+                  {getMarketHelpData(market.marketTitle).name}{' '}
+                  {network.name === 'Ethereum Sepolia' || 'Ethereum Görli'
+                    ? getMarketHelpData(market.marketTitle).testChainName
+                    : ''}{' '}
+                  {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
                 {market.v3 && (
@@ -186,7 +203,7 @@ export const MarketSwitcher = () => {
           PaperProps: {
             style: {
               minWidth: 240,
-              display: 'none', // Todo remove on main
+              // display: 'none', // Todo remove on main
             },
             variant: 'outlined',
             elevation: 0,
@@ -194,15 +211,15 @@ export const MarketSwitcher = () => {
         },
       }}
     >
-      {/* <Box>
+      <Box>
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
           </Trans>
         </Typography>
-      </Box> */}
+      </Box>
 
-      {/* {isV3MarketsAvailable && (
+      {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
           <StyledToggleButtonGroup
             value={selectedMarketVersion}
@@ -254,7 +271,7 @@ export const MarketSwitcher = () => {
                 <Trans>Version 3</Trans>
               </Typography>
             </StyledToggleButton>
-            <StyledToggleButton
+            {/* <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -282,11 +299,11 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton>
+            </StyledToggleButton> */}
           </StyledToggleButtonGroup>
         </Box>
-      )} */}
-      {/* {availableMarkets.map((marketId: CustomMarket) => {
+      )}
+      {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (
@@ -318,7 +335,7 @@ export const MarketSwitcher = () => {
             </ListItemText>
           </MenuItem>
         );
-      })} */}
+      })}
     </TextField>
   );
 };

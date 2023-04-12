@@ -6,7 +6,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -28,9 +27,10 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
-  const [stakeGeneralResult, stakeUserResult] = useRootStore((state) => [
+  const [stakeGeneralResult, stakeUserResult, getStakeConfig] = useRootStore((state) => [
     state.stakeGeneralResult,
     state.stakeUserResult,
+    state.getStakeConfig,
   ]);
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
@@ -69,9 +69,10 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
 
   // is Network mismatched
   const stakingChain =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+    currentNetworkConfig.isFork &&
+    currentNetworkConfig.underlyingChainId === getStakeConfig().chainId
       ? currentChainId
-      : stakeConfig.chainId;
+      : getStakeConfig().chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
 
   const networkConfig = getNetworkConfig(stakingChain);

@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress';
 
 import { defaultConfig } from '../base.cypress';
 
-const folder = `./cypress/e2e/1-v3-markets/6-gho_goerli-v3-market/`;
+const folder = `./cypress/e2e/1-v3-markets/7-gho_sepolia-v3-market/`;
 
 export default defineConfig({
   ...defaultConfig,

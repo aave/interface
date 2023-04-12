@@ -51,6 +51,22 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [ChainId.sepolia]: {
+    name: 'Ethereum Sepolia',
+    privateJsonRPCUrl: 'https://eth-sepolia.g.alchemy.com/v2/DcgsmYhsMAhCarVoqRmSLnMUH2i__wlM',
+    publicJsonRPCUrl: [],
+    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.etherscan.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
+
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     privateJsonRPCUrl: 'https://eth-goerli.g.alchemy.com/v2/Svm_hYMBAm9sUyqpEVxtCi6WhefbBvdl',
