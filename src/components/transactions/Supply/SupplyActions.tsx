@@ -84,7 +84,7 @@ export const SupplyActions = React.memo(
         if (approvedAmount) {
           const fetchedRequiresApproval = checkRequiresApproval({
             approvedAmount: approvedAmount.amount,
-            amountToSupply,
+            amount: amountToSupply,
             signedAmount: signatureParams ? signatureParams.amount : '0',
           });
           setRequiresApproval(fetchedRequiresApproval);
