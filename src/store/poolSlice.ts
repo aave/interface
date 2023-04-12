@@ -110,7 +110,9 @@ export interface PoolSlice {
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
   getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
-  getCreditDelegationApprovedAmount: (args: Omit<ApproveDelegationType, 'user'>) => Promise<number>;
+  getCreditDelegationApprovedAmount: (
+    args: Omit<ApproveDelegationType, 'user' | 'amount'>
+  ) => Promise<ApproveDelegationType>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
 }
 
@@ -329,15 +331,18 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    getCreditDelegationApprovedAmount: async (args: Omit<ApproveDelegationType, 'user'>) => {
+    getCreditDelegationApprovedAmount: async (
+      args: Omit<ApproveDelegationType, 'user' | 'amount'>
+    ) => {
       const provider = get().jsonRpcProvider();
       const tokenERC20Service = new ERC20Service(provider);
       const debtTokenService = new BaseDebtToken(provider, tokenERC20Service);
+      const user = get().account;
       const approvedAmount = await debtTokenService.approvedDelegationAmount({
         ...args,
-        user: get().account,
+        user,
       });
-      return approvedAmount;
+      return { ...args, user, amount: approvedAmount.toString() };
     },
     generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => {
       const provider = get().jsonRpcProvider();
