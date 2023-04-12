@@ -132,7 +132,7 @@ export const createGhoSlice: StateCreator<
             ghoUserDataFetched: true,
           });
         } catch (err) {
-          console.log('error:', err);
+          console.log('error', err);
         }
       } else {
         try {
@@ -144,7 +144,7 @@ export const createGhoSlice: StateCreator<
             ghoUserDataFetched: false,
           });
         } catch (err) {
-          console.log('error:', err);
+          console.log('error', err);
         }
       }
     },
