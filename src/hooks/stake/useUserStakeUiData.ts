@@ -8,7 +8,7 @@ export const useUserStakeUiData = () => {
   const user = useRootStore((store) => store.account);
   return useQuery({
     queryFn: () => uiStakeDataService.getUserStakeUIDataHumanized({ user }),
-    queryKey: [QueryKeys.USER_STAKE_UI_DATA, user],
+    queryKey: [QueryKeys.USER_STAKE_UI_DATA, user, uiStakeDataService.toHash()],
     enabled: !!user,
     initialData: null,
     refetchInterval: POLLING_INTERVAL,

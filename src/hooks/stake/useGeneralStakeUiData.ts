@@ -6,7 +6,7 @@ export const useGeneralStakeUiData = () => {
   const { uiStakeDataService } = useSharedDependencies();
   return useQuery({
     queryFn: () => uiStakeDataService.getGeneralStakeUIDataHumanized(),
-    queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA],
+    queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA, uiStakeDataService.toHash()],
     refetchInterval: POLLING_INTERVAL,
   });
 };
