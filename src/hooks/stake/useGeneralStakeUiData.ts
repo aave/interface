@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { POOLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
+import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export const useGeneralStakeUiData = () => {
@@ -7,6 +7,6 @@ export const useGeneralStakeUiData = () => {
   return useQuery({
     queryFn: () => uiStakeDataService.getGeneralStakeUIDataHumanized(),
     queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA],
-    refetchInterval: POOLING_INTERVAL,
+    refetchInterval: POLLING_INTERVAL,
   });
 };

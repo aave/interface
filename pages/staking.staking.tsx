@@ -19,16 +19,14 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
-import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();
-  const user = useRootStore((state) => state.account);
 
-  const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData({ user });
+  const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData();
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData();
 

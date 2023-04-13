@@ -7,7 +7,6 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -37,9 +36,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
-  const user = useRootStore((state) => state.account);
-
-  const { data: stakeUserResult } = useUserStakeUiData({ user });
+  const { data: stakeUserResult } = useUserStakeUiData();
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
 
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
