@@ -14,10 +14,7 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance();
   const [reserves, baseCurrencyData] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),

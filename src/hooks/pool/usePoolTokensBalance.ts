@@ -3,13 +3,11 @@ import { useRootStore } from 'src/store/root';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-type UsePoolTokensBalance = {
-  lendingPoolAddressProvider: string;
-};
-
-export const usePoolTokensBalance = ({ lendingPoolAddressProvider }: UsePoolTokensBalance) => {
+export const usePoolTokensBalance = () => {
   const { poolTokensBalanceService } = useSharedDependencies();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
+  const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   return useQuery({
     queryFn: () =>
       poolTokensBalanceService.getPoolTokensBalances({ user, lendingPoolAddressProvider }),
