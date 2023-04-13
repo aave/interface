@@ -33,7 +33,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const governanceWalletBalanceService = new WalletBalanceService(
     governanceProvider,
     governanceConfig.walletBalanceProvider,
-    currentMarketData.chainId
+    governanceChainId
   );
   return (
     <SharedDependenciesContext.Provider
