@@ -24,6 +24,7 @@ declare module '@mui/material/styles/createPalette' {
 
   interface TypeText {
     muted: string;
+    custom1: string;
   }
 
   interface TypeBackground {
@@ -32,6 +33,7 @@ declare module '@mui/material/styles/createPalette' {
     surface: string;
     header: string;
     disabled: string;
+    custom1: string;
   }
 
   interface Palette {
@@ -177,6 +179,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         secondary: getColor('#27282B', '#A5A8B6'),
         disabled: getColor('#2f2f37', '#62677B'),
         muted: getColor('#2f2f37', '#8E92A3'),
+        custom1: getColor('#52545b', '#8E92A3'),
       },
       background: {
         default: getColor('#FEFEFE', '#1B2030'),
@@ -184,6 +187,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         surface: getColor('#F7F7F9', '#383D51'),
         header: getColor('#FFEDEB', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        custom1: getColor('#EBEBEF8F', '#EBEBEF4D'),
       },
       shadow: {
         markets: getColor('#FFEDEB', '#EBEBEF1F'),

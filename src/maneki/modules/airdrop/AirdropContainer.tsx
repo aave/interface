@@ -278,6 +278,7 @@ export const AirdropContainer = () => {
               alignItems: 'flex-start',
               position: 'relative',
               height: '100%',
+              mb: '16px',
             }}
           >
             <Paper
@@ -286,6 +287,7 @@ export const AirdropContainer = () => {
                 px: { xs: 4, xsm: 6 },
                 py: { xs: 3.5, xsm: 4 },
                 borderRadius: '10px',
+                mr: '16px',
               }}
             >
               <Typography variant="h3" color="text.secondary" sx={{ p: '8px 16px' }}>
@@ -312,18 +314,21 @@ export const AirdropContainer = () => {
                 py: { xs: 3.5, xsm: 4 },
                 borderRadius: '10px',
                 display: 'flex',
-                height: '100%',
               }}
             >
               {!entry ? (
-                <Typography variant="h4">You are not eligle to claim from venus</Typography>
+                <Typography variant="h4">
+                  <Trans>You are not eligle to claim from venus</Trans>
+                </Typography>
               ) : isClaimed ? (
-                <Typography variant="h4">You already claimed venus</Typography>
+                <Typography variant="h4">
+                  <Trans>You already claimed venus</Trans>
+                </Typography>
               ) : (
                 <>
                   <Typography variant="h4">
-                    (Venus) You are eligle to claim airdrop of {entry.amount / 1000000000000000000}{' '}
-                    PAW
+                    (Venus) <Trans>You are eligle to claim airdrop of</Trans>{' '}
+                    {entry.amount / 1000000000000000000} PAW
                   </Typography>
 
                   <Button
@@ -341,32 +346,80 @@ export const AirdropContainer = () => {
             </Paper>
           </Box>
           {/*socmed section */}
-          <Paper sx={{ width: paperWidth }}>
-            {!entrySocmed ? (
-              <Paper>You are not eligle to claim from socmed</Paper>
-            ) : isClaimedSocmed ? (
-              <Paper>You already claimed socmed</Paper>
-            ) : (
-              <>
-                <Box>
-                  (Socmed) You are eligle to claim airdrop of{' '}
-                  {entrySocmed.amount / 1000000000000000000} PAW
-                </Box>
-                <Box>
-                  <Button
-                    //   disabled={!isActive}
-                    onClick={() => {
-                      setCurrentSelectedAirdrop(1);
-                      openAirDrop();
-                    }}
-                    variant="contained"
-                  >
-                    <Trans>claim airdrop</Trans>
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Paper>
+          <Box>
+            <Paper
+              sx={(theme) => ({
+                width: '50%',
+                px: { xs: 4, xsm: 6 },
+                py: { xs: 3.5, xsm: 4 },
+                borderRadius: '10px',
+                m: 'auto',
+                boxShadow: `0px 4px 250px ${theme.palette.shadow.markets}`,
+              })}
+            >
+              <Box>
+                <Typography variant="h2" color="text.secondary" sx={{ ml: '16px' }}>
+                  Social Media Airdrop (<Trans>{statusOfAirdrop}</Trans>)
+                </Typography>
+                <List sx={{ mt: '16px' }}>
+                  <ListItem disablePadding={true} sx={{ p: '0 16px' }}>
+                    <ListItemText>
+                      - <Trans>This airdrop is distributed to Social Media members.</Trans>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem disablePadding={true} sx={{ p: '0 16px' }}>
+                    <ListItemText>
+                      - <Trans>This is a one-time airdrop.</Trans>
+                    </ListItemText>
+                  </ListItem>
+                </List>
+              </Box>
+              <Box
+                sx={{
+                  // borderTop: '1px solid #0000001F',
+                  // p: '16px',
+                  position: 'relative',
+                  width: '100%',
+                }}
+              >
+                {!entrySocmed ? (
+                  <Typography variant="h4">
+                    <Trans>You are not eligle to claim from socmed</Trans>
+                  </Typography>
+                ) : isClaimedSocmed ? (
+                  <Typography variant="h4">
+                    <Trans>You already claimed socmed</Trans>
+                  </Typography>
+                ) : (
+                  <Box sx={{ display: 'flex', alignItems: 'center', p: '24px' }}>
+                    <Typography
+                      sx={{
+                        width: '80%',
+                        fontWeight: 'bold',
+                        p: '14px',
+                        backgroundColor: 'background.custom1',
+                        mr: '12px',
+                        borderRadius: '4px',
+                      }}
+                    >
+                      {entrySocmed.amount / 1000000000000000000} PAW
+                    </Typography>
+                    <Button
+                      //   disabled={!isActive}
+                      onClick={() => {
+                        setCurrentSelectedAirdrop(1);
+                        openAirDrop();
+                      }}
+                      variant="contained"
+                      sx={{ width: '20%', display: 'block', p: '12px', borderRadius: '4px' }}
+                    >
+                      <Trans>Claim</Trans>
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            </Paper>
+          </Box>
         </>
       )}
     </Box>
