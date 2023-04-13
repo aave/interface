@@ -19,6 +19,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -129,8 +130,9 @@ export const BorrowModalContent = ({
   const handleChange = (_value: string) => {
     const maxSelected = _value === '-1';
     const value = maxSelected ? maxAmountToBorrow.toString() : _value;
-    amountRef.current = value;
-    setAmount(value);
+    const decimalTruncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
+    amountRef.current = decimalTruncatedValue;
+    setAmount(decimalTruncatedValue);
   };
 
   // health factor calculations
