@@ -17,6 +17,7 @@ import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
@@ -59,7 +60,8 @@ export const SupplyModalContent = React.memo(
     } = useRootStore();
 
     // states
-    const [_amount, setAmount] = useState('');
+    const [amount, setAmount] = useState('');
+    const [maxSelected, setMaxSelected] = useState(false);
     const amountRef = useRef<string>();
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
@@ -74,13 +76,14 @@ export const SupplyModalContent = React.memo(
       underlyingAsset,
       minRemainingBaseTokenBalance
     );
-    const isMaxSelected = _amount === '-1';
-    const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
 
     const handleChange = (value: string) => {
-      const maxSelected = value === '-1';
-      amountRef.current = maxSelected ? maxAmountToSupply.toString(10) : value;
-      setAmount(value);
+      const isMaxSelected = value === '-1';
+      const inputValue = maxSelected ? maxAmountToSupply.toString(10) : value;
+      const decimalTruncatedValue = roundToTokenDecimals(inputValue, poolReserve.decimals);
+      amountRef.current = decimalTruncatedValue;
+      setAmount(decimalTruncatedValue);
+      setMaxSelected(isMaxSelected);
     };
 
     // Calculation of future HF
@@ -231,7 +234,7 @@ export const SupplyModalContent = React.memo(
             },
           ]}
           capType={CapType.supplyCap}
-          isMaxSelected={isMaxSelected}
+          isMaxSelected={maxSelected}
           disabled={supplyTxState.loading}
           maxValue={maxAmountToSupply.toString(10)}
           balanceText={<Trans>Wallet balance</Trans>}
@@ -243,7 +246,7 @@ export const SupplyModalContent = React.memo(
           </Typography>
         )}
 
-        <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(_amount) === 0}>
+        <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
           <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
           <DetailsIncentivesLine
             incentives={poolReserve.aIncentivesData}
@@ -251,7 +254,7 @@ export const SupplyModalContent = React.memo(
           />
           <DetailsCollateralLine collateralType={collateralType} />
           <DetailsHFLine
-            visibleHfChange={!!_amount}
+            visibleHfChange={!!amount}
             healthFactor={user ? user.healthFactor : '-1'}
             futureHealthFactor={healthFactorAfterDeposit.toString(10)}
           />
