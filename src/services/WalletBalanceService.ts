@@ -16,11 +16,15 @@ interface GovernanceTokensBalance {
 
 type GetPoolWalletBalances = {
   user: string;
-  poolAddress: string;
+  lendingPoolAddressProvider: string;
+};
+
+type UserPoolTokensBalances = {
+  address: string;
+  amount: string;
 };
 
 export class WalletBalanceService implements Hashable {
-  
   private readonly walletBalanceService: WalletBalanceProvider;
 
   constructor(
@@ -50,11 +54,14 @@ export class WalletBalanceService implements Hashable {
     };
   }
 
-  async getPoolTokensBalances({ user, poolAddress }: GetPoolWalletBalances) {
+  async getPoolTokensBalances({
+    user,
+    lendingPoolAddressProvider,
+  }: GetPoolWalletBalances): Promise<UserPoolTokensBalances[]> {
     const { 0: tokenAddresses, 1: balances } =
       await this.walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
         user,
-        poolAddress
+        lendingPoolAddressProvider
       );
     const mappedBalances = tokenAddresses.map((address, ix) => ({
       address: address.toLowerCase(),

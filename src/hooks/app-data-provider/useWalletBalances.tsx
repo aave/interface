@@ -14,19 +14,17 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const user = useRootStore((state) => state.account);
   const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const { data: balances } = usePoolTokensBalance({
-    user,
-    poolAddress: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance({
+    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
   });
   const [reserves, baseCurrencyData] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
   ]);
 
+  const walletBalances = balances ?? [];
   // process data
-  const walletBalances = balances || [];
   let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
@@ -59,6 +57,6 @@ export const useWalletBalances = () => {
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
-    loading: !walletBalances.length || !reserves.length,
+    loading: balancesLoading || !reserves.length,
   };
 };
