@@ -133,7 +133,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
             }}
           >
             <CapsCircularStatus
-              value={ghoReserveData.aaveFacilitatorMintedPercent}
+              value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
               tooltipContent={
                 <>
                   <Trans>
