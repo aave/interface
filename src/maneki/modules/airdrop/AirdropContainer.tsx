@@ -264,12 +264,12 @@ export const AirdropContainer = () => {
   }
 
   if (loading) {
-    return <ManekiLoadingPaper text="Loading..." withCircle />;
+    return <ManekiLoadingPaper description="Loading..." withCircle />;
   }
   return (
     <>
       {merkleRoot == '' || merkleRootSocmed == '' ? (
-        <ManekiLoadingPaper text="Generating Hashes..." withCircle />
+        <ManekiLoadingPaper description="Generating Hashes..." withCircle />
       ) : (
         <>
           <Box

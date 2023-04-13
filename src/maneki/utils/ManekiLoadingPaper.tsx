@@ -3,11 +3,11 @@ import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/
 import LoveManeki from '/public/loveManeki.svg';
 
 interface ManekiLoadingPaperProps extends PaperProps {
-  text?: string;
+  description?: string;
   withCircle?: boolean;
 }
 export default function ManekiLoadingPaper({
-  text,
+  description,
   withCircle,
   sx,
   ...rest
@@ -35,7 +35,7 @@ export default function ManekiLoadingPaper({
         }}
       />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
-        {text}
+        {description}
       </Typography>
       {withCircle ? <CircularProgress /> : <></>}
     </Paper>
