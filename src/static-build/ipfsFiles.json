@@ -2862,6 +2862,19 @@
       "ipfsHash": "QmPogBzKst8fwianPCFh1K2fY37z29X2BRv1nDdfejTWjW",
       "originalHash": "0x15c80b04cf6ba566a61b13f4a403bda6d13ecdd1cd5aec5ae50841a582050105",
       "id": 201
+    },
+    {
+      "title": "ACI Service Provider Proposal",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "ACI Service Provider Proposal",
+      "discussions": "https://governance.aave.com/t/arfc-aci-service-provider-6-month-proposal/12513",
+      "created": "2023-04-12T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis AIP proposal presents Aave with the …",
+      "basename": "ACI_SERVICE_PROVIDER_PROPOSAL",
+      "description": "\n\n## Simple Summary\n\nThis AIP proposal presents Aave with the opportunity to onboard Aave-Chan Initiative (ACI) as a service provider for the Aave protocol.\n\n## Motivation\n\nThe Aave Chan Initiative has been a dedicated contributor to the Aave ecosystem. The 6-Month Budget Proposal aims to secure the necessary resources to continue the ACI's work, ensuring that we can maintain our level of commitment and contribution to the Aave ecosystem. For more details about the ACI proposal, please refer to the [TEMP CHECK](https://governance.aave.com/t/temp-check-aave-chan-initiative-6-month-budget-proposal/12344) version of the current proposal.\n\n## Specification\n\nIf this proposal is approved, a stream of the allocated budget will be activated, with [treasury.aavechan.eth](https://etherscan.io/address/0x57ab7ee15cE5ECacB1aB84EE42D5A9d0d8112922) as the recipient.\n\nThis will allow the ACI to periodically claim a fraction of the budget for the duration of the stream.\n\nThe proposed budget is 250k aUSDT for a period of 6 months.\n\nThe proposal payload uses the delegatecall pattern with a pre-deployed payload. The payload creates a 180 days stream with the following parameters:\n\n```solidity\ncontract ProposalPayload is IProposalGenericExecutor {\n  address public constant ACI_TREASURY = 0x57ab7ee15cE5ECacB1aB84EE42D5A9d0d8112922;\n  address public constant AUSDT = AaveV2EthereumAssets.USDT_A_TOKEN;\n  address public constant COLLECTOR = AaveV2Ethereum.COLLECTOR;\n  address public constant RESERVE_CONTROLLER = AaveV2Ethereum.COLLECTOR_CONTROLLER;\n  uint256 public constant STREAM_AMOUNT = 250000e6;\n  uint256 public constant STREAM_DURATION = 180 days;\n\n  function execute() external {\n    uint256 ACTUAL_STREAM_AMOUNT_AUSDT = (STREAM_AMOUNT / STREAM_DURATION) * STREAM_DURATION;\n\n    IAaveEcosystemReserveController(RESERVE_CONTROLLER).createStream(\n      COLLECTOR,\n      ACI_TREASURY,\n      ACTUAL_STREAM_AMOUNT_AUSDT,\n      AUSDT,\n      block.timestamp,\n      block.timestamp + STREAM_DURATION\n    );\n  }\n}\n```\t\n\n## References\n\nA list of relevant links like for this proposal:\n\n- [forum discussion](https://governance.aave.com/t/arfc-aci-service-provider-6-month-proposal/12513)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3ACIProposal_20230411/AaveV3ACIProposal_20230411Test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3ACIProposal_20230411/AaveV3ACIProposal_20230411.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).",
+      "ipfsHash": "QmNwMhfhsTEFY5oGQtjaimRwS2e2EKCQ9rKB3DTdCnwgX1",
+      "originalHash": "0x08e41909ee73087b8cfd0f31a95771ec7321e072e77660c4b9bbc400566b3f68",
+      "id": 202
     }
   ]
 }
