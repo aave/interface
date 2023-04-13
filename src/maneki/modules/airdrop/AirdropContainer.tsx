@@ -19,6 +19,7 @@ import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
+import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
 import randomAddrs from './devRandAddr';
 import randomAddrs2 from './devRandAddr2';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
@@ -154,8 +155,8 @@ export const AirdropContainer = () => {
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(40% - 12px)' : '100%';
   const statusOfAirdrop = 'Ongoing';
   React.useEffect(() => {
@@ -183,8 +184,8 @@ export const AirdropContainer = () => {
 
     // DEV : remove prompts
     if (!entryFound) {
-      // const addr = prompt('DEV -- please enter eligible address') as string;
-      const addr = '0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F';
+      const addr = prompt('DEV -- please enter eligible address') as string;
+      // const addr = '0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F';
       const newEntry = dataArr.find((e) => e.address == addr);
       entryFound = newEntry;
       entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
@@ -263,12 +264,12 @@ export const AirdropContainer = () => {
   }
 
   if (loading) {
-    return <Paper> Loading.. </Paper>;
+    return <ManekiLoadingPaper text="Loading..." withCircle />;
   }
   return (
-    <Box>
+    <>
       {merkleRoot == '' || merkleRootSocmed == '' ? (
-        <Box>Generating hashes..</Box>
+        <ManekiLoadingPaper text="Generating Hashes..." withCircle />
       ) : (
         <>
           <Box
@@ -376,8 +377,6 @@ export const AirdropContainer = () => {
               </Box>
               <Box
                 sx={{
-                  // borderTop: '1px solid #0000001F',
-                  // p: '16px',
                   position: 'relative',
                   width: '100%',
                 }}
@@ -422,6 +421,6 @@ export const AirdropContainer = () => {
           </Box>
         </>
       )}
-    </Box>
+    </>
   );
 };
