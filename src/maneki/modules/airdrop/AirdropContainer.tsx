@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper } from '@mui/material';
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
@@ -144,7 +154,10 @@ export const AirdropContainer = () => {
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
-
+  const { breakpoints } = useTheme();
+  const isDesktop = useMediaQuery(breakpoints.up('lg'));
+  const paperWidth = isDesktop ? 'calc(40% - 12px)' : '100%';
+  const statusOfAirdrop = 'Ongoing';
   React.useEffect(() => {
     // get entries
     const dataArr: entryType[] = randomAddrs;
@@ -170,7 +183,8 @@ export const AirdropContainer = () => {
 
     // DEV : remove prompts
     if (!entryFound) {
-      const addr = prompt('DEV -- please enter eligible address') as string;
+      // const addr = prompt('DEV -- please enter eligible address') as string;
+      const addr = '0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F';
       const newEntry = dataArr.find((e) => e.address == addr);
       entryFound = newEntry;
       entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
@@ -251,26 +265,67 @@ export const AirdropContainer = () => {
   if (loading) {
     return <Paper> Loading.. </Paper>;
   }
-
   return (
-    <Paper>
+    <Box>
       {merkleRoot == '' || merkleRootSocmed == '' ? (
         <Box>Generating hashes..</Box>
       ) : (
-        <Box>
-          {/*Venus section */}
-          <Box>
-            {!entry ? (
-              <Paper>You are not eligle to claim from venus</Paper>
-            ) : isClaimed ? (
-              <Paper>You already claimed venus</Paper>
-            ) : (
-              <>
-                <Box>
-                  (Venus) You are eligle to claim airdrop of {entry.amount / 1000000000000000000}{' '}
-                  PAW
-                </Box>
-                <Box>
+        <>
+          <Box
+            sx={{
+              display: isDesktop ? 'flex' : 'block',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              position: 'relative',
+              height: '100%',
+            }}
+          >
+            <Paper
+              sx={{
+                width: paperWidth,
+                px: { xs: 4, xsm: 6 },
+                py: { xs: 3.5, xsm: 4 },
+                borderRadius: '10px',
+              }}
+            >
+              <Typography variant="h3" color="text.secondary" sx={{ p: '8px 16px' }}>
+                Venus Airdrop (<Trans>{statusOfAirdrop}</Trans>)
+              </Typography>
+              <List>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This airdrop is distributed to Venus members.</Trans>
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This is a one-time airdrop.</Trans>
+                  </ListItemText>
+                </ListItem>
+              </List>
+            </Paper>
+            {/*Venus section */}
+            <Paper
+              sx={{
+                width: paperWidth,
+                px: { xs: 4, xsm: 6 },
+                py: { xs: 3.5, xsm: 4 },
+                borderRadius: '10px',
+                display: 'flex',
+                height: '100%',
+              }}
+            >
+              {!entry ? (
+                <Typography variant="h4">You are not eligle to claim from venus</Typography>
+              ) : isClaimed ? (
+                <Typography variant="h4">You already claimed venus</Typography>
+              ) : (
+                <>
+                  <Typography variant="h4">
+                    (Venus) You are eligle to claim airdrop of {entry.amount / 1000000000000000000}{' '}
+                    PAW
+                  </Typography>
+
                   <Button
                     //   disabled={!isActive}
                     onClick={() => {
@@ -279,15 +334,14 @@ export const AirdropContainer = () => {
                     }}
                     variant="contained"
                   >
-                    <Trans>claim airdrop</Trans>
+                    <Trans>Claim</Trans>
                   </Button>
-                </Box>
-              </>
-            )}
+                </>
+              )}
+            </Paper>
           </Box>
-
           {/*socmed section */}
-          <Box>
+          <Paper sx={{ width: paperWidth }}>
             {!entrySocmed ? (
               <Paper>You are not eligle to claim from socmed</Paper>
             ) : isClaimedSocmed ? (
@@ -312,9 +366,9 @@ export const AirdropContainer = () => {
                 </Box>
               </>
             )}
-          </Box>
-        </Box>
+          </Paper>
+        </>
       )}
-    </Paper>
+    </Box>
   );
 };
