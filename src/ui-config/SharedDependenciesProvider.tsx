@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { GovernanceService } from 'src/services/GovernanceService';
-import { UiStakeDataService } from 'src/Services/UiStakeDataService';
+import { UiStakeDataService } from 'src/services/UiStakeDataService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -24,15 +24,14 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const governanceChainId = isGovernanceFork ? currentMarketData.chainId : governanceConfig.chainId;
-
-  // providers
-  const currentProvider = getProvider(currentMarketData.chainId);
   const isStakeFork =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
 
-  // providers
+  const governanceChainId = isGovernanceFork ? currentMarketData.chainId : governanceConfig.chainId;
+  const stakingChainId = isStakeFork ? currentMarketData.chainId : stakeConfig.chainId;
 
+  // providers
+  const currentProvider = getProvider(currentMarketData.chainId);
   const governanceProvider = isGovernanceFork
     ? currentProvider
     : getProvider(governanceConfig.chainId);
@@ -50,11 +49,20 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
     currentMarketData.chainId
   );
-  const uiStakeDataService = new UiStakeDataService(stakeProvider, stakeConfig.stakeDataProvider);
+  const uiStakeDataService = new UiStakeDataService(
+    stakeProvider,
+    stakeConfig.stakeDataProvider,
+    stakingChainId
+  );
 
   return (
     <SharedDependenciesContext.Provider
-      value={{ governanceService, governanceWalletBalanceService, poolTokensBalanceService, uiStakeDataService }}
+      value={{
+        governanceService,
+        governanceWalletBalanceService,
+        poolTokensBalanceService,
+        uiStakeDataService,
+      }}
     >
       {children}
     </SharedDependenciesContext.Provider>

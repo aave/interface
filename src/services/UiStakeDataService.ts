@@ -1,5 +1,6 @@
 import { UiStakeDataProvider } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
+import { Hashable } from 'src/utils/types';
 
 export type StakeGeneralUiData = {
   usdPriceEth: string;
@@ -47,10 +48,14 @@ type GetUserStakeUIDataHumanizedParams = {
   user: string;
 };
 
-export class UiStakeDataService {
+export class UiStakeDataService implements Hashable {
   private readonly stakeDataService: UiStakeDataProvider;
 
-  constructor(provider: Provider, stakeDataProviderAddress: string) {
+  constructor(
+    provider: Provider,
+    stakeDataProviderAddress: string,
+    public readonly chainId: number
+  ) {
     this.stakeDataService = new UiStakeDataProvider({
       uiStakeDataProvider: stakeDataProviderAddress,
       provider,
@@ -63,5 +68,9 @@ export class UiStakeDataService {
 
   async getUserStakeUIDataHumanized({ user }: GetUserStakeUIDataHumanizedParams) {
     return this.stakeDataService.getUserStakeUIDataHumanized({ user });
+  }
+
+  public toHash() {
+    return this.chainId.toString();
   }
 }
