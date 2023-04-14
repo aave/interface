@@ -232,7 +232,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(28),
-        color: '#121418',
+        color: 'text.primary',
       },
       h2: {
         fontFamily: FONT,
@@ -240,7 +240,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: 'unset',
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
-        color: '#121418',
+        color: 'text.primary',
       },
       h3: {
         fontFamily: FONT,

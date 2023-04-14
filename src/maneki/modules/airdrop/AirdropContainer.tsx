@@ -1,25 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { List, ListItem, ListItemText, Paper } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
-import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
+import AirdropContentWrapper from './AirdropContentWrapper';
 import randomAddrs from './devRandAddr';
 import randomAddrs2 from './devRandAddr2';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
@@ -127,7 +117,6 @@ const getMerkleProof = (inputArray: string[], n: number) => {
 }; // getMerkleProof
 
 export const AirdropContainer = () => {
-  const { openAirDrop } = useModalContext();
   const { currentAccount, loading: web3Loading, provider, chainId } = useWeb3Context();
   const {
     merkleRoot,
@@ -149,16 +138,11 @@ export const AirdropContainer = () => {
     setReceiverSocmed,
     isClaimedSocmed,
     setIsClaimedSocmed,
-
-    setCurrentSelectedAirdrop,
   } = useAirdropContext();
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const paperWidth = isDesktop ? 'calc(40% - 12px)' : '100%';
-  const statusOfAirdrop = 'Ongoing';
+
   React.useEffect(() => {
     // get entries
     const dataArr: entryType[] = randomAddrs;
@@ -184,8 +168,8 @@ export const AirdropContainer = () => {
 
     // DEV : remove prompts
     if (!entryFound) {
-      const addr = prompt('DEV -- please enter eligible address') as string;
-      // const addr = '0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F';
+      // const addr = prompt('DEV -- please enter eligible address') as string;
+      const addr = '0x8bc3491E7D5AE64ebb59f6A1D2d19d89b166021d';
       const newEntry = dataArr.find((e) => e.address == addr);
       entryFound = newEntry;
       entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
@@ -272,28 +256,14 @@ export const AirdropContainer = () => {
         <ManekiLoadingPaper description="Generating Hashes..." withCircle />
       ) : (
         <>
-          <Box
-            sx={{
-              display: isDesktop ? 'flex' : 'block',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              position: 'relative',
-              height: '100%',
-              mb: '16px',
-            }}
-          >
-            <Paper
-              sx={{
-                width: paperWidth,
-                px: { xs: 4, xsm: 6 },
-                py: { xs: 3.5, xsm: 4 },
-                borderRadius: '10px',
-                mr: '16px',
-              }}
-            >
-              <Typography variant="h3" color="text.secondary" sx={{ p: '8px 16px' }}>
-                Venus Airdrop (<Trans>{statusOfAirdrop}</Trans>)
-              </Typography>
+          <AirdropContentWrapper
+            title="Venus"
+            mainHeader="Venus Airdrop"
+            airdropStatus="Ongoing"
+            entry={entry}
+            isClaimed={isClaimed}
+            setAirdropNumber={0}
+            description={
               <List>
                 <ListItem>
                   <ListItemText>
@@ -306,119 +276,31 @@ export const AirdropContainer = () => {
                   </ListItemText>
                 </ListItem>
               </List>
-            </Paper>
-            {/*Venus section */}
-            <Paper
-              sx={{
-                width: paperWidth,
-                px: { xs: 4, xsm: 6 },
-                py: { xs: 3.5, xsm: 4 },
-                borderRadius: '10px',
-                display: 'flex',
-              }}
-            >
-              {!entry ? (
-                <Typography variant="h4">
-                  <Trans>You are not eligle to claim from venus</Trans>
-                </Typography>
-              ) : isClaimed ? (
-                <Typography variant="h4">
-                  <Trans>You already claimed venus</Trans>
-                </Typography>
-              ) : (
-                <>
-                  <Typography variant="h4">
-                    (Venus) <Trans>You are eligle to claim airdrop of</Trans>{' '}
-                    {entry.amount / 1000000000000000000} PAW
-                  </Typography>
-
-                  <Button
-                    //   disabled={!isActive}
-                    onClick={() => {
-                      setCurrentSelectedAirdrop(0);
-                      openAirDrop();
-                    }}
-                    variant="contained"
-                  >
-                    <Trans>Claim</Trans>
-                  </Button>
-                </>
-              )}
-            </Paper>
-          </Box>
+            }
+          />
           {/*socmed section */}
-          <Box>
-            <Paper
-              sx={(theme) => ({
-                width: '50%',
-                px: { xs: 4, xsm: 6 },
-                py: { xs: 3.5, xsm: 4 },
-                borderRadius: '10px',
-                m: 'auto',
-                boxShadow: `0px 4px 250px ${theme.palette.shadow.markets}`,
-              })}
-            >
-              <Box>
-                <Typography variant="h2" color="text.secondary" sx={{ ml: '16px' }}>
-                  Social Media Airdrop (<Trans>{statusOfAirdrop}</Trans>)
-                </Typography>
-                <List sx={{ mt: '16px' }}>
-                  <ListItem disablePadding={true} sx={{ p: '0 16px' }}>
-                    <ListItemText>
-                      - <Trans>This airdrop is distributed to Social Media members.</Trans>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem disablePadding={true} sx={{ p: '0 16px' }}>
-                    <ListItemText>
-                      - <Trans>This is a one-time airdrop.</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </List>
-              </Box>
-              <Box
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                }}
-              >
-                {!entrySocmed ? (
-                  <Typography variant="h4">
-                    <Trans>You are not eligle to claim from socmed</Trans>
-                  </Typography>
-                ) : isClaimedSocmed ? (
-                  <Typography variant="h4">
-                    <Trans>You already claimed socmed</Trans>
-                  </Typography>
-                ) : (
-                  <Box sx={{ display: 'flex', alignItems: 'center', p: '24px' }}>
-                    <Typography
-                      sx={{
-                        width: '80%',
-                        fontWeight: 'bold',
-                        p: '14px',
-                        backgroundColor: 'background.custom1',
-                        mr: '12px',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      {entrySocmed.amount / 1000000000000000000} PAW
-                    </Typography>
-                    <Button
-                      //   disabled={!isActive}
-                      onClick={() => {
-                        setCurrentSelectedAirdrop(1);
-                        openAirDrop();
-                      }}
-                      variant="contained"
-                      sx={{ width: '20%', display: 'block', p: '12px', borderRadius: '4px' }}
-                    >
-                      <Trans>Claim</Trans>
-                    </Button>
-                  </Box>
-                )}
-              </Box>
-            </Paper>
-          </Box>
+          <AirdropContentWrapper
+            title="Social Media"
+            mainHeader="Social Media Airdrop"
+            airdropStatus="Ongoing"
+            entry={entrySocmed}
+            isClaimed={isClaimedSocmed}
+            setAirdropNumber={1}
+            description={
+              <List>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This airdrop is distributed to Social Media members.</Trans>
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This is a one-time airdrop.</Trans>
+                  </ListItemText>
+                </ListItem>
+              </List>
+            }
+          />
         </>
       )}
     </>
