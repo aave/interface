@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMediaQuery, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -31,7 +32,7 @@ export default function TopBarWarning() {
       <Box>
         <AppBar
           sx={{
-            padding: '8px, 12px, 8px, 12px',
+            padding: `8px, 12px, 8px, 12px`,
             background: '#000000',
             display: 'flex',
             alignItems: 'center',
@@ -42,21 +43,30 @@ export default function TopBarWarning() {
           position="static"
         >
           <Toolbar
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
+            sx={{
+              display: 'flex',
+              paddingRight: md ? 0 : '',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+            }}
             variant="dense"
           >
-            <Box>
+            <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
               <Typography component="div">
-                On April 24, 2023, E-mode parameters will be changed in accordance with the AIP.
-                Please read the proposal and adjust your open positions accordingly to avoid
-                liquidations.{' '}
+                <Trans>
+                  On April 24, 2023, E-mode parameters will be changed in accordance with the AIP.
+                  Please read the proposal and adjust your open positions accordingly to avoid
+                  liquidations.
+                </Trans>
+
                 {md ? (
                   <Link
-                    sx={{ color: 'white', textDecoration: 'underline' }}
+                    sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
                     target={'_blank'}
                     href="https://governance.aave.com/t/gauntlet-aave-v3-e-mode-methodology/12278"
                   >
-                    Learn more
+                    <Trans>Learn more</Trans>
                   </Link>
                 ) : null}
               </Typography>
@@ -76,12 +86,15 @@ export default function TopBarWarning() {
                     color: '#EAEBEF',
                   }}
                 >
-                  LEARN MORE
+                  <Trans>LEARN MORE</Trans>
                 </Button>
               ) : null}
             </Box>
-
-            <Button sx={{ color: 'white' }} onClick={handleClose} startIcon={<CloseIcon />} />
+            <Button
+              sx={{ color: 'white', paddingRight: 0 }}
+              onClick={handleClose}
+              startIcon={<CloseIcon />}
+            />
           </Toolbar>
         </AppBar>
       </Box>
