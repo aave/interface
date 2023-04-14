@@ -64,7 +64,7 @@ export default function TopBarWarning() {
                   <Link
                     sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
                     target={'_blank'}
-                    href="https://governance.aave.com/t/gauntlet-aave-v3-e-mode-methodology/12278"
+                    href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
                   >
                     <Trans>Learn more</Trans>
                   </Link>
@@ -77,7 +77,7 @@ export default function TopBarWarning() {
                   component="a"
                   target={'_blank'}
                   size="small"
-                  href="https://governance.aave.com/t/gauntlet-aave-v3-e-mode-methodology/12278"
+                  href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
                   sx={{
                     minWidth: '90px',
                     marginLeft: 5,
