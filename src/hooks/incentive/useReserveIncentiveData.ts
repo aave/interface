@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { POOLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
+import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 type UseReservesIncentiveData = {
@@ -15,6 +15,6 @@ export const useReserveIncentiveData = ({
       uiIncentivesDataService?.getReservesIncentivesDataHumanized({ lendingPoolAddressProvider }),
     queryKey: [QueryKeys.RESERVE_INCENTIVE_DATA, lendingPoolAddressProvider],
     enabled: !!uiIncentivesDataService,
-    refetchInterval: POOLING_INTERVAL,
+    refetchInterval: POLLING_INTERVAL,
   });
 };

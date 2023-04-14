@@ -53,12 +53,7 @@ export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
-  // refreshPoolData?: () => Promise<void[]>;
-  isUserHasDeposits: boolean;
   user: ExtendedFormattedUser;
-  // refreshIncentives?: () => Promise<void>;
-  // loading: boolean;
-
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
@@ -175,10 +170,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   );
 
-  const isUserHasDeposits = user.userReservesData.some(
-    (userReserve) => userReserve.scaledATokenBalance !== '0'
-  );
-
   const earnedAPY = proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber();
   const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
   const netAPY =
@@ -205,7 +196,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
           netAPY,
         },
         userReserves,
-        isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
       }}

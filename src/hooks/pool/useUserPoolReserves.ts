@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { POOLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
+import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 type UseUserPoolReservesArgs = {
@@ -16,6 +16,6 @@ export const useUserPoolReserves = ({
     queryFn: () => uiPoolService.getUserReservesHumanized({ user, lendingPoolAddressProvider }),
     queryKey: [QueryKeys.USER_POOL_RESERVES, user, lendingPoolAddressProvider],
     enabled: !!user,
-    refetchInterval: POOLING_INTERVAL,
+    refetchInterval: POLLING_INTERVAL,
   });
 };
