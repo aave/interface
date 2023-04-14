@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { usePoolReserves } from 'src/hooks/pool/usePoolReserves';
+import { useCMPoolReserves } from 'src/hooks/pool/usePoolReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
@@ -14,9 +14,7 @@ import { getNormalizedMintAmount } from './utils';
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { account, currentMarket, currentMarketData } = useRootStore();
-  const { data: poolReserves } = usePoolReserves({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: poolReserves } = useCMPoolReserves();
 
   const [captchaToken, setCaptchaToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);

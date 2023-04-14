@@ -4,7 +4,7 @@ import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useReserveIncentiveData } from 'src/hooks/incentive/useReserveIncentiveData';
-import { usePoolReserves } from 'src/hooks/pool/usePoolReserves';
+import { useCMPoolReserves } from 'src/hooks/pool/usePoolReserves';
 import { formatReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 
@@ -23,15 +23,10 @@ export const ClaimRewardsActions = ({
   selectedReward,
 }: ClaimRewardsActionsProps) => {
   const claimRewards = useRootStore((state) => state.claimRewards);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
-  const { data: poolReserves } = usePoolReserves({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
-  const { data: reservesIncentives } = useReserveIncentiveData({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: poolReserves } = useCMPoolReserves();
+  const { data: reservesIncentives } = useReserveIncentiveData();
 
   const reserves = poolReserves?.reservesData || [];
   const baseCurrencyData = poolReserves?.baseCurrencyData || {

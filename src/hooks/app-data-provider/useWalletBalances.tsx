@@ -1,9 +1,8 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
-import { useRootStore } from 'src/store/root';
 
-import { usePoolReserves } from '../pool/usePoolReserves';
+import { useCMPoolReserves } from '../pool/usePoolReserves';
 import { usePoolTokensBalance } from '../pool/usePoolTokensBalance';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
@@ -14,11 +13,8 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
   const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance();
-  const { data: poolReserves, isLoading: reservesLoading } = usePoolReserves({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: poolReserves, isLoading: reservesLoading } = useCMPoolReserves();
 
   const reserves = poolReserves?.reservesData || [];
   const baseCurrencyData = poolReserves?.baseCurrencyData || {
@@ -30,7 +26,6 @@ export const useWalletBalances = () => {
 
   const walletBalances = balances ?? [];
   // process data
-  let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
       if (reserve.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
@@ -41,7 +36,6 @@ export const useWalletBalances = () => {
       }
       return poolReserve.underlyingAsset.toLowerCase() === reserve.address;
     });
-    if (reserve.amount !== '0') hasEmptyWallet = false;
     if (poolReserve) {
       acc[reserve.address] = {
         amount: normalize(reserve.amount, poolReserve.decimals),
@@ -61,7 +55,6 @@ export const useWalletBalances = () => {
   }, {} as { [address: string]: { amount: string; amountUSD: string } });
   return {
     walletBalances: aggregatedBalance,
-    hasEmptyWallet,
     loading: balancesLoading || reservesLoading,
   };
 };

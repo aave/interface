@@ -4,11 +4,16 @@ import {
   UserReservesHelperInput,
 } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
+import { Hashable } from 'src/utils/types';
 
-export class UiPoolService {
+export class UiPoolService implements Hashable {
   private readonly uiPoolDataProviderService: UiPoolDataProvider;
 
-  constructor(provider: Provider, uiPoolDataProviderAddress: string, chainId: number) {
+  constructor(
+    provider: Provider,
+    uiPoolDataProviderAddress: string,
+    public readonly chainId: number
+  ) {
     this.uiPoolDataProviderService = new UiPoolDataProvider({
       uiPoolDataProviderAddress,
       provider: provider,
@@ -25,5 +30,9 @@ export class UiPoolService {
       user,
       lendingPoolAddressProvider,
     });
+  }
+
+  public toHash() {
+    return this.chainId.toString();
   }
 }

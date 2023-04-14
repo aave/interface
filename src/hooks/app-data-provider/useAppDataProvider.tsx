@@ -19,8 +19,8 @@ import {
 } from '../../store/poolSelectors';
 import { useReserveIncentiveData } from '../incentive/useReserveIncentiveData';
 import { useUserIncentiveData } from '../incentive/useUserIncentiveData';
-import { usePoolReserves } from '../pool/usePoolReserves';
-import { useUserPoolReserves } from '../pool/useUserPoolReserves';
+import { useCMPoolReserves } from '../pool/usePoolReserves';
+import { useCMUserPoolReserves } from '../pool/useUserPoolReserves';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 
 /**
@@ -68,25 +68,12 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const account = useRootStore((store) => store.account);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
-  const { data: userPoolReserves } = useUserPoolReserves({
-    user: account,
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
-  const { data: poolReserves } = usePoolReserves({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
-  const { data: reservesIncentives } = useReserveIncentiveData({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
-  const { data: userIncentiveData } = useUserIncentiveData({
-    user: account,
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: userPoolReserves } = useCMUserPoolReserves();
+  const { data: poolReserves } = useCMPoolReserves();
+  const { data: reservesIncentives } = useReserveIncentiveData();
+  const { data: userIncentiveData } = useUserIncentiveData();
 
   const userEmodeCategoryId = userPoolReserves?.userEmodeCategoryId || 0;
   const userReserves = userPoolReserves?.userReserves || [];

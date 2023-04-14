@@ -25,6 +25,8 @@ const SharedDependenciesContext = createContext<SharedDependenciesContext | null
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
   const currentMarketData = useRootStore((state) => state.currentMarketData);
+
+  // fork flags
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;

@@ -52,7 +52,6 @@ export default function V3Migration() {
   );
 
   const { data: poolReserveV3 } = useUserPoolReserves({
-    user,
     lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
   });
 
