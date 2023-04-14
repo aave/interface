@@ -30,6 +30,7 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
           minHeight: '100vh',
         },
       }}
+      disableScrollLock
     >
       {children}
     </Drawer>
