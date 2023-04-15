@@ -2,24 +2,22 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Button, ButtonProps, SvgIcon } from '@mui/material';
 import { forwardRef } from 'react';
 
-import { Link } from './primitives/Link';
+import { Link, LinkProps } from './primitives/Link';
 
-interface ExternalLinkButtonProps extends ButtonProps {
-  href: string;
-}
+type ExternalLinkButtonProps = ButtonProps & Omit<LinkProps, 'variant'>;
 
 const ExternalLinkButton = forwardRef<HTMLAnchorElement, ExternalLinkButtonProps>((props, ref) => (
-  <Link href={props.href} ref={ref}>
-    <Button
-      variant="outlined"
-      endIcon={
-        <SvgIcon sx={{ width: 14, height: 14 }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      }
-      {...props}
-    />
-  </Link>
+  <Button
+    component={Link}
+    variant={props.variant || 'outlined'}
+    endIcon={
+      <SvgIcon sx={{ width: 14, height: 14 }}>
+        <ExternalLinkIcon />
+      </SvgIcon>
+    }
+    {...props}
+    ref={ref}
+  />
 ));
 
 export default ExternalLinkButton;
