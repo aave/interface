@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useAirdropContext } from 'src/maneki/hooks/airdrop-data-provider/AirdropDataProvider';
 
@@ -64,19 +65,28 @@ export default function AirdropContentWrapper({
             <Trans>You already claimed {title}</Trans>
           </Typography>
         ) : (
-          <Box sx={{ display: 'flex', alignItems: 'center', p: '24px' }}>
-            <Typography
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              p: '24px',
+            }}
+          >
+            <Box
               sx={{
                 width: '80%',
-                fontWeight: 'bold',
-                p: '14px',
+                p: '12px 24px',
                 backgroundColor: 'background.custom1',
                 mr: '12px',
                 borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}
             >
-              {entry.amount / 1000000000000000000} PAW
-            </Typography>
+              <FormattedNumber value={entry.amount / 1000000000000000000} variant="secondary14" />
+              <Typography sx={{ fontWeight: '600' }}>PAW</Typography>
+            </Box>
             <Button
               //   disabled={!isActive}
               onClick={() => {
