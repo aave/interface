@@ -168,8 +168,7 @@ export const AirdropContainer = () => {
 
     // DEV : remove prompts
     if (!entryFound) {
-      // const addr = prompt('DEV -- please enter eligible address') as string;
-      const addr = '0x8bc3491E7D5AE64ebb59f6A1D2d19d89b166021d';
+      const addr = prompt('DEV -- please enter eligible address') as string;
       const newEntry = dataArr.find((e) => e.address == addr);
       entryFound = newEntry;
       entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
