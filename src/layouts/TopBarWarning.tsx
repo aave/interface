@@ -37,7 +37,6 @@ export default function TopBarWarning() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          flexGrow: 1,
           borderRadius: 0,
         }}
         position="static"
