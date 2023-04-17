@@ -154,6 +154,7 @@ export const SupplyActions = React.memo(
 
             setApprovalTxState({ ...approvalTxState, loading: true });
             const response = await sendTx(approveTxData);
+            await response.wait(1);
             setApprovalTxState({
               txHash: response.hash,
               loading: false,
@@ -186,6 +187,7 @@ export const SupplyActions = React.memo(
           });
 
           const response = await sendTx(signedTxData);
+          await response.wait(1);
           setMainTxState({
             txHash: response.hash,
             loading: false,
@@ -197,6 +199,7 @@ export const SupplyActions = React.memo(
             reserve: poolAddress,
           });
           const response = await sendTx(txData);
+          await response.wait(1);
           setMainTxState({
             txHash: response.hash,
             loading: false,
