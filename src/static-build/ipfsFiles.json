@@ -2889,6 +2889,19 @@
       "ipfsHash": "QmaKTzWBdhzqQNuhqnLKmiLGf7tjbg7fdTh5XPJsFoqj1z",
       "originalHash": "0xb1fe8b52c60e67743e3f9d406bb267f517fc87b6cd63e23b0754fa8e52c67441",
       "id": 203
+    },
+    {
+      "title": "Update AAVE V3 ETH Risk Parameters",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "Update AAVE V3 ETH Risk Parameters",
+      "discussions": "https://governance.aave.com/t/arfc-align-aave-risk-parameters-on-aave-v3-ethereum-market-with-aave-v2/12656",
+      "created": "2023-04-16T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis AIP proposal presents Aave with the …",
+      "basename": "AAVE_V3_ETH_AAVE_RISK_PARAMS",
+      "description": "\n\n## Simple Summary\n\nThis AIP proposal presents Aave with the opportunity to update AAVE risk parameters on the Aave V3 Ethereum Pool\n\n## Motivation\n\nThis AIP proposes the alignment of the AAVE risk parameters on the Aave V3 Ethereum market with those on Aave V2, as the current parameters on Aave V3 are less attractive for users considering migration.\n\nBy matching the Aave V2 parameters, we aim to encourage migration and ensure a smoother transition for users. This proposal does not suggest any changes to Aave V3 caps or interest rate strategies.\n\nTo make Aave V3 more attractive for migration and to match Aave V2 parameters, we propose the following changes:\n\n- Loan-to-Value (LTV): Increase the LTV from 60% to 66%.\n- Liquidation Threshold (LT): Increase the LT from 70% to 73%.\n- Liquidation Penalty (LP): Maintain the current LP of 7.5%, as it is already in alignment with Aave V2.\n\n\n## Specification\n\nTicker: AAVE\n\nContract address: [0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9](https://etherscan.io/address/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9)\n\n| Parameter                | Current Aave V3 | Current Aave V2 | Proposed Aave V3 |\n|--------------------------|-----------------|-----------------|------------------|\n| Loan-to-Value (LTV)      | 60%             | 66%             | 66%              |\n| Liquidation Threshold (LT)| 70%             | 73%             | 73%              |\n| Liquidation Penalty (LP)  | 7.5%            | 7.5%            | 7.5%             |\n\n```solidity\ncontract AaveV3RiskParams_20230516 is AaveV3PayloadEthereum {\n  function collateralsUpdates() public pure override returns (IEngine.CollateralUpdate[] memory) {\n    IEngine.CollateralUpdate[] memory collateralUpdate = new IEngine.CollateralUpdate[](1);\n\n    collateralUpdate[0] = IEngine.CollateralUpdate({\n      asset: AaveV3EthereumAssets.AAVE_UNDERLYING,\n      ltv: 66_00,\n      liqThreshold: 73_00,\n      liqBonus: EngineFlags.KEEP_CURRENT,\n      debtCeiling: EngineFlags.KEEP_CURRENT,\n      liqProtocolFee: EngineFlags.KEEP_CURRENT,\n      eModeCategory: EngineFlags.KEEP_CURRENT\n    });\n    return collateralUpdate;\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal:\n\n- [forum discussion](https://governance.aave.com/t/arfc-align-aave-risk-parameters-on-aave-v3-ethereum-market-with-aave-v2/12656)\n- [tests](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/src/AaveV3RiskParams_20230516/AaveV3RiskParams_20230516test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-v3-crosschain-listing-template/blob/main/src/AaveV3RiskParams_20230516/AaveV3RiskParams_20230516.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).",
+      "ipfsHash": "QmXbnsntfGz7qjKvAZhiBECYhxE9F6MEjKCjfhoKhztwnT",
+      "originalHash": "0x899a2100c271e4cae958d3af62e74717ed2662dbd8ac6ffdc17c4d126ba966ec",
+      "id": 204
     }
   ]
 }
