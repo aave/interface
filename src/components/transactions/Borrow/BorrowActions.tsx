@@ -77,6 +77,7 @@ export const BorrowActions = React.memo(
 
           setApprovalTxState({ ...approvalTxState, loading: true });
           const response = await sendTx(approveDelegationTxData);
+          await response.wait(1);
           setApprovalTxState({
             txHash: response.hash,
             loading: false,
@@ -107,6 +108,7 @@ export const BorrowActions = React.memo(
               : poolReserve.stableDebtTokenAddress,
         });
         const response = await sendTx(txData);
+        await response.wait(1);
         setMainTxState({
           txHash: response.hash,
           loading: false,
