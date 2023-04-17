@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper } from '@mui/material';
+import { List, ListItem, ListItemText, Paper } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
-import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
+import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
+import AirdropContentWrapper from './AirdropContentWrapper';
 import randomAddrs from './devRandAddr';
 import randomAddrs2 from './devRandAddr2';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
@@ -116,7 +117,6 @@ const getMerkleProof = (inputArray: string[], n: number) => {
 }; // getMerkleProof
 
 export const AirdropContainer = () => {
-  const { openAirDrop } = useModalContext();
   const { currentAccount, loading: web3Loading, provider, chainId } = useWeb3Context();
   const {
     merkleRoot,
@@ -138,8 +138,6 @@ export const AirdropContainer = () => {
     setReceiverSocmed,
     isClaimedSocmed,
     setIsClaimedSocmed,
-
-    setCurrentSelectedAirdrop,
   } = useAirdropContext();
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
@@ -249,72 +247,61 @@ export const AirdropContainer = () => {
   }
 
   if (loading) {
-    return <Paper> Loading.. </Paper>;
+    return <ManekiLoadingPaper description="Loading..." withCircle />;
   }
-
   return (
-    <Paper>
-      {merkleRoot == '' || merkleRootSocmed == '' ? (
-        <Box>Generating hashes..</Box>
+    <>
+      {(merkleRoot == '' && !isClaimed) || (merkleRootSocmed == '' && !isClaimedSocmed) ? (
+        <ManekiLoadingPaper description="Generating Hashes..." withCircle />
       ) : (
-        <Box>
-          {/*Venus section */}
-          <Box>
-            {!entry ? (
-              <Paper>You are not eligle to claim from venus</Paper>
-            ) : isClaimed ? (
-              <Paper>You already claimed venus</Paper>
-            ) : (
-              <>
-                <Box>
-                  (Venus) You are eligle to claim airdrop of {entry.amount / 1000000000000000000}{' '}
-                  PAW
-                </Box>
-                <Box>
-                  <Button
-                    //   disabled={!isActive}
-                    onClick={() => {
-                      setCurrentSelectedAirdrop(0);
-                      openAirDrop();
-                    }}
-                    variant="contained"
-                  >
-                    <Trans>claim airdrop</Trans>
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Box>
-
+        <>
+          <AirdropContentWrapper
+            title="Venus"
+            mainHeader="Venus Airdrop"
+            airdropStatus="Ongoing"
+            entry={entry}
+            isClaimed={isClaimed}
+            setAirdropNumber={0}
+            description={
+              <List>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This airdrop is distributed to Venus members.</Trans>
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This is a one-time airdrop.</Trans>
+                  </ListItemText>
+                </ListItem>
+              </List>
+            }
+          />
           {/*socmed section */}
-          <Box>
-            {!entrySocmed ? (
-              <Paper>You are not eligle to claim from socmed</Paper>
-            ) : isClaimedSocmed ? (
-              <Paper>You already claimed socmed</Paper>
-            ) : (
-              <>
-                <Box>
-                  (Socmed) You are eligle to claim airdrop of{' '}
-                  {entrySocmed.amount / 1000000000000000000} PAW
-                </Box>
-                <Box>
-                  <Button
-                    //   disabled={!isActive}
-                    onClick={() => {
-                      setCurrentSelectedAirdrop(1);
-                      openAirDrop();
-                    }}
-                    variant="contained"
-                  >
-                    <Trans>claim airdrop</Trans>
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Box>
-        </Box>
+          <AirdropContentWrapper
+            title="Social Media"
+            mainHeader="Social Media Airdrop"
+            airdropStatus="Ongoing"
+            entry={entrySocmed}
+            isClaimed={isClaimedSocmed}
+            setAirdropNumber={1}
+            description={
+              <List>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This airdrop is distributed to Social Media members.</Trans>
+                  </ListItemText>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>
+                    - <Trans>This is a one-time airdrop.</Trans>
+                  </ListItemText>
+                </ListItem>
+              </List>
+            }
+          />
+        </>
       )}
-    </Paper>
+    </>
   );
 };
