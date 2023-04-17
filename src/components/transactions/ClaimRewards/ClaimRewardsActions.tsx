@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useReserveIncentiveData } from 'src/hooks/incentive/useReserveIncentiveData';
+import { useCMReserveIncentiveData } from 'src/hooks/incentive/useReserveIncentiveData';
 import { useCMPoolReserves } from 'src/hooks/pool/usePoolReserves';
 import { formatReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
@@ -26,7 +26,7 @@ export const ClaimRewardsActions = ({
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   const { data: poolReserves } = useCMPoolReserves();
-  const { data: reservesIncentives } = useReserveIncentiveData();
+  const { data: reservesIncentives } = useCMReserveIncentiveData();
 
   const reserves = poolReserves?.reservesData || [];
   const baseCurrencyData = poolReserves?.baseCurrencyData || {

@@ -17,8 +17,8 @@ import {
   formatUserSummaryAndIncentives,
   reserveSortFn,
 } from '../../store/poolSelectors';
-import { useReserveIncentiveData } from '../incentive/useReserveIncentiveData';
-import { useUserIncentiveData } from '../incentive/useUserIncentiveData';
+import { useCMReserveIncentiveData } from '../incentive/useReserveIncentiveData';
+import { useCMUserIncentiveData } from '../incentive/useUserIncentiveData';
 import { useCMPoolReserves } from '../pool/usePoolReserves';
 import { useCMUserPoolReserves } from '../pool/useUserPoolReserves';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
@@ -72,8 +72,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const { data: userPoolReserves } = useCMUserPoolReserves();
   const { data: poolReserves } = useCMPoolReserves();
-  const { data: reservesIncentives } = useReserveIncentiveData();
-  const { data: userIncentiveData } = useUserIncentiveData();
+  const { data: reservesIncentives } = useCMReserveIncentiveData();
+  const { data: userIncentiveData } = useCMUserIncentiveData();
 
   const userEmodeCategoryId = userPoolReserves?.userEmodeCategoryId || 0;
   const userReserves = userPoolReserves?.userReserves || [];

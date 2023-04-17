@@ -3,11 +3,15 @@ import { useRootStore } from 'src/store/root';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const useUserIncentiveData = () => {
+type UseUserIncentiveDataParams = {
+  lendingPoolAddressProvider: string;
+};
+
+export const useUserIncentiveData = ({
+  lendingPoolAddressProvider,
+}: UseUserIncentiveDataParams) => {
   const { uiIncentivesDataService } = useSharedDependencies();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
-  const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   return useQuery({
     queryFn: () =>
       uiIncentivesDataService?.getUserReservesIncentivesData({ lendingPoolAddressProvider, user }),
@@ -20,4 +24,10 @@ export const useUserIncentiveData = () => {
     enabled: !!user && !!uiIncentivesDataService,
     refetchInterval: POLLING_INTERVAL,
   });
+};
+
+export const useCMUserIncentiveData = () => {
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
+  return useUserIncentiveData({ lendingPoolAddressProvider });
 };
