@@ -5,9 +5,8 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -54,36 +53,50 @@ export const SupplyModalContent = React.memo(
     const { marketReferencePriceInUsd, user } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
-    const { supplyCap, debtCeiling } = useAssetCaps();
+    const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
     const {
       poolComputed: { minRemainingBaseTokenBalance },
     } = useRootStore();
 
     // states
     const [amount, setAmount] = useState('');
-    const [maxSelected, setMaxSelected] = useState(false);
-    const amountRef = useRef<string>();
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
     const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
 
     const supplyApy = poolReserve.supplyAPY;
+    const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
+      poolReserve;
 
     // Calculate max amount to supply
-    const maxAmountToSupply = getMaxAmountAvailableToSupply(
-      walletBalance,
-      poolReserve,
-      underlyingAsset,
-      minRemainingBaseTokenBalance
+    const maxAmountToSupply = useMemo(
+      () =>
+        getMaxAmountAvailableToSupply(
+          walletBalance,
+          { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
+          underlyingAsset,
+          minRemainingBaseTokenBalance
+        ),
+      [
+        walletBalance,
+        supplyCap,
+        totalLiquidity,
+        isFrozen,
+        decimals,
+        debtCeiling,
+        isolationModeTotalDebt,
+        underlyingAsset,
+        minRemainingBaseTokenBalance,
+      ]
     );
 
     const handleChange = (value: string) => {
-      const isMaxSelected = value === '-1';
-      const inputValue = maxSelected ? maxAmountToSupply.toString(10) : value;
-      const decimalTruncatedValue = roundToTokenDecimals(inputValue, poolReserve.decimals);
-      amountRef.current = decimalTruncatedValue;
-      setAmount(decimalTruncatedValue);
-      setMaxSelected(isMaxSelected);
+      if (value === '-1') {
+        setAmount(maxAmountToSupply);
+      } else {
+        const decimalTruncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
+        setAmount(decimalTruncatedValue);
+      }
     };
 
     // Calculation of future HF
@@ -100,10 +113,12 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-          .multipliedBy(user.currentLiquidationThreshold)
-          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
+
+    const isMaxSelected = amount === maxAmountToSupply;
 
     let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
@@ -135,29 +150,6 @@ export const SupplyModalContent = React.memo(
         ? userReserve.usageAsCollateralEnabledOnUser
         : true);
 
-    // TODO: check if calc is correct to see if cap reached
-    const capReached =
-      poolReserve.supplyCap !== '0' &&
-      valueToBigNumber(amount).gt(
-        new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity)
-      );
-
-    // handle error for supply cap reached
-    let blockingError: ErrorType | undefined = undefined;
-    if (!supplyTxState.success) {
-      if (capReached) {
-        blockingError = ErrorType.CAP_REACHED;
-      }
-    }
-    const BlockingError: React.FC = () => {
-      switch (blockingError) {
-        case ErrorType.CAP_REACHED:
-          return <Trans>Cap reached. Lower supply amount</Trans>;
-        default:
-          return <></>;
-      }
-    };
-
     // token info to add to wallet
     const addToken: ERC20TokenType = {
       address: poolReserve.aTokenAddress,
@@ -171,7 +163,7 @@ export const SupplyModalContent = React.memo(
       userReserve,
       user.totalCollateralUSD,
       user.isInIsolationMode,
-      debtCeiling.isMaxed
+      debtCeilingUsage.isMaxed
     );
 
     const supplyActionsProps = useMemo(() => {
@@ -180,7 +172,7 @@ export const SupplyModalContent = React.memo(
         isWrongNetwork,
         poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
         symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-        blocked: blockingError !== undefined,
+        blocked: false,
         decimals: poolReserve.decimals,
       };
     }, [
@@ -190,7 +182,6 @@ export const SupplyModalContent = React.memo(
       poolReserve.underlyingAsset,
       poolReserve.symbol,
       currentNetworkConfig.baseAssetSymbol,
-      blockingError,
       poolReserve.decimals,
     ]);
 
@@ -198,7 +189,7 @@ export const SupplyModalContent = React.memo(
       return (
         <TxSuccessView
           action={<Trans>Supplied</Trans>}
-          amount={amountRef.current}
+          amount={amount}
           symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
           addToken={addToken}
         />
@@ -207,8 +198,8 @@ export const SupplyModalContent = React.memo(
     return (
       <>
         {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
-        {supplyCap.determineWarningDisplay({ supplyCap })}
-        {debtCeiling.determineWarningDisplay({ debtCeiling })}
+        {supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage })}
+        {debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage })}
         {poolReserve.symbol === 'AMPL' && (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
             <AMPLWarning />
@@ -217,7 +208,7 @@ export const SupplyModalContent = React.memo(
         {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
           poolReserve.symbol === 'AAVE' &&
           isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
-        {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
+        {poolReserve.symbol === 'SNX' && maxAmountToSupply !== '0' && <SNXWarning />}
 
         <AssetInput
           value={amount}
@@ -226,7 +217,7 @@ export const SupplyModalContent = React.memo(
           symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
           assets={[
             {
-              balance: maxAmountToSupply.toString(10),
+              balance: maxAmountToSupply,
               symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
               iconSymbol: supplyUnWrapped
                 ? currentNetworkConfig.baseAssetSymbol
@@ -234,17 +225,11 @@ export const SupplyModalContent = React.memo(
             },
           ]}
           capType={CapType.supplyCap}
-          isMaxSelected={maxSelected}
+          isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
-          maxValue={maxAmountToSupply.toString(10)}
+          maxValue={maxAmountToSupply}
           balanceText={<Trans>Wallet balance</Trans>}
         />
-
-        {blockingError !== undefined && (
-          <Typography variant="helperText" color="error.main">
-            <BlockingError />
-          </Typography>
-        )}
 
         <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
           <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
