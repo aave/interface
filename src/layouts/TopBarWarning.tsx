@@ -29,75 +29,74 @@ export default function TopBarWarning() {
 
   if (showWarning) {
     return (
-      <Box>
-        <AppBar
+      <AppBar
+        component="header"
+        sx={{
+          padding: `8px, 12px, 8px, 12px`,
+          background: '#000000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexGrow: 1,
+          borderRadius: 0,
+        }}
+        position="static"
+      >
+        <Toolbar
           sx={{
-            padding: `8px, 12px, 8px, 12px`,
-            background: '#000000',
             display: 'flex',
+            paddingRight: md ? 0 : '',
+            justifyContent: 'center',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            flexGrow: 1,
-            borderRadius: 0,
+            width: '100%',
           }}
-          position="static"
+          variant="dense"
         >
-          <Toolbar
-            sx={{
-              display: 'flex',
-              paddingRight: md ? 0 : '',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-            }}
-            variant="dense"
-          >
-            <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
-              <Typography component="div">
-                <Trans>
-                  On April 24, 2023, E-mode parameters will be changed in accordance with the AIP.
-                  Please read the proposal and adjust your open positions accordingly to avoid
-                  liquidations.
-                </Trans>
+          <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
+            <Typography component="div">
+              <Trans>
+                On April 24, 2023, E-mode parameters will be changed in accordance with the AIP.
+                Please read the proposal and adjust your open positions accordingly to avoid
+                liquidations.
+              </Trans>
 
-                {md ? (
-                  <Link
-                    sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                    target={'_blank'}
-                    href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
-                  >
-                    <Trans>Learn more</Trans>
-                  </Link>
-                ) : null}
-              </Typography>
-            </Box>
-            <Box>
-              {!md ? (
-                <Button
-                  component="a"
+              {md ? (
+                <Link
+                  sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
                   target={'_blank'}
-                  size="small"
                   href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
-                  sx={{
-                    minWidth: '90px',
-                    marginLeft: 5,
-                    height: '24px',
-                    background: '#383D51',
-                    color: '#EAEBEF',
-                  }}
                 >
-                  <Trans>LEARN MORE</Trans>
-                </Button>
+                  <Trans>Learn more</Trans>
+                </Link>
               ) : null}
-            </Box>
-            <Button
-              sx={{ color: 'white', paddingRight: 0 }}
-              onClick={handleClose}
-              startIcon={<CloseIcon />}
-            />
-          </Toolbar>
-        </AppBar>
-      </Box>
+            </Typography>
+          </Box>
+          <Box>
+            {!md ? (
+              <Button
+                component="a"
+                target={'_blank'}
+                size="small"
+                href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
+                sx={{
+                  minWidth: '90px',
+                  marginLeft: 5,
+                  height: '24px',
+                  background: '#383D51',
+                  color: '#EAEBEF',
+                }}
+              >
+                <Trans>LEARN MORE</Trans>
+              </Button>
+            ) : null}
+          </Box>
+          <Button
+            sx={{ color: 'white', paddingRight: 0 }}
+            onClick={handleClose}
+            startIcon={<CloseIcon />}
+          />
+        </Toolbar>
+      </AppBar>
     );
   }
   return null;
