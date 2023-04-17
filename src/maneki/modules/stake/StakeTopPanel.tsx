@@ -21,6 +21,7 @@ export const StakeTopPanel = () => {
   const { stakedPAW, setStakedPAW, share, setShare, dailyRevenue, setDailyRevenue } =
     useStakingContext();
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [lpPrice, setLpPrice] = React.useState<number>(-1);
   const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -39,8 +40,9 @@ export const StakeTopPanel = () => {
 
     // add contract call into promise arr
     promises.push(contract.getUserLpStaked(currentAccount)); // staked paw
-    promises.push(contract.getUserSharePercentage(currentAccount)); // user share % dev : error execution reverted
-    promises.push(contract.getUserDailyRewardsInUsd(currentAccount)); // daily revenue dev : error execution reverted
+    promises.push(contract.getUserSharePercentage(currentAccount)); // user share % - 4 dec
+    promises.push(contract.getUserDailyRewardsInUsd(currentAccount)); // daily revenue
+    promises.push(contract.getLpPrice()); // lpprice
 
     // call promise all and get data
     Promise.all(promises)
@@ -49,6 +51,7 @@ export const StakeTopPanel = () => {
         setStakedPAW(parseInt(data[0]._hex, 16));
         setShare(parseInt(data[1]._hex, 16));
         setDailyRevenue(parseInt(data[2]._hex, 16));
+        setLpPrice(parseInt(data[3]._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -67,6 +70,7 @@ export const StakeTopPanel = () => {
           symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
+        price {stakedPAW * lpPrice}
       </TopInfoPanelItem>
 
       {/* Share display */}

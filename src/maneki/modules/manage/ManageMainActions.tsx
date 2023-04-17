@@ -34,7 +34,7 @@ export const ManageMainActions = () => {
   const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
   const [locks, setLocks] = React.useState<VestEntry[]>([]);
   const [totalLocksValue, setTotalLocksValue] = React.useState(-1);
-  const [claimables, setClaimables] = React.useState<Claimables[]>([]);
+  const [claimables, setClaimables] = React.useState<Claimables[][]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
 
@@ -45,12 +45,13 @@ export const ManageMainActions = () => {
   // handle unlock action
   const handleClaimUnlock = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration()); // getreward? dev : notfound
+    promises.push(contract.withdraw(unlockedPAW)); // withdraw unlocked paw
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -67,12 +68,13 @@ export const ManageMainActions = () => {
   // handle claim all vest action
   const handleClaimAllVest = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.withdraw(vestedPAW + unlockedPAW)); // claim vested and unlocked
+    promises.push(contract.exit(false)); // claim vested and unlocked
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -89,7 +91,8 @@ export const ManageMainActions = () => {
   // claim expired
   const handleClaimExpired = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
@@ -111,12 +114,13 @@ export const ManageMainActions = () => {
   // claim all
   const handleClaimAll = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.getReward(claimables.map((e) => e[0]))); // claims all fees
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -143,30 +147,29 @@ export const ManageMainActions = () => {
     promises.push(contract.getEarlyExitPenalty(currentAccount)); // exit penalty
     promises.push(contract.getExpiredLockedPaw(currentAccount)); // expired locked paw
     promises.push(contract.getTotalPawLocked(currentAccount)); // total locked paw
-    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // total claimable value dev missing?
-    promises.push(contract.getVestingScheduleArray(currentAccount)); // vests dev: format unknowne
-    promises.push(contract.getLockScheduleArray(currentAccount)); // locks dev: format unknowne
-    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // claimables
+    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // total claimable value
+    promises.push(contract.getVestingScheduleArray(currentAccount)); // vests
+    promises.push(contract.getLockScheduleArray(currentAccount)); // locks
+    promises.push(contract.getClaimableRewards(currentAccount)); // claimables
     promises.push(contract.getTotalPawLockedValue(currentAccount)); // locked value
     promises.push(contract.getTotalPawVestingValue(currentAccount)); // vesting value
 
-    // TODO add value for total locke and unlocked
-
     // call promise all and get data
     Promise.all(promises)
-      .then((data: NumReturn[]) => {
+      .then((data: (NumReturn | VestEntry[] | Claimables[][])[]) => {
         // dev change data setting logic here
-        setUnlockedPAW(parseInt(data[0]._hex, 16));
-        setVestedPAW(parseInt(data[1]._hex, 16));
-        setExitPenalty(parseInt(data[2]._hex, 16));
-        setExpiredLockedPAW(parseInt(data[3]._hex, 16));
-        setTotalLockedPAW(parseInt(data[4]._hex, 16));
-        setTotalClaimableValue(parseInt(data[5]._hex, 16));
-        setVests([{ amount: parseInt(data[6]._hex, 16), expiry: '1-1-1111' }]);
-        setLocks([{ amount: parseInt(data[7]._hex, 16), expiry: '1-1-1111' }]);
-        setClaimables([{ amount: parseInt(data[8]._hex, 16), token: 'PAW' }]);
-        setTotalLocksValue(parseInt(data[9]._hex, 16));
-        setTotalVestsValue(parseInt(data[10]._hex, 16));
+
+        setUnlockedPAW(parseInt((data[0] as NumReturn)._hex, 16));
+        setVestedPAW(parseInt((data[1] as NumReturn)._hex, 16));
+        setExitPenalty(parseInt((data[2] as NumReturn)._hex, 16));
+        setExpiredLockedPAW(parseInt((data[3] as NumReturn)._hex, 16));
+        setTotalLockedPAW(parseInt((data[4] as NumReturn)._hex, 16));
+        setTotalClaimableValue(parseInt((data[5] as NumReturn)._hex, 16));
+        setVests(data[6] as VestEntry[]);
+        setLocks(data[7] as VestEntry[]);
+        setClaimables(data[8] as Claimables[][]);
+        setTotalLocksValue(parseInt((data[9] as NumReturn)._hex, 16));
+        setTotalVestsValue(parseInt((data[10] as NumReturn)._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -178,7 +181,8 @@ export const ManageMainActions = () => {
     <Paper>
       <div>main actions</div>
       <div style={{ border: '1px solid black' }}>
-        Unlocked paw {unlockedPAW} <button onClick={handleClaimUnlock}>Claim</button>
+        Unlocked paw {unlockedPAW}
+        <button onClick={handleClaimUnlock}>Claim</button>
       </div>
       <div style={{ border: '1px solid black' }}>
         Vested paw {vestedPAW} penalty {exitPenalty}
@@ -215,7 +219,8 @@ export const ManageMainActions = () => {
         Claimable fees
         {claimables.map((claimable, i) => (
           <div key={i}>
-            amount {claimable.amount} token {claimable.token}
+            amount {(claimable as Claimables[])[0]} token{' '}
+            {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
           </div>
         ))}
         {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>

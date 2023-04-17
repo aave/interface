@@ -5,8 +5,8 @@ import * as React from 'react';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
-import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-import MULTI_FEE_ABI from './MultiFeeABI';
+import LPABI from './LPABI';
+import MASTER_CHEF_ABI from './MasterChefABI';
 
 interface NumReturn {
   _hex: string;
@@ -19,20 +19,19 @@ export const StakeMain = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
 
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
-  // eslint-disable-next-line prettier/prettier
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
-    .STAKING_DATA_PROVIDER as string;
+  const LP_PAIR_ADDR = marketsData.bsc_testnet_v3.addresses.LP_TOKEN as string;
+  const MASTER_CHEF_ADDR = marketsData.bsc_testnet_v3.addresses.MASTER_CHEF as string;
 
   // handle stake action
   const handleStake = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.stake(amountToStake, false)); // stake action
+    promises.push(contract.deposit(marketsData.bsc_testnet_v3.addresses.LP_TOKEN, amountToStake)); // stake action
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -48,12 +47,12 @@ export const StakeMain = () => {
 
   React.useEffect(() => {
     // create contract
-    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const contract = new Contract(LP_PAIR_ADDR, LPABI, provider);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getTotalBalance(currentAccount)); // balance
+    promises.push(contract.balanceOf(currentAccount)); // balance lp
 
     // call promise all and get data
     Promise.all(promises)

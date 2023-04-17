@@ -18,10 +18,16 @@ interface NumReturn {
 }
 
 export const ManageTopPanel = () => {
-  const { stakedPAW, lockedPAW, setStakedPAW, setLockedPAW } = useManageContext();
+  const {
+    stakedPAW,
+    lockedPAW,
+    setStakedPAW,
+    setLockedPAW,
+    lockedStakedValue,
+    setLockedStakedValue,
+  } = useManageContext();
   const [dailyPlatformFees, setDailyPlatformFees] = React.useState<number>(-1);
   const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<number>(-1);
-  const [dailyRevenue, setDailyRevenue] = React.useState<number>(-1);
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
@@ -41,11 +47,11 @@ export const ManageTopPanel = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getUserLpStaked(currentAccount)); // staked paw
+    promises.push(contract.getUnlockedPaw(currentAccount)); // staked paw
     promises.push(contract.getTotalPawLocked(currentAccount)); // locked paw
-    promises.push(contract.getLpPrice()); // daily platform fees dev : missing
-    promises.push(contract.getUserDailyRewardsInUsd(currentAccount)); // daily revenue dev : error execution reverted
-    promises.push(contract.getLpPrice()); // daily penalty fees dev : missing
+    promises.push(contract.getUserLockedAndStakedPawInUsd(currentAccount)); // staked + locked value
+    promises.push(contract.getUserDailyPlatformFeeDistributionInUsd(currentAccount)); // daily platform fees
+    promises.push(contract.getUserDailyPenaltyFeeDistributionInUsd(currentAccount)); // daily penalty fees
 
     // call promise all and get data
     Promise.all(promises)
@@ -53,8 +59,8 @@ export const ManageTopPanel = () => {
         // dev change data setting logic here
         setStakedPAW(parseInt(data[0]._hex, 16));
         setLockedPAW(parseInt(data[1]._hex, 16));
-        setDailyPlatformFees(parseInt(data[2]._hex, 16));
-        setDailyRevenue(parseInt(data[3]._hex, 16));
+        setLockedStakedValue(parseInt(data[2]._hex, 16));
+        setDailyPlatformFees(parseInt(data[3]._hex, 16));
         setDailyPenaltyFees(parseInt(data[4]._hex, 16));
         setLoading(false);
       })
@@ -69,7 +75,7 @@ export const ManageTopPanel = () => {
         loading={loading}
       >
         <FormattedNumber
-          value={(stakedPAW + lockedPAW).toString()}
+          value={lockedStakedValue.toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
@@ -77,12 +83,14 @@ export const ManageTopPanel = () => {
           symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
+        Stake {stakedPAW}
+        Lock {lockedPAW}
       </TopInfoPanelItem>
 
       {/* Daily revenue display */}
       <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Daily revenue</Trans>} loading={loading}>
         <FormattedNumber
-          value={dailyRevenue.toString()}
+          value={(dailyPlatformFees + dailyPenaltyFees).toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
@@ -95,7 +103,7 @@ export const ManageTopPanel = () => {
       {/* weekly revenue display */}
       <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Weekly revenue</Trans>} loading={loading}>
         <FormattedNumber
-          value={(7 * dailyRevenue).toString()}
+          value={(7 * (dailyPlatformFees + dailyPenaltyFees)).toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}

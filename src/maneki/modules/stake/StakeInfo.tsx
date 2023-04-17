@@ -7,7 +7,7 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useStakingContext } from '../../hooks/staking-data-provider/StakingDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-import MULTI_FEE_ABI from './MultiFeeABI';
+import MASTER_CHEF_ABI from './MasterChefABI';
 
 interface NumReturn {
   _hex: string;
@@ -16,7 +16,7 @@ interface NumReturn {
 
 export const StakeInfo = () => {
   const { stakedPAW } = useStakingContext();
-  const [vestedPAW, setVestedPAW] = React.useState<number>(-1);
+  const [vestablePAW, setvestablePAW] = React.useState<number>(-1);
   const [stakingAPR, setStakingAPR] = React.useState<number>(-1);
   const [LPPrice, setLPPrice] = React.useState<number>(-1);
   const [LPStaked, setLPStaked] = React.useState<number>(-1);
@@ -25,20 +25,22 @@ export const StakeInfo = () => {
 
   const { provider, currentAccount } = useWeb3Context();
 
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   // eslint-disable-next-line prettier/prettier
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
+  const MASTER_CHEF_ADDR = marketsData.bsc_testnet_v3.addresses.MASTER_CHEF as string;
+
   // handle unstake action
   const handleUnstake = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.lockDuration()); // unstake action dev: missing
+    promises.push(contract.withdraw(marketsData.bsc_testnet_v3.addresses.LP_TOKEN, LPStaked)); // unstake action
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -55,12 +57,13 @@ export const StakeInfo = () => {
   // handle vest action
   const handleVest = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.lockDuration()); // vest action dev: missing
+    promises.push(contract.claim(currentAccount, [marketsData.bsc_testnet_v3.addresses.LP_TOKEN])); // vest action
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -77,11 +80,14 @@ export const StakeInfo = () => {
   React.useEffect(() => {
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const contract2 = new Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, provider);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getVestingPaw(currentAccount)); // vested paw
+    promises.push(
+      contract2.claimableReward(currentAccount, [marketsData.bsc_testnet_v3.addresses.LP_TOKEN])
+    ); // vestable paw
     promises.push(contract.getStakingAPR()); // stakingapr
     promises.push(contract.getLpPrice()); // lpprice
     promises.push(contract.getLpStaked()); // lpstaked
@@ -89,13 +95,13 @@ export const StakeInfo = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: NumReturn[]) => {
+      .then((data: (NumReturn | NumReturn[])[]) => {
         // dev change data setting logic here
-        setVestedPAW(parseInt(data[0]._hex, 16));
-        setStakingAPR(parseInt(data[1]._hex, 16));
-        setLPPrice(parseInt(data[2]._hex, 16));
-        setLPStaked(parseInt(data[3]._hex, 16));
-        setTotalDailyRewards(parseInt(data[4]._hex, 16));
+        setvestablePAW(parseInt((data[0] as NumReturn[])[0]._hex, 16));
+        setStakingAPR(parseInt((data[1] as NumReturn)._hex, 16));
+        setLPPrice(parseInt((data[2] as NumReturn)._hex, 16));
+        setLPStaked(parseInt((data[3] as NumReturn)._hex, 16));
+        setTotalDailyRewards(parseInt((data[4] as NumReturn)._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -107,10 +113,11 @@ export const StakeInfo = () => {
     <Paper>
       <div>stake info</div>
       <div>
-        Your staked PAW {stakedPAW} <button onClick={handleUnstake}>Unstake</button>
+        Your staked PAW {stakedPAW} price {stakedPAW * LPPrice}{' '}
+        <button onClick={handleUnstake}>Unstake</button>
       </div>
       <div>
-        Your vested PAW {vestedPAW} <button onClick={handleVest}>Vest</button>
+        Your vestable PAW {vestablePAW} <button onClick={handleVest}>Vest</button>
       </div>
       <div>stakingAPR {stakingAPR}</div>
       <div>LPPrice {LPPrice}</div>
