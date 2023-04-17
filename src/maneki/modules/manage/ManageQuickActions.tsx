@@ -30,12 +30,13 @@ export const ManageQuickActions = () => {
   // handle lock action
   const handleLock = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.stake(amountToLock, true)); // lock
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -52,12 +53,13 @@ export const ManageQuickActions = () => {
   // handle stake action
   const handleStake = () => {
     // create contract
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, provider);
+    const signer = provider?.getSigner(currentAccount as string);
+    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.duration());
+    promises.push(contract.stake(amountToLock, false)); // stake
 
     // call promise all nad handle sucess error
     Promise.all(promises)

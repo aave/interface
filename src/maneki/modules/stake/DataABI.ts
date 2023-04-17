@@ -135,6 +135,27 @@ const MANEKI_DATA_PROVIDER_ABI = [
   },
   {
     inputs: [],
+    name: 'getProtocolAggregatedDailyPenaltyFeeDistribution',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getProtocolAggregatedDailyPenaltyFeeDistributionInUsd',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getProtocolAggregatedDailyPlatformFeeDistributionInUsd',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'getStakingAPR',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -191,6 +212,20 @@ const MANEKI_DATA_PROVIDER_ABI = [
   },
   {
     inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'getUserDailyPenaltyFeeDistributionInUsd',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'getUserDailyPlatformFeeDistributionInUsd',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
     name: 'getUserDailyRewardsInPaw',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -199,6 +234,13 @@ const MANEKI_DATA_PROVIDER_ABI = [
   {
     inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
     name: 'getUserDailyRewardsInUsd',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'getUserLockedAndStakedPawInUsd',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
