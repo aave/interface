@@ -2902,6 +2902,32 @@
       "ipfsHash": "QmXbnsntfGz7qjKvAZhiBECYhxE9F6MEjKCjfhoKhztwnT",
       "originalHash": "0x899a2100c271e4cae958d3af62e74717ed2662dbd8ac6ffdc17c4d126ba966ec",
       "id": 204
+    },
+    {
+      "title": "Supply/Borrow Cap Updates V3 Arbitrum",
+      "shortDescription": "Update Supply and Borrow Caps on Aave V3 Arbitrum",
+      "author": "Chaos Labs (@ori-chaoslabs, @yonikesel)",
+      "discussions": "https://governance.aave.com/t/arfc-chaos-labs-supply-and-borrow-cap-updates-03-30-2023/12532",
+      "created": "2023-3-30",
+      "preview": "# Simple Summary\n\nA proposal to adjust three (3) total risk …",
+      "basename": "AIP-SUPPLY-CAPS-ARBITRUM-V3-20230330",
+      "description": "\n\n# Simple Summary\n\nA proposal to adjust three (3) total risk parameters, including Supply Cap and Borrow Cap, across two (2) Aave V3 Arbitrum assets.\n\n# Motivation\n\nThe objective of this proposal is to recommend updated supply and borrow caps for V3 assets that have reached high utilization of either cap. The recommendations provided in this proposal were derived using Chaos Labs’ Updated Supply and Borrow Cap Methodology\n\nThe respective governance forum discussion is linked below:\n\n- [[ARFC] Chaos Labs Supply and Borrow Cap Updates - 03.30.2023](https://governance.aave.com/t/arfc-chaos-labs-supply-and-borrow-cap-updates-03-30-2023/12532)\n\n# Specification\n\nThe following risk parameter proposal is presented below:\n\n### Arbitrum\n\n| Asset | Current Supply Cap | Recommended Supply Cap | Current Borrow Cap | Recommended Borrow Cap |\n| ----- | ------------------ | ---------------------- | ------------------ | ---------------------- |\n| WBTC  | 2,100              | 4,200                  | 1,115              | No Change              |\n| WETH  | 45,000             | 70,000                 | 11,165             | 22,000                 |\n\n# References\n\nForum Post: [Arbitrum Post](https://governance.aave.com/t/arfc-chaos-labs-supply-and-borrow-cap-updates-03-30-2023/12532)\n\nTest: [Arbitrum Test](https://github.com/bgd-labs/aave-proposals/blob/master/src/AaveV3ArbSupplyCapsUpdate_20230330/AaveV3ArbSupplyCapsUpdate_20230330_test.t.sol)\n\nProposal payload implementation: [Arbitrum Payload](https://github.com/bgd-labs/aave-proposals/blob/master/src/AaveV3ArbSupplyCapsUpdate_20230330/AaveV3ArbSupplyCapsUpdate_20230330.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmRfCr57mBdUutyrbpjttaB7aLoG3wkBCEdbTNh2xMMjHn",
+      "originalHash": "0x3153da673854d10ae6350b2508577a1d09d5486269b6501e15a557ec7fd73cb5",
+      "id": 205
+    },
+    {
+      "title": "Risk Parameter Updates Aave V3 Optimism",
+      "shortDescription": "Update risk parameters on Aave V3 Optimism",
+      "author": "Chaos Labs (@ori-chaoslabs, @yonikesel)",
+      "discussions": "https://governance.aave.com/t/arfc-chaos-labs-risk-parameter-updates-aave-v3-optimism-2023-03-22/12421",
+      "created": "2023-03-30T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nA proposal to adjust five (5) total risk …",
+      "basename": "RISK-PARAMS-UPDATE-V3-OPTIMISM-20230330",
+      "description": "\n\n# Simple Summary\n\nA proposal to adjust five (5) total risk parameters, including Loan-to-Value, Liquidation Threshold, and Liquidation Bonus, across two (2) Aave V3 Optimism assets.\n\n# Motivation\n\nChaos Labs’ Parameter Recommendation Platform runs hundreds of thousands of agent-based off-chain and on-chain simulations to examine how different Aave V3 risk parameters configurations would behave under adverse market conditions - and find the optimal values to maximize protocol borrow usage while minimizing losses from liquidations and bad debt.\n\nNote: As a general guideline, we limit the proposed changes by ±3% for all parameters as a high/low bound for a given proposal. This ensures more controlled changes and allows us to analyze their effect on user behavior before recommending further amendments to the parameters if the optimal configuration is outside this range.\n\nPlease find more information on the parameter recommendation methodology [here](https://community.chaoslabs.xyz/aave/recommendations/methodology).\n\nYou can also view the simulation results and breakdown for the different assets by clicking on them on this [page](https://community.chaoslabs.xyz/aave/recommendations).\n\nThe output of our simulations reveals an opportunity to increase LTVs and LTs for WBTC and DAI on V3 Optimism, resulting in improved capital efficiency of the system, with no effect on the projected VaR (95th percentile of the protocol losses that will be accrued due to bad debt from under-collateralized accounts over 24 hours) and EVaR (Extreme VaR, the 99th percentile of the protocol losses that will be accrued due to bad debt from under-collateralized accounts over 24 hours)\n\nSimulating all changes jointly yields a projected borrow increase of ~$155,000, with no increase in VaR and Extreme VaR compared to simulations with the current parameters.\n\n# Specification\n\nThe following risk parameter proposal is presented below:\n\n| Asset | Parameter             | Current | Recommended | Change |\n| ----- | --------------------- | ------- | ----------- | ------ |\n| WBTC  | Liquidation Threshold | 75%     | 78%         | +3%    |\n| WBTC  | Loan-to-Value         | 70%     | 73%         | +3%    |\n| WBTC  | Liquidation Penalty   | 9.4%    | 8.5%        | -0.9%  |\n| DAI   | Liquidation Threshold | 80%     | 83%         | +3%    |\n| DAI   | Loan-to-Value         | 75%     | 78%         | +3%    |\n\n# References\n\n[Forum Post](https://governance.aave.com/t/arfc-chaos-labs-risk-parameter-updates-aave-v3-optimism-2023-03-22/12421)\n\n[Tests](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPRiskParams_20230330/AaveV3OPRiskParams_20230330_Test.t.sol)\n\n[Proposal payload implementation](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPRiskParams_20230330/AaveV3OPRiskParams_20230330.sol)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmcMEwvA1KDRnK5KBK4D1J6rRHFM5RPSRbucAMHv3WyTau",
+      "originalHash": "0xd02a54834d79d18546c749459d31a370cc6d51bfe45cb72dc2bb37abce897966",
+      "id": 206
     }
   ]
 }
