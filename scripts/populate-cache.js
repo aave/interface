@@ -44873,13 +44873,125 @@ var require_IGovernanceV2Helper_factory = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.IGovernanceV2Helper__factory = void 0;
     var ethers_1 = require_lib31();
-    var IGovernanceV2Helper__factory = class {
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IGovernanceV2Helper__factory = IGovernanceV2Helper__factory;
     var _abi = [
+      {
+        inputs: [],
+        name: "ONE_HUNDRED_WITH_PRECISION",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "tokens",
+            type: "address[]"
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "nonce",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "expiry",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct IGovernanceV2Helper.DelegateTokensBySigData[]",
+            name: "data",
+            type: "tuple[]"
+          }
+        ],
+        name: "delegateTokensBySig",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "tokens",
+            type: "address[]"
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address"
+              },
+              {
+                internalType: "enum IGovernancePowerDelegationToken.DelegationType",
+                name: "delegationType",
+                type: "uint8"
+              },
+              {
+                internalType: "uint256",
+                name: "nonce",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "expiry",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct IGovernanceV2Helper.DelegateTokensByTypeBySigData[]",
+            name: "data",
+            type: "tuple[]"
+          }
+        ],
+        name: "delegateTokensByTypeBySig",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
       {
         inputs: [
           {
@@ -45214,6 +45326,16 @@ var require_IGovernanceV2Helper_factory = __commonJS({
         type: "function"
       }
     ];
+    var IGovernanceV2Helper__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IGovernanceV2Helper__factory = IGovernanceV2Helper__factory;
+    IGovernanceV2Helper__factory.abi = _abi;
   }
 });
 
@@ -45349,6 +45471,42 @@ var require_governance_contract = __commonJS({
           return (yield govContract.getProposalsCount()).toNumber();
         });
       }
+      delegateTokensBySig(_0) {
+        return __async(this, arguments, function* ({ user, tokens, data }) {
+          const helper = IGovernanceV2Helper__factory_1.IGovernanceV2Helper__factory.connect(this.aaveGovernanceV2HelperAddress, this.provider);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return helper.populateTransaction.delegateTokensBySig(tokens, data);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.GOV_DELEGATION_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      delegateTokensByTypeBySig(_0) {
+        return __async(this, arguments, function* ({ user, tokens, data }) {
+          const helper = IGovernanceV2Helper__factory_1.IGovernanceV2Helper__factory.connect(this.aaveGovernanceV2HelperAddress, this.provider);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return helper.populateTransaction.delegateTokensByTypeBySig(tokens, data);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.GOV_DELEGATION_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
     };
     tslib_1.__decorate([
       methodValidators_1.GovValidator,
@@ -45400,6 +45558,22 @@ var require_governance_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", []),
       tslib_1.__metadata("design:returntype", Promise)
     ], AaveGovernanceService2.prototype, "getProposalsCount", null);
+    tslib_1.__decorate([
+      methodValidators_1.GovHelperValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)("tokens")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], AaveGovernanceService2.prototype, "delegateTokensBySig", null);
+    tslib_1.__decorate([
+      methodValidators_1.GovHelperValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)("tokens")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], AaveGovernanceService2.prototype, "delegateTokensByTypeBySig", null);
     exports2.AaveGovernanceService = AaveGovernanceService2;
   }
 });
@@ -45805,6 +45979,7 @@ var require_governance_power_delegation_contract = __commonJS({
             types: {
               EIP712Domain: [
                 { name: "name", type: "string" },
+                { name: "version", type: "string" },
                 { name: "chainId", type: "uint256" },
                 { name: "verifyingContract", type: "address" }
               ],
@@ -45817,6 +45992,7 @@ var require_governance_power_delegation_contract = __commonJS({
             primaryType: "Delegate",
             domain: {
               name: governanceTokenName,
+              version: "1",
               chainId,
               verifyingContract: governanceToken
             },
@@ -45837,6 +46013,7 @@ var require_governance_power_delegation_contract = __commonJS({
             types: {
               EIP712Domain: [
                 { name: "name", type: "string" },
+                { name: "version", type: "string" },
                 { name: "chainId", type: "uint256" },
                 { name: "verifyingContract", type: "address" }
               ],
@@ -45850,6 +46027,7 @@ var require_governance_power_delegation_contract = __commonJS({
             primaryType: "DelegateByType",
             domain: {
               name: governanceTokenName,
+              version: "1",
               chainId,
               verifyingContract: governanceToken
             },
@@ -63076,7 +63254,7 @@ var governanceConfig = {
     AAVE_GOVERNANCE_V2: "0xEC568fffba86c094cf06b22134B23074DFE2252c",
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: "0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7",
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
-    AAVE_GOVERNANCE_V2_HELPER: "0x16ff7583ea21055bf5f929ec4b896d997ff35847"
+    AAVE_GOVERNANCE_V2_HELPER: "0xBb7baf0534423e3108E1D03c259104cDba2C1cB7"
   },
   ipfsGateway: "https://cloudflare-ipfs.com/ipfs",
   fallbackIpfsGateway: "https://ipfs.io/ipfs"
