@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export enum RepayType {
@@ -23,28 +23,30 @@ export function RepayTypeSelector({
         <Trans>Repay with</Trans>
       </Typography>
 
-      <StyledToggleButtonGroup
+      <StyledTxModalToggleGroup
         color="primary"
         value={repayType}
         exclusive
         onChange={(_, value) => setRepayType(value)}
-        sx={{ width: '100%', height: '36px', p: '2px' }}
       >
-        <StyledToggleButton value={RepayType.BALANCE} disabled={repayType === RepayType.BALANCE}>
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <StyledTxModalToggleButton
+          value={RepayType.BALANCE}
+          disabled={repayType === RepayType.BALANCE}
+        >
+          <Typography variant="buttonM">
             <Trans>Wallet balance</Trans>
           </Typography>
-        </StyledToggleButton>
+        </StyledTxModalToggleButton>
 
-        <StyledToggleButton
+        <StyledTxModalToggleButton
           value={RepayType.COLLATERAL}
           disabled={repayType === RepayType.COLLATERAL}
         >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+          <Typography variant="buttonM">
             <Trans>Collateral</Trans>
           </Typography>
-        </StyledToggleButton>
-      </StyledToggleButtonGroup>
+        </StyledTxModalToggleButton>
+      </StyledTxModalToggleGroup>
     </Box>
   );
 }

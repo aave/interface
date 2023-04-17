@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useEffect } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { DelegationType } from 'src/helpers/types';
 
 export type DelegationTypeSelectorProps = {
@@ -19,39 +19,37 @@ export const DelegationTypeSelector = ({
   }, [setDelegationType]);
 
   return (
-    <StyledToggleButtonGroup
-      color="primary"
+    <StyledTxModalToggleGroup
       value={delegationType}
       exclusive
       onChange={(_, value) => setDelegationType(value)}
-      sx={{ width: '100%', height: '36px', p: '2px' }}
     >
-      <StyledToggleButton
+      <StyledTxModalToggleButton
         value={DelegationType.BOTH}
         disabled={delegationType === DelegationType.BOTH}
       >
-        <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <Typography variant="buttonM">
           <Trans>Both</Trans>
         </Typography>
-      </StyledToggleButton>
+      </StyledTxModalToggleButton>
 
-      <StyledToggleButton
+      <StyledTxModalToggleButton
         value={DelegationType.VOTING}
         disabled={delegationType === DelegationType.VOTING}
       >
-        <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <Typography variant="buttonM">
           <Trans>Voting</Trans>
         </Typography>
-      </StyledToggleButton>
+      </StyledTxModalToggleButton>
 
-      <StyledToggleButton
+      <StyledTxModalToggleButton
         value={DelegationType.PROPOSITION_POWER}
         disabled={delegationType === DelegationType.PROPOSITION_POWER}
       >
-        <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <Typography variant="buttonM">
           <Trans>Proposition</Trans>
         </Typography>
-      </StyledToggleButton>
-    </StyledToggleButtonGroup>
+      </StyledTxModalToggleButton>
+    </StyledTxModalToggleGroup>
   );
 };
