@@ -2,6 +2,7 @@
 import { Paper } from '@mui/material';
 import { Contract } from 'ethers';
 import * as React from 'react';
+import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
@@ -97,7 +98,7 @@ export const ManageQuickActions = () => {
       .catch((e) => console.error(e));
   }, []);
 
-  if (loading) return <Paper>Loading..</Paper>;
+  if (loading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
     <Paper>
