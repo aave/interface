@@ -64,7 +64,7 @@ export const CapsCircularStatus = ({ value, tooltipContent }: CapsCircularStatus
           size={80}
           thickness={3}
           // We show at minimum, 2% color to represent small values
-          value={value <= 2 ? 2 : value}
+          value={value <= 2 ? 2 : value > 100 ? 100 : value}
         />
         <Typography
           variant="secondary14"
