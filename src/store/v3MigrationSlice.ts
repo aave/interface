@@ -27,7 +27,7 @@ import {
   selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
 
-type MigrationSelectedAsset = {
+export type MigrationSelectedAsset = {
   underlyingAsset: string;
   enforced: boolean;
 };
@@ -47,20 +47,21 @@ const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
   [1]: ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84'],
 };
 
+export type MigrationException = {
+  v2UnderlyingAsset: string;
+  v3UnderlyingAsset: string;
+  amount: string;
+};
+
+export type MigrationExceptionsMap = Record<string, MigrationException>;
+
 export type V3MigrationSlice = {
   //STATE
   exceptionsBalancesLoading: boolean;
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
-  migrationExceptions: Record<
-    string,
-    {
-      v2UnderlyingAsset: string;
-      v3UnderlyingAsset: string;
-      amount: string;
-    }
-  >;
+  migrationExceptions: MigrationExceptionsMap;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS

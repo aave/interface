@@ -16,8 +16,6 @@ interface MigrationListsProps {
   suppliesPositions: ReactNode;
   borrowsPositions: ReactNode;
   loading?: boolean;
-  isSupplyPositionsAvailable: boolean;
-  isBorrowPositionsAvailable: boolean;
   emodeCategoryId?: number;
   isolatedReserveV3?: IsolatedReserve;
 }
@@ -29,8 +27,6 @@ export const MigrationLists = ({
   borrowsPositions,
   loading,
   isolatedReserveV3,
-  isSupplyPositionsAvailable,
-  isBorrowPositionsAvailable,
   emodeCategoryId,
 }: MigrationListsProps) => {
   const {
@@ -41,6 +37,9 @@ export const MigrationLists = ({
   const { supplyReserves, borrowReserves } = useRootStore(
     useCallback((state) => selectUserReservesForMigration(state, 0), [])
   );
+
+  const isSupplyPositionsAvailable = supplyReserves.length > 0;
+  const isBorrowPositionsAvailable = borrowReserves.length > 0;
 
   const allSuppliesDisabled =
     supplyReserves.find((reserve) => reserve.migrationDisabled === undefined) === undefined;

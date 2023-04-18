@@ -118,8 +118,6 @@ export default function V3Migration() {
         <ContentContainer>
           <MigrationLists
             loading={loading}
-            isSupplyPositionsAvailable={supplyReserves.length > 0}
-            isBorrowPositionsAvailable={borrowReserves.length > 0}
             onSelectAllSupplies={handleToggleAllSupply}
             onSelectAllBorrows={handleToggleAllBorrow}
             emodeCategoryId={poolReserveV3?.userEmodeCategoryId}
