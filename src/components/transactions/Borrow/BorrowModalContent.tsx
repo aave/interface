@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -114,26 +114,24 @@ export const BorrowModalContent = ({
   const { borrowCap } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const [_amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
-  const amountRef = useRef<string>();
 
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
-  const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
-
-  const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
-    const maxSelected = _value === '-1';
-    const value = maxSelected ? maxAmountToBorrow.toString() : _value;
-    const decimalTruncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
-    amountRef.current = decimalTruncatedValue;
-    setAmount(decimalTruncatedValue);
+    if (_value === '-1') {
+      setAmount(maxAmountToBorrow);
+    } else {
+      const decimalTruncatedValue = roundToTokenDecimals(_value, poolReserve.decimals);
+      setAmount(decimalTruncatedValue);
+    }
   };
+
+  const isMaxSelected = amount === maxAmountToBorrow;
 
   // health factor calculations
   const amountToBorrowInUsd = valueToBigNumber(amount)
@@ -215,7 +213,7 @@ export const BorrowModalContent = ({
     return (
       <TxSuccessView
         action={<Trans>Borrowed</Trans>}
-        amount={amountRef.current}
+        amount={amount}
         symbol={iconSymbol}
         addToken={borrowUnWrapped && poolReserve.isWrappedBaseAsset ? undefined : addToken}
       />
@@ -244,7 +242,7 @@ export const BorrowModalContent = ({
         usdValue={usdValue.toString(10)}
         assets={[
           {
-            balance: formattedMaxAmountToBorrow,
+            balance: maxAmountToBorrow,
             symbol,
             iconSymbol,
           },
@@ -252,7 +250,7 @@ export const BorrowModalContent = ({
         symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToBorrow.toString(10)}
+        maxValue={maxAmountToBorrow}
         balanceText={<Trans>Available</Trans>}
       />
 
@@ -275,7 +273,7 @@ export const BorrowModalContent = ({
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
         />
