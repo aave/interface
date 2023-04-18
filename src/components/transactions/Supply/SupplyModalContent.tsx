@@ -113,9 +113,9 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-          .multipliedBy(user.currentLiquidationThreshold)
-          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
 
     const isMaxSelected = amount === maxAmountToSupply;
@@ -166,24 +166,14 @@ export const SupplyModalContent = React.memo(
       debtCeilingUsage.isMaxed
     );
 
-    const supplyActionsProps = useMemo(() => {
-      return {
-        amountToSupply: amount,
-        isWrongNetwork,
-        poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
-        symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-        blocked: false,
-        decimals: poolReserve.decimals,
-      };
-    }, [
-      amount,
+    const supplyActionsProps = {
+      amountToSupply: amount,
       isWrongNetwork,
-      supplyUnWrapped,
-      poolReserve.underlyingAsset,
-      poolReserve.symbol,
-      currentNetworkConfig.baseAssetSymbol,
-      poolReserve.decimals,
-    ]);
+      poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
+      symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+      blocked: false,
+      decimals: poolReserve.decimals,
+    };
 
     if (supplyTxState.success)
       return (
