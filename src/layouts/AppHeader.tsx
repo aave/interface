@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -43,8 +44,12 @@ export function AppHeader() {
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useRootStore((state) => [
+    state.mobileMenuOpen,
+    state.setMobileMenuOpen,
+  ]);
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {

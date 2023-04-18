@@ -8,12 +8,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
+import { useRootStore } from 'src/store/root';
 
 export default function TopBarWarning() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
 
   const [showWarning, setShowWarning] = useState(true);
+
+  const [mobileMenuOpen] = useRootStore((state) => [state.mobileMenuOpen]);
 
   useEffect(() => {
     const warningBarOpen = localStorage.getItem('warningBarOpen');
@@ -26,6 +29,9 @@ export default function TopBarWarning() {
     localStorage.setItem('warningBarOpen', 'false');
     setShowWarning(false);
   };
+
+  // Note: hide warnings when mobile menu is open
+  if (mobileMenuOpen) return null;
 
   if (showWarning) {
     return (
