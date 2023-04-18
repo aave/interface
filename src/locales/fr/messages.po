@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-31 12:06\n"
+"PO-Revision-Date: 2023-04-17 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -697,17 +697,9 @@ msgstr "Le plafond de la dette n'est pas nul"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegate"
-msgstr "Déléguer"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
 msgstr ""
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegating"
-msgstr "Déléguant"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1506,6 +1498,7 @@ msgstr ""
 msgid "Read-only mode."
 msgstr ""
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr ""
@@ -1595,16 +1588,8 @@ msgstr "Réviser tx"
 msgid "Review tx details"
 msgstr "Examiner les détails de la transaction"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoke"
-msgstr ""
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Revoke power"
-msgstr ""
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoking"
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
@@ -1695,6 +1680,18 @@ msgstr "Montrer"
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Afficher les actifs avec 0 solde"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Sign to continue"
+msgstr ""
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signatures ready"
+msgstr ""
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signing"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
@@ -2430,6 +2427,7 @@ msgstr "Le retrait de ce montant réduira votre facteur santé et augmentera le 
 msgid "Withdrawing {symbol}"
 msgstr "Retrait {symbole}"
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
 msgstr "Mauvais réseau"
@@ -2654,6 +2652,11 @@ msgid "withdrew"
 msgstr ""
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
