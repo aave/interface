@@ -54,9 +54,9 @@ export const SupplyModalContent = React.memo(
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
-    const {
-      poolComputed: { minRemainingBaseTokenBalance },
-    } = useRootStore();
+    const minRemainingBaseTokenBalance = useRootStore(
+      (state) => state.poolComputed.minRemainingBaseTokenBalance
+    );
 
     // states
     const [amount, setAmount] = useState('');
@@ -113,9 +113,9 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-        .multipliedBy(user.currentLiquidationThreshold)
-        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+          .multipliedBy(user.currentLiquidationThreshold)
+          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
 
     const isMaxSelected = amount === maxAmountToSupply;

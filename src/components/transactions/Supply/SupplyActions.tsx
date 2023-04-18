@@ -42,7 +42,7 @@ export const SupplyActions = React.memo(
     decimals,
     ...props
   }: SupplyActionProps) => {
-    const {
+    const [
       tryPermit,
       supply,
       supplyWithPermit,
@@ -50,7 +50,15 @@ export const SupplyActions = React.memo(
       generateSignatureRequest,
       generateApproval,
       walletApprovalMethodPreference,
-    } = useRootStore();
+    ] = useRootStore((state) => [
+      state.tryPermit,
+      state.supply,
+      state.supplyWithPermit,
+      state.getApprovedAmount,
+      state.generateSignatureRequest,
+      state.generateApproval,
+      state.walletApprovalMethodPreference,
+    ]);
     const {
       approvalTxState,
       mainTxState,
