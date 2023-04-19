@@ -1064,7 +1064,7 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Join the community discussion"
 msgstr "Join the community discussion"
 
-#: src/layouts/TopBarWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 msgid "LEARN MORE"
 msgstr "LEARN MORE"
 
@@ -1081,7 +1081,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/layouts/TopBarWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1350,7 +1350,7 @@ msgstr "Ok, Close"
 msgid "Ok, I got it"
 msgstr "Ok, I got it"
 
-#: src/layouts/TopBarWarning.tsx
+#: src/layouts/MainLayout.tsx
 msgid "On April 24, 2023, E-mode parameters will be changed in accordance with the AIP. Please read the proposal and adjust your open positions accordingly to avoid liquidations."
 msgstr "On April 24, 2023, E-mode parameters will be changed in accordance with the AIP. Please read the proposal and adjust your open positions accordingly to avoid liquidations."
 
@@ -2709,6 +2709,10 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "{notifyText}"
+msgstr "{notifyText}"
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"

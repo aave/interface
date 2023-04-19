@@ -12,8 +12,6 @@ export const createLayoutSlice: StateCreator<
   [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   LayoutSlice
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
 > = (set) => {
   return {
     mobileMenuOpen: false,

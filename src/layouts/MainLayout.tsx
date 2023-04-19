@@ -1,13 +1,25 @@
+import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { AppHeader } from './AppHeader';
-import TopBarWarning from './TopBarWarning';
+import TopBarNotify from './TopBarNotify';
+
+const notifyText = (
+  <Trans>
+    On April 24, 2023, E-mode parameters will be changed in accordance with the AIP. Please read the
+    proposal and adjust your open positions accordingly to avoid liquidations.
+  </Trans>
+);
+
+// Gaunlet AIP for emode liquidations
+const learnMoreLink =
+  'https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550';
 
 export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <TopBarWarning />
+      <TopBarNotify notifyText={notifyText} learnMoreLink={learnMoreLink} />
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}
