@@ -15,6 +15,7 @@ _steps:_
 1. install dependencies `yarn`
 2. add .env.local file to the root folder with:
 
+
 ```sh
 TENDERLY_KEY=
 TENDERLY_ACCOUNT=Aave
