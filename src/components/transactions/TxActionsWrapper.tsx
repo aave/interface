@@ -1,7 +1,6 @@
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@mui/material';
-import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -74,7 +73,7 @@ export const TxActionsWrapper = ({
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
-    if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
+    if (preparingTransactions) return { disabled: true, loading: true };
     // if (hasApprovalError && handleRetry)
     //   return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)
