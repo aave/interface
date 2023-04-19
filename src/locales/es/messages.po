@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-04-17 18:04\n"
+"PO-Revision-Date: 2023-04-18 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1683,11 +1683,11 @@ msgstr "Mostrar activos con 0 balance"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Sign to continue"
-msgstr ""
+msgstr "Firma para continuar"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signatures ready"
-msgstr ""
+msgstr "Firmas listas"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
