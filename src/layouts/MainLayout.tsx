@@ -7,8 +7,8 @@ import TopBarNotify from './TopBarNotify';
 
 const notifyText = (
   <Trans>
-    On April 24, 2023, E-mode parameters will be changed in accordance with the AIP. Please read the
-    proposal and adjust your open positions accordingly to avoid liquidations.
+    An upcoming AIP will adjust E-mode, and if passed, could cause account liquidations. See the
+    snapshot for more info
   </Trans>
 );
 
