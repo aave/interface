@@ -565,6 +565,10 @@ msgstr ""
 msgid "Collateral change"
 msgstr ""
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Credit Delegation"
+msgstr "Delegacion de Credit"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "La garantie est (principalement) la même devise que celle qui est empruntée"

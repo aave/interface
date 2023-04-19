@@ -117,6 +117,7 @@ export const ROUTES = {
   dashboard: '/',
   markets: '/markets',
   staking: '/staking',
+  creditDelegation: '/credit-delegation',
   governance: '/governance',
   faucet: '/faucet',
   migrationTool: '/v3-migration',

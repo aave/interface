@@ -646,6 +646,10 @@ msgstr "Κείμενο σφάλματος αντιγραφής"
 msgid "Created"
 msgstr "Δημιουργήθηκε"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Credit Delegation"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Τρέχον LTV"

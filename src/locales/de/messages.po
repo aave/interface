@@ -646,6 +646,10 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Credit Delegation"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr ""

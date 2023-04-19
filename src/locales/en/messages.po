@@ -39,6 +39,12 @@ msgstr "ACTIVATE COOLDOWN"
 msgid "APR"
 msgstr "APR"
 
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -55,6 +61,8 @@ msgstr "APY"
 msgid "APY change"
 msgstr "APY change"
 
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
@@ -65,6 +73,9 @@ msgstr "APY type"
 msgid "APY type change"
 msgstr "APY type change"
 
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/ListItemAPYButton.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
@@ -72,6 +83,9 @@ msgstr "APY type change"
 msgid "APY, stable"
 msgstr "APY, stable"
 
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/ListItemAPYButton.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
@@ -202,6 +216,9 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -263,17 +280,23 @@ msgstr "Asset is not listed"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
+#: src/modules/credit-delegation/lists/ListHeader.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr "Assets"
 
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
 msgstr "Assets to borrow"
 
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
@@ -292,6 +315,7 @@ msgstr "Author"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Available"
@@ -308,11 +332,13 @@ msgstr "Available liquidity"
 msgid "Available on"
 msgstr "Available on"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
 
 #: src/components/caps/CapsHint.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
@@ -329,6 +355,9 @@ msgstr "Back to Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -355,8 +384,13 @@ msgstr "Before supplying"
 msgid "Blocked Address"
 msgstr "Blocked Address"
 
+#: pages/credit-delegation.page.tsx
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -400,6 +434,7 @@ msgstr "Borrow cap"
 msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
 
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
@@ -476,6 +511,8 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -502,6 +539,7 @@ msgstr "Choose how much voting/proposition power to give to someone else by dele
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
 msgstr "Claim"
@@ -637,6 +675,10 @@ msgstr "Copy error text"
 msgid "Created"
 msgstr "Created"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Credit Delegation"
+msgstr "Credit Delegation"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
@@ -662,6 +704,7 @@ msgstr "Current votes"
 msgid "Dark mode"
 msgstr "Dark mode"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
@@ -671,6 +714,8 @@ msgstr "Dashboard"
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
 
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
@@ -688,10 +733,18 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
+#: pages/credit-delegation.page.tsx
+msgid "Delegate"
+msgstr "Delegate"
+
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
 msgstr "Delegated power"
 
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/credit-delegation/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1202,10 +1255,12 @@ msgstr "Migrate"
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
@@ -1243,6 +1298,7 @@ msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
 msgid "Net APR"
 msgstr "Net APR"
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net APY"
 msgstr "Net APY"
@@ -1251,6 +1307,7 @@ msgstr "Net APY"
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 
+#: src/modules/credit-delegation/CreditDelegationTopPanel.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
 msgstr "Net worth"
@@ -1316,6 +1373,7 @@ msgid "Not reached"
 msgstr "Not reached"
 
 #: pages/v3-migration.page.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
@@ -1325,6 +1383,7 @@ msgid "Nothing staked"
 msgstr "Nothing staked"
 
 #: pages/v3-migration.page.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
@@ -1527,6 +1586,8 @@ msgid "Repaid"
 msgstr "Repaid"
 
 #: src/components/transactions/Repay/RepayModal.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Repay"
@@ -1595,6 +1656,7 @@ msgstr "Rewards APR"
 msgid "Risk details"
 msgstr "Risk details"
 
+#: src/modules/credit-delegation/lists/ListItemAPYButton.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
@@ -1615,6 +1677,7 @@ msgstr "Seems like we can't switch the network automatically. Please check if yo
 msgid "Select"
 msgstr "Select"
 
+#: src/modules/credit-delegation/lists/ListItemAPYButton.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
@@ -1807,6 +1870,10 @@ msgstr "Supplied asset amount"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1816,6 +1883,8 @@ msgid "Supply"
 msgstr "Supply"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsList.tsx
@@ -1831,6 +1900,8 @@ msgstr "Supply apy"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
@@ -1863,6 +1934,8 @@ msgstr "Supplying {symbol}"
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
@@ -2242,6 +2315,7 @@ msgstr "Use it to vote for or against active proposals."
 msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -2367,6 +2441,7 @@ msgstr "Wallet Balance"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/modules/credit-delegation/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Wallet balance"
@@ -2401,6 +2476,8 @@ msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Ma
 msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
@@ -2507,6 +2584,8 @@ msgstr "You will exit isolation mode and other tokens can now be used as collate
 msgid "You {action} <0/> {symbol}"
 msgstr "You {action} <0/> {symbol}"
 
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/credit-delegation/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"
@@ -2537,6 +2616,8 @@ msgstr "Your proposition power is based on your AAVE/stkAAVE balance and receive
 msgid "Your reward balance is 0"
 msgstr "Your reward balance is 0"
 
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/credit-delegation/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
@@ -2550,10 +2631,12 @@ msgstr "Your voting info"
 msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
 msgstr "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
 
+#: src/modules/credit-delegation/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 
+#: src/modules/credit-delegation/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets."
 msgstr "Your {name} wallet is empty. Purchase or transfer assets."

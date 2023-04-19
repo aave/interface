@@ -646,6 +646,10 @@ msgstr "Copiar el texto del error"
 msgid "Created"
 msgstr "Creado"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Credit Delegation"
+msgstr "Delegación de Crédito"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "LTV actual"

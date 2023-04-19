@@ -37,6 +37,12 @@ export const navigation: Navigation[] = [
       !ENABLE_TESTNET,
   },
   {
+    link: ROUTES.creditDelegation,
+    title: t`Credit Delegation`,
+    dataCy: 'menuCreditDelegation',
+    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_CREDIT_DELEGATION === 'true',
+  },
+  {
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
