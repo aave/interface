@@ -137,11 +137,11 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        // IconComponent: (props) =>
-        //   // <SvgIcon fontSize="medium" {...props}>
-        //   //   <ChevronDownIcon />
-        //   // </SvgIcon>
-        //   '',
+        IconComponent: () => null,
+        // <SvgIcon fontSize="medium" {...props}>
+        //   <ChevronDownIcon />
+        // </SvgIcon>
+        //'',
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
           return (
