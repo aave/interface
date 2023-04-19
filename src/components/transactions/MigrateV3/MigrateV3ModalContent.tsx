@@ -11,7 +11,7 @@ import {
   selectedUserSupplyReservesForMigration,
   selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
-import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -36,7 +36,7 @@ export const MigrateV3ModalContent = () => {
   );
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { currentChainId, setCurrentMarket, currentMarket } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -72,16 +72,17 @@ export const MigrateV3ModalContent = () => {
   }
 
   const handleRoute = () => {
-    if (currentMarket === CustomMarket.proto_polygon) {
-      setCurrentMarket('proto_polygon_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
-    } else if (currentMarket === CustomMarket.proto_avalanche) {
-      setCurrentMarket('proto_avalanche_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_avalanche_v3}`;
-    } else {
-      setCurrentMarket('proto_mainnet_v3' as CustomMarket);
-      window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
-    }
+    return null;
+    // if (currentMarket === CustomMarket.proto_polygon) {
+    //   setCurrentMarket('proto_polygon_v3' as CustomMarket);
+    //   window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
+    // } else if (currentMarket === CustomMarket.proto_avalanche) {
+    //   setCurrentMarket('proto_avalanche_v3' as CustomMarket);
+    //   window.location.href = `/?marketName=${CustomMarket.proto_avalanche_v3}`;
+    // } else {
+    //   setCurrentMarket('proto_mainnet_v3' as CustomMarket);
+    //   window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
+    // }
   };
 
   if (migrateTxState.success) {

@@ -1,10 +1,10 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
+// import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   ListItemText,
   MenuItem,
-  SvgIcon,
+  // SvgIcon,
   TextField,
   Tooltip,
   Typography,
@@ -137,11 +137,11 @@ export const MarketSwitcher = () => {
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => (
-          <SvgIcon fontSize="medium" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        ),
+        // IconComponent: (props) =>
+        //   // <SvgIcon fontSize="medium" {...props}>
+        //   //   <ChevronDownIcon />
+        //   // </SvgIcon>
+        //   '',
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
           return (
@@ -195,6 +195,7 @@ export const MarketSwitcher = () => {
           PaperProps: {
             style: {
               minWidth: 240,
+              display: 'none',
             },
             variant: 'outlined',
             elevation: 0,
@@ -262,7 +263,7 @@ export const MarketSwitcher = () => {
                 <Trans>Version 3</Trans>
               </Typography>
             </StyledToggleButton>
-            <StyledToggleButton
+            {/* <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -290,7 +291,7 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton>
+            </StyledToggleButton> */}
           </StyledToggleButtonGroup>
         </Box>
       )}
