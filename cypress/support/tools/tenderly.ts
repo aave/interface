@@ -51,7 +51,7 @@ export class TenderlyFork {
 
   async add_balance(address: string, amount: number) {
     if (!this.fork_id) throw new Error('Fork not initialized!');
-    tenderly.post(
+    return tenderly.post(
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork/${this.fork_id}/balance`,
       { accounts: [address], amount: amount }
     );
@@ -59,7 +59,7 @@ export class TenderlyFork {
 
   async add_balance_rpc(address: string) {
     if (!this.fork_id) throw new Error('Fork not initialized!');
-    axios({
+    return axios({
       url: this.get_rpc_url(),
       method: 'post',
       headers: { 'content-type': 'text/plain' },

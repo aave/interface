@@ -37,7 +37,7 @@ export const delegate = (
   const _shortName = asset.shortName;
   const _actionName = 'Delegate';
 
-  return describe(`Delegate both ${_shortName}`, () => {
+  return describe(`Delegate ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Setup delegation`, () => {
       cy.get('button:contains("Set up delegation")').click();
@@ -79,8 +79,10 @@ export const verifyPower = (
 export const revoke = (
   {
     asset,
+    isChoice = true,
   }: {
     asset: { shortName: string; fullName: string };
+    isChoice?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -92,7 +94,8 @@ export const revoke = (
     skipSetup({ skip, updateSkipStatus });
     it(`Revoke ${_shortName}`, () => {
       cy.get('button:contains("Revoke power")').click();
-      cy.get(`[data-cy=Modal]`).find(`[data-cy='delegate-token-${asset.shortName}']`).click();
+      if (isChoice)
+        cy.get(`[data-cy=Modal]`).find(`[data-cy='delegate-token-${asset.shortName}']`).click();
       cy.doConfirm(true, _actionName);
     });
     doCloseModal();
