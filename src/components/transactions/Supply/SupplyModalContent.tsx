@@ -54,9 +54,9 @@ export const SupplyModalContent = React.memo(
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
-    const {
-      poolComputed: { minRemainingBaseTokenBalance },
-    } = useRootStore();
+    const minRemainingBaseTokenBalance = useRootStore(
+      (state) => state.poolComputed.minRemainingBaseTokenBalance
+    );
 
     // states
     const [amount, setAmount] = useState('');
@@ -166,24 +166,14 @@ export const SupplyModalContent = React.memo(
       debtCeilingUsage.isMaxed
     );
 
-    const supplyActionsProps = useMemo(() => {
-      return {
-        amountToSupply: amount,
-        isWrongNetwork,
-        poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
-        symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-        blocked: false,
-        decimals: poolReserve.decimals,
-      };
-    }, [
-      amount,
+    const supplyActionsProps = {
+      amountToSupply: amount,
       isWrongNetwork,
-      supplyUnWrapped,
-      poolReserve.underlyingAsset,
-      poolReserve.symbol,
-      currentNetworkConfig.baseAssetSymbol,
-      poolReserve.decimals,
-    ]);
+      poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
+      symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+      blocked: false,
+      decimals: poolReserve.decimals,
+    };
 
     if (supplyTxState.success)
       return (
