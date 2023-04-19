@@ -4,7 +4,7 @@ import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalCont
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
-import { AIP, GOVERNANCE_PAGE, STAKE } from 'src/utils/mixPanelEvents';
+import { AIP, DASHBOARD, GOVERNANCE_PAGE, STAKE } from 'src/utils/mixPanelEvents';
 
 export enum ModalType {
   Supply,
@@ -47,11 +47,39 @@ export type TxStateType = {
 };
 
 export interface ModalContextType<T extends ModalArgsType> {
-  openSupply: (underlyingAsset: string) => void;
-  openWithdraw: (underlyingAsset: string) => void;
-  openBorrow: (underlyingAsset: string) => void;
-  openRepay: (underlyingAsset: string, currentRateMode: InterestRate, isFrozen: boolean) => void;
-  openCollateralChange: (underlyingAsset: string) => void;
+  openSupply: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openWithdraw: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openBorrow: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openRepay: (
+    underlyingAsset: string,
+    currentRateMode: InterestRate,
+    isFrozen: boolean,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openCollateralChange: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    usageAsCollateralEnabledOnUser: boolean
+  ) => void;
   openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAssetName: string, icon: string) => void;
@@ -100,25 +128,64 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   return (
     <ModalContext.Provider
       value={{
-        openSupply: (underlyingAsset) => {
+        openSupply: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Supply);
           setArgs({ underlyingAsset });
+          trackEvent(DASHBOARD.SUPPLY_DASHBOARD, {
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            funnel,
+          });
         },
-        openWithdraw: (underlyingAsset) => {
+        openWithdraw: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Withdraw);
           setArgs({ underlyingAsset });
+
+          trackEvent(DASHBOARD.WITHDRAWL_DASHBOARD, {
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            funnel: funnel,
+          });
         },
-        openBorrow: (underlyingAsset) => {
+        openBorrow: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
+          trackEvent(DASHBOARD.BORROW_DASHBOARD, {
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            funnel,
+          });
         },
-        openRepay: (underlyingAsset, currentRateMode, isFrozen) => {
+        openRepay: (underlyingAsset, currentRateMode, isFrozen, currentMarket, name, funnel) => {
           setType(ModalType.Repay);
           setArgs({ underlyingAsset, currentRateMode, isFrozen });
+
+          trackEvent(DASHBOARD.REPAY_DASHBOARD, {
+            asset: underlyingAsset,
+            assetName: name,
+            market: currentMarket,
+            funnel,
+          });
         },
-        openCollateralChange: (underlyingAsset) => {
+        openCollateralChange: (
+          underlyingAsset,
+          currentMarket,
+          name,
+          funnel,
+          usageAsCollateralEnabledOnUser
+        ) => {
           setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
+          trackEvent(DASHBOARD.COLLATERAL_TOGGLE_DASHBOARD, {
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            usageAsCollateralEnabledOnUser: usageAsCollateralEnabledOnUser,
+            funnel,
+          });
         },
         openRateSwitch: (underlyingAsset, currentRateMode) => {
           setType(ModalType.RateSwitch);

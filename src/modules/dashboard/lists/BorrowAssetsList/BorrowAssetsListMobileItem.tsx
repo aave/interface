@@ -100,7 +100,7 @@ export const BorrowAssetsListMobileItem = ({
         <Button
           disabled={borrowButtonDisable}
           variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
+          onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

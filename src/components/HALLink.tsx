@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';
+import { useRootStore } from 'src/store/root';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import Hal from '/public/icons/healthFactor/HAL.svg';
 import HalHover from '/public/icons/healthFactor/HALHover.svg';
@@ -54,6 +56,7 @@ interface Props {
 
 export default function HALLink({ healthFactor, marketName, integrationURL }: Props) {
   const { currentAccount } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const urlString = useMemo(() => {
     const formattedHealthFactor = valueToBigNumber(healthFactor).toFixed(2, BigNumber.ROUND_DOWN);
@@ -105,6 +108,12 @@ export default function HALLink({ healthFactor, marketName, integrationURL }: Pr
         target="_blank"
         rel="noopener"
         component={Link}
+        onClick={() =>
+          trackEvent(DASHBOARD.NOTIFY_DASHBOARD, {
+            market: marketName,
+            healthFactor: healthFactor,
+          })
+        }
         sx={{
           pl: 6,
           position: 'relative',

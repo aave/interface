@@ -4,7 +4,9 @@ import { NoData } from 'src/components/primitives/NoData';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -39,6 +41,8 @@ export const SupplyAssetsListItem = ({
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
+
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <ListItemWrapper
@@ -83,7 +87,9 @@ export const SupplyAssetsListItem = ({
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached}
           variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
+          onClick={() => {
+            openSupply(underlyingAsset, currentMarket, name, 'dashboard');
+          }}
         >
           <Trans>Supply</Trans>
         </Button>
@@ -91,6 +97,13 @@ export const SupplyAssetsListItem = ({
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          onClick={() => {
+            trackEvent(DASHBOARD.DETAILS_BUTTON_DASHBOARD, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+            });
+          }}
         >
           <Trans>Details</Trans>
         </Button>
