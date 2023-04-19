@@ -33680,7 +33680,8 @@ var require_types2 = __commonJS({
       420: "optimism_goerli",
       16666e5: "harmony",
       16667e5: "harmony_testnet",
-      11155111: "sepolia"
+      11155111: "sepolia",
+      534353: "scroll_alpha"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33706,6 +33707,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["harmony_testnet"] = 16667e5] = "harmony_testnet";
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
+      ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -42112,6 +42114,9 @@ var require_IDebtTokenBase_factory = __commonJS({
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
     };
     exports2.IDebtTokenBase__factory = IDebtTokenBase__factory;
     var _abi = [
@@ -42179,6 +42184,7 @@ var require_baseDebtToken_contract = __commonJS({
       constructor(provider, erc20Service) {
         super(provider, IDebtTokenBase__factory_1.IDebtTokenBase__factory);
         this.erc20Service = erc20Service;
+        this.debtTokenInterface = IDebtTokenBase__factory_1.IDebtTokenBase__factory.createInterface();
       }
       approveDelegation({ user, delegatee, debtTokenAddress, amount }) {
         const debtTokenContract = this.getContractInstance(debtTokenAddress);
@@ -42193,6 +42199,23 @@ var require_baseDebtToken_contract = __commonJS({
           txType: types_1.eEthereumTxType.ERC20_APPROVAL,
           gas: this.generateTxPriceEstimation([], txCallback)
         };
+      }
+      approvedDelegationAmount(_0) {
+        return __async(this, arguments, function* ({ user, delegatee, debtTokenAddress }) {
+          const debtTokenContract = this.getContractInstance(debtTokenAddress);
+          const allowance = yield debtTokenContract.borrowAllowance(user, delegatee);
+          const decimals = yield this.erc20Service.decimalsOf(debtTokenAddress);
+          return Number(ethers_1.ethers.utils.formatUnits(allowance, decimals));
+        });
+      }
+      generateApproveDelegationTxData({ user, delegatee, debtTokenAddress, amount }) {
+        const txData = this.debtTokenInterface.encodeFunctionData("approveDelegation", [delegatee, amount]);
+        const approveDelegationTx = {
+          data: txData,
+          to: debtTokenAddress,
+          from: user
+        };
+        return approveDelegationTx;
       }
       isDelegationApproved(_0) {
         return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount }) {
@@ -42214,6 +42237,25 @@ var require_baseDebtToken_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", [Object]),
       tslib_1.__metadata("design:returntype", Object)
     ], BaseDebtToken.prototype, "approveDelegation", null);
+    tslib_1.__decorate([
+      methodValidators_1.DebtTokenValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("delegatee")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], BaseDebtToken.prototype, "approvedDelegationAmount", null);
+    tslib_1.__decorate([
+      methodValidators_1.DebtTokenValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("delegatee")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
+      tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Object)
+    ], BaseDebtToken.prototype, "generateApproveDelegationTxData", null);
     tslib_1.__decorate([
       methodValidators_1.DebtTokenValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
@@ -42392,6 +42434,22 @@ var require_wethgateway_contract = __commonJS({
           };
           return actionTx;
         };
+        this.generateBorrowEthTxData = (args) => {
+          var _a7;
+          const numericRateMode = args.interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          const txData = this.wethGatewayInstance.encodeFunctionData("borrowETH", [
+            args.lendingPool,
+            args.amount,
+            numericRateMode,
+            (_a7 = args.referralCode) !== null && _a7 !== void 0 ? _a7 : "0"
+          ]);
+          const actionTx = {
+            data: txData,
+            to: this.wethGatewayAddress,
+            from: args.user
+          };
+          return actionTx;
+        };
       }
       depositETH({ lendingPool, user, amount, onBehalfOf, referralCode }) {
         const convertedAmount = (0, utils_1.valueToWei)(amount, 18);
@@ -42416,6 +42474,9 @@ var require_wethgateway_contract = __commonJS({
           const txs = [];
           const convertedAmount = (0, utils_1.valueToWei)(amount, 18);
           const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          if (!debtTokenAddress) {
+            throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+          }
           const delegationApproved = yield this.baseDebtTokenService.isDelegationApproved({
             debtTokenAddress,
             allowanceGiver: user,
@@ -43542,6 +43603,7 @@ var require_lendingPool_contract_bundle = __commonJS({
     exports2.LendingPoolBundle = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
     var utils_1 = require_utils6();
     var erc20_contract_1 = require_erc20_contract();
     var ILendingPool__factory_1 = require_ILendingPool_factory();
@@ -43579,6 +43641,39 @@ var require_lendingPool_contract_bundle = __commonJS({
                 amount,
                 onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
                 referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+              ]);
+              actionTx.to = this.lendingPoolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+            }
+            return actionTx;
+          }
+        };
+        this.borrowTxBuilder = {
+          generateTxData: ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode }) => {
+            let actionTx = {};
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              if (!debtTokenAddress) {
+                throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+              }
+              actionTx = this.wethGatewayService.generateBorrowEthTxData({
+                lendingPool: this.lendingPoolAddress,
+                user,
+                amount,
+                debtTokenAddress,
+                interestRateMode,
+                referralCode: referralCodeParam
+              });
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("borrow", [
+                reserve,
+                amount,
+                numericRateMode,
+                referralCodeParam,
+                onBehalfOfParam
               ]);
               actionTx.to = this.lendingPoolAddress;
               actionTx.from = user;
@@ -48796,6 +48891,20 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.data = txData;
           return actionTx;
         };
+        this.generateBorrowTxData = ({ user, reserve, amount, numericRateMode, referralCode, onBehalfOf }) => {
+          const actionTx = {};
+          const txData = this.poolContractInstance.encodeFunctionData("borrow", [
+            reserve,
+            amount,
+            numericRateMode,
+            referralCode !== null && referralCode !== void 0 ? referralCode : "0",
+            onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.from = user;
+          actionTx.data = txData;
+          return actionTx;
+        };
         this.generateSupplyWithPermitTxData = ({ user, reserve, amount, onBehalfOf, referralCode, deadline, permitR, permitS, permitV }) => {
           const actionTx = {};
           const txData = this.poolContractInstance.encodeFunctionData("supplyWithPermit", [
@@ -48816,6 +48925,16 @@ var require_v3_pool_rollups = __commonJS({
         this.generateEncodedSupplyTxData = ({ encodedTxData, user }) => {
           const actionTx = {};
           const txData = this.l2PoolContractInstance.encodeFunctionData("supply", [
+            encodedTxData
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          return actionTx;
+        };
+        this.generateEncodedBorrowTxData = ({ encodedTxData, user }) => {
+          const actionTx = {};
+          const txData = this.l2PoolContractInstance.encodeFunctionData("borrow", [
             encodedTxData
           ]);
           actionTx.to = this.l2PoolAddress;
@@ -50124,6 +50243,7 @@ var require_v3_pool_contract_bundle = __commonJS({
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var bytes_1 = require_lib2();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
     var utils_1 = require_utils6();
     var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
@@ -50238,6 +50358,56 @@ var require_v3_pool_contract_bundle = __commonJS({
               populatedTx.data = txData;
             }
             return populatedTx;
+          }
+        };
+        this.borrowTxBuilder = {
+          generateTxData: ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode, useOptimizedPath, encodedTxData }) => {
+            let actionTx = {};
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              if (!debtTokenAddress) {
+                throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+              }
+              actionTx = this.wethGatewayService.generateBorrowEthTxData({
+                lendingPool: this.poolAddress,
+                user,
+                amount,
+                debtTokenAddress,
+                interestRateMode,
+                referralCode: referralCodeParam
+              });
+            } else if (useOptimizedPath) {
+              if (encodedTxData) {
+                actionTx = this.l2PoolService.generateEncodedBorrowTxData({
+                  encodedTxData,
+                  user
+                });
+              } else {
+                const args = {
+                  user,
+                  reserve,
+                  amount,
+                  onBehalfOf: onBehalfOfParam,
+                  referralCode: referralCodeParam,
+                  numericRateMode
+                };
+                actionTx = this.l2PoolService.generateBorrowTxData(args);
+              }
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("borrow", [
+                reserve,
+                amount,
+                numericRateMode,
+                referralCodeParam,
+                onBehalfOfParam
+              ]);
+              actionTx.to = this.poolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+            }
+            return actionTx;
           }
         };
       }
