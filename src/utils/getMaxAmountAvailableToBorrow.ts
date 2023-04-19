@@ -7,6 +7,19 @@ import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from '../hooks/app-data-provider/useAppDataProvider';
+import { roundToTokenDecimals } from './utils';
+
+// Subset of ComputedReserveData
+interface PoolReserveBorrowSubset {
+  borrowCap: string;
+  availableLiquidityUSD: string;
+  totalDebt: string;
+  isFrozen: boolean;
+  decimals: number;
+  formattedAvailableLiquidity: string;
+  formattedPriceInMarketReferenceCurrency: string;
+  borrowCapUSD: string;
+}
 
 /**
  * Calculates the maximum amount a user can borrow.
@@ -15,10 +28,10 @@ import {
  * @param user
  */
 export function getMaxAmountAvailableToBorrow(
-  poolReserve: ComputedReserveData,
+  poolReserve: PoolReserveBorrowSubset,
   user: FormatUserSummaryAndIncentivesResponse,
   rateMode: InterestRate
-) {
+): string {
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
 
@@ -77,7 +90,10 @@ export function getMaxAmountAvailableToBorrow(
         .multipliedBy('0.99')
         .lt(user.availableBorrowsUSD));
 
-  return shouldAddMargin ? maxUserAmountToBorrow.multipliedBy('0.99') : maxUserAmountToBorrow;
+  const amountWithMargin = shouldAddMargin
+    ? maxUserAmountToBorrow.multipliedBy('0.99')
+    : maxUserAmountToBorrow;
+  return roundToTokenDecimals(amountWithMargin.toString(10), poolReserve.decimals);
 }
 
 export function assetCanBeBorrowedByUser(
