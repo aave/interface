@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { Contract } from 'ethers';
 import * as React from 'react';
+import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
@@ -175,56 +176,61 @@ export const ManageMainActions = () => {
       .catch((e) => console.error(e));
   }, [provider]);
 
-  if (loading) return <Paper>loading...</Paper>;
+  if (loading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
-    <Paper>
-      <div>main actions</div>
-      <div style={{ border: '1px solid black' }}>
-        Unlocked paw {unlockedPAW}
-        <button onClick={handleClaimUnlock}>Claim</button>
-      </div>
-      <div style={{ border: '1px solid black' }}>
-        Vested paw {vestedPAW} penalty {exitPenalty}
-        <div>
-          Claim all <button onClick={handleClaimAllVest}>Claim</button>
-        </div>
-      </div>
-
-      <div style={{ border: '1px solid black' }}>
-        Expired locked paw {expiredLockedPAW} <button onClick={handleClaimExpired}>Claim</button>
-      </div>
-
-      <div style={{ border: '1px solid black' }}>
-        <div>Vests</div>
-        {vests.map((vest, i) => (
-          <div key={i}>
-            amount {vest.amount} exp {vest.expiry}
+    <>
+      <Grid md={9} xs={12} sx={{ px: '12px' }}>
+        <Paper>
+          <div>main actions</div>
+          <div style={{ border: '1px solid black' }}>
+            Unlocked paw {unlockedPAW}
+            <button onClick={handleClaimUnlock}>Claim</button>
           </div>
-        ))}
-        Total vested {totalVestsValue}
-      </div>
-
-      <div style={{ border: '1px solid black' }}>
-        <div>Locks</div>
-        {locks.map((lock, i) => (
-          <div key={i}>
-            amount {lock.amount} exp {lock.expiry}
+          <div style={{ border: '1px solid black' }}>
+            Vested paw {vestedPAW} penalty {exitPenalty}
+            <div>
+              Claim all <button onClick={handleClaimAllVest}>Claim</button>
+            </div>
           </div>
-        ))}
-        Total locked {totalLockedPAW} value {totalLocksValue}
-      </div>
 
-      <div style={{ border: '1px solid black' }}>
-        Claimable fees
-        {claimables.map((claimable, i) => (
-          <div key={i}>
-            amount {(claimable as Claimables[])[0]} token{' '}
-            {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
+          <div style={{ border: '1px solid black' }}>
+            Expired locked paw {expiredLockedPAW}{' '}
+            <button onClick={handleClaimExpired}>Claim</button>
           </div>
-        ))}
-        {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>
-      </div>
-    </Paper>
+
+          <div style={{ border: '1px solid black' }}>
+            <div>Vests</div>
+            {vests.map((vest, i) => (
+              <div key={i}>
+                amount {vest.amount} exp {vest.expiry}
+              </div>
+            ))}
+            Total vested {totalVestsValue}
+          </div>
+
+          <div style={{ border: '1px solid black' }}>
+            <div>Locks</div>
+            {locks.map((lock, i) => (
+              <div key={i}>
+                amount {lock.amount} exp {lock.expiry}
+              </div>
+            ))}
+            Total locked {totalLockedPAW} value {totalLocksValue}
+          </div>
+
+          <div style={{ border: '1px solid black' }}>
+            Claimable fees
+            {claimables.map((claimable, i) => (
+              <div key={i}>
+                amount {(claimable as Claimables[])[0]} token{' '}
+                {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
+              </div>
+            ))}
+            {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>
+          </div>
+        </Paper>
+      </Grid>
+    </>
   );
 };
