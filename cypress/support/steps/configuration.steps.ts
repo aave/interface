@@ -28,9 +28,7 @@ export const configEnvWithTenderly = ({
   const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
   before(async () => {
     await tenderly.init();
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    await setTimeout(() => {}, 3000);
-
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await tenderly.add_balance_rpc(walletAddress);
     if (unpause) {
       await tenderly.unpauseMarket();
