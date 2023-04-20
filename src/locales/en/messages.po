@@ -182,6 +182,10 @@ msgstr "Amount must be greater than 0"
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
 
+#: src/layouts/MainLayout.tsx
+msgid "An upcoming AIP will adjust E-mode, and if passed, could cause account liquidations. See the snapshot for more info"
+msgstr "An upcoming AIP will adjust E-mode, and if passed, could cause account liquidations. See the snapshot for more info"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
@@ -1060,6 +1064,10 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Join the community discussion"
 msgstr "Join the community discussion"
 
+#: src/layouts/TopBarNotify.tsx
+msgid "LEARN MORE"
+msgstr "LEARN MORE"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
@@ -1073,6 +1081,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2696,6 +2705,10 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "{notifyText}"
+msgstr "{notifyText}"
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
