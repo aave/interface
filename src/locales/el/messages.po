@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-04-17 18:04\n"
+"PO-Revision-Date: 2023-04-19 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -498,10 +498,6 @@ msgstr ""
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr ""
-
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "Cap reached. Lower supply amount"
-msgstr "Το ανώτατο όριο έχει επιτευχθεί. Χαμηλότερη ποσότητα προσφοράς"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
