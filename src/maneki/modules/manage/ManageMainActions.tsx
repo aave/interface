@@ -30,9 +30,9 @@ export const ManageMainActions = () => {
   const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(-1);
   const [totalLockedPAW, setTotalLockedPAW] = React.useState(-1);
   const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
-  const [vests, setVests] = React.useState<VestEntry[]>([]);
+  const [vests, setVests] = React.useState<VestEntry[][]>([]);
   const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
-  const [locks, setLocks] = React.useState<VestEntry[]>([]);
+  const [locks, setLocks] = React.useState<VestEntry[][]>([]);
   const [totalLocksValue, setTotalLocksValue] = React.useState(-1);
   const [claimables, setClaimables] = React.useState<Claimables[][]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -156,7 +156,7 @@ export const ManageMainActions = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: (NumReturn | VestEntry[] | Claimables[][])[]) => {
+      .then((data: (NumReturn | VestEntry[][] | Claimables[][])[]) => {
         // dev change data setting logic here
 
         setUnlockedPAW(parseInt((data[0] as NumReturn)._hex, 16));
@@ -165,8 +165,8 @@ export const ManageMainActions = () => {
         setExpiredLockedPAW(parseInt((data[3] as NumReturn)._hex, 16));
         setTotalLockedPAW(parseInt((data[4] as NumReturn)._hex, 16));
         setTotalClaimableValue(parseInt((data[5] as NumReturn)._hex, 16));
-        setVests(data[6] as VestEntry[]);
-        setLocks(data[7] as VestEntry[]);
+        setVests(data[6] as VestEntry[][]);
+        setLocks(data[7] as VestEntry[][]);
         setClaimables(data[8] as Claimables[][]);
         setTotalLocksValue(parseInt((data[9] as NumReturn)._hex, 16));
         setTotalVestsValue(parseInt((data[10] as NumReturn)._hex, 16));
@@ -199,7 +199,8 @@ export const ManageMainActions = () => {
         <div>Vests</div>
         {vests.map((vest, i) => (
           <div key={i}>
-            amount {vest.amount} exp {vest.expiry}
+            amount {parseInt(((vest as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+            exp {parseInt(((vest as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
           </div>
         ))}
         Total vested {totalVestsValue}
@@ -209,7 +210,8 @@ export const ManageMainActions = () => {
         <div>Locks</div>
         {locks.map((lock, i) => (
           <div key={i}>
-            amount {lock.amount} exp {lock.expiry}
+            amount {parseInt(((lock as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+            unlocktime {parseInt(((lock as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
           </div>
         ))}
         Total locked {totalLockedPAW} value {totalLocksValue}
@@ -219,7 +221,7 @@ export const ManageMainActions = () => {
         Claimable fees
         {claimables.map((claimable, i) => (
           <div key={i}>
-            amount {(claimable as Claimables[])[0]} token{' '}
+            token {(claimable as Claimables[])[0]} amount{' '}
             {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
           </div>
         ))}
