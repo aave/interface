@@ -111,7 +111,10 @@ export const SwapModalContent = ({
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
-  const remainingSupplyCap = remainingCap(swapTarget.reserve);
+  const remainingSupplyCap = remainingCap(
+    swapTarget.reserve.supplyCap,
+    swapTarget.reserve.totalLiquidity
+  );
   const remainingCapUsd = amountToUsd(
     remainingSupplyCap,
     swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
