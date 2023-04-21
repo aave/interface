@@ -7,8 +7,8 @@ import TopBarNotify from './TopBarNotify';
 
 const notifyText = (
   <Trans>
-    An upcoming AIP will adjust E-mode, and if passed, could cause account liquidations. See the
-    snapshot for more info
+    <strong>Important: </strong> An upcoming AIP may adjust E-Mode. If passed, this vote could cause
+    account liquidations.
   </Trans>
 );
 
