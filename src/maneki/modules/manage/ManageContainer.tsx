@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
@@ -26,14 +26,12 @@ export const ManagePawContainer = () => {
   }
 
   return (
-    <Box>
-      <Grid container>
-        {/* QuickActions */}
-        <ManageQuickActions />
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, gap: '32px' }}>
+      {/* QuickActions */}
+      <ManageQuickActions />
 
-        {/* Main actions  */}
-        <ManageMainActions />
-      </Grid>
+      {/* Main actions  */}
+      <ManageMainActions />
     </Box>
   );
 };

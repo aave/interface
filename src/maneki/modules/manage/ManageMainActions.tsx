@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Grid, Paper } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { Contract } from 'ethers';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
@@ -180,45 +180,124 @@ export const ManageMainActions = () => {
 
   return (
     <>
-      <Grid md={9} xs={12} sx={{ px: '12px' }}>
-        <Paper>
-          <div>main actions</div>
-          <div style={{ border: '1px solid black' }}>
-            Unlocked paw {unlockedPAW}
-            <button onClick={handleClaimUnlock}>Claim</button>
-          </div>
-          <div style={{ border: '1px solid black' }}>
-            Vested paw {vestedPAW} penalty {exitPenalty}
-            <div>
-              Claim all <button onClick={handleClaimAllVest}>Claim</button>
+      <Box sx={{ minWidth: '70%' }}>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+            padding: '32px',
+            borderRadius: '14px',
+            width: '92%',
+            mb: '32px',
+          }}
+        >
+          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
+            <Box>
+              <Typography variant="h4" fontWeight={700}>
+                Unlock PAW{' '}
+              </Typography>
+              <Typography>Staked PAW and expired PAW vests</Typography>
+            </Box>
+            <Box>
+              <Typography>{unlockedPAW}</Typography>
+              <Button onClick={handleClaimUnlock}>Claim</Button>
+            </Box>
+          </Box>
+          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
+            <Box>
+              <Typography variant="h4" fontWeight={700}>
+                Vested PAW
+              </Typography>
+              <Typography>
+                PAW that can be claimed with a{' '}
+                <Typography component={'span'} color="error.light">
+                  50% penalty
+                </Typography>
+              </Typography>
+            </Box>
+            <Typography>{vestedPAW}</Typography>
+          </Box>
+          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
+            <Box>
+              <Typography variant="h4" fontWeight={700}>
+                Claim all of the above
+              </Typography>
+              <Typography>
+                Early Exit Penalty:{' '}
+                <Typography component="span" color={'error.light'}>
+                  {exitPenalty} PAW
+                </Typography>
+              </Typography>
+            </Box>
+            <Box>
+              <Button onClick={handleClaimAllVest}>Claim</Button>
+            </Box>
+          </Box>
+          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
+            <Box>
+              <Typography variant="h4" fontWeight={700}>
+                Expired Locked PAW
+              </Typography>
+              <Typography>
+                PAW locks that have exceeded the 3 month lock period and are now withdrawable.
+              </Typography>
+            </Box>
+            <Box>
+              <Typography>{expiredLockedPAW}</Typography>
+              <Button onClick={handleClaimExpired}>Claim</Button>
+            </Box>
+          </Box>
+        </Paper>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+            padding: '32px',
+            borderRadius: '14px',
+            width: '92%',
+            mb: '32px',
+          }}
+        >
+          <Typography variant={'h3'}>PAW Vests</Typography>
+          {vests.map((vest, i) => (
+            <div key={i}>
+              amount {vest.amount} exp {vest.expiry}
             </div>
-          </div>
-
-          <div style={{ border: '1px solid black' }}>
-            Expired locked paw {expiredLockedPAW}{' '}
-            <button onClick={handleClaimExpired}>Claim</button>
-          </div>
-
-          <div style={{ border: '1px solid black' }}>
-            <div>Vests</div>
-            {vests.map((vest, i) => (
-              <div key={i}>
-                amount {vest.amount} exp {vest.expiry}
-              </div>
-            ))}
-            Total vested {totalVestsValue}
-          </div>
-
-          <div style={{ border: '1px solid black' }}>
-            <div>Locks</div>
-            {locks.map((lock, i) => (
-              <div key={i}>
-                amount {lock.amount} exp {lock.expiry}
-              </div>
-            ))}
-            Total locked {totalLockedPAW} value {totalLocksValue}
-          </div>
-
+          ))}
+          <Typography>Total vested: {totalVestsValue}</Typography>
+        </Paper>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+            padding: '32px',
+            borderRadius: '14px',
+            width: '92%',
+            mb: '32px',
+          }}
+        >
+          <Typography variant={'h3'}>PAW Locks</Typography>
+          {locks.map((lock, i) => (
+            <div key={i}>
+              amount {lock.amount} exp {lock.expiry}
+            </div>
+          ))}
+          <Typography>Total locked: {totalLockedPAW}</Typography>
+          <Typography>value: {totalLocksValue}</Typography>
+        </Paper>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+            padding: '32px',
+            borderRadius: '14px',
+            width: '92%',
+          }}
+        >
           <div style={{ border: '1px solid black' }}>
             Claimable fees
             {claimables.map((claimable, i) => (
@@ -230,7 +309,7 @@ export const ManageMainActions = () => {
             {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>
           </div>
         </Paper>
-      </Grid>
+      </Box>
     </>
   );
 };

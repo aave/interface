@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AddModeratorOutlinedIcon from '@mui/icons-material/AddModeratorOutlined';
 import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncryptionOutlined';
-import { Box, Grid, Paper, Typography } from '@mui/material';
-import { Contract } from 'ethers';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import { BigNumber, Contract } from 'ethers';
 import * as React from 'react';
+import NumberFormat from 'react-number-format';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
+import { countDecimals, toWeiString } from './ManageUtils';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
 interface NumReturn {
@@ -17,12 +19,40 @@ interface NumReturn {
   _isBigNumber: boolean;
 }
 
+interface CustomNumberFormatType {
+  amountTo: string;
+  setAmountTo: React.Dispatch<React.SetStateAction<string>>;
+  balancePAW: number;
+  style?: React.CSSProperties;
+}
+
+function CustomNumberFormat({ amountTo, setAmountTo, balancePAW, style }: CustomNumberFormatType) {
+  return (
+    <NumberFormat
+      value={amountTo}
+      thousandSeparator
+      isNumericString={true}
+      allowNegative={false}
+      isAllowed={(values) => {
+        if (countDecimals(values.value) > 18 || parseFloat(values.value) > balancePAW) return false;
+        return true;
+      }}
+      onValueChange={(values) => {
+        const countDec = countDecimals(values.value);
+        if (countDec > 18) values.value = amountTo;
+        setAmountTo(values.value);
+      }}
+      style={style}
+    />
+  );
+}
+
 export const ManageQuickActions = () => {
   const { balancePAW, setBalancePAW } = useManageContext();
   const [stakingAPR, setStakingAPR] = React.useState<number>(-1);
   const [lockingAPR, setLockingAPR] = React.useState<number>(-1);
-  const [amountToStake, setAmountToStake] = React.useState<number>(0);
-  const [amountToLock, setAmountToLock] = React.useState<number>(0);
+  const [amountToStake, setAmountToStake] = React.useState<string>('');
+  const [amountToLock, setAmountToLock] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
 
@@ -35,11 +65,10 @@ export const ManageQuickActions = () => {
     // create contract
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.stake(amountToLock, true)); // lock
+    promises.push(contract.stake(BigNumber.from(toWeiString(amountToLock)), true)); // lock
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -58,11 +87,10 @@ export const ManageQuickActions = () => {
     // create contract
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.stake(amountToLock, false)); // stake
+    promises.push(contract.stake(BigNumber.from(toWeiString(amountToStake)), false)); // stake
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -79,7 +107,6 @@ export const ManageQuickActions = () => {
   React.useEffect(() => {
     // create contracts
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
-    console.log(contract);
     const promises = [];
 
     // add contract call into promise arr
@@ -93,6 +120,7 @@ export const ManageQuickActions = () => {
         // dev change data setting logic here
         console.log('data', data);
         setBalancePAW(parseInt(data[0]._hex, 16));
+        // setBalancePAW(1000);
         setStakingAPR(parseInt(data[1]._hex, 16));
         setLockingAPR(parseInt(data[2]._hex, 16));
 
@@ -104,87 +132,139 @@ export const ManageQuickActions = () => {
   if (loading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
-    <Grid md={3} xs={12} sx={{ px: '16px', gap: '32px' }} container>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '32px', minWidth: '30%' }}>
       {/* Stake */}
       <Paper
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '12px',
-          padding: '24px',
+          gap: '24px',
+          padding: '32px',
           boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px',
           borderRadius: '14px',
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <AddModeratorOutlinedIcon sx={{ transform: 'scale(1.5)' }} />
-            <Typography variant="h2" fontWeight={'800'}>
-              Stake
+          <Box sx={{ display: 'flex', gap: '12px' }}>
+            <AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />
+            <Typography variant="h3" fontWeight={'700'}>
+              Stake PAW
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: '8px' }}>
-            <Typography>APR </Typography>
-            <Typography>{(stakingAPR / 100000000).toFixed(2)} %</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              padding: '12px',
+              border: '1px solid rgb(68, 73, 92)',
+              borderRadius: '12px',
+              bgcolor: 'background.header',
+            }}
+          >
+            <Typography fontWeight={600} fontSize={12}>
+              APR
+            </Typography>
+            <Typography fontWeight={800} fontSize={16}>
+              {(stakingAPR / 100000000).toFixed(2)} %
+            </Typography>
           </Box>
         </Box>
-        <Typography>Stake PAW and earn platform fees with no lockup period.</Typography>
-        <Box>
-          <Typography>Waller balance </Typography>
-          <Typography>{balancePAW}</Typography>
+        <Typography fontWeight={600} fontSize={'14px'}>
+          Stake PAW and earn platform fees with no lockup period.
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography fontSize={16} fontWeight={500}>
+            Wallet Balance :
+          </Typography>
+          <Typography fontSize={18} fontWeight={600}>
+            {balancePAW} PAW
+          </Typography>
         </Box>
-        <Box>
-          <input
-            value={amountToStake}
-            onChange={(e) => setAmountToStake(parseInt(e.target.value))}
-            type="number"
-            max={balancePAW}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <CustomNumberFormat
+            amountTo={amountToStake}
+            setAmountTo={setAmountToStake}
+            balancePAW={balancePAW}
+            style={{
+              padding: '12px 16px',
+              border: 'solid 1px #dadada',
+              fontSize: '16px',
+              borderRadius: '8px',
+            }}
           />
-          <button onClick={handleStake}>stake</button>
+          <Button onClick={handleStake} variant="contained" sx={{ padding: '0px 24px' }}>
+            Stake
+          </Button>
         </Box>
       </Paper>
       <Paper
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'column',
+          gap: '24px',
+          padding: '32px',
           boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px',
-          padding: '24px',
-          gap: '12px',
           borderRadius: '14px',
         }}
       >
         {/* Lock */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.5)' }} />
-            <Typography variant="h2" fontWeight="800">
-              Lock
+          <Box sx={{ display: 'flex', gap: '12px' }}>
+            <EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />
+            <Typography variant="h3" fontWeight={'700'}>
+              Lock PAW
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: '8px' }}>
-            <Typography>APR</Typography>
-            <Typography>{(lockingAPR / 100000000).toFixed(2)} %</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              padding: '12px',
+              border: '1px solid rgb(68, 73, 92)',
+              borderRadius: '12px',
+              bgcolor: 'background.header',
+            }}
+          >
+            <Typography fontWeight={600} fontSize={12}>
+              APR
+            </Typography>
+            <Typography fontWeight={800} fontSize={16}>
+              {(lockingAPR / 100000000).toFixed(2)} %
+            </Typography>
           </Box>
         </Box>
-        <Typography>Lock PAW and earn platform fees and penalty fees in unlocked PAW.</Typography>
-        <Typography>
+        <Typography fontWeight={600} fontSize={'14px'}>
+          Lock PAW and earn platform fees and penalty fees in unlocked PAW.
+        </Typography>
+        <Typography fontWeight={600} fontSize={'14px'}>
           Locked PAW is subject to a three month lock and will continue to earn fees after the locks
           expire if you do not withdraw.
         </Typography>
-        <Box>
-          <Typography>Balance</Typography>
-          <Typography>{balancePAW}</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography fontSize={16} fontWeight={500}>
+            Wallet Balance :
+          </Typography>
+          <Typography fontSize={18} fontWeight={600}>
+            {balancePAW} PAW
+          </Typography>
         </Box>
-        <Box>
-          <input
-            value={amountToLock}
-            onChange={(e) => setAmountToLock(parseInt(e.target.value))}
-            type="number"
-            max={balancePAW}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <CustomNumberFormat
+            amountTo={amountToLock}
+            setAmountTo={setAmountToLock}
+            balancePAW={balancePAW}
+            style={{
+              padding: '12px 16px',
+              border: 'solid 1px #dadada',
+              fontSize: '16px',
+              borderRadius: '8px',
+            }}
           />
-          <button onClick={handleLock}>lock</button>
+          <Button onClick={handleLock} variant="contained" sx={{ padding: '0px 24px' }}>
+            Lock
+          </Button>
         </Box>
       </Paper>
-    </Grid>
+    </Box>
   );
 };
