@@ -2,7 +2,7 @@
 import AddModeratorOutlinedIcon from '@mui/icons-material/AddModeratorOutlined';
 import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncryptionOutlined';
 import { Box, Button, Paper, Typography } from '@mui/material';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 import NumberFormat from 'react-number-format';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
@@ -13,6 +13,7 @@ import { useManageContext } from '../../hooks/manage-data-provider/ManageDataPro
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import { countDecimals, toWeiString } from './ManageUtils';
 import MULTI_FEE_ABI from './MultiFeeABI';
+import PAW_TOKEN_ABI from './PAWTokenABI';
 
 interface NumReturn {
   _hex: string;
@@ -22,7 +23,7 @@ interface NumReturn {
 interface CustomNumberFormatType {
   amountTo: string;
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
-  balancePAW: number;
+  balancePAW: string;
   style?: React.CSSProperties;
 }
 
@@ -34,7 +35,8 @@ function CustomNumberFormat({ amountTo, setAmountTo, balancePAW, style }: Custom
       isNumericString={true}
       allowNegative={false}
       isAllowed={(values) => {
-        if (countDecimals(values.value) > 18 || parseFloat(values.value) > balancePAW) return false;
+        if (countDecimals(values.value) > 18 || parseFloat(values.value) > parseFloat(balancePAW))
+          return false;
         return true;
       }}
       onValueChange={(values) => {
@@ -55,7 +57,10 @@ export const ManageQuickActions = () => {
   const [amountToLock, setAmountToLock] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
-
+  console.log(provider);
+  console.log(currentAccount);
+  console.log(provider?.getSigner(currentAccount as string));
+  const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
@@ -107,10 +112,11 @@ export const ManageQuickActions = () => {
   React.useEffect(() => {
     // create contracts
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getTotalBalance(currentAccount)); // balance
+    promises.push(pawContract.balanceOf(currentAccount)); // balance
     promises.push(contract.getStakingAPR()); // staking apr
     promises.push(contract.getLockingAPR()); // locking apr
 
@@ -118,9 +124,8 @@ export const ManageQuickActions = () => {
     Promise.all(promises)
       .then((data: NumReturn[]) => {
         // dev change data setting logic here
-        console.log('data', data);
-        setBalancePAW(parseInt(data[0]._hex, 16));
-        // setBalancePAW(1000);
+
+        setBalancePAW(utils.formatUnits(data[0].toString(), 18));
         setStakingAPR(parseInt(data[1]._hex, 16));
         setLockingAPR(parseInt(data[2]._hex, 16));
 

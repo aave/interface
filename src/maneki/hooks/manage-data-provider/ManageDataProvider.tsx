@@ -8,8 +8,8 @@ interface ManageData {
   setLockedPAW: (PAW: number) => void;
   lockedStakedValue: number;
   setLockedStakedValue: (PAW: number) => void;
-  balancePAW: number;
-  setBalancePAW: (PAW: number) => void;
+  balancePAW: string;
+  setBalancePAW: (PAW: string) => void;
   share: number;
   setShare: (PAW: number) => void;
   dailyRevenue: number;
@@ -20,7 +20,7 @@ export const ManageDataProvider: React.FC<{ children: ReactElement }> = ({ child
   const [stakedPAW, setStakedPAW] = React.useState<number>(-1);
   const [lockedPAW, setLockedPAW] = React.useState<number>(-1);
   const [lockedStakedValue, setLockedStakedValue] = React.useState<number>(-1);
-  const [balancePAW, setBalancePAW] = React.useState<number>(-1);
+  const [balancePAW, setBalancePAW] = React.useState<string>('');
   const [share, setShare] = React.useState<number>(-1);
   const [dailyRevenue, setDailyRevenue] = React.useState<number>(-1);
 
