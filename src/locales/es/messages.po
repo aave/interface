@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-03-15 18:05\n"
+"PO-Revision-Date: 2023-04-21 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -25,6 +25,10 @@ msgstr "<0>Ampleforth</0> es un activo con rebase. Visita la <1>documentación</
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
+
+#: src/layouts/MainLayout.tsx
+msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
+msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -214,6 +218,10 @@ msgstr "Los parámetros del array que deberían ser iguales en longitud no lo so
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Activo"
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
+msgstr "Este activo solo se puede utilizar como garantía en isolation mode con poder de préstamo limitado. Para entrar en el isolation mode, deshabilita todas las demás garantías."
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
@@ -477,7 +485,6 @@ msgstr "RECLAMAR {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "RECLAMANDO {symbol}"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -495,10 +502,6 @@ msgstr "Cancelar"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "No se puede deshabilitar E-Mode"
-
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "Cap reached. Lower supply amount"
-msgstr "Límite alcanzado. Menos cantidad de suministro"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
@@ -580,11 +583,16 @@ msgstr "Uso de la garantía"
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "El uso de garantías está limitado debido al Isolation mode."
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr "El uso de garantías está limitado debido al isolation mode."
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "El uso como garantía está limitado debido al isolation mode. <0>Aprende más</0>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Collateralization"
 msgstr "Colateralización"
 
@@ -689,17 +697,9 @@ msgstr "El límite de deuda no es cero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "El límite de deuda limita la cantidad posible que los usuarios del protocolo pueden tomar prestado contra este activo. El límite de deuda es específico para los activos en isolation mode y se indica en USD."
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegate"
-msgstr "Delegar"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
 msgstr "Poder delegado"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegating"
-msgstr "Delegando"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -732,7 +732,6 @@ msgid "Disable {symbol} as collateral"
 msgstr "Desactivar {symbol} como garantía"
 
 #: src/components/ReserveSubheader.tsx
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr "Deshabilitado"
@@ -810,10 +809,6 @@ msgstr "Habilitar {symbol} como garantía"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Habilitado"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Enabled in isolation"
-msgstr "Habilitado en isolation"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -1066,13 +1061,17 @@ msgstr "Aislado"
 msgid "Isolated Debt Ceiling"
 msgstr "Límite de deuda aislado"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Los activos aislados han limitado tu capacidad de préstamo y otros activos no pueden ser usados como garantía."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
 msgstr "Únete a la discusión de la comunidad"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "LEARN MORE"
+msgstr "APRENDE MÁS"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
@@ -1087,6 +1086,7 @@ msgstr "Idioma"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1098,7 +1098,7 @@ msgstr "Aprende más"
 msgid "Learn more about risks involved"
 msgstr "Aprende más sobre los riesgos involucrados"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Aprende más en nuestra guía <0>Preguntas frecuentes</0>"
 
@@ -1280,10 +1280,6 @@ msgstr "Red no soportada para esta cartera"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "Nuevo APY"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "No"
-msgstr "No"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
@@ -1507,6 +1503,7 @@ msgstr "El modo de solo lectura permite ver las posiciones de las direcciones en
 msgid "Read-only mode."
 msgstr "Modo de solo lectura."
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Modo de solo lectura. Conéctate a una cartera para realizar transacciones."
@@ -1596,17 +1593,9 @@ msgstr "Revisión tx"
 msgid "Review tx details"
 msgstr "Revisar detalles de la tx"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoke"
-msgstr "Revocar"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Revoke power"
 msgstr "Revocar poder"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoking"
-msgstr "Revocando"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
@@ -1696,6 +1685,18 @@ msgstr "Mostrar"
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Mostrar activos con 0 balance"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Sign to continue"
+msgstr "Firma para continuar"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signatures ready"
+msgstr "Firmas listas"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signing"
+msgstr "Firmando"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
@@ -2212,6 +2213,8 @@ msgstr "UNSTAKEAR {symbol}"
 msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "No disponible"
@@ -2429,6 +2432,7 @@ msgstr "Retirar esta cantidad reducirá tu factor de salud y aumentará el riesg
 msgid "Withdrawing {symbol}"
 msgstr "Retirando {symbol}"
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
 msgstr "Red incorrecta"
@@ -2436,10 +2440,6 @@ msgstr "Red incorrecta"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Yes"
-msgstr "Sí"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2657,6 +2657,11 @@ msgid "withdrew"
 msgstr "retirado"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -2705,6 +2710,10 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "Faucet {networkName}"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "{notifyText}"
+msgstr "{notifyText}"
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
