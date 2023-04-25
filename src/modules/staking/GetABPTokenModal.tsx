@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import ExternalLinkButton from 'src/components/ExternalLinkButton';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
@@ -21,14 +21,8 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => (
         your BPT in the Safety Module to secure the protocol and earn Safety Incentives.
       </Trans>
     </Typography>
-    <Button
-      variant="outlined"
+    <ExternalLinkButton
       size="large"
-      endIcon={
-        <SvgIcon>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      }
       fullWidth
       sx={{ px: 4 }}
       href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
@@ -39,6 +33,6 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => (
         <TokenIcon symbol="BAL" sx={{ mr: 2 }} />
         <Trans>Go to Balancer Pool</Trans>
       </Box>
-    </Button>
+    </ExternalLinkButton>
   </BasicModal>
 );
