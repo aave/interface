@@ -1,5 +1,5 @@
 import { Drawer } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 interface DrawerWrapperProps {
   open: boolean;
@@ -9,6 +9,10 @@ interface DrawerWrapperProps {
 }
 
 export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : 'auto';
+  });
+
   return (
     <Drawer
       data-cy={`mobile-menu`}
