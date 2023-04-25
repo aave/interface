@@ -12,7 +12,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { findAndFilterGhoReserve, GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -131,7 +131,7 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  const borrowReserves: unknown =
+  const borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
@@ -143,21 +143,14 @@ export const BorrowAssetsList = () => {
             })
         );
 
-  // Transform to the DashboardReserve schema so the sort utils can work with it
-  let preSortedReserves = borrowReserves as DashboardReserve[];
-  // Move GHO to top of assets to borrow list
-  const ghoReserve = preSortedReserves.filter((reserve) => reserve.symbol === GHO_SYMBOL);
-  if (ghoReserve.length > 0) {
-    preSortedReserves = preSortedReserves.filter((reserve) => reserve.symbol !== GHO_SYMBOL);
-    preSortedReserves.unshift(ghoReserve[0]);
-  }
+  const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
     'asset',
-    preSortedReserves
+    filteredReserves as unknown as DashboardReserve[]
   );
-  const borrowDisabled = !sortedReserves.length;
+  const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {
     return (
@@ -204,71 +197,75 @@ export const BorrowAssetsList = () => {
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <Box sx={{ px: 6, mb: 4 }}>
-          {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-            <MarketWarning marketName="Harmony" />
-          )}
+        <>
+          <Box sx={{ px: 6, mb: 4 }}>
+            {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
+              <MarketWarning marketName="Harmony" />
+            )}
 
-          {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
-            <MarketWarning marketName="Fantom" />
-          )}
+            {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
+              <MarketWarning marketName="Fantom" />
+            )}
 
-          {+collateralUsagePercent >= 0.98 && (
-            <Warning severity="error">
-              <Trans>
-                Be careful - You are very close to liquidation. Consider depositing more collateral
-                or paying down some of your borrowed positions
-              </Trans>
-            </Warning>
-          )}
+            {+collateralUsagePercent >= 0.98 && (
+              <Warning severity="error">
+                <Trans>
+                  Be careful - You are very close to liquidation. Consider depositing more
+                  collateral or paying down some of your borrowed positions
+                </Trans>
+              </Warning>
+            )}
 
-          {!borrowDisabled && (
-            <>
-              {user?.isInIsolationMode && (
-                <Warning severity="warning">
-                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                    Learn More
-                  </Link>
-                </Warning>
-              )}
-              {user?.isInEmode && (
-                <Warning severity="warning">
-                  <Trans>
-                    In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
-                    assets
-                  </Trans>
-                </Warning>
-              )}
-              {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                <Warning severity="info">
-                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                </Warning>
-              )}
-            </>
-          )}
-        </Box>
+            {!borrowDisabled && (
+              <>
+                {user?.isInIsolationMode && (
+                  <Warning severity="warning">
+                    <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                    <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                      Learn More
+                    </Link>
+                  </Warning>
+                )}
+                {user?.isInEmode && (
+                  <Warning severity="warning">
+                    <Trans>
+                      In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
+                      assets
+                    </Trans>
+                  </Warning>
+                )}
+                {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                  <Warning severity="info">
+                    <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+                  </Warning>
+                )}
+              </>
+            )}
+          </Box>
+          {ghoReserve &&
+            !downToXSM &&
+            isGhoAndSupported({ symbol: ghoReserve.symbol, currentMarket }) && (
+              <AssetCapsProvider asset={ghoReserve.reserve}>
+                <GhoBorrowAssetsListItem {...ghoReserve} />
+              </AssetCapsProvider>
+            )}
+        </>
       }
     >
       <>
-        {!downToXSM && !!sortedReserves.length && <RenderHeader />}
+        {!downToXSM && reserves.length && <RenderHeader />}
+        {ghoReserve &&
+          downToXSM &&
+          isGhoAndSupported({ symbol: ghoReserve.symbol, currentMarket }) && (
+            <AssetCapsProvider asset={ghoReserve.reserve}>
+              <GhoBorrowAssetsListMobileItem {...ghoReserve} />
+            </AssetCapsProvider>
+          )}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                isGhoAndSupported({
-                  symbol: item.symbol,
-                  currentMarket,
-                }) ? (
-                  <GhoBorrowAssetsListMobileItem {...item} />
-                ) : (
-                  <BorrowAssetsListMobileItem {...item} />
-                )
-              ) : isGhoAndSupported({
-                  symbol: item.symbol,
-                  currentMarket,
-                }) ? (
-                <GhoBorrowAssetsListItem {...item} />
+                <BorrowAssetsListMobileItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}

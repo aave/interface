@@ -1,14 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
-import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getAvailableBorrows, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
-import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
@@ -52,6 +50,14 @@ export const GhoBorrowAssetsListMobileItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
+  const ghoApyRange: [number, number] | undefined = ghoLoadingData
+    ? undefined
+    : [
+        ghoUserData.userGhoAvailableToBorrowAtDiscount === 0
+          ? ghoReserveData.ghoBorrowAPYWithMaxDiscount
+          : userCurrentBorrowApy,
+        userBorrowApyAfterNewBorrow,
+      ];
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -69,8 +75,8 @@ export const GhoBorrowAssetsListMobileItem = ({
 
       <Row
         caption={
-          <VariableAPYTooltip
-            text={<Trans>APY, variable</Trans>}
+          <FixedAPYTooltip
+            text={<Trans>APY, fixed rate</Trans>}
             key="APY_dash_mob_variable_ type"
             variant="description"
           />
@@ -80,36 +86,16 @@ export const GhoBorrowAssetsListMobileItem = ({
         mb={2}
       >
         <GhoIncentivesCard
+          withTokenIcon={true}
           useApyRange
-          rangeValues={
-            ghoLoadingData ? undefined : [userCurrentBorrowApy, userBorrowApyAfterNewBorrow]
-          }
+          rangeValues={ghoApyRange}
           value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
           incentives={vIncentivesData}
           symbol={symbol}
           data-cy="apyType"
-          borrowAmount={debtBalanceAfterMaxBorrow}
-          baseApy={ghoReserveData.ghoVariableBorrowAPY}
-          discountPercent={ghoReserveData.ghoDiscountRate * -1}
-          discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
         />
-      </Row>
-
-      <Row
-        caption={
-          <StableAPYTooltip
-            text={<Trans>APY, stable</Trans>}
-            key="APY_dash_mob_stable_ type"
-            variant="description"
-          />
-        }
-        align="flex-start"
-        captionVariant="description"
-        mb={2}
-      >
-        <IncentivesCard value={-1} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
