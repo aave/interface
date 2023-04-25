@@ -181,7 +181,7 @@ export const ManageQuickActions = () => {
           <Typography fontSize={16} fontWeight={500}>
             Wallet Balance :
           </Typography>
-          <Typography fontSize={18} fontWeight={600}>
+          <Typography fontSize={16} fontWeight={600}>
             {balancePAW} PAW
           </Typography>
         </Box>
@@ -249,7 +249,7 @@ export const ManageQuickActions = () => {
           <Typography fontSize={16} fontWeight={500}>
             Wallet Balance :
           </Typography>
-          <Typography fontSize={18} fontWeight={600}>
+          <Typography fontSize={16} fontWeight={600}>
             {balancePAW} PAW
           </Typography>
         </Box>
