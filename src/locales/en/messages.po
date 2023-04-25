@@ -743,10 +743,6 @@ msgstr "Disabling this asset as collateral affects your borrowing power and Heal
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
@@ -913,10 +909,6 @@ msgstr "Funds in the Safety Module"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Github"
-msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
