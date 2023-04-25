@@ -1,38 +1,12 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
+import ExternalLinkButton from 'src/components/ExternalLinkButton';
 import { Link } from 'src/components/primitives/Link';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
-
-interface ExternalLinkProps {
-  text: string;
-  href: string;
-}
-
-function ExternalLink({ text, href }: ExternalLinkProps) {
-  return (
-    <Button
-      variant="surface"
-      size="small"
-      sx={{ minWidth: 'unset' }}
-      component={Link}
-      href={href}
-      target="_blank"
-      rel="noopener"
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {text}
-        <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      </Box>
-    </Button>
-  );
-}
 
 export const GovernanceTopPanel = () => {
   const theme = useTheme();
@@ -80,9 +54,35 @@ export const GovernanceTopPanel = () => {
           maxWidth: 'sm',
         }}
       >
-        <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
-        <ExternalLink text="FORUM" href="https://governance.aave.com/" />
-        <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
+        <ExternalLinkButton
+          size="small"
+          variant="surface"
+          target="_blank"
+          rel="noopener"
+          href="https://snapshot.org/#/aave.eth"
+        >
+          <Trans>SNAPSHOTS</Trans>
+        </ExternalLinkButton>
+
+        <ExternalLinkButton
+          size="small"
+          variant="surface"
+          target="_blank"
+          rel="noopener"
+          href="https://governance.aave.com/"
+        >
+          <Trans>FORUM</Trans>
+        </ExternalLinkButton>
+
+        <ExternalLinkButton
+          size="small"
+          variant="surface"
+          target="_blank"
+          rel="noopener"
+          href="https://docs.aave.com/faq/governance"
+        >
+          <Trans>FAQ</Trans>
+        </ExternalLinkButton>
       </Box>
     </TopInfoPanel>
   );
