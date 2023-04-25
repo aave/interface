@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { GitHub, Twitter } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
@@ -17,23 +18,28 @@ const StyledLink = styled(Link)(({ theme }) => ({
 const FOOTER_LINKS = [
   {
     href: '',
-    label: 'Terms',
+    label: <Trans>Terms</Trans>,
+    key: 'Terms',
   },
   {
     href: '',
-    label: 'Privacy',
+    label: <Trans>Privacy</Trans>,
+    key: 'Privacy',
   },
   {
     href: '',
-    label: 'Docs',
+    label: <Trans>Docs</Trans>,
+    key: 'Docs',
   },
   {
     href: '',
-    label: 'FAQ',
+    label: <Trans>FAQS</Trans>,
+    key: 'FAQS',
   },
   {
     href: '',
-    label: 'Send feedback',
+    label: <Trans>Send feedback</Trans>,
+    key: 'Send feedback',
   },
 ];
 
@@ -79,7 +85,7 @@ export function AppFooter() {
     >
       <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         {FOOTER_LINKS.map((link) => (
-          <StyledLink key={link.label} href={link.href}>
+          <StyledLink key={link.key} href={link.href}>
             <Typography variant="caption">{link.label}</Typography>
           </StyledLink>
         ))}

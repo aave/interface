@@ -747,6 +747,10 @@ msgstr "Disconnect Wallet"
 msgid "Discord channel"
 msgstr "Discord channel"
 
+#: src/layouts/AppFooter.tsx
+msgid "Docs"
+msgstr "Docs"
+
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
 msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
@@ -852,6 +856,10 @@ msgstr "Expires"
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
+
+#: src/layouts/AppFooter.tsx
+msgid "FAQS"
+msgstr "FAQS"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
@@ -1426,6 +1434,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
 
+#: src/layouts/AppFooter.tsx
+msgid "Privacy"
+msgstr "Privacy"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -1647,6 +1659,10 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
+
+#: src/layouts/AppFooter.tsx
+msgid "Send feedback"
+msgstr "Send feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -1908,6 +1924,10 @@ msgstr "Switching E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
+
+#: src/layouts/AppFooter.tsx
+msgid "Terms"
+msgstr "Terms"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
