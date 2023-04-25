@@ -11,7 +11,7 @@ const ExternalLinkButton = forwardRef<HTMLAnchorElement, ExternalLinkButtonProps
     component={Link}
     variant={props.variant || 'outlined'}
     endIcon={
-      <SvgIcon sx={{ width: 14, height: 14 }}>
+      <SvgIcon sx={props.size != 'large' ? { width: 14, height: 14 } : null}>
         <ExternalLinkIcon />
       </SvgIcon>
     }
