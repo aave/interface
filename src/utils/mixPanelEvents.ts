@@ -185,5 +185,6 @@ export const NAV_BAR = {
 export const SETTINGS = {
   DARK_MODE: 'Dark Mode Toggle',
   TESTNET_MODE: 'Testnet mode toggled: ',
-  LANGUAGE: 'Language selected: ',
+  LANGUAGE: 'Language selector',
+  LANGUAGE_SELECTED: 'Language selected',
 };
