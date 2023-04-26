@@ -201,7 +201,8 @@ export const marketsData: {
         '0x73115acAd6A22eAdFeEda0c5CFEe9A29BBdA7d05',
       MASTER_CHEF: process.env.NEXT_PUBLIC_MANEKI_MASTER_CHEF || '',
       LP_TOKEN: process.env.NEXT_PUBLIC_MANEKI_LP_TOKEN || '',
-      PAW_TOKEN: process.env.NEXT_PUBLIC_MANEKI_PAW_TOKEN || '',
+      PAW_TOKEN:
+        process.env.NEXT_PUBLIC_MANEKI_PAW_TOKEN || '0xb97d999e428395a317becb2aef3b876599c8a4d7',
     },
   },
   /*
