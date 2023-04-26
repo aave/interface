@@ -117,13 +117,13 @@ describe('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
     borrow(borrowCase, skipTestState, true);
   });
   repay(testData.testCases.repayCollateral, skipTestState, false);
-  testData.testCases.repay.forEach((repayCase) => {
-    repay(repayCase, skipTestState, false);
-  });
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
+  testData.testCases.repay.forEach((repayCase) => {
+    repay(repayCase, skipTestState, false);
+  });
   switchCollateralBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
