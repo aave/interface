@@ -57,7 +57,7 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
+    const { refetchWalletBalances, refetchPoolData, refetchIncentiveData, refetchGhoData } =
       useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
@@ -117,6 +117,7 @@ export const BorrowActions = React.memo(
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
+        refetchGhoData && refetchGhoData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
