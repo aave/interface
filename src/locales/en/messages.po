@@ -42,6 +42,10 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "AAVE stakeholders get a discount on GHO borrow rate"
+msgstr "AAVE stakeholders get a discount on GHO borrow rate"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "ACTIVATE COOLDOWN"
@@ -415,8 +419,6 @@ msgstr "Borrow"
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Borrow APY"
 msgstr "Borrow APY"
 
@@ -772,8 +774,6 @@ msgstr "Delegated power"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Details"
 msgstr "Details"
 
@@ -1090,6 +1090,10 @@ msgstr "Health factor is not below the threshold"
 #: src/components/lists/ListWrapper.tsx
 msgid "Hide"
 msgstr "Hide"
+
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
+msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -1568,8 +1572,6 @@ msgstr "Preview tx and migrate"
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Price"
 msgstr "Price"
 
@@ -1920,10 +1922,6 @@ msgstr "Stake"
 #: pages/staking.staking.tsx
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
-
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Stake AAVE and borrow GHO at a lower rate"
-msgstr "Stake AAVE and borrow GHO at a lower rate"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Stake AAVE to borrow GHO at a discount"
@@ -2873,6 +2871,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"
 msgstr "{0}"
 
