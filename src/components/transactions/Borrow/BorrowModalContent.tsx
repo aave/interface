@@ -6,19 +6,20 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -68,32 +69,32 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <StyledToggleButtonGroup
+      <StyledTxModalToggleGroup
         color="primary"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', height: '36px', p: '2px', mt: 0.5 }}
+        sx={{ mt: 0.5 }}
       >
-        <StyledToggleButton
+        <StyledTxModalToggleButton
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+          <Typography variant="buttonM" sx={{ mr: 1 }}>
             <Trans>Variable</Trans>
           </Typography>
           <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-        <StyledToggleButton
+        </StyledTxModalToggleButton>
+        <StyledTxModalToggleButton
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+          <Typography variant="buttonM" sx={{ mr: 1 }}>
             <Trans>Stable</Trans>
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-      </StyledToggleButtonGroup>
+        </StyledTxModalToggleButton>
+      </StyledTxModalToggleGroup>
     </Row>
   );
 };
@@ -113,25 +114,24 @@ export const BorrowModalContent = ({
   const { borrowCap } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const [_amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
-  const amountRef = useRef<string>();
 
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
-  const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
-
-  const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
   // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
-    const maxSelected = _value === '-1';
-    const value = maxSelected ? maxAmountToBorrow.toString() : _value;
-    amountRef.current = value;
-    setAmount(value);
+    if (_value === '-1') {
+      setAmount(maxAmountToBorrow);
+    } else {
+      const decimalTruncatedValue = roundToTokenDecimals(_value, poolReserve.decimals);
+      setAmount(decimalTruncatedValue);
+    }
   };
+
+  const isMaxSelected = amount === maxAmountToBorrow;
 
   // health factor calculations
   const amountToBorrowInUsd = valueToBigNumber(amount)
@@ -213,7 +213,7 @@ export const BorrowModalContent = ({
     return (
       <TxSuccessView
         action={<Trans>Borrowed</Trans>}
-        amount={amountRef.current}
+        amount={amount}
         symbol={iconSymbol}
         addToken={borrowUnWrapped && poolReserve.isWrappedBaseAsset ? undefined : addToken}
       />
@@ -242,7 +242,7 @@ export const BorrowModalContent = ({
         usdValue={usdValue.toString(10)}
         assets={[
           {
-            balance: formattedMaxAmountToBorrow,
+            balance: maxAmountToBorrow,
             symbol,
             iconSymbol,
           },
@@ -250,7 +250,7 @@ export const BorrowModalContent = ({
         symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToBorrow.toString(10)}
+        maxValue={maxAmountToBorrow}
         balanceText={<Trans>Available</Trans>}
       />
 
@@ -273,7 +273,7 @@ export const BorrowModalContent = ({
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
         />
