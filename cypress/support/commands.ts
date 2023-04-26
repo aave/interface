@@ -1,5 +1,7 @@
 import 'cypress-wait-until';
 
+import { CustomizedBridge } from './tools/bridge';
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -128,6 +130,25 @@ Cypress.Commands.add('doSwitchToDashboardBorrowView', () => {
 
 Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
   switchDashboardView('Supply', 'supplies');
+});
+
+Cypress.Commands.add('refresh', () => {
+  cy.wait(1000); // it's need for some cases where we reload page before full uplaoding page
+  cy.visit(window.url, {
+    onBeforeLoad(win) {
+      // eslint-disable-next-line
+      (win as any).ethereum = new CustomizedBridge(window.signer, window.provider);
+      win.localStorage.setItem('forkEnabled', 'true');
+      win.localStorage.setItem('forkNetworkId', '3030');
+      win.localStorage.setItem('forkBaseChainId', window.chainId);
+      win.localStorage.setItem('forkRPCUrl', window.rpc);
+      win.localStorage.setItem('walletProvider', 'injected');
+      win.localStorage.setItem('selectedAccount', window.address);
+      win.localStorage.setItem('selectedMarket', window.market);
+      win.localStorage.setItem('testnetsEnabled', window.testnetsEnabled);
+    },
+  });
+  cy.wait(1000); //give a time to upload recent data from blockchain
 });
 
 Cypress.Commands.add('doSwitchMarket', (marketName: string, isV3: boolean) => {
