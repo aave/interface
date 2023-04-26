@@ -51,14 +51,14 @@ const testData = {
       amount: 10.1,
       hasApproval: false,
     },
+    repayCollateral: {
+      asset: assets.polygonV3Market.USDC,
+      apyType: constants.apyType.stable,
+      amount: 2,
+      hasApproval: false,
+      repayOption: constants.repayType.collateral,
+    },
     repay: [
-      {
-        asset: assets.polygonV3Market.USDC,
-        apyType: constants.apyType.stable,
-        amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
       {
         asset: assets.polygonV3Market.USDC,
         apyType: constants.apyType.stable,
@@ -109,13 +109,14 @@ describe('USDC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
+  repay(testData.testCases.repayCollateral, skipTestState, false);
+  testData.testCases.repay.forEach((repayCase) => {
+    repay(repayCase, skipTestState, false);
+  });
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
-  testData.testCases.repay.forEach((repayCase) => {
-    repay(repayCase, skipTestState, false);
-  });
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
