@@ -34,6 +34,119 @@ interface GhoMarketAssetsListItemProps {
 }
 
 export const GhoMarketAssetsListItem = ({ reserve }: GhoMarketAssetsListItemProps) => {
+  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
+  return (
+    <Box
+      sx={{
+        paddingX: 6,
+        height: 136,
+        overflowY: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}
+    >
+      <Box
+        sx={{
+          height: 116,
+          borderRadius: 4,
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: '#C9B3F94D',
+          position: 'relative',
+          padding: '24px 32px 24px 264px',
+        }}
+      >
+        <Box
+          component="img"
+          src="/illustration_desktop.svg"
+          sx={{
+            position: 'absolute',
+            top: -65,
+            left: 0,
+          }}
+        />
+        <Box
+          sx={{
+            maxWidth: 300,
+          }}
+        >
+          <Typography variant="h2">
+            <Trans>Meet GHO</Trans>
+          </Typography>
+          <Typography variant="description" color="text.secondary">
+            A decentralized, multi-collateralized stablecoin created by AaveDAO.
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 16,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 3,
+              alignItems: 'center',
+            }}
+          >
+            <TokenIcon
+              symbol="GHO"
+              sx={{
+                fontSize: '38px',
+              }}
+            />
+            <Box>
+              <FormattedNumber
+                symbol="USD"
+                compact
+                variant="h3"
+                value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+              />
+              <Typography variant="description" color="text.secondary">
+                <Trans>Total borrowed</Trans>
+              </Typography>
+            </Box>
+          </Box>
+          <Box>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 3,
+                alignItems: 'center',
+              }}
+            >
+              <Box>
+                <FormattedNumber
+                  symbol="USD"
+                  compact
+                  variant="h3"
+                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                />
+                <Typography variant="description" color="text.secondary">
+                  <Trans>Borrow APY, fixed rate</Trans>
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            marginLeft: 'auto',
+          }}
+        >
+          <Trans>View details</Trans>
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export const GhoMarketAssetsListItem1 = ({ reserve }: GhoMarketAssetsListItemProps) => {
+  console.log(reserve?.availableLiquidity);
   const { currentMarket } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
