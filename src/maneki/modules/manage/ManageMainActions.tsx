@@ -1,11 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { Contract } from 'ethers';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
+import ManageMainPaper from './components/ManageMainPaper';
+import MainActionUnlock from './components/ManageMainUnlock';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
@@ -181,136 +193,202 @@ export const ManageMainActions = () => {
   return (
     <>
       <Box sx={{ minWidth: '70%' }}>
-        <Paper
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '24px',
-            padding: '32px',
-            borderRadius: '14px',
-            width: '92%',
-            mb: '32px',
-          }}
-        >
-          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
-            <Box>
-              <Typography variant="h4" fontWeight={700}>
-                Unlock PAW{' '}
-              </Typography>
-              <Typography>Staked PAW and expired PAW vests</Typography>
-            </Box>
-            <Box>
-              <Typography>{unlockedPAW}</Typography>
-              <Button onClick={handleClaimUnlock}>Claim</Button>
-            </Box>
-          </Box>
-          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
-            <Box>
-              <Typography variant="h4" fontWeight={700}>
-                Vested PAW
-              </Typography>
-              <Typography>
-                PAW that can be claimed with a{' '}
-                <Typography component={'span'} color="error.light">
-                  50% penalty
+        <ManageMainPaper>
+          <MainActionUnlock
+            borderBottom
+            leftComponent={
+              <>
+                <Typography variant="h4" fontWeight={700}>
+                  Unlock PAW{' '}
                 </Typography>
-              </Typography>
-            </Box>
-            <Typography>{vestedPAW}</Typography>
-          </Box>
-          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
-            <Box>
-              <Typography variant="h4" fontWeight={700}>
-                Claim all of the above
-              </Typography>
-              <Typography>
-                Early Exit Penalty:{' '}
-                <Typography component="span" color={'error.light'}>
-                  {exitPenalty} PAW
+                <Typography>Staked PAW and expired PAW vests</Typography>
+              </>
+            }
+            rightComponent={
+              <>
+                <Typography>{unlockedPAW} PAW</Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleClaimUnlock}
+                  sx={{ padding: '8px 24px' }}
+                >
+                  Claim
+                </Button>
+              </>
+            }
+          />
+          <MainActionUnlock
+            borderBottom
+            leftComponent={
+              <>
+                <Typography variant="h4" fontWeight={700}>
+                  Vested PAW
                 </Typography>
+                <Typography>
+                  PAW that can be claimed with a{' '}
+                  <Typography component={'span'} color="error.light">
+                    50% penalty
+                  </Typography>
+                </Typography>
+              </>
+            }
+            rightComponent={
+              <Typography
+                sx={{
+                  width: '50%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                {vestedPAW}{' '}
               </Typography>
-            </Box>
-            <Box>
-              <Button onClick={handleClaimAllVest}>Claim</Button>
-            </Box>
-          </Box>
-          <Box sx={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px' }}>
-            <Box>
-              <Typography variant="h4" fontWeight={700}>
-                Expired Locked PAW
-              </Typography>
-              <Typography>
-                PAW locks that have exceeded the 3 month lock period and are now withdrawable.
-              </Typography>
-            </Box>
-            <Box>
-              <Typography>{expiredLockedPAW}</Typography>
-              <Button onClick={handleClaimExpired}>Claim</Button>
-            </Box>
-          </Box>
-        </Paper>
-        <Paper
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '24px',
-            padding: '32px',
-            borderRadius: '14px',
-            width: '92%',
-            mb: '32px',
-          }}
-        >
+            }
+          />
+          <MainActionUnlock
+            borderBottom
+            leftComponent={
+              <>
+                <Typography variant="h4" fontWeight={700}>
+                  Claim all of the above
+                </Typography>
+                <Typography>
+                  Early Exit Penalty:{' '}
+                  <Typography component="span" color={'error.light'}>
+                    {exitPenalty} PAW
+                  </Typography>
+                </Typography>
+              </>
+            }
+            rightComponent={
+              <>
+                <Typography>{''}</Typography>
+                <Button
+                  onClick={handleClaimAllVest}
+                  variant="contained"
+                  sx={{ padding: '8px 24px' }}
+                >
+                  Claim
+                </Button>
+              </>
+            }
+          />
+          <MainActionUnlock
+            leftComponent={
+              <>
+                <Typography variant="h4" fontWeight={700}>
+                  Expired Locked PAW
+                </Typography>
+                <Typography>
+                  PAW locks that have exceeded the 3 month lock period and are now withdrawable.
+                </Typography>
+              </>
+            }
+            rightComponent={
+              <>
+                <Typography>{expiredLockedPAW} PAW</Typography>
+                <Button
+                  onClick={handleClaimExpired}
+                  variant="contained"
+                  sx={{ padding: '8px 24px' }}
+                >
+                  Claim
+                </Button>
+              </>
+            }
+          />
+        </ManageMainPaper>
+        <ManageMainPaper>
           <Typography variant={'h3'}>PAW Vests</Typography>
-          {vests.map((vest, i) => (
-            <div key={i}>
-              amount {parseInt(((vest as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
-              exp {parseInt(((vest as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
-            </div>
-          ))}
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Amount</TableCell>
+                  <TableCell>Expiry</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {vests.map((vest, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      {parseInt(((vest as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+                    </TableCell>
+                    <TableCell>
+                      {parseInt(((vest as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Typography>Total vested: {totalVestsValue}</Typography>
-        </Paper>
-        <Paper
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '24px',
-            padding: '32px',
-            borderRadius: '14px',
-            width: '92%',
-            mb: '32px',
-          }}
-        >
+        </ManageMainPaper>
+        <ManageMainPaper>
           <Typography variant={'h3'}>PAW Locks</Typography>
-          {locks.map((lock, i) => (
-            <div key={i}>
-              amount {parseInt(((lock as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
-              unlocktime {parseInt(((lock as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
-            </div>
-          ))}
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Amount</TableCell>
+                  <TableCell>Expiry</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {locks.map((lock, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      {parseInt(((lock as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+                    </TableCell>
+                    <TableCell>
+                      {/**Convert Unix Timestamp to DateTime */}
+                      {parseInt(((lock as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Typography>Total locked: {totalLockedPAW}</Typography>
           <Typography>value: {totalLocksValue}</Typography>
-        </Paper>
-        <Paper
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '24px',
-            padding: '32px',
-            borderRadius: '14px',
-            width: '92%',
-          }}
-        >
-          <div style={{ border: '1px solid black' }}>
-            Claimable fees
-            {claimables.map((claimable, i) => (
-              <div key={i}>
-                token {(claimable as Claimables[])[0]} amount{' '}
-                {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
-              </div>
-            ))}
-            {totalClaimableValue} <button onClick={handleClaimAll}>claim all</button>
-          </div>
-        </Paper>
+        </ManageMainPaper>
+        <ManageMainPaper>
+          <Typography variant={'h3'}>Claimable fees</Typography>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tokens</TableCell>
+                  <TableCell>Amount</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {claimables.map((claimable, i) => (
+                  <TableRow key={i}>
+                    <TableCell>{(claimable as Claimables[])[0]}</TableCell>
+                    <TableCell>
+                      {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography>Total Value: {totalClaimableValue}</Typography>
+            <Button
+              onClick={handleClaimAll}
+              sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}
+            >
+              Claim All
+            </Button>
+          </Box>
+        </ManageMainPaper>
       </Box>
     </>
   );
