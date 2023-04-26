@@ -10478,10 +10478,6 @@ var require_base = __commonJS({
           comb[2] = points[a].toJ().mixedAdd(points[b].neg());
         }
         var index = [
-<<<<<<< HEAD
-          -3 /* -1 -1 */, -1 /* -1 0 */, -5 /* -1 1 */, -7 /* 0 -1 */, 0 /* 0 0 */, 7 /* 0 1 */,
-          5 /* 1 -1 */, 1 /* 1 0 */, 3,
-=======
           -3,
           /* -1 -1 */
           -1,
@@ -10499,7 +10495,6 @@ var require_base = __commonJS({
           1,
           /* 1 0 */
           3
->>>>>>> official/main
           /* 1 1 */
         ];
         var jsf = getJSF(coeffs[a], coeffs[b]);
@@ -33744,6 +33739,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["migrateV3"] = "migrateV3";
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
+      ProtocolAction2["stake"] = "stake";
+      ProtocolAction2["stakeWithPermit"] = "stakeWithPermit";
       ProtocolAction2["vote"] = "vote";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
@@ -35343,6 +35340,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.repayWithPermit]: {
         limit: "350000",
         recommended: "350000"
+      },
+      [types_1.ProtocolAction.stake]: {
+        limit: "350000",
+        recommended: "350000"
+      },
+      [types_1.ProtocolAction.stakeWithPermit]: {
+        limit: "400000",
+        recommended: "400000"
       },
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
@@ -43938,6 +43943,113 @@ var require_v3_faucet_contract = __commonJS({
   }
 });
 
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
+var require_IERC202612_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IERC202612__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "_nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IERC202612__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IERC202612__factory = IERC202612__factory;
+    IERC202612__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
+var require_erc20_2612 = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ERC20_2612Service = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IERC202612__factory_1 = require_IERC202612_factory();
+    var ERC20_2612Service = class extends BaseService_1.default {
+      constructor(provider) {
+        super(provider, IERC202612__factory_1.IERC202612__factory);
+        this.getNonce = this.getNonce.bind(this);
+      }
+      getNonce(_0) {
+        return __async(this, arguments, function* ({ token, owner }) {
+          const tokenContract = this.getContractInstance(token);
+          let nonce;
+          try {
+            nonce = yield tokenContract.nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+          }
+          try {
+            nonce = yield tokenContract._nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+            console.log(`Token ${token} does not implement nonces or _nonces method`);
+          }
+          return null;
+        });
+      }
+    };
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], ERC20_2612Service.prototype, "getNonce", null);
+    exports2.ERC20_2612Service = ERC20_2612Service;
+  }
+});
+
 // node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js
 var require_IAaveStakingHelper_factory = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js"(exports2) {
@@ -44107,6 +44219,7 @@ var require_staking_contract = __commonJS({
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
+    var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
     var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
     var IStakedToken__factory_1 = require_IStakedToken_factory();
@@ -44115,13 +44228,14 @@ var require_staking_contract = __commonJS({
         var _a7;
         super(provider, IStakedToken__factory_1.IStakedToken__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
         this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
         if (this.stakingHelperContractAddress !== "") {
           this.stakingHelperContract = IAaveStakingHelper__factory_1.IAaveStakingHelper__factory.connect(this.stakingHelperContractAddress, provider);
         }
       }
-      signStaking(user, amount, nonce) {
+      signStaking(user, amount) {
         return __async(this, null, function* () {
           const { getTokenData } = this.erc20Service;
           const stakingContract = this.getContractInstance(this.stakingContractAddress);
@@ -44129,6 +44243,13 @@ var require_staking_contract = __commonJS({
           const { name: name2, decimals } = yield getTokenData(stakedToken);
           const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
           const { chainId } = yield this.provider.getNetwork();
+          const nonce = yield this.erc20_2612Service.getNonce({
+            token: stakedToken,
+            owner: user
+          });
+          if (nonce === null) {
+            return "";
+          }
           const typeData = {
             types: {
               EIP712Domain: [
@@ -44301,9 +44422,8 @@ var require_staking_contract = __commonJS({
       methodValidators_1.SignStakingValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
-      tslib_1.__param(2, (0, paramValidators_1.is0OrPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [String, String, String]),
+      tslib_1.__metadata("design:paramtypes", [String, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "signStaking", null);
     tslib_1.__decorate([
@@ -46458,113 +46578,6 @@ var require_governance_power_delegation_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], GovernancePowerDelegationTokenService.prototype, "getNonce", null);
     exports2.GovernancePowerDelegationTokenService = GovernancePowerDelegationTokenService;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
-var require_IERC202612_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IERC202612__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "_nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ];
-    var IERC202612__factory = class {
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IERC202612__factory = IERC202612__factory;
-    IERC202612__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
-var require_erc20_2612 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.ERC20_2612Service = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
-    var methodValidators_1 = require_methodValidators();
-    var paramValidators_1 = require_paramValidators();
-    var IERC202612__factory_1 = require_IERC202612_factory();
-    var ERC20_2612Service = class extends BaseService_1.default {
-      constructor(provider) {
-        super(provider, IERC202612__factory_1.IERC202612__factory);
-        this.getNonce = this.getNonce.bind(this);
-      }
-      getNonce(_0) {
-        return __async(this, arguments, function* ({ token, owner }) {
-          const tokenContract = this.getContractInstance(token);
-          let nonce;
-          try {
-            nonce = yield tokenContract.nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-          }
-          try {
-            nonce = yield tokenContract._nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-            console.log(`Token ${token} does not implement nonces or _nonces method`);
-          }
-          return null;
-        });
-      }
-    };
-    tslib_1.__decorate([
-      methodValidators_1.ERC20Validator,
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], ERC20_2612Service.prototype, "getNonce", null);
-    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -49289,6 +49302,12 @@ var require_v3_pool_contract = __commonJS({
           encoderAddress: this.l2EncoderAddress
         });
       }
+      getReserveData(reserve) {
+        return __async(this, null, function* () {
+          const lendingPoolContract = this.getContractInstance(this.poolAddress);
+          return lendingPoolContract.getReserveData(reserve);
+        });
+      }
       deposit(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
@@ -50065,6 +50084,13 @@ var require_v3_pool_contract = __commonJS({
     };
     tslib_1.__decorate([
       methodValidators_1.LPValidatorV3,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], Pool.prototype, "getReserveData", null);
+    tslib_1.__decorate([
+      methodValidators_1.LPValidatorV3,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
       tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
@@ -50418,6 +50444,201 @@ var require_v3_pool_contract_bundle = __commonJS({
       }
     };
     exports2.PoolBundle = PoolBundle;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js
+var require_IUiGhoDataProvider_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IUiGhoDataProvider__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [],
+        name: "getGhoReserveData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "ghoBaseVariableBorrowRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountedPerToken",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDebtTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDiscountTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "ghoReserveLastUpdateTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint128",
+                name: "ghoCurrentBorrowIndex",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketLevel",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketMaxCapacity",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoReserveData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getGhoUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "userGhoDiscountPercent",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userDiscountTokenBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userPreviousGhoBorrowIndex",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userGhoScaledBorrowBalance",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoUserData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IUiGhoDataProvider__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IUiGhoDataProvider__factory = IUiGhoDataProvider__factory;
+    IUiGhoDataProvider__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js
+var require_GhoService = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var utils_1 = require_utils5();
+    var IUiGhoDataProvider__factory_1 = require_IUiGhoDataProvider_factory();
+    var GhoService = class {
+      constructor({ provider, uiGhoDataProviderAddress }) {
+        if (!(0, utils_1.isAddress)(uiGhoDataProviderAddress)) {
+          throw new Error("UiGhoDataProvider contract address is not valid");
+        }
+        this.ghoDataProviderService = IUiGhoDataProvider__factory_1.IUiGhoDataProvider__factory.connect(uiGhoDataProviderAddress, provider);
+      }
+      /**
+       * Fetches Gho reserve, discount, facilitator data
+       * @returns - instance of GhoReserveData with reserve, discount, facilitator data
+       */
+      getGhoReserveData() {
+        return __async(this, null, function* () {
+          const ghoReserveData = yield this.ghoDataProviderService.getGhoReserveData();
+          return {
+            ghoBaseVariableBorrowRate: ghoReserveData.ghoBaseVariableBorrowRate.toString(),
+            ghoDiscountedPerToken: ghoReserveData.ghoDiscountedPerToken.toString(),
+            ghoDiscountRate: ghoReserveData.ghoDiscountRate.toString(),
+            aaveFacilitatorBucketMaxCapacity: ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString(),
+            aaveFacilitatorBucketLevel: ghoReserveData.aaveFacilitatorBucketLevel.toString(),
+            ghoMinDebtTokenBalanceForDiscount: ghoReserveData.ghoMinDebtTokenBalanceForDiscount.toString(),
+            ghoMinDiscountTokenBalanceForDiscount: ghoReserveData.ghoMinDiscountTokenBalanceForDiscount.toString(),
+            ghoCurrentBorrowIndex: ghoReserveData.ghoCurrentBorrowIndex.toString(),
+            ghoReserveLastUpdateTimestamp: ghoReserveData.ghoReserveLastUpdateTimestamp.toString()
+          };
+        });
+      }
+      /**
+       * Fetches Gho user data for UI display
+       * @param userAddress - Address of user to fetch ghoDiscountRate, ghoDiscountTokenBalance, and gho balance indeces
+       * @returns - instance of GhoUserData
+       */
+      getGhoUserData(userAddress) {
+        return __async(this, null, function* () {
+          if (!(0, utils_1.isAddress)(userAddress)) {
+            throw new Error("user address is not valid");
+          }
+          const ghoUserData = yield this.ghoDataProviderService.getGhoUserData(userAddress);
+          return {
+            userGhoDiscountPercent: ghoUserData.userGhoDiscountPercent.toString(),
+            userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance.toString(),
+            userGhoScaledBorrowBalance: ghoUserData.userGhoScaledBorrowBalance.toString(),
+            userPreviousGhoBorrowIndex: ghoUserData.userPreviousGhoBorrowIndex.toString()
+          };
+        });
+      }
+    };
+    exports2.GhoService = GhoService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/index.js
+var require_gho = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var GhoService_1 = require_GhoService();
+    Object.defineProperty(exports2, "GhoService", { enumerable: true, get: function() {
+      return GhoService_1.GhoService;
+    } });
   }
 });
 
@@ -53953,8 +54174,10 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_v3_migration_contract(), exports2);
     tslib_1.__exportStar(require_erc20_2612(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_types2(), exports2);
     tslib_1.__exportStar(require_ipfs(), exports2);
     tslib_1.__exportStar(require_utils6(), exports2);
@@ -63823,33 +64046,34 @@ var import_providers2 = __toESM(require_lib30());
 var import_contract_helpers2 = __toESM(require_cjs());
 var markets = __toESM(require_AaveAddressBook());
 var marketsData = {
-  ["proto_mainnet_v3" /* proto_mainnet_v3 */]: {
-    marketTitle: "Ethereum",
-    chainId: import_contract_helpers2.ChainId.mainnet,
-    v3: true,
-    enabledFeatures: {
-      governance: true,
-      staking: true,
-      liquiditySwap: true,
-      collateralRepay: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Ethereum.POOL,
-      WETH_GATEWAY: markets.AaveV3Ethereum.WETH_GATEWAY,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Ethereum.SWAP_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV3Ethereum.COLLECTOR
-    }
-    // halIntegration: {
-    //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-    //   marketName: 'aavev3',
-    // },
-  },
+  // [CustomMarket.proto_mainnet_v3]: {
+  //   marketTitle: 'Ethereum',
+  //   chainId: ChainId.mainnet,
+  //   v3: true,
+  //   disableCharts: true,
+  //   enabledFeatures: {
+  //     governance: true,
+  //     staking: true,
+  //     liquiditySwap: true,
+  //     collateralRepay: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Ethereum.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Ethereum.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Ethereum.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Ethereum.COLLECTOR,
+  //   },
+  //   // halIntegration: {
+  //   //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
+  //   //   marketName: 'aavev3',
+  //   // },
+  // },
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",
     chainId: import_contract_helpers2.ChainId.mainnet,
@@ -63899,386 +64123,409 @@ var marketsData = {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  ["amm_mainnet" /* amm_mainnet */]: {
-    marketTitle: "Ethereum AMM",
-    chainId: import_contract_helpers2.ChainId.mainnet,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2EthereumAMM.POOL,
-      WETH_GATEWAY: markets.AaveV2EthereumAMM.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2EthereumAMM.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV2EthereumAMM.COLLECTOR
-    }
-  },
-  ["proto_polygon" /* proto_polygon */]: {
-    marketTitle: "Polygon",
-    chainId: import_contract_helpers2.ChainId.polygon,
-    enabledFeatures: {
-      liquiditySwap: true,
-      incentives: true,
-      collateralRepay: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Polygon.POOL,
-      WETH_GATEWAY: markets.AaveV2Polygon.WETH_GATEWAY,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV2Polygon.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Polygon.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Polygon.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV2Polygon.COLLECTOR,
-      V3_MIGRATOR: markets.AaveV2Polygon.MIGRATION_HELPER
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
-      marketName: "aavepolygon"
-    }
-  },
-  ["proto_avalanche" /* proto_avalanche */]: {
-    marketTitle: "Avalanche",
-    chainId: import_contract_helpers2.ChainId.avalanche,
-    enabledFeatures: {
-      liquiditySwap: true,
-      incentives: true,
-      collateralRepay: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Avalanche.POOL,
-      WETH_GATEWAY: markets.AaveV2Avalanche.WETH_GATEWAY,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV2Avalanche.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Avalanche.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Avalanche.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Avalanche.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV2Avalanche.COLLECTOR,
-      V3_MIGRATOR: markets.AaveV2Avalanche.MIGRATION_HELPER
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
-      marketName: "aaveavalanche"
-    }
-  },
+  // [CustomMarket.amm_mainnet]: {
+  //   marketTitle: 'Ethereum AMM',
+  //   chainId: ChainId.mainnet,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2EthereumAMM.POOL,
+  //     WETH_GATEWAY: markets.AaveV2EthereumAMM.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2EthereumAMM.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV2EthereumAMM.COLLECTOR,
+  //   },
+  // },
+  // [CustomMarket.proto_polygon]: {
+  //   marketTitle: 'Polygon',
+  //   chainId: ChainId.polygon,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Polygon.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Polygon.WETH_GATEWAY,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV2Polygon.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Polygon.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Polygon.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV2Polygon.COLLECTOR,
+  //     V3_MIGRATOR: markets.AaveV2Polygon.MIGRATION_HELPER,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
+  //     marketName: 'aavepolygon',
+  //   },
+  // },
+  // [CustomMarket.proto_avalanche]: {
+  //   marketTitle: 'Avalanche',
+  //   chainId: ChainId.avalanche,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Avalanche.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Avalanche.WETH_GATEWAY,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV2Avalanche.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV2Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Avalanche.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Avalanche.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Avalanche.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV2Avalanche.COLLECTOR,
+  //     V3_MIGRATOR: markets.AaveV2Avalanche.MIGRATION_HELPER,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
+  //     marketName: 'aaveavalanche',
+  //   },
+  // },
   // v3
-  ["proto_sepolia_v3" /* proto_sepolia_v3 */]: {
-    marketTitle: "Ethereum Sepolia",
+  ["proto_sepolia_gho_v3" /* proto_sepolia_gho_v3 */]: {
+    marketTitle: "Ethereum Sepolia GHO",
     v3: true,
     chainId: import_contract_helpers2.ChainId.sepolia,
     enabledFeatures: {
-      faucet: true
+      faucet: true,
+      staking: true
+      // incentives: false,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Sepolia.POOL,
-      WETH_GATEWAY: markets.AaveV3Sepolia.WETH_GATEWAY,
-      FAUCET: markets.AaveV3Sepolia.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER
+      LENDING_POOL_ADDRESS_PROVIDER: "0x6861730cFf157d3Ef3Fe987f526Ec5e1235B2f45",
+      LENDING_POOL: "0xFF634a7b623E7e7ED49Cd6e9110b9F49b7Ef0Ec4",
+      WETH_GATEWAY: "0xd45a6502E4d3e9e66829Bb07a4eB4f662873417b",
+      FAUCET: "0xc1bFB9323bF7d2aE66e064A4d46FDD21e65464f3",
+      WALLET_BALANCE_PROVIDER: "0x894ef447CF3C97F267999244B1D130Bd746153E6",
+      UI_POOL_DATA_PROVIDER: "0x25c682B532CFFDe7E2E657a4Dc9A277d87b5788C",
+      UI_INCENTIVE_DATA_PROVIDER: "0xA5c352032806D3F5935eEA7b67Dfe97eCfB0d7Cc"
     }
   },
-  ["proto_goerli_v3" /* proto_goerli_v3 */]: {
-    marketTitle: "Ethereum G\xF6rli",
+  ["proto_goerli_gho_v3" /* proto_goerli_gho_v3 */]: {
+    marketTitle: "Ethereum G\xF6rli GHO",
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Goerli.POOL,
-      WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
-      FAUCET: markets.AaveV3Goerli.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Goerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Goerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER
-    }
-  },
-  ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
-    marketTitle: "Arbitrum",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.arbitrum_one,
-    enabledFeatures: {
-      incentives: true,
-      liquiditySwap: true,
-      collateralRepay: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Arbitrum.POOL,
-      WETH_GATEWAY: markets.AaveV3Arbitrum.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Arbitrum.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: markets.AaveV3Arbitrum.L2_ENCODER,
-      COLLECTOR: markets.AaveV3Arbitrum.COLLECTOR,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
-      marketName: "arbitrum"
-    }
-  },
-  ["proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */]: {
-    marketTitle: "Arbitrum G\xF6rli",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
-    enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
-      incentives: true
+      // governance: true,
+      staking: true
+      // incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
-      WETH_GATEWAY: markets.AaveV3ArbitrumGoerli.WETH_GATEWAY,
-      FAUCET: markets.AaveV3ArbitrumGoerli.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3ArbitrumGoerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: markets.AaveV3ArbitrumGoerli.L2_ENCODER
-    }
-  },
-  ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
-    marketTitle: "Avalanche",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.avalanche,
-    enabledFeatures: {
-      liquiditySwap: true,
-      incentives: true,
-      collateralRepay: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Avalanche.POOL,
-      WETH_GATEWAY: markets.AaveV3Avalanche.WETH_GATEWAY,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.SWAP_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Avalanche.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Avalanche.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Avalanche.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV3Avalanche.COLLECTOR
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
-      marketName: "avalanche"
-    }
-  },
-  ["proto_fuji_v3" /* proto_fuji_v3 */]: {
-    marketTitle: "Avalanche Fuji",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.fuji,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Fuji.POOL,
-      WETH_GATEWAY: markets.AaveV3Fuji.WETH_GATEWAY,
-      FAUCET: markets.AaveV3Fuji.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Fuji.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Fuji.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER
-    }
-  },
-  ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
-    marketTitle: "Optimism G\xF6rli",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.optimism_goerli,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
-      WETH_GATEWAY: markets.AaveV3OptimismGoerli.WETH_GATEWAY,
-      FAUCET: markets.AaveV3OptimismGoerli.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3OptimismGoerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER
-    }
-  },
-  ["proto_fantom_v3" /* proto_fantom_v3 */]: {
-    marketTitle: "Fantom",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.fantom,
-    enabledFeatures: {
-      incentives: true,
-      collateralRepay: true,
-      liquiditySwap: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Fantom.POOL,
-      WETH_GATEWAY: markets.AaveV3Fantom.WETH_GATEWAY,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Fantom.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Fantom.REPAY_WITH_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Fantom.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Fantom.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV3Fantom.COLLECTOR
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
-      marketName: "fantom"
-    }
-  },
-  ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
-    marketTitle: "Fantom Testnet",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.fantom_testnet,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
-      WETH_GATEWAY: markets.AaveV3FantomTestnet.WETH_GATEWAY,
-      FAUCET: markets.AaveV3FantomTestnet.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3FantomTestnet.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_INCENTIVE_DATA_PROVIDER
-    }
-  },
-  ["proto_harmony_v3" /* proto_harmony_v3 */]: {
-    marketTitle: "Harmony",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.harmony,
-    enabledFeatures: {
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Harmony.POOL,
-      WETH_GATEWAY: markets.AaveV3Harmony.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Harmony.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Harmony.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV3Harmony.COLLECTOR
-    }
-  },
-  ["proto_optimism_v3" /* proto_optimism_v3 */]: {
-    marketTitle: "Optimism",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.optimism,
-    enabledFeatures: {
-      incentives: true,
-      collateralRepay: true,
-      liquiditySwap: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Optimism.POOL,
-      WETH_GATEWAY: markets.AaveV3Optimism.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Optimism.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Optimism.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Optimism.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: markets.AaveV3Optimism.L2_ENCODER,
-      COLLECTOR: markets.AaveV3Optimism.COLLECTOR,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER
-    }
-  },
-  ["proto_polygon_v3" /* proto_polygon_v3 */]: {
-    marketTitle: "Polygon",
-    chainId: import_contract_helpers2.ChainId.polygon,
-    v3: true,
-    enabledFeatures: {
-      liquiditySwap: true,
-      incentives: true,
-      collateralRepay: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Polygon.POOL,
-      WETH_GATEWAY: markets.AaveV3Polygon.WETH_GATEWAY,
-      REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
-      SWAP_COLLATERAL_ADAPTER: markets.AaveV3Polygon.SWAP_COLLATERAL_ADAPTER,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Polygon.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Polygon.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: markets.AaveV3Polygon.COLLECTOR
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
-      marketName: "polygon"
-    }
-  },
-  ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
-    marketTitle: "Polygon Mumbai",
-    chainId: import_contract_helpers2.ChainId.mumbai,
-    enabledFeatures: {
-      incentives: true,
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV3Mumbai.POOL,
-      WETH_GATEWAY: markets.AaveV3Mumbai.WETH_GATEWAY,
-      FAUCET: markets.AaveV3Mumbai.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV3Mumbai.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV3Mumbai.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Mumbai.UI_INCENTIVE_DATA_PROVIDER
-    },
-    v3: true
-  },
-  ["proto_goerli" /* proto_goerli */]: {
-    marketTitle: "Ethereum G\xF6rli",
-    chainId: import_contract_helpers2.ChainId.goerli,
-    enabledFeatures: {
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Goerli.POOL,
-      WETH_GATEWAY: markets.AaveV2Goerli.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Goerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Goerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Goerli.UI_INCENTIVE_DATA_PROVIDER,
-      FAUCET: markets.AaveV2Goerli.FAUCET
-    }
-  },
-  ["proto_mumbai" /* proto_mumbai */]: {
-    marketTitle: "Polygon Mumbai",
-    chainId: import_contract_helpers2.ChainId.mumbai,
-    enabledFeatures: {
-      incentives: true,
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Mumbai.POOL,
-      WETH_GATEWAY: markets.AaveV2Mumbai.WETH_GATEWAY,
-      FAUCET: markets.AaveV2Mumbai.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER
-    }
-  },
-  ["proto_fuji" /* proto_fuji */]: {
-    marketTitle: "Avalanche Fuji",
-    chainId: import_contract_helpers2.ChainId.fuji,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: markets.AaveV2Fuji.POOL,
-      WETH_GATEWAY: markets.AaveV2Fuji.WETH_GATEWAY,
-      FAUCET: markets.AaveV2Fuji.FAUCET,
-      WALLET_BALANCE_PROVIDER: markets.AaveV2Fuji.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER
+      LENDING_POOL_ADDRESS_PROVIDER: "0x4dd5ab8Fb385F2e12aDe435ba7AFA812F1d364D0".toLowerCase(),
+      LENDING_POOL: "0x617Cf26407193E32a771264fB5e9b8f09715CdfB",
+      WETH_GATEWAY: "0x9c402E3b0D123323F0FCed781b8184Ec7E02Dd31",
+      FAUCET: "0x1265305F033156bbF8Ba54fE45DD5685BEc4Cc44",
+      WALLET_BALANCE_PROVIDER: "0x03C8d0c46834921c4468C15A03E5d76Ae5CA3133",
+      UI_POOL_DATA_PROVIDER: "0x3De59b6901e7Ad0A19621D49C5b52cC9a4977e52",
+      UI_INCENTIVE_DATA_PROVIDER: "0xF67B25977cEFf3563BF7F24A531D6CEAe6870a9d"
     }
   }
+  // [CustomMarket.proto_goerli_v3]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   v3: true,
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Goerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Goerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Goerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Goerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_arbitrum_v3]: {
+  //   marketTitle: 'Arbitrum',
+  //   v3: true,
+  //   chainId: ChainId.arbitrum_one,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     liquiditySwap: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Arbitrum.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Arbitrum.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Arbitrum.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3Arbitrum.L2_ENCODER,
+  //     COLLECTOR: markets.AaveV3Arbitrum.COLLECTOR,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'arbitrum',
+  //   },
+  // },
+  // [CustomMarket.proto_arbitrum_goerli_v3]: {
+  //   marketTitle: 'Arbitrum Görli',
+  //   v3: true,
+  //   chainId: ChainId.arbitrum_goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3ArbitrumGoerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3ArbitrumGoerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3ArbitrumGoerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3ArbitrumGoerli.L2_ENCODER,
+  //   },
+  // },
+  // [CustomMarket.proto_avalanche_v3]: {
+  //   marketTitle: 'Avalanche',
+  //   v3: true,
+  //   chainId: ChainId.avalanche,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Avalanche.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Avalanche.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Avalanche.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Avalanche.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Avalanche.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Avalanche.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'avalanche',
+  //   },
+  // },
+  // [CustomMarket.proto_fuji_v3]: {
+  //   marketTitle: 'Avalanche Fuji',
+  //   v3: true,
+  //   chainId: ChainId.fuji,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Fuji.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Fuji.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Fuji.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Fuji.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Fuji.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_optimism_goerli_v3]: {
+  //   marketTitle: 'Optimism Görli',
+  //   v3: true,
+  //   chainId: ChainId.optimism_goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3OptimismGoerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3OptimismGoerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3OptimismGoerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER,
+  //   },
+  // },
+  // [CustomMarket.proto_fantom_v3]: {
+  //   marketTitle: 'Fantom',
+  //   v3: true,
+  //   chainId: ChainId.fantom,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     collateralRepay: true,
+  //     liquiditySwap: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Fantom.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Fantom.WETH_GATEWAY,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Fantom.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Fantom.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Fantom.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Fantom.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Fantom.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'fantom',
+  //   },
+  // },
+  // [CustomMarket.proto_fantom_testnet_v3]: {
+  //   marketTitle: 'Fantom Testnet',
+  //   v3: true,
+  //   chainId: ChainId.fantom_testnet,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
+  //     WETH_GATEWAY: markets.AaveV3FantomTestnet.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3FantomTestnet.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3FantomTestnet.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_harmony_v3]: {
+  //   marketTitle: 'Harmony',
+  //   v3: true,
+  //   chainId: ChainId.harmony,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Harmony.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Harmony.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Harmony.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Harmony.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Harmony.COLLECTOR,
+  //   },
+  // },
+  // [CustomMarket.proto_optimism_v3]: {
+  //   marketTitle: 'Optimism',
+  //   v3: true,
+  //   chainId: ChainId.optimism,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     collateralRepay: true,
+  //     liquiditySwap: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Optimism.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Optimism.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Optimism.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Optimism.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Optimism.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3Optimism.L2_ENCODER,
+  //     COLLECTOR: markets.AaveV3Optimism.COLLECTOR,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
+  //   },
+  // },
+  // [CustomMarket.proto_polygon_v3]: {
+  //   marketTitle: 'Polygon',
+  //   chainId: ChainId.polygon,
+  //   v3: true,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Polygon.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Polygon.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Polygon.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Polygon.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Polygon.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Polygon.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'polygon',
+  //   },
+  // },
+  // [CustomMarket.proto_mumbai_v3]: {
+  //   marketTitle: 'Polygon Mumbai',
+  //   chainId: ChainId.mumbai,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Mumbai.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Mumbai.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Mumbai.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Mumbai.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Mumbai.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Mumbai.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  //   v3: true,
+  // },
+  // [CustomMarket.proto_goerli]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Goerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Goerli.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Goerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Goerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Goerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     FAUCET: markets.AaveV2Goerli.FAUCET,
+  //   },
+  // },
+  // [CustomMarket.proto_mumbai]: {
+  //   marketTitle: 'Polygon Mumbai',
+  //   chainId: ChainId.mumbai,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Mumbai.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Mumbai.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV2Mumbai.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_fuji]: {
+  //   marketTitle: 'Avalanche Fuji',
+  //   chainId: ChainId.fuji,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Fuji.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Fuji.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV2Fuji.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Fuji.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
 };
 
 // src/ui-config/networksConfig.ts
@@ -64286,12 +64533,8 @@ var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
   [import_contract_helpers3.ChainId.sepolia]: {
     name: "Ethereum Sepolia",
-    publicJsonRPCUrl: [
-      "https://rpc.sepolia.org",
-      "https://rpc2.sepolia.org",
-      "https://rpc.sepolia.online",
-      "https://www.sepoliarpc.space"
-    ],
+    privateJsonRPCUrl: "https://eth-sepolia.g.alchemy.com/v2/DcgsmYhsMAhCarVoqRmSLnMUH2i__wlM",
+    publicJsonRPCUrl: [],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: "0x0",
@@ -64305,11 +64548,8 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.goerli]: {
     name: "Ethereum G\xF6rli",
-    publicJsonRPCUrl: [
-      "https://eth-goerli.public.blastapi.io",
-      "https://rpc.ankr.com/eth_goerli",
-      "https://goerli.prylabs.net"
-    ],
+    privateJsonRPCUrl: "https://eth-goerli.g.alchemy.com/v2/Svm_hYMBAm9sUyqpEVxtCi6WhefbBvdl",
+    publicJsonRPCUrl: ["https://eth-goerli.public.blastapi.io", "https://rpc.ankr.com/eth_goerli"],
     publicJsonRPCWSUrl: "wss://eth-goerli.public.blastapi.io",
     // protocolDataUrl: '',
     baseUniswapAdapter: "0x0",
@@ -64808,7 +65048,6 @@ var ustDisableProposal = "https://app.aave.com/governance/proposal/75";
 var kncDisableProposal = "https://app.aave.com/governance/proposal/69";
 var v2MainnetDisableProposal = "https://app.aave.com/governance/proposal/111";
 var v2MainnetDisableProposal2 = "https://app.aave.com/governance/proposal/125";
-var v2PolygonDisableProposal = "https://app.aave.com/governance/proposal/124";
 var frozenProposalMap = {
   ["UST" + "proto_mainnet" /* proto_mainnet */]: ustDisableProposal,
   ["KNC" + "proto_mainnet" /* proto_mainnet */]: kncDisableProposal,
@@ -64851,13 +65090,14 @@ var frozenProposalMap = {
   ["ENS" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
   ["LINK" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
   ["UNI" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
-  ["SNX" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
-  ["BAL" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["CRV" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["DPI" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["GHST" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["LINK" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["XSUSHI" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal
+  ["SNX" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2
+  // TODO: Add for production
+  // ['BAL' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['CRV' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['LINK' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
 };
 
 // src/modules/governance/utils/governanceProvider.tsx
@@ -64870,19 +65110,6 @@ var governanceContract = new import_contract_helpers5.AaveGovernanceService(getP
 var import_lodash = __toESM(require_lodash());
 
 // node_modules/steno/lib/index.js
-<<<<<<< HEAD
-var import_fs = __toESM(require('fs'), 1);
-
-var __classPrivateFieldSet2 = function (receiver, state, value, kind, f) {
-  if (kind === 'm') throw new TypeError('Private method is not writable');
-  if (kind === 'a' && !f) throw new TypeError('Private accessor was defined without a setter');
-  if (typeof state === 'function' ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError('Cannot write private member to an object whose class did not declare it');
-  return (
-    kind === 'a' ? f.call(receiver, value) : f ? (f.value = value) : state.set(receiver, value),
-    value
-  );
-=======
 var import_fs = __toESM(require("fs"), 1);
 var __classPrivateFieldSet2 = function(receiver, state, value, kind, f) {
   if (kind === "m")
@@ -64892,7 +65119,6 @@ var __classPrivateFieldSet2 = function(receiver, state, value, kind, f) {
   if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
     throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
->>>>>>> official/main
 };
 var __classPrivateFieldGet2 = function(receiver, state, kind, f) {
   if (kind === "a" && !f)
@@ -64955,20 +65181,6 @@ var _JSONFile_adapter;
 _JSONFile_adapter = /* @__PURE__ */ new WeakMap();
 
 // node_modules/lowdb/lib/adapters/TextFileSync.js
-<<<<<<< HEAD
-var import_fs2 = __toESM(require('fs'), 1);
-var import_path = __toESM(require('path'), 1);
-
-var __classPrivateFieldSet3 = function (receiver, state, value, kind, f) {
-  if (kind === 'm') throw new TypeError('Private method is not writable');
-  if (kind === 'a' && !f) throw new TypeError('Private accessor was defined without a setter');
-  if (typeof state === 'function' ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError('Cannot write private member to an object whose class did not declare it');
-  return (
-    kind === 'a' ? f.call(receiver, value) : f ? (f.value = value) : state.set(receiver, value),
-    value
-  );
-=======
 var import_fs2 = __toESM(require("fs"), 1);
 var import_path = __toESM(require("path"), 1);
 var __classPrivateFieldSet3 = function(receiver, state, value, kind, f) {
@@ -64979,7 +65191,6 @@ var __classPrivateFieldSet3 = function(receiver, state, value, kind, f) {
   if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
     throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
->>>>>>> official/main
 };
 var __classPrivateFieldGet3 = function(receiver, state, kind, f) {
   if (kind === "a" && !f)
@@ -65307,10 +65518,10 @@ populateCache().then(() => console.log("finished"));
 tslib/tslib.es6.js:
   (*! *****************************************************************************
   Copyright (c) Microsoft Corporation.
-
+  
   Permission to use, copy, modify, and/or distribute this software for any
   purpose with or without fee is hereby granted.
-
+  
   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
   REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
   AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
@@ -65336,12 +65547,12 @@ reflect-metadata/Reflect.js:
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use
   this file except in compliance with the License. You may obtain a copy of the
   License at http://www.apache.org/licenses/LICENSE-2.0
-
+  
   THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
   KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
   WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
   MERCHANTABLITY OR NON-INFRINGEMENT.
-
+  
   See the Apache Version 2.0 License for specific language governing permissions
   and limitations under the License.
   ***************************************************************************** *)
