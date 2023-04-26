@@ -31,7 +31,7 @@ export const GhoBorrowAssetsListItem = ({
   const { ghoUserDataFetched } = useRootStore();
 
   // Available borrows is min of user available borrows and remaining facilitator capacity
-  const maxAmountUserCanMint = getMaxGhoMintAmount(user).toNumber();
+  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
   const availableBorrows = getAvailableBorrows(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorBucketMaxCapacity,

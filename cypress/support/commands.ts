@@ -1,7 +1,7 @@
 import 'cypress-wait-until';
-import { CustomizedBridge } from './tools/bridge';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**
@@ -48,6 +48,13 @@ declare global {
        */
       doSwitchToDashboardSupplyView(): void;
       refresh(): void;
+      /**
+       * This will switch market
+       * @param marketName string
+       * @param isV3 boolean
+       * @example cy.doSwitchMarket('mainnet', true)
+       */
+      doSwitchMarket(marketName: string, isV3: boolean): void;
     }
   }
 }
@@ -67,7 +74,10 @@ Cypress.Commands.add(
   (hasApproval: boolean, actionName?: string, assetName?: string) => {
     cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
     if (!hasApproval) {
-      cy.get(`[data-cy=approvalButton]`, { timeout: 20000 }).should('not.be.disabled').click();
+      cy.get(`[data-cy=approvalButton]`, { timeout: 20000 })
+        .last()
+        .should('not.be.disabled')
+        .click({ force: true });
     }
     cy.get('[data-cy=actionButton]', { timeout: 30000 })
       .last()
@@ -80,8 +90,8 @@ Cypress.Commands.add(
           expect($btn.first()).to.contain(`${actionName}`);
         }
       })
-      .click();
-    cy.get("[data-cy=Modal] h2:contains('All done!')").last().should('be.visible');
+      .click({ force: true });
+    cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
   }
 );
 
@@ -120,23 +130,14 @@ Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
   switchDashboardView('Supply', 'supplies');
 });
 
-Cypress.Commands.add('refresh', () => {
-  cy.wait(1000); // it's need for some cases where we reload page before full uplaoding page
-  cy.visit(window.url, {
-    onBeforeLoad(win) {
-      // eslint-disable-next-line
-      (win as any).ethereum = new CustomizedBridge(window.signer, window.provider);
-      win.localStorage.setItem('forkEnabled', 'true');
-      win.localStorage.setItem('forkNetworkId', '3030');
-      win.localStorage.setItem('forkBaseChainId', window.chainId);
-      win.localStorage.setItem('forkRPCUrl', window.rpc);
-      win.localStorage.setItem('walletProvider', 'injected');
-      win.localStorage.setItem('selectedAccount', window.address);
-      win.localStorage.setItem('selectedMarket', window.market);
-      win.localStorage.setItem('testnetsEnabled', window.testnetsEnabled);
-    },
+Cypress.Commands.add('doSwitchMarket', (marketName: string, isV3: boolean) => {
+  cy.get('[data-cy="marketSelector"]').click();
+  cy.get(`[data-cy="markets_switch_button_${isV3 ? 'v3' : 'v2'}"]`).then(($btn) => {
+    if (!$btn.attr('aria-passed')) {
+      $btn.click();
+    }
   });
-  cy.wait(1000); //give a time to upload recent data from blockchain
+  cy.get(`[data-value="fork_proto_${isV3 ? marketName + '_v3' : marketName}"]`).click();
 });
 
 export {};

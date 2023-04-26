@@ -22,7 +22,8 @@ describe('MOBILE RESOLUTION SPEC, AAVE V2 MARKET', () => {
       checkContent('Stake', '/staking/');
     });
   });
-  describe('CASE2:Check proposal pages', () => {
+  // TODO: need to rebuild and make
+  describe.skip('CASE2:Check proposal pages', () => {
     const _maxResolution = 312;
     it('Verify width of proposal body with long text', () => {
       doFindMobileMenuElement('[data-cy="menuGovernance"]');

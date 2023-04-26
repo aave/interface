@@ -1,10 +1,14 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import {
+  IsolatedDisabledBadge,
+  IsolatedEnabledBadge,
+  UnavailableDueToIsolationBadge,
+} from 'src/components/isolationMode/IsolatedBadge';
 import { Row } from 'src/components/primitives/Row';
 import { CollateralType } from 'src/helpers/types';
 
@@ -17,6 +21,8 @@ import { GasStation } from '../GasStation/GasStation';
 export interface TxModalDetailsProps {
   gasLimit?: string;
   slippageSelector?: ReactNode;
+  skipLoad?: boolean;
+  disabled?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -28,6 +34,8 @@ const ArrowRightIcon = (
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   gasLimit,
   slippageSelector,
+  skipLoad,
+  disabled,
   children,
 }) => {
   return (
@@ -49,7 +57,11 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         {children}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+        <GasStation
+          gasLimit={parseUnits(gasLimit || '0', 'wei')}
+          skipLoad={skipLoad}
+          disabled={disabled}
+        />
         {slippageSelector}
       </Box>
     </Box>
@@ -180,49 +192,45 @@ export interface DetailsCollateralLine {
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
   return (
     <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {collateralType === CollateralType.UNAVAILABLE && (
-          <>
-            <SvgIcon sx={{ color: 'error.main', fontSize: 16, mr: '2px' }}>
-              <ExclamationIcon />
-            </SvgIcon>
-            <Typography variant="description" color="error.main">
-              <Trans>Unavailable</Trans>
-            </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
+      <CollateralState collateralType={collateralType} />
+    </Row>
+  );
+};
+
+interface CollateralStateProps {
+  collateralType: CollateralType;
+}
+
+export const CollateralState = ({ collateralType }: CollateralStateProps) => {
+  return (
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      {
+        {
+          [CollateralType.ENABLED]: (
             <Typography variant="description" color="success.main">
               <Trans>Enabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.ISOLATED_ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'warning.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
-            <Typography variant="description" color="warning.main">
-              <Trans>Enabled in isolation</Trans>
+          ),
+          [CollateralType.ISOLATED_ENABLED]: (
+            <IsolatedEnabledBadge
+              typographyProps={{ variant: 'description', color: 'warning.main' }}
+            />
+          ),
+          [CollateralType.DISABLED]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Disabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.ISOLATED_DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-      </Box>
-    </Row>
+          ),
+          [CollateralType.UNAVAILABLE]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Unavailable</Trans>
+            </Typography>
+          ),
+          [CollateralType.ISOLATED_DISABLED]: <IsolatedDisabledBadge />,
+          [CollateralType.UNAVAILABLE_DUE_TO_ISOLATION]: <UnavailableDueToIsolationBadge />,
+        }[collateralType]
+      }
+    </Box>
   );
 };
 
@@ -303,7 +311,7 @@ export const DetailsHFLine = ({
                   {ArrowRightIcon}
 
                   <HealthFactorNumber
-                    value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                    value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
                     variant="secondary14"
                   />
                 </>
@@ -324,20 +332,18 @@ export const DetailsHFLine = ({
 export interface DetailsUnwrapSwitchProps {
   unwrapped: boolean;
   setUnWrapped: (value: boolean) => void;
-  symbol: string;
-  unwrappedSymbol: string;
+  label: ReactNode;
 }
 
 export const DetailsUnwrapSwitch = ({
   unwrapped,
   setUnWrapped,
-  symbol,
-  unwrappedSymbol,
+  label,
 }: DetailsUnwrapSwitchProps) => {
   return (
-    <Row captionVariant="description" mb={4}>
+    <Row captionVariant="description" sx={{ mt: 5 }}>
       <FormControlLabel
-        value="darkmode"
+        sx={{ mx: 0 }}
         control={
           <Switch
             disableRipple
@@ -347,9 +353,8 @@ export const DetailsUnwrapSwitch = ({
           />
         }
         labelPlacement="end"
-        label={''}
+        label={label}
       />
-      <Typography>{`Unwrap ${symbol} (to withdraw ${unwrappedSymbol})`}</Typography>
     </Row>
   );
 };

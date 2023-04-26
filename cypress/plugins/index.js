@@ -21,7 +21,9 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const configWithDotenv = require('dotenv').config({ path: process.env.DOTENV_CONFIG_PATH });
+    const configWithDotenv = require('dotenv').config({
+      path: process.env.DOTENV_CONFIG_PATH,
+    });
     const env = { ...config.env, ...configWithDotenv.parsed };
     const result = { ...config, env };
     return result;

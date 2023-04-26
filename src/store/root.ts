@@ -8,12 +8,14 @@ import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
+import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
+import { createWalletDomainsSlice, WalletDomainsSlice } from './walletDomains';
 import { createWalletSlice, WalletSlice } from './walletSlice';
 
 enableMapSet();
@@ -25,7 +27,9 @@ export type RootStore = StakeSlice &
   IncentiveSlice &
   GovernanceSlice &
   V3MigrationSlice &
-  GhoSlice;
+  GhoSlice &
+  WalletDomainsSlice &
+  LayoutSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -39,6 +43,8 @@ export const useRootStore = create<RootStore>()(
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
         ...createGhoSlice(...args),
+        ...createWalletDomainsSlice(...args),
+        ...createLayoutSlice(...args),
       };
     })
   )
@@ -121,6 +127,18 @@ useRootStore.subscribe(
         });
     } else {
       setFaucetPermissioned(false);
+    }
+  },
+  { fireImmediately: true }
+);
+
+useRootStore.subscribe(
+  (state) => state.account,
+  (account) => {
+    if (account) {
+      useRootStore.getState().fetchConnectedWalletDomains();
+    } else {
+      useRootStore.getState().clearWalletDomains();
     }
   },
   { fireImmediately: true }

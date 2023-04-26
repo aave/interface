@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-02-02 18:05\n"
+"PO-Revision-Date: 2023-04-21 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -24,6 +24,10 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+msgstr ""
+
+#: src/layouts/MainLayout.tsx
+msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
 msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
@@ -54,6 +58,7 @@ msgstr "APR"
 msgid "APY"
 msgstr "APY"
 
+#: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "APY change"
@@ -90,6 +95,15 @@ msgstr "Η προσφορά AToken δεν είναι μηδενική"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Διακυβέρνηση Aave"
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave aToken"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Aave debt token"
+msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
@@ -141,7 +155,8 @@ msgstr ""
 msgid "All done!"
 msgstr "Όλα έτοιμα!"
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "Όλες οι προτάσεις"
 
@@ -204,6 +219,10 @@ msgstr "Οι παράμετροι της συστοιχίας που θα έπρ
 msgid "Asset"
 msgstr "Περιουσιακό στοιχείο"
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
+msgstr ""
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "To περιουσιακό στοιχείο μπορεί να χρησιμοποιηθεί ως εγγύηση μόνο σε λειτουργία απομόνωσης."
@@ -253,10 +272,6 @@ msgstr "Το περιουσιακό στοιχείο δεν περιλαμβάν
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Asset to delegate"
-msgstr "Περιουσιακό στοιχείο προς εκχώρηση"
-
 #: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -272,6 +287,13 @@ msgstr "Περιουσιακά στοιχεία προς δανεισμό"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
 msgstr "Περιουσιακά στοιχεία προς προμήθεια"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
@@ -321,6 +343,10 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Balance"
 msgstr "Υπόλοιπο"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Balance to revoke"
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -435,6 +461,10 @@ msgstr ""
 msgid "Borrowing {symbol}"
 msgstr "Δανεισμός {symbol}"
 
+#: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Both"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr ""
@@ -455,7 +485,6 @@ msgstr "ΔΙΕΚΔΙΚΗΣΗ {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "ΔΙΕΚΔΙΚΗΣΗ {symbol}"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -466,7 +495,7 @@ msgstr "Μπορεί να αποτελέσει εγγύηση"
 msgid "Can be executed"
 msgstr "Μπορεί να εκτελεστεί"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/components/TitleWithSearchBar.tsx
 msgid "Cancel"
 msgstr ""
 
@@ -474,9 +503,9 @@ msgstr ""
 msgid "Cannot disable E-Mode"
 msgstr ""
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "Cap reached. Lower supply amount"
-msgstr "Το ανώτατο όριο έχει επιτευχθεί. Χαμηλότερη ποσότητα προσφοράς"
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
+msgstr ""
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -554,11 +583,16 @@ msgstr "Χρησιμοποίηση εγγυήσεων"
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "H χρήση εγγυήσεων είναι περιορισμένη λόγω της λειτουργίας Απομόνωσης."
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr ""
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "Η χρήση εγγύησης είναι περιορισμένη λόγω της λειτουργίας απομόνωσης. <0>Μάθετε περισσότερα</0>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Collateralization"
 msgstr "Εξασφάλιση"
 
@@ -625,6 +659,7 @@ msgid "Current v2 Balance"
 msgstr ""
 
 #: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
 msgstr ""
 
@@ -662,17 +697,8 @@ msgstr "Το ανώτατο όριο χρέους δεν είναι μηδενι
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Delegate"
-msgstr "Εκπρόσωπος"
-
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-msgid "Delegating"
-msgstr "Ανάθεση αρμοδιοτήτων"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegation"
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegated power"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
@@ -707,7 +733,6 @@ msgstr "Απενεργοποίηση {symbol} ως εγγύηση"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -731,9 +756,8 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr ""
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+#: src/components/Warnings/StETHCollateralWarning.tsx
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -785,10 +809,6 @@ msgstr "Ενεργοποίηση {symbol} ως εγγύηση"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Enabled in isolation"
-msgstr "Ενεργοποιημένο σε απομόνωση"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -865,7 +885,8 @@ msgstr "Βρύση {0}"
 msgid "Fetching data..."
 msgstr ""
 
-#: src/modules/governance/ProposalsList.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Φίλτρο"
 
@@ -915,6 +936,10 @@ msgstr "Πηγαίνετε Πίσω"
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Go to V3 Dashboard"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
@@ -1036,12 +1061,16 @@ msgstr "Απομονωμένο"
 msgid "Isolated Debt Ceiling"
 msgstr ""
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Τα απομονωμένα περιουσιακά στοιχεία έχουν περιορισμένη δανειοληπτική ικανότητα και άλλα περιουσιακά στοιχεία δεν μπορούν να χρησιμοποιηθούν ως εγγύηση."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
+msgstr ""
+
+#: src/layouts/TopBarNotify.tsx
+msgid "LEARN MORE"
 msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
@@ -1057,6 +1086,7 @@ msgstr "Γλώσσα"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1068,9 +1098,13 @@ msgstr "Μάθετε περισσότερα"
 msgid "Learn more about risks involved"
 msgstr "Μάθετε περισσότερα για τους κινδύνους"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών Ερωτήσεων</0>"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Learn more."
+msgstr ""
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -1079,6 +1113,10 @@ msgstr "Σύνδεσμοι"
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Ρευστοποίηση <0/> κατώτατο όριο"
+
+#: src/modules/migration/MigrationList.tsx
+msgid "Liquidation Threshold"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/migration/HFChange.tsx
@@ -1099,6 +1137,7 @@ msgid "Liquidation risk parameters"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
@@ -1133,6 +1172,8 @@ msgstr "Αγορές"
 msgid "Max"
 msgstr "Μεγιστο"
 
+#: src/modules/migration/MigrationList.tsx
+#: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
@@ -1240,10 +1281,6 @@ msgstr "Δίκτυο που δεν υποστηρίζεται για αυτό τ
 msgid "New APY"
 msgstr "Νέο APY"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "No"
-msgstr ""
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr ""
@@ -1252,9 +1289,9 @@ msgstr ""
 msgid "No rewards to claim"
 msgstr "Δεν υπάρχουν ανταμοιβές για διεκδίκηση"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "No search results for"
+#: src/components/NoSearchResults.tsx
+#: src/components/NoSearchResults.tsx
+msgid "No search results{0}"
 msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -1351,6 +1388,7 @@ msgstr ""
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr ""
 
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Παρακαλούμε συνδέστε ένα πορτοφόλι για να δείτε τις προσωπικές σας πληροφορίες εδώ."
@@ -1409,14 +1447,15 @@ msgstr "Λεπτομέρειες πρότασης"
 msgid "Proposal overview"
 msgstr "Επισκόπηση πρότασης"
 
-#: src/modules/governance/ProposalsList.tsx
+#: pages/governance/index.governance.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
 msgid "Proposals"
 msgstr "Προτάσεις"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Proposition power"
-msgstr "Ισχύς πρότασης"
+msgid "Proposition"
+msgstr ""
 
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
@@ -1464,6 +1503,7 @@ msgstr ""
 msgid "Read-only mode."
 msgstr ""
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr ""
@@ -1553,6 +1593,10 @@ msgstr "Αναθεώρηση συναλλαγής"
 msgid "Review tx details"
 msgstr "Αναθεώρηση λεπτομερειών συναλλαγής"
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Revoke power"
+msgstr ""
+
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
 msgstr "Ανταμοιβή(ες) προς διεκδίκηση"
@@ -1597,20 +1641,16 @@ msgstr "Επιλέξτε γλώσσα"
 msgid "Select slippage tolerance"
 msgstr ""
 
-#: src/modules/reserve-overview/AddTokenDropdown.tsx
-msgid "Select token to add"
-msgstr ""
-
-#: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Select token to view in block explorer"
-msgstr ""
-
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 borrows to migrate"
 msgstr ""
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Select v2 supplies to migrate"
+msgstr ""
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
@@ -1621,8 +1661,17 @@ msgstr ""
 msgid "Selected supply assets"
 msgstr ""
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Set up delegation"
+msgstr ""
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Share on Lens"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -1636,6 +1685,18 @@ msgstr "Εμφάνιση"
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Εμφάνιση περιουσιακών στοιχείων με υπόλοιπο 0"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Sign to continue"
+msgstr ""
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signatures ready"
+msgstr ""
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signing"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
@@ -1874,6 +1935,10 @@ msgstr "Λειτουργία Testnet"
 msgid "Testnet mode is ON"
 msgstr ""
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Thank you for voting!!"
+msgstr ""
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "Το % της συνολικής δανειοληπτικής σας δύναμης που χρησιμοποιείται. Αυτό βασίζεται στο ποσό της παρεχόμενης εξασφάλισής σας και στο συνολικό ποσό που μπορείτε να δανειστείτε."
@@ -1915,8 +1980,8 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "Η εγγύηση που έχει επιλεγεί δεν μπορεί να ρευστοποιηθεί"
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
-msgstr "Η περίοδος ψύξης είναι ο χρόνος που απαιτείται πριν από την αποδέσμευση των token σας (10 ημέρες). Μπορείτε να αποσύρετε τα περιουσιακά σας στοιχεία από τη μονάδα ασφαλείας μόνο μετά την περίοδο αναστολής και εντός του ενεργού παραθύρου ξεκλειδώματος.<0>Μάθετε περισσότερα</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -1925,6 +1990,10 @@ msgstr "Η περίοδος ψύξης είναι {0}. Μετά την {1} πε�
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "Οι επιπτώσεις στον συντελεστή υγείας θα προκαλούσαν ρευστοποίηση. Προσπαθήστε να μειώσετε το ποσό."
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "The loan to value of the migrated positions would cause liquidation. Increase migrated collateral or reduce migrated borrow to continue."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
@@ -2014,6 +2083,10 @@ msgstr ""
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
 
+#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr ""
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Αυτός ο υπολογισμός gas είναι μόνο μια εκτίμηση. Το πορτοφόλι σας θα καθορίσει την τιμή της συναλλαγής. Μπορείτε να τροποποιήσετε τις ρυθμίσεις gas απευθείας από τον πάροχο του πορτοφολιού σας."
@@ -2060,7 +2133,7 @@ msgid "To continue, you need to grant Aave smart contracts permission to move yo
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this category must be closed."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -2070,6 +2143,10 @@ msgstr "Για την εξόφληση εκ μέρους ενός χρήστη �
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "Για να ζητήσετε πρόσβαση σε αυτή την αδειοδοτημένη αγορά, επισκεφθείτε την ιστοσελίδα: <0>Όνομα Παρόχου Πρόσβασης</0>"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
+msgstr ""
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
@@ -2129,10 +2206,6 @@ msgstr "Η συναλλαγή απέτυχε"
 msgid "Transaction overview"
 msgstr "Επισκόπηση συναλλαγής"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Type of delegation"
-msgstr "Τύπος ανάθεσης"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
@@ -2141,6 +2214,8 @@ msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 msgid "UNSTAKING {symbol}"
 msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Μη διαθέσιμο"
@@ -2157,6 +2232,11 @@ msgstr "Υπέρβαση του ανώτατου ορίου νομισματοκ
 msgid "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 msgstr ""
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Underlying token"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Ξεκλειδώστε τώρα"
@@ -2167,6 +2247,14 @@ msgstr "Παράθυρο ξεκλειδώματος"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
+msgstr ""
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Use it to vote for or against active proposals."
+msgstr ""
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2250,10 +2338,6 @@ msgstr "Προβολή λεπτομερειών"
 msgid "View on Explorer"
 msgstr "Προβολή στον Explorer"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-msgid "Vote"
-msgstr ""
-
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Ψηφίστε ΚΑΤΑ"
@@ -2278,8 +2362,10 @@ msgid "Votes"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+msgid "Voting"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Δύναμη ψήφου"
@@ -2308,10 +2394,6 @@ msgstr "Το πορτοφόλι δεν εντοπίστηκε. Συνδέστε 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Τα πορτοφόλια παρέχονται από Εξωτερικούς Παρόχους και επιλέγοντας τα συμφωνείτε με τους Όρους των εν λόγω Παρόχων. Η πρόσβασή σας στο πορτοφόλι ενδέχεται να εξαρτάται από τη λειτουργία του Εξωτερικού Παρόχου."
-
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr ""
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2351,6 +2433,7 @@ msgstr ""
 msgid "Withdrawing {symbol}"
 msgstr "Ανάληψη {symbol}"
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
 msgstr "Λάθος δίκτυο"
@@ -2358,10 +2441,6 @@ msgstr "Λάθος δίκτυο"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "ΥΠΕΡ"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Yes"
-msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2415,6 +2494,10 @@ msgstr "Δεν έχετε προμήθειες σε αυτό το νόμισμα
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "Δεν έχετε αρκετά χρήματα στο πορτοφόλι σας για να αποπληρώσετε ολόκληρο το ποσό. Εάν προχωρήσετε στην αποπληρωμή με το τρέχον ποσό των χρημάτων σας, θα εξακολουθείτε να έχετε μια μικρή θέση δανεισμού στο ταμπλό σας."
 
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "You have no AAVE/stkAAVE balance to delegate."
+msgstr ""
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "Δεν έχετε δανειστεί ακόμα χρησιμοποιώντας αυτό το νόμισμα"
@@ -2452,12 +2535,18 @@ msgstr "Το τρέχον δάνειο προς αξία με βάση τις π
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr "Ο συντελεστής υγείας και το δάνειο προς αξία καθορίζουν τη διασφάλιση των εξασφαλίσεών σας. Για να αποφύγετε τις ρευστοποιήσεις μπορείτε να παράσχετε περισσότερες εξασφαλίσεις ή να εξοφλήσετε δανειακές θέσεις."
 
+#: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
+#: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
 msgstr "Οι πληροφορίες σας"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
@@ -2471,6 +2560,10 @@ msgstr "Οι προμήθειές σας"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
 msgstr "Οι πληροφορίες ψήφου σας"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Your voting power is based on your AAVE/stkAAVE balance and received delegations."
+msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
@@ -2492,7 +2585,7 @@ msgstr ""
 msgid "Zero address not valid"
 msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
 
-#: src/modules/markets/MarketAssetListTitle.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "assets"
 msgstr "περιουσιακά στοιχεία"
 
@@ -2565,8 +2658,15 @@ msgid "withdrew"
 msgstr ""
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2612,13 +2712,25 @@ msgstr "{m}λ"
 msgid "{networkName} Faucet"
 msgstr ""
 
+#: src/layouts/TopBarNotify.tsx
+msgid "{notifyText}"
+msgstr ""
+
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
+msgstr ""
+
+#: src/components/NoSearchResults.tsx
+msgid "{subtitle}"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}δ"
+
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "{title}"
+msgstr ""
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"

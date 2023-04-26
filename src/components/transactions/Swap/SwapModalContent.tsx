@@ -4,9 +4,13 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
+import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
+import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -21,7 +25,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ErrorType, getAssetCollateralType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -41,7 +45,7 @@ export const SwapModalContent = ({
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
-    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
+    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
@@ -63,12 +67,6 @@ export const SwapModalContent = ({
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
-
-  const remainingCapUsd = amountToUsd(
-    remainingCap(swapTarget.reserve),
-    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  );
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -111,25 +109,30 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
-  const disableFlashLoan =
-    shouldUseFlashloan &&
-    flashLoanNotAvailable(
-      userReserve.underlyingAsset,
-      currentNetworkConfig.underlyingChainId || currentChainId
-    );
-
   // consider caps
   // we cannot check this in advance as it's based on the swap result
+  const remainingSupplyCap = remainingCap(
+    swapTarget.reserve.supplyCap,
+    swapTarget.reserve.totalLiquidity
+  );
+  const remainingCapUsd = amountToUsd(
+    remainingSupplyCap,
+    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
+
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingCapUsd.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
+  if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+    blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+  } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
-  } else if (disableFlashLoan) {
-    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
-  const handleBlocked = () => {
+  const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.SUPPLY_CAP_REACHED:
         return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
@@ -139,11 +142,11 @@ export const SwapModalContent = ({
             The effects on the health factor would cause liquidation. Try lowering the amount.
           </Trans>
         );
-      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
-            transactions
+            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
+            collateral to perform this action
           </Trans>
         );
       default:
@@ -167,10 +170,64 @@ export const SwapModalContent = ({
     poolReserve.reserveLiquidationThreshold !== '0';
 
   // calculate impact based on $ difference
-  const priceImpact =
-    outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
+  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
+  let priceImpact =
+    inputAmountUSD && inputAmountUSD !== '0'
+      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
       : '0';
+  if (priceImpact === '-0.00') {
+    priceImpact = '0.00';
+  }
+
+  const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  const swapSourceCollateralType = getAssetCollateralType(
+    userReserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    sourceDebtCeiling
+  );
+
+  const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  let swapTargetCollateralType = getAssetCollateralType(
+    swapTarget,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    targetDebtCeiling
+  );
+
+  // If the user is swapping all of their isolated asset to an asset that is not supplied,
+  // then the swap target will be enabled as collateral as part of the swap.
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ISOLATED_ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    if (swapTarget.reserve.isIsolated) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+    } else {
+      swapTargetCollateralType = CollateralType.ENABLED;
+    }
+  }
+
+  // If the user is swapping all of their enabled asset to an isolated asset that is not supplied,
+  // and no other supplied assets are being used as collateral,
+  // then the swap target will be enabled as collateral and the user will be in isolation mode.
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    const reservesAsCollateral = user.userReservesData.filter(
+      (r) => r.usageAsCollateralEnabledOnUser
+    );
+
+    if (
+      reservesAsCollateral.length === 1 &&
+      reservesAsCollateral[0].underlyingAsset === userReserve.underlyingAsset
+    ) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+    }
+  }
 
   return (
     <>
@@ -220,8 +277,14 @@ export const SwapModalContent = ({
       )}
       {!error && blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
+          <BlockingError />
         </Typography>
+      )}
+
+      {swapTarget.reserve.symbol === 'stETH' && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <StETHCollateralWarning />
+        </Warning>
       )}
 
       <TxModalDetails
@@ -234,8 +297,8 @@ export const SwapModalContent = ({
           showHealthFactor={showHealthFactor}
           healthFactor={user?.healthFactor}
           healthFactorAfterSwap={hfAfterSwap.toString(10)}
-          swapSource={userReserve}
-          swapTarget={swapTarget}
+          swapSource={{ ...userReserve, collateralType: swapSourceCollateralType }}
+          swapTarget={{ ...swapTarget, collateralType: swapTargetCollateralType }}
           toAmount={outputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}

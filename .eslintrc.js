@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'prettier/prettier': 'warn',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
@@ -23,5 +24,6 @@ module.exports = {
     // disabled as with the static export Image does not make to much sense
     '@next/next/no-img-element': 'off',
     'react/self-closing-comp': 'warn',
+    'react/display-name': 'off',
   },
 };

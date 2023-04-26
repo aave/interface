@@ -14,6 +14,7 @@ export default defineConfig({
       '/**/reward.avalanche-v2.cy.ts',
       '/**/swap.avalanche-v2.cy.ts',
       '/**/critical-conditions.avalanche-v2.cy.ts',
+      '/**/migration.avalanche-v2.cy.ts',
     ],
   },
 });

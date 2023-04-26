@@ -19,11 +19,13 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
+import { zeroLTVBlockingWithdraw } from '../utils';
 import { WithdrawActions } from './WithdrawActions';
 
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
   POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY,
+  ZERO_LTV_WITHDRAW_BLOCKED,
 }
 
 export const WithdrawModalContent = ({
@@ -91,6 +93,8 @@ export const WithdrawModalContent = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
   if (
     userReserve?.usageAsCollateralEnabledOnUser &&
     poolReserve.reserveLiquidationThreshold !== '0'
@@ -122,7 +126,12 @@ export const WithdrawModalContent = ({
 
   let blockingError: ErrorType | undefined = undefined;
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
-    if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
+    if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+      blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+    } else if (
+      healthFactorAfterWithdraw.lt('1') &&
+      user.totalBorrowsMarketReferenceCurrency !== '0'
+    ) {
       blockingError = ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT;
     } else if (
       !blockingError &&
@@ -133,7 +142,7 @@ export const WithdrawModalContent = ({
   }
 
   // error render handling
-  const handleBlocked = () => {
+  const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT:
         return (
@@ -143,6 +152,13 @@ export const WithdrawModalContent = ({
         return (
           <Trans>
             These funds have been borrowed and are not available for withdrawal at this time.
+          </Trans>
+        );
+      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
+        return (
+          <Trans>
+            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
+            collateral to perform this action
           </Trans>
         );
       default:
@@ -197,19 +213,21 @@ export const WithdrawModalContent = ({
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
+          <BlockingError />
         </Typography>
       )}
 
+      {poolReserve.isWrappedBaseAsset && (
+        <DetailsUnwrapSwitch
+          unwrapped={withdrawUnWrapped}
+          setUnWrapped={setWithdrawUnWrapped}
+          label={
+            <Typography>{`Unwrap ${poolReserve.symbol} (to withdraw ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
+          }
+        />
+      )}
+
       <TxModalDetails gasLimit={gasLimit}>
-        {poolReserve.isWrappedBaseAsset && (
-          <DetailsUnwrapSwitch
-            unwrapped={withdrawUnWrapped}
-            setUnWrapped={setWithdrawUnWrapped}
-            symbol={poolReserve.symbol}
-            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
-        )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(amount || '0').toString(10)}
