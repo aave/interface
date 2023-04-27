@@ -15,16 +15,6 @@ import {
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { GhoBorrowDiscountPieChart } from './GhoBorrowDiscountPieChart';
-import { GhoBorrowTermRange } from './GhoTimeRangeSelector';
-
-interface GhoInterestRateGraphContainerProps {
-  borrowAmount: number | null;
-  stkAaveAmount: number | null;
-  interestOwed: number;
-  rateAfterDiscount: number;
-  selectedTimeRange: GhoBorrowTermRange;
-  onSelectedTimeRangeChanged: (value: GhoBorrowTermRange) => void;
-}
 
 interface GhoInterestRatePieChartContainer {
   borrowAmount: number | null;
@@ -154,6 +144,7 @@ export const GhoPieMobile = ({
         alignItems: 'center',
         px: 4,
         pt: 2,
+        mb: 2,
       }}
     >
       <Stack alignItems="center" sx={{ position: 'absolute', top: 60 }}>

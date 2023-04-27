@@ -247,19 +247,19 @@ export const GhoDiscountCalculator = () => {
         </Typography>
       );
 
-    if (alertText) {
-      return (
-        <Alert
-          icon={<InfoIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
-          severity="info"
-          sx={{ background: palette.background.surface2 }}
-        >
-          {alertText}
-        </Alert>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <Alert
+        icon={<InfoIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
+        severity="info"
+        sx={{
+          background: palette.background.surface2,
+          visibility: alertText ? 'visible' : 'hidden',
+          minHeight: downToXsm ? 'unset' : '54px',
+        }}
+      >
+        {alertText}
+      </Alert>
+    );
   };
 
   const GhoDiscountCalculatorDesktop = (
@@ -273,7 +273,13 @@ export const GhoDiscountCalculator = () => {
           rateAfterDiscount={rateSelection.rateAfterDiscount}
         />
       </Box>
-      <Stack direction="column" gap={2} sx={{ width: '258px' }}>
+      <Stack
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        gap={2}
+        sx={{ width: '258px' }}
+      >
         <Box>
           <CalculatorInput
             title="Borrow amount"
