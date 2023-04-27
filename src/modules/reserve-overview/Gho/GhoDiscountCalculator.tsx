@@ -12,7 +12,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';
-import { GhoInterestRatePieChartContainer } from './GhoInterestRateGraphContainer';
+import { GhoPieChartContainer } from './GhoPieChartContainer';
 import { getSecondsForGhoBorrowTermDuration } from './GhoTimeRangeSelector';
 import { calculateDiscountRate } from './utils';
 
@@ -41,6 +41,7 @@ export const GhoDiscountCalculator = () => {
   });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
 
+  // We're assuming a one year borrow term for the rate calculations
   const selectedTimeRange = ESupportedTimeRanges.OneYear;
 
   useEffect(() => {
@@ -280,7 +281,7 @@ export const GhoDiscountCalculator = () => {
   const GhoDiscountCalculatorDesktop = (
     <Stack direction="row" gap={8}>
       <Box>
-        <GhoInterestRatePieChartContainer
+        <GhoPieChartContainer
           borrowAmount={ghoBorrow}
           discountableAmount={discountableGhoAmount}
           baseRate={rateSelection.baseRate}
@@ -323,7 +324,7 @@ export const GhoDiscountCalculator = () => {
 
   const GhoDiscountCalculatorMobile = (
     <>
-      <GhoInterestRatePieChartContainer
+      <GhoPieChartContainer
         borrowAmount={ghoBorrow}
         discountableAmount={discountableGhoAmount}
         baseRate={rateSelection.baseRate}

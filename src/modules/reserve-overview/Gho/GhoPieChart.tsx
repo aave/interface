@@ -1,7 +1,7 @@
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 
-interface PieChartData {
+export interface PieChartData {
   name: string;
   value: number;
   color: string;
@@ -14,7 +14,7 @@ interface GhoBorrowDiscountPieChartProps {
   margin?: { top: number; right: number; bottom: number; left: number };
 }
 
-export const GhoBorrowDiscountPieChart = ({
+export const GhoPieChart = ({
   data,
   width,
   height,

@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-import { GhoBorrowDiscountPieChart } from './GhoBorrowDiscountPieChart';
+import { GhoPieChart, PieChartData } from './GhoPieChart';
 
-interface GhoInterestRatePieChartContainer {
+interface GhoPieChartContainer {
   borrowAmount: number | null;
   discountableAmount: number | null;
   baseRate: number;
@@ -24,13 +24,13 @@ interface GhoInterestRatePieChartContainer {
   rateAfterDiscount: number;
 }
 
-export const GhoInterestRatePieChartContainer = ({
+export const GhoPieChartContainer = ({
   borrowAmount,
   discountableAmount,
   baseRate,
   discountedAmountRate,
   rateAfterDiscount,
-}: GhoInterestRatePieChartContainer) => {
+}: GhoPieChartContainer) => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
 
@@ -52,7 +52,7 @@ export const GhoInterestRatePieChartContainer = ({
 
   if (downToXsm) {
     return (
-      <GhoPieMobile
+      <GhoPieChartMobile
         chartData={chartData}
         rateAfterDiscount={rateAfterDiscount}
         baseRate={baseRate}
@@ -63,7 +63,7 @@ export const GhoInterestRatePieChartContainer = ({
     );
   } else {
     return (
-      <GhoPieDesktop
+      <GhoPieChartDesktop
         chartData={chartData}
         rateAfterDiscount={rateAfterDiscount}
         baseRate={baseRate}
@@ -75,23 +75,23 @@ export const GhoInterestRatePieChartContainer = ({
   }
 };
 
-interface GhoPieProps {
+interface GhoPieChartProps {
   rateAfterDiscount: number;
-  chartData: Array<{ name: string; color: string; value: number }>;
+  chartData: PieChartData[];
   amountAtDiscount: number;
   discountedAmountRate: number;
   amountThatExceedsDiscount: number;
   baseRate: number;
 }
 
-export const GhoPieDesktop = ({
+const GhoPieChartDesktop = ({
   rateAfterDiscount,
   chartData,
   amountAtDiscount,
   discountedAmountRate,
   amountThatExceedsDiscount,
   baseRate,
-}: GhoPieProps) => {
+}: GhoPieChartProps) => {
   const theme = useTheme();
 
   return (
@@ -112,9 +112,9 @@ export const GhoPieDesktop = ({
         <Typography variant="subheader2">Borrow APY</Typography>
         <FormattedNumber variant="h1" percent value={rateAfterDiscount} visibleDecimals={2} />
       </Stack>
-      <GhoBorrowDiscountPieChart data={chartData} width={156} height={156} />
+      <GhoPieChart data={chartData} width={156} height={156} />
       <Box>
-        <ChartLegend
+        <PieChartLegend
           amountAtDiscount={amountAtDiscount}
           discountedAmountRate={discountedAmountRate}
           amountThatExceedsDiscount={amountThatExceedsDiscount}
@@ -125,14 +125,14 @@ export const GhoPieDesktop = ({
   );
 };
 
-export const GhoPieMobile = ({
+const GhoPieChartMobile = ({
   rateAfterDiscount,
   chartData,
   amountAtDiscount,
   discountedAmountRate,
   amountThatExceedsDiscount,
   baseRate,
-}: GhoPieProps) => {
+}: GhoPieChartProps) => {
   const theme = useTheme();
 
   return (
@@ -158,9 +158,9 @@ export const GhoPieMobile = ({
           visibleDecimals={2}
         />
       </Stack>
-      <GhoBorrowDiscountPieChart data={chartData} width={156} height={156} />
+      <GhoPieChart data={chartData} width={156} height={156} />
       <Box sx={{ width: '100%' }}>
-        <ChartLegend
+        <PieChartLegend
           amountAtDiscount={amountAtDiscount}
           discountedAmountRate={discountedAmountRate}
           amountThatExceedsDiscount={amountThatExceedsDiscount}
@@ -171,19 +171,19 @@ export const GhoPieMobile = ({
   );
 };
 
-interface ChartLegendProps {
+interface PieChartLegendProps {
   amountAtDiscount: number;
   discountedAmountRate: number;
   amountThatExceedsDiscount: number;
   baseRate: number;
 }
 
-const ChartLegend = ({
+const PieChartLegend = ({
   amountAtDiscount,
   discountedAmountRate,
   amountThatExceedsDiscount,
   baseRate,
-}: ChartLegendProps) => {
+}: PieChartLegendProps) => {
   return (
     <TableContainer>
       <Table size="small">
