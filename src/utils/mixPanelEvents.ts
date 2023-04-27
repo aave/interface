@@ -17,6 +17,17 @@ export const GENERAL = {
 };
 
 export const DASHBOARD = {
+  TOOLTIP_NET_APY: 'Click Tooltip Dashboard NetAPY', // done
+  TOOLTIP_BORROW_CAP: 'Click Tooltip Borrow Cap',
+  TOOLTIP_APY_VAR: 'Click Tooltip Borrow Variable APY',
+  TOOLTIP_APY_STB: 'Click tooltip Borrow Stable APY',
+  TOOLTIP_SUPPLIED_COLLATERAL: 'Click tooltip supplied assets collateral',
+  TOOLTIP_COLLATERAL_SWITCH: 'Click tooltip supply collateral switch',
+
+  TOTAL_SUPPLIED_TOOLTIP_APY: 'Click tooltip total supplied assets APY',
+  TOOLTIP_BORROWED_POSITIONS_APY: 'Click tooltip borrwed position APY',
+  TOOLTIP_BORROWED_POWER_USED: 'Click tooltip borrowing power %',
+
   CHANGE_MARKET: 'Change market on dashboard', //done
   VIEW_MARKETS: 'View markets on dashboard', // can be viewed in PAGEVIEW
   VIEW_RISK_DETAILS: 'View risk details on dashboard',

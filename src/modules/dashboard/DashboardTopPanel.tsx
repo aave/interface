@@ -14,6 +14,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
@@ -156,7 +157,12 @@ export const DashboardTopPanel = () => {
           title={
             <div style={{ display: 'flex' }}>
               <Trans>Net APY</Trans>
-              <NetAPYTooltip />
+              <NetAPYTooltip
+                event={{
+                  eventName: DASHBOARD.TOOLTIP_NET_APY,
+                  eventParams: {},
+                }}
+              />
             </div>
           }
           loading={loading}
