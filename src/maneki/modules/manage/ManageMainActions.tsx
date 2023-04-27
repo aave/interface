@@ -10,14 +10,14 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Contract } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
-import MainActionUnlock from './components/ManageMainUnlock';
+import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
@@ -194,7 +194,7 @@ export const ManageMainActions = () => {
     <>
       <Box sx={{ minWidth: '70%' }}>
         <ManageMainPaper>
-          <MainActionUnlock
+          <ManageMainPrimaryWrapper
             borderBottom
             leftComponent={
               <>
@@ -217,7 +217,7 @@ export const ManageMainActions = () => {
               </>
             }
           />
-          <MainActionUnlock
+          <ManageMainPrimaryWrapper
             borderBottom
             leftComponent={
               <>
@@ -245,7 +245,7 @@ export const ManageMainActions = () => {
               </Typography>
             }
           />
-          <MainActionUnlock
+          <ManageMainPrimaryWrapper
             borderBottom
             leftComponent={
               <>
@@ -273,7 +273,7 @@ export const ManageMainActions = () => {
               </>
             }
           />
-          <MainActionUnlock
+          <ManageMainPrimaryWrapper
             leftComponent={
               <>
                 <Typography variant="h4" fontWeight={700}>
@@ -312,10 +312,10 @@ export const ManageMainActions = () => {
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
                     <TableCell>
-                      {parseInt(((vest as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+                      {BigNumber.from(((vest as VestEntry[])[0] as unknown as NumReturn)._hex)}
                     </TableCell>
                     <TableCell>
-                      {parseInt(((vest as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
+                      {BigNumber.from(((vest as VestEntry[])[1] as unknown as NumReturn)._hex)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -383,7 +383,8 @@ export const ManageMainActions = () => {
             <Typography>Total Value: {totalClaimableValue}</Typography>
             <Button
               onClick={handleClaimAll}
-              sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}
+              // sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}
+              variant="contained"
             >
               Claim All
             </Button>

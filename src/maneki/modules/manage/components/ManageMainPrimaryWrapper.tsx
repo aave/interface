@@ -1,17 +1,17 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
-interface MainActionUnlockProps {
+interface ManageMainPrimaryWrapperProps {
   borderBottom?: boolean;
   leftComponent: ReactNode;
   rightComponent: ReactNode;
 }
 
-export default function MainActionUnlock({
+export default function ManageMainPrimaryWrapper({
   borderBottom,
   leftComponent,
   rightComponent,
-}: MainActionUnlockProps) {
+}: ManageMainPrimaryWrapperProps) {
   return (
     <Box
       sx={{

@@ -1,34 +1,46 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, SxProps, TextField, Typography } from '@mui/material';
+import { BigNumber } from 'ethers';
+import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
-import NumberFormat from 'react-number-format';
 
-import { countDecimals } from '../ManageUtils';
+import { countDecimals, toWeiString } from '../ManageUtils';
 
 interface CustomNumberFormatType {
   amountTo: string;
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
   balancePAW: string;
-  style?: React.CSSProperties;
+  sx?: SxProps;
+  inputLabel?: string;
 }
 
-function CustomNumberFormat({ amountTo, setAmountTo, balancePAW, style }: CustomNumberFormatType) {
+function CustomNumberFormat({
+  amountTo,
+  setAmountTo,
+  balancePAW,
+  sx,
+  inputLabel,
+}: CustomNumberFormatType) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const regex = /^(\d+\.?|\.?)\d*$/g;
+    const countDec = countDecimals(event.target.value);
+    if (regex.test(event.target.value)) {
+      if (
+        BigNumber.from(toWeiString(event.target.value)).gt(BigNumber.from(toWeiString(balancePAW)))
+      ) {
+        setAmountTo(balancePAW);
+      } else if (countDec > 18) setAmountTo(amountTo);
+      else setAmountTo(event.target.value);
+    }
+  }
   return (
-    <NumberFormat
+    <TextField
       value={amountTo}
-      thousandSeparator
-      isNumericString={true}
-      allowNegative={false}
-      isAllowed={(values) => {
-        if (countDecimals(values.value) > 18 || parseFloat(values.value) > parseFloat(balancePAW))
-          return false;
-        return true;
-      }}
-      onValueChange={(values) => {
-        const countDec = countDecimals(values.value);
-        if (countDec > 18) values.value = amountTo;
-        setAmountTo(values.value);
-      }}
-      style={style}
+      placeholder="0.00"
+      type="text"
+      onChange={handleChange}
+      variant="outlined"
+      label={inputLabel ? inputLabel : ''}
+      sx={{ ...sx }}
     />
   );
 }
@@ -43,6 +55,7 @@ interface ManageQuickContentWrapperProps {
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
   handleClick: () => void;
   buttonText: string;
+  inputLabel?: string;
 }
 
 export default function ManageQuickContentWrapper({
@@ -55,6 +68,7 @@ export default function ManageQuickContentWrapper({
   setAmountTo,
   handleClick,
   buttonText,
+  inputLabel,
 }: ManageQuickContentWrapperProps) {
   return (
     <Paper
@@ -110,14 +124,16 @@ export default function ManageQuickContentWrapper({
           amountTo={amountTo}
           setAmountTo={setAmountTo}
           balancePAW={balancePAW}
-          style={{
-            padding: '12px 16px',
-            border: 'solid 1px #dadada',
-            fontSize: '16px',
-            borderRadius: '8px',
+          inputLabel={inputLabel}
+          sx={{
+            '& .MuiOutlinedInput-root.Mui-focused': {
+              '& > fieldset': {
+                borderColor: 'orange',
+              },
+            },
           }}
         />
-        <Button onClick={handleClick} variant="contained" sx={{ padding: '0px 24px' }}>
+        <Button onClick={handleClick} variant="contained" sx={{ padding: '0px 32px' }}>
           {buttonText}
         </Button>
       </Box>

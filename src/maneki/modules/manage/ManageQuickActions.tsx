@@ -116,6 +116,7 @@ export const ManageQuickActions = () => {
         setAmountTo={setAmountToStake}
         handleClick={handleStake}
         buttonText={'Stake'}
+        inputLabel="Stake"
       />
       <ManageQuickContentWrapper
         svgIcon={<EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
@@ -130,6 +131,7 @@ export const ManageQuickActions = () => {
         setAmountTo={setAmountToLock}
         handleClick={handleLock}
         buttonText={'Lock'}
+        inputLabel="Lock"
       />
     </Box>
   );
