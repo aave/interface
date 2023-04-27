@@ -29,7 +29,6 @@ export const GhoDiscountCalculator = () => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const { breakpoints, palette } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  // const lg = useMediaQuery(breakpoints.only('lg'));
 
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);

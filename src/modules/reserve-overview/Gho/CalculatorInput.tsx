@@ -107,7 +107,6 @@ export const CalculatorInput = ({
         ]}
         sx={sliderStyles}
       />
-      {/* <Box sx={{ minHeight: '35px' }}>{helperTextComponent}</Box> */}
     </>
   );
 };
