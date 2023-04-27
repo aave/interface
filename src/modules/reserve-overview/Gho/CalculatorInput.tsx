@@ -33,7 +33,7 @@ interface CalculatorInputProps {
   title: string;
   value: number | null;
   disabled: boolean;
-  tokenSymbol: 'AAVE' | 'GHO';
+  tokenSymbol: 'stkAAVE' | 'GHO';
   sliderMax: number;
   sliderMin?: number;
   onValueChanged: (value: number | null) => void;

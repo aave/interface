@@ -110,7 +110,7 @@ export const GhoDiscountCalculator = () => {
               >
                 <Trans>to</Trans>
               </Typography>{' '}
-              <TokenIcon symbol="AAVE" sx={{ fontSize: '14px', mr: 1 }} />1
+              <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />1
             </Typography>
           )}
         </ReserveOverviewBox>
@@ -312,7 +312,7 @@ export const GhoDiscountCalculator = () => {
             title="Staked AAVE amount"
             value={stkAave}
             disabled={ghoLoadingData}
-            tokenSymbol="AAVE"
+            tokenSymbol="stkAAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
           />
