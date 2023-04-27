@@ -60,7 +60,7 @@ export const GhoDiscountCalculator = () => {
   useEffect(() => {
     const stkAaveAmount = stkAave ?? 0;
     const ghoBorrowAmount = ghoBorrow ?? 0;
-    const discountableAmount = stkAaveAmount * ghoReserveData.ghoDiscountedPerToken;
+    const discountableAmount = Math.round(stkAaveAmount * ghoReserveData.ghoDiscountedPerToken);
     const termDuration = getSecondsForGhoBorrowTermDuration(selectedTimeRange);
     const calculatedRate = calculateDiscountRate(
       ghoBorrowAmount,

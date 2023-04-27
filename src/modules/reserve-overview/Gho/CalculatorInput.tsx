@@ -48,6 +48,11 @@ export const CalculatorInput = ({
   sliderMin = 0,
   onValueChanged,
 }: CalculatorInputProps) => {
+  let fomormattedValue = value;
+  if (value && value % 1 !== 0) {
+    fomormattedValue = parseFloat(value.toFixed(2));
+  }
+
   return (
     <>
       <Typography variant="subheader2" gutterBottom>
@@ -56,7 +61,7 @@ export const CalculatorInput = ({
       <OutlinedInput
         disabled={disabled}
         fullWidth
-        value={value}
+        value={fomormattedValue}
         placeholder="0"
         endAdornment={<TokenIcon symbol={tokenSymbol} />}
         inputProps={{
