@@ -269,7 +269,7 @@ export const GhoDiscountCalculator = () => {
         sx={{
           background: palette.background.surface2,
           visibility: alertText ? 'visible' : 'hidden',
-          minHeight: downToXsm ? 'unset' : '54px',
+          minHeight: '54px',
         }}
       >
         {alertText}
