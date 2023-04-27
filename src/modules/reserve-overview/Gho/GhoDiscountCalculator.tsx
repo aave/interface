@@ -29,12 +29,10 @@ export const GhoDiscountCalculator = () => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const { breakpoints, palette } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
+  // const lg = useMediaQuery(breakpoints.only('lg'));
+
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
-  // const [selectedTimeRange, setSelectedTimeRange] = useState<GhoBorrowTermRange>(
-  //   ESupportedTimeRanges.OneYear
-  // );
-  const selectedTimeRange = ESupportedTimeRanges.OneYear;
 
   const [rateSelection, setRateSelection] = useState<CalculatedRateSelection>({
     baseRate: ghoReserveData.ghoVariableBorrowAPY,
@@ -43,7 +41,7 @@ export const GhoDiscountCalculator = () => {
   });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
 
-  // const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
+  const selectedTimeRange = ESupportedTimeRanges.OneYear;
 
   useEffect(() => {
     // Inital values come from the store, but if that data is not loaded yet, update it once it is
@@ -78,14 +76,13 @@ export const GhoDiscountCalculator = () => {
       rateAfterDiscount: calculatedRate.rateAfterDiscount,
       rateAfterMaxDiscount: calculatedRate.rateAfterMaxDiscount,
     });
-    console.log('calculatedRate', calculatedRate);
   }, [stkAave, ghoBorrow, selectedTimeRange]);
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         <Typography variant="subheader1">
-          <Trans>Discount parameters</Trans>
+          <Trans>Discount model parameters</Trans>
         </Typography>
       </Box>
       <Box
@@ -168,7 +165,13 @@ export const GhoDiscountCalculator = () => {
       : (ghoBorrow - discountableGhoAmount) / Number(ghoReserveData.ghoDiscountedPerToken);
 
     const handleAddStkAaveForMaxDiscount = () => {
-      if (stkAave) setStkAave(stkAave + additionalStkAaveToReachMax);
+      if (stkAave) {
+        setStkAave(stkAave + additionalStkAaveToReachMax);
+      } else {
+        // reset to default
+        setGhoBorrow(10000);
+        setStkAave(100);
+      }
     };
 
     let alertText = null;
@@ -212,9 +215,16 @@ export const GhoDiscountCalculator = () => {
             <Typography
               component="span"
               variant="subheader2"
+              color="text.highlight"
               onClick={handleAddStkAaveForMaxDiscount}
               sx={{
-                '&:hover': { textDecoration: 'underline', cursor: 'pointer' },
+                '&:hover': {
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  '.MuiTypography-root': {
+                    textDecoration: 'underline',
+                  },
+                },
               }}
             >
               <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
@@ -222,17 +232,20 @@ export const GhoDiscountCalculator = () => {
               </SvgIcon>
               <Trans>
                 Add{' '}
-                <FormattedNumber
-                  value={additionalStkAaveToReachMax}
-                  variant="caption"
-                  visibleDecimals={2}
-                  sx={{
-                    '.MuiTypography-root': { ml: 0 },
-                    '&:hover': { textDecoration: 'underline', cursor: 'pointer' },
-                  }}
-                />{' '}
-                stkAAVE
+                {discountableGhoAmount > 0 ? (
+                  <>
+                    <FormattedNumber
+                      value={additionalStkAaveToReachMax}
+                      variant="subheader2"
+                      visibleDecimals={2}
+                      sx={{
+                        '.MuiTypography-root': { ml: 0 },
+                      }}
+                    />{' '}
+                  </>
+                ) : null}
               </Trans>
+              stkAAVE
             </Typography>{' '}
             <Trans>
               to borrow at{' '}
@@ -265,7 +278,7 @@ export const GhoDiscountCalculator = () => {
   };
 
   const GhoDiscountCalculatorDesktop = (
-    <Stack direction="row" gap={4}>
+    <Stack direction="row" gap={8}>
       <Box>
         <GhoInterestRatePieChartContainer
           borrowAmount={ghoBorrow}
@@ -282,7 +295,7 @@ export const GhoDiscountCalculator = () => {
         gap={2}
         sx={{ width: '258px' }}
       >
-        <Box>
+        <Box sx={{ flexShrink: 1 }}>
           <CalculatorInput
             title="Borrow amount"
             value={ghoBorrow}
@@ -293,7 +306,7 @@ export const GhoDiscountCalculator = () => {
             sliderMin={1}
           />
         </Box>
-        <Box>
+        <Box sx={{ flexShrink: 1 }}>
           <CalculatorInput
             title="Staked AAVE amount"
             value={stkAave}
@@ -357,7 +370,7 @@ export const GhoDiscountCalculator = () => {
         </Trans>
       </Typography>
       {downToXsm ? GhoDiscountCalculatorMobile : GhoDiscountCalculatorDesktop}
-      <Box sx={{ my: downToXsm ? 4 : 10 }}>
+      <Box sx={{ mt: downToXsm ? 4 : 10 }}>
         <GhoDiscountParametersComponent loading={ghoLoadingData} />
       </Box>
     </>

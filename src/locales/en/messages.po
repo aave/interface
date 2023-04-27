@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
-msgstr "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
+msgid "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
+msgstr "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -824,13 +824,13 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount model parameters"
+msgstr "Discount model parameters"
+
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Discount on base APY"
 msgstr "Discount on base APY"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount parameters"
-msgstr "Discount parameters"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"

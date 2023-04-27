@@ -102,17 +102,18 @@ export const GhoPieDesktop = ({
         background: theme.palette.background.surface2,
         width: '306px',
         height: '320px',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        py: 4,
         px: 6,
       }}
     >
-      <Stack alignItems="center" sx={{ position: 'absolute', top: 70 }}>
+      <Stack alignItems="center" gap={1} sx={{ position: 'absolute', top: 65 }}>
         <Typography variant="subheader2">Borrow APY</Typography>
         <FormattedNumber variant="h1" percent value={rateAfterDiscount} visibleDecimals={2} />
       </Stack>
       <GhoBorrowDiscountPieChart data={chartData} width={156} height={156} />
-      <Box sx={{ mt: 4 }}>
+      <Box>
         <ChartLegend
           amountAtDiscount={amountAtDiscount}
           discountedAmountRate={discountedAmountRate}
@@ -147,7 +148,7 @@ export const GhoPieMobile = ({
         mb: 2,
       }}
     >
-      <Stack alignItems="center" sx={{ position: 'absolute', top: 60 }}>
+      <Stack alignItems="center" gap={1} sx={{ position: 'absolute', top: 58 }}>
         <Typography variant="subheader2">Borrow APY</Typography>
         <FormattedNumber
           variant="h1"

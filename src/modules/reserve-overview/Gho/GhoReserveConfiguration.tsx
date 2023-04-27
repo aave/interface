@@ -118,7 +118,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Borrow info</Trans>
         </PanelTitle>
-        <Box>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', mt: 8 }}>
           <Box
             sx={{
               display: 'flex',
@@ -208,7 +208,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               </PanelItem>
             </Box>
           </Box>
-          <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', mt: 8 }}>
+          <Box sx={{ mt: 8 }}>
             <GhoDiscountCalculator />
           </Box>
         </Box>
