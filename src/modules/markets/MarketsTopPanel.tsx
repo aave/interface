@@ -35,11 +35,7 @@ export const MarketsTopPanel = () => {
 
   return (
     <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
-      <TopInfoPanelItem
-        icon={<PieIcon />}
-        title={<Trans>Total market size</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.toString()}
           symbol="USD"
@@ -50,11 +46,7 @@ export const MarketsTopPanel = () => {
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem
-        icon={<TotalSupplyIcon />}
-        title={<Trans>Total available</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem hideIcon title={<Trans>Total available</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
           symbol="USD"
@@ -65,11 +57,7 @@ export const MarketsTopPanel = () => {
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem
-        icon={<TotalBorrowIcon />}
-        title={<Trans>Total borrows</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem hideIcon title={<Trans>Total borrows</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalDebt.toString()}
           symbol="USD"
