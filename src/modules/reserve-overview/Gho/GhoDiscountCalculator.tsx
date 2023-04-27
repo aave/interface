@@ -296,7 +296,7 @@ export const GhoDiscountCalculator = () => {
         gap={2}
         sx={{ width: '258px' }}
       >
-        <Box sx={{ flexShrink: 1 }}>
+        <Box>
           <CalculatorInput
             title="Borrow amount"
             value={ghoBorrow}
@@ -307,7 +307,7 @@ export const GhoDiscountCalculator = () => {
             sliderMin={1}
           />
         </Box>
-        <Box sx={{ flexShrink: 1 }}>
+        <Box>
           <CalculatorInput
             title="Staked AAVE amount"
             value={stkAave}
