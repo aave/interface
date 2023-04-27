@@ -347,7 +347,7 @@ export const GhoDiscountCalculator = () => {
             title="Staked AAVE amount"
             value={stkAave}
             disabled={ghoLoadingData}
-            tokenSymbol="AAVE"
+            tokenSymbol="stkAAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
           />
