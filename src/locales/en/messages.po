@@ -88,6 +88,11 @@ msgstr "APY type change"
 msgid "APY with max discount"
 msgstr "APY with max discount"
 
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+msgid "APY, fixed rate"
+msgstr "APY, fixed rate"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
@@ -418,7 +423,8 @@ msgstr "Borrow"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
+#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Borrow APY"
 msgstr "Borrow APY"
 
@@ -758,13 +764,18 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Decided by community"
-msgstr "Decided by community"
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Delegate"
+msgstr "Delegate"
 
-#: src/modules/governance/DelegatedInfoPanel.tsx
-msgid "Delegated power"
-msgstr "Delegated power"
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+msgid "Delegating"
+msgstr "Delegating"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Delegation"
+msgstr "Delegation"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1307,7 +1318,8 @@ msgstr "Max slashing"
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
@@ -2322,7 +2334,8 @@ msgstr "Total available"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
@@ -2792,8 +2805,10 @@ msgstr "ends"
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
