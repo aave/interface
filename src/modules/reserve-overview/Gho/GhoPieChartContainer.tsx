@@ -110,7 +110,13 @@ const GhoPieChartDesktop = ({
     >
       <Stack alignItems="center" gap={1} sx={{ position: 'absolute', top: 65 }}>
         <Typography variant="subheader2">Borrow APY</Typography>
-        <FormattedNumber variant="h1" percent value={rateAfterDiscount} visibleDecimals={2} />
+        <FormattedNumber
+          variant="h1"
+          symbolsColor="text.primary"
+          percent
+          value={rateAfterDiscount}
+          visibleDecimals={2}
+        />
       </Stack>
       <GhoPieChart data={chartData} width={156} height={156} />
       <Box>
