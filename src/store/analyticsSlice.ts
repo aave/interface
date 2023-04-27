@@ -11,6 +11,8 @@ export type AnalyticsSlice = {
   trackEvent: (eventName: string, properties?: TrackEventProperties) => void;
 };
 
+export const MIXPANEL_API_HOST = '/collect';
+
 export const createAnalyticsSlice: StateCreator<
   RootStore,
   [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],

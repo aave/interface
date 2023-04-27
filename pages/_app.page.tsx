@@ -32,6 +32,7 @@ import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { MIXPANEL_API_HOST } from '../src/store/analyticsSlice';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -58,7 +59,9 @@ export default function MyApp(props: MyAppProps) {
 
   React.useEffect(() => {
     if (MIXPANEL_TOKEN) {
-      mixpanel.init(MIXPANEL_TOKEN);
+      mixpanel.init(MIXPANEL_TOKEN, {
+        api_host: MIXPANEL_API_HOST,
+      });
     } else {
       console.warn('Mixpanel token not provided. Mixpanel will not be initialized.');
     }

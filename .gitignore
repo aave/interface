@@ -46,3 +46,4 @@ package-lock.json
 # IDE specific
 .idea
 .vscode
+.env.development
