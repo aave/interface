@@ -9,15 +9,22 @@ interface PieChartData {
 
 interface GhoBorrowDiscountPieChartProps {
   data: PieChartData[];
+  width: number;
+  height: number;
+  margin?: { top: number; right: number; bottom: number; left: number };
 }
 
-export const GhoBorrowDiscountPieChart = ({ data }: GhoBorrowDiscountPieChartProps) => {
-  const width = 156;
-  const height = 156;
-
-  const radius = width / 2;
-  const centerY = height / 2;
-  const centerX = width / 2;
+export const GhoBorrowDiscountPieChart = ({
+  data,
+  width,
+  height,
+  margin = { top: 0, right: 0, bottom: 0, left: 0 },
+}: GhoBorrowDiscountPieChartProps) => {
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const radius = Math.min(innerWidth, innerHeight) / 2;
+  const centerY = innerHeight / 2;
+  const centerX = innerWidth / 2;
   const donutThickness = 18;
 
   let padAngle = 0.04;
@@ -27,7 +34,7 @@ export const GhoBorrowDiscountPieChart = ({ data }: GhoBorrowDiscountPieChartPro
 
   return (
     <svg width={width} height={height}>
-      <Group top={centerY} left={centerX}>
+      <Group top={centerY + margin.top} left={centerX + margin.left}>
         <Pie
           data={data}
           pieValue={(d) => d.value || 0}

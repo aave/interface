@@ -1015,11 +1015,6 @@ msgstr "GHO"
 msgid "GHO discount program"
 msgstr "GHO discount program"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-msgid "GHO effective interest rate"
-msgstr "GHO effective interest rate"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -2341,8 +2336,6 @@ msgid "Total emission per day"
 msgstr "Total emission per day"
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
 msgid "Total interest accrued"
 msgstr "Total interest accrued"
 
