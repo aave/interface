@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, OutlinedInput, Slider, Typography, useTheme } from '@mui/material';
+import { OutlinedInput, Slider, Typography } from '@mui/material';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 

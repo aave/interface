@@ -13,7 +13,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';
 import { GhoInterestRatePieChartContainer } from './GhoInterestRateGraphContainer';
-import { getSecondsForGhoBorrowTermDuration, GhoBorrowTermRange } from './GhoTimeRangeSelector';
+import { getSecondsForGhoBorrowTermDuration } from './GhoTimeRangeSelector';
 import { calculateDiscountRate } from './utils';
 
 interface CalculatedRateSelection {
@@ -31,9 +31,11 @@ export const GhoDiscountCalculator = () => {
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
-  const [selectedTimeRange, setSelectedTimeRange] = useState<GhoBorrowTermRange>(
-    ESupportedTimeRanges.OneYear
-  );
+  // const [selectedTimeRange, setSelectedTimeRange] = useState<GhoBorrowTermRange>(
+  //   ESupportedTimeRanges.OneYear
+  // );
+  const selectedTimeRange = ESupportedTimeRanges.OneYear;
+
   const [rateSelection, setRateSelection] = useState<CalculatedRateSelection>({
     baseRate: ghoReserveData.ghoVariableBorrowAPY,
     rateAfterDiscount: ghoReserveData.ghoBorrowAPYWithMaxDiscount, // Initialize with max discount
@@ -41,7 +43,7 @@ export const GhoDiscountCalculator = () => {
   });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
 
-  const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
+  // const interestOwed = (ghoBorrow || 0) * rateSelection.rateAfterDiscount;
 
   useEffect(() => {
     // Inital values come from the store, but if that data is not loaded yet, update it once it is
