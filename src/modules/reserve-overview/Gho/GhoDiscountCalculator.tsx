@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import InfoIcon from '@mui/icons-material/InfoOutlined';
+import { Alert, Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -11,7 +12,10 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';
-import { GhoInterestRateGraphContainer } from './GhoInterestRateGraphContainer';
+import {
+  GhoInterestRateGraphContainer,
+  GhoInterestRatePieChartContainer,
+} from './GhoInterestRateGraphContainer';
 import { getSecondsForGhoBorrowTermDuration, GhoBorrowTermRange } from './GhoTimeRangeSelector';
 import { calculateDiscountRate } from './utils';
 
@@ -26,7 +30,7 @@ let initialRateValuesSet = false;
 // We start this calculator off showing values to reach max discount
 export const GhoDiscountCalculator = () => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const [stkAave, setStkAave] = useState<number | null>(100);
   const [ghoBorrow, setGhoBorrow] = useState<number | null>(10000);
@@ -75,12 +79,13 @@ export const GhoDiscountCalculator = () => {
       rateAfterDiscount: calculatedRate.rateAfterDiscount,
       rateAfterMaxDiscount: calculatedRate.rateAfterMaxDiscount,
     });
+    console.log('calculatedRate', calculatedRate);
   }, [stkAave, ghoBorrow, selectedTimeRange]);
 
   const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <Typography variant="secondary14" color="text.secondary">
+        <Typography variant="subheader1">
           <Trans>Discount parameters</Trans>
         </Typography>
       </Box>
@@ -252,9 +257,18 @@ export const GhoDiscountCalculator = () => {
   };
 
   const GhoDiscountCalculatorDesktop = (
-    <>
-      <Stack direction="row" gap={2}>
-        <Box sx={{ width: '100%' }}>
+    <Stack direction="row" gap={4}>
+      <Box>
+        <GhoInterestRatePieChartContainer
+          borrowAmount={ghoBorrow}
+          discountableAmount={discountableGhoAmount}
+          baseRate={rateSelection.baseRate}
+          discountedAmountRate={rateSelection.rateAfterMaxDiscount}
+          rateAfterDiscount={rateSelection.rateAfterDiscount}
+        />
+      </Box>
+      <Stack direction="column" gap={2} sx={{ width: '258px' }}>
+        <Box>
           <CalculatorInput
             title="Borrow amount"
             value={ghoBorrow}
@@ -263,10 +277,9 @@ export const GhoDiscountCalculator = () => {
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
             sliderMin={1}
-            helperTextComponent={<BorrowAmountHelperText />}
           />
         </Box>
-        <Box sx={{ width: '100%' }}>
+        <Box>
           <CalculatorInput
             title="Staked AAVE amount"
             value={stkAave}
@@ -274,19 +287,18 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="AAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
-            helperTextComponent={<StkAaveAmountHelperText />}
           />
         </Box>
+        <Alert
+          icon={<InfoIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
+          severity="info"
+          sx={{ background: palette.background.surface2 }}
+        >
+          <BorrowAmountHelperText />
+          <StkAaveAmountHelperText />
+        </Alert>
       </Stack>
-      <GhoInterestRateGraphContainer
-        borrowAmount={ghoBorrow}
-        stkAaveAmount={stkAave}
-        rateAfterDiscount={rateSelection.rateAfterDiscount}
-        interestOwed={interestOwed}
-        selectedTimeRange={selectedTimeRange}
-        onSelectedTimeRangeChanged={setSelectedTimeRange}
-      />
-    </>
+    </Stack>
   );
 
   const GhoDiscountCalculatorMobile = (
@@ -309,7 +321,6 @@ export const GhoDiscountCalculator = () => {
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
             sliderMin={1}
-            helperTextComponent={<BorrowAmountHelperText />}
           />
         </Box>
         <Box sx={{ width: '100%' }}>
@@ -320,7 +331,6 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="AAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
-            helperTextComponent={<StkAaveAmountHelperText />}
           />
         </Box>
       </Stack>
@@ -330,12 +340,13 @@ export const GhoDiscountCalculator = () => {
   return (
     <>
       <Typography variant="subheader1" gutterBottom>
-        <Trans>Stake AAVE to borrow GHO at a discount</Trans>
+        <Trans>Staking discount</Trans>
       </Typography>
       <Typography variant="caption" color="text.secondary" mb={6}>
         <Trans>
-          For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate.
-          Use the calculator below to see different borrow rates with the discount applied.
+          Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO
+          borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the
+          calculator below to see GHO borrow rate with the discount applied.
         </Trans>
       </Typography>
       {downToXsm ? GhoDiscountCalculatorMobile : GhoDiscountCalculatorDesktop}

@@ -1,5 +1,18 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -8,6 +21,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
+import { GhoBorrowDiscountPieChart } from './GhoBorrowDiscountPieChart';
 import { GhoInterestRate, GhoInterestRateGraph } from './GhoInterestRateGraph';
 import { GhoBorrowTermRange, GhoTimeRangeSelector } from './GhoTimeRangeSelector';
 import { calculateDiscountRate } from './utils';
@@ -20,6 +34,145 @@ interface GhoInterestRateGraphContainerProps {
   selectedTimeRange: GhoBorrowTermRange;
   onSelectedTimeRangeChanged: (value: GhoBorrowTermRange) => void;
 }
+
+interface GhoInterestRatePieChartContainer {
+  borrowAmount: number | null;
+  discountableAmount: number | null;
+  baseRate: number;
+  discountedAmountRate: number;
+  rateAfterDiscount: number;
+}
+
+export const GhoInterestRatePieChartContainer = ({
+  borrowAmount,
+  discountableAmount,
+  baseRate,
+  discountedAmountRate,
+  rateAfterDiscount,
+}: GhoInterestRatePieChartContainer) => {
+  const theme = useTheme();
+
+  const amountAtDiscount = discountableAmount || 0;
+  const amountThatExceedsDiscount = Math.max(0, (borrowAmount || 0) - amountAtDiscount);
+
+  const chartData = [
+    {
+      name: 'amountThatExceedsDiscount',
+      value: amountThatExceedsDiscount,
+      color: '#B3C7F9',
+    },
+    {
+      name: 'amountAtDiscount',
+      value: amountAtDiscount,
+      color: '#C9B3F9',
+    },
+  ];
+  return (
+    <Stack
+      direction="column"
+      sx={{
+        position: 'relative',
+        background: theme.palette.background.surface2,
+        width: '306px',
+        height: '320px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        px: 6,
+      }}
+    >
+      <Stack alignItems="center" sx={{ position: 'absolute', top: 70 }}>
+        <Typography variant="subheader2">Borrow APY</Typography>
+        <FormattedNumber variant="h1" percent value={rateAfterDiscount} visibleDecimals={2} />
+      </Stack>
+      <GhoBorrowDiscountPieChart data={chartData} />
+      <Box sx={{ mt: 4 }}>
+        <TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left" sx={{ pl: 0 }}>
+                  <Typography variant="helperText">Principal balance</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="helperText">Amount</Typography>
+                </TableCell>
+                <TableCell align="right" sx={{ pr: 0 }}>
+                  <Typography variant="helperText">APY</Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                sx={{
+                  [`& .${tableCellClasses.root}`]: {
+                    borderBottom: 'none',
+                  },
+                }}
+              >
+                <TableCell align="left" sx={{ pl: 0 }}>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <Box
+                      sx={{
+                        background: '#C9B3F9',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                      }}
+                    />
+                    <Typography variant="caption">At a discount</Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell>
+                  <FormattedNumber variant="subheader2" value={amountAtDiscount} align="right" />
+                </TableCell>
+                <TableCell sx={{ pr: 0 }} align="right">
+                  <FormattedNumber
+                    variant="subheader2"
+                    value={discountedAmountRate}
+                    percent
+                    visibleDecimals={2}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                sx={{
+                  [`& .${tableCellClasses.root}`]: {
+                    borderBottom: 'none',
+                  },
+                }}
+              >
+                <TableCell align="left" sx={{ pl: 0 }}>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <Box
+                      sx={{
+                        background: '#B3C7F9',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        flexShrink: 0,
+                      }}
+                    />
+                    <Typography variant="caption">Exceeds the discount</Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell align="right">
+                  <FormattedNumber
+                    variant="subheader2"
+                    visibleDecimals={2}
+                    value={amountThatExceedsDiscount}
+                  />
+                </TableCell>
+                <TableCell sx={{ pr: 0 }} align="right">
+                  <FormattedNumber variant="subheader2" value={baseRate} percent />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Stack>
+  );
+};
 
 export const GhoInterestRateGraphContainer = ({
   borrowAmount,

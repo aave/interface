@@ -118,93 +118,98 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Borrow info</Trans>
         </PanelTitle>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            flexDirection: { xs: 'column', sm: 'row' },
-          }}
-        >
+        <Box>
           <Box
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
-              flexWrap: 'wrap',
+              flexDirection: { xs: 'column', sm: 'row' },
             }}
           >
-            <CapsCircularStatus
-              value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
-              tooltipContent={
-                <>
-                  <Trans>
-                    Maximum amount available to borrow is{' '}
-                    <FormattedNumber
-                      value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-                      variant="secondary12"
-                    />{' '}
-                    {reserve.symbol} (
-                    <FormattedNumber
-                      value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-                      variant="secondary12"
-                      symbol="USD"
-                    />
-                    ).
-                  </Trans>
-                </>
-              }
-            />
-            <PanelItem
-              title={
-                <Box display="flex" alignItems="center">
-                  <Trans>Total borrowed</Trans>
-                </Box>
-              }
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
+              }}
             >
-              <Box>
-                <FormattedNumber
-                  value={ghoReserveData.aaveFacilitatorBucketLevel}
-                  variant="main16"
-                  compact
-                />
-                <Typography
-                  component="span"
-                  color="text.primary"
-                  variant="secondary16"
-                  sx={{ display: 'inline-block', mx: 1 }}
-                >
-                  <Trans>of</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={ghoReserveData.aaveFacilitatorBucketMaxCapacity}
-                  variant="main16"
-                />
-              </Box>
-              <Box>
-                <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketLevel.toString()} />
-                <Typography
-                  component="span"
-                  color="text.secondary"
-                  variant="secondary12"
-                  sx={{ display: 'inline-block', mx: 1 }}
-                >
-                  <Trans>of</Trans>
-                </Typography>
-                <ReserveSubheader
-                  value={ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString()}
-                />
-              </Box>
-            </PanelItem>
+              <CapsCircularStatus
+                value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
+                tooltipContent={
+                  <>
+                    <Trans>
+                      Maximum amount available to borrow is{' '}
+                      <FormattedNumber
+                        value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                        variant="secondary12"
+                      />{' '}
+                      {reserve.symbol} (
+                      <FormattedNumber
+                        value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                        variant="secondary12"
+                        symbol="USD"
+                      />
+                      ).
+                    </Trans>
+                  </>
+                }
+              />
+              <PanelItem
+                title={
+                  <Box display="flex" alignItems="center">
+                    <Trans>Total borrowed</Trans>
+                  </Box>
+                }
+              >
+                <Box>
+                  <FormattedNumber
+                    value={ghoReserveData.aaveFacilitatorBucketLevel}
+                    variant="main16"
+                    compact
+                  />
+                  <Typography
+                    component="span"
+                    color="text.primary"
+                    variant="secondary16"
+                    sx={{ display: 'inline-block', mx: 1 }}
+                  >
+                    <Trans>of</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={ghoReserveData.aaveFacilitatorBucketMaxCapacity}
+                    variant="main16"
+                  />
+                </Box>
+                <Box>
+                  <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketLevel.toString()} />
+                  <Typography
+                    component="span"
+                    color="text.secondary"
+                    variant="secondary12"
+                    sx={{ display: 'inline-block', mx: 1 }}
+                  >
+                    <Trans>of</Trans>
+                  </Typography>
+                  <ReserveSubheader
+                    value={ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString()}
+                  />
+                </Box>
+              </PanelItem>
+            </Box>
+            {desktopScreens && <Divider orientation="vertical" flexItem sx={{ mx: 6 }} />}
+            <Box mt={{ xs: 6, sm: 0 }}>
+              <PanelItem title={<Trans>Borrow APY</Trans>}>
+                <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
+                {desktopScreens && (
+                  <Typography variant="caption" color="text.secondary" mt={1}>
+                    <Trans>Decided by community</Trans>
+                  </Typography>
+                )}
+              </PanelItem>
+            </Box>
           </Box>
-          {desktopScreens && <Divider orientation="vertical" flexItem sx={{ mx: 6 }} />}
-          <Box mt={{ xs: 6, sm: 0 }}>
-            <PanelItem title={<Trans>Borrow APY</Trans>}>
-              <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
-              {desktopScreens && (
-                <Typography variant="caption" color="text.secondary" mt={1}>
-                  <Trans>Decided by community</Trans>
-                </Typography>
-              )}
-            </PanelItem>
+          <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%', mt: 8 }}>
+            <GhoDiscountCalculator />
           </Box>
         </Box>
       </PanelRow>
@@ -214,15 +219,6 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <ReserveEModePanel reserve={reserve} />
         </>
       )}
-      <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-      <PanelRow id="discount">
-        <PanelTitle>
-          <Trans>Staking incentive</Trans>
-        </PanelTitle>
-        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-          <GhoDiscountCalculator />
-        </Box>
-      </PanelRow>
     </Paper>
   );
 };

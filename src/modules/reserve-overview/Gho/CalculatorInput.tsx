@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, OutlinedInput, Slider, Typography } from '@mui/material';
+import { Box, OutlinedInput, Slider, Typography, useTheme } from '@mui/material';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 
@@ -37,7 +37,6 @@ interface CalculatorInputProps {
   sliderMax: number;
   sliderMin?: number;
   onValueChanged: (value: number | null) => void;
-  helperTextComponent: React.ReactNode;
 }
 
 export const CalculatorInput = ({
@@ -48,7 +47,6 @@ export const CalculatorInput = ({
   sliderMax,
   sliderMin = 0,
   onValueChanged,
-  helperTextComponent,
 }: CalculatorInputProps) => {
   return (
     <>
@@ -104,7 +102,7 @@ export const CalculatorInput = ({
         ]}
         sx={sliderStyles}
       />
-      <Box sx={{ minHeight: '35px' }}>{helperTextComponent}</Box>
+      {/* <Box sx={{ minHeight: '35px' }}>{helperTextComponent}</Box> */}
     </>
   );
 };

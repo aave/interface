@@ -987,10 +987,6 @@ msgstr "Filter"
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
-msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
-
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
@@ -1923,9 +1919,9 @@ msgstr "Stake"
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Stake AAVE to borrow GHO at a discount"
-msgstr "Stake AAVE to borrow GHO at a discount"
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "Stake AAVE and borrow GHO at a lower rate"
+msgstr "Stake AAVE and borrow GHO at a lower rate"
 
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
@@ -1959,13 +1955,10 @@ msgstr "Staking Rewards"
 msgid "Staking balance"
 msgstr "Staking balance"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Staking discount"
 msgstr "Staking discount"
-
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Staking incentive"
-msgstr "Staking incentive"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2466,6 +2459,10 @@ msgstr "User is in isolation mode"
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
+msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
