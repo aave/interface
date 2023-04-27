@@ -103,7 +103,6 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Aave Protocol native asset"
 msgstr "Aave Protocol native asset"
 
@@ -386,7 +385,6 @@ msgstr "Borrow"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
@@ -398,6 +396,7 @@ msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Borrow APY, fixed rate"
 msgstr "Borrow APY, fixed rate"
 
@@ -1291,6 +1290,7 @@ msgid "Maximum loan to value"
 msgstr "Maximum loan to value"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
+#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Meet GHO"
 msgstr "Meet GHO"
 
@@ -1530,7 +1530,6 @@ msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx

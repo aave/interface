@@ -28,65 +28,93 @@ export const GhoMarketAssetsListMobileItem = ({ reserve }: GhoMarketAssetsListMo
   }
 
   return (
-    <Box>
-      <Divider />
-      <Box sx={{ px: 4, pt: 4, pb: 6 }}>
+    <Box
+      sx={{
+        paddingX: 6,
+        height: 228,
+        overflowY: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}
+    >
+      <Box
+        sx={{
+          borderRadius: 4,
+          gap: 6,
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#C9B3F94D',
+          position: 'relative',
+          p: 4,
+        }}
+      >
         <Box
           sx={{
-            display: 'inline-flex',
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: 1,
-            p: 1,
+            maxWidth: 250,
           }}
         >
-          <Trans>Aave Protocol native asset</Trans>
+          <Typography variant="subheader1">
+            <Trans>Meet GHO</Trans>
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            A decentralized, multi-collateralized stablecoin created by AaveDAO.
+          </Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', my: 4 }}>
-          <TokenIcon sx={{ fontSize: '40px' }} symbol="GHO" fontSize="inherit" />
-          <Box sx={{ px: 3 }}>
-            <Typography variant="h3">GHO</Typography>
-          </Box>
-        </Box>
-        <Row sx={{ mb: 3 }} caption={<Trans>Price</Trans>} captionVariant="description">
-          <FormattedNumber
-            compact
-            symbol="usd"
-            value="1"
-            visibleDecimals={2}
-            variant="secondary14"
-          />
-        </Row>
-        <Row sx={{ mb: 3 }} caption={<Trans>Total borrowed</Trans>} captionVariant="description">
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 16,
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: { xs: 'flex-end' },
-              justifyContent: 'center',
-              textAlign: 'center',
+              gap: 3,
+              alignItems: 'center',
             }}
           >
-            <FormattedNumber
-              compact
-              value={ghoReserveData.aaveFacilitatorBucketLevel}
-              visibleDecimals={2}
-              variant="secondary14"
+            <TokenIcon
+              symbol="GHO"
+              sx={{
+                fontSize: '38px',
+              }}
             />
-            <ReserveSubheader
-              value={ghoReserveData.aaveFacilitatorBucketLevel.toString()}
-              rightAlign={true}
-            />
+            <Box>
+              <FormattedNumber
+                symbol="USD"
+                compact
+                variant="main14"
+                value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+              />
+              <Typography variant="caption" color="text.secondary">
+                <Trans>Total borrowed</Trans>
+              </Typography>
+            </Box>
           </Box>
-        </Row>
-        <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
-          <GhoBorrowApyRange percentVariant="secondary14" hyphenVariant="secondary14" />
-        </Row>
-        <Button
-          variant="outlined"
-          component={Link}
-          href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
-          fullWidth
-        >
+          <Box>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 3,
+                alignItems: 'center',
+              }}
+            >
+              <Box>
+                <FormattedNumber
+                  symbol="USD"
+                  compact
+                  variant="main14"
+                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                />
+                <Typography variant="caption" color="text.secondary">
+                  <Trans>Borrow APY, fixed rate</Trans>
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Button variant="contained" size="large">
           <Trans>View details</Trans>
         </Button>
       </Box>
