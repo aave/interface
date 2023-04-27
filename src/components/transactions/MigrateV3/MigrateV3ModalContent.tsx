@@ -1,5 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import { useCallback } from 'react';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
@@ -23,6 +24,7 @@ import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 export const MigrateV3ModalContent = () => {
   const currentTimeStamp = useCurrentTimestamp(10);
+
   const { supplyPositions, borrowPositions } = useRootStore(
     useCallback(
       (state) => ({
@@ -68,7 +70,41 @@ export const MigrateV3ModalContent = () => {
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (migrateTxState.success) return <TxSuccessView action={<Trans>Migrated</Trans>} />;
+
+  const handleRoute = () => {
+    /* 
+TO-DO: re-enable in merge
+if (currentMarket === CustomMarket.proto_polygon) {
+      setCurrentMarket('proto_polygon_v3' as CustomMarket);
+      window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
+    } else if (currentMarket === CustomMarket.proto_avalanche) {
+      setCurrentMarket('proto_avalanche_v3' as CustomMarket);
+      window.location.href = `/?marketName=${CustomMarket.proto_avalanche_v3}`;
+    } else {
+      setCurrentMarket('proto_mainnet_v3' as CustomMarket);
+      window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
+    } */
+  };
+
+  if (migrateTxState.success) {
+    return (
+      <TxSuccessView
+        customAction={
+          <Box mt={5}>
+            <Button variant="gradient" size="medium" onClick={handleRoute}>
+              <Trans>Go to V3 Dashboard</Trans>
+            </Button>
+          </Box>
+        }
+        customText={
+          <Trans>
+            Selected assets have successfully migrated. Visit the Market Dashboard to see them.
+          </Trans>
+        }
+        action={<Trans>Migrated</Trans>}
+      />
+    );
+  }
 
   return (
     <>

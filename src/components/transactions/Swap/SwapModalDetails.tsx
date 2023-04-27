@@ -1,16 +1,18 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, SvgIcon } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
+  CollateralState,
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { CollateralType } from 'src/helpers/types';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
@@ -18,8 +20,8 @@ export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
   healthFactor: string;
   healthFactorAfterSwap: string;
-  swapSource: ComputedUserReserveData;
-  swapTarget: ComputedUserReserveData;
+  swapSource: ComputedUserReserveData & { collateralType: CollateralType };
+  swapTarget: ComputedUserReserveData & { collateralType: CollateralType };
   toAmount: string;
   fromAmount: string;
   loading: boolean;
@@ -35,24 +37,6 @@ export const SwapModalDetails = ({
   fromAmount,
   loading,
 }: SupplyModalDetailsProps) => {
-  const { palette } = useTheme();
-
-  const parseUsageString = (usage: boolean) => {
-    if (usage) {
-      return (
-        <Typography variant="secondary14" color={palette.success.main}>
-          <Trans>Yes</Trans>
-        </Typography>
-      );
-    } else {
-      return (
-        <Typography variant="secondary14" color={palette.error.main}>
-          <Trans>No</Trans>
-        </Typography>
-      );
-    }
-  };
-
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
   );
@@ -90,19 +74,28 @@ export const SwapModalDetails = ({
         percent
         loading={loading}
       />
-      <Row caption={<Trans>Can be collateral</Trans>} captionVariant="description" mb={4}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+          }}
+        >
           {loading ? (
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              {parseUsageString(swapSource.reserve.reserveLiquidationThreshold !== '0')}
+              <CollateralState collateralType={swapSource.collateralType} />
 
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
 
-              {parseUsageString(swapTarget.reserve.usageAsCollateralEnabled)}
+                <CollateralState collateralType={swapTarget.collateralType} />
+              </Box>
             </>
           )}
         </Box>

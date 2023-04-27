@@ -10,9 +10,9 @@ export default defineConfig({
   e2e: {
     specPattern: [
       folder + '/**/swap.aave-v2.cy.ts',
-      folder + '/**/stake.aave-v2.cy.ts',
       folder + '/**/reward.aave-v2.cy.ts',
       folder + '/**/critical-conditions.aave-v2.cy.ts',
+      folder + '/**/migration.aave-v2.cy.ts',
     ],
   },
 });

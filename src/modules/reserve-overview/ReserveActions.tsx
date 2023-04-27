@@ -18,8 +18,8 @@ import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
@@ -327,7 +327,7 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
 };
 
 const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
-  return !disable ? (
+  return (
     <Stack>
       <AvailableTooltip
         variant="description"
@@ -362,7 +362,7 @@ const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
         </Button>
       </Stack>
     </Stack>
-  ) : null;
+  );
 };
 
 const WrappedBaseAssetSelector = ({
@@ -377,25 +377,21 @@ const WrappedBaseAssetSelector = ({
   setSelectedAsset: (value: string) => void;
 }) => {
   return (
-    <StyledToggleButtonGroup
+    <StyledTxModalToggleGroup
       color="primary"
       value={selectedAsset}
       exclusive
       onChange={(_, value) => setSelectedAsset(value)}
-      sx={{ width: '100%', height: '36px', p: 0.5, mb: 4 }}
+      sx={{ mb: 4 }}
     >
-      <StyledToggleButton value={assetSymbol}>
-        <Typography variant="subheader1" sx={{ mr: 1 }}>
-          {assetSymbol}
-        </Typography>
-      </StyledToggleButton>
+      <StyledTxModalToggleButton value={assetSymbol}>
+        <Typography variant="buttonM">{assetSymbol}</Typography>
+      </StyledTxModalToggleButton>
 
-      <StyledToggleButton value={baseAssetSymbol}>
-        <Typography variant="subheader1" sx={{ mr: 1 }}>
-          {baseAssetSymbol}
-        </Typography>
-      </StyledToggleButton>
-    </StyledToggleButtonGroup>
+      <StyledTxModalToggleButton value={baseAssetSymbol}>
+        <Typography variant="buttonM">{baseAssetSymbol}</Typography>
+      </StyledTxModalToggleButton>
+    </StyledTxModalToggleGroup>
   );
 };
 

@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0":
-  version "1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0.tgz#05f9df66df97970f40f26d1ae39608207be20335"
-  integrity sha512-uRGd+7Lqp76VtsKeabxv05Zwq++tDYI2SdrggauBJtJMl9VrI95fx/GUCQ+qaU27MMzGRNsdxYABD6QBy4vTjQ==
+"@aave/contract-helpers@1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0+b395767":
+  version "1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0.tgz#97176ca935c444f0bb3516809938b893d2afbe65"
+  integrity sha512-BWwEkSVKMkty9yk675Wy2k1BmrB9BvRHZLSvMCPO7I8mLR6otYJY225700S3W97LFWOir3V81MleVn1yk6DCjA==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0":
-  version "1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.15.1-dd78cf88d95c8c1ce75c0e4c21b69472402740ac.0.tgz#a0d4d6e96041e18709a254e8e9da2b5e56429c3e"
-  integrity sha512-DoQQg6zSzZGhib/66+yy7ZzDA7Jw8Pv5ktHSQwMA5Ms9gM8jvkaLbXvMtP/goyqI0EjFPNm1ZzL556HU8tl12g==
+"@aave/math-utils@1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0+b395767":
+  version "1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.17.1-94e401101c2af8139520a8c6766602f0393ed798.0.tgz#ebf1cbdc3db871830fafd0795f9fd6957e14e28c"
+  integrity sha512-PZSKWMidLEaTDSgG1C4WxZzmLXY8PhI2va9VtHX/XZwWUwhkIsjyO+IOzi1Xn6mnzsaR5BaCV+3EtqaVJ1Sn4A==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -1328,10 +1328,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-1.13.1.tgz#4c10ee9dcc986e2f24cb2062663e7697814ad395"
-  integrity sha512-+0QOQbNCQEp34eUA1K7Qkn4t8X7WQ04rY91/bTmt7smHKk4CBtp6EqogX0cw+M63bG7+wqR5EXaAYCJSLEvpDg==
+"@bgd-labs/aave-address-book@^1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-1.19.0.tgz#c11e2afa4149da78e53f17abfcfa38c1a3db9271"
+  integrity sha512-Z36b3zma+cPzkOubeMSeg2b9dx/+UInbIR4DWpGIguxh82X2tdZrA5rTUAioTcaumtmvkrtI08cSYa48qY2CAg==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"
@@ -3325,6 +3325,13 @@
   version "18.0.6"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.6.tgz#36652900024842b74607a17786b6662dd1e103a1"
   integrity sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-infinite-scroller@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@types/react-infinite-scroller/-/react-infinite-scroller-1.2.3.tgz#b8dcb0e5762c3f79cc92e574d2c77402524cab71"
+  integrity sha512-l60JckVoO+dxmKW2eEG7jbliEpITsTJvRPTe97GazjF5+ylagAuyYdXl8YY9DQsTP9QjhqGKZROknzgscGJy0A==
   dependencies:
     "@types/react" "*"
 
@@ -6880,6 +6887,11 @@ functions-have-names@^1.2.2:
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
+fuse.js@^6.6.2:
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.6.2.tgz#fe463fed4b98c0226ac3da2856a415576dc9a111"
+  integrity sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==
+
 fuzzaldrin@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/fuzzaldrin/-/fuzzaldrin-2.1.0.tgz"
@@ -10000,7 +10012,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -10123,6 +10135,13 @@ react-dom@latest:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-infinite-scroller@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.6.tgz#8b80233226dc753a597a0eb52621247f49b15f18"
+  integrity sha512-mGdMyOD00YArJ1S1F3TVU9y4fGSfVVl6p5gh/Vt4u99CJOptfVu/q5V/Wlle72TMgYlBwIhbxK5wF0C/R33PXQ==
+  dependencies:
+    prop-types "^15.5.8"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

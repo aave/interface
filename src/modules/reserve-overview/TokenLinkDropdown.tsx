@@ -33,6 +33,7 @@ export const TokenLinkDropdown = ({
   if (!poolReserve) {
     return null;
   }
+  const showDebtTokenHeader = poolReserve.borrowingEnabled || poolReserve.stableBorrowRateEnabled;
 
   return (
     <>
@@ -63,9 +64,9 @@ export const TokenLinkDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
+        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
           <Typography variant="secondary12" color="text.secondary">
-            <Trans>Select token to view in block explorer</Trans>
+            <Trans>Underlying token</Trans>
           </Typography>
         </Box>
 
@@ -75,6 +76,7 @@ export const TokenLinkDropdown = ({
             address: poolReserve?.underlyingAsset,
           })}
           target="_blank"
+          divider
         >
           <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
@@ -83,18 +85,35 @@ export const TokenLinkDropdown = ({
         </MenuItem>
 
         {!hideAToken && (
-          <MenuItem
-            component="a"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              address: poolReserve?.aTokenAddress,
-            })}
-            target="_blank"
-          >
-            <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {'a' + poolReserve.symbol}
+          <>
+            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+              <Typography variant="secondary12" color="text.secondary">
+                <Trans>Aave aToken</Trans>
+              </Typography>
+            </Box>
+
+            <MenuItem
+              component="a"
+              href={currentNetworkConfig.explorerLinkBuilder({
+                address: poolReserve?.aTokenAddress,
+              })}
+              target="_blank"
+              divider={showDebtTokenHeader}
+            >
+              <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
+              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+                {'a' + poolReserve.symbol}
+              </Typography>
+            </MenuItem>
+          </>
+        )}
+
+        {showDebtTokenHeader && (
+          <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+            <Typography variant="secondary12" color="text.secondary">
+              <Trans>Aave debt token</Trans>
             </Typography>
-          </MenuItem>
+          </Box>
         )}
         {poolReserve.borrowingEnabled && (
           <MenuItem

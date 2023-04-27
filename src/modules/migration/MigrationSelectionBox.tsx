@@ -50,13 +50,13 @@ export const MigrationSelectionBox = ({
     <ListHeaderTitle onClick={onSelectAllClick}>
       <Typography variant="main12" sx={{ fontWeight: 700 }}>
         {allSelected ? (
-          <Box sx={selectionBoxStyle}>
+          <Box sx={selectionBoxStyle} data-cy={`migration-checkbox-all`}>
             <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
               <CheckIcon />
             </SvgIcon>
           </Box>
         ) : numSelected !== 0 ? (
-          <Box sx={selectionBoxStyle}>
+          <Box sx={selectionBoxStyle} data-cy={`migration-checkbox-all`}>
             <SvgIcon sx={{ fontSize: '16px', color: 'background.paper' }}>
               <MinusSmIcon />
             </SvgIcon>
@@ -67,6 +67,7 @@ export const MigrationSelectionBox = ({
               ...selectionBoxStyle,
               background: 'white',
             }}
+            data-cy={`migration-checkbox-all`}
           />
         )}
       </Typography>
