@@ -28,9 +28,6 @@ export const ManageQuickActions = () => {
   const [amountToLock, setAmountToLock] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
-  console.log(provider);
-  console.log(currentAccount);
-  console.log(provider?.getSigner(currentAccount as string));
   const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses

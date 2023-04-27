@@ -201,7 +201,7 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   Unlock PAW{' '}
                 </Typography>
-                <Typography>Staked PAW and expired PAW vests</Typography>
+                <Typography sx={{ width: '90%' }}>Staked PAW and expired PAW vests</Typography>
               </>
             }
             rightComponent={
@@ -224,7 +224,7 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   Vested PAW
                 </Typography>
-                <Typography>
+                <Typography sx={{ width: '90%' }}>
                   PAW that can be claimed with a{' '}
                   <Typography component={'span'} color="error.light">
                     50% penalty
@@ -252,7 +252,7 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   Claim all of the above
                 </Typography>
-                <Typography>
+                <Typography sx={{ width: '90%' }}>
                   Early Exit Penalty:{' '}
                   <Typography component="span" color={'error.light'}>
                     {exitPenalty} PAW
@@ -279,7 +279,7 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   Expired Locked PAW
                 </Typography>
-                <Typography>
+                <Typography sx={{ width: '90%' }}>
                   PAW locks that have exceeded the 3 month lock period and are now withdrawable.
                 </Typography>
               </>

@@ -21,13 +21,14 @@ export default function MainActionUnlock({
         pb: '12px',
       }}
     >
-      <Box sx={{ width: '50%' }}>{leftComponent}</Box>
+      <Box sx={{ width: '50%', padding: '8px 12px' }}>{leftComponent}</Box>
       <Box
         sx={{
           width: '50%',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          padding: '8px 12px',
         }}
       >
         {rightComponent}
