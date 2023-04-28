@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
@@ -47,7 +46,6 @@ export default function DynamicProposal() {
 DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider />
       {page}
       <GovVoteModal />
     </MainLayout>

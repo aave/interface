@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { DelegationType } from 'src/helpers/types';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
 
@@ -87,8 +87,8 @@ export const DelegationTokenSelector = ({
   filter,
 }: DelegationTokenSelectorProps) => {
   const {
-    aaveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
+    data: { aave, stkAave },
+  } = useGovernanceTokens();
 
   const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;
   const isOneLiner = filter && filteredTokens.length === 1;

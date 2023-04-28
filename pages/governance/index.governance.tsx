@@ -4,8 +4,6 @@ import { useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
-import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
-import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
@@ -106,11 +104,8 @@ export default function Governance(props: GovernancePageProps) {
 Governance.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider />
-      <AaveTokensBalanceProvider>
-        {page}
-        <GovDelegationModal />
-      </AaveTokensBalanceProvider>
+      {page}
+      <GovDelegationModal />
     </MainLayout>
   );
 };
