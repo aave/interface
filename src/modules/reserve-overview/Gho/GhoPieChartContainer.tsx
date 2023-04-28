@@ -17,7 +17,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { GhoPieChart, PieChartData } from './GhoPieChart';
 
-interface GhoPieChartContainer {
+export interface GhoPieChartContainer {
   borrowAmount: number | null;
   discountableAmount: number | null;
   baseRate: number;

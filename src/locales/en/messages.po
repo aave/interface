@@ -42,10 +42,6 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "AAVE stakeholders get a discount on GHO borrow rate"
-msgstr "AAVE stakeholders get a discount on GHO borrow rate"
-
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "ACTIVATE COOLDOWN"
@@ -323,6 +319,13 @@ msgstr "Assets to borrow"
 msgid "Assets to supply"
 msgstr "Assets to supply"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
 msgstr "At a discount"
@@ -421,8 +424,6 @@ msgstr "Borrow"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
-#: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Borrow APY"
 msgstr "Borrow APY"
 
@@ -762,18 +763,9 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Delegate"
-msgstr "Delegate"
-
-#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
-msgid "Delegating"
-msgstr "Delegating"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegation"
-msgstr "Delegation"
+#: src/modules/governance/DelegatedInfoPanel.tsx
+msgid "Delegated power"
+msgstr "Delegated power"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -1932,10 +1924,6 @@ msgstr "Stake"
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "Stake AAVE and borrow GHO at a lower rate"
-msgstr "Stake AAVE and borrow GHO at a lower rate"
-
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
@@ -2851,6 +2839,10 @@ msgstr "staking view"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
+
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "stkAAVE holders get a discount on GHO borrow rate"
+msgstr "stkAAVE holders get a discount on GHO borrow rate"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "to"
