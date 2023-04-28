@@ -297,6 +297,7 @@ export const GhoDiscountCalculator = () => {
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
             sliderMin={1}
+            downToXsm={downToXsm}
           />
         </Box>
         <Box sx={{ width: '100%' }}>
@@ -307,6 +308,7 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="stkAAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
+            downToXsm={downToXsm}
           />
         </Box>
         <Box sx={{ width: '100%' }}>
@@ -335,6 +337,7 @@ export const GhoDiscountCalculator = () => {
             onValueChanged={(value) => setGhoBorrow(value)}
             sliderMax={100000}
             sliderMin={1}
+            downToXsm={downToXsm}
           />
         </Box>
         <Box sx={{ width: '100%' }}>
@@ -345,6 +348,7 @@ export const GhoDiscountCalculator = () => {
             tokenSymbol="stkAAVE"
             onValueChanged={(value) => setStkAave(value)}
             sliderMax={1000}
+            downToXsm={downToXsm}
           />
         </Box>
         <StakingDiscountAlert />

@@ -2704,6 +2704,10 @@ msgstr "You have not borrow yet using this currency"
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
 msgstr "You may borrow up to <0/> GHO at <1/> (max discount)"
 
+#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
+msgid "You may enter a custom amount in the field."
+msgstr "You may enter a custom amount in the field."
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
