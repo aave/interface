@@ -28,8 +28,15 @@ export const GhoPieChart = ({
   const donutThickness = 18;
 
   let padAngle = 0.04;
-  if (data.find((d) => d.value === 0)) {
+  const threshold = 0.01;
+  // Optimize the pad angle for cases when there is a 0 value,
+  // or for when the ratio between the two values is very small.
+  if (data.some((d) => d.value === 0)) {
     padAngle = 0;
+  } else if (data[0].value !== 0 && data[1].value / data[0].value < threshold) {
+    padAngle = 0.01;
+  } else if (data[1].value !== 0 && data[0].value / data[1].value < threshold) {
+    padAngle = 0.01;
   }
 
   return (
