@@ -33,7 +33,7 @@
   "dependencies": {
     "@aave/contract-helpers": "1.16.0",
     "@aave/math-utils": "1.16.0",
-    "@bgd-labs/aave-address-book": "^1.19.0",
+    "@bgd-labs/aave-address-book": "^1.23.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
