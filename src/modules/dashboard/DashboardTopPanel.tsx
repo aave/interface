@@ -41,6 +41,7 @@ export const DashboardTopPanel = () => {
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
@@ -203,7 +204,10 @@ export const DashboardTopPanel = () => {
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
-              onInfoClick={() => setOpen(true)}
+              onInfoClick={() => {
+                trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
+                setOpen(true);
+              }}
               HALIntegrationComponent={
                 currentMarketData.halIntegration && (
                   <HALLink

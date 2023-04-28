@@ -74,12 +74,6 @@ export const BorrowAssetsListItem = ({
           disabled={borrowButtonDisable}
           variant="contained"
           onClick={() => {
-            trackEvent(DASHBOARD.BORROW_DASHBOARD, {
-              market: currentMarket,
-              assetName: name,
-              asset: underlyingAsset,
-            });
-
             openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
           }}
         >

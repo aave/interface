@@ -290,7 +290,6 @@ msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or dis
 msgid "Author"
 msgstr "Author"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
@@ -311,6 +310,10 @@ msgstr "Available on"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Available sdss"
+msgstr "Available sdss"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx

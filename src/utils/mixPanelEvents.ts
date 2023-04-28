@@ -18,19 +18,19 @@ export const GENERAL = {
 
 export const DASHBOARD = {
   TOOLTIP_NET_APY: 'Click Tooltip Dashboard NetAPY', // done
-  TOOLTIP_BORROW_CAP: 'Click Tooltip Borrow Cap',
-  TOOLTIP_APY_VAR: 'Click Tooltip Borrow Variable APY',
-  TOOLTIP_APY_STB: 'Click tooltip Borrow Stable APY',
-  TOOLTIP_SUPPLIED_COLLATERAL: 'Click tooltip supplied assets collateral',
-  TOOLTIP_COLLATERAL_SWITCH: 'Click tooltip supply collateral switch',
+  TOOLTIP_BORROW_CAP: 'Click Tooltip Borrow Cap', //done
+  TOOLTIP_APY_VAR: 'Click Tooltip Borrow Variable APY', //done
+  TOOLTIP_APY_STB: 'Click tooltip Borrow Stable APY', //done
+  TOOLTIP_SUPPLIED_COLLATERAL: 'Click tooltip supplied assets collateral', //done
+  TOOLTIP_COLLATERAL_SWITCH: 'Click tooltip supply collateral switch', //done
 
-  TOTAL_SUPPLIED_TOOLTIP_APY: 'Click tooltip total supplied assets APY',
-  TOOLTIP_BORROWED_POSITIONS_APY: 'Click tooltip borrwed position APY',
-  TOOLTIP_BORROWED_POWER_USED: 'Click tooltip borrowing power %',
+  TOTAL_SUPPLIED_TOOLTIP_APY: 'Click tooltip total supplied assets APY', //done
+  TOOLTIP_BORROWED_POSITIONS_APY: 'Click tooltip borrwed position APY', //done
+  TOOLTIP_BORROWED_POWER_USED: 'Click tooltip borrowing power %', // done
 
   CHANGE_MARKET: 'Change market on dashboard', //done
   VIEW_MARKETS: 'View markets on dashboard', // can be viewed in PAGEVIEW
-  VIEW_RISK_DETAILS: 'View risk details on dashboard',
+  VIEW_RISK_DETAILS: 'View risk details on dashboard', // done
   SUPPLY_DASHBOARD: 'Supply dashboard', //done
   REPAY_DASHBOARD: 'Repay dashboard', // done
   SWAP_DASHBOARD: 'Swap dashboard', //done
@@ -97,6 +97,9 @@ export const RESERVE_DETAILS = {
   EMODE_LIQUIDATION_THRESHOLD_INFO_ICON: 'View E-Mode liquidation threshold info reserve page: ', //done
   EMODE_LIQUIDATION_PENALTY_INFO_ICON: 'View E-Mode liquidation penalty info reserve page: ', //done
   VIEW_INTEREST_STRATEGY: 'View interest rate strategy link reserve page', //done
+  GO_DASHBOARD_EMODE: 'Click Dashboard from E-Mode section', //done
+  GO_FAQ: 'Go to FAQ from reserve page', // done
+  GO_TECH_PAPER: 'Go to tech paper from reserve page', // done
 };
 
 export const YOUR_INFO_RESERVE_DETAILS = {

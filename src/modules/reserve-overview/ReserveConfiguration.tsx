@@ -226,6 +226,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(RESERVE_DETAILS.GO_DASHBOARD_EMODE);
+                    }}
                   >
                     Dashboard
                   </Link>
@@ -235,6 +238,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(RESERVE_DETAILS.GO_FAQ);
+                    }}
                   >
                     FAQ
                   </Link>{' '}
@@ -244,6 +250,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(RESERVE_DETAILS.GO_TECH_PAPER);
+                    }}
                   >
                     Aave V3 Technical Paper
                   </Link>
