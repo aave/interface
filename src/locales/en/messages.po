@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
-msgstr "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
+msgid "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
+msgstr "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -41,10 +41,6 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-
-#: src/modules/staking/GhoDiscountProgram.tsx
-msgid "AAVE stakeholders get a discount on GHO borrow rate"
-msgstr "AAVE stakeholders get a discount on GHO borrow rate"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -85,8 +81,13 @@ msgid "APY type change"
 msgstr "APY type change"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "APY with max discount"
-msgstr "APY with max discount"
+msgid "APY with discount applied"
+msgstr "APY with discount applied"
+
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+msgid "APY, fixed rate"
+msgstr "APY, fixed rate"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -209,6 +210,7 @@ msgstr "Already on cooldown"
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
 
@@ -324,6 +326,10 @@ msgstr "Assets to supply"
 msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "At a discount"
+msgstr "At a discount"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
 msgstr "Author"
@@ -418,7 +424,6 @@ msgstr "Borrow"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Borrow APY"
 msgstr "Borrow APY"
 
@@ -758,10 +763,6 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Decided by community"
-msgstr "Decided by community"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
 msgstr "Delegated power"
@@ -824,13 +825,17 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount"
+msgstr "Discount"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount model parameters"
+msgstr "Discount model parameters"
+
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Discount on base APY"
 msgstr "Discount on base APY"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount parameters"
-msgstr "Discount parameters"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
@@ -938,6 +943,10 @@ msgstr "Error connecting. Try refreshing the page."
 msgid "Estimated compounding interest, including discount for staking AAVE:"
 msgstr "Estimated compounding interest, including discount for staking AAVE:"
 
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "Exceeds the discount"
+msgstr "Exceeds the discount"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
@@ -987,10 +996,6 @@ msgstr "Filter"
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
-msgstr "For each staked AAVE, Safety Module participants may borrow GHO with lower interest rate. Use the calculator below to see different borrow rates with the discount applied."
-
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
@@ -1018,11 +1023,6 @@ msgstr "GHO"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"
 msgstr "GHO discount program"
-
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-msgid "GHO effective interest rate"
-msgstr "GHO effective interest rate"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1304,10 +1304,6 @@ msgstr "Max"
 msgid "Max LTV"
 msgstr "Max LTV"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Max discount"
-msgstr "Max discount"
-
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
 msgstr "Max slashing"
@@ -1316,7 +1312,8 @@ msgstr "Max slashing"
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
@@ -1582,6 +1579,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
+
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "Principal balance"
+msgstr "Principal balance"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
@@ -1923,10 +1924,6 @@ msgstr "Stake"
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Stake AAVE to borrow GHO at a discount"
-msgstr "Stake AAVE to borrow GHO at a discount"
-
 #: pages/staking.staking.tsx
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
@@ -1959,13 +1956,10 @@ msgstr "Staking Rewards"
 msgid "Staking balance"
 msgstr "Staking balance"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Staking discount"
 msgstr "Staking discount"
-
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Staking incentive"
-msgstr "Staking incentive"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2334,7 +2328,8 @@ msgstr "Total available"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
@@ -2348,8 +2343,6 @@ msgid "Total emission per day"
 msgstr "Total emission per day"
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraphContainer.tsx
 msgid "Total interest accrued"
 msgstr "Total interest accrued"
 
@@ -2466,6 +2459,10 @@ msgstr "User is in isolation mode"
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
+msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
@@ -2695,6 +2692,10 @@ msgstr "You have not borrow yet using this currency"
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
 msgstr "You may borrow up to <0/> GHO at <1/> (max discount)"
 
+#: src/modules/reserve-overview/Gho/CalculatorInput.tsx
+msgid "You may enter a custom amount in the field."
+msgstr "You may enter a custom amount in the field."
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -2802,8 +2803,10 @@ msgstr "ends"
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
@@ -2836,6 +2839,10 @@ msgstr "staking view"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
+
+#: src/modules/staking/GhoDiscountProgram.tsx
+msgid "stkAAVE holders get a discount on GHO borrow rate"
+msgstr "stkAAVE holders get a discount on GHO borrow rate"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "to"
