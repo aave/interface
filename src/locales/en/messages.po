@@ -85,8 +85,8 @@ msgid "APY type change"
 msgstr "APY type change"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "APY with max discount"
-msgstr "APY with max discount"
+msgid "APY with discount applied"
+msgstr "APY with discount applied"
 
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
@@ -834,6 +834,10 @@ msgid "Discord channel"
 msgstr "Discord channel"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount"
+msgstr "Discount"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount model parameters"
 msgstr "Discount model parameters"
 
@@ -1307,10 +1311,6 @@ msgstr "Max"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Max discount"
-msgstr "Max discount"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"

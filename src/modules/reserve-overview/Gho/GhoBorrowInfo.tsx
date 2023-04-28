@@ -93,7 +93,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
         <PanelItem title={<Trans>APY, fixed rate</Trans>}>
-          <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
+          <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
         </PanelItem>
       </Box>
     </Stack>
@@ -145,7 +145,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
           <PanelItem title={<Trans>APY, fixed rate</Trans>}>
-            <FormattedNumber value={reserve.variableBorrowAPR} percent variant="main16" />
+            <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
           </PanelItem>
         </Box>
       </Stack>

@@ -113,7 +113,7 @@ export const GhoDiscountCalculator = () => {
             </Typography>
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Max discount</Trans>}>
+        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discount</Trans>}>
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -127,7 +127,7 @@ export const GhoDiscountCalculator = () => {
             />
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>APY with max discount</Trans>}>
+        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>APY with discount applied</Trans>}>
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
