@@ -269,7 +269,6 @@ export const GhoDiscountCalculator = () => {
         sx={{
           background: palette.background.surface2,
           visibility: alertText ? 'visible' : 'hidden',
-          minHeight: '54px',
         }}
       >
         {alertText}
@@ -288,14 +287,8 @@ export const GhoDiscountCalculator = () => {
           rateAfterDiscount={rateSelection.rateAfterDiscount}
         />
       </Box>
-      <Stack
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        gap={2}
-        sx={{ width: '258px' }}
-      >
-        <Box>
+      <Stack direction="column" alignItems="center" gap={2} sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mt: 4 }}>
           <CalculatorInput
             title="Borrow amount"
             value={ghoBorrow}
@@ -306,7 +299,7 @@ export const GhoDiscountCalculator = () => {
             sliderMin={1}
           />
         </Box>
-        <Box>
+        <Box sx={{ width: '100%' }}>
           <CalculatorInput
             title="Staked AAVE amount"
             value={stkAave}
@@ -316,7 +309,9 @@ export const GhoDiscountCalculator = () => {
             sliderMax={1000}
           />
         </Box>
-        <StakingDiscountAlert />
+        <Box sx={{ width: '100%' }}>
+          <StakingDiscountAlert />
+        </Box>
       </Stack>
     </Stack>
   );
@@ -330,7 +325,7 @@ export const GhoDiscountCalculator = () => {
         discountedAmountRate={rateSelection.rateAfterMaxDiscount}
         rateAfterDiscount={rateSelection.rateAfterDiscount}
       />
-      <Stack gap={2}>
+      <Stack gap={2} sx={{ minHeight: '280px' }}>
         <Box sx={{ width: '100%' }}>
           <CalculatorInput
             title="Borrow amount"
