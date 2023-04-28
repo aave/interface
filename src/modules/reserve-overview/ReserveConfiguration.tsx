@@ -36,7 +36,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
 
   return (
-    <Paper sx={{ py: '16px', px: '24px' }}>
+    <Paper sx={{ py: '16px', px: '16px' }}>
       <Box
         sx={{
           display: 'flex',

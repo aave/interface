@@ -15,7 +15,7 @@ type GhoReserveConfigurationProps = {
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
   return (
-    <Paper sx={{ py: '16px', px: '24px' }}>
+    <Paper sx={{ py: '16px', px: '16px' }}>
       <Box
         sx={{
           display: 'flex',
