@@ -8,6 +8,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { GhoDiscountProgram } from './GhoDiscountProgram';
@@ -377,7 +378,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       </Stack>
 
       {hasDiscountProgram && (
-        <Box sx={{ mt: 4 }}>
+        <Box
+          sx={{
+            mt: ['20px', '36px'],
+            width: STAGING_ENV || ENABLE_TESTNET ? ['100%', , , , '50%'] : '100%',
+            marginX: 'auto',
+          }}
+        >
           <GhoDiscountProgram />
         </Box>
       )}

@@ -137,6 +137,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor('#383D51', '#EAEBEF'),
         light: getColor('#62677B', '#F1F1F3'),
         dark: getColor('#292E41', '#D2D4DC'),
+        contrast: getColor('#FFFFFF', '#0F121D'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
