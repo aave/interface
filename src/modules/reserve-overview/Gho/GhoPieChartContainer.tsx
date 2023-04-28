@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import {
   Box,
   Stack,
@@ -196,12 +197,23 @@ const PieChartLegend = ({
     <TableContainer>
       <Table size="small">
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              [`& .${tableCellClasses.root}`]: {
+                py: 2,
+                lineHeight: 0,
+              },
+            }}
+          >
             <TableCell align="left" sx={{ pl: 0 }}>
-              <Typography variant="helperText">Principal balance</Typography>
+              <Typography variant="helperText">
+                <Trans>Principal balance</Trans>
+              </Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography variant="helperText">Amount</Typography>
+              <Typography variant="helperText">
+                <Trans>Amount</Trans>
+              </Typography>
             </TableCell>
             <TableCell align="right" sx={{ pr: 0 }}>
               <Typography variant="helperText">APY</Typography>
@@ -219,7 +231,7 @@ const PieChartLegend = ({
               },
             }}
           >
-            <TableCell align="left" sx={{ pl: 0 }}>
+            <TableCell align="left" sx={{ pl: 0, py: 1 }}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <Box
                   sx={{
@@ -229,7 +241,9 @@ const PieChartLegend = ({
                     borderRadius: '50%',
                   }}
                 />
-                <Typography variant="caption">At a discount</Typography>
+                <Typography variant="caption">
+                  <Trans>At a discount</Trans>
+                </Typography>
               </Stack>
             </TableCell>
             <TableCell align="right">
@@ -262,7 +276,9 @@ const PieChartLegend = ({
                     flexShrink: 0,
                   }}
                 />
-                <Typography variant="caption">Exceeds the discount</Typography>
+                <Typography variant="caption">
+                  <Trans>Exceeds the discount</Trans>
+                </Typography>
               </Stack>
             </TableCell>
             <TableCell align="right">

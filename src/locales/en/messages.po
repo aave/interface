@@ -214,6 +214,7 @@ msgstr "Already on cooldown"
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
 msgstr "Amount"
 
@@ -322,12 +323,9 @@ msgstr "Assets to borrow"
 msgid "Assets to supply"
 msgstr "Assets to supply"
 
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
-msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "At a discount"
+msgstr "At a discount"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
@@ -948,6 +946,10 @@ msgstr "Error connecting. Try refreshing the page."
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for staking AAVE:"
 msgstr "Estimated compounding interest, including discount for staking AAVE:"
+
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "Exceeds the discount"
+msgstr "Exceeds the discount"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
@@ -1585,6 +1587,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
+
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
+msgid "Principal balance"
+msgstr "Principal balance"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
