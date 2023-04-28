@@ -104,6 +104,7 @@ const GhoPieChartDesktop = ({
         height: '320px',
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderRadius: 2,
         py: 4,
         px: 6,
       }}
@@ -149,6 +150,7 @@ const GhoPieChartMobile = ({
         height: '280px',
         background: theme.palette.background.surface2,
         alignItems: 'center',
+        borderRadius: 2,
         px: 4,
         pt: 2,
         mb: 2,
