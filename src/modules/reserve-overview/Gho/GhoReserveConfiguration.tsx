@@ -1,6 +1,15 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -14,8 +23,11 @@ type GhoReserveConfigurationProps = {
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
+  const { breakpoints } = useTheme();
+  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
+
   return (
-    <Paper sx={{ py: '16px', px: '16px' }}>
+    <Paper sx={{ py: 4, px: downToXsm ? 4 : 6 }}>
       <Box
         sx={{
           display: 'flex',

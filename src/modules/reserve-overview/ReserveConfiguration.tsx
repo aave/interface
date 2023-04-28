@@ -1,6 +1,15 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -25,6 +34,7 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { breakpoints } = useTheme();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   const renderCharts =
@@ -35,8 +45,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
 
+  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
+
   return (
-    <Paper sx={{ py: '16px', px: '16px' }}>
+    <Paper sx={{ py: 4, px: downToXsm ? 4 : 6 }}>
       <Box
         sx={{
           display: 'flex',
