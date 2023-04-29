@@ -12,17 +12,18 @@ import {
 } from '@mui/material';
 import React, { ReactElement, useCallback, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-import { ListColumn } from 'src/components/lists/ListColumn';
-import { ListItem } from 'src/components/lists/ListItem';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { Link } from 'src/components/primitives/Link';
-import { TransactionHistoryItem, useTransactionHistory } from 'src/hooks/useTransactionHistory';
+import {
+  ActionFields,
+  TransactionHistoryItem,
+  useTransactionHistory,
+} from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import SearchBox from './HistorySearchBox';
+import TransactionRowItem from './TransactionRowItem';
 
 enum FilterOptions {
   ALL,
@@ -59,7 +60,7 @@ const downloadFile = () => {
   URL.revokeObjectURL(downloadUrl);
 };
 
-function HistoryWrapper() {
+export const HistoryWrapper = () => {
   const {
     data: transactions,
     isLoading,
@@ -84,7 +85,6 @@ function HistoryWrapper() {
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const { currentNetworkConfig } = useRootStore();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const [filter] = useState<FilterOptions>(FilterOptions.ALL);
 
@@ -162,16 +162,12 @@ function HistoryWrapper() {
 
             return (
               <div ref={isLastItem ? lastElementRef : null} key={index}>
-                <ListItem px={downToXSM ? 4 : 6}>
-                  <ListColumn>
-                    <Link
-                      href={currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash })}
-                    >
-                      TX
-                    </Link>
-                  </ListColumn>
-                  <ListColumn>{transaction.action}</ListColumn>
-                </ListItem>
+                <TransactionRowItem
+                  transaction={
+                    transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
+                  }
+                  downToXSM={downToXSM}
+                />
               </div>
             );
           })
@@ -213,6 +209,6 @@ function HistoryWrapper() {
       </Box>
     </ListWrapper>
   );
-}
+};
 
 export default HistoryWrapper;
