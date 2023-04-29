@@ -28,6 +28,7 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -78,18 +79,20 @@ export default function MyApp(props: MyAppProps) {
                       <BackgroundDataProvider>
                         <AppDataProvider>
                           <GasStationProvider>
-                            {getLayout(<Component {...pageProps} />)}
-                            <SupplyModal />
-                            <WithdrawModal />
-                            <BorrowModal />
-                            <RepayModal />
-                            <CollateralChangeModal />
-                            <RateSwitchModal />
-                            <ClaimRewardsModal />
-                            <EmodeModal />
-                            <SwapModal />
-                            <FaucetModal />
-                            <MigrateV3Modal />
+                            <SharedDependenciesProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <MigrateV3Modal />
+                            </SharedDependenciesProvider>
                           </GasStationProvider>
                         </AppDataProvider>
                       </BackgroundDataProvider>

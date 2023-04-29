@@ -6,11 +6,11 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DelegationType } from 'src/helpers/types';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -20,7 +20,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { DelegationTokenSelector } from './DelegationTokenSelector';
+import { DelegationTokenSelector, DelegationTokenType } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
 
@@ -42,18 +42,17 @@ type GovDelegationModalContentProps = {
 
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
-  const {
-    aaveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const powers = useRootStore((state) => state.powers);
-  const refreshGovernanceData = useRootStore((state) => state.refreshGovernanceData);
+  const {
+    data: { aave, stkAave },
+  } = useGovernanceTokens();
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states
-  const [delegationToken, setDelegationToken] = useState<string>('');
-  const [delegationType, setDelegationType] = useState(DelegationType.VOTING);
+  const [delegationTokenType, setDelegationTokenType] = useState(DelegationTokenType.BOTH);
+  const [delegationType, setDelegationType] = useState(DelegationType.BOTH);
   const [delegate, setDelegate] = useState('');
 
   const isRevokeModal = type === ModalType.RevokeGovDelegation;
@@ -84,6 +83,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       amount: stkAave,
       votingDelegatee: powers?.stkAaveVotingDelegatee,
       propositionDelegatee: powers?.stkAavePropositionDelegatee,
+      type: DelegationTokenType.STKAAVE,
     },
     {
       address: governanceConfig.aaveTokenAddress,
@@ -92,10 +92,9 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       amount: aave,
       votingDelegatee: powers?.aaveVotingDelegatee,
       propositionDelegatee: powers?.aavePropositionDelegatee,
+      type: DelegationTokenType.AAVE,
     },
   ];
-
-  const selectedToken = tokens.find((t) => t.address === delegationToken);
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
@@ -117,8 +116,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   };
 
   useEffect(() => {
-    if (txState.success) refreshGovernanceData();
-  }, [txState.success, refreshGovernanceData]);
+    if (txState.success) refetch();
+  }, [txState.success, refetch]);
 
   // is Network mismatched
   const govChain =
@@ -178,8 +177,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
 
       <DelegationTokenSelector
-        setDelegationToken={setDelegationToken}
-        delegationTokenAddress={delegationToken}
+        setDelegationTokenType={setDelegationTokenType}
+        delegationTokenType={delegationTokenType}
         delegationTokens={tokens}
         delegationType={delegationType}
         filter={isRevokeModal}
@@ -213,17 +212,11 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
 
       <GovDelegationActions
         delegationType={delegationType}
-        delegationToken={selectedToken}
-        delegate={delegate}
+        delegationTokenType={delegationTokenType}
+        delegatee={delegate}
         isWrongNetwork={isWrongNetwork}
-        actionText={isRevokeModal ? <Trans>Revoke</Trans> : <Trans>Delegate</Trans>}
-        actionInProgressText={isRevokeModal ? <Trans>Revoking</Trans> : <Trans>Delegating</Trans>}
-        blocked={
-          delegateAddressBlockingError !== undefined ||
-          delegate === '' ||
-          !delegationType ||
-          !selectedToken
-        }
+        blocked={delegateAddressBlockingError !== undefined || delegate === '' || !delegationType}
+        isRevoke={isRevokeModal}
       />
     </>
   );

@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid ".CSV"
+msgstr ".CSV"
+
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -20,6 +24,10 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+
+#: src/layouts/MainLayout.tsx
+msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
+msgstr "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -108,10 +116,6 @@ msgstr "Aave per month"
 msgid "Account"
 msgstr "Account"
 
-#: src/modules/history/TransactionsList.tsx
-msgid "Action"
-msgstr "Action"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
@@ -154,6 +158,10 @@ msgstr "All done!"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "All proposals"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "All transactions"
+msgstr "All transactions"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
@@ -213,6 +221,10 @@ msgstr "Array parameters that should be equal length are not"
 #: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Asset"
+
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
+msgstr "Asset can be only used as collateral in isolation mode with limited borrowing power. To enter isolation mode, disable all other collateral."
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
@@ -361,6 +373,8 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
@@ -403,6 +417,10 @@ msgstr "Borrow cap is exceeded"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Borrow rate change"
+msgstr "Borrow rate change"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
@@ -476,7 +494,6 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -494,10 +511,6 @@ msgstr "Cancel"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "Cannot disable E-Mode"
-
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "Cap reached. Lower supply amount"
-msgstr "Cap reached. Lower supply amount"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes, your delegate's voting/proposition power will be automatically adjusted."
@@ -569,6 +582,7 @@ msgstr "Collateral is (mostly) the same currency that is being borrowed"
 msgid "Collateral to repay with"
 msgstr "Collateral to repay with"
 
+#: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -579,11 +593,17 @@ msgstr "Collateral usage"
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+msgid "Collateral usage is limited because of isolation mode."
+msgstr "Collateral usage is limited because of isolation mode."
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/history/TransactionRowItem.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
 
@@ -688,17 +708,13 @@ msgstr "Debt ceiling is not zero"
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegate"
-msgstr "Delegate"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Delegated power"
 msgstr "Delegated power"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Delegating"
-msgstr "Delegating"
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Deposit"
+msgstr "Deposit"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -732,7 +748,6 @@ msgstr "Disable {symbol} as collateral"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -755,6 +770,10 @@ msgstr "Discord"
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Download .CSV"
+msgstr "Download .CSV"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
@@ -809,10 +828,6 @@ msgstr "Enable {symbol} as collateral"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Enabled"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Enabled in isolation"
-msgstr "Enabled in isolation"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -1065,13 +1080,17 @@ msgstr "Isolated"
 msgid "Isolated Debt Ceiling"
 msgstr "Isolated Debt Ceiling"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
 msgstr "Join the community discussion"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "LEARN MORE"
+msgstr "LEARN MORE"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
@@ -1086,6 +1105,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1097,7 +1117,7 @@ msgstr "Learn more"
 msgid "Learn more about risks involved"
 msgstr "Learn more about risks involved"
 
-#: src/components/isolationMode/IsolatedTooltip.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
@@ -1105,13 +1125,13 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "Learn more."
 msgstr "Learn more."
 
-#: src/modules/history/TransactionsList.tsx
-msgid "Link"
-msgstr "Link"
-
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Links"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Liquidation"
+msgstr "Liquidation"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
@@ -1284,10 +1304,6 @@ msgstr "Network not supported for this wallet"
 msgid "New APY"
 msgstr "New APY"
 
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "No"
-msgstr "No"
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
@@ -1301,9 +1317,9 @@ msgstr "No rewards to claim"
 msgid "No search results{0}"
 msgstr "No search results{0}"
 
-#: src/modules/history/TransactionsList.tsx
-msgid "No transactions found for this user and market."
-msgstr "No transactions found for this user and market."
+#: src/modules/history/HistoryWrapper.tsx
+msgid "No transactions yet."
+msgstr "No transactions yet."
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1417,7 +1433,7 @@ msgstr "Please connect your wallet to see migration tool."
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
 
-#: src/modules/history/TransactionsList.tsx
+#: src/modules/history/HistoryWrapper.tsx
 msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
@@ -1518,6 +1534,7 @@ msgstr "Read-only mode allows to see address positions in Aave, but you won't be
 msgid "Read-only mode."
 msgstr "Read-only mode."
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
@@ -1557,6 +1574,7 @@ msgstr "Repaid"
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
 msgid "Repay"
 msgstr "Repay"
 
@@ -1607,17 +1625,9 @@ msgstr "Review tx"
 msgid "Review tx details"
 msgstr "Review tx details"
 
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoke"
-msgstr "Revoke"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Revoke power"
 msgstr "Revoke power"
-
-#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-msgid "Revoking"
-msgstr "Revoking"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
@@ -1707,6 +1717,18 @@ msgstr "Show"
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Sign to continue"
+msgstr "Sign to continue"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signatures ready"
+msgstr "Signatures ready"
+
+#: src/components/transactions/DelegationTxsWrapper.tsx
+msgid "Signing"
+msgstr "Signing"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
@@ -1835,6 +1857,8 @@ msgstr "Supplied asset amount"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Supply"
@@ -2212,6 +2236,7 @@ msgid "Transaction failed"
 msgstr "Transaction failed"
 
 #: src/layouts/WalletWidget.tsx
+#: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr "Transaction history"
 
@@ -2219,9 +2244,13 @@ msgstr "Transaction history"
 msgid "Transaction overview"
 msgstr "Transaction overview"
 
-#: src/modules/history/TransactionsList.tsx
+#: src/modules/history/HistoryWrapper.tsx
 msgid "Transactions"
 msgstr "Transactions"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Tx hash"
+msgstr "Tx hash"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2231,6 +2260,8 @@ msgstr "UNSTAKE {symbol}"
 msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
 
+#: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -2433,6 +2464,7 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
 
@@ -2448,6 +2480,7 @@ msgstr "Withdrawing this amount will reduce your health factor and increase risk
 msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
 
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
 msgstr "Wrong Network"
@@ -2455,10 +2488,6 @@ msgstr "Wrong Network"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
-
-#: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Yes"
-msgstr "Yes"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2615,13 +2644,25 @@ msgstr "blocked activities"
 msgid "copy the error"
 msgstr "copy the error"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "disabled"
+msgstr "disabled"
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
 msgstr "documentation"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "enabled"
+msgstr "enabled"
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "ends"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "for"
+msgstr "for"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -2676,6 +2717,11 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -2728,6 +2774,10 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
+
+#: src/layouts/TopBarNotify.tsx
+msgid "{notifyText}"
+msgstr "{notifyText}"
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"

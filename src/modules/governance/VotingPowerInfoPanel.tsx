@@ -6,12 +6,12 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
-import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export function VotingPowerInfoPanel() {
   const { currentAccount } = useWeb3Context();
-  const powers = useVotingPower();
+  const { data: powers } = usePowers();
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
