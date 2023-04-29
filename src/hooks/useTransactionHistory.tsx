@@ -4,7 +4,7 @@ import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query'
 import { useRootStore } from 'src/store/root';
 import { QueryKeys } from 'src/ui-config/queries';
 
-export type TransactionHistoryItem = {
+export type TransactionHistoryItem<T = unknown> = {
   id: string;
   txHash: string;
   action: string;
@@ -12,6 +12,61 @@ export type TransactionHistoryItem = {
     id: string;
   };
   timestamp: number;
+} & T;
+
+type ReserveSubset = {
+  symbol: string;
+  decimals: number;
+  underlyingAsset: string;
+  name: string;
+};
+
+export type ActionFields = {
+  Supply: {
+    reserve: ReserveSubset;
+    amount: string;
+  };
+  Deposit: {
+    reserve: ReserveSubset;
+    amount: string;
+  };
+  Borrow: {
+    reserve: ReserveSubset;
+    amount: string;
+  };
+  Repay: {
+    reserve: ReserveSubset;
+    amount: string;
+  };
+  RedeemUnderlying: {
+    reserve: ReserveSubset;
+    amount: string;
+  };
+  LiquidationCall: {
+    collateralReserve: ReserveSubset;
+    collateralAmount: string;
+    principalReserve: ReserveSubset;
+    principalAmount: string;
+  };
+  SwapBorrowRate: {
+    reserve: ReserveSubset;
+    borrowRateModeFrom: number;
+    borrowRateModeTo: number;
+    stableBorrowRate: string;
+    variableBorrowRate: string;
+  };
+  Swap: {
+    reserve: ReserveSubset;
+    borrowRateModeFrom: number;
+    borrowRateModeTo: number;
+    stableBorrowRate: string;
+    variableBorrowRate: string;
+  };
+  UsageAsCollateral: {
+    reserve: ReserveSubset;
+    fromState: boolean;
+    toState: boolean;
+  };
 };
 
 export const useTransactionHistory = () => {
