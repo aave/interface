@@ -10,6 +10,8 @@ query UserTransactions($userAddress: String!) {
       reserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       assetPriceUSD
     }
@@ -18,6 +20,8 @@ query UserTransactions($userAddress: String!) {
       reserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       assetPriceUSD
     }
@@ -30,6 +34,8 @@ query UserTransactions($userAddress: String!) {
       reserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       assetPriceUSD
     }
@@ -38,6 +44,8 @@ query UserTransactions($userAddress: String!) {
       toState
       reserve {
         symbol
+        name
+        underlyingAsset
       }
     }
     ... on Repay {
@@ -45,6 +53,8 @@ query UserTransactions($userAddress: String!) {
       reserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       assetPriceUSD
     }
@@ -56,6 +66,8 @@ query UserTransactions($userAddress: String!) {
       reserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
     }
     ... on LiquidationCall {
@@ -63,11 +75,15 @@ query UserTransactions($userAddress: String!) {
       collateralReserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       principalAmount
       principalReserve {
         symbol
         decimals
+        name
+        underlyingAsset
       }
       collateralAssetPriceUSD
       borrowAssetPriceUSD
