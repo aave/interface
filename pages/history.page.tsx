@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { HistoryTopPanel } from 'src/modules/history/HistoryTopPanel';
-import HistoryWrapper from 'src/modules/history/HistoryWrapper';
+import { HistoryWrapper } from 'src/modules/history/HistoryWrapper';
 
 export default function History() {
   return (
