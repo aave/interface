@@ -21,10 +21,10 @@ import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 
-interface NumReturn {
-  _hex: string;
-  _isBigNumber: boolean;
-}
+// interface NumReturn {
+//   _hex: string;
+//   _isBigNumber: boolean;
+// }
 
 interface VestEntry {
   amount: number;
@@ -169,20 +169,22 @@ export const ManageMainActions = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: (NumReturn | VestEntry[][] | Claimables[][])[]) => {
+      .then((data: (BigNumber | VestEntry[][] | Claimables[][])[]) => {
         // dev change data setting logic here
-
-        setUnlockedPAW(parseInt((data[0] as NumReturn)._hex, 16));
-        setVestedPAW(parseInt((data[1] as NumReturn)._hex, 16));
-        setExitPenalty(parseInt((data[2] as NumReturn)._hex, 16));
-        setExpiredLockedPAW(parseInt((data[3] as NumReturn)._hex, 16));
-        setTotalLockedPAW(parseInt((data[4] as NumReturn)._hex, 16));
-        setTotalClaimableValue(parseInt((data[5] as NumReturn)._hex, 16));
+        {
+          /** Need to convert to string */
+        }
+        setUnlockedPAW(parseInt((data[0] as BigNumber)._hex, 16));
+        setVestedPAW(parseInt((data[1] as BigNumber)._hex, 16));
+        setExitPenalty(parseInt((data[2] as BigNumber)._hex, 16));
+        setExpiredLockedPAW(parseInt((data[3] as BigNumber)._hex, 16));
+        setTotalLockedPAW(parseInt((data[4] as BigNumber)._hex, 16));
+        setTotalClaimableValue(parseInt((data[5] as BigNumber)._hex, 16));
         setVests(data[6] as VestEntry[][]);
         setLocks(data[7] as VestEntry[][]);
         setClaimables(data[8] as Claimables[][]);
-        setTotalLocksValue(parseInt((data[9] as NumReturn)._hex, 16));
-        setTotalVestsValue(parseInt((data[10] as NumReturn)._hex, 16));
+        setTotalLocksValue(parseInt((data[9] as BigNumber)._hex, 16));
+        setTotalVestsValue(parseInt((data[10] as BigNumber)._hex, 16));
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -312,10 +314,10 @@ export const ManageMainActions = () => {
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
                     <TableCell>
-                      {BigNumber.from(((vest as VestEntry[])[0] as unknown as NumReturn)._hex)}
+                      {BigNumber.from(((vest as VestEntry[])[0] as unknown as BigNumber)._hex)}
                     </TableCell>
                     <TableCell>
-                      {BigNumber.from(((vest as VestEntry[])[1] as unknown as NumReturn)._hex)}
+                      {BigNumber.from(((vest as VestEntry[])[1] as unknown as BigNumber)._hex)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -338,18 +340,20 @@ export const ManageMainActions = () => {
                 {locks.map((lock, i) => (
                   <TableRow key={i}>
                     <TableCell>
-                      {parseInt(((lock as VestEntry[])[0] as unknown as NumReturn)._hex, 16)}
+                      {parseInt(((lock as VestEntry[])[0] as unknown as BigNumber)._hex, 16)}
                     </TableCell>
                     <TableCell>
-                      {/**Convert Unix Timestamp to DateTime */}
-                      {parseInt(((lock as VestEntry[])[1] as unknown as NumReturn)._hex, 16)}
+                      {/** Convert Unix Timestamp to DateTime */}
+                      {parseInt(((lock as VestEntry[])[1] as unknown as BigNumber)._hex, 16)}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+          {/** Value in Uint256 */}
           <Typography>Total locked: {totalLockedPAW}</Typography>
+          {/** Value in USD */}
           <Typography>value: {totalLocksValue}</Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -365,9 +369,11 @@ export const ManageMainActions = () => {
               <TableBody>
                 {claimables.map((claimable, i) => (
                   <TableRow key={i}>
+                    {/** Map this to svg icon and respective coin */}
                     <TableCell>{(claimable as Claimables[])[0]}</TableCell>
                     <TableCell>
-                      {parseInt(((claimable as Claimables[])[1] as unknown as NumReturn)._hex, 16)}
+                      {/** Map this to string of uint256 */}
+                      {parseInt(((claimable as Claimables[])[1] as unknown as BigNumber)._hex, 16)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -385,6 +391,7 @@ export const ManageMainActions = () => {
               onClick={handleClaimAll}
               // sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}
               variant="contained"
+              sx={{ padding: '8px 24px' }}
             >
               Claim All
             </Button>

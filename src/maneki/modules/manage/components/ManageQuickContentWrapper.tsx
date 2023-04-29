@@ -36,10 +36,11 @@ function CustomNumberFormat({
     <TextField
       value={amountTo}
       placeholder="0.00"
-      type="text"
       onChange={handleChange}
       variant="outlined"
       label={inputLabel ? inputLabel : ''}
+      size="small"
+      autoComplete="off"
       sx={{ ...sx }}
     />
   );
