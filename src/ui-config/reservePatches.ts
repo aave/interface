@@ -1,3 +1,5 @@
+import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
+
 /**
  * Maps onchain symbols to different symbols.
  * This is useful when you want to explode symbols via _ to render multiple symbols or when the symbol has a bridge prefix or suffix.
@@ -105,7 +107,8 @@ export function fetchIconSymbolAndName({
     return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
   }
 
-  const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
+  // TO-DO: handle this separately for tx history, removing the prefix is only necessary with symbols coming from subgraph
+  const unifiedSymbol = unPrefixSymbol((SYMBOL_MAP[symbol] || symbol).toUpperCase(), 'AMM');
   return {
     iconSymbol: unifiedSymbol,
     name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || name || unifiedSymbol,
