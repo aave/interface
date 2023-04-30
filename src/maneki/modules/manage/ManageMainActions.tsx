@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { BigNumber, Contract } from 'ethers';
+import Image from 'next/image';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
@@ -20,21 +21,20 @@ import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
+import {
+  Claimables,
+  ClaimablesTuple,
+  convertClaimables,
+  convertVestEntry,
+  VestEntry,
+  VestEntryTuple,
+} from './utils/manageActionHelper';
+import { tokenImageMatching } from './utils/tokenMatching';
 
 // interface NumReturn {
 //   _hex: string;
 //   _isBigNumber: boolean;
 // }
-
-interface VestEntry {
-  amount: number;
-  expiry: string;
-}
-
-interface Claimables {
-  amount: number;
-  token: string;
-}
 
 export const ManageMainActions = () => {
   const [unlockedPAW, setUnlockedPAW] = React.useState(-1);
@@ -43,11 +43,11 @@ export const ManageMainActions = () => {
   const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(-1);
   const [totalLockedPAW, setTotalLockedPAW] = React.useState(-1);
   const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
-  const [vests, setVests] = React.useState<VestEntry[][]>([]);
+  const [vests, setVests] = React.useState<VestEntry[]>([]);
   const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
-  const [locks, setLocks] = React.useState<VestEntry[][]>([]);
+  const [locks, setLocks] = React.useState<VestEntry[]>([]);
   const [totalLocksValue, setTotalLocksValue] = React.useState(-1);
-  const [claimables, setClaimables] = React.useState<Claimables[][]>([]);
+  const [claimables, setClaimables] = React.useState<Claimables[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
 
@@ -133,7 +133,7 @@ export const ManageMainActions = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getReward(claimables.map((e) => e[0]))); // claims all fees
+    promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
 
     // call promise all nad handle sucess error
     Promise.all(promises)
@@ -151,7 +151,6 @@ export const ManageMainActions = () => {
     if (!provider) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
-
     const promises = [];
 
     // add contract call into promise arr
@@ -169,20 +168,22 @@ export const ManageMainActions = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: (BigNumber | VestEntry[][] | Claimables[][])[]) => {
+      .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[])[]) => {
         // dev change data setting logic here
         {
           /** Need to convert to string */
         }
+        // console.log(data[6] as VestEntryTuple[]);
+        // console.log(convertVestEntry(data[6] as VestEntryTuple[]));
         setUnlockedPAW(parseInt((data[0] as BigNumber)._hex, 16));
         setVestedPAW(parseInt((data[1] as BigNumber)._hex, 16));
         setExitPenalty(parseInt((data[2] as BigNumber)._hex, 16));
         setExpiredLockedPAW(parseInt((data[3] as BigNumber)._hex, 16));
         setTotalLockedPAW(parseInt((data[4] as BigNumber)._hex, 16));
         setTotalClaimableValue(parseInt((data[5] as BigNumber)._hex, 16));
-        setVests(data[6] as VestEntry[][]);
-        setLocks(data[7] as VestEntry[][]);
-        setClaimables(data[8] as Claimables[][]);
+        setVests(convertVestEntry(data[6] as VestEntryTuple[]));
+        setLocks(convertVestEntry(data[7] as VestEntryTuple[]));
+        setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
         setTotalLocksValue(parseInt((data[9] as BigNumber)._hex, 16));
         setTotalVestsValue(parseInt((data[10] as BigNumber)._hex, 16));
         setLoading(false);
@@ -313,12 +314,8 @@ export const ManageMainActions = () => {
               <TableBody>
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
-                    <TableCell>
-                      {BigNumber.from(((vest as VestEntry[])[0] as unknown as BigNumber)._hex)}
-                    </TableCell>
-                    <TableCell>
-                      {BigNumber.from(((vest as VestEntry[])[1] as unknown as BigNumber)._hex)}
-                    </TableCell>
+                    <TableCell>{vest.amount.toString()}</TableCell>
+                    <TableCell>{vest.expiry.toString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -339,12 +336,10 @@ export const ManageMainActions = () => {
               <TableBody>
                 {locks.map((lock, i) => (
                   <TableRow key={i}>
-                    <TableCell>
-                      {parseInt(((lock as VestEntry[])[0] as unknown as BigNumber)._hex, 16)}
-                    </TableCell>
+                    <TableCell>{lock.amount.toString()}</TableCell>
                     <TableCell>
                       {/** Convert Unix Timestamp to DateTime */}
-                      {parseInt(((lock as VestEntry[])[1] as unknown as BigNumber)._hex, 16)}
+                      {lock.expiry.toString()}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -362,7 +357,7 @@ export const ManageMainActions = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Tokens</TableCell>
+                  <TableCell sx={{ width: '50%', pl: '36px' }}>Tokens</TableCell>
                   <TableCell>Amount</TableCell>
                 </TableRow>
               </TableHead>
@@ -370,10 +365,27 @@ export const ManageMainActions = () => {
                 {claimables.map((claimable, i) => (
                   <TableRow key={i}>
                     {/** Map this to svg icon and respective coin */}
-                    <TableCell>{(claimable as Claimables[])[0]}</TableCell>
+                    {/* {console.log(
+                      tokenImageMatching[(claimable as Claimables[])[0] as unknown as string]
+                    )} */}
+                    {console.log(`/${tokenImageMatching[claimable.token]}.svg`)}
+
+                    <TableCell
+                      sx={{ display: 'flex', gap: '16px', alignItems: 'center', pl: '36px' }}
+                    >
+                      <Image
+                        alt={`token image for ${tokenImageMatching[claimable.token]}`}
+                        src={`/icons/tokens/${tokenImageMatching[claimable.token]}.svg`}
+                        width={24}
+                        height={24}
+                      />
+                      <Typography>{`m${tokenImageMatching[
+                        claimable.token
+                      ].toUpperCase()}`}</Typography>
+                    </TableCell>
                     <TableCell>
                       {/** Map this to string of uint256 */}
-                      {parseInt(((claimable as Claimables[])[1] as unknown as BigNumber)._hex, 16)}
+                      {claimable.amount.toString()}
                     </TableCell>
                   </TableRow>
                 ))}
