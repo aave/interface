@@ -64,7 +64,6 @@ export const GhoBorrowAssetsListItem = ({
       ]
     : undefined;
 
-  console.log(ghoApyRange);
   return (
     <ListItemWrapper
       symbol={symbol}
