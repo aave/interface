@@ -3,24 +3,25 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
+import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { MarketAssetListTitle } from 'src/modules/markets/MarketAssetListTitle';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
-import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
+import { GhoBanner } from './Gho/GhoBanner';
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const [searchTerm, setSearchTerm] = useState('');
 
   const ghoReserve = getGhoReserve(reserves);
   const filteredData = reserves
@@ -77,9 +78,14 @@ export const MarketAssetsListContainer = () => {
   return (
     <ListWrapper
       titleComponent={
-        <MarketAssetListTitle
+        <TitleWithSearchBar
           onSearchTermChange={setSearchTerm}
-          marketTitle={currentMarketData.marketTitle}
+          title={
+            <>
+              {currentMarketData.marketTitle} <Trans>assets</Trans>
+            </>
+          }
+          searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         />
       }
     >
@@ -91,7 +97,7 @@ export const MarketAssetsListContainer = () => {
 
       {displayGho && (
         <Box mb={4}>
-          <GhoMarketAssetsListItem reserve={ghoReserve} />
+          <GhoBanner reserve={ghoReserve} />
         </Box>
       )}
 
@@ -121,45 +127,15 @@ export const MarketAssetsListContainer = () => {
 
       {/* Show no search results message if nothing hits in either list */}
       {!loading && filteredData.length === 0 && !displayGho && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 1,
-            pt: 15,
-            pb: 32,
-            px: 4,
-          }}
-        >
-          {sm ? (
-            <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
-              <Typography variant="h2">
-                <Trans>No search results for</Trans>
-              </Typography>
-              <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
-                &apos;{searchTerm}&apos;
-              </Typography>
-            </Box>
-          ) : (
-            <Typography
-              sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
-              variant="h2"
-            >
-              <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
-            </Typography>
-          )}
-          <Typography
-            sx={{ width: '280px', textAlign: 'center' }}
-            variant="description"
-            color="text.secondary"
-          >
+        <NoSearchResults
+          searchTerm={searchTerm}
+          subtitle={
             <Trans>
               We couldn&apos;t find any assets related to your search. Try again with a different
               asset name, symbol, or address.
             </Trans>
-          </Typography>
-        </Box>
+          }
+        />
       )}
     </ListWrapper>
   );

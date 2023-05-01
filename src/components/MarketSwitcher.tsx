@@ -38,9 +38,9 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 export const getMarketHelpData = (marketName: string) => {
   const testChains = [
     'Görli',
-    'Sepolia',
     'Ropsten',
     'Mumbai',
+    'Sepolia',
     'Fuji',
     'Testnet',
     'Kovan',
@@ -190,7 +190,8 @@ export const MarketSwitcher = () => {
         },
         sx: {
           '&.MarketSwitcher__select .MuiSelect-outlined': {
-            p: 0,
+            pl: 0,
+            py: 0,
             backgroundColor: 'transparent !important',
           },
           '.MuiSelect-icon': { color: '#F1F1F3' },

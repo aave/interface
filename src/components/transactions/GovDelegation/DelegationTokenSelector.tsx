@@ -1,89 +1,136 @@
-import { Box, Typography } from '@mui/material';
+import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-import * as React from 'react';
+import { useEffect } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { DelegationType } from 'src/helpers/types';
+import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 
 import { TokenIcon } from '../../primitives/TokenIcon';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+export type DelegationToken = {
+  address: string;
+  name: string;
+  amount: string;
+  symbol: string;
+  votingDelegatee?: string;
+  propositionDelegatee?: string;
+  type: DelegationTokenType;
 };
 
-export type DelegationToken = { address: string; name: string; amount: string; symbol: string };
+export enum DelegationTokenType {
+  BOTH = 0,
+  AAVE,
+  STKAAVE,
+}
 
 export type DelegationTokenSelectorProps = {
   delegationTokens: DelegationToken[];
-  setDelegationToken: (token: string) => void;
-  delegationTokenAddress: string;
+  setDelegationTokenType: (type: DelegationTokenType) => void;
+  delegationTokenType: DelegationTokenType;
+  delegationType: DelegationType;
+  filter: boolean;
+};
+
+type TokenRowProps = {
+  symbol: string[] | string;
+  amount: string | number;
+};
+
+export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
+  return (
+    <Row
+      sx={{ alignItems: 'center', width: '100%' }}
+      caption={
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          {Array.isArray(symbol) ? (
+            symbol.map((token, index) => (
+              <>
+                <TokenIcon symbol={token} sx={{ width: 16, height: 16 }} />
+                <Typography variant="subheader1">{token}</Typography>
+                {index < symbol.length - 1 && <Typography variant="subheader1">+</Typography>}
+              </>
+            ))
+          ) : (
+            <>
+              <TokenIcon symbol={symbol} sx={{ width: 16, height: 16 }} />
+              <Typography variant="subheader1">{symbol}</Typography>
+            </>
+          )}
+        </Box>
+      }
+    >
+      <FormattedNumber variant="secondary14" color="text.secondary" value={amount} />
+    </Row>
+  );
+};
+
+const filterTokens = (
+  tokens: DelegationToken[],
+  delegationType: DelegationType
+): DelegationToken[] => {
+  if (delegationType === DelegationType.VOTING) {
+    return tokens.filter((token) => token.votingDelegatee !== '');
+  } else if (delegationType === DelegationType.PROPOSITION_POWER) {
+    return tokens.filter((token) => token.propositionDelegatee !== '');
+  }
+  return tokens.filter(
+    (token) => token.propositionDelegatee !== '' || token.votingDelegatee !== ''
+  );
 };
 
 export const DelegationTokenSelector = ({
   delegationTokens,
-  setDelegationToken,
-  delegationTokenAddress,
+  setDelegationTokenType,
+  delegationTokenType,
+  delegationType,
+  filter,
 }: DelegationTokenSelectorProps) => {
+  const {
+    aaveTokens: { aave, stkAave },
+  } = useAaveTokensProviderContext();
+
+  const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;
+  const isOneLiner = filter && filteredTokens.length === 1;
+
+  useEffect(() => {
+    if (isOneLiner) setDelegationTokenType(filteredTokens[0].type);
+  }, [isOneLiner, filteredTokens, setDelegationTokenType]);
+
+  if (isOneLiner) {
+    return <TokenRow symbol={filteredTokens[0].symbol} amount={filteredTokens[0].amount} />;
+  }
+
   return (
     <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
-      <Select
-        fullWidth
-        value={delegationTokenAddress}
-        onChange={(e) => setDelegationToken(e.target.value)}
-        input={<OutlinedInput />}
-        MenuProps={MenuProps}
-        native={false}
-        displayEmpty
-        sx={{
-          '& .MuiSvgIcon-root': {
-            right: '12px',
-          },
-        }}
-        renderValue={(selectedToken) => {
-          if (!selectedToken)
-            return (
-              <Box sx={{ display: 'flex', flexDirection: 'row', pr: '12px' }}>
-                <Typography variant="buttonM">Select ...</Typography>
-              </Box>
-            );
-          const token = delegationTokens.find(
-            (token) => token.address === delegationTokenAddress
-          ) as DelegationToken;
-          return (
-            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', pr: '12px' }}>
-              <TokenIcon symbol={token.symbol} />
-              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
-                {token.name}
-              </Typography>
-              <Typography variant="buttonM">{token.amount}</Typography>
-            </Box>
-          );
-        }}
+      <RadioGroup
+        value={delegationTokenType}
+        onChange={(e) =>
+          setDelegationTokenType(Number(e.target.value) as unknown as DelegationTokenType)
+        }
       >
-        {delegationTokens.map((token) => (
-          <MenuItem
-            key={`delegation-token-${token.address}`}
-            value={token.address}
-            disabled={token.amount === '0'}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-              <TokenIcon symbol={token.symbol} sx={{ mx: '4px' }} />
-              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
-                {token.name}
-              </Typography>
-              <Typography variant="buttonM">{token.amount}</Typography>
-            </Box>
-          </MenuItem>
-        ))}
-      </Select>
+        <FormControlLabel
+          value={DelegationTokenType.BOTH}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol={['AAVE', 'stkAAVE']} amount={Number(aave) + Number(stkAave)} />}
+          data-cy={`delegate-token-both`}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.AAVE}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="AAVE" amount={aave} />}
+          data-cy={`delegate-token-AAVE`}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.STKAAVE}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="stkAAVE" amount={stkAave} />}
+          data-cy={`delegate-token-stkAAVE`}
+        />
+      </RadioGroup>
     </FormControl>
   );
 };

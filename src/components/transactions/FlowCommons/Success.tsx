@@ -20,6 +20,8 @@ export type SuccessTxViewProps = {
   collateral?: boolean;
   rate?: InterestRate;
   addToken?: ERC20TokenType;
+  customAction?: ReactNode;
+  customText?: ReactNode;
 };
 
 const ExtLinkIcon = () => (
@@ -36,6 +38,8 @@ export const TxSuccessView = ({
   collateral,
   rate,
   addToken,
+  customAction,
+  customText,
 }: SuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const { addERC20Token } = useWeb3Context();
@@ -91,6 +95,13 @@ export const TxSuccessView = ({
                 You {action}{' '}
                 <FormattedNumber value={Number(amount)} compact variant="secondary14" /> {symbol}
               </Trans>
+            </Typography>
+          )}
+
+          {customAction && (
+            <Typography>
+              {customText}
+              {customAction}
             </Typography>
           )}
 

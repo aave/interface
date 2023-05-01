@@ -1,12 +1,22 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
+import { BUSDOffBoardingWarning } from 'src/components/Warnings/BUSDOffBoardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -24,6 +34,7 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { breakpoints } = useTheme();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   const renderCharts =
@@ -34,15 +45,20 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
 
+  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
+
   return (
-    <Paper sx={{ py: '16px', px: '24px' }}>
+    <Paper sx={{ py: 4, px: downToXsm ? 4 : 6 }}>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: reserve.isFrozen || reserve.symbol == 'AMPL' ? '0px' : '36px',
+          mb:
+            reserve.isFrozen || reserve.symbol == 'AMPL' || reserve.symbol === 'stETH'
+              ? '0px'
+              : '36px',
         }}
       >
         <Typography variant="h3">
@@ -51,7 +67,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       </Box>
 
       <Box>
-        {reserve.isFrozen ? (
+        {reserve.isFrozen && reserve.symbol != 'BUSD' ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
@@ -62,6 +78,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Trans>More details</Trans>
               </Link>
             </Trans>
+          </Warning>
+        ) : reserve.symbol === 'BUSD' ? (
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+            <BUSDOffBoardingWarning />
           </Warning>
         ) : (
           reserve.symbol == 'AMPL' && (
