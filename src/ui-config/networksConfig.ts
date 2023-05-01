@@ -19,6 +19,8 @@ export type NetworkConfig = {
   publicJsonRPCWSUrl?: string;
   alchemyJsonRPCUrl?: string;
   alchemyJsonRPCWSUrl?: string;
+  infuraJsonRPCUrl?: string;
+  infuraJsonRPCWSUrl?: string;
   // protocolDataUrl: string;
   // https://github.com/aave/aave-api
   ratesHistoryApiUrl?: string;
@@ -64,6 +66,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     alchemyJsonRPCUrl: 'https://eth-sepolia.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://eth-sepolia.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://sepolia.infura.io/v3/',
+    infuraJsonRPCWSUrl: 'wss://sepolia.infura.io/v3/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -84,6 +88,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     alchemyJsonRPCUrl: 'https://eth-goerli.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://eth-goerli.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://goerli.infura.io/v3/',
+    infuraJsonRPCWSUrl: 'wss://goerli.infura.io/v3/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -106,6 +112,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     alchemyJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://eth-mainnet.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://mainnet.infura.io/v3/',
+    infuraJsonRPCWSUrl: 'wss://mainnet.infura.io/v3/',
     // cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
@@ -128,6 +136,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     alchemyJsonRPCUrl: 'https://polygon-mainnet.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://polygon-mainnet.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://polygon-mainnet.infura.io/v3/',
     // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
@@ -154,6 +163,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
     alchemyJsonRPCUrl: 'https://polygon-mumbai.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://polygon-mumbai.infura.io/v3/',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
@@ -170,6 +180,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
+    infuraJsonRPCUrl: 'https://avalanche-fuji.infura.io/v3/',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -195,6 +206,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/avalanche',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
+    infuraJsonRPCUrl: 'https://avalanche-mainnet.infura.io/v3/',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
     // cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
@@ -221,6 +233,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
     alchemyJsonRPCUrl: 'https://arb-goerli.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://arb-goerli.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://arbitrum-goerli.infura.io/v3/',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -245,6 +258,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
     alchemyJsonRPCUrl: 'https://arb-mainnet.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://arb-mainnet.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://arbitrum-mainnet.infura.io/v3/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -296,6 +310,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     alchemyJsonRPCUrl: 'https://opt-mainnet.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://opt-mainnet.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://optimism-mainnet.infura.io/v3/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH', // OETH
@@ -317,6 +332,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
     alchemyJsonRPCUrl: 'https://opt-goerli.g.alchemy.com/v2/',
     alchemyJsonRPCWSUrl: 'wss://opt-goerli.g.alchemy.com/v2/',
+    infuraJsonRPCUrl: 'https://optimism-goerli.infura.io/v3/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',

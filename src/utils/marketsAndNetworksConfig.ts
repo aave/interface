@@ -21,7 +21,7 @@ export type Pool = {
 };
 export type CustomRPCProvider = {
   id: number;
-  name: 'alchemy';
+  name: 'alchemy' | 'infura';
   key: string;
 };
 
