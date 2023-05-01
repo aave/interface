@@ -52,7 +52,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
         component="header"
         sx={{
           padding: `8px, 12px, 8px, 12px`,
-          background: '#000000',
+          background: (theme) => theme.palette.gradients.newGradient,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
