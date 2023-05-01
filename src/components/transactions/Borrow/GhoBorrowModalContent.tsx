@@ -231,9 +231,6 @@ export const GhoBorrowModalContent = ({
     const sharedIncentiveProps: SharedIncentiveProps = {
       incentives: userReserve.reserve.vIncentivesData,
       symbol: userReserve.reserve.symbol,
-      baseApy: ghoReserveData.ghoBaseVariableBorrowRate,
-      discountPercent: ghoReserveData.ghoDiscountRate * -1,
-      discountableAmount: ghoUserData.userGhoAvailableToBorrowAtDiscount,
       stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
       ghoRoute:
         ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',
@@ -241,20 +238,13 @@ export const GhoBorrowModalContent = ({
     };
 
     if (!hasGhoBorrowPositions && amount !== '') {
-      return (
-        <GhoIncentivesCard
-          value={futureBorrowAPY}
-          borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
-          {...sharedIncentiveProps}
-        />
-      );
+      return <GhoIncentivesCard value={futureBorrowAPY} {...sharedIncentiveProps} />;
     }
 
     if (hasGhoBorrowPositions && amount === '') {
       return (
         <GhoIncentivesCard
           value={currentBorrowAPY}
-          borrowAmount={userReserve.totalBorrows}
           onMoreDetailsClick={() => close()}
           {...sharedIncentiveProps}
         />
@@ -265,7 +255,6 @@ export const GhoBorrowModalContent = ({
       return (
         <GhoIncentivesCard
           value={currentBorrowAPY}
-          borrowAmount={(Number(amount) + Number(userReserve.totalBorrows)).toString()}
           onMoreDetailsClick={() => close()}
           {...sharedIncentiveProps}
         />
@@ -277,11 +266,6 @@ export const GhoBorrowModalContent = ({
         <>
           <GhoIncentivesCard
             value={currentBorrowAPY}
-            borrowAmount={
-              !!amount
-                ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
-                : userReserve.totalBorrows
-            }
             onMoreDetailsClick={() => close()}
             {...sharedIncentiveProps}
           />
@@ -294,7 +278,6 @@ export const GhoBorrowModalContent = ({
               )}
               <GhoIncentivesCard
                 value={ghoLoadingData ? -1 : futureBorrowAPY}
-                borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
                 {...sharedIncentiveProps}
               />
             </>
