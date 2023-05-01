@@ -10,7 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber, Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
@@ -37,11 +37,11 @@ import { tokenImageMatching } from './utils/tokenMatching';
 // }
 
 export const ManageMainActions = () => {
-  const [unlockedPAW, setUnlockedPAW] = React.useState(-1);
-  const [vestedPAW, setVestedPAW] = React.useState(-1);
-  const [exitPenalty, setExitPenalty] = React.useState(-1);
-  const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(-1);
-  const [totalLockedPAW, setTotalLockedPAW] = React.useState(-1);
+  const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
+  const [vestedPAW, setVestedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
+  const [exitPenalty, setExitPenalty] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
+  const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
+  const [totalLockedPAW, setTotalLockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
   const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
   const [vests, setVests] = React.useState<VestEntry[]>([]);
   const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
@@ -173,19 +173,17 @@ export const ManageMainActions = () => {
         {
           /** Need to convert to string */
         }
-        // console.log(data[6] as VestEntryTuple[]);
-        // console.log(convertVestEntry(data[6] as VestEntryTuple[]));
-        setUnlockedPAW(parseInt((data[0] as BigNumber)._hex, 16));
-        setVestedPAW(parseInt((data[1] as BigNumber)._hex, 16));
-        setExitPenalty(parseInt((data[2] as BigNumber)._hex, 16));
-        setExpiredLockedPAW(parseInt((data[3] as BigNumber)._hex, 16));
-        setTotalLockedPAW(parseInt((data[4] as BigNumber)._hex, 16));
-        setTotalClaimableValue(parseInt((data[5] as BigNumber)._hex, 16));
+        setUnlockedPAW(data[0] as BigNumber); // 18 Decimal percision
+        setVestedPAW(data[1] as BigNumber); // 18 Decimal percision
+        setExitPenalty(data[2] as BigNumber); // 18 Decimal percision
+        setExpiredLockedPAW(data[3] as BigNumber); // 18 Decimal percision (Funciton empty)
+        setTotalLockedPAW(data[4] as BigNumber); // 18 Decimal percision
+        setTotalClaimableValue((data[5] as BigNumber).toNumber()); // 8 Decimal percision
         setVests(convertVestEntry(data[6] as VestEntryTuple[]));
         setLocks(convertVestEntry(data[7] as VestEntryTuple[]));
         setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
-        setTotalLocksValue(parseInt((data[9] as BigNumber)._hex, 16));
-        setTotalVestsValue(parseInt((data[10] as BigNumber)._hex, 16));
+        setTotalLocksValue((data[9] as BigNumber).toNumber()); // 8 Decimal percision
+        setTotalVestsValue((data[10] as BigNumber).toNumber()); // 8 Decimal percision
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -209,7 +207,7 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>{unlockedPAW} PAW</Typography>
+                <Typography>{utils.formatUnits(unlockedPAW.toString(), 18)} PAW</Typography>
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
@@ -244,7 +242,7 @@ export const ManageMainActions = () => {
                   alignItems: 'center',
                 }}
               >
-                {vestedPAW}{' '}
+                {utils.formatUnits(vestedPAW.toString(), 18)}{' '}
               </Typography>
             }
           />
@@ -258,7 +256,7 @@ export const ManageMainActions = () => {
                 <Typography sx={{ width: '90%' }}>
                   Early Exit Penalty:{' '}
                   <Typography component="span" color={'error.light'}>
-                    {exitPenalty} PAW
+                    {utils.formatUnits(exitPenalty.toString(), 18)} PAW
                   </Typography>
                 </Typography>
               </>
@@ -289,7 +287,7 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>{expiredLockedPAW} PAW</Typography>
+                <Typography>{utils.formatUnits(expiredLockedPAW.toString())} PAW</Typography>
                 <Button
                   onClick={handleClaimExpired}
                   variant="contained"
@@ -347,7 +345,7 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           {/** Value in Uint256 */}
-          <Typography>Total locked: {totalLockedPAW}</Typography>
+          <Typography>Total locked: {utils.formatUnits(totalLockedPAW.toString(), 18)}</Typography>
           {/** Value in USD */}
           <Typography>value: {totalLocksValue}</Typography>
         </ManageMainPaper>
@@ -364,10 +362,6 @@ export const ManageMainActions = () => {
               <TableBody>
                 {claimables.map((claimable, i) => (
                   <TableRow key={i}>
-                    {/** Map this to svg icon and respective coin */}
-                    {/* {console.log(
-                      tokenImageMatching[(claimable as Claimables[])[0] as unknown as string]
-                    )} */}
                     {console.log(`/${tokenImageMatching[claimable.token]}.svg`)}
 
                     <TableCell
@@ -385,7 +379,7 @@ export const ManageMainActions = () => {
                     </TableCell>
                     <TableCell>
                       {/** Map this to string of uint256 */}
-                      {claimable.amount.toString()}
+                      {utils.formatUnits(claimable.amount.toString(), 18)}
                     </TableCell>
                   </TableRow>
                 ))}

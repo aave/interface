@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
 
-import { countDecimals, toWeiString } from '../ManageUtils';
+import { countDecimals, toWeiString } from '../utils/stringConverter';
 
 interface CustomNumberFormatType {
   amountTo: string;

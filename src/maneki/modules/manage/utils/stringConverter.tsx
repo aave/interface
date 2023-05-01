@@ -9,6 +9,8 @@ export const removeDecimals = (value: string) => {
   return splited.join('');
 };
 
+// Converts string with decimal to without decimals multiply by 18
+// 0.1 = 100_000_000_000_000_000
 export const toWeiString = (value: string) => {
   let splited = removeDecimals(value);
   const decimals = countDecimals(value);

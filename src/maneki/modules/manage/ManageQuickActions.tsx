@@ -11,14 +11,14 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import ManageQuickContentWrapper from './components/ManageQuickContentWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-import { toWeiString } from './ManageUtils';
 import MULTI_FEE_ABI from './MultiFeeABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
+import { toWeiString } from './utils/stringConverter';
 
-interface NumReturn {
-  _hex: string;
-  _isBigNumber: boolean;
-}
+// interface NumReturn {
+//   _hex: string;
+//   _isBigNumber: boolean;
+// }
 
 export const ManageQuickActions = () => {
   const { balancePAW, setBalancePAW } = useManageContext();
@@ -90,7 +90,7 @@ export const ManageQuickActions = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: NumReturn[]) => {
+      .then((data: BigNumber[]) => {
         // dev change data setting logic here
 
         setBalancePAW(utils.formatUnits(data[0].toString(), 18));
