@@ -1,6 +1,9 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { formatEther } from 'ethers/lib/utils';
+import { useRootStore } from 'src/store/root';
 
 import { PopperComponent } from '../ContentWithTooltip';
 import GhoBorrowApyRange from '../GhoBorrowApyRange';
@@ -38,6 +41,10 @@ export const GhoIncentivesCard = ({
   onMoreDetailsClick,
   withTokenIcon = false,
 }: GhoIncentivesCardProps) => {
+  const [stakeUserResult] = useRootStore((state) => [state.stakeUserResult]);
+  const stkAaveAmount = new BigNumber(stakeUserResult?.aave?.stakeTokenUserBalance || '0');
+  const formattedStkAaveAmount = formatEther(stkAaveAmount.toString());
+
   return (
     <Box
       sx={{
@@ -68,9 +75,19 @@ export const GhoIncentivesCard = ({
             >
               <Typography variant="caption" color="text.secondary">
                 <Trans>
-                  Estimated compounding interest, including discount for staking AAVE in Safety
-                  Module.
-                </Trans>
+                  Estimated compounding interest, including discount for Staking{' '}
+                  {formattedStkAaveAmount !== '0.0' ? (
+                    <>
+                      <FormattedNumber
+                        variant="caption"
+                        color="text.secondary"
+                        value={formattedStkAaveAmount}
+                        visibleDecimals={2}
+                      />{' '}
+                    </>
+                  ) : null}
+                  AAVE in Safety Module.
+                </Trans>{' '}
                 <Link
                   onClick={onMoreDetailsClick}
                   href={ghoRoute}
