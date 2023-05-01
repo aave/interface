@@ -112,15 +112,16 @@ export const AddTokenDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
+        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
           <Typography variant="secondary12" color="text.secondary">
-            <Trans>Select token to add</Trans>
+            <Trans>Underlying token</Trans>
           </Typography>
         </Box>
 
         <MenuItem
           key="underlying"
           value="underlying"
+          divider
           onClick={() => {
             if (currentChainId !== connectedChainId) {
               switchNetwork(currentChainId).then(() => {
@@ -142,32 +143,38 @@ export const AddTokenDropdown = ({
             {poolReserve.symbol}
           </Typography>
         </MenuItem>
-
         {!hideAToken && (
-          <MenuItem
-            key="atoken"
-            value="atoken"
-            onClick={() => {
-              if (currentChainId !== connectedChainId) {
-                switchNetwork(currentChainId).then(() => {
-                  setChangingNetwork(true);
-                });
-              } else {
-                addERC20Token({
-                  address: poolReserve.aTokenAddress,
-                  decimals: poolReserve.decimals,
-                  symbol: `a${poolReserve.symbol}`,
-                  image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
-                });
-              }
-              handleClose();
-            }}
-          >
-            <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {`a${poolReserve.symbol}`}
-            </Typography>
-          </MenuItem>
+          <>
+            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+              <Typography variant="secondary12" color="text.secondary">
+                <Trans>Aave aToken</Trans>
+              </Typography>
+            </Box>
+            <MenuItem
+              key="atoken"
+              value="atoken"
+              onClick={() => {
+                if (currentChainId !== connectedChainId) {
+                  switchNetwork(currentChainId).then(() => {
+                    setChangingNetwork(true);
+                  });
+                } else {
+                  addERC20Token({
+                    address: poolReserve.aTokenAddress,
+                    decimals: poolReserve.decimals,
+                    symbol: `a${poolReserve.symbol}`,
+                    image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
+                  });
+                }
+                handleClose();
+              }}
+            >
+              <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
+              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+                {`a${poolReserve.symbol}`}
+              </Typography>
+            </MenuItem>
+          </>
         )}
       </Menu>
     </>

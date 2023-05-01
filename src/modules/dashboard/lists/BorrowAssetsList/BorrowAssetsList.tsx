@@ -12,7 +12,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { findAndFilterGhoReserve, GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { findAndFilterGhoReserve, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -92,7 +92,7 @@ export const BorrowAssetsList = () => {
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
-        ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
+        ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
         : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)

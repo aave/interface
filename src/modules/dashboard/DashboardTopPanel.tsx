@@ -18,7 +18,6 @@ import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
-import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 // TODO: need change icon
 // import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
 // import HfFull from '/public/icons/healthFactor/hfFull.svg';
@@ -125,7 +124,7 @@ export const DashboardTopPanel = () => {
               <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
-                    <Typography variant="buttonS">
+                    <Typography variant="buttonS" data-cy={`migration-button`}>
                       <Trans>Migrate to v3</Trans>
                     </Typography>
                   </Button>

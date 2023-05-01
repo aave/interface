@@ -66,7 +66,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
-
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     privateJsonRPCUrl: 'https://eth-goerli.g.alchemy.com/v2/Svm_hYMBAm9sUyqpEVxtCi6WhefbBvdl',
@@ -84,7 +83,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    // privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
@@ -123,7 +122,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     bridge: {
       icon: '/icons/bridge/polygon.svg',
       name: 'Polygon PoS Bridge',
-      url: 'https://wallet.matic.network/bridge/',
+      url: 'https://wallet.polygon.technology/polygon/bridge',
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
