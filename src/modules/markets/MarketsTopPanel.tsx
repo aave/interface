@@ -1,11 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
+import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
 
-import PieIcon from '../../../public/icons/markets/pie-icon.svg';
-import TotalBorrowIcon from '../../../public/icons/markets/total-borrow-indicator.svg';
-import TotalSupplyIcon from '../../../public/icons/markets/total-supply-indicator.svg';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -34,7 +32,11 @@ export const MarketsTopPanel = () => {
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
-    <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
+    <TopInfoPanel
+      containerProps={marketContainerProps}
+      pageTitle={<Trans>Markets</Trans>}
+      withMarketSwitcher
+    >
       <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.toString()}

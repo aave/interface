@@ -559,46 +559,6 @@ export function getThemedComponents(theme: Theme) {
           },
         ],
       },
-      MuiContainer: {
-        styleOverrides: {
-          root: {
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            paddingBottom: '39px',
-            [theme.breakpoints.up('xs')]: {
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
-            [theme.breakpoints.up('xsm')]: {
-              paddingLeft: '20px',
-              paddingRight: '20px',
-            },
-            [theme.breakpoints.up('sm')]: {
-              paddingLeft: '48px',
-              paddingRight: '48px',
-            },
-            [theme.breakpoints.up('md')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('lg')]: {
-              paddingLeft: '20px',
-              paddingRight: '20px',
-            },
-            [theme.breakpoints.up('xl')]: {
-              maxWidth: 'unset',
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('xxl')]: {
-              paddingLeft: 0,
-              paddingRight: 0,
-              maxWidth: '1440px',
-            },
-          },
-        },
-      },
       MuiSwitch: {
         styleOverrides: {
           root: {
