@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-04-21 18:04\n"
+"PO-Revision-Date: 2023-04-24 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -28,7 +28,7 @@ msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza 
 
 #: src/layouts/MainLayout.tsx
 msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
-msgstr ""
+msgstr "<0>Importante: </0>Una próxima propuesta del Gobierno de Aave podría ajustar el E-Mode y plantear riesgos de liquidación para ciertas posiciones."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
