@@ -17,6 +17,8 @@ export type NetworkConfig = {
   privateJsonRPCWSUrl?: string;
   publicJsonRPCUrl: readonly string[]; // public rpc used if not private found, and used to add specific network to wallets if user don't have them. Normally with slow rates
   publicJsonRPCWSUrl?: string;
+  alchemyJsonRPCUrl?: string;
+  alchemyJsonRPCWSUrl?: string;
   // protocolDataUrl: string;
   // https://github.com/aave/aave-api
   ratesHistoryApiUrl?: string;
@@ -60,6 +62,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://www.sepoliarpc.space',
     ],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    alchemyJsonRPCUrl: 'https://eth-sepolia.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://eth-sepolia.g.alchemy.com/v2/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -78,6 +82,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://goerli.prylabs.net',
     ],
     publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    alchemyJsonRPCUrl: 'https://eth-goerli.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://eth-goerli.g.alchemy.com/v2/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -98,6 +104,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://cloudflare-eth.com/v1/mainnet',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
+    alchemyJsonRPCUrl: 'https://eth-mainnet.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://eth-mainnet.g.alchemy.com/v2/',
     // cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
@@ -118,6 +126,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc-mainnet.matic.quiknode.pro',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
+    alchemyJsonRPCUrl: 'https://polygon-mainnet.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://polygon-mainnet.g.alchemy.com/v2/',
     // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
@@ -142,6 +152,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://polygon-mumbai.g.alchemy.com/v2/demo',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
+    alchemyJsonRPCUrl: 'https://polygon-mumbai.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
@@ -207,6 +219,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://arb-goerli.g.alchemy.com/v2/demo',
     ],
     publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
+    alchemyJsonRPCUrl: 'https://arb-goerli.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://arb-goerli.g.alchemy.com/v2/',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -229,6 +243,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://1rpc.io/arb',
     ],
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
+    alchemyJsonRPCUrl: 'https://arb-mainnet.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://arb-mainnet.g.alchemy.com/v2/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -278,6 +294,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       'https://rpc.ankr.com/optimism',
     ],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
+    alchemyJsonRPCUrl: 'https://opt-mainnet.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://opt-mainnet.g.alchemy.com/v2/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH', // OETH
@@ -297,6 +315,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     name: 'Optimism Görli',
     publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
+    alchemyJsonRPCUrl: 'https://opt-goerli.g.alchemy.com/v2/',
+    alchemyJsonRPCWSUrl: 'wss://opt-goerli.g.alchemy.com/v2/',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',

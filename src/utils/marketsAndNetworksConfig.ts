@@ -19,6 +19,11 @@ import { RotationProvider } from './rotationProvider';
 export type Pool = {
   address: string;
 };
+export type CustomRPCProvider = {
+  id: number;
+  name: 'alchemy';
+  key: string;
+};
 
 export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
 export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
@@ -45,6 +50,12 @@ const FORK_WS_RPC_URL =
   process.env.NEXT_PUBLIC_FORK_URL_WS_RPC ||
   global?.window?.localStorage.getItem('forkWsRPCUrl') ||
   'ws://127.0.0.1:8545';
+// determines if user is using app RPC or custom RPC
+const USING_CUSTOM_RPC = global?.window?.localStorage.getItem('usingCustomRPC') === 'true';
+// determines if user is using custom RPC provider
+const CUSTOM_RPC_PROVIDERS: CustomRPCProvider[] | null = JSON.parse(
+  global?.window?.localStorage.getItem('customRPCProviders') || 'null'
+);
 
 /**
  * Generates network configs based on networkConfigs & fork settings.
@@ -164,24 +175,35 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
 export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
-  if (!providers[chainId]) {
-    const config = getNetworkConfig(chainId);
-    const chainProviders: string[] = [];
-    if (config.privateJsonRPCUrl) {
-      chainProviders.push(config.privateJsonRPCUrl);
-    }
-    if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
-    }
-    if (!chainProviders.length) {
-      throw new Error(`${chainId} has no jsonRPCUrl configured`);
-    }
-    if (chainProviders.length === 1) {
-      providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
-    } else {
-      providers[chainId] = new RotationProvider(chainProviders, chainId);
-    }
+  const config = getNetworkConfig(chainId);
+  const chainProviders: Set<string> = new Set(); // Incase Duplicate RPC URls
+
+  if (USING_CUSTOM_RPC && CUSTOM_RPC_PROVIDERS) {
+    CUSTOM_RPC_PROVIDERS.map((customRPCProvider: CustomRPCProvider) => {
+      const customRPCUrl = config[`${customRPCProvider.name}JsonRPCUrl`];
+
+      if (customRPCUrl) chainProviders.add(customRPCUrl + customRPCProvider.key);
+    });
   }
+
+  if (config.privateJsonRPCUrl) {
+    chainProviders.add(config.privateJsonRPCUrl);
+  }
+
+  if (config.publicJsonRPCUrl.length) {
+    config.publicJsonRPCUrl.map((rpc) => chainProviders.add(rpc));
+  }
+
+  if (!chainProviders.size) {
+    throw new Error(`${chainId} has no jsonRPCUrl configured`);
+  }
+
+  if (chainProviders.size === 1) {
+    providers[chainId] = new StaticJsonRpcProvider([...chainProviders][0], chainId);
+  } else {
+    providers[chainId] = new RotationProvider([...chainProviders], chainId);
+  }
+
   return providers[chainId];
 };
 
