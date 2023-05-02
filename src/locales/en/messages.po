@@ -819,8 +819,8 @@ msgid "Discount"
 msgstr "Discount"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Discount applied for {userStakedAaveBalance} staking AAVE"
-msgstr "Discount applied for {userStakedAaveBalance} staking AAVE"
+msgid "Discount applied for <0/> staking AAVE"
+msgstr "Discount applied for <0/> staking AAVE"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount model parameters"

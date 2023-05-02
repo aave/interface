@@ -406,8 +406,16 @@ export const GhoBorrowModalContent = ({
           </Box>
         </Row>
         {discountAvailable && (
-          <Typography variant="caption" color="text.secondary">
-            <Trans>Discount applied for {userStakedAaveBalance} staking AAVE</Trans>
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>
+              Discount applied for{' '}
+              <FormattedNumber
+                variant="helperText"
+                color="text.secondary"
+                value={userStakedAaveBalance}
+              />{' '}
+              staking AAVE
+            </Trans>
           </Typography>
         )}
       </TxModalDetails>
