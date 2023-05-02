@@ -94,7 +94,14 @@ export const GhoDiscountCalculator = () => {
           mb: 2,
         }}
       >
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discountable amount</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>Discountable amount</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={75} />
           ) : (
@@ -113,7 +120,14 @@ export const GhoDiscountCalculator = () => {
             </Typography>
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discount</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>Discount</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -127,7 +141,14 @@ export const GhoDiscountCalculator = () => {
             />
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>APY with discount applied</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>APY with discount applied</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
