@@ -25,6 +25,7 @@ import {
   Claimables,
   ClaimablesTuple,
   convertClaimables,
+  convertUnixToDate,
   convertVestEntry,
   VestEntry,
   VestEntryTuple,
@@ -42,11 +43,11 @@ export const ManageMainActions = () => {
   const [exitPenalty, setExitPenalty] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
   const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
   const [totalLockedPAW, setTotalLockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
-  const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
+  const [totalClaimableValue, setTotalClaimableValue] = React.useState(BigNumber.from(-1));
   const [vests, setVests] = React.useState<VestEntry[]>([]);
-  const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
+  const [totalVestsValue, setTotalVestsValue] = React.useState(BigNumber.from(-1));
   const [locks, setLocks] = React.useState<VestEntry[]>([]);
-  const [totalLocksValue, setTotalLocksValue] = React.useState(-1);
+  const [totalLocksValue, setTotalLocksValue] = React.useState(BigNumber.from(-1));
   const [claimables, setClaimables] = React.useState<Claimables[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
@@ -178,12 +179,12 @@ export const ManageMainActions = () => {
         setExitPenalty(data[2] as BigNumber); // 18 Decimal percision
         setExpiredLockedPAW(data[3] as BigNumber); // 18 Decimal percision (Funciton empty)
         setTotalLockedPAW(data[4] as BigNumber); // 18 Decimal percision
-        setTotalClaimableValue((data[5] as BigNumber).toNumber()); // 8 Decimal percision
+        setTotalClaimableValue(data[5] as BigNumber); // 8 Decimal percision
         setVests(convertVestEntry(data[6] as VestEntryTuple[]));
         setLocks(convertVestEntry(data[7] as VestEntryTuple[]));
         setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
-        setTotalLocksValue((data[9] as BigNumber).toNumber()); // 8 Decimal percision
-        setTotalVestsValue((data[10] as BigNumber).toNumber()); // 8 Decimal percision
+        setTotalLocksValue(data[9] as BigNumber); // 8 Decimal percision
+        setTotalVestsValue(data[10] as BigNumber); // 8 Decimal percision
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -207,7 +208,7 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>{utils.formatUnits(unlockedPAW.toString(), 18)} PAW</Typography>
+                <Typography>{utils.formatUnits(unlockedPAW, 18)} PAW</Typography>
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
@@ -242,7 +243,7 @@ export const ManageMainActions = () => {
                   alignItems: 'center',
                 }}
               >
-                {utils.formatUnits(vestedPAW.toString(), 18)}{' '}
+                {utils.formatUnits(vestedPAW, 18)}{' '}
               </Typography>
             }
           />
@@ -256,7 +257,7 @@ export const ManageMainActions = () => {
                 <Typography sx={{ width: '90%' }}>
                   Early Exit Penalty:{' '}
                   <Typography component="span" color={'error.light'}>
-                    {utils.formatUnits(exitPenalty.toString(), 18)} PAW
+                    {utils.formatUnits(exitPenalty, 18)} PAW
                   </Typography>
                 </Typography>
               </>
@@ -287,7 +288,7 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>{utils.formatUnits(expiredLockedPAW.toString())} PAW</Typography>
+                <Typography>{utils.formatUnits(expiredLockedPAW, 18)} PAW</Typography>
                 <Button
                   onClick={handleClaimExpired}
                   variant="contained"
@@ -312,14 +313,16 @@ export const ManageMainActions = () => {
               <TableBody>
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
-                    <TableCell>{vest.amount.toString()}</TableCell>
-                    <TableCell>{vest.expiry.toString()}</TableCell>
+                    <TableCell>{utils.formatUnits(vest.amount, 18)}</TableCell>
+                    <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Typography>Total vested: {totalVestsValue}</Typography>
+          <Typography>
+            Total vested: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)}
+          </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
           <Typography variant={'h3'}>PAW Locks</Typography>
@@ -334,10 +337,10 @@ export const ManageMainActions = () => {
               <TableBody>
                 {locks.map((lock, i) => (
                   <TableRow key={i}>
-                    <TableCell>{lock.amount.toString()}</TableCell>
+                    <TableCell>{utils.formatUnits(lock.amount, 18)}</TableCell>
                     <TableCell>
                       {/** Convert Unix Timestamp to DateTime */}
-                      {lock.expiry.toString()}
+                      {convertUnixToDate(lock.expiry.toNumber() * 1000)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -347,7 +350,7 @@ export const ManageMainActions = () => {
           {/** Value in Uint256 */}
           <Typography>Total locked: {utils.formatUnits(totalLockedPAW.toString(), 18)}</Typography>
           {/** Value in USD */}
-          <Typography>value: {totalLocksValue}</Typography>
+          <Typography>Value: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)}</Typography>
         </ManageMainPaper>
         <ManageMainPaper>
           <Typography variant={'h3'}>Claimable fees</Typography>
@@ -390,7 +393,9 @@ export const ManageMainActions = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Typography>Total Value: {totalClaimableValue}</Typography>
+            <Typography>
+              Total Value: {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)}
+            </Typography>
             <Button
               onClick={handleClaimAll}
               // sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}

@@ -22,8 +22,8 @@ import { toWeiString } from './utils/stringConverter';
 
 export const ManageQuickActions = () => {
   const { balancePAW, setBalancePAW } = useManageContext();
-  const [stakingAPR, setStakingAPR] = React.useState<number>(-1);
-  const [lockingAPR, setLockingAPR] = React.useState<number>(-1);
+  const [stakingAPR, setStakingAPR] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [lockingAPR, setLockingAPR] = React.useState<BigNumber>(BigNumber.from(-1));
   const [amountToStake, setAmountToStake] = React.useState<string>('');
   const [amountToLock, setAmountToLock] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -94,8 +94,8 @@ export const ManageQuickActions = () => {
         // dev change data setting logic here
 
         setBalancePAW(data[0]);
-        setStakingAPR(parseInt(data[1]._hex, 16));
-        setLockingAPR(parseInt(data[2]._hex, 16));
+        setStakingAPR(data[1]);
+        setLockingAPR(data[2]);
 
         setLoading(false);
       })
@@ -109,7 +109,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Stake PAW'}
-        aprValue={(stakingAPR / 100_000_000).toFixed(2)}
+        aprValue={(stakingAPR.toNumber() / 100_000_000).toFixed(2)}
         descriptions={['Stake PAW and earn platform fees with no lockup period.']}
         balancePAW={utils.formatUnits(balancePAW, 18)}
         amountTo={amountToStake}
@@ -121,7 +121,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Lock PAW'}
-        aprValue={(lockingAPR / 100_000_000).toFixed(2)}
+        aprValue={(lockingAPR.toNumber() / 100_000_000).toFixed(2)}
         descriptions={[
           'Lock PAW and earn platform fees and penalty fees in unlocked PAW.',
           'Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw.',
