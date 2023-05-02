@@ -127,13 +127,6 @@ export const BorrowActions = React.memo(
       }
     };
 
-    // eventTxInfo: {
-    //   amount: amountToBorrow,
-    //   assetName: poolReserve.name,
-    //   asset: poolReserve.underlyingAsset,
-    //   market: currentMarket,
-    // },
-
     // callback to fetch approved credit delegation amount and determine execution path on dependency updates
     const fetchApprovedAmount = useCallback(
       async (forceApprovalCheck?: boolean) => {
