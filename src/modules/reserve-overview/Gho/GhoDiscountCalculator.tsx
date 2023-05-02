@@ -299,7 +299,7 @@ export const GhoDiscountCalculator = () => {
 
   const GhoDiscountCalculatorDesktop = (
     <Stack direction="row" gap={8}>
-      <Box>
+      <Box sx={{ flexBasis: '50%' }}>
         <GhoPieChartContainer
           borrowAmount={ghoBorrow}
           discountableAmount={discountableGhoAmount}
@@ -308,7 +308,7 @@ export const GhoDiscountCalculator = () => {
           rateAfterDiscount={rateSelection.rateAfterDiscount}
         />
       </Box>
-      <Stack direction="column" alignItems="center" gap={2} sx={{ width: '100%' }}>
+      <Stack direction="column" alignItems="center" gap={2} sx={{ flexBasis: '50%' }}>
         <Box sx={{ width: '100%', mt: 4 }}>
           <CalculatorInput
             title="Borrow amount"
