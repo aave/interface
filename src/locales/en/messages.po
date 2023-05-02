@@ -925,8 +925,8 @@ msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
 #: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Estimated compounding interest, including discount for staking AAVE in Safety Module."
-msgstr "Estimated compounding interest, including discount for staking AAVE in Safety Module."
+msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
+msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
