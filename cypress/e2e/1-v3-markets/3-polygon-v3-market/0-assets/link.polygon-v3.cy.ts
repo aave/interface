@@ -75,7 +75,8 @@ const testData = {
   },
 };
 
-describe('LINK INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+//due caps
+describe.skip('LINK INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
 
