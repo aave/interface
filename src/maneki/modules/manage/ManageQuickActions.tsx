@@ -93,7 +93,7 @@ export const ManageQuickActions = () => {
       .then((data: BigNumber[]) => {
         // dev change data setting logic here
 
-        setBalancePAW(utils.formatUnits(data[0].toString(), 18));
+        setBalancePAW(data[0]);
         setStakingAPR(parseInt(data[1]._hex, 16));
         setLockingAPR(parseInt(data[2]._hex, 16));
 
@@ -109,9 +109,9 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Stake PAW'}
-        aprValue={(stakingAPR / 100000000).toFixed(2)}
+        aprValue={(stakingAPR / 100_000_000).toFixed(2)}
         descriptions={['Stake PAW and earn platform fees with no lockup period.']}
-        balancePAW={balancePAW}
+        balancePAW={utils.formatUnits(balancePAW, 18)}
         amountTo={amountToStake}
         setAmountTo={setAmountToStake}
         handleClick={handleStake}
@@ -121,12 +121,12 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Lock PAW'}
-        aprValue={(lockingAPR / 100000000).toFixed(2)}
+        aprValue={(lockingAPR / 100_000_000).toFixed(2)}
         descriptions={[
           'Lock PAW and earn platform fees and penalty fees in unlocked PAW.',
           'Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw.',
         ]}
-        balancePAW={balancePAW}
+        balancePAW={utils.formatUnits(balancePAW, 18)}
         amountTo={amountToLock}
         setAmountTo={setAmountToLock}
         handleClick={handleLock}

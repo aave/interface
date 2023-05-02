@@ -1,15 +1,16 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 interface ManageData {
-  stakedPAW: number;
-  setStakedPAW: (stakedPAW: number) => void;
-  lockedPAW: number;
-  setLockedPAW: (PAW: number) => void;
-  lockedStakedValue: number;
-  setLockedStakedValue: (PAW: number) => void;
-  balancePAW: string;
-  setBalancePAW: (PAW: string) => void;
+  stakedPAW: BigNumber;
+  setStakedPAW: (stakedPAW: BigNumber) => void;
+  lockedPAW: BigNumber;
+  setLockedPAW: (PAW: BigNumber) => void;
+  lockedStakedValue: BigNumber;
+  setLockedStakedValue: (PAW: BigNumber) => void;
+  balancePAW: BigNumber;
+  setBalancePAW: (PAW: BigNumber) => void;
   share: number;
   setShare: (PAW: number) => void;
   dailyRevenue: number;
@@ -17,10 +18,10 @@ interface ManageData {
 }
 
 export const ManageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  const [stakedPAW, setStakedPAW] = React.useState<number>(-1);
-  const [lockedPAW, setLockedPAW] = React.useState<number>(-1);
-  const [lockedStakedValue, setLockedStakedValue] = React.useState<number>(-1);
-  const [balancePAW, setBalancePAW] = React.useState<string>('');
+  const [stakedPAW, setStakedPAW] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [lockedPAW, setLockedPAW] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [lockedStakedValue, setLockedStakedValue] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [balancePAW, setBalancePAW] = React.useState<BigNumber>(BigNumber.from(-1));
   const [share, setShare] = React.useState<number>(-1);
   const [dailyRevenue, setDailyRevenue] = React.useState<number>(-1);
 

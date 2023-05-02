@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
-import { Contract } from 'ethers';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 
 import PieIcon from '../../../../public/icons/markets/pie-icon.svg';
@@ -12,10 +12,10 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
-interface NumReturn {
-  _hex: string;
-  _isBigNumber: boolean;
-}
+// interface NumReturn {
+//   _hex: string;
+//   _isBigNumber: boolean;
+// }
 
 export const ManageTopPanel = () => {
   const {
@@ -26,8 +26,8 @@ export const ManageTopPanel = () => {
     lockedStakedValue,
     setLockedStakedValue,
   } = useManageContext();
-  const [dailyPlatformFees, setDailyPlatformFees] = React.useState<number>(-1);
-  const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<number>(-1);
+  const [dailyPlatformFees, setDailyPlatformFees] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<BigNumber>(BigNumber.from(-1));
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
@@ -55,13 +55,13 @@ export const ManageTopPanel = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: NumReturn[]) => {
+      .then((data: BigNumber[]) => {
         // dev change data setting logic here
-        setStakedPAW(parseInt(data[0]._hex, 16));
-        setLockedPAW(parseInt(data[1]._hex, 16));
-        setLockedStakedValue(parseInt(data[2]._hex, 16));
-        setDailyPlatformFees(parseInt(data[3]._hex, 16));
-        setDailyPenaltyFees(parseInt(data[4]._hex, 16));
+        setStakedPAW(data[0]); // 18 Decimal Percision
+        setLockedPAW(data[1]); // 18 Decimal Percision
+        setLockedStakedValue(data[2]); // 8 Decimal Percision
+        setDailyPlatformFees(data[3]); // 8 Decimal Percision
+        setDailyPenaltyFees(data[4]); // 8 Decimal Percision
         setLoading(false);
       })
       .catch((e) => console.error(e));
@@ -75,27 +75,31 @@ export const ManageTopPanel = () => {
         loading={loading}
       >
         <FormattedNumber
-          value={lockedStakedValue.toString()}
+          value={utils.formatUnits(lockedStakedValue, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
-        Stake {stakedPAW}
-        Lock {lockedPAW}
+        <Box>
+          <Typography>Stake {utils.formatUnits(stakedPAW, 18)}</Typography>
+          <Typography>Lock {utils.formatUnits(lockedPAW, 18)}</Typography>
+        </Box>
       </TopInfoPanelItem>
 
       {/* Daily revenue display */}
       <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Daily revenue</Trans>} loading={loading}>
         <FormattedNumber
-          value={(dailyPlatformFees + dailyPenaltyFees).toString()}
+          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees), 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -103,12 +107,13 @@ export const ManageTopPanel = () => {
       {/* weekly revenue display */}
       <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Weekly revenue</Trans>} loading={loading}>
         <FormattedNumber
-          value={(7 * (dailyPlatformFees + dailyPenaltyFees)).toString()}
+          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees).mul(7), 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -120,12 +125,13 @@ export const ManageTopPanel = () => {
         loading={loading}
       >
         <FormattedNumber
-          value={dailyPlatformFees.toString()}
+          value={utils.formatUnits(dailyPlatformFees, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -137,12 +143,13 @@ export const ManageTopPanel = () => {
         loading={loading}
       >
         <FormattedNumber
-          value={dailyPenaltyFees.toString()}
+          value={utils.formatUnits(dailyPenaltyFees, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>

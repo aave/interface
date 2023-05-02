@@ -37,11 +37,11 @@ import { tokenImageMatching } from './utils/tokenMatching';
 // }
 
 export const ManageMainActions = () => {
-  const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
-  const [vestedPAW, setVestedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
-  const [exitPenalty, setExitPenalty] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
-  const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
-  const [totalLockedPAW, setTotalLockedPAW] = React.useState(BigNumber.from('-1')); // Convert from BigNumber to 18 decimals
+  const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
+  const [vestedPAW, setVestedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
+  const [exitPenalty, setExitPenalty] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
+  const [expiredLockedPAW, setExpiredLockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
+  const [totalLockedPAW, setTotalLockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
   const [totalClaimableValue, setTotalClaimableValue] = React.useState(-1);
   const [vests, setVests] = React.useState<VestEntry[]>([]);
   const [totalVestsValue, setTotalVestsValue] = React.useState(-1);
@@ -362,8 +362,6 @@ export const ManageMainActions = () => {
               <TableBody>
                 {claimables.map((claimable, i) => (
                   <TableRow key={i}>
-                    {console.log(`/${tokenImageMatching[claimable.token]}.svg`)}
-
                     <TableCell
                       sx={{ display: 'flex', gap: '16px', alignItems: 'center', pl: '36px' }}
                     >
