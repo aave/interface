@@ -80,6 +80,7 @@ msgstr "APY type change"
 msgid "APY with discount applied"
 msgstr "APY with discount applied"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
@@ -414,7 +415,6 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Borrow APY"
@@ -817,6 +817,10 @@ msgstr "Discord channel"
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount"
 msgstr "Discount"
+
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Discount applied for {userStakedAaveBalance} staking AAVE"
+msgstr "Discount applied for {userStakedAaveBalance} staking AAVE"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount model parameters"

@@ -13,6 +13,7 @@ import {
   GhoIncentivesCardProps,
 } from 'src/components/incentives/GhoIncentivesCard';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
@@ -238,12 +239,19 @@ export const GhoBorrowModalContent = ({
     };
 
     if (!hasGhoBorrowPositions && amount !== '') {
-      return <GhoIncentivesCard value={futureBorrowAPY} {...sharedIncentiveProps} />;
+      return (
+        <GhoIncentivesCard
+          withTokenIcon={discountAvailable}
+          value={futureBorrowAPY}
+          {...sharedIncentiveProps}
+        />
+      );
     }
 
     if (hasGhoBorrowPositions && amount === '') {
       return (
         <GhoIncentivesCard
+          withTokenIcon={discountAvailable}
           value={currentBorrowAPY}
           onMoreDetailsClick={() => close()}
           {...sharedIncentiveProps}
@@ -265,6 +273,7 @@ export const GhoBorrowModalContent = ({
       return (
         <>
           <GhoIncentivesCard
+            withTokenIcon
             value={currentBorrowAPY}
             onMoreDetailsClick={() => close()}
             {...sharedIncentiveProps}
@@ -379,9 +388,11 @@ export const GhoBorrowModalContent = ({
         <Row
           caption={
             <Box>
-              <Typography>
-                <Trans>Borrow APY</Trans>
-              </Typography>
+              <FixedAPYTooltip
+                text={<Trans>APY, fixed rate</Trans>}
+                variant="subheader2"
+                color="text.secondary"
+              />
             </Box>
           }
           captionVariant="description"
@@ -394,6 +405,11 @@ export const GhoBorrowModalContent = ({
             </Box>
           </Box>
         </Row>
+        {discountAvailable && (
+          <Typography variant="caption" color="text.secondary">
+            <Trans>Discount applied for {userStakedAaveBalance} staking AAVE</Trans>
+          </Typography>
+        )}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
