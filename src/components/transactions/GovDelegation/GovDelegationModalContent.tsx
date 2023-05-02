@@ -6,11 +6,11 @@ import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DelegationType } from 'src/helpers/types';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { DELEGATION } from 'src/utils/mixPanelEvents';
@@ -43,13 +43,12 @@ type GovDelegationModalContentProps = {
 
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
-  const {
-    aaveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const powers = useRootStore((state) => state.powers);
-  const refreshGovernanceData = useRootStore((state) => state.refreshGovernanceData);
+  const {
+    data: { aave, stkAave },
+  } = useGovernanceTokens();
+  const { data: powers, refetch } = usePowers();
   // error states
 
   // selector states
@@ -118,8 +117,8 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   };
 
   useEffect(() => {
-    if (txState.success) refreshGovernanceData();
-  }, [txState.success, refreshGovernanceData]);
+    if (txState.success) refetch();
+  }, [txState.success, refetch]);
 
   // is Network mismatched
   const govChain =

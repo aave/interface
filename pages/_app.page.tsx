@@ -1,6 +1,8 @@
 import '/public/fonts/inter/inter.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import mixpanel from 'mixpanel-browser';
@@ -10,7 +12,6 @@ import Head from 'next/head';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
-import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
 import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
@@ -28,6 +29,7 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -47,6 +49,8 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+
+const queryClient = new QueryClient();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -80,37 +84,41 @@ export default function MyApp(props: MyAppProps) {
         imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
       />
       <LanguageProvider>
-        <Web3ReactProvider getLibrary={getWeb3Library}>
-          <Web3ContextProvider>
-            <AppGlobalStyles>
-              <AddressBlocked>
-                <PermissionProvider>
-                  <ModalContextProvider>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <MigrateV3Modal />
-                          <TransactionEventHandler />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </ModalContextProvider>
-                </PermissionProvider>
-              </AddressBlocked>
-            </AppGlobalStyles>
-          </Web3ContextProvider>
-        </Web3ReactProvider>
+        <QueryClientProvider client={queryClient}>
+          <Web3ReactProvider getLibrary={getWeb3Library}>
+            <Web3ContextProvider>
+              <AppGlobalStyles>
+                <AddressBlocked>
+                  <PermissionProvider>
+                    <ModalContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            <SharedDependenciesProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <MigrateV3Modal />
+                            </SharedDependenciesProvider>
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </ModalContextProvider>
+                  </PermissionProvider>
+                </AddressBlocked>
+              </AppGlobalStyles>
+            </Web3ContextProvider>
+          </Web3ReactProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </LanguageProvider>
     </CacheProvider>
   );
