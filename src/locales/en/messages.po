@@ -26,10 +26,6 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "<0>Discount only applies to <1/> GHO,</0> which equals discountable amount for staking <2/> AAVE."
-msgstr "<0>Discount only applies to <1/> GHO,</0> which equals discountable amount for staking <2/> AAVE."
-
 #: src/layouts/MainLayout.tsx
 msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
 msgstr "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
@@ -84,6 +80,9 @@ msgstr "APY type change"
 msgid "APY with discount applied"
 msgstr "APY with discount applied"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "APY, fixed rate"
@@ -91,7 +90,6 @@ msgstr "APY, fixed rate"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
@@ -99,7 +97,6 @@ msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, variable"
@@ -333,6 +330,7 @@ msgstr "Author"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 msgid "Available"
 msgstr "Available"
 
@@ -381,10 +379,6 @@ msgstr "Balance"
 msgid "Balance to revoke"
 msgstr "Balance to revoke"
 
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Base APY"
-msgstr "Base APY"
-
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -415,10 +409,6 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Borrow APY"
-msgstr "Borrow APY"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrow APY rate"
@@ -437,10 +427,6 @@ msgstr "Borrow APY, stable"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
-
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Borrow amount"
-msgstr "Borrow amount"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
@@ -824,13 +810,13 @@ msgstr "Discord channel"
 msgid "Discount"
 msgstr "Discount"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Discount applied for <0/> staking AAVE"
+msgstr "Discount applied for <0/> staking AAVE"
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount model parameters"
 msgstr "Discount model parameters"
-
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Discount on base APY"
-msgstr "Discount on base APY"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
@@ -935,8 +921,8 @@ msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
 #: src/components/incentives/GhoIncentivesCard.tsx
-msgid "Estimated compounding interest, including discount for staking AAVE:"
-msgstr "Estimated compounding interest, including discount for staking AAVE:"
+msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
+msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
@@ -1197,6 +1183,7 @@ msgid "Language"
 msgstr "Language"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/components/incentives/GhoIncentivesCard.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
@@ -1373,10 +1360,6 @@ msgstr "Migration risks"
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
-
-#: src/components/incentives/GhoIncentivesCard.tsx
-msgid "More details"
-msgstr "More details"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
@@ -1965,6 +1948,10 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
+
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
