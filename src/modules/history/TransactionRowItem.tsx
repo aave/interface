@@ -1,13 +1,15 @@
 import {
   ArrowDownIcon,
+  ArrowNarrowRightIcon,
   ArrowUpIcon,
   CheckIcon,
   DotsHorizontalIcon,
   DuplicateIcon,
-  ExclamationIcon,
   ExternalLinkIcon,
 } from '@heroicons/react/outline';
+import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import PercentIcon from '@mui/icons-material/Percent';
 import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
@@ -19,9 +21,12 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHistory';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { formatNumberDisplay } from 'src/utils/utils';
 
 import ArrowDownTrayIcon from '/public/arrowDownTray.svg';
 import ArrowUpTrayIcon from '/public/arrowUpTray.svg';
+
+import { BorrowRateModeBlock } from './BorrowRateModeBlock';
 
 const iconBoxStyling = {
   width: '24px',
@@ -76,7 +81,7 @@ const ActionIconMap = ({ action }: { action: string }) => {
       return <DotsHorizontalIcon />;
     case 'SwapBorrowRate':
     case 'Swap':
-      return <DotsHorizontalIcon />;
+      return <PercentIcon />;
     case 'LiquidationCall':
       return <ExclamationIcon />;
     default:
@@ -103,7 +108,11 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
           >
-            + {Number(formatUnits(supplyTx.amount, supplyTx.reserve.decimals)).toPrecision(6)}{' '}
+            +
+            {formatNumberDisplay(
+              Number(formatUnits(supplyTx.amount, supplyTx.reserve.decimals)),
+              6
+            )}{' '}
             {formattedSupplyReserve.name}
           </Typography>
         </Box>
@@ -120,7 +129,11 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
           >
-            + {Number(formatUnits(borrowTx.amount, borrowTx.reserve.decimals)).toPrecision(6)}{' '}
+            +
+            {formatNumberDisplay(
+              Number(formatUnits(borrowTx.amount, borrowTx.reserve.decimals)),
+              6
+            )}{' '}
             {formattedBorrowReserve.name}
           </Typography>
         </Box>
@@ -136,8 +149,11 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
           >
-            &minus;{' '}
-            {Number(formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)).toPrecision(6)}{' '}
+            &minus;
+            {formatNumberDisplay(
+              Number(formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)),
+              6
+            )}{' '}
             {formattedWithdrawReserve.name}
           </Typography>
         </Box>
@@ -153,7 +169,11 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
           >
-            &minus; {Number(formatUnits(repayTx.amount, repayTx.reserve.decimals)).toPrecision(6)}{' '}
+            &minus;
+            {formatNumberDisplay(
+              Number(formatUnits(repayTx.amount, repayTx.reserve.decimals)),
+              6
+            )}{' '}
             {formattedRepayReserve.name}
           </Typography>
         </Box>
@@ -203,16 +223,21 @@ const ActionDetails = <K extends keyof ActionFields>({
       const formattedSwapReserve = fetchIconSymbolAndName(swapBorrowRateTx.reserve);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography>
-            Variable 2% - Stable 4%
-            <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-            <Typography
-              variant="secondary14"
-              color="text.primary"
-              sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
-            >
-              {swapBorrowRateTx.reserve.symbol}
-            </Typography>
+          <BorrowRateModeBlock from={true} swapBorrowRateTx={swapBorrowRateTx} />
+          <SvgIcon sx={{ fontSize: '20px', px: 1 }}>
+            <ArrowNarrowRightIcon />
+          </SvgIcon>
+          <BorrowRateModeBlock swapBorrowRateTx={swapBorrowRateTx} />
+          <Typography variant="caption" color="text.secondary" px={2}>
+            <Trans>for</Trans>
+          </Typography>
+          <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: '20px' }} />
+          <Typography
+            variant="secondary14"
+            color="text.primary"
+            sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+          >
+            {swapBorrowRateTx.reserve.symbol}
           </Typography>
         </Box>
       );
@@ -226,10 +251,77 @@ const ActionDetails = <K extends keyof ActionFields>({
       );
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography>
-            Liquidation colat {formattedLiquidationColatReserve.iconSymbol} debt{' '}
-            {formattedLiquidationBorrowReserve.iconSymbol}
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={4.5}>
+            <Typography>
+              <Trans>Liquidated collateral</Trans>
+            </Typography>
+            <Box sx={{ display: 'inline-flex' }}>
+              <TokenIcon
+                symbol={formattedLiquidationColatReserve.iconSymbol}
+                sx={{ fontSize: '20px', pr: 0.5 }}
+              />
+              <Typography
+                variant="secondary14"
+                color="text.primary"
+                sx={{ display: 'inline-flex' }}
+              >
+                -
+                {formatNumberDisplay(
+                  Number(
+                    formatUnits(
+                      liquidationTx.collateralAmount,
+                      liquidationTx.collateralReserve.decimals
+                    )
+                  ),
+                  2
+                )}
+                <Box
+                  sx={{
+                    ml: formattedLiquidationColatReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                  }}
+                >
+                  {formattedLiquidationColatReserve.symbol}
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
+          <SvgIcon sx={{ fontSize: '14px' }}>
+            <ArrowNarrowRightIcon />
+          </SvgIcon>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={4.5}>
+            <Typography>
+              <Trans>Covered debt</Trans>
+            </Typography>
+            <Box sx={{ display: 'inline-flex' }}>
+              <TokenIcon
+                symbol={formattedLiquidationBorrowReserve.iconSymbol}
+                sx={{ fontSize: '20px', pr: 0.5 }}
+              />
+              <Typography
+                variant="secondary14"
+                color="text.primary"
+                sx={{ display: 'inline-flex' }}
+              >
+                +
+                {formatNumberDisplay(
+                  Number(
+                    formatUnits(
+                      liquidationTx.principalAmount,
+                      liquidationTx.principalReserve.decimals
+                    )
+                  ),
+                  2
+                )}
+                <Box
+                  sx={{
+                    ml: formattedLiquidationBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                  }}
+                >
+                  {formattedLiquidationBorrowReserve.symbol}
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       );
     default:
