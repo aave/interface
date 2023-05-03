@@ -41,9 +41,6 @@ export const GhoDiscountCalculator = () => {
   });
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
 
-  // We're assuming a one year borrow term for the rate calculations
-  const selectedTimeRange = ESupportedTimeRanges.OneYear;
-
   useEffect(() => {
     // Inital values come from the store, but if that data is not loaded yet, update it once it is
     if (!ghoLoadingData && !initialRateValuesSet) {
@@ -61,8 +58,11 @@ export const GhoDiscountCalculator = () => {
   useEffect(() => {
     const stkAaveAmount = stkAave ?? 0;
     const ghoBorrowAmount = ghoBorrow ?? 0;
-    const discountableAmount = Math.round(stkAaveAmount * ghoReserveData.ghoDiscountedPerToken);
-    const termDuration = getSecondsForGhoBorrowTermDuration(selectedTimeRange);
+    let discountableAmount = Math.round(stkAaveAmount * ghoReserveData.ghoDiscountedPerToken);
+    if (stkAaveAmount < ghoReserveData.ghoMinDiscountTokenBalanceForDiscount) {
+      discountableAmount = 0;
+    }
+    const termDuration = getSecondsForGhoBorrowTermDuration(ESupportedTimeRanges.OneYear);
     const calculatedRate = calculateDiscountRate(
       ghoBorrowAmount,
       termDuration,
@@ -77,7 +77,7 @@ export const GhoDiscountCalculator = () => {
       rateAfterDiscount: calculatedRate.rateAfterDiscount,
       rateAfterMaxDiscount: calculatedRate.rateAfterMaxDiscount,
     });
-  }, [stkAave, ghoBorrow, selectedTimeRange]);
+  }, [stkAave, ghoBorrow]);
 
   const StakingDiscountAlert = () => {
     const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
@@ -366,24 +366,30 @@ const GhoDiscountParametersComponent: React.FC<{
         fullWidth={downToXsm}
         loading={loading}
       >
-        <FormattedNumber
-          value={ghoReserveData.ghoMinDiscountTokenBalanceForDiscount}
-          visibleDecimals={2}
-          variant="secondary14"
-          color="text.primary"
-        />
+        <Stack direction="row" alignItems="center">
+          <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />
+          <FormattedNumber
+            value={ghoReserveData.ghoMinDiscountTokenBalanceForDiscount}
+            visibleDecimals={2}
+            variant="secondary14"
+            color="text.primary"
+          />
+        </Stack>
       </DiscountModelParameter>
       <DiscountModelParameter
         title={<Trans>Minimum GHO borrow amount</Trans>}
         fullWidth={downToXsm}
         loading={loading}
       >
-        <FormattedNumber
-          value={ghoReserveData.ghoMinDebtTokenBalanceForDiscount}
-          visibleDecimals={2}
-          variant="secondary14"
-          color="text.primary"
-        />
+        <Stack direction="row" alignItems="center">
+          <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
+          <FormattedNumber
+            value={ghoReserveData.ghoMinDebtTokenBalanceForDiscount}
+            visibleDecimals={2}
+            variant="secondary14"
+            color="text.primary"
+          />
+        </Stack>
       </DiscountModelParameter>
     </Box>
     <Typography variant="caption" color="text.secondary">

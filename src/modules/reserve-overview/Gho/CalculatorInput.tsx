@@ -90,13 +90,17 @@ export const CalculatorInput = ({
           min: 0,
           sx: { py: 2, px: 3, fontSize: '21px' },
         }}
-        onChange={(e) =>
-          e.target.value === '' || Number(e.target.value) <= 0
-            ? onValueChanged(null)
-            : onValueChanged(Number(e.target.value))
-        }
+        onChange={(e) => {
+          const value = parseFloat(e.target.value.replace(/,/g, ''));
+          if (isNaN(value) || value <= 0) {
+            onValueChanged(null);
+          } else {
+            onValueChanged(value);
+          }
+        }}
         onBlur={(e) => {
-          if (e.target.value === '' || Number(e.target.value) <= 0) {
+          const value = parseFloat(e.target.value.replace(/,/g, ''));
+          if (isNaN(value) || value <= 0) {
             onValueChanged(sliderMin);
           }
         }}
