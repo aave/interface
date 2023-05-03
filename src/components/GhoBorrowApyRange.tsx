@@ -1,4 +1,10 @@
-import { Box, Skeleton, Typography, TypographyPropsVariantOverrides } from '@mui/material';
+import {
+  Box,
+  Skeleton,
+  Typography,
+  TypographyProps,
+  TypographyPropsVariantOverrides,
+} from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 import { OverridableStringUnion } from '@mui/types';
 import React from 'react';
@@ -6,12 +12,12 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
-type GhoBorrowApyRangeProps = {
+interface GhoBorrowApyRangeProps extends TypographyProps {
   minVal?: number;
   maxVal?: number;
   percentVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   hyphenVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
-};
+}
 
 /**
  * This component displays two borrow APY values as percentages with two decimal places and a hyphen in between.
@@ -23,6 +29,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
   maxVal,
   percentVariant,
   hyphenVariant,
+  ...rest
 }) => {
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
@@ -48,6 +55,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
           visibleDecimals={2}
           variant={percentVariant ?? 'h3'}
           data-cy={'apy'}
+          {...rest}
         />
       ) : (
         <>
@@ -57,6 +65,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
             visibleDecimals={2}
             variant={percentVariant ?? 'h3'}
             data-cy={'apy-gho-from'}
+            {...rest}
           />
           <Typography
             variant={hyphenVariant ?? 'secondary16'}
@@ -72,6 +81,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
             visibleDecimals={2}
             variant={percentVariant ?? 'h3'}
             data-cy={'apy-gho-till'}
+            {...rest}
           />
         </>
       )}

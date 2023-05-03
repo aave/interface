@@ -113,11 +113,6 @@ msgstr "AToken supply is not zero"
 msgid "Aave Governance"
 msgstr "Aave Governance"
 
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
-msgid "Aave Protocol native asset"
-msgstr "Aave Protocol native asset"
-
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Aave aToken"
@@ -360,7 +355,6 @@ msgstr "Available rewards"
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
@@ -422,8 +416,6 @@ msgid "Borrow"
 msgstr "Borrow"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 msgid "Borrow APY"
 msgstr "Borrow APY"
 
@@ -431,6 +423,10 @@ msgstr "Borrow APY"
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow APY, fixed rate"
+msgstr "Borrow APY, fixed rate"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -773,7 +769,6 @@ msgstr "Delegated power"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Details"
@@ -1334,6 +1329,10 @@ msgstr "Maximum amount available to supply is limited because protocol supply ca
 msgid "Maximum loan to value"
 msgstr "Maximum loan to value"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Meet GHO"
+msgstr "Meet GHO"
+
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menu"
@@ -1566,8 +1565,6 @@ msgstr "Powered by"
 msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Price"
 msgstr "Price"
@@ -2322,8 +2319,7 @@ msgstr "Top 10 addresses"
 msgid "Total available"
 msgstr "Total available"
 
-#: src/modules/markets/Gho/GhoMarketAssetsListItem.tsx
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -2506,7 +2502,7 @@ msgstr "View all votes"
 msgid "View contract"
 msgstr "View contract"
 
-#: src/modules/markets/Gho/GhoMarketAssetsListMobileItem.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
