@@ -1,4 +1,5 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { USER_TRANSACTIONS_V2 } from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
@@ -50,8 +51,8 @@ export type ActionFields = {
   };
   SwapBorrowRate: {
     reserve: ReserveSubset;
-    borrowRateModeFrom: number;
-    borrowRateModeTo: number;
+    borrowRateModeFrom: string;
+    borrowRateModeTo: string;
     stableBorrowRate: string;
     variableBorrowRate: string;
   };
@@ -69,7 +70,7 @@ export type ActionFields = {
   };
 };
 
-export const useTransactionHistory = () => {
+export const useTransactionHistory = ({ fetchAll }: { fetchAll: boolean }) => {
   const { currentMarketData, account } = useRootStore();
 
   interface TransactionHistoryParams {
@@ -146,6 +147,13 @@ export const useTransactionHistory = () => {
       },
     }
   );
+
+  // If fetchAll is true, fetch all pages immediately instead of waiting for page trigger
+  useEffect(() => {
+    if (fetchAll && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchAll, hasNextPage, fetchNextPage]);
 
   return {
     data,

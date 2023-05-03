@@ -61,12 +61,18 @@ const downloadFile = () => {
 };
 
 export const HistoryWrapper = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   const {
     data: transactions,
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-  } = useTransactionHistory();
+  } = useTransactionHistory({ fetchAll: searchQuery.length > 0 });
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -127,7 +133,7 @@ export const HistoryWrapper = () => {
               <FilterLabel filter={filter} />
             </Typography>
           </Button>
-          <SearchBox />
+          <SearchBox onSearch={handleSearch} />
         </Box>
         <Box
           sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
@@ -155,11 +161,32 @@ export const HistoryWrapper = () => {
           </>
         )
       ) : transactions && transactions.pages && transactions.pages[0].length > 0 ? (
-        transactions.pages.map((page: TransactionHistoryItem[], pageIndex: number) =>
-          page.map((transaction: TransactionHistoryItem, index: number) => {
+        transactions.pages.map((page: TransactionHistoryItem[], pageIndex: number) => {
+          let filteredTxns: TransactionHistoryItem[];
+          // Apply seach filter
+          if (searchQuery.length > 0) {
+            // txn may or may not contain reserve field
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredTxns = page.filter((txn: any) => {
+              const symbol = txn?.reserve?.symbol?.toLowerCase();
+              const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase(); // for liquidationcall
+              const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase(); // for liquidationcall
+              if (
+                (symbol && symbol.includes(searchQuery.toLowerCase())) ||
+                (collateralSymbol && collateralSymbol.includes(searchQuery.toLowerCase())) ||
+                (principalSymbol && principalSymbol.includes(searchQuery.toLowerCase()))
+              ) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+          } else {
+            filteredTxns = page;
+          }
+          return filteredTxns.map((transaction: TransactionHistoryItem, index: number) => {
             const isLastItem =
-              pageIndex === transactions.pages.length - 1 && index === page.length - 1;
-
+              pageIndex === transactions.pages.length - 1 && index === filteredTxns.length - 1;
             return (
               <div ref={isLastItem ? lastElementRef : null} key={index}>
                 <TransactionRowItem
@@ -170,8 +197,8 @@ export const HistoryWrapper = () => {
                 />
               </div>
             );
-          })
-        )
+          });
+        })
       ) : (
         <Box
           sx={{

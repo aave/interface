@@ -2,9 +2,21 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import SvgIcon from '@mui/material/SvgIcon';
 import TextField from '@mui/material/TextField';
-import React from 'react';
+import React, { useState } from 'react';
 
-const SearchBox = () => {
+interface SearchBoxProps {
+  onSearch: (query: string) => void;
+}
+
+const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    onSearch(query);
+  };
+
   return (
     <TextField
       sx={{
@@ -27,6 +39,8 @@ const SearchBox = () => {
           },
         },
       }}
+      value={searchQuery}
+      onChange={handleInputChange}
       placeholder={'Search assets...'} // TODO: i18n
       InputProps={{
         startAdornment: (
