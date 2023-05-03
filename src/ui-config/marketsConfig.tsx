@@ -56,6 +56,7 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  proto_scroll_alpha_v3 = 'proto_scroll_alpha_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
@@ -361,6 +362,25 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER,
+    },
+  },
+  [CustomMarket.proto_scroll_alpha_v3]: {
+    marketTitle: 'Scroll Alpha Görli',
+    v3: true,
+    chainId: ChainId.scroll_alpha,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ScrollAlpha.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3ScrollAlpha.POOL,
+      WETH_GATEWAY: markets.AaveV3ScrollAlpha.WETH_GATEWAY,
+      FAUCET: markets.AaveV3ScrollAlpha.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3ScrollAlpha.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: markets.AaveV3ScrollAlpha.L2_ENCODER,
     },
   },
   [CustomMarket.proto_fantom_v3]: {
