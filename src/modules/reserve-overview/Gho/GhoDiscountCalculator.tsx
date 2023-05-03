@@ -94,7 +94,14 @@ export const GhoDiscountCalculator = () => {
           mb: 2,
         }}
       >
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discountable amount</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>Discountable amount</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={75} />
           ) : (
@@ -113,7 +120,14 @@ export const GhoDiscountCalculator = () => {
             </Typography>
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>Discount</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>Discount</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -127,7 +141,14 @@ export const GhoDiscountCalculator = () => {
             />
           )}
         </ReserveOverviewBox>
-        <ReserveOverviewBox fullWidth={downToXsm} title={<Trans>APY with discount applied</Trans>}>
+        <ReserveOverviewBox
+          fullWidth={downToXsm}
+          title={
+            <Typography variant="description">
+              <Trans>APY with discount applied</Trans>
+            </Typography>
+          }
+        >
           {loading ? (
             <Skeleton variant="text" width={50} />
           ) : (
@@ -278,7 +299,7 @@ export const GhoDiscountCalculator = () => {
 
   const GhoDiscountCalculatorDesktop = (
     <Stack direction="row" gap={8}>
-      <Box>
+      <Box sx={{ flexBasis: '50%' }}>
         <GhoPieChartContainer
           borrowAmount={ghoBorrow}
           discountableAmount={discountableGhoAmount}
@@ -287,7 +308,7 @@ export const GhoDiscountCalculator = () => {
           rateAfterDiscount={rateSelection.rateAfterDiscount}
         />
       </Box>
-      <Stack direction="column" alignItems="center" gap={2} sx={{ width: '100%' }}>
+      <Stack direction="column" alignItems="center" gap={2} sx={{ flexBasis: '50%' }}>
         <Box sx={{ width: '100%', mt: 4 }}>
           <CalculatorInput
             title="Borrow amount"

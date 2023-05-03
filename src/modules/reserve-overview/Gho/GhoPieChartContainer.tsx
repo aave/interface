@@ -101,7 +101,7 @@ const GhoPieChartDesktop = ({
       sx={{
         position: 'relative',
         background: theme.palette.background.surface2,
-        width: '306px',
+        minWidth: '306px',
         height: '320px',
         justifyContent: 'space-between',
         alignItems: 'center',
