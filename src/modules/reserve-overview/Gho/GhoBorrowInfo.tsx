@@ -2,6 +2,7 @@ import { FormattedGhoReserveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import {
@@ -92,7 +93,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
         </Box>
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
-        <PanelItem title={<Trans>APY, fixed rate</Trans>}>
+        <PanelItem title={<FixedAPYTooltip text={<Trans>APY, fixed rate</Trans>} />}>
           <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
         </PanelItem>
       </Box>
