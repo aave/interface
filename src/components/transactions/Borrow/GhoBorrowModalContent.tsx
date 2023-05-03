@@ -118,15 +118,15 @@ export const GhoBorrowModalContent = ({
 
   const { currentMarket: customMarket } = useProtocolDataContext();
 
+  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
+  const [amount, setAmount] = useState('');
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
+
   // Check if user has any open borrow positions on GHO
   // Check if user can borrow at a discount
   const hasGhoBorrowPositions = ghoUserData.userGhoBorrowBalance > 0;
   const userStakedAaveBalance: number = ghoUserData.userDiscountTokenBalance;
-  const discountAvailable = userStakedAaveBalance > 0;
-
-  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const [amount, setAmount] = useState('');
-  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
+  const discountAvailable = ghoUserData.userGhoAvailableToBorrowAtDiscount > 0;
 
   // amount calculations
   let maxAmountToBorrow = getMaxGhoMintAmount(user);
@@ -167,17 +167,26 @@ export const GhoBorrowModalContent = ({
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
+  const currentDiscountedAmount =
+    ghoUserData.userGhoBorrowBalance > ghoReserveData.ghoMinDiscountTokenBalanceForDiscount
+      ? ghoUserData.userGhoAvailableToBorrowAtDiscount
+      : 0;
   const currentBorrowAPY = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
     ghoUserData.userGhoBorrowBalance,
-    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    currentDiscountedAmount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
+  const futureDiscountedAmount =
+    ghoUserData.userGhoBorrowBalance + Number(amount) >
+    ghoReserveData.ghoMinDiscountTokenBalanceForDiscount
+      ? ghoUserData.userGhoAvailableToBorrowAtDiscount
+      : 0;
   const futureBorrowAPY = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
     ghoUserData.userGhoBorrowBalance + Number(amount),
-    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    futureDiscountedAmount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
   console.log(
@@ -412,6 +421,7 @@ export const GhoBorrowModalContent = ({
               <FormattedNumber
                 variant="helperText"
                 color="text.secondary"
+                visibleDecimals={2}
                 value={userStakedAaveBalance}
               />{' '}
               staking AAVE

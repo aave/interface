@@ -67,7 +67,9 @@ export const GhoBorrowAssetsListItem = ({
     : undefined;
 
   return (
-    <ListItem sx={{ border: '1px solid', borderColor: 'divider', mb: 2 }}>
+    <ListItem
+      sx={{ borderTop: '1px solid', borderBottom: '1px solid', borderColor: 'divider', mb: 2 }}
+    >
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}

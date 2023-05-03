@@ -30,10 +30,14 @@ export const GhoBorrowedPositionsListItem = ({
   const { ghoUserDataFetched } = useRootStore();
   const { isActive, isFrozen, borrowingEnabled } = reserve;
 
+  const discountableAmount =
+    ghoUserData.userGhoBorrowBalance >= ghoReserveData.ghoMinDebtTokenBalanceForDiscount
+      ? ghoUserData.userGhoAvailableToBorrowAtDiscount
+      : 0;
   const borrowRateAfterDiscount = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
     ghoUserData.userGhoBorrowBalance,
-    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    discountableAmount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 

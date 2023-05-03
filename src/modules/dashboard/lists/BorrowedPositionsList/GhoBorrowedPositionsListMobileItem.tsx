@@ -29,10 +29,14 @@ export const GhoBorrowedPositionsListMobileItem = ({
     reserve;
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
 
+  const discountableAmount =
+    ghoUserData.userGhoBorrowBalance >= ghoReserveData.ghoMinDebtTokenBalanceForDiscount
+      ? ghoUserData.userGhoAvailableToBorrowAtDiscount
+      : 0;
   const borrowRateAfterDiscount = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
     ghoUserData.userGhoBorrowBalance,
-    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    discountableAmount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
