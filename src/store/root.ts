@@ -89,13 +89,10 @@ export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshIncentiveData();
 }, 60000);
 
-export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshGovernanceData();
-}, 60000);
-
 export const useGhoDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshGhoData();
 }, 60000);
+
 let latest: V3FaucetService;
 
 useRootStore.subscribe(

@@ -305,6 +305,28 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     //   url: 'https://app.optimism.io/bridge',
     // },
   },
+  [ChainId.scroll_alpha]: {
+    name: 'Scroll Alpha',
+    publicJsonRPCUrl: [
+      'https://alpha-rpc.scroll.io/l2',
+      'https://scroll-alphanet.public.blastapi.io',
+    ],
+    publicJsonRPCWSUrl: 'wss://scroll-alphanet.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://blockscout.scroll.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/scroll.svg',
+    // bridge: {
+    //   icon: '/icons/bridge/scroll.svg',
+    //   name: 'Scroll Alpha Bridge',
+    //   url: 'https://scroll.io/alpha/bridge',
+    // },
+  },
   [ChainId.fantom]: {
     name: 'Fantom',
     privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
