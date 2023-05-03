@@ -14,11 +14,9 @@ import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
-import { GhoMarketAssetsListItem } from './Gho/GhoMarketAssetsListItem';
-import { GhoMarketAssetsListMobileItem } from './Gho/GhoMarketAssetsListMobileItem';
+import { GhoBanner } from './Gho/GhoBanner';
 
 export const MarketAssetsListContainer = () => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const [searchTerm, setSearchTerm] = useState('');
@@ -99,11 +97,7 @@ export const MarketAssetsListContainer = () => {
 
       {displayGho && (
         <Box mb={4}>
-          {isTableChangedToCards ? (
-            <GhoMarketAssetsListMobileItem reserve={ghoReserve} />
-          ) : (
-            <GhoMarketAssetsListItem reserve={ghoReserve} />
-          )}
+          <GhoBanner reserve={ghoReserve} />
         </Box>
       )}
 

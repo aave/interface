@@ -1,7 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button } from '@mui/material';
+import { Box, Button, SvgIcon } from '@mui/material';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
@@ -13,28 +16,17 @@ import {
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
-import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 
 export const GhoBorrowedPositionsListMobileItem = ({
   reserve,
   borrowRateMode,
-  stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { currentMarket } = useProtocolDataContext();
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    isActive,
-    isFrozen,
-    borrowingEnabled,
-    stableBorrowRateEnabled,
-    variableBorrowAPY,
-    underlyingAsset,
-  } = reserve;
+  const { openBorrow, openRepay } = useModalContext();
+  const { symbol, iconSymbol, name, isActive, isFrozen, borrowingEnabled, underlyingAsset } =
+    reserve;
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
 
   const borrowRateAfterDiscount = weightedAverageAPY(
@@ -43,6 +35,8 @@ export const GhoBorrowedPositionsListMobileItem = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
+
+  const hasDiscount = ghoUserData.userDiscountTokenBalance > 0;
 
   return (
     <ListMobileItemWrapper
@@ -62,14 +56,11 @@ export const GhoBorrowedPositionsListMobileItem = ({
       />
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <GhoIncentivesCard
+          withTokenIcon={hasDiscount}
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
           incentives={reserve.vIncentivesData}
           symbol={reserve.symbol}
           data-cy={`apyType`}
-          borrowAmount={ghoUserData.userGhoBorrowBalance}
-          baseApy={ghoReserveData.ghoVariableBorrowAPY}
-          discountPercent={ghoReserveData.ghoDiscountRate * -1}
-          discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
@@ -81,16 +72,14 @@ export const GhoBorrowedPositionsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <ListItemAPYButton
-          stableBorrowRateEnabled={stableBorrowRateEnabled}
-          borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
-          onClick={() => openRateSwitch(underlyingAsset, borrowRateMode)}
-          stableBorrowAPY={stableBorrowAPY}
-          variableBorrowAPY={variableBorrowAPY}
-          underlyingAsset={underlyingAsset}
-          currentMarket={currentMarket}
-        />
+        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
+          <Button variant="outlined" size="small" color="primary" disabled>
+            FIXED RATE
+            <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
+              <InformationCircleIcon />
+            </SvgIcon>
+          </Button>
+        </ContentWithTooltip>
       </Row>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

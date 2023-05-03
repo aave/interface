@@ -1,7 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Button, SvgIcon } from '@mui/material';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -14,21 +17,18 @@ import {
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListButtonsColumn } from '../ListButtonsColumn';
-import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 
 export const GhoBorrowedPositionsListItem = ({
   reserve,
   borrowRateMode,
-  stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { openBorrow, openRepay } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
   const { ghoUserDataFetched } = useRootStore();
-  const { isActive, isFrozen, borrowingEnabled, stableBorrowRateEnabled, variableBorrowAPY } =
-    reserve;
+  const { isActive, isFrozen, borrowingEnabled } = reserve;
 
   const borrowRateAfterDiscount = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
@@ -36,6 +36,8 @@ export const GhoBorrowedPositionsListItem = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
+
+  const hasDiscount = ghoUserData.userDiscountTokenBalance > 0;
 
   return (
     <ListItemWrapper
@@ -55,29 +57,24 @@ export const GhoBorrowedPositionsListItem = ({
       />
       <ListColumn>
         <GhoIncentivesCard
+          withTokenIcon={hasDiscount}
           value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
           incentives={reserve.vIncentivesData}
           symbol={reserve.symbol}
           data-cy={`apyType`}
-          borrowAmount={ghoUserData.userGhoBorrowBalance}
-          baseApy={ghoReserveData.ghoVariableBorrowAPY}
-          discountPercent={ghoReserveData.ghoDiscountRate * -1}
-          discountableAmount={ghoUserData.userGhoAvailableToBorrowAtDiscount}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </ListColumn>
       <ListColumn>
-        <ListItemAPYButton
-          stableBorrowRateEnabled={stableBorrowRateEnabled}
-          borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
-          onClick={() => openRateSwitch(reserve.underlyingAsset, borrowRateMode)}
-          stableBorrowAPY={stableBorrowAPY}
-          variableBorrowAPY={variableBorrowAPY}
-          underlyingAsset={reserve.underlyingAsset}
-          currentMarket={currentMarket}
-        />
+        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
+          <Button variant="outlined" size="small" color="primary" disabled>
+            FIXED RATE
+            <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
+              <InformationCircleIcon />
+            </SvgIcon>
+          </Button>
+        </ContentWithTooltip>
       </ListColumn>
       <ListButtonsColumn>
         <Button

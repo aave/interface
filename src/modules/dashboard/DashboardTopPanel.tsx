@@ -18,7 +18,6 @@ import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
-import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 // TODO: need change icon
 // import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
 // import HfFull from '/public/icons/healthFactor/hfFull.svg';
@@ -135,7 +134,7 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
+        <TopInfoPanelItem hideIcon={true} title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -152,6 +151,7 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         <TopInfoPanelItem
+          hideIcon={true}
           icon={<NetAPYIcon />}
           title={
             <div style={{ display: 'flex' }}>

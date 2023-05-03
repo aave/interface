@@ -13,6 +13,7 @@ import {
   GhoIncentivesCardProps,
 } from 'src/components/incentives/GhoIncentivesCard';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
@@ -231,9 +232,6 @@ export const GhoBorrowModalContent = ({
     const sharedIncentiveProps: SharedIncentiveProps = {
       incentives: userReserve.reserve.vIncentivesData,
       symbol: userReserve.reserve.symbol,
-      baseApy: ghoReserveData.ghoBaseVariableBorrowRate,
-      discountPercent: ghoReserveData.ghoDiscountRate * -1,
-      discountableAmount: ghoUserData.userGhoAvailableToBorrowAtDiscount,
       stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
       ghoRoute:
         ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',
@@ -243,8 +241,8 @@ export const GhoBorrowModalContent = ({
     if (!hasGhoBorrowPositions && amount !== '') {
       return (
         <GhoIncentivesCard
+          withTokenIcon={discountAvailable}
           value={futureBorrowAPY}
-          borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
           {...sharedIncentiveProps}
         />
       );
@@ -253,8 +251,8 @@ export const GhoBorrowModalContent = ({
     if (hasGhoBorrowPositions && amount === '') {
       return (
         <GhoIncentivesCard
+          withTokenIcon={discountAvailable}
           value={currentBorrowAPY}
-          borrowAmount={userReserve.totalBorrows}
           onMoreDetailsClick={() => close()}
           {...sharedIncentiveProps}
         />
@@ -265,7 +263,6 @@ export const GhoBorrowModalContent = ({
       return (
         <GhoIncentivesCard
           value={currentBorrowAPY}
-          borrowAmount={(Number(amount) + Number(userReserve.totalBorrows)).toString()}
           onMoreDetailsClick={() => close()}
           {...sharedIncentiveProps}
         />
@@ -276,12 +273,8 @@ export const GhoBorrowModalContent = ({
       return (
         <>
           <GhoIncentivesCard
+            withTokenIcon
             value={currentBorrowAPY}
-            borrowAmount={
-              !!amount
-                ? (Number(amount) + Number(userReserve.totalBorrows)).toString()
-                : userReserve.totalBorrows
-            }
             onMoreDetailsClick={() => close()}
             {...sharedIncentiveProps}
           />
@@ -294,7 +287,6 @@ export const GhoBorrowModalContent = ({
               )}
               <GhoIncentivesCard
                 value={ghoLoadingData ? -1 : futureBorrowAPY}
-                borrowAmount={Number(userReserve.totalBorrows) + Number(amount)}
                 {...sharedIncentiveProps}
               />
             </>
@@ -396,9 +388,11 @@ export const GhoBorrowModalContent = ({
         <Row
           caption={
             <Box>
-              <Typography>
-                <Trans>Borrow APY</Trans>
-              </Typography>
+              <FixedAPYTooltip
+                text={<Trans>APY, fixed rate</Trans>}
+                variant="subheader2"
+                color="text.secondary"
+              />
             </Box>
           }
           captionVariant="description"
@@ -411,6 +405,19 @@ export const GhoBorrowModalContent = ({
             </Box>
           </Box>
         </Row>
+        {discountAvailable && (
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>
+              Discount applied for{' '}
+              <FormattedNumber
+                variant="helperText"
+                color="text.secondary"
+                value={userStakedAaveBalance}
+              />{' '}
+              staking AAVE
+            </Trans>
+          </Typography>
+        )}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

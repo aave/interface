@@ -1,12 +1,16 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { formatEther } from 'ethers/lib/utils';
+import { useRootStore } from 'src/store/root';
 
 import { PopperComponent } from '../ContentWithTooltip';
 import GhoBorrowApyRange from '../GhoBorrowApyRange';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { NoData } from '../primitives/NoData';
+import { TokenIcon } from '../primitives/TokenIcon';
 import { IncentivesButton } from './IncentivesButton';
 
 export interface GhoIncentivesCardProps {
@@ -18,55 +22,44 @@ export interface GhoIncentivesCardProps {
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
   align?: 'center' | 'flex-end';
-  borrowAmount: string | number;
-  baseApy: string | number;
-  discountPercent: string | number;
-  discountableAmount: string | number;
   stkAaveBalance: string | number;
   ghoRoute: string;
   onMoreDetailsClick?: () => void;
+  withTokenIcon?: boolean;
 }
 
 export const GhoIncentivesCard = ({
   symbol,
   value,
-  useApyRange = false,
+  useApyRange,
   rangeValues = [0, 0],
   incentives,
   variant = 'secondary14',
   symbolsVariant,
   align,
-  borrowAmount,
-  baseApy,
-  discountPercent,
-  discountableAmount,
-  stkAaveBalance,
   ghoRoute,
   onMoreDetailsClick,
-}: GhoIncentivesCardProps) => (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: align || { xs: 'flex-end', xsm: 'center' },
-      justifyContent: 'center',
-      textAlign: 'center',
-    }}
-  >
-    {value.toString() !== '-1' ? (
-      discountableAmount === 0 ? (
-        <Box sx={{ display: 'flex' }}>
-          <FormattedNumber
-            value={value}
-            percent
-            variant={variant}
-            symbolsVariant={symbolsVariant}
-            data-cy={'apy'}
-          />
-        </Box>
-      ) : (
+  withTokenIcon = false,
+}: GhoIncentivesCardProps) => {
+  const [stakeUserResult] = useRootStore((state) => [state.stakeUserResult]);
+  const stkAaveAmount = new BigNumber(stakeUserResult?.aave?.stakeTokenUserBalance || '0');
+  const formattedStkAaveAmount = formatEther(stkAaveAmount.toString());
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: align || { xs: 'flex-end', xsm: 'center' },
+        justifyContent: 'center',
+        textAlign: 'center',
+        flex: '2 1 auto',
+      }}
+    >
+      {value.toString() !== '-1' ? (
         <Tooltip
           enterTouchDelay={0}
+          placement="top"
           title={
             <Box
               sx={{
@@ -78,81 +71,44 @@ export const GhoIncentivesCard = ({
                   fontSize: '12px',
                   lineHeight: '16px',
                   fontWeight: 500,
-                  '&:hover': { textDecoration: 'underline' },
                 },
               }}
             >
-              <Typography variant="caption" color="text.secondary">
-                <Trans>Estimated compounding interest, including discount for staking AAVE:</Trans>
-                <ul style={{ listStylePosition: 'inside', paddingLeft: 8 }}>
-                  <li>
-                    <Trans>Borrow amount</Trans>:{' '}
-                    <FormattedNumber
-                      value={borrowAmount}
-                      variant="caption"
-                      color="text.secondary"
-                      visibleDecimals={0}
-                    />{' '}
-                    GHO
-                  </li>
-                  <li>
-                    <Trans>Base APY</Trans>:{' '}
-                    <FormattedNumber
-                      value={baseApy}
-                      variant="caption"
-                      color="text.secondary"
-                      percent
-                    />
-                  </li>
-                  <li>
-                    <Trans>Discount on base APY</Trans>:{' '}
-                    <FormattedNumber
-                      value={discountPercent}
-                      variant="caption"
-                      color="text.secondary"
-                      visibleDecimals={0}
-                      percent
-                    />
-                  </li>
-                </ul>
+              <Typography variant="subheader2">
                 <Trans>
-                  <strong>
-                    Discount only applies to{' '}
-                    <FormattedNumber
-                      variant="caption"
-                      color="text.secondary"
-                      visibleDecimals={0}
-                      value={discountableAmount}
-                      sx={{ fontWeight: 'bold' }}
-                    />{' '}
-                    GHO,
-                  </strong>{' '}
-                  which equals discountable amount for staking{' '}
-                  <FormattedNumber
-                    value={stkAaveBalance}
-                    variant="caption"
-                    color="text.secondary"
-                    visibleDecimals={0}
-                  />{' '}
-                  AAVE.
+                  Estimated compounding interest, including discount for Staking{' '}
+                  {formattedStkAaveAmount !== '0.0' ? (
+                    <>
+                      <FormattedNumber
+                        variant="subheader2"
+                        value={formattedStkAaveAmount}
+                        visibleDecimals={2}
+                      />{' '}
+                    </>
+                  ) : null}
+                  AAVE in Safety Module.
                 </Trans>{' '}
-                <Link onClick={onMoreDetailsClick} href={ghoRoute} underline="always">
-                  <Trans>More details</Trans>
+                <Link
+                  onClick={onMoreDetailsClick}
+                  href={ghoRoute}
+                  underline="always"
+                  variant="subheader2"
+                >
+                  <Trans>Learn more</Trans>
                 </Link>
               </Typography>
             </Box>
           }
-          placement="top"
           arrow
           PopperComponent={PopperComponent}
         >
           <Box
-            sx={(theme) => ({
+            sx={() => ({
               display: 'flex',
-              borderBottom: `1px dashed ${theme.palette.text.muted}`,
-              cursor: 'pointer',
+              alignItems: 'center',
             })}
           >
+            {withTokenIcon && <TokenIcon symbol="stkAAVE" sx={{ height: 14, width: 14, mr: 1 }} />}
             {useApyRange ? (
               <GhoBorrowApyRange
                 percentVariant={variant}
@@ -171,11 +127,11 @@ export const GhoIncentivesCard = ({
             )}
           </Box>
         </Tooltip>
-      )
-    ) : (
-      <NoData variant={variant} color="text.secondary" />
-    )}
+      ) : (
+        <NoData variant={variant} color="text.secondary" />
+      )}
 
-    <IncentivesButton incentives={incentives} symbol={symbol} />
-  </Box>
-);
+      <IncentivesButton incentives={incentives} symbol={symbol} />
+    </Box>
+  );
+};

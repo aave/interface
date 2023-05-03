@@ -111,3 +111,25 @@ export const displayNonDiscountableAmount = (
     ? 0
     : amountGhoBeingBorrowed - discountableGhoAmount;
 };
+
+interface ReserveWithSymbol {
+  symbol: string;
+}
+
+type FindAndFilterReturn<T> = {
+  value: T | undefined;
+  filtered: Array<T>;
+};
+
+export const findAndFilterGhoReserve = <T extends ReserveWithSymbol>(reserves: Array<T>) => {
+  return reserves.reduce<FindAndFilterReturn<T>>(
+    (acum, reserve) => {
+      if (reserve.symbol === GHO_SYMBOL) return { value: reserve, filtered: acum.filtered };
+      else return { ...acum, filtered: acum.filtered.concat(reserve) };
+    },
+    {
+      value: undefined,
+      filtered: [],
+    }
+  );
+};
