@@ -1,9 +1,10 @@
+import { FormattedGhoReserveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import AddIcon from '@mui/icons-material/Add';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import { Alert, Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Stack } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -77,106 +78,6 @@ export const GhoDiscountCalculator = () => {
       rateAfterMaxDiscount: calculatedRate.rateAfterMaxDiscount,
     });
   }, [stkAave, ghoBorrow, selectedTimeRange]);
-
-  const GhoDiscountParametersComponent: React.FC<{ loading: boolean }> = ({ loading }) => (
-    <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <Typography variant="subheader1">
-          <Trans>Discount model parameters</Trans>
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          mt: 3,
-          mb: 2,
-        }}
-      >
-        <ReserveOverviewBox
-          fullWidth={downToXsm}
-          title={
-            <Typography variant="description">
-              <Trans>Discountable amount</Trans>
-            </Typography>
-          }
-        >
-          {loading ? (
-            <Skeleton variant="text" width={75} />
-          ) : (
-            <Typography variant="secondary14" display="flex" alignItems="center">
-              <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
-              {ghoReserveData.ghoDiscountedPerToken}
-              <Typography
-                component="span"
-                variant="secondary14"
-                color="text.primary"
-                sx={{ mx: 1 }}
-              >
-                <Trans>to</Trans>
-              </Typography>{' '}
-              <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />1
-            </Typography>
-          )}
-        </ReserveOverviewBox>
-        <ReserveOverviewBox
-          fullWidth={downToXsm}
-          title={
-            <Typography variant="description">
-              <Trans>Discount</Trans>
-            </Typography>
-          }
-        >
-          {loading ? (
-            <Skeleton variant="text" width={50} />
-          ) : (
-            <FormattedNumber
-              value={ghoReserveData.ghoDiscountRate * -1}
-              percent
-              variant="secondary14"
-              color="text.primary"
-              sx={{ mr: 1 }}
-              visibleDecimals={0}
-            />
-          )}
-        </ReserveOverviewBox>
-        <ReserveOverviewBox
-          fullWidth={downToXsm}
-          title={
-            <Typography variant="description">
-              <Trans>APY with discount applied</Trans>
-            </Typography>
-          }
-        >
-          {loading ? (
-            <Skeleton variant="text" width={50} />
-          ) : (
-            <FormattedNumber
-              value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-              percent
-              variant="secondary14"
-              color="text.primary"
-            />
-          )}
-        </ReserveOverviewBox>
-      </Box>
-      <Typography variant="caption" color="text.secondary">
-        <Trans>
-          Discount parameters are decided by the Aave community and may be changed over time. Check
-          Governance for updates and vote to participate.{' '}
-          <Link
-            href="https://governance.aave.com"
-            sx={{ textDecoration: 'underline' }}
-            variant="caption"
-            color="text.secondary"
-          >
-            Learn more
-          </Link>
-        </Trans>
-      </Typography>
-    </Box>
-  );
 
   const StakingDiscountAlert = () => {
     const maxGhoNotBorrowed = ghoBorrow && ghoBorrow < discountableGhoAmount;
@@ -391,8 +292,136 @@ export const GhoDiscountCalculator = () => {
       </Typography>
       {downToXsm ? GhoDiscountCalculatorMobile : GhoDiscountCalculatorDesktop}
       <Box sx={{ mt: downToXsm ? 4 : 10 }}>
-        <GhoDiscountParametersComponent loading={ghoLoadingData} />
+        <GhoDiscountParametersComponent
+          loading={ghoLoadingData}
+          downToXsm={downToXsm}
+          ghoReserveData={ghoReserveData}
+        />
       </Box>
     </>
+  );
+};
+
+const GhoDiscountParametersComponent: React.FC<{
+  loading: boolean;
+  downToXsm: boolean;
+  ghoReserveData: FormattedGhoReserveData;
+}> = ({ loading, downToXsm, ghoReserveData }) => (
+  <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      <Typography variant="subheader1">
+        <Trans>Discount model parameters</Trans>
+      </Typography>
+    </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        pt: '12px',
+        columnGap: 2.5,
+      }}
+    >
+      <DiscountModelParameter
+        title={<Trans>Discountable amount</Trans>}
+        fullWidth={downToXsm}
+        loading={loading}
+      >
+        <Typography variant="secondary14" display="flex" alignItems="center">
+          <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
+          {ghoReserveData.ghoDiscountedPerToken}
+          <Typography component="span" variant="secondary14" color="text.primary" sx={{ mx: 1 }}>
+            <Trans>to</Trans>
+          </Typography>{' '}
+          <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />1
+        </Typography>
+      </DiscountModelParameter>
+      <DiscountModelParameter
+        title={<Trans>Discount</Trans>}
+        fullWidth={downToXsm}
+        loading={loading}
+      >
+        <FormattedNumber
+          value={ghoReserveData.ghoDiscountRate * -1}
+          percent
+          variant="secondary14"
+          color="text.primary"
+          sx={{ mr: 1 }}
+          visibleDecimals={0}
+        />
+      </DiscountModelParameter>
+      <DiscountModelParameter
+        title={<Trans>APY with discount applied</Trans>}
+        fullWidth={downToXsm}
+        loading={loading}
+      >
+        <FormattedNumber
+          value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
+          percent
+          variant="secondary14"
+          color="text.primary"
+        />
+      </DiscountModelParameter>
+      <DiscountModelParameter
+        title={<Trans>Minimum staked Aave amount</Trans>}
+        fullWidth={downToXsm}
+        loading={loading}
+      >
+        <FormattedNumber
+          value={ghoReserveData.ghoMinDiscountTokenBalanceForDiscount}
+          visibleDecimals={2}
+          variant="secondary14"
+          color="text.primary"
+        />
+      </DiscountModelParameter>
+      <DiscountModelParameter
+        title={<Trans>Minimum GHO borrow amount</Trans>}
+        fullWidth={downToXsm}
+        loading={loading}
+      >
+        <FormattedNumber
+          value={ghoReserveData.ghoMinDebtTokenBalanceForDiscount}
+          visibleDecimals={2}
+          variant="secondary14"
+          color="text.primary"
+        />
+      </DiscountModelParameter>
+    </Box>
+    <Typography variant="caption" color="text.secondary">
+      <Trans>
+        Discount parameters are decided by the Aave community and may be changed over time. Check
+        Governance for updates and vote to participate.{' '}
+        <Link
+          href="https://governance.aave.com"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Learn more
+        </Link>
+      </Trans>
+    </Typography>
+  </Box>
+);
+
+interface DiscountModelParameterProps {
+  title: ReactNode;
+  children: ReactNode;
+  fullWidth: boolean;
+  loading: boolean;
+}
+
+const DiscountModelParameter = ({
+  title,
+  children,
+  fullWidth,
+  loading,
+}: DiscountModelParameterProps) => {
+  return (
+    <ReserveOverviewBox
+      fullWidth={fullWidth}
+      title={<Typography variant="description">{title}</Typography>}
+    >
+      {loading ? <Skeleton variant="text" width={75} /> : children}
+    </ReserveOverviewBox>
   );
 };
