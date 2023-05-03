@@ -53,6 +53,8 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/history/BorrowRateModeBlock.tsx
+#: src/modules/history/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
@@ -653,6 +655,10 @@ msgstr "Copy error message"
 msgid "Copy error text"
 msgstr "Copy error text"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Covered debt"
+msgstr "Covered debt"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
 msgstr "Created"
@@ -1128,6 +1134,10 @@ msgstr "Learn more."
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Links"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Liquidated collateral"
+msgstr "Liquidated collateral"
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Liquidation"
@@ -1765,6 +1775,7 @@ msgstr "Spanish"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
 
@@ -2349,6 +2360,7 @@ msgstr "VOTE YAE"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/BorrowRateModeBlock.tsx
 msgid "Variable"
 msgstr "Variable"
 
@@ -2660,6 +2672,7 @@ msgstr "enabled"
 msgid "ends"
 msgstr "ends"
 
+#: src/modules/history/TransactionRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "for"
 msgstr "for"
