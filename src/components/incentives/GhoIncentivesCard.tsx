@@ -59,6 +59,7 @@ export const GhoIncentivesCard = ({
       {value.toString() !== '-1' ? (
         <Tooltip
           enterTouchDelay={0}
+          placement="top"
           title={
             <Box
               sx={{
@@ -73,14 +74,13 @@ export const GhoIncentivesCard = ({
                 },
               }}
             >
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="subheader2">
                 <Trans>
                   Estimated compounding interest, including discount for Staking{' '}
                   {formattedStkAaveAmount !== '0.0' ? (
                     <>
                       <FormattedNumber
-                        variant="caption"
-                        color="text.secondary"
+                        variant="subheader2"
                         value={formattedStkAaveAmount}
                         visibleDecimals={2}
                       />{' '}
@@ -93,14 +93,12 @@ export const GhoIncentivesCard = ({
                   href={ghoRoute}
                   underline="always"
                   variant="subheader2"
-                  color="text.secondary"
                 >
                   <Trans>Learn more</Trans>
                 </Link>
               </Typography>
             </Box>
           }
-          placement="top"
           arrow
           PopperComponent={PopperComponent}
         >
