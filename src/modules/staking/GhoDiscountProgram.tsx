@@ -24,7 +24,10 @@ export const GhoDiscountProgram = () => {
           width: '100%',
           marginTop: 'auto',
           p: 4,
-          borderRadius: 4,
+          borderRadius: {
+            xs: 0,
+            xsm: 4,
+          },
           display: 'flex',
           flexDirection: 'column',
           alignItems: ['flex-start', 'center'],
@@ -35,13 +38,16 @@ export const GhoDiscountProgram = () => {
       >
         <Box
           component="img"
-          src="/illustration_token.svg"
+          src="/illustration_token.png"
           sx={{
             position: 'absolute',
-            left: -20,
-            bottom: -45,
+            left: -40,
+            top: -33,
+            width: 250,
+            height: 250,
             overflow: 'hidden',
             display: ['none', 'block'],
+            transform: 'matrix(1, -0.14, 0.14, 1, 0, 0)',
           }}
           width={220}
           height={220}
@@ -81,15 +87,14 @@ export const GhoDiscountProgram = () => {
         </Box>
         <Box
           component="img"
-          src="/illustration_aave_friendly_ghost.svg"
+          src="/illustration_aave_friendly_ghost.png"
           sx={{
             position: 'absolute',
-            right: -20,
-            bottom: [-38, -45],
+            right: [-200, -190],
+            bottom: [-265, -270],
             overflow: 'hidden',
+            transform: 'scaleY(0.5) scaleX(0.5)',
           }}
-          width={220}
-          height={220}
           alt="gho ghost"
         />
       </Box>
