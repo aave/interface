@@ -254,7 +254,7 @@ export const BorrowModalContent = ({
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow}
-        balanceText={<Trans>Available sdss</Trans>}
+        balanceText={<Trans>Available</Trans>}
         event={{
           eventName: BORROW_MODAL.MAX_BORROW,
           eventParams: {
