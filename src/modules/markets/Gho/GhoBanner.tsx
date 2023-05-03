@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -15,7 +15,9 @@ interface GhoBannerProps {
 }
 
 export const GhoBanner = ({ reserve }: GhoBannerProps) => {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
+  const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData } = useAppDataContext();
   return (
@@ -201,15 +203,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 <FormattedNumber
                   symbol="USD"
                   compact
-                  sx={{
-                    ['@media screen and (min-width: 1125px)']: {
-                      typography: 'h3',
-                    },
-                    typography: {
-                      xs: 'secondary14',
-                      md: 'secondary16',
-                    },
-                  }}
+                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                   value={ghoReserveData.aaveFacilitatorRemainingCapacity}
                 />
                 <Typography
@@ -238,17 +232,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               <GhoBorrowApyRange
                 minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
-                percentVariant="secondary14"
-                hyphenVariant="secondary14"
-                sx={{
-                  ['@media screen and (min-width: 1125px)']: {
-                    typography: 'h3',
-                  },
-                  typography: {
-                    xs: 'secondary14',
-                    md: 'secondary16',
-                  },
-                }}
+                variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
               />
               <Typography
                 sx={{
@@ -269,7 +255,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
         </Box>
         <Button
           variant="contained"
-          size={isTableChangedToCards ? 'medium' : 'large'}
+          size={isCustomBreakpoint ? 'medium' : 'large'}
           href={reserve && ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
           sx={{
             marginLeft: {
