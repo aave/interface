@@ -1357,6 +1357,14 @@ msgstr "Migrating multiple collaterals and borrowed assets at the same time can 
 msgid "Migration risks"
 msgstr "Migration risks"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Minimum GHO borrow amount"
+msgstr "Minimum GHO borrow amount"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Minimum staked Aave amount"
+msgstr "Minimum staked Aave amount"
+
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
