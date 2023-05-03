@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro';
 import { ReactNode } from 'react';
 
 import { ListColumn } from '../../../components/lists/ListColumn';
@@ -13,14 +12,8 @@ interface ListHeaderProps {
 export const ListHeader = ({ head }: ListHeaderProps) => {
   return (
     <ListHeaderWrapper>
-      <ListColumn maxWidth={160} isRow>
-        <ListHeaderTitle>
-          <Trans>Assets</Trans>
-        </ListHeaderTitle>
-      </ListColumn>
-
       {head.map((title, i) => (
-        <ListColumn overFlow={'visible'} key={i}>
+        <ListColumn overFlow={'visible'} key={i} isRow={i === 0}>
           <ListHeaderTitle>{title}</ListHeaderTitle>
         </ListColumn>
       ))}
