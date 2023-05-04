@@ -643,6 +643,14 @@ msgstr "Cooldown to unstake"
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copied"
+msgstr "Copied"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copy"
+msgstr "Copy"
+
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copy address"
@@ -2391,6 +2399,10 @@ msgstr "View details"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "View on Explorer"
+
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View on block explorer"
+msgstr "View on block explorer"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
