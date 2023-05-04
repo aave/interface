@@ -41,12 +41,19 @@ export const BorrowActions = React.memo(
     blocked,
     sx,
   }: BorrowActionsProps) => {
-    const {
+    const [
       borrow,
       getCreditDelegationApprovedAmount,
       currentMarketData,
       generateApproveDelegation,
-    } = useRootStore();
+      estimateGasLimit,
+    ] = useRootStore((state) => [
+      state.borrow,
+      state.getCreditDelegationApprovedAmount,
+      state.currentMarketData,
+      state.generateApproveDelegation,
+      state.estimateGasLimit,
+    ]);
     const {
       approvalTxState,
       mainTxState,
@@ -66,7 +73,7 @@ export const BorrowActions = React.memo(
     const approval = async () => {
       try {
         if (requiresApproval && approvedAmount) {
-          const approveDelegationTxData = generateApproveDelegation({
+          let approveDelegationTxData = generateApproveDelegation({
             debtTokenAddress:
               interestRateMode === InterestRate.Variable
                 ? poolReserve.variableDebtTokenAddress
@@ -74,8 +81,8 @@ export const BorrowActions = React.memo(
             delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
             amount: MAX_UINT_AMOUNT,
           });
-
           setApprovalTxState({ ...approvalTxState, loading: true });
+          approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
           const response = await sendTx(approveDelegationTxData);
           await response.wait(1);
           setApprovalTxState({
@@ -98,7 +105,7 @@ export const BorrowActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const txData = borrow({
+        let borrowTxData = borrow({
           amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
           reserve: poolAddress,
           interestRateMode,
@@ -107,7 +114,8 @@ export const BorrowActions = React.memo(
               ? poolReserve.variableDebtTokenAddress
               : poolReserve.stableDebtTokenAddress,
         });
-        const response = await sendTx(txData);
+        borrowTxData = await estimateGasLimit(borrowTxData);
+        const response = await sendTx(borrowTxData);
         await response.wait(1);
         setMainTxState({
           txHash: response.hash,

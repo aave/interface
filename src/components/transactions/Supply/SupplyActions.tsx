@@ -50,6 +50,7 @@ export const SupplyActions = React.memo(
       generateSignatureRequest,
       generateApproval,
       walletApprovalMethodPreference,
+      estimateGasLimit,
     ] = useRootStore((state) => [
       state.tryPermit,
       state.supply,
@@ -58,6 +59,7 @@ export const SupplyActions = React.memo(
       state.generateSignatureRequest,
       state.generateApproval,
       state.walletApprovalMethodPreference,
+      state.estimateGasLimit,
     ]);
     const {
       approvalTxState,
@@ -158,9 +160,9 @@ export const SupplyActions = React.memo(
               success: true,
             });
           } else {
-            const approveTxData = generateApproval(approvedAmount);
-
+            let approveTxData = generateApproval(approvedAmount);
             setApprovalTxState({ ...approvalTxState, loading: true });
+            approveTxData = await estimateGasLimit(approveTxData);
             const response = await sendTx(approveTxData);
             await response.wait(1);
             setApprovalTxState({
@@ -187,14 +189,14 @@ export const SupplyActions = React.memo(
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
         if (usePermit && signatureParams) {
-          const signedTxData = supplyWithPermit({
+          let signedSupplyWithPermitTxData = supplyWithPermit({
             signature: signatureParams.signature,
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
             deadline: signatureParams.deadline,
           });
-
-          const response = await sendTx(signedTxData);
+          signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
+          const response = await sendTx(signedSupplyWithPermitTxData);
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
@@ -202,11 +204,12 @@ export const SupplyActions = React.memo(
             success: true,
           });
         } else {
-          const txData = supply({
+          let supplyTxData = supply({
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
           });
-          const response = await sendTx(txData);
+          supplyTxData = await estimateGasLimit(supplyTxData);
+          const response = await sendTx(supplyTxData);
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
