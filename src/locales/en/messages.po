@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/history/HistoryWrapper.tsx
-msgid ".CSV"
-msgstr ".CSV"
+msgid ".JSON"
+msgstr ".JSON"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -778,8 +778,8 @@ msgid "Discord channel"
 msgstr "Discord channel"
 
 #: src/modules/history/HistoryWrapper.tsx
-msgid "Download .CSV"
-msgstr "Download .CSV"
+msgid "Download .JSON"
+msgstr "Download .JSON"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
