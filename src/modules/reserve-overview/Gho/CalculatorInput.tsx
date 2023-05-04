@@ -89,6 +89,7 @@ export const CalculatorInput = ({
         inputProps={{
           min: 0,
           sx: { py: 2, px: 3, fontSize: '21px' },
+          inputMode: 'numeric',
         }}
         onChange={(e) => {
           const value = parseFloat(e.target.value.replace(/,/g, ''));
