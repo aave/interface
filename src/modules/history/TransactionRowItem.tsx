@@ -10,7 +10,7 @@ import {
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import PercentIcon from '@mui/icons-material/Percent';
-import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, SvgIcon, Tooltip, Typography, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
@@ -106,15 +106,23 @@ const ActionDetails = <K extends keyof ActionFields>({
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
             {formatNumberDisplay(
               Number(formatUnits(supplyTx.amount, supplyTx.reserve.decimals)),
               6
-            )}{' '}
-            {formattedSupplyReserve.name}
+            )}
           </Typography>
+          <Tooltip
+            title={`${formattedSupplyReserve.name} (${formattedSupplyReserve.symbol})`}
+            arrow
+            placement="top"
+          >
+            <Typography variant="secondary14" color="text.primary">
+              {formattedSupplyReserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'Borrow':
@@ -123,19 +131,26 @@ const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedBorrowReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
             {formatNumberDisplay(
               Number(formatUnits(borrowTx.amount, borrowTx.reserve.decimals)),
               6
             )}{' '}
-            {formattedBorrowReserve.name}
           </Typography>
+          <Tooltip
+            title={`${formattedBorrowReserve.name} (${formattedBorrowReserve.symbol})`}
+            arrow
+            placement="top"
+          >
+            <Typography variant="secondary14" color="text.primary">
+              {formattedBorrowReserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'RedeemUnderlying':
@@ -147,15 +162,23 @@ const ActionDetails = <K extends keyof ActionFields>({
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
             {formatNumberDisplay(
               Number(formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)),
               6
             )}{' '}
-            {formattedWithdrawReserve.name}
           </Typography>
+          <Tooltip
+            title={`${formattedWithdrawReserve.name} (${formattedWithdrawReserve.symbol})`}
+            arrow
+            placement="top"
+          >
+            <Typography variant="secondary14" color="text.primary">
+              {formattedWithdrawReserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'Repay':
@@ -167,15 +190,23 @@ const ActionDetails = <K extends keyof ActionFields>({
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             &minus;
             {formatNumberDisplay(
               Number(formatUnits(repayTx.amount, repayTx.reserve.decimals)),
               6
             )}{' '}
-            {formattedRepayReserve.name}
           </Typography>
+          <Tooltip
+            title={`${formattedRepayReserve.name} (${formattedRepayReserve.symbol})`}
+            arrow
+            placement="top"
+          >
+            <Typography variant="secondary14" color="text.primary">
+              {formattedRepayReserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'UsageAsCollateral':
@@ -206,13 +237,19 @@ const ActionDetails = <K extends keyof ActionFields>({
               fontSize: '20px',
             }}
           />
-          <Typography
-            variant="secondary14"
-            color="text.primary"
-            sx={{ ml: formattedCollateralReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+          <Tooltip
+            title={`${formattedCollateralReserve.name} (${formattedCollateralReserve.symbol})`}
+            arrow
+            placement="top"
           >
-            {formattedCollateralReserve.name}
-          </Typography>
+            <Typography
+              variant="secondary14"
+              color="text.primary"
+              sx={{ ml: formattedCollateralReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            >
+              {formattedCollateralReserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'SwapBorrowRate':
@@ -232,13 +269,19 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Trans>for</Trans>
           </Typography>
           <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Typography
-            variant="secondary14"
-            color="text.primary"
-            sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+          <Tooltip
+            title={`${formattedSwapReserve.name} (${formattedSwapReserve.symbol})`}
+            arrow
+            placement="top"
           >
-            {swapBorrowRateTx.reserve.symbol}
-          </Typography>
+            <Typography
+              variant="secondary14"
+              color="text.primary"
+              sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
+            >
+              {swapBorrowRateTx.reserve.symbol}
+            </Typography>
+          </Tooltip>
         </Box>
       );
     case 'LiquidationCall':
@@ -268,7 +311,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Typography
                   variant="secondary14"
                   color="text.primary"
-                  sx={{ display: 'inline-flex' }}
+                  sx={{ display: 'inline-flex', mr: 1 }}
                 >
                   -
                   {formatNumberDisplay(
@@ -280,8 +323,20 @@ const ActionDetails = <K extends keyof ActionFields>({
                     ),
                     2
                   )}
-                  {formattedLiquidationColatReserve.symbol}
                 </Typography>
+                <Tooltip
+                  title={`${formattedLiquidationColatReserve.name} (${formattedLiquidationColatReserve.symbol})`}
+                  arrow
+                  placement="top"
+                >
+                  <Typography
+                    variant="secondary14"
+                    color="text.primary"
+                    sx={{ display: 'inline-flex' }}
+                  >
+                    {formattedLiquidationColatReserve.symbol}
+                  </Typography>
+                </Tooltip>
               </Box>
             </Box>
           </Box>
@@ -305,7 +360,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Typography
                   variant="secondary14"
                   color="text.primary"
-                  sx={{ display: 'inline-flex' }}
+                  sx={{ display: 'inline-flex', mr: 1 }}
                 >
                   +
                   {formatNumberDisplay(
@@ -317,8 +372,20 @@ const ActionDetails = <K extends keyof ActionFields>({
                     ),
                     2
                   )}
-                  {formattedLiquidationBorrowReserve.symbol}
                 </Typography>
+                <Tooltip
+                  title={`${formattedLiquidationBorrowReserve.name} (${formattedLiquidationBorrowReserve.symbol})`}
+                  arrow
+                  placement="top"
+                >
+                  <Typography
+                    variant="secondary14"
+                    color="text.primary"
+                    sx={{ display: 'inline-flex' }}
+                  >
+                    {formattedLiquidationBorrowReserve.symbol}
+                  </Typography>
+                </Tooltip>
               </Box>
             </Box>
           </Box>
