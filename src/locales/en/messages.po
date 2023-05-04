@@ -14,8 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
-msgstr "<0><1><2/></1>Add {0}stkAAVE</0> to borrow at <3/> (max discount)"
+msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
+msgstr "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "<0><1><2/></1>Add stkAAVE</0> to see borrow rate with discount"
+msgstr "<0><1><2/></1>Add stkAAVE</0> to see borrow rate with discount"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
