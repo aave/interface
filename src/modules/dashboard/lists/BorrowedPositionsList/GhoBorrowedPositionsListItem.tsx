@@ -41,7 +41,8 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount = ghoUserData.userDiscountTokenBalance > 0;
+  const hasDiscount =
+    ghoUserData.userDiscountTokenBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
 
   return (
     <ListItemWrapper
@@ -63,8 +64,6 @@ export const GhoBorrowedPositionsListItem = ({
         <GhoIncentivesCard
           withTokenIcon={hasDiscount}
           value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
-          incentives={reserve.vIncentivesData}
-          symbol={reserve.symbol}
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
@@ -72,13 +71,7 @@ export const GhoBorrowedPositionsListItem = ({
       </ListColumn>
       <ListColumn>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            disabled
-            data-cy={`apyButton_fixed`}
-          >
+          <Button variant="outlined" size="small" color="primary">
             FIXED RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />

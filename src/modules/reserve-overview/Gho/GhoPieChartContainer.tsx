@@ -36,7 +36,7 @@ export const GhoPieChartContainer = ({
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
 
   const amountAtDiscount = discountableAmount || 0;
-  const amountThatExceedsDiscount = Math.max(1, (borrowAmount || 0) - amountAtDiscount);
+  const amountThatExceedsDiscount = Math.max(0, (borrowAmount || 0) - amountAtDiscount);
 
   const chartData = [
     {

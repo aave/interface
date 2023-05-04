@@ -18,7 +18,6 @@ export const GhoBorrowAssetsListMobileItem = ({
   symbol,
   iconSymbol,
   name,
-  vIncentivesData,
   underlyingAsset,
   isFreezed,
 }: GhoBorrowAssetsItem) => {
@@ -90,11 +89,10 @@ export const GhoBorrowAssetsListMobileItem = ({
           useApyRange
           rangeValues={ghoApyRange}
           value={ghoLoadingData ? -1 : userBorrowApyAfterNewBorrow}
-          incentives={vIncentivesData}
-          symbol={symbol}
           data-cy="apyType"
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
+          forceShowTooltip
         />
       </Row>
 

@@ -24,7 +24,6 @@ export const GhoBorrowAssetsListItem = ({
   symbol,
   iconSymbol,
   name,
-  vIncentivesData,
   underlyingAsset,
   isFreezed,
 }: GhoBorrowAssetsItem) => {
@@ -117,11 +116,10 @@ export const GhoBorrowAssetsListItem = ({
           useApyRange
           rangeValues={ghoApyRange}
           value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
-          incentives={vIncentivesData}
-          symbol={symbol}
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
+          forceShowTooltip
         />
       </ListColumn>
       <ListButtonsColumn>

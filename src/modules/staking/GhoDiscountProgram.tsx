@@ -1,8 +1,7 @@
-import { ArrowRightIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ROUTES } from 'src/components/primitives/Link';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
 
 export const GhoDiscountProgram = () => {
@@ -15,7 +14,10 @@ export const GhoDiscountProgram = () => {
     <Box
       sx={{
         overflow: 'hidden',
-        height: [132, 124],
+        height: {
+          xs: 132,
+          xsm: 124,
+        },
         display: 'flex',
       }}
     >
@@ -30,8 +32,14 @@ export const GhoDiscountProgram = () => {
           },
           display: 'flex',
           flexDirection: 'column',
-          alignItems: ['flex-start', 'center'],
-          height: [120, 104],
+          alignItems: {
+            xs: 'flex-start',
+            xsm: 'center',
+          },
+          height: {
+            xs: 120,
+            xsm: 104,
+          },
           backgroundColor: '#9C93B338',
           position: 'relative',
         }}
@@ -46,7 +54,10 @@ export const GhoDiscountProgram = () => {
             width: 250,
             height: 250,
             overflow: 'hidden',
-            display: ['none', 'block'],
+            display: {
+              xs: 'none',
+              xsm: 'block',
+            },
             transform: 'matrix(1, -0.14, 0.14, 1, 0, 0)',
           }}
           width={220}
@@ -76,13 +87,8 @@ export const GhoDiscountProgram = () => {
               gap: [2, 1],
             }}
           >
-            {downToXsm && <TokenIcon sx={{ fontSize: '21px' }} symbol="GHO" fontSize="inherit" />}
-            {<Trans>{downToXsm ? 'View details' : 'VIEW DETAILS'}</Trans>}
-            {downToXsm ? (
-              <ArrowRightIcon width={20} height={20} />
-            ) : (
-              <ChevronRightIcon width={12} height={12} />
-            )}
+            <Trans>{downToXsm ? 'View details' : 'VIEW DETAILS'}</Trans>
+            <ChevronRightIcon width={downToXsm ? 20 : 12} height={downToXsm ? 20 : 12} />
           </Button>
         </Box>
         <Box

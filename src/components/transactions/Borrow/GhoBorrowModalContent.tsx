@@ -15,7 +15,7 @@ import {
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link, ROUTES } from 'src/components/primitives/Link';
+import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -113,7 +113,6 @@ export const GhoBorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
-  const { currentMarket } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
 
   const { currentMarket: customMarket } = useProtocolDataContext();
@@ -239,8 +238,6 @@ export const GhoBorrowModalContent = ({
     };
 
     const sharedIncentiveProps: SharedIncentiveProps = {
-      incentives: userReserve.reserve.vIncentivesData,
-      symbol: userReserve.reserve.symbol,
       stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
       ghoRoute:
         ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',
@@ -339,31 +336,6 @@ export const GhoBorrowModalContent = ({
         />
       )}
 
-      {!discountAvailable && !hasGhoBorrowPositions && (
-        <Warning severity="info" sx={{ mb: 6 }}>
-          <Typography variant="subheader1" gutterBottom>
-            <Trans>GHO discount program</Trans>
-          </Typography>
-          <Typography variant="caption">
-            <Trans>
-              Safety Module participants (i.e., stkAAVE holders) receive{' '}
-              <FormattedNumber
-                value={ghoReserveData.ghoDiscountRate}
-                percent
-                visibleDecimals={0}
-                variant="caption"
-              />{' '}
-              discount on the GHO borrow interest rate.{' '}
-              <Link
-                href={`/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${currentMarket}`}
-                underline="always"
-              >
-                Learn more
-              </Link>
-            </Trans>
-          </Typography>
-        </Warning>
-      )}
       <AssetInput
         value={amount}
         onChange={handleChange}

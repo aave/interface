@@ -9,7 +9,6 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import {
   ComputedUserReserveData,
@@ -40,7 +39,8 @@ export const GhoBorrowedPositionsListMobileItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount = ghoUserData.userDiscountTokenBalance > 0;
+  const hasDiscount =
+    ghoUserData.userDiscountTokenBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
 
   return (
     <ListMobileItemWrapper
@@ -62,22 +62,14 @@ export const GhoBorrowedPositionsListMobileItem = ({
         <GhoIncentivesCard
           withTokenIcon={hasDiscount}
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
-          incentives={reserve.vIncentivesData}
-          symbol={reserve.symbol}
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
         />
       </Row>
-      <Row
-        caption={
-          <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
-        }
-        captionVariant="description"
-        mb={2}
-      >
+      <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <Button variant="outlined" size="small" color="primary" disabled>
+          <Button variant="outlined" size="small" color="primary">
             FIXED RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />

@@ -130,59 +130,86 @@ export const GhoDiscountCalculator = () => {
         </Typography>
       );
 
-    if (maxDiscountNotReached)
-      alertText = (
-        <Typography variant="caption" component="p" color="text.secondary">
-          <Trans>
-            <Typography
-              component="span"
-              variant="subheader2"
-              color="text.highlight"
-              onClick={handleAddStkAaveForMaxDiscount}
-              sx={{
-                '&:hover': {
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                  '.MuiTypography-root': {
-                    textDecoration: 'underline',
-                  },
-                },
-              }}
-            >
-              <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
-                <AddIcon />
-              </SvgIcon>
-              <Trans>
-                Add{' '}
-                {discountableGhoAmount > 0 ? (
-                  <>
-                    <FormattedNumber
-                      value={additionalStkAaveToReachMax}
-                      variant="subheader2"
-                      visibleDecimals={2}
-                      sx={{
-                        '.MuiTypography-root': { ml: 0 },
-                      }}
-                    />{' '}
-                  </>
-                ) : null}
-              </Trans>
-              stkAAVE
-            </Typography>{' '}
+    if (maxDiscountNotReached) {
+      if (discountableGhoAmount === 0) {
+        alertText = (
+          <Typography variant="caption" component="p" color="text.secondary">
             <Trans>
-              to borrow at{' '}
-              <FormattedNumber
-                value={rateSelection.rateAfterMaxDiscount}
-                percent
-                variant="caption"
-                symbolsColor="text.secondary"
-                sx={{ '.MuiTypography-root': { ml: 0 } }}
-              />{' '}
-              (max discount)
+              <Typography
+                component="span"
+                variant="subheader2"
+                color="text.highlight"
+                onClick={handleAddStkAaveForMaxDiscount}
+                sx={{
+                  '&:hover': {
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    '.MuiTypography-root': {
+                      textDecoration: 'underline',
+                    },
+                  },
+                }}
+              >
+                <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
+                  <AddIcon />
+                </SvgIcon>
+                <Trans>Add stkAAVE</Trans>
+              </Typography>{' '}
+              <Trans>to see borrow rate with discount</Trans>
             </Trans>
-          </Trans>
-        </Typography>
-      );
+          </Typography>
+        );
+      } else {
+        alertText = (
+          <Typography variant="caption" component="p" color="text.secondary">
+            <Trans>
+              <Typography
+                component="span"
+                variant="subheader2"
+                color="text.highlight"
+                onClick={handleAddStkAaveForMaxDiscount}
+                sx={{
+                  '&:hover': {
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    '.MuiTypography-root': {
+                      textDecoration: 'underline',
+                    },
+                  },
+                }}
+              >
+                <SvgIcon sx={{ fontSize: '14px', verticalAlign: 'middle', marginBottom: '3px' }}>
+                  <AddIcon />
+                </SvgIcon>
+                <Trans>
+                  Add{' '}
+                  <FormattedNumber
+                    value={additionalStkAaveToReachMax}
+                    variant="subheader2"
+                    visibleDecimals={2}
+                    sx={{
+                      '.MuiTypography-root': { ml: 0 },
+                    }}
+                  />{' '}
+                </Trans>
+                stkAAVE
+              </Typography>{' '}
+              <Trans>
+                to borrow at{' '}
+                <FormattedNumber
+                  value={rateSelection.rateAfterMaxDiscount}
+                  percent
+                  variant="caption"
+                  symbolsColor="text.secondary"
+                  sx={{ '.MuiTypography-root': { ml: 0 } }}
+                />{' '}
+                (max discount)
+              </Trans>
+            </Trans>
+          </Typography>
+        );
+      }
+    }
 
     return (
       <Alert
