@@ -167,7 +167,7 @@ export const GhoBorrowModalContent = ({
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   const currentDiscountedAmount =
-    ghoUserData.userGhoBorrowBalance > ghoReserveData.ghoMinDiscountTokenBalanceForDiscount
+    ghoUserData.userGhoBorrowBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount
       ? ghoUserData.userGhoAvailableToBorrowAtDiscount
       : 0;
   const currentBorrowAPY = weightedAverageAPY(
@@ -178,7 +178,7 @@ export const GhoBorrowModalContent = ({
   );
 
   const futureDiscountedAmount =
-    ghoUserData.userGhoBorrowBalance + Number(amount) >
+    ghoUserData.userGhoBorrowBalance + Number(amount) >=
     ghoReserveData.ghoMinDiscountTokenBalanceForDiscount
       ? ghoUserData.userGhoAvailableToBorrowAtDiscount
       : 0;
