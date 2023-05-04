@@ -16,12 +16,12 @@ import React, { useEffect, useState } from 'react';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHistory';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { formatNumberDisplay } from 'src/utils/utils';
 
 import ArrowDownTrayIcon from '/public/arrowDownTray.svg';
 import ArrowUpTrayIcon from '/public/arrowUpTray.svg';
@@ -109,11 +109,13 @@ const ActionDetails = <K extends keyof ActionFields>({
             sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
-            {formatNumberDisplay(
-              Number(formatUnits(supplyTx.amount, supplyTx.reserve.decimals)),
-              6
-            )}
           </Typography>
+          <FormattedNumber
+            value={formatUnits(supplyTx.amount, supplyTx.reserve.decimals)}
+            variant="secondary14"
+            color="text.primary"
+            sx={{ mr: 1 }}
+          />
           <Tooltip
             title={`${formattedSupplyReserve.name} (${formattedSupplyReserve.symbol})`}
             arrow
@@ -137,11 +139,13 @@ const ActionDetails = <K extends keyof ActionFields>({
             sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
-            {formatNumberDisplay(
-              Number(formatUnits(borrowTx.amount, borrowTx.reserve.decimals)),
-              6
-            )}{' '}
           </Typography>
+          <FormattedNumber
+            value={formatUnits(borrowTx.amount, borrowTx.reserve.decimals)}
+            variant="secondary14"
+            color="text.primary"
+            sx={{ mr: 1 }}
+          />
           <Tooltip
             title={`${formattedBorrowReserve.name} (${formattedBorrowReserve.symbol})`}
             arrow
@@ -165,11 +169,13 @@ const ActionDetails = <K extends keyof ActionFields>({
             sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             +
-            {formatNumberDisplay(
-              Number(formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)),
-              6
-            )}{' '}
           </Typography>
+          <FormattedNumber
+            value={formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)}
+            variant="secondary14"
+            color="text.primary"
+            sx={{ mr: 1 }}
+          />
           <Tooltip
             title={`${formattedWithdrawReserve.name} (${formattedWithdrawReserve.symbol})`}
             arrow
@@ -193,11 +199,13 @@ const ActionDetails = <K extends keyof ActionFields>({
             sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
             &minus;
-            {formatNumberDisplay(
-              Number(formatUnits(repayTx.amount, repayTx.reserve.decimals)),
-              6
-            )}{' '}
           </Typography>
+          <FormattedNumber
+            value={formatUnits(repayTx.amount, repayTx.reserve.decimals)}
+            variant="secondary14"
+            color="text.primary"
+            sx={{ mr: 1 }}
+          />
           <Tooltip
             title={`${formattedRepayReserve.name} (${formattedRepayReserve.symbol})`}
             arrow
@@ -306,6 +314,7 @@ const ActionDetails = <K extends keyof ActionFields>({
               <Box
                 sx={{
                   ml: formattedLiquidationColatReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                  display: 'inline-flex',
                 }}
               >
                 <Typography
@@ -314,16 +323,16 @@ const ActionDetails = <K extends keyof ActionFields>({
                   sx={{ display: 'inline-flex', mr: 1 }}
                 >
                   -
-                  {formatNumberDisplay(
-                    Number(
-                      formatUnits(
-                        liquidationTx.collateralAmount,
-                        liquidationTx.collateralReserve.decimals
-                      )
-                    ),
-                    2
-                  )}
                 </Typography>
+                <FormattedNumber
+                  value={formatUnits(
+                    liquidationTx.collateralAmount,
+                    liquidationTx.collateralReserve.decimals
+                  )}
+                  variant="secondary14"
+                  color="text.primary"
+                  sx={{ mr: 1 }}
+                />
                 <Tooltip
                   title={`${formattedLiquidationColatReserve.name} (${formattedLiquidationColatReserve.symbol})`}
                   arrow
@@ -355,6 +364,7 @@ const ActionDetails = <K extends keyof ActionFields>({
               <Box
                 sx={{
                   ml: formattedLiquidationBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                  display: 'inline-flex',
                 }}
               >
                 <Typography
@@ -363,16 +373,16 @@ const ActionDetails = <K extends keyof ActionFields>({
                   sx={{ display: 'inline-flex', mr: 1 }}
                 >
                   +
-                  {formatNumberDisplay(
-                    Number(
-                      formatUnits(
-                        liquidationTx.principalAmount,
-                        liquidationTx.principalReserve.decimals
-                      )
-                    ),
-                    2
-                  )}
                 </Typography>
+                <FormattedNumber
+                  value={formatUnits(
+                    liquidationTx.principalAmount,
+                    liquidationTx.principalReserve.decimals
+                  )}
+                  variant="secondary14"
+                  color="text.primary"
+                  sx={{ mr: 1 }}
+                />
                 <Tooltip
                   title={`${formattedLiquidationBorrowReserve.name} (${formattedLiquidationBorrowReserve.symbol})`}
                   arrow

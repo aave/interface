@@ -74,22 +74,3 @@ export const roundToTokenDecimals = (inputValue: string, tokenDecimals: number) 
   // Combine the whole and adjusted decimal parts
   return whole + '.' + adjustedDecimals;
 };
-
-export const formatNumberDisplay = (number: number, expectedDecimals: number): string => {
-  const minNonZeroValue = Math.pow(10, -expectedDecimals);
-
-  if (number > minNonZeroValue) {
-    if (Number.isInteger(number)) {
-      return number.toFixed(0);
-    } else {
-      return number.toFixed(expectedDecimals);
-    }
-  }
-
-  // Calculate the number of leading zeros after the decimal point for the smallest non-zero value
-  const leadingZeros = Math.ceil(-Math.log10(Math.abs(number))) - 1;
-
-  // Ensure at least expectedDecimals are shown
-  const adjustedDecimalPlaces = Math.max(leadingZeros + 1, expectedDecimals);
-  return number.toFixed(adjustedDecimalPlaces);
-};
