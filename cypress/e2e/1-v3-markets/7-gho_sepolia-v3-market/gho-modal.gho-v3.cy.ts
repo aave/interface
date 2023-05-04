@@ -17,7 +17,7 @@ const testData = {
 };
 
 describe(`GHO MODAL APY TESTING`, () => {
-  describe.skip(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
+  describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ aDAI: 1000 }),
@@ -26,8 +26,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       cy.doSwitchToDashboardBorrowView();
       DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
     });
-    //BUG T-5080
-    it.skip(`Verify modal without discount APY=${gho.apy.max}%, no amount`, () => {
+    it(`Verify modal without discount APY=${gho.apy.max}%, no amount`, () => {
       ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.eql(gho.apy.max);
       });
@@ -45,7 +44,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe.skip(`Verify modal with max discount APY = ${gho.apy.min}%`, () => {
+  describe(`Verify modal with max discount APY = ${gho.apy.min}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ stkAave: 50, aDAI: 1000 }),
@@ -53,12 +52,6 @@ describe(`GHO MODAL APY TESTING`, () => {
     before(`Open Modal`, () => {
       cy.doSwitchToDashboardBorrowView();
       DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
-    });
-    //BUG T-5080
-    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
-      ModalHelpers.getApy().then(($val) => {
-        expect($val).to.be.eql(gho.apy.min);
-      });
     });
     it(`Verify modal with max discount APY=${gho.apy.min}%, some amount`, () => {
       ModalHelpers.setAmount(100);
@@ -73,7 +66,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
+  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
@@ -82,12 +75,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       cy.doSwitchToDashboardBorrowView();
       DashboardHelpers.openBorrowModal(testData.borrow.asset.shortName);
     });
-    //BUG T-5080 - should be range
-    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
-      ModalHelpers.getApy().then(($val) => {
-        expect($val).to.be.eql(gho.apy.min);
-      });
-    });
+
     it(`Verify modal with max discount APY=${gho.apy.min}%, small amount`, () => {
       ModalHelpers.setAmount(100);
       ModalHelpers.getApy().then(($val) => {
@@ -121,12 +109,6 @@ describe(`GHO MODAL APY TESTING`, () => {
         maxAPY = $val;
       });
     });
-    //BUG T-5080 - should be range
-    it.skip(`Verify modal with max discount APY=${gho.apy.min}%, no amount`, () => {
-      ModalHelpers.getApy().then(($val) => {
-        expect($val).to.be.eql(gho.apy.min);
-      });
-    });
     it(`Verify modal with max discount APY=${gho.apy.min}%, small amount`, () => {
       ModalHelpers.setAmount(1);
       ModalHelpers.getApy().then(($val) => {
@@ -147,7 +129,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe.skip(`Verify modal with changing discount for APY`, () => {
+  describe(`Verify modal with changing discount for APY`, () => {
     let minAPYRage: number;
     let maxAPYRange: number;
     let borrowedAPY: number;
