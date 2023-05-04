@@ -149,7 +149,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
           >
-            &minus;
+            +
             {formatNumberDisplay(
               Number(formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)),
               6
@@ -260,29 +260,29 @@ const ActionDetails = <K extends keyof ActionFields>({
                 symbol={formattedLiquidationColatReserve.iconSymbol}
                 sx={{ fontSize: '20px', pr: 0.5 }}
               />
-              <Typography
-                variant="secondary14"
-                color="text.primary"
-                sx={{ display: 'inline-flex' }}
+              <Box
+                sx={{
+                  ml: formattedLiquidationColatReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                }}
               >
-                -
-                {formatNumberDisplay(
-                  Number(
-                    formatUnits(
-                      liquidationTx.collateralAmount,
-                      liquidationTx.collateralReserve.decimals
-                    )
-                  ),
-                  2
-                )}
-                <Box
-                  sx={{
-                    ml: formattedLiquidationColatReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
-                  }}
+                <Typography
+                  variant="secondary14"
+                  color="text.primary"
+                  sx={{ display: 'inline-flex' }}
                 >
+                  -
+                  {formatNumberDisplay(
+                    Number(
+                      formatUnits(
+                        liquidationTx.collateralAmount,
+                        liquidationTx.collateralReserve.decimals
+                      )
+                    ),
+                    2
+                  )}
                   {formattedLiquidationColatReserve.symbol}
-                </Box>
-              </Typography>
+                </Typography>
+              </Box>
             </Box>
           </Box>
           <SvgIcon sx={{ fontSize: '14px' }}>
@@ -297,29 +297,29 @@ const ActionDetails = <K extends keyof ActionFields>({
                 symbol={formattedLiquidationBorrowReserve.iconSymbol}
                 sx={{ fontSize: '20px', pr: 0.5 }}
               />
-              <Typography
-                variant="secondary14"
-                color="text.primary"
-                sx={{ display: 'inline-flex' }}
+              <Box
+                sx={{
+                  ml: formattedLiquidationBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
+                }}
               >
-                +
-                {formatNumberDisplay(
-                  Number(
-                    formatUnits(
-                      liquidationTx.principalAmount,
-                      liquidationTx.principalReserve.decimals
-                    )
-                  ),
-                  2
-                )}
-                <Box
-                  sx={{
-                    ml: formattedLiquidationBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
-                  }}
+                <Typography
+                  variant="secondary14"
+                  color="text.primary"
+                  sx={{ display: 'inline-flex' }}
                 >
+                  +
+                  {formatNumberDisplay(
+                    Number(
+                      formatUnits(
+                        liquidationTx.principalAmount,
+                        liquidationTx.principalReserve.decimals
+                      )
+                    ),
+                    2
+                  )}
                   {formattedLiquidationBorrowReserve.symbol}
-                </Box>
-              </Typography>
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>

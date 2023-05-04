@@ -47,12 +47,12 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+const queryClient = new QueryClient();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
-export const queryClient = new QueryClient();
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
