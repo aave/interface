@@ -15,14 +15,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 
-import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
-import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
-import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
-// TODO: need change icon
-// import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
-// import HfFull from '/public/icons/healthFactor/hfFull.svg';
-// import HfLow from '/public/icons/healthFactor/hfLow.svg';
-// import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
 import HALLink from '../../components/HALLink';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -134,7 +126,7 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem hideIcon={true} title={<Trans>Net worth</Trans>} loading={loading}>
+        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -151,8 +143,6 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         <TopInfoPanelItem
-          hideIcon={true}
-          icon={<NetAPYIcon />}
           title={
             <div style={{ display: 'flex' }}>
               <Trans>Net APY</Trans>
@@ -160,6 +150,7 @@ export const DashboardTopPanel = () => {
             </div>
           }
           loading={loading}
+          hideIcon
         >
           {currentAccount && Number(user?.netWorthUSD) > 0 ? (
             <FormattedNumber
@@ -177,22 +168,13 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem
-            icon={<EmptyHeartIcon />}
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Trans>Health factor</Trans>
               </Box>
             }
-            // TODO: need change icon
-            // icon={
-            //   <SvgIcon sx={{ fontSize: '24px' }}>
-            //     {+user.healthFactor >= 10 && <HfFull />}
-            //     {+user.healthFactor < 10 && +user.healthFactor >= 3 && <HfMiddle />}
-            //     {+user.healthFactor < 3 && +user.healthFactor >= 1 && <HfLow />}
-            //     {+user.healthFactor < 1 && <HfEmpty />}
-            //   </SvgIcon>
-            // }
             loading={loading}
+            hideIcon
           >
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
@@ -212,11 +194,7 @@ export const DashboardTopPanel = () => {
         )}
 
         {currentAccount && claimableRewardsUsd > 0 && (
-          <TopInfoPanelItem
-            title={<Trans>Available rewards</Trans>}
-            icon={<ClaimGiftIcon />}
-            loading={loading}
-          >
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
             <Box
               sx={{
                 display: 'flex',
