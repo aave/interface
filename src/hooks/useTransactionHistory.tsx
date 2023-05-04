@@ -1,5 +1,4 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { USER_TRANSACTIONS_V2 } from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
@@ -70,7 +69,54 @@ export type ActionFields = {
   };
 };
 
-export const useTransactionHistory = ({ fetchAll }: { fetchAll: boolean }) => {
+interface HistoryFilters {
+  searchQuery: string;
+  filterQuery: string[];
+}
+
+export const applyTxHistoryFilters = ({
+  searchQuery,
+  filterQuery,
+  txns,
+}: HistoryFilters & { txns: TransactionHistoryItem[] }) => {
+  let filteredTxns: TransactionHistoryItem[];
+
+  // Apply seach filter
+  if (searchQuery.length > 0) {
+    // txn may or may not contain reserve fields, there's definitely a way to handle this with generics but I'm lazy
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filteredTxns = txns.filter((txn: any) => {
+      const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase(); // for liquidationcall
+      const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase(); // for liquidationcall
+      const symbol = txn?.reserve?.symbol?.toLowerCase(); // for all other reserve actions
+      if (
+        (symbol && symbol.includes(searchQuery.toLowerCase())) ||
+        (collateralSymbol && collateralSymbol.includes(searchQuery.toLowerCase())) ||
+        (principalSymbol && principalSymbol.includes(searchQuery.toLowerCase()))
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else {
+    filteredTxns = txns;
+  }
+
+  // apply txn type filter
+  if (filterQuery.length > 0) {
+    filteredTxns = filteredTxns.filter((txn: TransactionHistoryItem) => {
+      if (filterQuery.includes(txn.action)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+  return filteredTxns;
+};
+
+export const useTransactionHistory = () => {
   const { currentMarketData, account } = useRootStore();
 
   interface TransactionHistoryParams {
@@ -112,6 +158,36 @@ export const useTransactionHistory = ({ fetchAll }: { fetchAll: boolean }) => {
     }
   };
 
+  const fetchForDownload = async ({
+    searchQuery,
+    filterQuery,
+  }: HistoryFilters): Promise<TransactionHistoryItem[]> => {
+    const allTransactions = [];
+    const batchSize = 100;
+    let skip = 0;
+    let currentBatchSize = batchSize;
+
+    while (currentBatchSize === batchSize) {
+      const currentBatch = await fetchTransactionHistory({
+        first: batchSize,
+        skip: skip,
+        account,
+        subgraphUrl: currentMarketData.subgraphUrl ?? '',
+        v3: !!currentMarketData.v3,
+      });
+
+      console.log(`FETCHING WITH SKIP ${skip}`);
+      console.log(currentBatch);
+      currentBatchSize = currentBatch.length;
+      allTransactions.push(...currentBatch);
+      skip += batchSize;
+    }
+
+    const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
+
+    return filteredTxns;
+  };
+
   const {
     data,
     fetchNextPage,
@@ -148,13 +224,6 @@ export const useTransactionHistory = ({ fetchAll }: { fetchAll: boolean }) => {
     }
   );
 
-  // If fetchAll is true, fetch all pages immediately instead of waiting for page trigger
-  useEffect(() => {
-    if (fetchAll && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [fetchAll, hasNextPage, fetchNextPage]);
-
   return {
     data,
     fetchNextPage,
@@ -163,5 +232,6 @@ export const useTransactionHistory = ({ fetchAll }: { fetchAll: boolean }) => {
     isLoading,
     isError,
     error,
+    fetchForDownload,
   };
 };

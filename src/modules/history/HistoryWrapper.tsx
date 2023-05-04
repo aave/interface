@@ -44,35 +44,35 @@ const FilterLabel = ({ filter }: { filter: FilterOptions }): ReactElement => {
   }
 };
 
-const downloadFile = () => {
-  const content = 'oh hi there';
-  const fileName = 'hi.txt';
-  const file = new Blob([content], { type: 'text/plain' });
-  const downloadUrl = URL.createObjectURL(file);
-
-  const link = document.createElement('a');
-  link.href = downloadUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  URL.revokeObjectURL(downloadUrl);
-};
-
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
 
   const {
     data: transactions,
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-  } = useTransactionHistory({ fetchAll: searchQuery.length > 0 });
+    fetchForDownload,
+  } = useTransactionHistory();
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleDownload = async () => {
+    const fileName = 'transactions.json';
+    const data = await fetchForDownload({ searchQuery, filterQuery: [] });
+    const jsonData = JSON.stringify(data, null, 2);
+    const file = new Blob([jsonData], { type: 'application/json' });
+    const downloadUrl = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(downloadUrl);
+  };
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -137,13 +137,13 @@ export const HistoryWrapper = () => {
         </Box>
         <Box
           sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
-          onClick={() => downloadFile()}
+          onClick={handleDownload}
         >
           <SvgIcon width={8} height={8}>
             <DownloadIcon />
           </SvgIcon>
           <Typography variant="buttonM" color="text.primary">
-            {downToMD ? <Trans>.CSV</Trans> : <Trans>Download .CSV</Trans>}
+            {downToMD ? <Trans>.JSON</Trans> : <Trans>Download .JSON</Trans>}
           </Typography>
         </Box>
       </Box>
