@@ -40,7 +40,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             md: 4,
           },
           display: 'flex',
-          backgroundColor: '#C9B3F94D',
+          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#C9B3F94D',
           position: 'relative',
           alignItems: {
             xs: 'none',
