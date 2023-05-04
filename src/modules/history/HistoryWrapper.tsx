@@ -46,6 +46,7 @@ const FilterLabel = ({ filter }: { filter: FilterOptions }): ReactElement => {
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [loadingJson, setLoadingJson] = useState(false);
 
   const {
     data: transactions,
@@ -60,6 +61,7 @@ export const HistoryWrapper = () => {
   };
 
   const handleDownload = async () => {
+    setLoadingJson(true);
     const fileName = 'transactions.json';
     const data = await fetchForDownload({ searchQuery, filterQuery: [] });
     const jsonData = JSON.stringify(data, null, 2);
@@ -72,6 +74,7 @@ export const HistoryWrapper = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(downloadUrl);
+    setLoadingJson(false);
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -139,6 +142,7 @@ export const HistoryWrapper = () => {
           sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
           onClick={handleDownload}
         >
+          {loadingJson && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
           <SvgIcon width={8} height={8}>
             <DownloadIcon />
           </SvgIcon>
