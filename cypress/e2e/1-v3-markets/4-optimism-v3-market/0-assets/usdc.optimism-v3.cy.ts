@@ -51,14 +51,14 @@ const testData = {
       amount: 10.1,
       hasApproval: false,
     },
+    repayCollateral: {
+      asset: assets.optimismMarket.USDC,
+      apyType: constants.apyType.stable,
+      amount: 2,
+      hasApproval: false,
+      repayOption: constants.repayType.collateral,
+    },
     repay: [
-      {
-        asset: assets.optimismMarket.USDC,
-        apyType: constants.apyType.stable,
-        amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
       {
         asset: assets.optimismMarket.USDC,
         apyType: constants.apyType.stable,
@@ -109,6 +109,7 @@ describe('USDC INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
+  repay(testData.testCases.repayCollateral, skipTestState, false);
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });
