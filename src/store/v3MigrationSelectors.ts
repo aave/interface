@@ -101,38 +101,20 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
-      let increasedAmount = userReserve.stableBorrows;
-      if (userReserve.reserve.stableBorrowAPY == '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.stableBorrows,
-          userReserve.reserve.stableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Stable,
-        increasedStableBorrows: increasedAmount,
+        increasedStableBorrows: userReserve.stableBorrows,
         increasedVariableBorrows: '0',
         debtKey: userReserve.reserve.stableDebtTokenAddress,
       });
     }
     if (userReserve.variableBorrows !== '0') {
-      let increasedAmount = userReserve.variableBorrows;
-      if (userReserve.reserve.variableBorrowAPY === '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.variableBorrows,
-          userReserve.reserve.variableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Variable,
         increasedStableBorrows: '0',
-        increasedVariableBorrows: increasedAmount,
+        increasedVariableBorrows: userReserve.variableBorrows,
         debtKey: userReserve.reserve.variableDebtTokenAddress,
       });
     }
@@ -550,16 +532,6 @@ export const selectMigrationSignedPermits = (
 const addPercent = (amount: string) => {
   const convertedAmount = valueToBigNumber(amount);
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
-};
-
-// adding  7 days of either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
-const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
-  const convertedAmount = valueToBigNumber(amount);
-  const convertedBorrowAPY = valueToBigNumber(borrowAPY);
-  return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
-    .toString();
 };
 
 export const selectSelectedBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
