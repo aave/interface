@@ -1,4 +1,3 @@
-import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -9,47 +8,80 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { NoData } from '../primitives/NoData';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { IncentivesButton } from './IncentivesButton';
 
 export interface GhoIncentivesCardProps {
-  symbol: string;
   value: string | number;
   useApyRange?: boolean;
   rangeValues?: [number, number];
-  incentives?: ReserveIncentiveResponse[];
-  variant?: 'main14' | 'main16' | 'secondary14';
-  symbolsVariant?: 'secondary14' | 'secondary16';
-  align?: 'center' | 'flex-end';
   stkAaveBalance: string | number;
   ghoRoute: string;
   onMoreDetailsClick?: () => void;
   withTokenIcon?: boolean;
+  forceShowTooltip?: boolean;
 }
 
 export const GhoIncentivesCard = ({
-  symbol,
   value,
   useApyRange,
   rangeValues = [0, 0],
-  incentives,
-  variant = 'secondary14',
-  symbolsVariant,
-  align,
   ghoRoute,
+  stkAaveBalance,
   onMoreDetailsClick,
   withTokenIcon = false,
-  stkAaveBalance,
+  forceShowTooltip = false,
 }: GhoIncentivesCardProps) => {
   const { ghoReserveData } = useAppDataContext();
 
   const stkAaveAmount = Number(stkAaveBalance);
+  const userQualifiesForDiscount =
+    stkAaveAmount >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
+
+  let toolTipContent = <></>;
+  const showTooltip = userQualifiesForDiscount || forceShowTooltip;
+  if (showTooltip) {
+    toolTipContent = (
+      <Box
+        sx={{
+          py: 4,
+          px: 6,
+          fontSize: '12px',
+          lineHeight: '16px',
+          a: {
+            fontSize: '12px',
+            lineHeight: '16px',
+            fontWeight: 500,
+          },
+        }}
+      >
+        <Typography variant="subheader2">
+          <Trans>
+            Estimated compounding interest, including discount for Staking{' '}
+            {userQualifiesForDiscount ? (
+              <>
+                <FormattedNumber variant="subheader2" value={stkAaveAmount} visibleDecimals={2} />{' '}
+              </>
+            ) : null}
+            AAVE in Safety Module.
+          </Trans>{' '}
+          <Link
+            onClick={onMoreDetailsClick}
+            href={ghoRoute}
+            underline="always"
+            variant="subheader2"
+          >
+            <Trans>Learn more</Trans>
+          </Link>
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
+        alignItems: { xs: 'flex-end', xsm: 'center' },
         justifyContent: 'center',
         textAlign: 'center',
         flex: '2 1 auto',
@@ -59,46 +91,8 @@ export const GhoIncentivesCard = ({
         <Tooltip
           enterTouchDelay={0}
           placement="top"
-          title={
-            <Box
-              sx={{
-                py: 4,
-                px: 6,
-                fontSize: '12px',
-                lineHeight: '16px',
-                a: {
-                  fontSize: '12px',
-                  lineHeight: '16px',
-                  fontWeight: 500,
-                },
-              }}
-            >
-              <Typography variant="subheader2">
-                <Trans>
-                  Estimated compounding interest, including discount for Staking{' '}
-                  {stkAaveAmount >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount ? (
-                    <>
-                      <FormattedNumber
-                        variant="subheader2"
-                        value={stkAaveAmount}
-                        visibleDecimals={2}
-                      />{' '}
-                    </>
-                  ) : null}
-                  AAVE in Safety Module.
-                </Trans>{' '}
-                <Link
-                  onClick={onMoreDetailsClick}
-                  href={ghoRoute}
-                  underline="always"
-                  variant="subheader2"
-                >
-                  <Trans>Learn more</Trans>
-                </Link>
-              </Typography>
-            </Box>
-          }
-          arrow
+          title={toolTipContent}
+          arrow={showTooltip}
           PopperComponent={PopperComponent}
         >
           <Box
@@ -110,27 +104,19 @@ export const GhoIncentivesCard = ({
             {withTokenIcon && <TokenIcon symbol="stkAAVE" sx={{ height: 14, width: 14, mr: 1 }} />}
             {useApyRange ? (
               <GhoBorrowApyRange
-                percentVariant={variant}
-                hyphenVariant={variant}
+                percentVariant="secondary14"
+                hyphenVariant="secondary14"
                 minVal={Math.min(...rangeValues)}
                 maxVal={Math.max(...rangeValues)}
               />
             ) : (
-              <FormattedNumber
-                value={value}
-                percent
-                variant={variant}
-                symbolsVariant={symbolsVariant}
-                data-cy={'apy'}
-              />
+              <FormattedNumber value={value} percent variant="secondary14" data-cy={'apy'} />
             )}
           </Box>
         </Tooltip>
       ) : (
-        <NoData variant={variant} color="text.secondary" />
+        <NoData variant="secondary14" color="text.secondary" />
       )}
-
-      <IncentivesButton incentives={incentives} symbol={symbol} />
     </Box>
   );
 };

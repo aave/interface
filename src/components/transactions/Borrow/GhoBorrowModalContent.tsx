@@ -238,8 +238,6 @@ export const GhoBorrowModalContent = ({
     };
 
     const sharedIncentiveProps: SharedIncentiveProps = {
-      incentives: userReserve.reserve.vIncentivesData,
-      symbol: userReserve.reserve.symbol,
       stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
       ghoRoute:
         ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',

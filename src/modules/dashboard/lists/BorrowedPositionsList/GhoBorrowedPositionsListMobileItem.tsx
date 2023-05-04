@@ -62,8 +62,6 @@ export const GhoBorrowedPositionsListMobileItem = ({
         <GhoIncentivesCard
           withTokenIcon={hasDiscount}
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
-          incentives={reserve.vIncentivesData}
-          symbol={reserve.symbol}
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
