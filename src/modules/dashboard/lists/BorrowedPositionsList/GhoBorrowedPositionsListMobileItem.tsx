@@ -39,7 +39,8 @@ export const GhoBorrowedPositionsListMobileItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount = ghoUserData.userDiscountTokenBalance > 0;
+  const hasDiscount =
+    ghoUserData.userDiscountTokenBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
 
   return (
     <ListMobileItemWrapper
