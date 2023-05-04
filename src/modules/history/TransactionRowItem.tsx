@@ -5,15 +5,16 @@ import {
   CheckIcon,
   DotsHorizontalIcon,
   DuplicateIcon,
-  ExternalLinkIcon,
 } from '@heroicons/react/outline';
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import PercentIcon from '@mui/icons-material/Percent';
-import { Box, SvgIcon, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -115,7 +116,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ mr: 1 }}
           />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedSupplyReserve.name} (${formattedSupplyReserve.symbol})`}
             arrow
             placement="top"
@@ -123,7 +124,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Typography variant="secondary14" color="text.primary">
               {formattedSupplyReserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'Borrow':
@@ -145,7 +146,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ mr: 1 }}
           />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedBorrowReserve.name} (${formattedBorrowReserve.symbol})`}
             arrow
             placement="top"
@@ -153,7 +154,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Typography variant="secondary14" color="text.primary">
               {formattedBorrowReserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'RedeemUnderlying':
@@ -175,7 +176,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ mr: 1 }}
           />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedWithdrawReserve.name} (${formattedWithdrawReserve.symbol})`}
             arrow
             placement="top"
@@ -183,7 +184,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Typography variant="secondary14" color="text.primary">
               {formattedWithdrawReserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'Repay':
@@ -205,7 +206,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ mr: 1 }}
           />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedRepayReserve.name} (${formattedRepayReserve.symbol})`}
             arrow
             placement="top"
@@ -213,7 +214,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Typography variant="secondary14" color="text.primary">
               {formattedRepayReserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'UsageAsCollateral':
@@ -244,7 +245,7 @@ const ActionDetails = <K extends keyof ActionFields>({
               fontSize: '20px',
             }}
           />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedCollateralReserve.name} (${formattedCollateralReserve.symbol})`}
             arrow
             placement="top"
@@ -256,7 +257,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             >
               {formattedCollateralReserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'SwapBorrowRate':
@@ -276,7 +277,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             <Trans>for</Trans>
           </Typography>
           <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Tooltip
+          <DarkTooltip
             title={`${formattedSwapReserve.name} (${formattedSwapReserve.symbol})`}
             arrow
             placement="top"
@@ -288,7 +289,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             >
               {swapBorrowRateTx.reserve.symbol}
             </Typography>
-          </Tooltip>
+          </DarkTooltip>
         </Box>
       );
     case 'LiquidationCall':
@@ -332,7 +333,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                   color="text.primary"
                   sx={{ mr: 1 }}
                 />
-                <Tooltip
+                <DarkTooltip
                   title={`${formattedLiquidationColatReserve.name} (${formattedLiquidationColatReserve.symbol})`}
                   arrow
                   placement="top"
@@ -344,7 +345,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                   >
                     {formattedLiquidationColatReserve.symbol}
                   </Typography>
-                </Tooltip>
+                </DarkTooltip>
               </Box>
             </Box>
           </Box>
@@ -382,7 +383,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                   color="text.primary"
                   sx={{ mr: 1 }}
                 />
-                <Tooltip
+                <DarkTooltip
                   title={`${formattedLiquidationBorrowReserve.name} (${formattedLiquidationBorrowReserve.symbol})`}
                   arrow
                   placement="top"
@@ -394,7 +395,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                   >
                     {formattedLiquidationBorrowReserve.symbol}
                   </Typography>
-                </Tooltip>
+                </DarkTooltip>
               </Box>
             </Box>
           </Box>
@@ -488,33 +489,47 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
         </Box>
         <ListColumn align="right">
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            <Typography variant="caption" color="text.secondary" mr={1}>
-              <Trans>Tx hash</Trans>
-            </Typography>
-            <CompactableTypography
-              compactMode={CompactMode.MD}
-              variant="caption"
-              color="text.primary"
+            <DarkTooltip
+              title={copyStatus ? <Trans>Copied</Trans> : <Trans>Copy</Trans>}
+              placement="top"
             >
-              {transaction.txHash}
-            </CompactableTypography>
-            <Box onClick={() => handleCopy(explorerLink)}>
-              <SvgIcon
-                sx={{
-                  m: 1,
-                  fontSize: '14px',
-                  color: copyStatus ? 'green' : '#62677B',
-                  cursor: 'pointer',
-                }}
+              <Box
+                onClick={() => handleCopy(explorerLink)}
+                sx={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
               >
-                {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
-              </SvgIcon>
-            </Box>
-            <Link href={explorerLink}>
-              <SvgIcon sx={{ fontSize: '14px', color: '#62677B' }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
+                <Typography variant="caption" color="text.secondary" mr={1}>
+                  <Trans>Tx hash</Trans>
+                </Typography>
+                <CompactableTypography
+                  compactMode={CompactMode.MD}
+                  variant="caption"
+                  color="text.primary"
+                >
+                  {transaction.txHash}
+                </CompactableTypography>
+                <SvgIcon
+                  sx={{
+                    m: 1,
+                    fontSize: '14px',
+                    color: copyStatus ? 'green' : '#62677B',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
+                </SvgIcon>
+              </Box>
+            </DarkTooltip>
+            <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
+              <Link href={explorerLink}>
+                <SvgIcon
+                  sx={{ fontSize: '14px', color: '#62677B', display: 'flex', alignItems: 'center' }}
+                >
+                  <ArrowOutward />
+                </SvgIcon>
+              </Link>
+            </DarkTooltip>
           </Box>
         </ListColumn>
       </ListItem>
