@@ -45,9 +45,8 @@ const iconBoxStyling = {
 const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {
     case 'Supply':
-      return <Trans>Supply</Trans>;
     case 'Deposit':
-      return <Trans>Deposit</Trans>;
+      return <Trans>Supply</Trans>;
     case 'Borrow':
       return <Trans>Borrow</Trans>;
     case 'RedeemUnderlying':
@@ -138,7 +137,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
-            +
+            &minus;
           </Typography>
           <FormattedNumber
             value={formatUnits(borrowTx.amount, borrowTx.reserve.decimals)}
@@ -168,7 +167,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
-            +
+            &minus;
           </Typography>
           <FormattedNumber
             value={formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)}
@@ -198,7 +197,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             color="text.primary"
             sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
           >
-            &minus;
+            +
           </Typography>
           <FormattedNumber
             value={formatUnits(repayTx.amount, repayTx.reserve.decimals)}
@@ -322,7 +321,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                   color="text.primary"
                   sx={{ display: 'inline-flex', mr: 1 }}
                 >
-                  -
+                  &minus;
                 </Typography>
                 <FormattedNumber
                   value={formatUnits(
