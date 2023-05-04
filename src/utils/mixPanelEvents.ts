@@ -120,7 +120,7 @@ export const SUPPLY_MODAL = {
 
 export const BORROW_MODAL = {
   SWITCH_NETWORK: 'Switch network borrow modal', // done
-  MAX_BORROW: 'Max supply input borrow modal', // done
+  MAX_BORROW: 'Max borrow input borrow modal', // done
   BORROW_TOKEN: 'Borrow token', // done
   UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal', //done
   GOV_LINK: 'Governance link borrow modal', // done
