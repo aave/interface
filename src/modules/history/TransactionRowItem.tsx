@@ -398,7 +398,7 @@ const ActionDetails = <K extends keyof ActionFields>({
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Box sx={{ display: 'inline-flex', alignItems: 'center', pl: 3 }}>
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
       <Box sx={iconBoxStyling}>
         <SvgIcon sx={{ fontSize: '14px', color: '#383D51' }}>
           <ActionIconMap action={action} />
@@ -454,61 +454,62 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
   const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
   return (
-    <ListItem
-      px={downToXSM ? 4 : 6}
-      sx={{
-        borderWidth: `1px 0 0 0`,
-        borderStyle: `solid`,
-        borderColor: `${theme.palette.divider}`,
-        height: '72px',
-      }}
-    >
-      <Box>
-        {' '}
-        <ActionTitle action={transaction.action} />
-      </Box>
-
-      <Box sx={{ width: '64px', mx: 6 }}>
-        <Typography variant="caption" color="text.muted">
-          {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
-        </Typography>
-      </Box>
-
-      <Box>
-        <ActionDetails transaction={transaction} />
-      </Box>
-      <ListColumn align="right">
-        <Box sx={{ display: 'inline-flex', alignItems: 'center', pr: 3 }}>
-          <Typography variant="caption" color="text.secondary" mr={1}>
-            <Trans>Tx hash</Trans>
-          </Typography>
-          <CompactableTypography
-            compactMode={CompactMode.MD}
-            variant="caption"
-            color="text.primary"
-          >
-            {transaction.txHash}
-          </CompactableTypography>
-          <Box onClick={() => handleCopy(explorerLink)}>
-            <SvgIcon
-              sx={{
-                m: 1,
-                fontSize: '14px',
-                color: copyStatus ? 'green' : '#62677B',
-                cursor: 'pointer',
-              }}
-            >
-              {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
-            </SvgIcon>
-          </Box>
-          <Link href={explorerLink}>
-            <SvgIcon sx={{ fontSize: '14px', color: '#62677B' }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </Link>
+    <Box px={6}>
+      <ListItem
+        px={downToXSM ? 4 : 3}
+        sx={{
+          borderWidth: `1px 0 0 0`,
+          borderStyle: `solid`,
+          borderColor: `${theme.palette.divider}`,
+          height: '72px',
+        }}
+      >
+        <Box>
+          <ActionTitle action={transaction.action} />
         </Box>
-      </ListColumn>
-    </ListItem>
+
+        <Box sx={{ width: '64px', mx: 6 }}>
+          <Typography variant="caption" color="text.muted">
+            {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
+          </Typography>
+        </Box>
+
+        <Box>
+          <ActionDetails transaction={transaction} />
+        </Box>
+        <ListColumn align="right">
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Typography variant="caption" color="text.secondary" mr={1}>
+              <Trans>Tx hash</Trans>
+            </Typography>
+            <CompactableTypography
+              compactMode={CompactMode.MD}
+              variant="caption"
+              color="text.primary"
+            >
+              {transaction.txHash}
+            </CompactableTypography>
+            <Box onClick={() => handleCopy(explorerLink)}>
+              <SvgIcon
+                sx={{
+                  m: 1,
+                  fontSize: '14px',
+                  color: copyStatus ? 'green' : '#62677B',
+                  cursor: 'pointer',
+                }}
+              >
+                {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
+              </SvgIcon>
+            </Box>
+            <Link href={explorerLink}>
+              <SvgIcon sx={{ fontSize: '14px', color: '#62677B' }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Link>
+          </Box>
+        </ListColumn>
+      </ListItem>
+    </Box>
   );
 }
 
