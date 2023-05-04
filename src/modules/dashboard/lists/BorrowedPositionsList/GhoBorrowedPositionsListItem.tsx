@@ -71,7 +71,7 @@ export const GhoBorrowedPositionsListItem = ({
       </ListColumn>
       <ListColumn>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <Button variant="outlined" size="small" color="primary" disabled>
+          <Button variant="outlined" size="small" color="primary">
             FIXED RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />
