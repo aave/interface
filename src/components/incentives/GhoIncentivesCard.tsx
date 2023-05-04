@@ -90,6 +90,7 @@ export const GhoIncentivesCard = ({
       {value.toString() !== '-1' ? (
         <Tooltip
           enterTouchDelay={0}
+          leaveTouchDelay={0}
           placement="top"
           title={toolTipContent}
           arrow={showTooltip}
