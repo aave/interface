@@ -44,6 +44,23 @@ const FilterLabel = ({ filter }: { filter: FilterOptions }): ReactElement => {
   }
 };
 
+const groupByDate = (
+  transactions: TransactionHistoryItem[]
+): Record<string, TransactionHistoryItem[]> => {
+  return transactions.reduce((grouped, transaction) => {
+    const date = new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(new Date(transaction.timestamp * 1000));
+    if (!grouped[date]) {
+      grouped[date] = [];
+    }
+    grouped[date].push(transaction);
+    return grouped;
+  }, {} as Record<string, TransactionHistoryItem[]>);
+};
+
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingJson, setLoadingJson] = useState(false);
@@ -188,20 +205,28 @@ export const HistoryWrapper = () => {
           } else {
             filteredTxns = page;
           }
-          return filteredTxns.map((transaction: TransactionHistoryItem, index: number) => {
-            const isLastItem =
-              pageIndex === transactions.pages.length - 1 && index === filteredTxns.length - 1;
-            return (
-              <div ref={isLastItem ? lastElementRef : null} key={index}>
-                <TransactionRowItem
-                  transaction={
-                    transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
-                  }
-                  downToXSM={downToXSM}
-                />
-              </div>
-            );
-          });
+          const groupedTxns = groupByDate(filteredTxns);
+          return Object.entries(groupedTxns).map(([date, txns], groupIndex) => (
+            <React.Fragment key={groupIndex}>
+              <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+                {date}
+              </Typography>
+              {txns.map((transaction: TransactionHistoryItem, index: number) => {
+                const isLastItem =
+                  pageIndex === transactions.pages.length - 1 && index === txns.length - 1;
+                return (
+                  <div ref={isLastItem ? lastElementRef : null} key={index}>
+                    <TransactionRowItem
+                      transaction={
+                        transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
+                      }
+                      downToXSM={downToXSM}
+                    />
+                  </div>
+                );
+              })}
+            </React.Fragment>
+          ));
         })
       ) : (
         <Box
