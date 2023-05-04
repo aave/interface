@@ -14,6 +14,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
@@ -40,6 +41,7 @@ export const DashboardTopPanel = () => {
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
@@ -156,7 +158,12 @@ export const DashboardTopPanel = () => {
           title={
             <div style={{ display: 'flex' }}>
               <Trans>Net APY</Trans>
-              <NetAPYTooltip />
+              <NetAPYTooltip
+                event={{
+                  eventName: DASHBOARD.TOOLTIP_NET_APY,
+                  eventParams: {},
+                }}
+              />
             </div>
           }
           loading={loading}
@@ -197,7 +204,10 @@ export const DashboardTopPanel = () => {
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
-              onInfoClick={() => setOpen(true)}
+              onInfoClick={() => {
+                trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
+                setOpen(true);
+              }}
               HALIntegrationComponent={
                 currentMarketData.halIntegration && (
                   <HALLink

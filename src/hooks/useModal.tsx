@@ -4,7 +4,13 @@ import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalCont
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
-import { AIP, DASHBOARD, GOVERNANCE_PAGE, STAKE } from 'src/utils/mixPanelEvents';
+import {
+  AIP,
+  DASHBOARD,
+  GOVERNANCE_PAGE,
+  STAKE,
+  YOUR_INFO_RESERVE_DETAILS,
+} from 'src/utils/mixPanelEvents';
 
 export enum ModalType {
   Supply,
@@ -51,7 +57,8 @@ export interface ModalContextType<T extends ModalArgsType> {
     underlyingAsset: string,
     currentMarket: string,
     name: string,
-    funnel: string
+    funnel: string,
+    isReserve?: boolean
   ) => void;
   openWithdraw: (
     underlyingAsset: string,
@@ -63,7 +70,8 @@ export interface ModalContextType<T extends ModalArgsType> {
     underlyingAsset: string,
     currentMarket: string,
     name: string,
-    funnel: string
+    funnel: string,
+    isReserve?: boolean
   ) => void;
   openRepay: (
     underlyingAsset: string,
@@ -128,15 +136,25 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   return (
     <ModalContext.Provider
       value={{
-        openSupply: (underlyingAsset, currentMarket, name, funnel) => {
+        openSupply: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Supply);
           setArgs({ underlyingAsset });
-          trackEvent(DASHBOARD.SUPPLY_DASHBOARD, {
-            market: currentMarket,
-            assetName: name,
-            asset: underlyingAsset,
-            funnel,
-          });
+
+          if (isReserve) {
+            trackEvent(YOUR_INFO_RESERVE_DETAILS.SUPPLY_RESERVE, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(DASHBOARD.SUPPLY_DASHBOARD, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
         },
         openWithdraw: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Withdraw);
@@ -149,15 +167,24 @@ export const ModalContextProvider: React.FC = ({ children }) => {
             funnel: funnel,
           });
         },
-        openBorrow: (underlyingAsset, currentMarket, name, funnel) => {
+        openBorrow: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
-          trackEvent(DASHBOARD.BORROW_DASHBOARD, {
-            market: currentMarket,
-            assetName: name,
-            asset: underlyingAsset,
-            funnel,
-          });
+          if (isReserve) {
+            trackEvent(YOUR_INFO_RESERVE_DETAILS.BORROW_RESERVE, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(DASHBOARD.BORROW_DASHBOARD, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
         },
         openRepay: (underlyingAsset, currentRateMode, isFrozen, currentMarket, name, funnel) => {
           setType(ModalType.Repay);

@@ -9,6 +9,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -162,13 +163,27 @@ export const BorrowedPositionsList = () => {
                 title={<Trans>APY</Trans>}
                 value={user?.debtAPY || 0}
                 percent
-                tooltip={<TotalBorrowAPYTooltip />}
+                tooltip={
+                  <TotalBorrowAPYTooltip
+                    event={{
+                      eventName: DASHBOARD.TOOLTIP_BORROWED_POSITIONS_APY,
+                      eventParams: {},
+                    }}
+                  />
+                }
               />
               <ListTopInfoItem
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
                 percent
-                tooltip={<BorrowPowerTooltip />}
+                tooltip={
+                  <BorrowPowerTooltip
+                    event={{
+                      eventName: DASHBOARD.TOOLTIP_BORROWED_POWER_USED,
+                      eventParams: {},
+                    }}
+                  />
+                }
               />
             </>
           )}

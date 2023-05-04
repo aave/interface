@@ -59,7 +59,6 @@ export const BorrowAssetsListItem = ({
           />
         }
       />
-
       <ListAPRColumn
         value={Number(variableBorrowRate)}
         incentives={vIncentivesData}
@@ -70,18 +69,11 @@ export const BorrowAssetsListItem = ({
         incentives={sIncentivesData}
         symbol={symbol}
       />
-
       <ListButtonsColumn>
         <Button
           disabled={borrowButtonDisable}
           variant="contained"
           onClick={() => {
-            trackEvent(DASHBOARD.BORROW_DASHBOARD, {
-              market: currentMarket,
-              assetName: name,
-              asset: underlyingAsset,
-            });
-
             openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
           }}
         >

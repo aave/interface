@@ -102,9 +102,9 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   const onSupplyClicked = () => {
     if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve');
+      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve', true);
     } else {
-      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve');
+      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
     }
   };
 
@@ -151,7 +151,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 symbol={selectedAsset}
                 disable={disableBorrowButton}
                 onActionClicked={() => {
-                  openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve');
+                  openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
                 }}
               />
             )}
@@ -353,7 +353,7 @@ const BorrowAction = ({
           variant="contained"
           data-cy="borrowButton"
         >
-          <Trans>Borrow</Trans>
+          <Trans>Borrow </Trans>
         </Button>
       </Stack>
     </Stack>

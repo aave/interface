@@ -35,16 +35,16 @@ export const ListWrapper = ({
   const handleTrackingEvents = () => {
     if (!isCollapse) {
       switch (localStorageName as string | boolean) {
-        case localStorageName === 'borrowAssetsDashboardTableCollapse':
+        case 'borrowAssetsDashboardTableCollapse':
           trackEvent(DASHBOARD.HIDE_BORROW_TILE, {});
           break;
-        case localStorageName === 'borrowedAssetsDashboardTableCollapse':
+        case 'borrowedAssetsDashboardTableCollapse':
           trackEvent(DASHBOARD.HIDE_YOUR_BORROW_TILE, {});
           break;
-        case localStorageName === 'supplyAssetsDashboardTableCollapse':
+        case 'supplyAssetsDashboardTableCollapse':
           trackEvent(DASHBOARD.HIDE_SUPPLY_TILE, {});
           break;
-        case localStorageName === 'suppliedAssetsDashboardTableCollapse':
+        case 'suppliedAssetsDashboardTableCollapse':
           trackEvent(DASHBOARD.HIDE_YOUR_SUPPLY_TILE, {});
         default:
           return null;
