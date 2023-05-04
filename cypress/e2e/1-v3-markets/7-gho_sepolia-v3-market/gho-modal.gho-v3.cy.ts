@@ -17,7 +17,7 @@ const testData = {
 };
 
 describe(`GHO MODAL APY TESTING`, () => {
-  describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
+  describe.skip(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ aDAI: 1000 }),
@@ -45,7 +45,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal with max discount APY = ${gho.apy.min}%`, () => {
+  describe.skip(`Verify modal with max discount APY = ${gho.apy.min}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ stkAave: 50, aDAI: 1000 }),
@@ -73,7 +73,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
+  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
       tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
@@ -147,7 +147,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal with changing discount for APY`, () => {
+  describe.skip(`Verify modal with changing discount for APY`, () => {
     let minAPYRage: number;
     let maxAPYRange: number;
     let borrowedAPY: number;

@@ -32,6 +32,17 @@ export class DashboardHelpers {
     return this.getApyRate(_selector);
   }
 
+  public static getBorrowedAmount(tokenName: string) {
+    const _selector = `[data-cy^='dashboardBorrowedListItem_${tokenName}']`;
+    return cy
+      .get(_selector)
+      .find(`[data-cy="nativeAmount"]`)
+      .first()
+      .then(($val) => {
+        return parseFloat($val.text());
+      });
+  }
+
   private static getApyRate(selector: string) {
     return cy
       .get(selector)
@@ -67,12 +78,12 @@ export class DashboardHelpers {
       () => {
         let res = false;
         return DashboardHelpers.getApyBorrowRate(assets.ghoV3Market.GHO.shortName).then(($val) => {
-          if (!isNaN($val)) res = true;
+          if (!isNaN($val) && $val !== 0) res = true;
           if (value) {
-            if ($val == value) res = true;
+            if ($val == value && $val !== 0) res = true;
             else res = false;
           } else {
-            if (!isNaN($val)) res = true;
+            if (!isNaN($val) && $val !== 0) res = true;
           }
           return res;
         });
@@ -90,10 +101,26 @@ export class DashboardHelpers {
         let res = false;
         return DashboardHelpers.getGhoApyBorrowRangeMin(assets.ghoV3Market.GHO.shortName).then(
           ($val) => {
-            if (!isNaN($val)) res = true;
+            if (!isNaN($val) && $val !== 0) res = true;
             return res;
           }
         );
+      },
+      {
+        timeout: 30000,
+        interval: 500,
+      }
+    );
+  };
+
+  public static waitLoadingGHOBorrowedAmount = () => {
+    cy.waitUntil(
+      () => {
+        let res = false;
+        return DashboardHelpers.getBorrowedAmount(assets.ghoV3Market.GHO.shortName).then(($val) => {
+          if (!isNaN($val) && $val !== 0) res = true;
+          return res;
+        });
       },
       {
         timeout: 30000,

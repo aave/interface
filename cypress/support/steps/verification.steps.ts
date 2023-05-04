@@ -1,4 +1,5 @@
 import constants from '../../fixtures/constans.json';
+import { DashboardHelpers } from '../helpers/dashboard.helper';
 
 type SkipType = {
   set: (val: boolean) => void;
@@ -70,6 +71,9 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
+              if (estimatedCase.isGho) {
+                DashboardHelpers.waitLoadingGHODashboardRange();
+              }
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               cy.getDashBoardBorrowedRow(_assetName, estimatedCase.apyType).within(($row) => {
