@@ -1,9 +1,7 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Tooltip, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
-import { formatEther } from 'ethers/lib/utils';
-import { useRootStore } from 'src/store/root';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { PopperComponent } from '../ContentWithTooltip';
 import GhoBorrowApyRange from '../GhoBorrowApyRange';
@@ -40,10 +38,11 @@ export const GhoIncentivesCard = ({
   ghoRoute,
   onMoreDetailsClick,
   withTokenIcon = false,
+  stkAaveBalance,
 }: GhoIncentivesCardProps) => {
-  const [stakeUserResult] = useRootStore((state) => [state.stakeUserResult]);
-  const stkAaveAmount = new BigNumber(stakeUserResult?.aave?.stakeTokenUserBalance || '0');
-  const formattedStkAaveAmount = formatEther(stkAaveAmount.toString());
+  const { ghoReserveData } = useAppDataContext();
+
+  const stkAaveAmount = Number(stkAaveBalance);
 
   return (
     <Box
@@ -77,11 +76,11 @@ export const GhoIncentivesCard = ({
               <Typography variant="subheader2">
                 <Trans>
                   Estimated compounding interest, including discount for Staking{' '}
-                  {formattedStkAaveAmount !== '0.0' ? (
+                  {stkAaveAmount >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount ? (
                     <>
                       <FormattedNumber
                         variant="subheader2"
-                        value={formattedStkAaveAmount}
+                        value={stkAaveAmount}
                         visibleDecimals={2}
                       />{' '}
                     </>
