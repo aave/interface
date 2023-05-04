@@ -196,7 +196,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       <Box
         component={component}
         sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-        onClick={() => router.push(ROUTES.history)}
+        onClick={() => {
+          setOpen(false);
+          router.push(ROUTES.history);
+        }}
       >
         <ListItemIcon
           sx={{
