@@ -1,5 +1,8 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { USER_TRANSACTIONS_V2 } from 'src/modules/history/v2-user-history-query';
+import {
+  USER_TRANSACTIONS_V2,
+  USER_TRANSACTIONS_V2_WITH_POOL,
+} from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
 import { QueryKeys } from 'src/ui-config/queries';
@@ -117,7 +120,20 @@ export const applyTxHistoryFilters = ({
 };
 
 export const useTransactionHistory = () => {
-  const { currentMarketData, account } = useRootStore();
+  const [currentMarketData, account] = useRootStore((state) => [
+    state.currentMarketData,
+    state.account,
+  ]);
+
+  // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
+  let selectedPool: string | undefined = undefined;
+  if (
+    !currentMarketData.v3 &&
+    (currentMarketData.marketTitle === 'Ethereum' ||
+      currentMarketData.marketTitle === 'Ethereum AMM')
+  ) {
+    selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
+  }
 
   interface TransactionHistoryParams {
     account: string;
@@ -125,6 +141,7 @@ export const useTransactionHistory = () => {
     first: number;
     skip: number;
     v3: boolean;
+    pool?: string;
   }
   const fetchTransactionHistory = async ({
     account,
@@ -132,10 +149,20 @@ export const useTransactionHistory = () => {
     first,
     skip,
     v3,
+    pool,
   }: TransactionHistoryParams) => {
+    let query = '';
+    if (v3) {
+      query = USER_TRANSACTIONS_V3;
+    } else if (pool) {
+      query = USER_TRANSACTIONS_V2_WITH_POOL;
+    } else {
+      query = USER_TRANSACTIONS_V2;
+    }
+
     const requestBody = {
-      query: v3 ? USER_TRANSACTIONS_V3 : USER_TRANSACTIONS_V2,
-      variables: { userAddress: account, first, skip },
+      query,
+      variables: { userAddress: account, first, skip, pool },
     };
     try {
       const response = await fetch(subgraphUrl, {
@@ -174,6 +201,7 @@ export const useTransactionHistory = () => {
         account,
         subgraphUrl: currentMarketData.subgraphUrl ?? '',
         v3: !!currentMarketData.v3,
+        pool: selectedPool,
       });
       currentBatchSize = currentBatch.length;
       allTransactions.push(...currentBatch);
@@ -193,7 +221,12 @@ export const useTransactionHistory = () => {
     isError,
     error,
   }: UseInfiniteQueryResult<TransactionHistoryItem[], Error> = useInfiniteQuery(
-    [QueryKeys.TRANSACTION_HISTORY, account, currentMarketData.subgraphUrl],
+    [
+      QueryKeys.TRANSACTION_HISTORY,
+      account,
+      currentMarketData.subgraphUrl,
+      currentMarketData.marketTitle,
+    ],
     async ({ pageParam = 0 }) => {
       const response = await fetchTransactionHistory({
         account,
@@ -201,6 +234,7 @@ export const useTransactionHistory = () => {
         first: 100,
         skip: pageParam,
         v3: !!currentMarketData.v3,
+        pool: selectedPool,
       });
       return response;
     },
