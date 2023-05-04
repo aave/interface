@@ -69,6 +69,7 @@ export const GhoBorrowAssetsListItem = ({
   return (
     <ListItem
       sx={{ borderTop: '1px solid', borderBottom: '1px solid', borderColor: 'divider', mb: 2 }}
+      data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link

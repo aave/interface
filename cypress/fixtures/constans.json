@@ -15,7 +15,8 @@
   "borrowAPYType": {
     "variable": "Variable",
     "stable": "Stable",
-    "default": "Default"
+    "default": "Default",
+    "fixed": "fixed"
   },
   "actionTypes": {
     "supply": "Supply",

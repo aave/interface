@@ -38,6 +38,7 @@ const testData = {
         assetName: assets.ghoV3Market.GHO.shortName,
         amount: 20,
         apyType: constants.borrowAPYType.variable,
+        isGho: true,
       },
     ],
   },

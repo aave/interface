@@ -35,19 +35,23 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
     configEnvWithTenderlySepoliaGhoFork({
       v3: true,
     });
-    it(`Check APY rate from dashboard is max = ${gho.apy.max}%`, () => {
-      DashboardHelpers.waitLoadingGHODashboard();
-      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
-        console.log($val);
-        baseApy = $val;
-        expect(baseApy).to.be.eql(gho.apy.max);
+    it(`Check APY rate from dashboard min = ${gho.apy.max}% and max = ${gho.apy.max}%`, () => {
+      DashboardHelpers.waitLoadingGHODashboardRange();
+      DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.max);
       });
     });
     TenderlyActions.tenderlyTokenRequest(tokenSet({ aDAI: 9000 }));
     DashboardActions.borrow(testData.borrow);
     it(`Check that borrowed APY is max = ${gho.apy.max}%`, () => {
-      //borrow 100 GHO
-      DashboardHelpers.getApyBorrowRate(gho.shortName).then(($val) => {
+      //borrowed 100 GHO
+      DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
+        expect($val).to.be.eql(gho.apy.min);
+      });
+      DashboardHelpers.getGhoApyBorrowRangeMax(gho.shortName).then(($val) => {
         expect($val).to.be.eql(gho.apy.max);
       });
       DashboardHelpers.getApyBorrowedRate(gho.shortName).then(($val) => {

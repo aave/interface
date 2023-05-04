@@ -83,6 +83,25 @@ export class DashboardHelpers {
       }
     );
   };
+
+  public static waitLoadingGHODashboardRange = () => {
+    cy.waitUntil(
+      () => {
+        let res = false;
+        return DashboardHelpers.getGhoApyBorrowRangeMin(assets.ghoV3Market.GHO.shortName).then(
+          ($val) => {
+            if (!isNaN($val)) res = true;
+            return res;
+          }
+        );
+      },
+      {
+        timeout: 30000,
+        interval: 500,
+      }
+    );
+  };
+
   public static openBorrowModal(assetName: string) {
     cy.get(`[data-cy='dashboardBorrowListItem_${assetName.toUpperCase()}']`)
       .contains('Borrow')
