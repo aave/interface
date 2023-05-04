@@ -1,6 +1,6 @@
 export const USER_TRANSACTIONS_V3 = `
-query UserTransactions($userAddress: String!) {
-  userTransactions(where: { user: $userAddress }, orderBy: timestamp, orderDirection: desc) {
+query UserTransactions($userAddress: String!, $first: Int!, $skip: Int!) {
+  userTransactions(where: { user: $userAddress }, orderBy: timestamp, orderDirection: desc, first: $first, skip: $skip) {
     id
     timestamp
     txHash

@@ -175,16 +175,12 @@ export const useTransactionHistory = () => {
         subgraphUrl: currentMarketData.subgraphUrl ?? '',
         v3: !!currentMarketData.v3,
       });
-
-      console.log(`FETCHING WITH SKIP ${skip}`);
-      console.log(currentBatch);
       currentBatchSize = currentBatch.length;
       allTransactions.push(...currentBatch);
       skip += batchSize;
     }
 
     const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
-
     return filteredTxns;
   };
 
@@ -206,7 +202,6 @@ export const useTransactionHistory = () => {
         skip: pageParam,
         v3: !!currentMarketData.v3,
       });
-
       return response;
     },
     {
@@ -217,7 +212,7 @@ export const useTransactionHistory = () => {
       ) => {
         const moreDataAvailable = lastPage.length === 100;
         if (!moreDataAvailable) {
-          return false;
+          return undefined;
         }
         return allPages.length * 100;
       },
