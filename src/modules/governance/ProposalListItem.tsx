@@ -57,9 +57,14 @@ export function ProposalListItem({
   const pendingL2WithQueue =
     proposalCrosschainBridge && proposal.executionTime > 0 && proposal.state === 'Queued';
 
+  const pendingL2WithFailed =
+    proposalCrosschainBridge && proposal.executionTime === 0 && proposal.state === 'Failed';
+
   const proposalState =
-    proposalCrosschainBridge && (pendingL2 || pendingL2WithQueue)
-      ? ProposalState.Pending
+    proposalCrosschainBridge && (pendingL2 || pendingL2WithQueue || pendingL2WithFailed)
+      ? !pendingL2WithFailed
+        ? ProposalState.Pending
+        : ProposalState.Failed
       : proposal.state;
 
   return (
@@ -105,7 +110,7 @@ export function ProposalListItem({
             ''
           )}
 
-          {executorChain === 'L2' && pendingL2 ? (
+          {executorChain === 'L2' && pendingL2 && proposalState !== 'Failed' ? (
             <StateBadge
               crossChainBridge={executorChain}
               state={proposalState}
