@@ -1,3 +1,4 @@
+import { ProposalState } from '@aave/contract-helpers';
 import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
@@ -39,16 +40,21 @@ export function ProposalListItem({
 
   // Note: We assume that the proposal will be executed two days later and add 3 hour buffer
   const twoDayDelay = 172800;
-  const threeExtraHours = 10800;
 
   const executedL2 =
     proposal.executionTime > 0
-      ? proposal.executionTime + (twoDayDelay + threeExtraHours) > proposal.executionTime
+      ? proposal.executionTime + twoDayDelay > proposal.executionTime
       : false;
 
-  const pendingL2 = proposal.executionTime === 0 && proposal.state !== 'Canceled';
-
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
+
+  const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
+  const pendingL2 =
+    proposalCrosschainBridge && proposal.executionTime === 0 && proposal.state !== 'Canceled';
+
+  const proposalState =
+    proposalCrosschainBridge && pendingL2 ? ProposalState.Pending : proposal.state;
+
   return (
     <Box
       sx={{
@@ -81,28 +87,28 @@ export function ProposalListItem({
           {ipfs.title}
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 3 }}>
-          <StateBadge
-            state={proposal.state}
-            crossChainBridge={proposalCrosschainBridge ? 'L1' : ''}
-            loading={mightBeStale}
-          />
-          {proposalCrosschainBridge && executedL2 ? (
-            <StateBadge crossChainBridge={'L2'} state={proposal.state} loading={mightBeStale} />
+          <StateBadge state={proposal.state} crossChainBridge={'L1'} loading={mightBeStale} />
+          {executorChain === 'L2' && executedL2 ? (
+            <StateBadge
+              crossChainBridge={executorChain}
+              state={proposalState}
+              loading={mightBeStale}
+            />
           ) : (
             ''
           )}
 
-          {proposalCrosschainBridge && pendingL2 ? (
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            // state props ignored as we force pending to be shown on l2
-            <StateBadge crossChainBridge={'L2'} state={'Pending'} loading={mightBeStale} />
+          {executorChain === 'L2' && pendingL2 ? (
+            <StateBadge
+              crossChainBridge={executorChain}
+              state={proposalState}
+              loading={mightBeStale}
+            />
           ) : (
             ''
           )}
 
           <FormattedProposalTime
-            targets={proposal.targets}
             state={proposal.state}
             startTimestamp={proposal.startTimestamp}
             executionTime={proposal.executionTime}
