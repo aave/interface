@@ -32,7 +32,6 @@ import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
 import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
-import { GhoBorrowedPositionsListMobileItem } from './GhoBorrowedPositionsListMobileItem';
 
 const head = [
   {
@@ -193,20 +192,13 @@ export const BorrowedPositionsList = () => {
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
-                {downToXSM ? (
-                  isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
-                    <GhoBorrowedPositionsListMobileItem
-                      {...item}
-                      key={item.underlyingAsset + item.borrowRateMode}
-                    />
-                  ) : (
-                    <BorrowedPositionsListMobileItem
-                      {...item}
-                      key={item.underlyingAsset + item.borrowRateMode}
-                    />
-                  )
-                ) : isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
+                {isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
                   <GhoBorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
+                ) : downToXSM ? (
+                  <BorrowedPositionsListMobileItem
                     {...item}
                     key={item.underlyingAsset + item.borrowRateMode}
                   />

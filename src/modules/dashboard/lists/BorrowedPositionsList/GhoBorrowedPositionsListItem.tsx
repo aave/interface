@@ -1,24 +1,29 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, SvgIcon } from '@mui/material';
+import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
+import { Row } from 'src/components/primitives/Row';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import {
+  ComputedReserveData,
   ComputedUserReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
+import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
+import { ListValueRow } from '../ListValueRow';
 
 export const GhoBorrowedPositionsListItem = ({
   reserve,
@@ -28,7 +33,8 @@ export const GhoBorrowedPositionsListItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
   const { ghoUserDataFetched, ghoUserQualifiesForDiscount } = useRootStore();
-  const { isActive, isFrozen, borrowingEnabled } = reserve;
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const discountableAmount =
     ghoUserData.userGhoBorrowBalance >= ghoReserveData.ghoMinDebtTokenBalanceForDiscount
@@ -43,29 +49,84 @@ export const GhoBorrowedPositionsListItem = ({
 
   const hasDiscount = ghoUserQualifiesForDiscount();
 
+  const { isActive, isFrozen, borrowingEnabled } = reserve;
+
+  const props: GhoBorrowedPositionsListItemProps = {
+    reserve,
+    borrowRateMode,
+    userGhoBorrowBalance: ghoUserData.userGhoBorrowBalance,
+    hasDiscount,
+    ghoLoadingData,
+    ghoUserDataFetched,
+    borrowRateAfterDiscount,
+    currentMarket,
+    userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
+    borrowDisabled: !isActive || !borrowingEnabled || isFrozen,
+    onRepayClick: () => openRepay(reserve.underlyingAsset, borrowRateMode, isFrozen),
+    onBorrowClick: () => openBorrow(reserve.underlyingAsset),
+  };
+
+  if (downToXSM) {
+    return <GhoBorrowedPositionsListItemMobile {...props} />;
+  } else {
+    return <GhoBorrowedPositionsListItemDesktop {...props} />;
+  }
+};
+
+interface GhoBorrowedPositionsListItemProps {
+  reserve: ComputedReserveData;
+  borrowRateMode: InterestRate;
+  userGhoBorrowBalance: number;
+  hasDiscount: boolean;
+  ghoLoadingData: boolean;
+  ghoUserDataFetched: boolean;
+  borrowRateAfterDiscount: number;
+  currentMarket: CustomMarket;
+  userDiscountTokenBalance: number;
+  borrowDisabled: boolean;
+  onRepayClick: () => void;
+  onBorrowClick: () => void;
+}
+
+const GhoBorrowedPositionsListItemDesktop = ({
+  reserve,
+  borrowRateMode,
+  userGhoBorrowBalance,
+  hasDiscount,
+  ghoLoadingData,
+  ghoUserDataFetched,
+  borrowRateAfterDiscount,
+  currentMarket,
+  userDiscountTokenBalance,
+  borrowDisabled,
+  onRepayClick,
+  onBorrowClick,
+}: GhoBorrowedPositionsListItemProps) => {
+  const { symbol, iconSymbol, name, isActive, isFrozen, underlyingAsset } = reserve;
+
   return (
     <ListItemWrapper
-      symbol={reserve.symbol}
-      iconSymbol={reserve.iconSymbol}
-      name={reserve.name}
-      detailsAddress={reserve.underlyingAsset}
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
-      frozen={reserve.isFrozen}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+      frozen={isFrozen}
+      data-cy={`dashboardBorrowedListItem_${symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
     >
       <ListValueColumn
-        symbol={reserve.symbol}
-        value={ghoUserData.userGhoBorrowBalance}
-        subValue={ghoUserData.userGhoBorrowBalance}
+        symbol={symbol}
+        value={userGhoBorrowBalance}
+        subValue={userGhoBorrowBalance}
       />
       <ListColumn>
         <GhoIncentivesCard
           withTokenIcon={hasDiscount}
           value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
           data-cy={`apyType`}
-          stkAaveBalance={ghoUserData.userDiscountTokenBalance}
-          ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+          stkAaveBalance={userDiscountTokenBalance}
+          ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
           userQualifiesForDiscount={hasDiscount}
         />
       </ListColumn>
@@ -86,21 +147,81 @@ export const GhoBorrowedPositionsListItem = ({
         </ContentWithTooltip>
       </ListColumn>
       <ListButtonsColumn>
-        <Button
-          disabled={!isActive}
-          variant="contained"
-          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode, false)}
-        >
+        <Button disabled={!isActive} variant="contained" onClick={onRepayClick}>
           <Trans>Repay</Trans>
         </Button>
-        <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen}
-          variant="outlined"
-          onClick={() => openBorrow(reserve.underlyingAsset)}
-        >
+        <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick}>
           <Trans>Borrow</Trans>
         </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
+  );
+};
+
+const GhoBorrowedPositionsListItemMobile = ({
+  reserve,
+  userGhoBorrowBalance,
+  hasDiscount,
+  ghoLoadingData,
+  borrowRateAfterDiscount,
+  currentMarket,
+  userDiscountTokenBalance,
+  borrowDisabled,
+  onRepayClick,
+  onBorrowClick,
+}: GhoBorrowedPositionsListItemProps) => {
+  const { symbol, iconSymbol, name, isActive } = reserve;
+
+  return (
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={reserve.underlyingAsset}
+      currentMarket={currentMarket}
+      frozen={reserve.isFrozen}
+      showBorrowCapTooltips
+    >
+      <ListValueRow
+        title={<Trans>Debt</Trans>}
+        value={userGhoBorrowBalance}
+        subValue={userGhoBorrowBalance}
+        disabled={userGhoBorrowBalance === 0}
+      />
+      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
+        <GhoIncentivesCard
+          withTokenIcon={hasDiscount}
+          value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
+          data-cy={`apyType`}
+          stkAaveBalance={userDiscountTokenBalance}
+          ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+          userQualifiesForDiscount={hasDiscount}
+        />
+      </Row>
+      <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>
+        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
+          <Button variant="outlined" size="small" color="primary">
+            FIXED RATE
+            <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
+              <InformationCircleIcon />
+            </SvgIcon>
+          </Button>
+        </ContentWithTooltip>
+      </Row>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+        <Button
+          disabled={!isActive}
+          variant="contained"
+          onClick={onRepayClick}
+          sx={{ mr: 1.5 }}
+          fullWidth
+        >
+          <Trans>Repay</Trans>
+        </Button>
+        <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick} fullWidth>
+          <Trans>Borrow</Trans>
+        </Button>
+      </Box>
+    </ListMobileItemWrapper>
   );
 };
