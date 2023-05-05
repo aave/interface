@@ -45,7 +45,7 @@ export function StateBadge({ state, loading, crossChainBridge }: StateBadgeProps
   if (loading) return <Skeleton width={70} />;
   return (
     <Badge state={state}>
-      {state} {crossChainBridge ? crossChainBridge : ''}
+      {state} {crossChainBridge}
     </Badge>
   );
 }

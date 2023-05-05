@@ -37,12 +37,12 @@ export function ProposalListItem({
       lowercaseExecutors.includes(address.toLowerCase())
     );
     if (hasDelayedExecutor.length > 0) {
-      // exectutionTimeStamp = executionTime + 172800; // Adds time for cross bridge execution
       proposalCrosschainBridge = true;
     }
   }
 
-  // Note: We assume that the proposal will be executed two days later and add 3 hour buffer
+  // Currently all cross-executors share this delay
+  // TO-DO: invetigate if this can be changed, if so, query on-chain
   const twoDayDelay = 172800;
 
   const executedL2 =
@@ -102,24 +102,13 @@ export function ProposalListItem({
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 3 }}>
           <StateBadge state={proposal.state} crossChainBridge={'L1'} loading={mightBeStale} />
-          {executorChain === 'L2' && executedL2 ? (
-            <StateBadge
-              crossChainBridge={executorChain}
-              state={proposalState}
-              loading={mightBeStale}
-            />
-          ) : (
-            ''
-          )}
 
-          {executorChain === 'L2' && pendingL2 && proposalState !== 'Failed' ? (
+          {executorChain === 'L2' && proposalState !== 'Failed' && (executedL2 || pendingL2) && (
             <StateBadge
               crossChainBridge={executorChain}
               state={proposalState}
               loading={mightBeStale}
             />
-          ) : (
-            ''
           )}
 
           <FormattedProposalTime
