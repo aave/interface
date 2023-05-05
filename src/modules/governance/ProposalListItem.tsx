@@ -26,13 +26,15 @@ export function ProposalListItem({
     AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
     AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
     AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
   ];
+  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
 
   let proposalCrosschainBridge = false;
 
   if (proposal.targets && proposal.targets.length > 0) {
     const hasDelayedExecutor = proposal.targets.filter((address) =>
-      delayedBridgeExecutors.includes(address)
+      lowercaseExecutors.includes(address.toLowerCase())
     );
     if (hasDelayedExecutor.length > 0) {
       // exectutionTimeStamp = executionTime + 172800; // Adds time for cross bridge execution
