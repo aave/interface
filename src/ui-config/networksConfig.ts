@@ -383,7 +383,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.metis_andromeda]: {
     name: 'Metis Andromeda',
-    //    privateJsonRPCUrl: 'https://metis-rpc.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca', resolving allowlist issue
+    privateJsonRPCUrl: 'https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
