@@ -171,9 +171,6 @@ export const ManageMainActions = () => {
     Promise.all(promises)
       .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[])[]) => {
         // dev change data setting logic here
-        {
-          /** Need to convert to string */
-        }
         setUnlockedPAW(data[0] as BigNumber); // 18 Decimal percision
         setVestedPAW(data[1] as BigNumber); // 18 Decimal percision
         setExitPenalty(data[2] as BigNumber); // 18 Decimal percision
@@ -358,16 +355,14 @@ export const ManageMainActions = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ width: '50%', pl: '36px' }}>Tokens</TableCell>
+                  <TableCell sx={{ width: '50%' }}>Tokens</TableCell>
                   <TableCell>Amount</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {claimables.map((claimable, i) => (
                   <TableRow key={i}>
-                    <TableCell
-                      sx={{ display: 'flex', gap: '16px', alignItems: 'center', pl: '36px' }}
-                    >
+                    <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                       <Image
                         alt={`token image for ${tokenImageMatching[claimable.token]}`}
                         src={`/icons/tokens/${tokenImageMatching[claimable.token]}.svg`}
