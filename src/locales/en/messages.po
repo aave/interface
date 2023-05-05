@@ -161,7 +161,8 @@ msgstr "All done!"
 msgid "All proposals"
 msgstr "All proposals"
 
-#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "All transactions"
 msgstr "All transactions"
 
@@ -375,7 +376,8 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
@@ -571,6 +573,7 @@ msgstr "Collateral"
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Collateral change"
@@ -1139,6 +1142,10 @@ msgstr "Learn more."
 msgid "Links"
 msgstr "Links"
 
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Liqudation"
+msgstr "Liqudation"
+
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
@@ -1531,6 +1538,10 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Quorum"
 msgstr "Quorum"
 
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Rate change"
+msgstr "Rate change"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
 msgstr "Raw-Ipfs"
@@ -1588,6 +1599,7 @@ msgstr "Repaid"
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Repay"
 msgstr "Repay"
@@ -1872,7 +1884,7 @@ msgstr "Supplied asset amount"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
@@ -2484,6 +2496,7 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Withdraw"
 msgstr "Withdraw"

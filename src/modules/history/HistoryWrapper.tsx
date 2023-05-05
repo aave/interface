@@ -1,16 +1,14 @@
 import { DownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import SortIcon from '@mui/icons-material/Sort';
 import {
   Box,
-  Button,
   CircularProgress,
   SvgIcon,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import {
@@ -22,27 +20,10 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
-import SearchBox from './HistorySearchBox';
 import TransactionRowItem from './TransactionRowItem';
+import { SearchInput } from 'src/components/SearchInput';
+import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
 
-enum FilterOptions {
-  ALL,
-  SUPPLY,
-  BORROW,
-}
-
-const FilterLabel = ({ filter }: { filter: FilterOptions }): ReactElement => {
-  switch (filter) {
-    case FilterOptions.ALL:
-      return <Trans>All transactions</Trans>;
-    case FilterOptions.SUPPLY:
-      return <Trans>Supply</Trans>;
-    case FilterOptions.BORROW:
-      return <Trans>Borrow</Trans>;
-    default:
-      return <></>;
-  }
-};
 
 const groupByDate = (
   transactions: TransactionHistoryItem[]
@@ -76,6 +57,10 @@ export const HistoryWrapper = () => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
+
+  const handleFilter = (filter: FilterOptions[]) => {
+    setFilter(filter);
+  }
 
   const handleDownload = async () => {
     setLoadingJson(true);
@@ -112,7 +97,7 @@ export const HistoryWrapper = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const [filter] = useState<FilterOptions>(FilterOptions.ALL);
+  const [filter, setFilter] = useState<FilterOptions[]>([]);
 
   if (!currentAccount) {
     return (
@@ -133,27 +118,8 @@ export const HistoryWrapper = () => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
         <Box sx={{ display: 'inline-flex' }}>
-          <Button
-            sx={{
-              width: 170,
-              background: 'white',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              p: 2,
-              height: 36,
-              border: '1px solid #EAEBEF',
-              borderRadius: '4px',
-            }}
-          >
-            <SvgIcon height={10} width={10} color="primary">
-              <SortIcon />
-            </SvgIcon>
-            <Typography variant="subheader1" color="text.primary" sx={{ ml: 2 }}>
-              <FilterLabel filter={filter} />
-            </Typography>
-          </Button>
-          <SearchBox onSearch={handleSearch} />
+          <HistoryFilterMenu onFilterChange={handleFilter} />
+          <SearchInput onSearchTermChange={handleSearch} placeholder="Search assets..." wrapperSx={{ width: '280px' }} />
         </Box>
         <Box
           sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
