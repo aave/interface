@@ -26,6 +26,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -110,7 +111,7 @@ export const GhoBorrowModalContent = ({
   userReserve,
   symbol,
 }: ModalWrapperProps) => {
-  const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
+  const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
   const { user, marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
   const { borrowCap } = useAssetCaps();
@@ -228,82 +229,6 @@ export const GhoBorrowModalContent = ({
     }
   };
 
-  const BorrowAPY = () => {
-    if (ghoLoadingData || (!hasGhoBorrowPositions && amount === '' && discountAvailable)) {
-      return <NoData variant="secondary14" color="text.secondary" />;
-    }
-
-    type SharedIncentiveProps = Omit<GhoIncentivesCardProps, 'value' | 'borrowAmount'> & {
-      'data-cy': string;
-    };
-
-    const sharedIncentiveProps: SharedIncentiveProps = {
-      stkAaveBalance: ghoUserData.userDiscountTokenBalance || 0,
-      ghoRoute:
-        ROUTES.reserveOverview(userReserve.reserve.underlyingAsset, customMarket) + '/#discount',
-      'data-cy': `apyType`,
-    };
-
-    if (!hasGhoBorrowPositions && amount !== '') {
-      return (
-        <GhoIncentivesCard
-          withTokenIcon={discountAvailable}
-          value={futureBorrowAPY}
-          {...sharedIncentiveProps}
-        />
-      );
-    }
-
-    if (hasGhoBorrowPositions && amount === '') {
-      return (
-        <GhoIncentivesCard
-          withTokenIcon={discountAvailable}
-          value={currentBorrowAPY}
-          onMoreDetailsClick={() => close()}
-          {...sharedIncentiveProps}
-        />
-      );
-    }
-
-    if (!discountAvailable) {
-      return (
-        <GhoIncentivesCard
-          value={currentBorrowAPY}
-          onMoreDetailsClick={() => close()}
-          {...sharedIncentiveProps}
-        />
-      );
-    }
-
-    if (discountAvailable) {
-      return (
-        <>
-          <GhoIncentivesCard
-            withTokenIcon
-            value={currentBorrowAPY}
-            onMoreDetailsClick={() => close()}
-            {...sharedIncentiveProps}
-          />
-          {!!amount && (
-            <>
-              {hasGhoBorrowPositions && (
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
-              )}
-              <GhoIncentivesCard
-                value={ghoLoadingData ? -1 : futureBorrowAPY}
-                {...sharedIncentiveProps}
-              />
-            </>
-          )}
-        </>
-      );
-    }
-
-    return <NoData variant="secondary14" color="text.secondary" />;
-  };
-
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: underlyingAsset,
@@ -382,7 +307,18 @@ export const GhoBorrowModalContent = ({
         >
           <Box sx={{ textAlign: 'right' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <BorrowAPY />
+              <BorrowAPY
+                ghoLoadingData={ghoLoadingData}
+                hasGhoBorrowPositions={hasGhoBorrowPositions}
+                borrowAmount={amount}
+                discountAvailable={discountAvailable}
+                userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
+                underlyingAsset={underlyingAsset}
+                customMarket={customMarket}
+                currentBorrowAPY={currentBorrowAPY}
+                futureBorrowAPY={futureBorrowAPY}
+                onDetailsClick={() => closeModal()}
+              />
             </Box>
           </Box>
         </Row>
@@ -454,4 +390,102 @@ export const GhoBorrowModalContent = ({
       />
     </>
   );
+};
+
+interface BorrowAPYProps {
+  ghoLoadingData: boolean;
+  hasGhoBorrowPositions: boolean;
+  borrowAmount: string;
+  discountAvailable: boolean;
+  userDiscountTokenBalance: number;
+  underlyingAsset: string;
+  customMarket: CustomMarket;
+  currentBorrowAPY: number;
+  futureBorrowAPY: number;
+  onDetailsClick: () => void;
+}
+const BorrowAPY = ({
+  ghoLoadingData,
+  hasGhoBorrowPositions,
+  borrowAmount,
+  discountAvailable,
+  userDiscountTokenBalance,
+  underlyingAsset,
+  customMarket,
+  currentBorrowAPY,
+  futureBorrowAPY,
+  onDetailsClick,
+}: BorrowAPYProps) => {
+  if (ghoLoadingData || (!hasGhoBorrowPositions && borrowAmount === '' && discountAvailable)) {
+    return <NoData variant="secondary14" color="text.secondary" />;
+  }
+
+  type SharedIncentiveProps = Omit<GhoIncentivesCardProps, 'value' | 'borrowAmount'> & {
+    'data-cy': string;
+  };
+
+  const sharedIncentiveProps: SharedIncentiveProps = {
+    stkAaveBalance: userDiscountTokenBalance || 0,
+    ghoRoute: ROUTES.reserveOverview(underlyingAsset, customMarket) + '/#discount',
+    'data-cy': `apyType`,
+  };
+
+  if (!hasGhoBorrowPositions && borrowAmount !== '') {
+    return (
+      <GhoIncentivesCard
+        withTokenIcon={discountAvailable}
+        value={futureBorrowAPY}
+        {...sharedIncentiveProps}
+      />
+    );
+  }
+
+  if (hasGhoBorrowPositions && borrowAmount === '') {
+    return (
+      <GhoIncentivesCard
+        withTokenIcon={discountAvailable}
+        value={currentBorrowAPY}
+        onMoreDetailsClick={onDetailsClick}
+        {...sharedIncentiveProps}
+      />
+    );
+  }
+
+  if (!discountAvailable) {
+    return (
+      <GhoIncentivesCard
+        value={currentBorrowAPY}
+        onMoreDetailsClick={onDetailsClick}
+        {...sharedIncentiveProps}
+      />
+    );
+  }
+
+  if (discountAvailable) {
+    return (
+      <>
+        <GhoIncentivesCard
+          withTokenIcon
+          value={currentBorrowAPY}
+          onMoreDetailsClick={onDetailsClick}
+          {...sharedIncentiveProps}
+        />
+        {!!borrowAmount && (
+          <>
+            {hasGhoBorrowPositions && (
+              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+            )}
+            <GhoIncentivesCard
+              value={ghoLoadingData ? -1 : futureBorrowAPY}
+              {...sharedIncentiveProps}
+            />
+          </>
+        )}
+      </>
+    );
+  }
+
+  return <NoData variant="secondary14" color="text.secondary" />;
 };
