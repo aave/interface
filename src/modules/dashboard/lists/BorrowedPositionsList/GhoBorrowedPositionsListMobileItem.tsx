@@ -7,6 +7,7 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { Row } from '../../../../components/primitives/Row';
@@ -24,9 +25,10 @@ export const GhoBorrowedPositionsListMobileItem = ({
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay } = useModalContext();
+  const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
+  const { ghoUserQualifiesForDiscount } = useRootStore();
   const { symbol, iconSymbol, name, isActive, isFrozen, borrowingEnabled, underlyingAsset } =
     reserve;
-  const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
 
   const discountableAmount =
     ghoUserData.userGhoBorrowBalance >= ghoReserveData.ghoMinDebtTokenBalanceForDiscount
@@ -39,8 +41,7 @@ export const GhoBorrowedPositionsListMobileItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount =
-    ghoUserData.userDiscountTokenBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
+  const hasDiscount = ghoUserQualifiesForDiscount();
 
   return (
     <ListMobileItemWrapper
@@ -65,6 +66,7 @@ export const GhoBorrowedPositionsListMobileItem = ({
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+          userQualifiesForDiscount={hasDiscount}
         />
       </Row>
       <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>

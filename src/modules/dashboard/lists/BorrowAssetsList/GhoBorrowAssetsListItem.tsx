@@ -120,6 +120,7 @@ export const GhoBorrowAssetsListItem = ({
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(underlyingAsset, currentMarket) + '/#discount'}
           forceShowTooltip
+          userQualifiesForDiscount
         />
       </ListColumn>
       <ListButtonsColumn>

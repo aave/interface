@@ -1,5 +1,5 @@
 import { GhoService } from '@aave/contract-helpers';
-import { GhoReserveData, GhoUserData } from '@aave/math-utils';
+import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
@@ -50,6 +50,7 @@ export interface GhoSlice {
   ghoUserData: GhoUserData;
   ghoReserveDataFetched: boolean;
   ghoUserDataFetched: boolean;
+  ghoUserQualifiesForDiscount: (futureBorrowAmount?: string) => boolean;
   ghoMarketConfig: () => GhoMarketConfig;
   refreshGhoData: () => Promise<void>;
 }
@@ -80,6 +81,30 @@ export const createGhoSlice: StateCreator<
     },
     ghoReserveDataFetched: false,
     ghoUserDataFetched: false,
+    ghoUserQualifiesForDiscount: (futureBorrowAmount = '0') => {
+      const ghoReserveDataFetched = get().ghoReserveDataFetched;
+      const ghoUserDataFetched = get().ghoUserDataFetched;
+
+      if (!ghoReserveDataFetched || !ghoUserDataFetched) return false;
+
+      const ghoReserveData = get().ghoReserveData;
+      const ghoUserData = get().ghoUserData;
+
+      const borrowBalance = Number(normalize(ghoUserData.userGhoScaledBorrowBalance, 18));
+      const minBorrowBalanceForDiscount = Number(
+        normalize(ghoReserveData.ghoMinDebtTokenBalanceForDiscount, 18)
+      );
+
+      const stkAaveBalance = Number(normalize(ghoUserData.userDiscountTokenBalance, 18));
+      const minStkAaveBalanceForDiscount = Number(
+        normalize(ghoReserveData.ghoMinDiscountTokenBalanceForDiscount, 18)
+      );
+
+      return (
+        borrowBalance + Number(futureBorrowAmount) >= minBorrowBalanceForDiscount &&
+        stkAaveBalance >= minStkAaveBalanceForDiscount
+      );
+    },
     ghoMarketConfig: () => {
       const currentMarket = get().currentMarket;
 

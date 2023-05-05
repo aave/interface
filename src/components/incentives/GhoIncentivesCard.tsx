@@ -15,6 +15,7 @@ export interface GhoIncentivesCardProps {
   rangeValues?: [number, number];
   stkAaveBalance: string | number;
   ghoRoute: string;
+  userQualifiesForDiscount: boolean;
   onMoreDetailsClick?: () => void;
   withTokenIcon?: boolean;
   forceShowTooltip?: boolean;
@@ -26,14 +27,15 @@ export const GhoIncentivesCard = ({
   rangeValues = [0, 0],
   ghoRoute,
   stkAaveBalance,
+  userQualifiesForDiscount,
   onMoreDetailsClick,
   withTokenIcon = false,
   forceShowTooltip = false,
 }: GhoIncentivesCardProps) => {
   const { ghoReserveData } = useAppDataContext();
-
   const stkAaveAmount = Number(stkAaveBalance);
-  const userQualifiesForDiscount =
+
+  const minStkAaveBalanceReached =
     stkAaveAmount >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
 
   let toolTipContent = <></>;
@@ -56,7 +58,7 @@ export const GhoIncentivesCard = ({
         <Typography variant="subheader2">
           <Trans>
             Estimated compounding interest, including discount for Staking{' '}
-            {userQualifiesForDiscount ? (
+            {minStkAaveBalanceReached ? (
               <>
                 <FormattedNumber variant="subheader2" value={stkAaveAmount} visibleDecimals={2} />{' '}
               </>

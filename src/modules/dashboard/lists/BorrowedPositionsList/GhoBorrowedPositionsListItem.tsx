@@ -27,7 +27,7 @@ export const GhoBorrowedPositionsListItem = ({
   const { openBorrow, openRepay } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
-  const { ghoUserDataFetched } = useRootStore();
+  const { ghoUserDataFetched, ghoUserQualifiesForDiscount } = useRootStore();
   const { isActive, isFrozen, borrowingEnabled } = reserve;
 
   const discountableAmount =
@@ -41,8 +41,7 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount =
-    ghoUserData.userDiscountTokenBalance >= ghoReserveData.ghoMinDiscountTokenBalanceForDiscount;
+  const hasDiscount = ghoUserQualifiesForDiscount();
 
   return (
     <ListItemWrapper
@@ -67,6 +66,7 @@ export const GhoBorrowedPositionsListItem = ({
           data-cy={`apyType`}
           stkAaveBalance={ghoUserData.userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket) + '/#discount'}
+          userQualifiesForDiscount={hasDiscount}
         />
       </ListColumn>
       <ListColumn>

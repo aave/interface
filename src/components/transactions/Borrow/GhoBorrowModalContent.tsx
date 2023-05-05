@@ -26,6 +26,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
@@ -114,6 +115,7 @@ export const GhoBorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
   const { user, marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
+  const ghoUserQualifiesForDiscount = useRootStore((state) => state.ghoUserQualifiesForDiscount);
   const { borrowCap } = useAssetCaps();
 
   const { currentMarket: customMarket } = useProtocolDataContext();
@@ -126,7 +128,7 @@ export const GhoBorrowModalContent = ({
   // Check if user can borrow at a discount
   const hasGhoBorrowPositions = ghoUserData.userGhoBorrowBalance > 0;
   const userStakedAaveBalance: number = ghoUserData.userDiscountTokenBalance;
-  const discountAvailable = ghoUserData.userGhoAvailableToBorrowAtDiscount > 0;
+  const discountAvailable = ghoUserQualifiesForDiscount(amount);
 
   // amount calculations
   let maxAmountToBorrow = getMaxGhoMintAmount(user);
@@ -427,6 +429,7 @@ const BorrowAPY = ({
   const sharedIncentiveProps: SharedIncentiveProps = {
     stkAaveBalance: userDiscountTokenBalance || 0,
     ghoRoute: ROUTES.reserveOverview(underlyingAsset, customMarket) + '/#discount',
+    userQualifiesForDiscount: discountAvailable,
     'data-cy': `apyType`,
   };
 
