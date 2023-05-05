@@ -71,7 +71,7 @@ export const GhoBorrowAssetsListItem = ({
       ]
     : undefined;
 
-  const listItemProps: GhoBorrowAssetsListItemProps = {
+  const props: GhoBorrowAssetsListItemProps = {
     symbol,
     iconSymbol,
     name,
@@ -87,9 +87,9 @@ export const GhoBorrowAssetsListItem = ({
     onBorrowClick: () => openBorrow(underlyingAsset),
   };
   if (downToXSM) {
-    return <GhoBorrowAssetsListItemMobile {...listItemProps} />;
+    return <GhoBorrowAssetsListItemMobile {...props} />;
   } else {
-    return <GhoBorrowAssetsListItemDesktop {...listItemProps} />;
+    return <GhoBorrowAssetsListItemDesktop {...props} />;
   }
 };
 
