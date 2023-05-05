@@ -21,7 +21,6 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -32,7 +31,6 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
@@ -166,7 +164,11 @@ export default function ProposalPage({
   return (
     <>
       {ipfs && (
-        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+        <Meta
+          imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
+          title={ipfs.title}
+          description={ipfs.shortDescription}
+        />
       )}
       <ProposalTopPanel />
 
@@ -637,7 +639,6 @@ export default function ProposalPage({
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider />
       {page}
       <GovVoteModal />
     </MainLayout>

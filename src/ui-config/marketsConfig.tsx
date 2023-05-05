@@ -56,6 +56,8 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  proto_scroll_alpha_v3 = 'proto_scroll_alpha_v3',
+  proto_sepolia_v3 = 'proto_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -220,6 +222,23 @@ export const marketsData: {
     },
   },
   // v3
+  [CustomMarket.proto_sepolia_v3]: {
+    marketTitle: 'Ethereum Sepolia',
+    v3: true,
+    chainId: ChainId.sepolia,
+    enabledFeatures: {
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Sepolia.POOL,
+      WETH_GATEWAY: markets.AaveV3Sepolia.WETH_GATEWAY,
+      FAUCET: markets.AaveV3Sepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Sepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
+    },
+  },
   [CustomMarket.proto_goerli_v3]: {
     marketTitle: 'Ethereum Görli',
     v3: true,
@@ -237,6 +256,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
+
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     v3: true,
@@ -342,6 +362,25 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER,
+    },
+  },
+  [CustomMarket.proto_scroll_alpha_v3]: {
+    marketTitle: 'Scroll Alpha Görli',
+    v3: true,
+    chainId: ChainId.scroll_alpha,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ScrollAlpha.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3ScrollAlpha.POOL,
+      WETH_GATEWAY: markets.AaveV3ScrollAlpha.WETH_GATEWAY,
+      FAUCET: markets.AaveV3ScrollAlpha.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3ScrollAlpha.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: markets.AaveV3ScrollAlpha.L2_ENCODER,
     },
   },
   [CustomMarket.proto_fantom_v3]: {

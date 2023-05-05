@@ -1,7 +1,8 @@
 import { ProposalState } from '@aave/contract-helpers';
 import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
+import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -19,6 +20,7 @@ export function ProposalListItem({
 }: GovernancePageProps['proposals'][0]) {
   const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
     formatProposal(proposal);
+  const { palette } = useTheme();
 
   const delayedBridgeExecutors = [
     AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
@@ -126,6 +128,17 @@ export function ProposalListItem({
             checked={diffReached}
             loading={mightBeStale}
           />
+          {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
+                Long Executor
+              </Typography>
+              <ShieldExclamationIcon
+                color={quorumReached ? palette.success.main : palette.warning.main}
+                height="16"
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
       <Box

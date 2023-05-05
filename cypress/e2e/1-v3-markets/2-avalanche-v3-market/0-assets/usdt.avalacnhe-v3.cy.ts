@@ -54,14 +54,14 @@ const testData = {
       amount: 10.1,
       hasApproval: false,
     },
+    repayCollateral: {
+      asset: assets.avalancheV3Market.USDT,
+      apyType: constants.apyType.stable,
+      amount: 2,
+      hasApproval: false,
+      repayOption: constants.repayType.default,
+    },
     repay: [
-      {
-        asset: assets.avalancheV3Market.USDT,
-        apyType: constants.apyType.stable,
-        amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.default,
-      },
       {
         asset: assets.avalancheV3Market.USDT,
         apyType: constants.apyType.stable,
@@ -107,8 +107,8 @@ const testData = {
     ],
   },
 };
-//limit
-describe('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+//skip while usdc frozen
+describe.skip('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 
@@ -116,6 +116,7 @@ describe('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
+  repay(testData.testCases.repayCollateral, skipTestState, false);
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });

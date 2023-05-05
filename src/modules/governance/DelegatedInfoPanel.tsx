@@ -7,8 +7,8 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ExternalUserDisplay } from 'src/components/UserDisplay';
-import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
-import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
+import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
+import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
@@ -105,12 +105,12 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 };
 
 export const DelegatedInfoPanel = () => {
-  const powers = useVotingPower();
-  const {
-    daveTokens: { aave, stkAave },
-  } = useAaveTokensProviderContext();
   const address = useRootStore((store) => store.account);
-  const { openGovDelegation } = useModalContext();
+  const {
+    data: { aave, stkAave },
+  } = useGovernanceTokens();
+  const { data: powers } = usePowers();
+  const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
 
   if (!powers || !address) return null;
 
@@ -121,6 +121,12 @@ export const DelegatedInfoPanel = () => {
     powers.aaveVotingDelegatee === '' &&
     powers.stkAavePropositionDelegatee === '' &&
     powers.stkAaveVotingDelegatee === '';
+
+  const showRevokeButton =
+    powers.aavePropositionDelegatee !== '' ||
+    powers.aaveVotingDelegatee !== '' ||
+    powers.stkAavePropositionDelegatee !== '' ||
+    powers.stkAaveVotingDelegatee !== '';
 
   return (
     <Paper sx={{ mt: 2 }}>
@@ -170,7 +176,7 @@ export const DelegatedInfoPanel = () => {
         )}
       </Box>
       <Divider />
-      <Box sx={{ p: 6 }}>
+      <Box sx={{ p: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Button
           size="large"
           sx={{ width: '100%' }}
@@ -180,6 +186,17 @@ export const DelegatedInfoPanel = () => {
         >
           <Trans>Set up delegation</Trans>
         </Button>
+        {showRevokeButton && (
+          <Button
+            size="large"
+            sx={{ width: '100%' }}
+            variant="outlined"
+            disabled={disableButton}
+            onClick={() => openRevokeGovDelegation()}
+          >
+            <Trans>Revoke power</Trans>
+          </Button>
+        )}
       </Box>
     </Paper>
   );

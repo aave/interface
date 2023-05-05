@@ -51,6 +51,25 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [ChainId.sepolia]: {
+    name: 'Ethereum Sepolia',
+    publicJsonRPCUrl: [
+      'https://rpc.sepolia.org',
+      'https://rpc2.sepolia.org',
+      'https://rpc.sepolia.online',
+      'https://www.sepoliarpc.space',
+    ],
+    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://sepolia.etherscan.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     publicJsonRPCUrl: [
@@ -71,7 +90,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    // privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://rpc.ankr.com/eth',
       'https://rpc.flashbots.net',
@@ -291,6 +310,28 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     //   icon: '/icons/bridge/optimism.svg',
     //   name: 'Optimism Bridge',
     //   url: 'https://app.optimism.io/bridge',
+    // },
+  },
+  [ChainId.scroll_alpha]: {
+    name: 'Scroll Alpha',
+    publicJsonRPCUrl: [
+      'https://alpha-rpc.scroll.io/l2',
+      'https://scroll-alphanet.public.blastapi.io',
+    ],
+    publicJsonRPCWSUrl: 'wss://scroll-alphanet.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://blockscout.scroll.io',
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/scroll.svg',
+    // bridge: {
+    //   icon: '/icons/bridge/scroll.svg',
+    //   name: 'Scroll Alpha Bridge',
+    //   url: 'https://scroll.io/alpha/bridge',
     // },
   },
   [ChainId.fantom]: {

@@ -8,7 +8,9 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
+import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
+import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -23,7 +25,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, useFlashloan } from '../utils';
+import { ErrorType, getAssetCollateralType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
@@ -109,21 +111,28 @@ export const SwapModalContent = ({
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
-  const remainingSupplyCap = remainingCap(swapTarget.reserve);
+  const remainingSupplyCap = remainingCap(
+    swapTarget.reserve.supplyCap,
+    swapTarget.reserve.totalLiquidity
+  );
   const remainingCapUsd = amountToUsd(
     remainingSupplyCap,
     swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
   );
 
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
+  if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+    blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+  } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
   }
 
-  const handleBlocked = () => {
+  const BlockingError: React.FC = () => {
     switch (blockingError) {
       case ErrorType.SUPPLY_CAP_REACHED:
         return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
@@ -131,6 +140,13 @@ export const SwapModalContent = ({
         return (
           <Trans>
             The effects on the health factor would cause liquidation. Try lowering the amount.
+          </Trans>
+        );
+      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
+        return (
+          <Trans>
+            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
+            collateral to perform this action
           </Trans>
         );
       default:
@@ -154,10 +170,64 @@ export const SwapModalContent = ({
     poolReserve.reserveLiquidationThreshold !== '0';
 
   // calculate impact based on $ difference
-  const priceImpact =
-    outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
+  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
+  let priceImpact =
+    inputAmountUSD && inputAmountUSD !== '0'
+      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
       : '0';
+  if (priceImpact === '-0.00') {
+    priceImpact = '0.00';
+  }
+
+  const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  const swapSourceCollateralType = getAssetCollateralType(
+    userReserve,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    sourceDebtCeiling
+  );
+
+  const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
+  let swapTargetCollateralType = getAssetCollateralType(
+    swapTarget,
+    user.totalCollateralUSD,
+    user.isInIsolationMode,
+    targetDebtCeiling
+  );
+
+  // If the user is swapping all of their isolated asset to an asset that is not supplied,
+  // then the swap target will be enabled as collateral as part of the swap.
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ISOLATED_ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    if (swapTarget.reserve.isIsolated) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+    } else {
+      swapTargetCollateralType = CollateralType.ENABLED;
+    }
+  }
+
+  // If the user is swapping all of their enabled asset to an isolated asset that is not supplied,
+  // and no other supplied assets are being used as collateral,
+  // then the swap target will be enabled as collateral and the user will be in isolation mode.
+  if (
+    isMaxSelected &&
+    swapSourceCollateralType === CollateralType.ENABLED &&
+    swapTarget.underlyingBalance === '0'
+  ) {
+    const reservesAsCollateral = user.userReservesData.filter(
+      (r) => r.usageAsCollateralEnabledOnUser
+    );
+
+    if (
+      reservesAsCollateral.length === 1 &&
+      reservesAsCollateral[0].underlyingAsset === userReserve.underlyingAsset
+    ) {
+      swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
+    }
+  }
 
   return (
     <>
@@ -207,7 +277,7 @@ export const SwapModalContent = ({
       )}
       {!error && blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
+          <BlockingError />
         </Typography>
       )}
 
@@ -227,8 +297,8 @@ export const SwapModalContent = ({
           showHealthFactor={showHealthFactor}
           healthFactor={user?.healthFactor}
           healthFactorAfterSwap={hfAfterSwap.toString(10)}
-          swapSource={userReserve}
-          swapTarget={swapTarget}
+          swapSource={{ ...userReserve, collateralType: swapSourceCollateralType }}
+          swapTarget={{ ...swapTarget, collateralType: swapTargetCollateralType }}
           toAmount={outputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
