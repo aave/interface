@@ -46,28 +46,21 @@ export function ProposalListItem({
   const twoDayDelay = 172800;
 
   const executedL2 =
-    proposal.executionTime > 0
-      ? proposal.executionTime + twoDayDelay > proposal.executionTime
-      : false;
+    proposal.executionTime === 0
+      ? false
+      : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
 
   const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
-  const pendingL2 =
-    proposalCrosschainBridge && proposal.executionTime === 0 && proposal.state !== 'Canceled';
 
-  const pendingL2WithQueue =
-    proposalCrosschainBridge && proposal.executionTime > 0 && proposal.state === 'Queued';
+  const pendingL2 = proposalCrosschainBridge && !executedL2;
 
-  const pendingL2WithFailed =
-    proposalCrosschainBridge && proposal.executionTime === 0 && proposal.state === 'Failed';
-
-  const proposalState =
-    proposalCrosschainBridge && (pendingL2 || pendingL2WithQueue || pendingL2WithFailed)
-      ? !pendingL2WithFailed
-        ? ProposalState.Pending
-        : ProposalState.Failed
-      : proposal.state;
+  const displayL2StateBadge =
+    executorChain === 'L2' &&
+    proposal.state !== 'Failed' &&
+    proposal.state !== 'Canceled' &&
+    (executedL2 || pendingL2);
 
   return (
     <Box
@@ -103,10 +96,10 @@ export function ProposalListItem({
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 3 }}>
           <StateBadge state={proposal.state} crossChainBridge={'L1'} loading={mightBeStale} />
 
-          {executorChain === 'L2' && proposalState !== 'Failed' && (executedL2 || pendingL2) && (
+          {displayL2StateBadge && (
             <StateBadge
               crossChainBridge={executorChain}
-              state={proposalState}
+              state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
               loading={mightBeStale}
             />
           )}
