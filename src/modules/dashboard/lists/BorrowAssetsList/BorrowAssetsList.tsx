@@ -37,7 +37,6 @@ import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
-import { GhoBorrowAssetsListMobileItem } from './GhoBorrowAssetsListMobileItem';
 
 const head = [
   {
@@ -258,7 +257,7 @@ export const BorrowAssetsList = () => {
           downToXSM &&
           isGhoAndSupported({ symbol: ghoReserve.symbol, currentMarket }) && (
             <AssetCapsProvider asset={ghoReserve.reserve}>
-              <GhoBorrowAssetsListMobileItem {...ghoReserve} />
+              <GhoBorrowAssetsListItem {...ghoReserve} />
             </AssetCapsProvider>
           )}
         {sortedReserves?.map((item) => (
