@@ -52,8 +52,13 @@ export function ProposalListItem({
   const pendingL2 =
     proposalCrosschainBridge && proposal.executionTime === 0 && proposal.state !== 'Canceled';
 
+  const pendingL2WithQueue =
+    proposalCrosschainBridge && proposal.executionTime > 0 && proposal.state === 'Queued';
+
   const proposalState =
-    proposalCrosschainBridge && pendingL2 ? ProposalState.Pending : proposal.state;
+    proposalCrosschainBridge && (pendingL2 || pendingL2WithQueue)
+      ? ProposalState.Pending
+      : proposal.state;
 
   return (
     <Box
