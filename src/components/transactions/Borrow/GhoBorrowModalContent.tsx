@@ -191,13 +191,7 @@ export const GhoBorrowModalContent = ({
     futureDiscountedAmount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  console.log(
-    `futureapy ${futureBorrowAPY} user gho balanace ${
-      ghoUserData.userGhoBorrowBalance
-    } amt ${amount} comb ${ghoUserData.userGhoBorrowBalance + Number(amount)} avail didc ${
-      ghoUserData.userGhoAvailableToBorrowAtDiscount
-    }`
-  );
+
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
   if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
