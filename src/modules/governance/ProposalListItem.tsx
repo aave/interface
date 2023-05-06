@@ -110,6 +110,7 @@ export function ProposalListItem({
             executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+            l2Execution={displayL2StateBadge}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
           <CheckBadge

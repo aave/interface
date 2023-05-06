@@ -841,6 +841,7 @@ msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/FormattedProposalTime.tsx
 msgid "Executed"
 msgstr "Executed"
 

@@ -13,6 +13,7 @@ interface FormattedProposalTimeProps {
   executionTime: number;
   expirationTimestamp: number;
   executionTimeWithGracePeriod: number;
+  l2Execution: boolean;
 }
 
 export function FormattedProposalTime({
@@ -21,8 +22,11 @@ export function FormattedProposalTime({
   startTimestamp,
   expirationTimestamp,
   executionTimeWithGracePeriod,
+  l2Execution,
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
+  const twoDayDelay = 172800;
+  const executionTimeWithL2 = executionTime + twoDayDelay;
 
   if ([ProposalState.Pending].includes(state)) {
     return (
@@ -63,7 +67,8 @@ export function FormattedProposalTime({
       ProposalState.Failed,
       ProposalState.Succeeded,
       ProposalState.Executed,
-    ].includes(state)
+    ].includes(state) &&
+    !l2Execution
   ) {
     return (
       <Typography component="span" variant="caption">
@@ -82,7 +87,8 @@ export function FormattedProposalTime({
       </Typography>
     );
   }
-  const canBeExecuted = timestamp > executionTime;
+  const crossChainExecutionTime = l2Execution ? executionTimeWithL2 : executionTime;
+  const canBeExecuted = timestamp > crossChainExecutionTime;
   return (
     <Typography component="span" variant="caption">
       <Typography
@@ -90,10 +96,22 @@ export function FormattedProposalTime({
         color="text.secondary"
         sx={{ display: { xs: 'none', md: 'inline' } }}
       >
-        {canBeExecuted ? <Trans>Expires</Trans> : <Trans>Can be executed</Trans>}
+        {canBeExecuted ? (
+          l2Execution ? (
+            <Trans>Executed</Trans>
+          ) : (
+            <Trans>Expires</Trans>
+          )
+        ) : (
+          <Trans>Can be executed</Trans>
+        )}
         &nbsp;
       </Typography>
-      {dayjs.unix(canBeExecuted ? executionTimeWithGracePeriod : executionTime).fromNow()}
+      {dayjs
+        .unix(
+          canBeExecuted && !l2Execution ? executionTimeWithGracePeriod : crossChainExecutionTime
+        )
+        .fromNow()}
     </Typography>
   );
 }
