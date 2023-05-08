@@ -84,7 +84,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  */
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { currentMarket } = useProtocolDataContext();
   const [
     reserves,
@@ -226,10 +226,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     (debtAPY || 0) *
       (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
 
-  console.log('reserves length', reserves.length);
-  console.log('user reserves length', userReserves.length);
-  console.log('current account', currentAccount);
-  console.log('web3Loading', web3Loading);
   return (
     <AppDataContext.Provider
       value={{
