@@ -385,10 +385,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     name: 'Metis Andromeda',
     privateJsonRPCUrl: 'https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://andromeda-explorer.metis.io/',
+    baseAssetSymbol: '', // N/A
+    wrappedBaseAssetSymbol: '', // N/A
+    baseAssetDecimals: 0, // N/A
+    explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
   },
 } as const;
