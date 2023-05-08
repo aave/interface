@@ -60,20 +60,28 @@ export const ManageQuickActions = () => {
     // create contract
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
+    const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, signer);
     const promises = [];
-
     // add contract call into promise arr
     promises.push(contract.stake(BigNumber.from(toWeiString(amountToStake)), false)); // stake
-
     // call promise all nad handle sucess error
+    Promise.resolve(pawContract.allowance(currentAccount, MULTI_FEE_ADDR) as BigNumber).then(
+      (value) => {
+        if (value.lt(BigNumber.from(toWeiString(amountToStake)))) {
+          alert('Not Enough Allowance');
+        }
+      }
+    );
     Promise.all(promises)
-      .then(() => {
+      .then((prom) => {
         alert('success');
         setLoading(false);
+        console.log(prom);
       })
       .catch((e) => {
         alert('error');
         console.error(e);
+        console.log(e.message);
       });
   };
 
