@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.17.3":
-  version "1.17.3"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.17.3.tgz#5ec2d52d9e938e7a57436dbe72b6b8ebd7c8e217"
-  integrity sha512-uXZSGsYTirVb0/mm8HcBhZgqeDaX7fddPZIlAtuvk3VnDg8DuSmk7WOqaVO1Qps5IHmW+qdWv5dR9+p2xgA+IQ==
+"@aave/contract-helpers@1.17.4":
+  version "1.17.4"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.17.4.tgz#3561d1076213e2ecdf1313788e884de00bbc9b16"
+  integrity sha512-9OpyxOxtB7OQGT8S69EVnrmrivf5otKaiwfqWYcI7EnJJkc3d5WE7wzzdCPdOqFGl+7RRlASKeMR5lVVBvCSNw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.17.3":
-  version "1.17.3"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.17.3.tgz#be1b0e207e4d8b595d7fd71c173cfc82db16d678"
-  integrity sha512-3mwjCJ4B15uloYfgU+dAtduW2di94GdLyk9rK5LiBZCDKb1pKOMHelZ9khYZFkAokL05VhuhjKT4n1mgHmgjHw==
+"@aave/math-utils@1.17.4":
+  version "1.17.4"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.17.4.tgz#e25148e9d5b6adf9a90e5ae473ed3f5cdec89465"
+  integrity sha512-7FW0ZsxGCP+ijZqcBb8hk7Z33lvpauyPM8wr2sCHDasZxdVhRFiLp7UsqbA0WJ+56AmdrTx8YM+5VQLw8p8UOw==
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"

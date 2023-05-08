@@ -66,7 +66,7 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  // proto_ethereum_v3_1 = 'proto_ethereum_v3_1',
+  proto_metis_v3 = 'proto_metis_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -557,6 +557,27 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: markets.AaveV2Fuji.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
+    },
+  },
+  [CustomMarket.proto_metis_v3]: {
+    marketTitle: 'Metis',
+    chainId: ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Metis.POOL,
+      WETH_GATEWAY: '0x0', // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: markets.AaveV3Metis.COLLECTOR,
+    },
+    halIntegration: {
+      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+      marketName: 'polygon',
     },
   },
 } as const;
