@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, OutlinedInput, Slider, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { NumberFormatValues } from 'react-number-format';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 
@@ -40,6 +41,8 @@ interface CalculatorInputProps {
   downToXsm: boolean;
   onValueChanged: (value: number | null) => void;
 }
+
+const MAX_LIMIT = 1000000000000; // Set maximum input to 1 trillion
 
 export const CalculatorInput = ({
   title,
@@ -90,6 +93,10 @@ export const CalculatorInput = ({
           min: 0,
           sx: { py: 2, px: 3, fontSize: '21px' },
           inputMode: 'numeric',
+          isAllowed: (values: NumberFormatValues) => {
+            const { floatValue } = values;
+            return floatValue === null || floatValue === undefined || floatValue < MAX_LIMIT;
+          },
         }}
         onChange={(e) => {
           const value = parseFloat(e.target.value.replace(/,/g, ''));

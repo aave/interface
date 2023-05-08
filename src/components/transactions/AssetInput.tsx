@@ -26,7 +26,6 @@ interface CustomProps {
   name: string;
   value: string;
 }
-const MAX_LIMIT = 1000000000000; // Set maximum input to 1 trillion
 
 export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
   function NumberFormatCustom(props, ref) {
@@ -36,10 +35,6 @@ export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProp
       <NumberFormat
         {...other}
         getInputRef={ref}
-        isAllowed={(values) => {
-          const { floatValue } = values;
-          return floatValue === null || floatValue === undefined || floatValue < MAX_LIMIT;
-        }}
         onValueChange={(values) => {
           if (values.value !== props.value)
             onChange({
