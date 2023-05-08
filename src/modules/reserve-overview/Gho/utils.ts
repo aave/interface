@@ -1,5 +1,11 @@
 import { calculateCompoundedRate, RAY_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+
+import { ESupportedTimeRanges } from '../TimeRangeSelector';
+
+dayjs.extend(duration);
 
 /**
  * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds and a given term length
@@ -37,4 +43,24 @@ export const calculateDiscountRate = (
     rateAfterDiscount: newBorrowRate,
     rateAfterMaxDiscount: borrowRateWithMaxDiscount,
   };
+};
+
+export const getSecondsForGhoBorrowTermDuration = (timeRange: ESupportedTimeRanges): number => {
+  switch (timeRange) {
+    case ESupportedTimeRanges.OneMonth:
+      return dayjs.duration({ days: 31 }).asSeconds();
+    case ESupportedTimeRanges.ThreeMonths:
+      return dayjs.duration({ years: 0.25 }).asSeconds();
+    case ESupportedTimeRanges.SixMonths:
+      return dayjs.duration({ years: 0.5 }).asSeconds();
+    case ESupportedTimeRanges.OneYear:
+      return dayjs.duration({ years: 1 }).asSeconds();
+    case ESupportedTimeRanges.TwoYears:
+      return dayjs.duration({ years: 2 }).asSeconds();
+    case ESupportedTimeRanges.FiveYears:
+      return dayjs.duration({ years: 5 }).asSeconds();
+    default:
+      // Return today as a fallback
+      return dayjs.duration({ days: 1 }).asSeconds();
+  }
 };

@@ -14,8 +14,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';
 import { GhoPieChartContainer } from './GhoPieChartContainer';
-import { getSecondsForGhoBorrowTermDuration } from './GhoTimeRangeSelector';
-import { calculateDiscountRate } from './utils';
+import { calculateDiscountRate, getSecondsForGhoBorrowTermDuration } from './utils';
 
 interface CalculatedRateSelection {
   baseRate: number;
