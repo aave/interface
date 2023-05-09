@@ -1000,10 +1000,6 @@ msgstr "Frozen assets"
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
 
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-msgid "GHO"
-msgstr "GHO"
-
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1024,8 +1020,7 @@ msgstr "Global settings"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Go Back"
 msgstr "Go Back"
 
@@ -1264,8 +1259,7 @@ msgstr "Ltv validation failed"
 msgid "MAX"
 msgstr "MAX"
 
-#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
 
@@ -1486,8 +1480,7 @@ msgstr "Operation not supported"
 msgid "Oracle price"
 msgstr "Oracle price"
 
-#: src/modules/reserve-overview/Gho/GhoReserveOverview.tsx
-#: src/modules/reserve-overview/ReserveOverview.tsx
+#: pages/reserve-overview.page.tsx
 msgid "Overview"
 msgstr "Overview"
 
@@ -1707,8 +1700,7 @@ msgstr "Reserve factor"
 msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 msgstr "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
 
@@ -2716,12 +2708,11 @@ msgid "Your health factor and loan to value determine the assurance of your coll
 msgstr "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 
 #: pages/governance/index.governance.tsx
+#: pages/reserve-overview.page.tsx
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/reserve-overview/Gho/GhoReserveOverview.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveOverview.tsx
 msgid "Your info"
 msgstr "Your info"
 
@@ -2863,7 +2854,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"
 msgstr "{0}"
