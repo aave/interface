@@ -215,7 +215,8 @@ export const SwapModalContent = ({
   if (
     isMaxSelected &&
     swapSourceCollateralType === CollateralType.ENABLED &&
-    swapTarget.underlyingBalance === '0'
+    swapTarget.underlyingBalance === '0' &&
+    swapTarget.reserve.isIsolated
   ) {
     const reservesAsCollateral = user.userReservesData.filter(
       (r) => r.usageAsCollateralEnabledOnUser
