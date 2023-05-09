@@ -25,7 +25,10 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: reserve.isFrozen ? '0px' : '36px',
+          mb:
+            reserve.isFrozen || reserve.symbol == 'AMPL' || reserve.symbol === 'stETH'
+              ? '0px'
+              : '36px',
         }}
       >
         <Typography variant="h3">
