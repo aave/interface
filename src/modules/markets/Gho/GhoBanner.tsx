@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -16,10 +17,18 @@ interface GhoBannerProps {
 
 export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const theme = useTheme();
+  const router = useRouter();
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData } = useAppDataContext();
+
+  const onClick = () => {
+    if (reserve) {
+      router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket));
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -35,6 +44,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       }}
     >
       <Box
+        onClick={onClick}
         sx={(theme) => ({
           borderRadius: {
             md: 4,
@@ -122,11 +132,16 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
           }}
         >
           <Box
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
             sx={{
               pr: {
                 xs: '140px',
                 xsm: 0,
               },
+              zIndex: 100,
               minWidth: {
                 md: 232,
               },
@@ -173,6 +188,10 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 xs: 4,
                 lg: 15,
               },
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
             }}
           >
             <Box
