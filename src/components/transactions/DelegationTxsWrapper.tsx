@@ -6,100 +6,80 @@ import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxAction } from 'src/ui-config/errorMapping';
 
-import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
-import { RightHelperText } from './FlowCommons/RightHelperText';
-
 interface TxActionsWrapperProps extends BoxProps {
-  actionInProgressText: ReactNode;
-  actionText: ReactNode;
-  amount?: string;
   approvalTxState?: TxStateType;
-  handleApproval?: () => Promise<void>;
+  handleSignatures: () => Promise<void>;
   handleAction: () => Promise<void>;
   isWrongNetwork: boolean;
   mainTxState: TxStateType;
   preparingTransactions: boolean;
   requiresAmount?: boolean;
-  requiresApproval: boolean;
-  symbol?: string;
+  requiresSignature: boolean;
   blocked?: boolean;
-  fetchingData?: boolean;
   errorParams?: {
     loading: boolean;
     disabled: boolean;
     content: ReactNode;
     handleClick: () => Promise<void>;
   };
-  tryPermit?: boolean;
+  isRevoke: boolean;
 }
 
-export const TxActionsWrapper = ({
-  actionInProgressText,
-  actionText,
-  amount,
+export const DelegationTxsWrapper = ({
+  isRevoke,
   approvalTxState,
-  handleApproval,
+  handleSignatures,
   handleAction,
   isWrongNetwork,
   mainTxState,
   preparingTransactions,
-  requiresAmount,
-  requiresApproval,
+  requiresSignature,
   sx,
-  symbol,
   blocked,
-  fetchingData = false,
-  errorParams,
-  tryPermit,
-  ...rest
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
   const { readOnlyModeAddress } = useWeb3Context();
 
-  const hasApprovalError =
-    requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
-  const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
-
   function getMainParams() {
-    if (blocked) return { disabled: true, content: actionText };
+    if (blocked)
+      return { disabled: true, content: <Trans>{isRevoke ? 'Revoke' : 'Delegate'}</Trans> };
     if (
       (txError?.txAction === TxAction.GAS_ESTIMATION ||
         txError?.txAction === TxAction.MAIN_ACTION) &&
       txError?.actionBlocked
     ) {
-      if (errorParams) return errorParams;
-      return { loading: false, disabled: true, content: actionText };
+      return {
+        loading: false,
+        disabled: true,
+        content: <Trans>{isRevoke ? 'Revoke' : 'Delegate'}</Trans>,
+      };
     }
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
-    if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
-    if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions) return { disabled: true, loading: true };
-    // if (hasApprovalError && handleRetry)
-    //   return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)
-      return { loading: true, disabled: true, content: actionInProgressText };
-    if (requiresApproval && !approvalTxState?.success)
-      return { disabled: true, content: actionText };
-    return { content: actionText, handleClick: handleAction };
+      return {
+        loading: true,
+        disabled: true,
+        content: <Trans>{isRevoke ? 'Revoking' : 'Delegating'}</Trans>,
+      };
+    if (requiresSignature && !approvalTxState?.success)
+      return { disabled: true, content: <Trans>{isRevoke ? 'Revoke' : 'Delegate'}</Trans> };
+    return {
+      content: <Trans>{isRevoke ? 'Revoke' : 'Delegate'}</Trans>,
+      handleClick: handleAction,
+    };
   }
 
-  function getApprovalParams() {
-    if (
-      !requiresApproval ||
-      isWrongNetwork ||
-      isAmountMissing ||
-      preparingTransactions ||
-      hasApprovalError
-    )
-      return null;
+  function getSignatureParams() {
+    if (!requiresSignature || isWrongNetwork || preparingTransactions || blocked) return null;
     if (approvalTxState?.loading)
-      return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
+      return { loading: true, disabled: true, content: <Trans>Signing</Trans> };
     if (approvalTxState?.success)
       return {
         disabled: true,
         content: (
           <>
-            <Trans>Approve Confirmed</Trans>
+            <Trans>Signatures ready</Trans>
             <SvgIcon sx={{ fontSize: 20, ml: 2 }}>
               <CheckIcon />
             </SvgIcon>
@@ -108,29 +88,15 @@ export const TxActionsWrapper = ({
       };
 
     return {
-      content: (
-        <ApprovalTooltip
-          variant="buttonL"
-          iconSize={20}
-          iconMargin={2}
-          color="white"
-          text={<Trans>Approve {symbol} to continue</Trans>}
-        />
-      ),
-      handleClick: handleApproval,
+      content: <Trans>Sign to continue</Trans>,
+      handleClick: handleSignatures,
     };
   }
 
   const { content, disabled, loading, handleClick } = getMainParams();
-  const approvalParams = getApprovalParams();
+  const approvalParams = getSignatureParams();
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
-          <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
-        </Box>
-      )}
-
+    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }}>
       {approvalParams && !readOnlyModeAddress && (
         <Button
           variant="contained"

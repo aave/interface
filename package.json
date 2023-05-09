@@ -31,9 +31,9 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.13.6",
-    "@aave/math-utils": "1.13.6",
-    "@bgd-labs/aave-address-book": "^1.19.0",
+    "@aave/contract-helpers": "1.17.4",
+    "@aave/math-utils": "1.17.4",
+    "@bgd-labs/aave-address-book": "^1.23.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -99,6 +99,7 @@
     "@lingui/macro": "^3.14.0",
     "@next/bundle-analyzer": "^12.1.0",
     "@svgr/webpack": "^6.4.0",
+    "@tanstack/react-query-devtools": "^4.29.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

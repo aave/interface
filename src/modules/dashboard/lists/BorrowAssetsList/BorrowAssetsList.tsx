@@ -89,7 +89,7 @@ export const BorrowAssetsList = () => {
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
-        ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
+        ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
         : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)

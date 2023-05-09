@@ -15,6 +15,8 @@ import { GasOption } from './GasStationProvider';
 
 export interface GasStationProps {
   gasLimit: BigNumber;
+  skipLoad?: boolean;
+  disabled?: boolean;
 }
 
 export const getGasCosts = (
@@ -31,7 +33,7 @@ export const getGasCosts = (
   return Number(formatUnits(gasLimit.mul(gasPrice), 18)) * parseFloat(baseCurrencyUsd);
 };
 
-export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
+export const GasStation: React.FC<GasStationProps> = ({ gasLimit, skipLoad, disabled }) => {
   const {
     state,
     gasPriceData: { data },
@@ -55,9 +57,9 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
       <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
 
-      {loadingTxns ? (
+      {loadingTxns && !skipLoad ? (
         <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-      ) : totalGasCostsUsd ? (
+      ) : totalGasCostsUsd && !disabled ? (
         <>
           <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
           <GasTooltip />
