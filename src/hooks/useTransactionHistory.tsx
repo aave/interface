@@ -28,28 +28,35 @@ export type ActionFields = {
   Supply: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Deposit: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Borrow: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Repay: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   RedeemUnderlying: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   LiquidationCall: {
     collateralReserve: ReserveSubset;
     collateralAmount: string;
     principalReserve: ReserveSubset;
     principalAmount: string;
+    borrowAssetPriceUSD: string;
+    collateralAssetPriceUSD: string;
   };
   SwapBorrowRate: {
     reserve: ReserveSubset;
@@ -57,6 +64,7 @@ export type ActionFields = {
     borrowRateModeTo: string;
     stableBorrowRate: string;
     variableBorrowRate: string;
+    assetPriceUSD: string;
   };
   Swap: {
     reserve: ReserveSubset;
@@ -64,11 +72,13 @@ export type ActionFields = {
     borrowRateModeTo: number;
     stableBorrowRate: string;
     variableBorrowRate: string;
+    assetPriceUSD: string;
   };
   UsageAsCollateral: {
     reserve: ReserveSubset;
     fromState: boolean;
     toState: boolean;
+    assetPriceUSD: string;
   };
 };
 
