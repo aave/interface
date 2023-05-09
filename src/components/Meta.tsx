@@ -6,10 +6,9 @@ type MetaProps = {
   description: string;
   imageUrl?: string;
   timestamp?: string;
-  imageUrl180?: string;
 };
 
-export function Meta({ title, description, imageUrl, imageUrl180, timestamp }: MetaProps) {
+export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
   return (
     <Head>
       <title>Aave - {title}</title>
@@ -35,8 +34,8 @@ export function Meta({ title, description, imageUrl, imageUrl180, timestamp }: M
         key="keywords"
         content="Decentralized Finance, DeFi, lending, borrowing, stablecoins, Ethereum, assets, erc-20, smart contracts, open finance, trustless"
       />
-      <link rel="apple-touch-icon" href={imageUrl180} />
-      <meta name="apple-mobile-web-app-title" content={`Aave - ${title}`} />
+      <link rel="apple-touch-icon" href="/aave_icon180.png" />
+      <meta name="apple-mobile-web-app-title" content={`Aave`} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     </Head>
