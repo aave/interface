@@ -14,8 +14,16 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/history/HistoryWrapper.tsx
+msgid ".CSV"
+msgstr ".CSV"
+
+#: src/modules/history/HistoryWrapper.tsx
 msgid ".JSON"
 msgstr ".JSON"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid ".{downloadFormat}"
+msgstr ".{downloadFormat}"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -376,7 +384,6 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -785,8 +792,13 @@ msgid "Discord channel"
 msgstr "Discord channel"
 
 #: src/modules/history/HistoryWrapper.tsx
-msgid "Download .JSON"
-msgstr "Download .JSON"
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Download"
+msgstr "Download"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Download transaction history"
+msgstr "Download transaction history"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
@@ -1483,6 +1495,10 @@ msgstr "Powered by"
 msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Price data is not currently available for this reserve on the protocol subgraph"
+msgstr "Price data is not currently available for this reserve on the protocol subgraph"
+
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -1690,6 +1706,10 @@ msgstr "Select"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Select file format"
+msgstr "Select file format"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
