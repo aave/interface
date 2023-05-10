@@ -1,8 +1,19 @@
 import { DownloadIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Menu,
+  MenuItem,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import {
@@ -39,6 +50,21 @@ export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingJson, setLoadingJson] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
+  const [downloadFormat, setDownloadFormat] = useState('JSON');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (format: string) => {
+    setDownloadFormat(format);
+    handleMenuClose();
+  };
 
   const {
     data: transactions,
@@ -50,18 +76,30 @@ export const HistoryWrapper = () => {
 
   const handleDownload = async () => {
     setLoadingJson(true);
-    const fileName = 'transactions.json';
     const data = await fetchForDownload({ searchQuery, filterQuery });
-    const jsonData = JSON.stringify(data, null, 2);
-    const file = new Blob([jsonData], { type: 'application/json' });
-    const downloadUrl = URL.createObjectURL(file);
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(downloadUrl);
+
+    const downloadData = (fileName: string, content: string, mimeType: string) => {
+      const file = new Blob([content], { type: mimeType });
+      const downloadUrl = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(downloadUrl);
+    };
+
+    if (downloadFormat === 'JSON') {
+      const jsonData = JSON.stringify(data, null, 2);
+      downloadData('transactions.json', jsonData, 'application/json');
+    } else if (downloadFormat === 'CSV') {
+      // WIP
+      const csvData = '';
+
+      downloadData('transactions.csv', csvData, 'text/csv');
+    }
+
     setLoadingJson(false);
   };
 
@@ -114,17 +152,62 @@ export const HistoryWrapper = () => {
             wrapperSx={{ width: '280px' }}
           />
         </Box>
-        <Box
-          sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
-          onClick={handleDownload}
-        >
-          {loadingJson && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <SvgIcon width={8} height={8}>
-            <DownloadIcon />
-          </SvgIcon>
-          <Typography variant="buttonM" color="text.primary">
-            {downToMD ? <Trans>.JSON</Trans> : <Trans>Download .JSON</Trans>}
-          </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                <Trans>Download transaction history</Trans>
+              </Typography>
+            }
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={handleDownload}
+            >
+              {loadingJson && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
+              <SvgIcon width={8} height={8}>
+                <DownloadIcon />
+              </SvgIcon>
+              <Typography variant="buttonM" color="text.primary">
+                {downToMD ? <Trans>Download</Trans> : <Trans>Download</Trans>}
+              </Typography>
+            </Box>
+          </DarkTooltip>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                <Trans>Select file format</Trans>
+              </Typography>
+            }
+          >
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              onClick={handleMenuClick}
+            >
+              <Typography variant="buttonM" color="text.primary">
+                <Trans>{`.${downloadFormat}`}</Trans>
+              </Typography>
+              <SvgIcon width={14} height={14} sx={{ ml: 0.5 }}>
+                <ChevronDownIcon />
+              </SvgIcon>
+            </Box>
+          </DarkTooltip>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+            <MenuItem onClick={() => handleMenuItemClick('JSON')}>
+              <Typography variant="buttonM" color="text.primary">
+                <Trans>.JSON</Trans>
+              </Typography>
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('CSV')}>
+              <Typography variant="buttonM" color="text.primary">
+                <Trans>.CSV</Trans>
+              </Typography>
+            </MenuItem>
+          </Menu>
         </Box>
       </Box>
 
