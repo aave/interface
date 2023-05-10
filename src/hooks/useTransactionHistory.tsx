@@ -1,4 +1,5 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
+import { FilterOptions } from 'src/modules/history/HistoryFilterMenu';
 import {
   USER_TRANSACTIONS_V2,
   USER_TRANSACTIONS_V2_WITH_POOL,
@@ -28,28 +29,35 @@ export type ActionFields = {
   Supply: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Deposit: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Borrow: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   Repay: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   RedeemUnderlying: {
     reserve: ReserveSubset;
     amount: string;
+    assetPriceUSD: string;
   };
   LiquidationCall: {
     collateralReserve: ReserveSubset;
     collateralAmount: string;
     principalReserve: ReserveSubset;
     principalAmount: string;
+    borrowAssetPriceUSD: string;
+    collateralAssetPriceUSD: string;
   };
   SwapBorrowRate: {
     reserve: ReserveSubset;
@@ -57,6 +65,7 @@ export type ActionFields = {
     borrowRateModeTo: string;
     stableBorrowRate: string;
     variableBorrowRate: string;
+    assetPriceUSD: string;
   };
   Swap: {
     reserve: ReserveSubset;
@@ -64,18 +73,43 @@ export type ActionFields = {
     borrowRateModeTo: number;
     stableBorrowRate: string;
     variableBorrowRate: string;
+    assetPriceUSD: string;
   };
   UsageAsCollateral: {
     reserve: ReserveSubset;
     fromState: boolean;
     toState: boolean;
+    assetPriceUSD: string;
   };
 };
 
 interface HistoryFilters {
   searchQuery: string;
-  filterQuery: string[];
+  filterQuery: FilterOptions[];
 }
+
+const actionFilterMap = (action: string): number => {
+  switch (action) {
+    case 'Deposit': // v2
+    case 'Supply': // v3
+      return 0;
+    case 'Borrow':
+      return 1;
+    case 'RedeemUnderlying':
+      return 2;
+    case 'Repay':
+      return 3;
+    case 'Swap': // v2
+    case 'SwapBorrowRate': // v3
+      return 4;
+    case 'UsageAsCollateral':
+      return 5;
+    case 'LiquidationCall':
+      return 6;
+    default:
+      return 7;
+  }
+};
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -109,7 +143,7 @@ export const applyTxHistoryFilters = ({
   // apply txn type filter
   if (filterQuery.length > 0) {
     filteredTxns = filteredTxns.filter((txn: TransactionHistoryItem) => {
-      if (filterQuery.includes(txn.action)) {
+      if (filterQuery.includes(actionFilterMap(txn.action))) {
         return true;
       } else {
         return false;

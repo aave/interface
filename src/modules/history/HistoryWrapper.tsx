@@ -1,29 +1,22 @@
 import { DownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  CircularProgress,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, CircularProgress, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { SearchInput } from 'src/components/SearchInput';
 import {
   ActionFields,
+  applyTxHistoryFilters,
   TransactionHistoryItem,
   useTransactionHistory,
 } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionRowItem from './TransactionRowItem';
-import { SearchInput } from 'src/components/SearchInput';
-import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
-
 
 const groupByDate = (
   transactions: TransactionHistoryItem[]
@@ -45,6 +38,7 @@ const groupByDate = (
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingJson, setLoadingJson] = useState(false);
+  const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
 
   const {
     data: transactions,
@@ -54,18 +48,10 @@ export const HistoryWrapper = () => {
     fetchForDownload,
   } = useTransactionHistory();
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const handleFilter = (filter: FilterOptions[]) => {
-    setFilter(filter);
-  }
-
   const handleDownload = async () => {
     setLoadingJson(true);
     const fileName = 'transactions.json';
-    const data = await fetchForDownload({ searchQuery, filterQuery: [] });
+    const data = await fetchForDownload({ searchQuery, filterQuery });
     const jsonData = JSON.stringify(data, null, 2);
     const file = new Blob([jsonData], { type: 'application/json' });
     const downloadUrl = URL.createObjectURL(file);
@@ -97,7 +83,6 @@ export const HistoryWrapper = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const [filter, setFilter] = useState<FilterOptions[]>([]);
 
   if (!currentAccount) {
     return (
@@ -107,6 +92,10 @@ export const HistoryWrapper = () => {
       />
     );
   }
+
+  const flatTxns = transactions?.pages?.flatMap((page) => page) || [];
+  const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns });
+  const isEmpty = filteredTxns.length === 0;
 
   return (
     <ListWrapper
@@ -118,8 +107,12 @@ export const HistoryWrapper = () => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
         <Box sx={{ display: 'inline-flex' }}>
-          <HistoryFilterMenu onFilterChange={handleFilter} />
-          <SearchInput onSearchTermChange={handleSearch} placeholder="Search assets..." wrapperSx={{ width: '280px' }} />
+          <HistoryFilterMenu onFilterChange={setFilterQuery} />
+          <SearchInput
+            onSearchTermChange={setSearchQuery}
+            placeholder="Search assets..."
+            wrapperSx={{ width: '280px' }}
+          />
         </Box>
         <Box
           sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5, cursor: 'pointer' }}
@@ -135,8 +128,8 @@ export const HistoryWrapper = () => {
         </Box>
       </Box>
 
-      {isLoading ? (
-        downToXSM ? (
+      {isLoading &&
+        (downToXSM ? (
           <>
             <HistoryMobileItemLoader />
             <HistoryMobileItemLoader />
@@ -146,54 +139,29 @@ export const HistoryWrapper = () => {
             <HistoryItemLoader />
             <HistoryItemLoader />
           </>
-        )
-      ) : transactions && transactions.pages && transactions.pages[0].length > 0 ? (
-        transactions.pages.map((page: TransactionHistoryItem[], pageIndex: number) => {
-          let filteredTxns: TransactionHistoryItem[];
-          // Apply seach filter
-          if (searchQuery.length > 0) {
-            // txn may or may not contain reserve field
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            filteredTxns = page.filter((txn: any) => {
-              const symbol = txn?.reserve?.symbol?.toLowerCase();
-              const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase(); // for liquidationcall
-              const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase(); // for liquidationcall
-              if (
-                (symbol && symbol.includes(searchQuery.toLowerCase())) ||
-                (collateralSymbol && collateralSymbol.includes(searchQuery.toLowerCase())) ||
-                (principalSymbol && principalSymbol.includes(searchQuery.toLowerCase()))
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            });
-          } else {
-            filteredTxns = page;
-          }
-          const groupedTxns = groupByDate(filteredTxns);
-          return Object.entries(groupedTxns).map(([date, txns], groupIndex) => (
-            <React.Fragment key={groupIndex}>
-              <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
-                {date}
-              </Typography>
-              {txns.map((transaction: TransactionHistoryItem, index: number) => {
-                const isLastItem =
-                  pageIndex === transactions.pages.length - 1 && index === txns.length - 1;
-                return (
-                  <div ref={isLastItem ? lastElementRef : null} key={index}>
-                    <TransactionRowItem
-                      transaction={
-                        transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
-                      }
-                      downToXSM={downToXSM}
-                    />
-                  </div>
-                );
-              })}
-            </React.Fragment>
-          ));
-        })
+        ))}
+
+      {!isEmpty ? (
+        Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
+          <React.Fragment key={groupIndex}>
+            <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+              {date}
+            </Typography>
+            {txns.map((transaction: TransactionHistoryItem, index: number) => {
+              const isLastItem = index === txns.length - 1;
+              return (
+                <div ref={isLastItem ? lastElementRef : null} key={index}>
+                  <TransactionRowItem
+                    transaction={
+                      transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
+                    }
+                    downToXSM={downToXSM}
+                  />
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))
       ) : (
         <Box
           sx={{
@@ -211,6 +179,7 @@ export const HistoryWrapper = () => {
           </Typography>
         </Box>
       )}
+
       <Box
         sx={{ display: 'flex', justifyContent: 'center', mb: isFetchingNextPage ? 6 : 0, mt: 10 }}
       >
