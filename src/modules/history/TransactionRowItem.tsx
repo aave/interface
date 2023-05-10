@@ -1,3 +1,5 @@
+// yes this file is a mess, it'll be broken up and refactored once stable
+
 import {
   ArrowDownIcon,
   ArrowNarrowRightIcon,
@@ -20,6 +22,7 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHistory';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -28,6 +31,20 @@ import ArrowDownTrayIcon from '/public/arrowDownTray.svg';
 import ArrowUpTrayIcon from '/public/arrowUpTray.svg';
 
 import { BorrowRateModeBlock } from './BorrowRateModeBlock';
+
+const PriceUnavailableTooltip = ({ price }: { price: string }) => {
+  if (Number(price) > 0) {
+    return <></>;
+  } else {
+    return (
+      <TextWithTooltip>
+        <Trans>
+          Price data is not currently available for this reserve on the protocol subgraph
+        </Trans>
+      </TextWithTooltip>
+    );
+  }
+};
 
 const iconBoxStyling = {
   width: '24px',
@@ -99,10 +116,10 @@ const ActionDetails = <K extends keyof ActionFields>({
     case 'Deposit':
       const supplyTx = transaction as TransactionHistoryItem<ActionFields['Supply']>;
       const formattedSupplyReserve = fetchIconSymbolAndName(supplyTx.reserve);
+      const formattedSupplyAmount = formatUnits(supplyTx.amount, supplyTx.reserve.decimals);
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedSupplyReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-
           <Typography
             variant="secondary14"
             color="text.primary"
@@ -110,14 +127,50 @@ const ActionDetails = <K extends keyof ActionFields>({
           >
             +
           </Typography>
-          <FormattedNumber
-            value={formatUnits(supplyTx.amount, supplyTx.reserve.decimals)}
-            variant="secondary14"
-            color="text.primary"
-            sx={{ mr: 1 }}
-          />
           <DarkTooltip
-            title={`${formattedSupplyReserve.name} (${formattedSupplyReserve.symbol})`}
+            title={
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    compact
+                    symbol="USD"
+                    symbolsColor="common.white"
+                    value={Number(supplyTx.assetPriceUSD) * Number(formattedSupplyAmount)}
+                  />
+                  <PriceUnavailableTooltip price={supplyTx.assetPriceUSD} />
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    value={formattedSupplyAmount}
+                    variant="secondary14"
+                    color="common.white"
+                    sx={{ mr: 1 }}
+                  />
+                  <Typography variant="secondary14" color="common.white">
+                    {formattedSupplyReserve.symbol}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            arrow
+            placement="top"
+          >
+            <Box>
+              <FormattedNumber
+                value={formattedSupplyAmount}
+                variant="secondary14"
+                color="text.primary"
+                compact
+                sx={{ mr: 1 }}
+              />
+            </Box>
+          </DarkTooltip>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedSupplyReserve.name} ({formattedSupplyReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -130,6 +183,7 @@ const ActionDetails = <K extends keyof ActionFields>({
     case 'Borrow':
       const borrowTx = transaction as TransactionHistoryItem<ActionFields['Borrow']>;
       const formattedBorrowReserve = fetchIconSymbolAndName(borrowTx.reserve);
+      const formattedBorrowAmount = formatUnits(borrowTx.amount, borrowTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedBorrowReserve.iconSymbol} sx={{ fontSize: '20px' }} />
@@ -140,14 +194,50 @@ const ActionDetails = <K extends keyof ActionFields>({
           >
             &minus;
           </Typography>
-          <FormattedNumber
-            value={formatUnits(borrowTx.amount, borrowTx.reserve.decimals)}
-            variant="secondary14"
-            color="text.primary"
-            sx={{ mr: 1 }}
-          />
           <DarkTooltip
-            title={`${formattedBorrowReserve.name} (${formattedBorrowReserve.symbol})`}
+            title={
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    compact
+                    symbol="USD"
+                    symbolsColor="common.white"
+                    value={Number(borrowTx.assetPriceUSD) * Number(formattedBorrowAmount)}
+                  />
+                  <PriceUnavailableTooltip price={borrowTx.assetPriceUSD} />
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    value={formattedBorrowAmount}
+                    variant="secondary14"
+                    color="common.white"
+                    sx={{ mr: 1 }}
+                  />
+                  <Typography variant="secondary14" color="common.white">
+                    {formattedBorrowReserve.symbol}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            arrow
+            placement="top"
+          >
+            <Box>
+              <FormattedNumber
+                value={formattedBorrowAmount}
+                variant="secondary14"
+                color="text.primary"
+                sx={{ mr: 1 }}
+                compact
+              />
+            </Box>
+          </DarkTooltip>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedBorrowReserve.name} ({formattedBorrowReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -160,6 +250,7 @@ const ActionDetails = <K extends keyof ActionFields>({
     case 'RedeemUnderlying':
       const withdrawTx = transaction as TransactionHistoryItem<ActionFields['RedeemUnderlying']>;
       const formattedWithdrawReserve = fetchIconSymbolAndName(withdrawTx.reserve);
+      const formattedWithdrawAmount = formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedWithdrawReserve.iconSymbol} sx={{ fontSize: '20px' }} />
@@ -170,14 +261,50 @@ const ActionDetails = <K extends keyof ActionFields>({
           >
             &minus;
           </Typography>
-          <FormattedNumber
-            value={formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals)}
-            variant="secondary14"
-            color="text.primary"
-            sx={{ mr: 1 }}
-          />
           <DarkTooltip
-            title={`${formattedWithdrawReserve.name} (${formattedWithdrawReserve.symbol})`}
+            title={
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    compact
+                    symbol="USD"
+                    symbolsColor="common.white"
+                    value={Number(withdrawTx.assetPriceUSD) * Number(formattedWithdrawAmount)}
+                  />
+                  <PriceUnavailableTooltip price={withdrawTx.assetPriceUSD} />
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    value={formattedWithdrawAmount}
+                    variant="secondary14"
+                    color="common.white"
+                    sx={{ mr: 1 }}
+                  />
+                  <Typography variant="secondary14" color="common.white">
+                    {formattedWithdrawReserve.symbol}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            arrow
+            placement="top"
+          >
+            <Box>
+              <FormattedNumber
+                value={formattedWithdrawAmount}
+                variant="secondary14"
+                color="text.primary"
+                sx={{ mr: 1 }}
+                compact
+              />
+            </Box>
+          </DarkTooltip>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedWithdrawReserve.name} ({formattedWithdrawReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -190,6 +317,7 @@ const ActionDetails = <K extends keyof ActionFields>({
     case 'Repay':
       const repayTx = transaction as TransactionHistoryItem<ActionFields['Repay']>;
       const formattedRepayReserve = fetchIconSymbolAndName(repayTx.reserve);
+      const formattedRepayAmount = formatUnits(repayTx.amount, repayTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedRepayReserve.iconSymbol} sx={{ fontSize: '20px' }} />
@@ -200,14 +328,50 @@ const ActionDetails = <K extends keyof ActionFields>({
           >
             +
           </Typography>
-          <FormattedNumber
-            value={formatUnits(repayTx.amount, repayTx.reserve.decimals)}
-            variant="secondary14"
-            color="text.primary"
-            sx={{ mr: 1 }}
-          />
           <DarkTooltip
-            title={`${formattedRepayReserve.name} (${formattedRepayReserve.symbol})`}
+            title={
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    compact
+                    symbol="USD"
+                    symbolsColor="common.white"
+                    value={Number(repayTx.assetPriceUSD) * Number(formattedRepayAmount)}
+                  />
+                  <PriceUnavailableTooltip price={repayTx.assetPriceUSD} />
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <FormattedNumber
+                    value={formattedRepayAmount}
+                    variant="secondary14"
+                    color="common.white"
+                    sx={{ mr: 1 }}
+                  />
+                  <Typography variant="secondary14" color="common.white">
+                    {formattedRepayReserve.symbol}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            arrow
+            placement="top"
+          >
+            <Box>
+              <FormattedNumber
+                value={formattedRepayAmount}
+                variant="secondary14"
+                color="text.primary"
+                sx={{ mr: 1 }}
+                compact
+              />
+            </Box>
+          </DarkTooltip>
+          <DarkTooltip
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedRepayReserve.name} ({formattedRepayReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -246,7 +410,11 @@ const ActionDetails = <K extends keyof ActionFields>({
             }}
           />
           <DarkTooltip
-            title={`${formattedCollateralReserve.name} (${formattedCollateralReserve.symbol})`}
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedCollateralReserve.name} ({formattedCollateralReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -278,7 +446,11 @@ const ActionDetails = <K extends keyof ActionFields>({
           </Typography>
           <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <DarkTooltip
-            title={`${formattedSwapReserve.name} (${formattedSwapReserve.symbol})`}
+            title={
+              <Typography variant="secondary14" color="common.white">
+                {formattedSwapReserve.name} ({formattedSwapReserve.symbol})
+              </Typography>
+            }
             arrow
             placement="top"
           >
@@ -299,6 +471,14 @@ const ActionDetails = <K extends keyof ActionFields>({
       );
       const formattedLiquidationBorrowReserve = fetchIconSymbolAndName(
         liquidationTx.principalReserve
+      );
+      const formattedCollateralAmount = formatUnits(
+        liquidationTx.collateralAmount,
+        liquidationTx.collateralReserve.decimals
+      );
+      const formattedLiquidationBorrowAmount = formatUnits(
+        liquidationTx.principalAmount,
+        liquidationTx.principalReserve.decimals
       );
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -324,17 +504,54 @@ const ActionDetails = <K extends keyof ActionFields>({
                 >
                   &minus;
                 </Typography>
-                <FormattedNumber
-                  value={formatUnits(
-                    liquidationTx.collateralAmount,
-                    liquidationTx.collateralReserve.decimals
-                  )}
-                  variant="secondary14"
-                  color="text.primary"
-                  sx={{ mr: 1 }}
-                />
                 <DarkTooltip
-                  title={`${formattedLiquidationColatReserve.name} (${formattedLiquidationColatReserve.symbol})`}
+                  title={
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex' }}>
+                        <FormattedNumber
+                          compact
+                          symbol="USD"
+                          symbolsColor="common.white"
+                          value={
+                            Number(liquidationTx.collateralAssetPriceUSD) *
+                            Number(formattedCollateralAmount)
+                          }
+                        />
+                        <PriceUnavailableTooltip price={liquidationTx.collateralAssetPriceUSD} />
+                      </Box>
+                      <Box sx={{ display: 'flex' }}>
+                        <FormattedNumber
+                          value={formattedCollateralAmount}
+                          variant="secondary14"
+                          color="common.white"
+                          sx={{ mr: 1 }}
+                        />
+                        <Typography variant="secondary14" color="common.white">
+                          {formattedLiquidationColatReserve.symbol}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <Box>
+                    <FormattedNumber
+                      value={formattedCollateralAmount}
+                      variant="secondary14"
+                      color="text.primary"
+                      sx={{ mr: 1 }}
+                      compact
+                    />
+                  </Box>
+                </DarkTooltip>
+                <DarkTooltip
+                  title={
+                    <Typography variant="secondary14" color="common.white">
+                      {formattedLiquidationColatReserve.name} (
+                      {formattedLiquidationColatReserve.symbol})
+                    </Typography>
+                  }
                   arrow
                   placement="top"
                 >
@@ -374,17 +591,54 @@ const ActionDetails = <K extends keyof ActionFields>({
                 >
                   +
                 </Typography>
-                <FormattedNumber
-                  value={formatUnits(
-                    liquidationTx.principalAmount,
-                    liquidationTx.principalReserve.decimals
-                  )}
-                  variant="secondary14"
-                  color="text.primary"
-                  sx={{ mr: 1 }}
-                />
                 <DarkTooltip
-                  title={`${formattedLiquidationBorrowReserve.name} (${formattedLiquidationBorrowReserve.symbol})`}
+                  title={
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex' }}>
+                        <FormattedNumber
+                          compact
+                          symbol="USD"
+                          symbolsColor="common.white"
+                          value={
+                            Number(liquidationTx.borrowAssetPriceUSD) *
+                            Number(formattedLiquidationBorrowAmount)
+                          }
+                        />
+                        <PriceUnavailableTooltip price={liquidationTx.borrowAssetPriceUSD} />
+                      </Box>
+                      <Box sx={{ display: 'flex' }}>
+                        <FormattedNumber
+                          value={formattedLiquidationBorrowAmount}
+                          variant="secondary14"
+                          color="common.white"
+                          sx={{ mr: 1 }}
+                        />
+                        <Typography variant="secondary14" color="common.white">
+                          {formattedLiquidationBorrowReserve.symbol}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <Box>
+                    <FormattedNumber
+                      value={formattedLiquidationBorrowAmount}
+                      variant="secondary14"
+                      color="text.primary"
+                      sx={{ mr: 1 }}
+                      compact
+                    />
+                  </Box>
+                </DarkTooltip>
+                <DarkTooltip
+                  title={
+                    <Typography variant="secondary14" color="common.white">
+                      {formattedLiquidationBorrowReserve.name} (
+                      {formattedLiquidationBorrowReserve.symbol})
+                    </Typography>
+                  }
                   arrow
                   placement="top"
                 >

@@ -32,6 +32,7 @@ export const DarkTooltip = ({ title, children }: TooltipProps) => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
+              whiteSpace: 'nowrap',
             }}
           >
             {title}
