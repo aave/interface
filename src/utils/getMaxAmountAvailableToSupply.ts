@@ -39,17 +39,11 @@ export function getMaxAmountAvailableToSupply(
     maxAmountToSupply = maxAmountToSupply.minus(minRemainingBaseToken);
   }
 
-  // make sure we don't try to supply more then maximum supply cap or debt ceiling
+  // make sure we don't try to supply more then maximum supply cap
   if (poolReserve.supplyCap !== '0') {
     maxAmountToSupply = BigNumber.min(
       maxAmountToSupply,
       remainingCap(poolReserve.supplyCap, poolReserve.totalLiquidity)
-    );
-  }
-  if (poolReserve.debtCeiling !== '0') {
-    maxAmountToSupply = BigNumber.min(
-      maxAmountToSupply,
-      remainingCap(poolReserve.debtCeiling, poolReserve.isolationModeTotalDebt)
     );
   }
 
