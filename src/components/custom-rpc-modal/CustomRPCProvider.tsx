@@ -1,7 +1,23 @@
+import { ChainId } from '@aave/contract-helpers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import { Button, InputBase, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  InputBase,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CustomRPCProvider as Provider } from 'src/utils/marketsAndNetworksConfig';
+import { networkConfigs } from 'src/ui-config/networksConfig';
+import {
+  CustomRPCProvider as Provider,
+  getNetworkConfig,
+} from 'src/utils/marketsAndNetworksConfig';
+
+type InvalidProviders = 'alchemy' | 'infura';
 
 type Props = {
   handleClose: () => void;
@@ -14,6 +30,8 @@ export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
     { id: 0, name: 'alchemy', key: '' },
     { id: 1, name: 'infura', key: '' },
   ]);
+  const [invalidProviders, setInvalidProviders] = useState<InvalidProviders[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const localStorage = global?.window?.localStorage;
 
@@ -34,7 +52,39 @@ export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
     setProviders(newProviders);
   };
 
-  const handleSave = () => {
+  const validateProviders = async () => {
+    const newInvalidProviders = new Set();
+
+    for (const provider of providers) {
+      for (const network in networkConfigs) {
+        const chainId = Number(network) as ChainId;
+        const config = getNetworkConfig(chainId);
+        const customRPCUrl = config[`${provider.name}JsonRPCUrl`];
+
+        if (provider.key && customRPCUrl) {
+          try {
+            const jsonRpcProvider = new JsonRpcProvider(customRPCUrl + provider.key);
+
+            // @ts-expect-error An argument for 'params' was not provided
+            await jsonRpcProvider.send('eth_chainId');
+          } catch (err) {
+            newInvalidProviders.add(provider.name);
+          }
+        }
+      }
+    }
+
+    setInvalidProviders([...newInvalidProviders] as InvalidProviders[]);
+    return newInvalidProviders.size;
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    if (await validateProviders()) {
+      setLoading(false);
+      return;
+    }
+
     if (!providers.filter((provider) => provider.key !== '').length) {
       localStorage.removeItem('customRPCProviders');
     } else {
@@ -78,10 +128,19 @@ export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
               handleInput(provider.id, e.target.value || '');
             }}
           />
+          {invalidProviders.includes(provider.name) && (
+            <Typography variant="caption" color="error" ml={2}>
+              <text style={{ textTransform: 'capitalize' }}>
+                <Trans>{provider.name}</Trans>{' '}
+              </text>
+              <Trans>Api key is not valid. Please try again with a different Api Key</Trans>
+            </Typography>
+          )}
         </Stack>
       ))}
-      <Button variant="contained" sx={{ mt: 4 }} onClick={handleSave}>
-        Save
+
+      <Button variant="contained" disabled={loading} sx={{ mt: 4 }} onClick={handleSave}>
+        {loading ? <CircularProgress size={16} thickness={2} value={100} /> : 'Save'}
       </Button>
     </Stack>
   );
