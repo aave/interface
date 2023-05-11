@@ -19,6 +19,12 @@ import { RotationProvider } from './rotationProvider';
 export type Pool = {
   address: string;
 };
+
+export type CustomRPCNetwork = {
+  chainId: number;
+  url: string;
+};
+
 export type CustomRPCProvider = {
   id: number;
   name: 'alchemy' | 'infura';
@@ -52,9 +58,11 @@ const FORK_WS_RPC_URL =
   'ws://127.0.0.1:8545';
 // determines if user is using app RPC or custom RPC
 const USING_CUSTOM_RPC = global?.window?.localStorage.getItem('usingCustomRPC') === 'true';
-// determines if user is using custom RPC provider
 const CUSTOM_RPC_PROVIDERS: CustomRPCProvider[] | null = JSON.parse(
   global?.window?.localStorage.getItem('customRPCProviders') || 'null'
+);
+const CUSTOM_RPC_URLS: CustomRPCNetwork[] = JSON.parse(
+  global?.window?.localStorage.getItem('customRPCUrls') || 'null'
 );
 
 /**
@@ -178,12 +186,20 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   const config = getNetworkConfig(chainId);
   const chainProviders: Set<string> = new Set(); // Incase Duplicate RPC URls
 
-  if (USING_CUSTOM_RPC && CUSTOM_RPC_PROVIDERS) {
-    CUSTOM_RPC_PROVIDERS.map((customRPCProvider: CustomRPCProvider) => {
-      const customRPCUrl = config[`${customRPCProvider.name}JsonRPCUrl`];
+  if (USING_CUSTOM_RPC) {
+    if (CUSTOM_RPC_URLS) {
+      const currentNetwork = CUSTOM_RPC_URLS.find((network) => network.chainId == chainId);
 
-      if (customRPCUrl) chainProviders.add(customRPCUrl + customRPCProvider.key);
-    });
+      if (currentNetwork) chainProviders.add(currentNetwork.url);
+    }
+
+    if (CUSTOM_RPC_PROVIDERS) {
+      CUSTOM_RPC_PROVIDERS.map((customRPCProvider: CustomRPCProvider) => {
+        const customRPCUrl = config[`${customRPCProvider.name}JsonRPCUrl`];
+
+        if (customRPCUrl) chainProviders.add(customRPCUrl + customRPCProvider.key);
+      });
+    }
   }
 
   if (config.privateJsonRPCUrl) {
