@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { List } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { NetworkInput } from 'src/components/custom-rpc-modal/NetworkInput';
@@ -7,6 +8,7 @@ import { CustomRPCNetwork } from 'src/utils/marketsAndNetworksConfig';
 type Props = {
   networks: CustomRPCNetwork[];
   setNetworks: (networks: CustomRPCNetwork[]) => void;
+  invalidNetworks: ChainId[];
 };
 
 export type FormattedNetwork = {
@@ -16,7 +18,7 @@ export type FormattedNetwork = {
   url: string;
 };
 
-export const CustomRPCUrl: React.FC<Props> = ({ networks, setNetworks }) => {
+export const CustomRPCUrl: React.FC<Props> = ({ networks, setNetworks, invalidNetworks }) => {
   const localStorage = global?.window?.localStorage;
 
   const showTestNets = localStorage.getItem('testnetsEnabled') === 'true' || false;
@@ -72,12 +74,22 @@ export const CustomRPCUrl: React.FC<Props> = ({ networks, setNetworks }) => {
         {showTestNets
           ? formattedTestNetworks.map((network) => {
               return (
-                <NetworkInput key={network.chainId} network={network} handleInput={handleInput} />
+                <NetworkInput
+                  key={network.chainId}
+                  network={network}
+                  invalid={invalidNetworks.includes(network.chainId)}
+                  handleInput={handleInput}
+                />
               );
             })
           : formattedNetworks.map((network) => {
               return (
-                <NetworkInput key={network.chainId} network={network} handleInput={handleInput} />
+                <NetworkInput
+                  key={network.chainId}
+                  network={network}
+                  invalid={invalidNetworks.includes(network.chainId)}
+                  handleInput={handleInput}
+                />
               );
             })}
       </List>

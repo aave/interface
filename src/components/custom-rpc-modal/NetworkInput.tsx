@@ -1,13 +1,15 @@
+import { Trans } from '@lingui/macro';
 import { Box, InputBase, ListItem, Stack, Typography } from '@mui/material';
 import { FormattedNetwork } from 'src/components/custom-rpc-modal/CustomRPCUrl';
 import { getMarketHelpData } from 'src/helpers/get-market-help-data';
 
 type Props = {
   network: FormattedNetwork;
+  invalid: boolean;
   handleInput: (chainId: number, newUrl: string) => void;
 };
 
-export const NetworkInput: React.FC<Props> = ({ network, handleInput }) => {
+export const NetworkInput: React.FC<Props> = ({ network, invalid, handleInput }) => {
   const testNetName = getMarketHelpData(network.name).testChainName;
   return (
     <ListItem key={network.chainId}>
@@ -68,6 +70,11 @@ export const NetworkInput: React.FC<Props> = ({ network, handleInput }) => {
             handleInput(network.chainId, e.target.value || '');
           }}
         />
+        {invalid && (
+          <Typography variant="caption" color="error" ml={2}>
+            <Trans>RPC Url is not valid. Please try again with a different RPC Url</Trans>
+          </Typography>
+        )}
       </Stack>
     </ListItem>
   );

@@ -1500,6 +1500,10 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Quorum"
 msgstr "Quorum"
 
+#: src/components/custom-rpc-modal/NetworkInput.tsx
+msgid "RPC Url is not valid. Please try again with a different RPC Url"
+msgstr "RPC Url is not valid. Please try again with a different RPC Url"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
 msgstr "Raw-Ipfs"

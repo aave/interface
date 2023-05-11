@@ -32,6 +32,7 @@ export const CustomRPCModal = () => {
     { id: 1, name: 'infura', key: '' },
   ]);
 
+  const [invalidNetworks, setInvalidNetworks] = useState<ChainId[]>([]);
   const [invalidProviders, setInvalidProviders] = useState<ProviderName[]>([]);
 
   useEffect(() => {
@@ -47,6 +48,23 @@ export const CustomRPCModal = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage]);
+
+  const validateRPCUrls = async () => {
+    const newInvalidNetworks = [];
+
+    for (const network of networks) {
+      try {
+        const jsonRpcProvider = new JsonRpcProvider(network.url);
+
+        // @ts-expect-error An argument for 'params' was not provided
+        await jsonRpcProvider.send('eth_chainId');
+      } catch (err) {
+        newInvalidNetworks.push(network.chainId);
+      }
+    }
+
+    return newInvalidNetworks;
+  };
 
   const validateProviders = async () => {
     const newInvalidProviders = new Set();
@@ -97,11 +115,15 @@ export const CustomRPCModal = () => {
     setLoading(true);
 
     const newInvalidProviders = await validateProviders();
+    const newInvalidNetworks = await validateRPCUrls();
 
-    if (newInvalidProviders.length) {
+    if (newInvalidProviders.length || newInvalidNetworks.length) {
       setInvalidProviders(newInvalidProviders);
+      setInvalidNetworks(newInvalidNetworks);
       setLoading(false);
 
+      if (!newInvalidNetworks.length && newInvalidProviders.length) setMode('provider');
+      if (!newInvalidProviders.length && newInvalidNetworks.length) setMode('urls');
       return;
     }
 
@@ -168,7 +190,11 @@ export const CustomRPCModal = () => {
             invalidProviders={invalidProviders}
           />
         ) : (
-          <CustomRPCUrl networks={networks} setNetworks={setNetworks} />
+          <CustomRPCUrl
+            networks={networks}
+            setNetworks={setNetworks}
+            invalidNetworks={invalidNetworks}
+          />
         )}
         <Button variant="contained" disabled={loading} sx={{ mt: 4 }} onClick={handleSave}>
           {loading ? <CircularProgress size={16} thickness={2} value={100} /> : 'Save'}
