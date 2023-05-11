@@ -190,6 +190,10 @@ msgstr "Amount must be greater than 0"
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
 
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Api Key"
+msgstr "Api Key"
+
 #: src/components/custom-rpc-modal/CustomRPCProvider.tsx
 msgid "Api key is not valid. Please try again with a different Api Key"
 msgstr "Api key is not valid. Please try again with a different Api Key"
@@ -672,6 +676,10 @@ msgstr "Current votes"
 #: src/layouts/components/CustomRPCSwitcher.tsx
 msgid "Custom RPC"
 msgstr "Custom RPC"
+
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Custom Urls"
+msgstr "Custom Urls"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"

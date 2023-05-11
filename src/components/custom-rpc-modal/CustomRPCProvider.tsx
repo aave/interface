@@ -1,49 +1,22 @@
-import { ChainId } from '@aave/contract-helpers';
-import { JsonRpcProvider } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import {
-  Button,
-  CircularProgress,
-  InputBase,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { networkConfigs } from 'src/ui-config/networksConfig';
-import {
-  CustomRPCProvider as Provider,
-  getNetworkConfig,
-} from 'src/utils/marketsAndNetworksConfig';
+import { InputBase, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { CustomRPCProvider as Provider } from 'src/utils/marketsAndNetworksConfig';
 
-type InvalidProviders = 'alchemy' | 'infura';
+export type ProviderName = 'alchemy' | 'infura';
 
 type Props = {
-  handleClose: () => void;
+  providers: Provider[];
+  setProviders: (providers: Provider[]) => void;
+  invalidProviders: ProviderName[];
 };
 
-export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
+export const CustomRPCProvider: React.FC<Props> = ({
+  providers,
+  setProviders,
+  invalidProviders,
+}) => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const [providers, setProviders] = useState<Provider[]>([
-    { id: 0, name: 'alchemy', key: '' },
-    { id: 1, name: 'infura', key: '' },
-  ]);
-  const [invalidProviders, setInvalidProviders] = useState<InvalidProviders[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const localStorage = global?.window?.localStorage;
-
-  useEffect(() => {
-    const customRPCProviders: Provider[] = JSON.parse(
-      localStorage.getItem('customRPCProviders') || '[]'
-    );
-
-    if (customRPCProviders.length) {
-      setProviders(customRPCProviders);
-    }
-  }, [localStorage]);
 
   const handleInput = (id: number, newKey: string) => {
     const newProviders = providers.map((provider) =>
@@ -52,52 +25,8 @@ export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
     setProviders(newProviders);
   };
 
-  const validateProviders = async () => {
-    const newInvalidProviders = new Set();
-
-    for (const provider of providers) {
-      for (const network in networkConfigs) {
-        const chainId = Number(network) as ChainId;
-        const config = getNetworkConfig(chainId);
-        const customRPCUrl = config[`${provider.name}JsonRPCUrl`];
-
-        if (provider.key && customRPCUrl) {
-          try {
-            const jsonRpcProvider = new JsonRpcProvider(customRPCUrl + provider.key);
-
-            // @ts-expect-error An argument for 'params' was not provided
-            await jsonRpcProvider.send('eth_chainId');
-          } catch (err) {
-            newInvalidProviders.add(provider.name);
-          }
-        }
-      }
-    }
-
-    setInvalidProviders([...newInvalidProviders] as InvalidProviders[]);
-    return newInvalidProviders.size;
-  };
-
-  const handleSave = async () => {
-    setLoading(true);
-    if (await validateProviders()) {
-      setLoading(false);
-      return;
-    }
-
-    if (!providers.filter((provider) => provider.key !== '').length) {
-      localStorage.removeItem('customRPCProviders');
-    } else {
-      localStorage.setItem('rpcSetUp', 'true');
-      localStorage.setItem('usingCustomRPC', 'true');
-      localStorage.setItem('customRPCProviders', JSON.stringify(providers));
-    }
-
-    handleClose();
-  };
-
   return (
-    <Stack gap={4}>
+    <>
       {providers.map((provider: Provider) => (
         <Stack gap={1} key={provider.id}>
           <Typography
@@ -138,10 +67,6 @@ export const CustomRPCProvider: React.FC<Props> = ({ handleClose }) => {
           )}
         </Stack>
       ))}
-
-      <Button variant="contained" disabled={loading} sx={{ mt: 4 }} onClick={handleSave}>
-        {loading ? <CircularProgress size={16} thickness={2} value={100} /> : 'Save'}
-      </Button>
-    </Stack>
+    </>
   );
 };
