@@ -124,6 +124,10 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Add Custom RPC URLs"
+msgstr "Add Custom RPC URLs"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
@@ -660,6 +664,10 @@ msgstr "Current v2 balance"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current votes"
 msgstr "Current votes"
+
+#: src/layouts/components/CustomRPCSwitcher.tsx
+msgid "Custom RPC"
+msgstr "Custom RPC"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -2651,6 +2659,7 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/custom-rpc-modal/CustomRPCProvider.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx

@@ -4,6 +4,8 @@ import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
+import { CustomRPCButton } from './components/CustomRPCButton';
+import { CustomRPCSwitcher } from './components/CustomRPCSwitcher';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
@@ -72,6 +74,8 @@ export function SettingsMenu() {
         <DarkModeSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
+        <CustomRPCSwitcher />
+        <CustomRPCButton handleCLose={() => setSettingsOpen(false)} />
       </Menu>
 
       <Menu
