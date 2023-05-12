@@ -33681,7 +33681,8 @@ var require_types2 = __commonJS({
       16666e5: "harmony",
       16667e5: "harmony_testnet",
       11155111: "sepolia",
-      534353: "scroll_alpha"
+      534353: "scroll_alpha",
+      1088: "metis_andromeda"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33708,6 +33709,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
       ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
+      ChainId7[ChainId7["metis_andromeda"] = 1088] = "metis_andromeda";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -33740,6 +33742,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
       ProtocolAction2["vote"] = "vote";
+      ProtocolAction2["approval"] = "approval";
+      ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
     (function(GovernanceVote2) {
@@ -35282,6 +35286,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.default]: {
         limit: "210000",
         recommended: "210000"
+      },
+      [types_1.ProtocolAction.approval]: {
+        limit: "65000",
+        recommended: "65000"
+      },
+      [types_1.ProtocolAction.creditDelegationApproval]: {
+        limit: "55000",
+        recommended: "55000"
       },
       [types_1.ProtocolAction.supply]: {
         limit: "300000",
@@ -41081,9 +41093,10 @@ var require_erc20_contract = __commonJS({
     exports2.ERC20Service = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var ethers_1 = require_lib31();
+    var utils_1 = require_utils5();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
-    var utils_1 = require_utils6();
+    var utils_2 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var IERC20Detailed__factory_1 = require_IERC20Detailed_factory();
@@ -41138,6 +41151,7 @@ var require_erc20_contract = __commonJS({
         tx.data = txData;
         tx.to = token;
         tx.from = user;
+        tx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.approval].recommended);
         return tx;
       }
       /**
@@ -41149,13 +41163,13 @@ var require_erc20_contract = __commonJS({
        * @returns {boolean} true if user has approved spender contract for greater than passed amount, false otherwise
        */
       isApproved(_0) {
-        return __async(this, arguments, function* ({ user, token, spender, amount }) {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+        return __async(this, arguments, function* ({ user, token, spender, amount, nativeDecimals }) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return true;
           const decimals = yield this.decimalsOf(token);
           const erc20Contract = this.getContractInstance(token);
           const allowance = yield erc20Contract.allowance(user, spender);
-          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_1.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_2.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_2.valueToWei)(nativeDecimals ? (0, utils_1.formatUnits)(amount, decimals) : amount, decimals));
           return allowance.gte(amountBNWithDecimals);
         });
       }
@@ -41168,11 +41182,11 @@ var require_erc20_contract = __commonJS({
        */
       approvedAmount(_0) {
         return __async(this, arguments, function* ({ user, token, spender }) {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return -1;
           const erc20Contract = this.getContractInstance(token);
           const allowance = yield erc20Contract.allowance(user, spender);
-          if (allowance.toString() === utils_1.MAX_UINT_AMOUNT) {
+          if (allowance.toString() === utils_2.MAX_UINT_AMOUNT) {
             return -1;
           }
           const decimals = yield this.decimalsOf(token);
@@ -41186,7 +41200,7 @@ var require_erc20_contract = __commonJS({
        */
       decimalsOf(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return 18;
           if (!this.tokenDecimals[token]) {
             const erc20Contract = this.getContractInstance(token);
@@ -41202,7 +41216,7 @@ var require_erc20_contract = __commonJS({
        */
       getTokenData(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             return {
               name: "Ethereum",
               symbol: "ETH",
@@ -42213,17 +42227,18 @@ var require_baseDebtToken_contract = __commonJS({
         const approveDelegationTx = {
           data: txData,
           to: debtTokenAddress,
-          from: user
+          from: user,
+          gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.creditDelegationApproval].recommended)
         };
         return approveDelegationTx;
       }
       isDelegationApproved(_0) {
-        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount }) {
+        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount, nativeDecimals }) {
           const decimals = yield this.erc20Service.decimalsOf(debtTokenAddress);
           const debtTokenContract = this.getContractInstance(debtTokenAddress);
           const delegatedAllowance = yield debtTokenContract.borrowAllowance(allowanceGiver, allowanceReceiver);
-          const amountBNWithDecimals = ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
-          return delegatedAllowance.gt(amountBNWithDecimals);
+          const amountBNWithDecimals = nativeDecimals ? ethers_1.BigNumber.from(amount) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          return delegatedAllowance.gte(amountBNWithDecimals);
         });
       }
     };
@@ -42430,7 +42445,8 @@ var require_wethgateway_contract = __commonJS({
             data: txData,
             to: this.wethGatewayAddress,
             from: args.user,
-            value: ethers_1.BigNumber.from(args.amount)
+            value: ethers_1.BigNumber.from(args.amount),
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].limit)
           };
           return actionTx;
         };
@@ -42446,7 +42462,8 @@ var require_wethgateway_contract = __commonJS({
           const actionTx = {
             data: txData,
             to: this.wethGatewayAddress,
-            from: args.user
+            from: args.user,
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrowETH].limit)
           };
           return actionTx;
         };
@@ -43602,6 +43619,7 @@ var require_lendingPool_contract_bundle = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.LendingPoolBundle = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
@@ -43645,6 +43663,7 @@ var require_lendingPool_contract_bundle = __commonJS({
               actionTx.to = this.lendingPoolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].recommended);
             }
             return actionTx;
           }
@@ -43678,6 +43697,7 @@ var require_lendingPool_contract_bundle = __commonJS({
               actionTx.to = this.lendingPoolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
             return actionTx;
           }
@@ -48860,6 +48880,7 @@ var require_v3_pool_rollups = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.L2Pool = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
     var utils_1 = require_utils5();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
@@ -48903,6 +48924,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.from = user;
           actionTx.data = txData;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
           return actionTx;
         };
         this.generateSupplyWithPermitTxData = ({ user, reserve, amount, onBehalfOf, referralCode, deadline, permitR, permitS, permitV }) => {
@@ -48930,6 +48952,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supply].limit);
           return actionTx;
         };
         this.generateEncodedBorrowTxData = ({ encodedTxData, user }) => {
@@ -48940,6 +48963,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
           return actionTx;
         };
         this.generateEncodedSupplyWithPermitTxData = ({ encodedTxData, signature, user }) => {
@@ -48949,6 +48973,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].limit);
           return actionTx;
         };
       }
@@ -50242,6 +50267,7 @@ var require_v3_pool_contract_bundle = __commonJS({
     exports2.PoolBundle = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var bytes_1 = require_lib2();
+    var ethers_1 = require_lib31();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
@@ -50313,6 +50339,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               actionTx.to = this.poolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supply].recommended);
             }
             return actionTx;
           },
@@ -50356,6 +50383,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               populatedTx.to = this.poolAddress;
               populatedTx.from = user;
               populatedTx.data = txData;
+              populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].recommended);
             }
             return populatedTx;
           }
@@ -50406,6 +50434,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               actionTx.to = this.poolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
             return actionTx;
           }
@@ -50693,6 +50722,7 @@ var require_v3_migration_contract = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.V3MigrationHelperService = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var bignumber_js_1 = tslib_1.__importDefault(require_bignumber2());
     var ethers_1 = require_lib31();
     var baseDebtToken_contract_1 = require_baseDebtToken_contract();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
@@ -50755,26 +50785,28 @@ var require_v3_migration_contract = __commonJS({
       }
       approveDelegationTokens(user, assets) {
         return __async(this, null, function* () {
-          console.log(assets, "assets");
           const assetsApproved = yield Promise.all(assets.map((_0) => __async(this, [_0], function* ({ amount, debtTokenAddress }) {
             return this.baseDebtTokenService.isDelegationApproved({
               debtTokenAddress,
               allowanceGiver: user,
               allowanceReceiver: this.MIGRATOR_ADDRESS,
-              amount
+              amount,
+              nativeDecimals: true
             });
           })));
-          console.log(assetsApproved, "assetsApproved");
           return assetsApproved.map((approved, index) => {
             if (approved) {
               return;
             }
             const asset = assets[index];
+            const originalAmount = new bignumber_js_1.default(asset.amount);
+            const tenPercent = originalAmount.dividedBy(10);
+            const amountPlusBuffer = originalAmount.plus(tenPercent).toFixed(0);
             return this.baseDebtTokenService.approveDelegation({
               user,
               delegatee: this.MIGRATOR_ADDRESS,
               debtTokenAddress: asset.debtTokenAddress,
-              amount: asset.amount
+              amount: amountPlusBuffer
             });
           }).filter((tx) => Boolean(tx));
         });
@@ -50786,7 +50818,8 @@ var require_v3_migration_contract = __commonJS({
               amount,
               spender: this.MIGRATOR_ADDRESS,
               token: aToken,
-              user
+              user,
+              nativeDecimals: true
             });
           })));
           return assetsApproved.map((approved, index) => {
@@ -64360,6 +64393,28 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER
     }
+  },
+  ["proto_metis_v3" /* proto_metis_v3 */]: {
+    marketTitle: "Metis",
+    chainId: import_contract_helpers2.ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Metis.POOL,
+      WETH_GATEWAY: "0x0",
+      // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: markets.AaveV3Metis.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
+    }
   }
 };
 
@@ -64694,6 +64749,19 @@ var networkConfigs = {
       name: "Fantom Bridge",
       url: "https://app.multichain.org/#/router"
     }
+  },
+  [import_contract_helpers3.ChainId.metis_andromeda]: {
+    name: "Metis Andromeda",
+    privateJsonRPCUrl: "https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: ["https://andromeda.metis.io/?owner=1088"],
+    baseAssetSymbol: "",
+    // N/A
+    wrappedBaseAssetSymbol: "",
+    // N/A
+    baseAssetDecimals: 0,
+    // N/A
+    explorerLink: "https://andromeda-explorer.metis.io",
+    networkLogoPath: "/icons/networks/metis.svg"
   }
 };
 

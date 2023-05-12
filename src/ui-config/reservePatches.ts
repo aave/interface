@@ -40,6 +40,10 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'BTC.b': 'BTC',
   // polygon
   miMATIC: 'MAI',
+  // metis
+  'm.USDC': 'USDC',
+  'm.USDT': 'USDT',
+  'm.DAI': 'DAI',
 };
 
 /**
