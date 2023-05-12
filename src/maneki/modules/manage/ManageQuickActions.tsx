@@ -62,24 +62,6 @@ export const ManageQuickActions = () => {
     // create contract
     if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
     openManageStake(amountToStake);
-
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-    const promises = [];
-    // add contract call into promise arr
-    promises.push(contract.stake(BigNumber.from(toWeiString(amountToStake)), false)); // stake
-    // call promise all nad handle sucess error
-    // Promise.all(promises)
-    //   .then((prom) => {
-    //     alert('success');
-    //     setLoading(false);
-    //     console.log(prom);
-    //   })
-    //   .catch((e) => {
-    //     alert('error');
-    //     console.error(e);
-    //     console.log(e.message);
-    //   });
   };
 
   React.useEffect(() => {
