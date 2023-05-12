@@ -4,6 +4,7 @@ import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncrypti
 import { Box } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -14,7 +15,6 @@ import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import MULTI_FEE_ABI from './MultiFeeABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
 import { toWeiString } from './utils/stringConverter';
-
 // interface NumReturn {
 //   _hex: string;
 //   _isBigNumber: boolean;
@@ -32,9 +32,11 @@ export const ManageQuickActions = () => {
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
+  const { openManageStake } = useModalContext();
 
   // handle lock action
   const handleLock = () => {
+    if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
     // create contract
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
@@ -58,31 +60,26 @@ export const ManageQuickActions = () => {
   // handle stake action
   const handleStake = () => {
     // create contract
+    if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
+    openManageStake(amountToStake);
+
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-    const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, signer);
     const promises = [];
     // add contract call into promise arr
     promises.push(contract.stake(BigNumber.from(toWeiString(amountToStake)), false)); // stake
     // call promise all nad handle sucess error
-    Promise.resolve(pawContract.allowance(currentAccount, MULTI_FEE_ADDR) as BigNumber).then(
-      (value) => {
-        if (value.lt(BigNumber.from(toWeiString(amountToStake)))) {
-          alert('Not Enough Allowance');
-        }
-      }
-    );
-    Promise.all(promises)
-      .then((prom) => {
-        alert('success');
-        setLoading(false);
-        console.log(prom);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-        console.log(e.message);
-      });
+    // Promise.all(promises)
+    //   .then((prom) => {
+    //     alert('success');
+    //     setLoading(false);
+    //     console.log(prom);
+    //   })
+    //   .catch((e) => {
+    //     alert('error');
+    //     console.error(e);
+    //     console.log(e.message);
+    //   });
   };
 
   React.useEffect(() => {

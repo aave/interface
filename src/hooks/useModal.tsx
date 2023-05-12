@@ -23,6 +23,7 @@ export enum ModalType {
   GovVote,
   V3Migration,
   AirDrop,
+  ManageStake,
 }
 
 export interface ModalArgsType {
@@ -35,6 +36,7 @@ export interface ModalArgsType {
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
   isFrozen?: boolean;
+  manageAmount?: string;
 }
 
 export type TxStateType = {
@@ -63,6 +65,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openAirDrop: () => void;
+  openManageStake: (manageAmount: string) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -164,6 +167,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openAirDrop: () => {
           setType(ModalType.AirDrop);
+        },
+        openManageStake: (manageAmount) => {
+          setType(ModalType.ManageStake);
+          setArgs({ manageAmount });
         },
         close: () => {
           setType(undefined);
