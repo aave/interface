@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, SxProps, TextField, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import React from 'react';
@@ -109,12 +110,12 @@ export default function ManageQuickContentWrapper({
       </Box>
       {descriptions.map((description, i) => (
         <Typography key={i} fontWeight={600} fontSize={'14px'}>
-          {description}
+          <Trans>{description}</Trans>
         </Typography>
       ))}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography fontSize={16} fontWeight={500}>
-          Wallet Balance :
+          <Trans>Wallet Balance</Trans> :
         </Typography>
         <Typography fontSize={16} fontWeight={600}>
           {balancePAW} PAW

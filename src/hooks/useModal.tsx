@@ -25,6 +25,7 @@ export enum ModalType {
   AirDrop,
   ManageStake,
   ManageLock,
+  ManageClaim,
 }
 
 export interface ModalArgsType {
