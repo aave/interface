@@ -3,7 +3,7 @@
 import { ArrowNarrowRightIcon, CheckIcon, DuplicateIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
@@ -654,6 +654,9 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
   const [currentNetworkConfig] = useRootStore((state) => [state.currentNetworkConfig]);
   const theme = useTheme();
 
+  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleCopy = async (text: string) => {
     navigator.clipboard.writeText(text);
     setCopyStatus(true);
@@ -713,21 +716,25 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
                 onClick={() => handleCopy(explorerLink)}
                 sx={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
               >
-                <Typography variant="caption" color="text.secondary" mr={1}>
-                  <Trans>Tx hash</Trans>
-                </Typography>
-                <CompactableTypography
-                  compactMode={CompactMode.MD}
-                  variant="caption"
-                  color="text.primary"
-                >
-                  {transaction.txHash}
-                </CompactableTypography>
+                {!downToMD && (
+                  <React.Fragment>
+                    <Typography variant="caption" color="text.secondary" mr={1}>
+                      <Trans>Tx hash</Trans>
+                    </Typography>
+                    <CompactableTypography
+                      compactMode={CompactMode.MD}
+                      variant="caption"
+                      color="text.primary"
+                    >
+                      {transaction.txHash}
+                    </CompactableTypography>
+                  </React.Fragment>
+                )}
                 <SvgIcon
                   sx={{
                     m: 1,
                     fontSize: '14px',
-                    color: copyStatus ? 'green' : '#62677B',
+                    color: copyStatus ? 'green' : downToSM ? 'text.muted' : 'text.secondary',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -740,7 +747,12 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
             <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
               <Link href={explorerLink}>
                 <SvgIcon
-                  sx={{ fontSize: '14px', color: '#62677B', display: 'flex', alignItems: 'center' }}
+                  sx={{
+                    fontSize: '14px',
+                    color: downToSM ? 'text.muted' : 'text.secondary',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
                 >
                   <ArrowOutward />
                 </SvgIcon>

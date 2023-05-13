@@ -1,4 +1,4 @@
-import { DocumentDownloadIcon } from '@heroicons/react/outline';
+import { DocumentDownloadIcon, SearchIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -10,20 +10,17 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
-import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { SearchInput } from 'src/components/SearchInput';
 import {
   ActionFields,
   applyTxHistoryFilters,
   TransactionHistoryItem,
   useTransactionHistory,
 } from 'src/hooks/useTransactionHistory';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
-import { HistoryWrapperMobile } from './HistoryWrapperMobile';
+import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionRowItem from './TransactionRowItem';
 
 const groupByDate = (
@@ -43,9 +40,9 @@ const groupByDate = (
   }, {} as Record<string, TransactionHistoryItem[]>);
 };
 
-export const HistoryWrapper = () => {
+export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadingDownload, setLoadingDownload] = useState(false);
+  //const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
 
   const {
@@ -53,56 +50,8 @@ export const HistoryWrapper = () => {
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-    fetchForDownload,
+    //fetchForDownload,
   } = useTransactionHistory();
-
-  const downloadData = (fileName: string, content: string, mimeType: string) => {
-    const file = new Blob([content], { type: mimeType });
-    const downloadUrl = URL.createObjectURL(file);
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(downloadUrl);
-  };
-
-  const handleJsonDownload = async () => {
-    setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const jsonData = JSON.stringify(data, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
-  };
-
-  const handleCsvDownload = async () => {
-    setLoadingDownload(true);
-    const data: TransactionHistoryItem[] = await fetchForDownload({ searchQuery, filterQuery });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    data.forEach((transaction) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    data.forEach((transaction: TransactionHistoryItem) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItem];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
-      });
-      csvContent += row.join(',') + '\n';
-    });
-
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
-  };
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -120,21 +69,6 @@ export const HistoryWrapper = () => {
   );
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
-
-  if (!currentAccount) {
-    return (
-      <ConnectWalletPaper
-        loading={web3Loading}
-        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
-      />
-    );
-  }
-
-  if (downToMD) {
-    return <HistoryWrapperMobile />;
-  }
 
   const flatTxns = transactions?.pages?.flatMap((page) => page) || [];
   const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns });
@@ -144,69 +78,43 @@ export const HistoryWrapper = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Transactions</Trans>
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            mx: 4,
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+            <Trans>Transactions</Trans>
+          </Typography>
+          <Box sx={{ display: 'flex', gap: '22px' }}>
+            <SvgIcon sx={{ cursor: 'pointer' }}>
+              <DocumentDownloadIcon width={20} height={20} />
+            </SvgIcon>
+            <SvgIcon sx={{ cursor: 'pointer' }}>
+              <SearchIcon width={20} height={20} />
+            </SvgIcon>
+          </Box>
+        </Box>
       }
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
-        <Box sx={{ display: 'inline-flex' }}>
-          <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
-          <SearchInput
-            onSearchTermChange={setSearchQuery}
-            placeholder="Search assets..."
-            wrapperSx={{ width: '280px' }}
-            searchTerm={searchQuery}
-          />
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-          {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              mr: 6,
-            }}
-            onClick={handleCsvDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.CSV</Trans>
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onClick={handleJsonDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.JSON</Trans>
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+      <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
 
-      {isLoading && (
-        <>
-          <HistoryItemLoader />
-          <HistoryItemLoader />
-        </>
-      )}
+      {isLoading &&
+        (downToXSM ? (
+          <>
+            <HistoryMobileItemLoader />
+            <HistoryMobileItemLoader />
+          </>
+        ) : (
+          <>
+            <HistoryItemLoader />
+            <HistoryItemLoader />
+          </>
+        ))}
 
       {!isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
@@ -303,4 +211,4 @@ export const HistoryWrapper = () => {
   );
 };
 
-export default HistoryWrapper;
+export default HistoryWrapperMobile;

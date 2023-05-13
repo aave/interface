@@ -1,7 +1,17 @@
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Check as CheckIcon, Sort as SortIcon } from '@mui/icons-material';
-import { Box, Button, Divider, Menu, MenuItem, SvgIcon, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 
@@ -49,6 +59,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -107,8 +118,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
     <Box>
       <Button
         sx={{
-          minWidth: 148,
-          maxWidth: 360,
+          minWidth: downToMD ? '100%' : 148,
+          maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
