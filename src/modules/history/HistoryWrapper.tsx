@@ -78,9 +78,29 @@ export const HistoryWrapper = () => {
 
   const handleCsvDownload = async () => {
     setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const jsonData = JSON.stringify(data, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
+    const data: TransactionHistoryItem[] = await fetchForDownload({ searchQuery, filterQuery });
+
+    // Getting all the unique headers
+    const headersSet = new Set<string>();
+    data.forEach((transaction) => {
+      Object.keys(transaction).forEach((key) => headersSet.add(key));
+    });
+
+    const headers: string[] = Array.from(headersSet);
+    let csvContent = headers.join(',') + '\n';
+
+    data.forEach((transaction: TransactionHistoryItem) => {
+      const row: string[] = headers.map((header) => {
+        const value = transaction[header as keyof TransactionHistoryItem];
+        if (typeof value === 'object') {
+          return JSON.stringify(value) ?? '';
+        }
+        return String(value) ?? '';
+      });
+      csvContent += row.join(',') + '\n';
+    });
+
+    downloadData('transactions.csv', csvContent, 'text/csv');
     setLoadingDownload(false);
   };
 
