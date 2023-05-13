@@ -1,17 +1,8 @@
 // yes this file is a mess, it'll be broken up and refactored once stable
 
-import {
-  ArrowDownIcon,
-  ArrowNarrowRightIcon,
-  ArrowUpIcon,
-  CheckIcon,
-  DotsHorizontalIcon,
-  DuplicateIcon,
-} from '@heroicons/react/outline';
-import { ExclamationIcon } from '@heroicons/react/solid';
+import { ArrowNarrowRightIcon, CheckIcon, DuplicateIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import PercentIcon from '@mui/icons-material/Percent';
 import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
@@ -27,9 +18,6 @@ import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHi
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
-import ArrowDownTrayIcon from '/public/arrowDownTray.svg';
-import ArrowUpTrayIcon from '/public/arrowUpTray.svg';
-
 import { BorrowRateModeBlock } from './BorrowRateModeBlock';
 
 const PriceUnavailableTooltip = ({ price }: { price: string }) => {
@@ -44,20 +32,6 @@ const PriceUnavailableTooltip = ({ price }: { price: string }) => {
       </TextWithTooltip>
     );
   }
-};
-
-const iconBoxStyling = {
-  width: '24px',
-  height: '24px',
-  background: '#F7F7F9',
-  borderRadius: '100px',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '5px',
-  gap: '10px',
-  mr: 6,
 };
 
 const ActionTextMap = ({ action }: { action: string }) => {
@@ -83,29 +57,6 @@ const ActionTextMap = ({ action }: { action: string }) => {
   }
 };
 
-const ActionIconMap = ({ action }: { action: string }) => {
-  switch (action) {
-    case 'Supply':
-    case 'Deposit':
-      return <ArrowUpTrayIcon />;
-    case 'Borrow':
-      return <ArrowDownTrayIcon />;
-    case 'RedeemUnderlying':
-      return <ArrowDownIcon />;
-    case 'Repay':
-      return <ArrowUpIcon />;
-    case 'UsageAsCollateral':
-      return <DotsHorizontalIcon />;
-    case 'SwapBorrowRate':
-    case 'Swap':
-      return <PercentIcon />;
-    case 'LiquidationCall':
-      return <ExclamationIcon />;
-    default:
-      return <></>;
-  }
-};
-
 const ActionDetails = <K extends keyof ActionFields>({
   transaction,
 }: {
@@ -122,8 +73,8 @@ const ActionDetails = <K extends keyof ActionFields>({
           <TokenIcon symbol={formattedSupplyReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <Typography
             variant="secondary14"
-            color="text.primary"
-            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
+            color="success.main"
+            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
           >
             +
           </Typography>
@@ -133,6 +84,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     compact
+                    compactThreshold={100000}
                     symbol="USD"
                     symbolsColor="common.white"
                     value={Number(supplyTx.assetPriceUSD) * Number(formattedSupplyAmount)}
@@ -159,8 +111,9 @@ const ActionDetails = <K extends keyof ActionFields>({
               <FormattedNumber
                 value={formattedSupplyAmount}
                 variant="secondary14"
-                color="text.primary"
+                color="success.main"
                 compact
+                compactThreshold={100000}
                 sx={{ mr: 1 }}
               />
             </Box>
@@ -174,7 +127,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="success.main">
               {formattedSupplyReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -190,7 +143,7 @@ const ActionDetails = <K extends keyof ActionFields>({
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
+            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
           >
             &minus;
           </Typography>
@@ -200,6 +153,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     compact
+                    compactThreshold={100000}
                     symbol="USD"
                     symbolsColor="common.white"
                     value={Number(borrowTx.assetPriceUSD) * Number(formattedBorrowAmount)}
@@ -229,6 +183,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 color="text.primary"
                 sx={{ mr: 1 }}
                 compact
+                compactThreshold={100000}
               />
             </Box>
           </DarkTooltip>
@@ -257,7 +212,7 @@ const ActionDetails = <K extends keyof ActionFields>({
           <Typography
             variant="secondary14"
             color="text.primary"
-            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
+            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
           >
             &minus;
           </Typography>
@@ -267,6 +222,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     compact
+                    compactThreshold={100000}
                     symbol="USD"
                     symbolsColor="common.white"
                     value={Number(withdrawTx.assetPriceUSD) * Number(formattedWithdrawAmount)}
@@ -296,6 +252,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 color="text.primary"
                 sx={{ mr: 1 }}
                 compact
+                compactThreshold={100000}
               />
             </Box>
           </DarkTooltip>
@@ -323,8 +280,8 @@ const ActionDetails = <K extends keyof ActionFields>({
           <TokenIcon symbol={formattedRepayReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <Typography
             variant="secondary14"
-            color="text.primary"
-            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mr: 1 }}
+            color="success.main"
+            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
           >
             +
           </Typography>
@@ -334,6 +291,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     compact
+                    compactThreshold={100000}
                     symbol="USD"
                     symbolsColor="common.white"
                     value={Number(repayTx.assetPriceUSD) * Number(formattedRepayAmount)}
@@ -360,9 +318,10 @@ const ActionDetails = <K extends keyof ActionFields>({
               <FormattedNumber
                 value={formattedRepayAmount}
                 variant="secondary14"
-                color="text.primary"
+                color="success.main"
                 sx={{ mr: 1 }}
                 compact
+                compactThreshold={100000}
               />
             </Box>
           </DarkTooltip>
@@ -375,7 +334,7 @@ const ActionDetails = <K extends keyof ActionFields>({
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="sucess.main">
               {formattedRepayReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -388,7 +347,7 @@ const ActionDetails = <K extends keyof ActionFields>({
       const formattedCollateralReserve = fetchIconSymbolAndName(collateralUsageTx.reserve);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="secondary14" color="text.primary">
+          <Typography variant="description" color="text.primary">
             <Trans>Collateralization</Trans>
           </Typography>
           {collateralUsageTx.toState === true ? (
@@ -400,7 +359,7 @@ const ActionDetails = <K extends keyof ActionFields>({
               <Trans>disabled</Trans>
             </Typography>
           )}
-          <Typography variant="secondary14" color="text.primary" sx={{ mr: 0.5 }}>
+          <Typography variant="description" color="text.primary" sx={{ mr: 0.5 }}>
             <Trans>for</Trans>
           </Typography>
           <TokenIcon
@@ -500,7 +459,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 <Typography
                   variant="secondary14"
                   color="text.primary"
-                  sx={{ display: 'inline-flex', mr: 1 }}
+                  sx={{ display: 'inline-flex', mb: 0.5 }}
                 >
                   &minus;
                 </Typography>
@@ -510,6 +469,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           compact
+                          compactThreshold={100000}
                           symbol="USD"
                           symbolsColor="common.white"
                           value={
@@ -542,6 +502,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                       color="text.primary"
                       sx={{ mr: 1 }}
                       compact
+                      compactThreshold={100000}
                     />
                   </Box>
                 </DarkTooltip>
@@ -586,8 +547,8 @@ const ActionDetails = <K extends keyof ActionFields>({
               >
                 <Typography
                   variant="secondary14"
-                  color="text.primary"
-                  sx={{ display: 'inline-flex', mr: 1 }}
+                  color="success.main"
+                  sx={{ display: 'inline-flex', mb: 0.5 }}
                 >
                   +
                 </Typography>
@@ -597,6 +558,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           compact
+                          compactThreshold={100000}
                           symbol="USD"
                           symbolsColor="common.white"
                           value={
@@ -626,9 +588,10 @@ const ActionDetails = <K extends keyof ActionFields>({
                     <FormattedNumber
                       value={formattedLiquidationBorrowAmount}
                       variant="secondary14"
-                      color="text.primary"
+                      color="success.main"
                       sx={{ mr: 1 }}
                       compact
+                      compactThreshold={100000}
                     />
                   </Box>
                 </DarkTooltip>
@@ -644,7 +607,7 @@ const ActionDetails = <K extends keyof ActionFields>({
                 >
                   <Typography
                     variant="secondary14"
-                    color="text.primary"
+                    color="success.main"
                     sx={{ display: 'inline-flex' }}
                   >
                     {formattedLiquidationBorrowReserve.symbol}
@@ -662,16 +625,9 @@ const ActionDetails = <K extends keyof ActionFields>({
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-      <Box sx={iconBoxStyling}>
-        <SvgIcon sx={{ fontSize: '14px', color: '#383D51' }}>
-          <ActionIconMap action={action} />
-        </SvgIcon>
-      </Box>
-      <Typography sx={{ width: '180px' }}>
-        <ActionTextMap action={action} />
-      </Typography>
-    </Box>
+    <Typography sx={{ width: '180px' }}>
+      <ActionTextMap action={action} />
+    </Typography>
   );
 }
 
@@ -728,11 +684,17 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
           height: '72px',
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'left',
+            gap: '4px',
+            mr: 6,
+          }}
+        >
           <ActionTitle action={transaction.action} />
-        </Box>
-
-        <Box sx={{ width: '64px', mx: 6 }}>
           <Typography variant="caption" color="text.muted">
             {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
           </Typography>
