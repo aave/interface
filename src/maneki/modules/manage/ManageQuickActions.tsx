@@ -4,7 +4,7 @@ import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncrypti
 import { Box } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
-import { useModalContext } from 'src/hooks/useModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -12,7 +12,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import ManageQuickContentWrapper from './components/ManageQuickContentWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-import MULTI_FEE_ABI from './MultiFeeABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
 import { toWeiString } from './utils/stringConverter';
 // interface NumReturn {
@@ -29,39 +28,21 @@ export const ManageQuickActions = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
-  const { openManageStake } = useModalContext();
+  const { openManage } = useModalContext();
 
   // handle lock action
   const handleLock = () => {
     if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
-    // create contract
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-    const promises = [];
-
-    // add contract call into promise arr
-    promises.push(contract.stake(BigNumber.from(toWeiString(amountToLock)), true)); // lock
-
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
-        alert('success');
-        setLoading(false);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-      });
+    openManage(amountToLock, ModalType.ManageLock);
   };
 
   // handle stake action
   const handleStake = () => {
     // create contract
     if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
-    openManageStake(amountToStake);
+    openManage(amountToStake, ModalType.ManageStake);
   };
 
   React.useEffect(() => {

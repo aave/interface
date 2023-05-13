@@ -10,19 +10,20 @@ import { toWeiString } from 'src/maneki/modules/manage/utils/stringConverter';
 import { TxAction } from 'src/ui-config/errorMapping';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
-interface ManageStakeActionsProps {
+interface ManageLockActionsProps {
   symbol: string;
   amount: string;
   isWrongNetwork: boolean;
 }
 
-export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageStakeActionsProps) => {
+export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLockActionsProps) => {
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const { provider, currentAccount } = useWeb3Context();
   const { mainTxState, setMainTxState, setTxError, approvalTxState, setApprovalTxState } =
     useModalContext();
   const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+
   const handleApproval = async () => {
     setApprovalTxState({
       loading: true,
@@ -62,7 +63,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
     try {
       const signer = provider?.getSigner(currentAccount as string);
       const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-      const promises = await contract.stake(BigNumber.from(toWeiString(amount)), false);
+      const promises = await contract.stake(BigNumber.from(toWeiString(amount)), true);
       setMainTxState({
         loading: false,
         success: true,
@@ -76,7 +77,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
       setTxError({
         blocking: false,
         actionBlocked: false,
-        error: <Trans>Staking Failed</Trans>,
+        error: <Trans>Locking Failed</Trans>,
         rawError: error,
         txAction: TxAction.MAIN_ACTION,
       });
@@ -84,8 +85,6 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
   };
 
   useEffect(() => {
-    // const signer = provider?.getSigner(currentAccount as string);
-    // const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
     const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);
     Promise.resolve(pawContract.allowance(currentAccount, MULTI_FEE_ADDR) as BigNumber).then(
       (value) => {
@@ -108,8 +107,8 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
       symbol={symbol}
       requiresAmount
       amount={amount}
-      actionText={<Trans>Stake {symbol}</Trans>}
-      actionInProgressText={<Trans>Staking {symbol}</Trans>}
+      actionText={<Trans>Lock {symbol}</Trans>}
+      actionInProgressText={<Trans>Locking {symbol}</Trans>}
       isWrongNetwork={isWrongNetwork}
       requiresApproval={requiresApproval}
       handleApproval={handleApproval}

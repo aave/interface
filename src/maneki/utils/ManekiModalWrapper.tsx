@@ -10,12 +10,15 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 export interface ManekiModalChildProps {
   symbol: string;
   isWrongNetwork: boolean;
+  action?: string;
 }
 
 interface ManekiModalWrapperProps {
   title: ReactElement;
   requiredChainId?: number;
   symbol: string;
+  action?: string;
+  amount?: string;
   children: (props: ManekiModalChildProps) => React.ReactNode;
 }
 
@@ -23,17 +26,19 @@ export const ManekiModalWrapper = ({
   title,
   requiredChainId: _requiredChainId,
   symbol,
+  action,
+  amount,
   children,
 }: ManekiModalWrapperProps) => {
   const { txError, mainTxState } = useModalContext();
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
-  if (txError && txError.blocking) {
+  if (txError) {
     return <TxErrorView txError={txError} />;
   }
 
   if (mainTxState.success) {
-    return <TxSuccessView />;
+    return <TxSuccessView action={action} amount={amount} symbol={symbol} />;
   }
 
   return (
@@ -48,6 +53,7 @@ export const ManekiModalWrapper = ({
       {children({
         symbol,
         isWrongNetwork,
+        action,
       })}
     </>
   );

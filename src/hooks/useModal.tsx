@@ -24,6 +24,7 @@ export enum ModalType {
   V3Migration,
   AirDrop,
   ManageStake,
+  ManageLock,
 }
 
 export interface ModalArgsType {
@@ -65,7 +66,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openAirDrop: () => void;
-  openManageStake: (manageAmount: string) => void;
+  openManage: (manageAmount: string, modalType: ModalType) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -168,8 +169,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openAirDrop: () => {
           setType(ModalType.AirDrop);
         },
-        openManageStake: (manageAmount) => {
-          setType(ModalType.ManageStake);
+        openManage: (manageAmount, modalType) => {
+          setType(modalType);
           setArgs({ manageAmount });
         },
         close: () => {
