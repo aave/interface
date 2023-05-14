@@ -5,7 +5,7 @@ import {
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { ManekiModalChildProps } from 'src/maneki/utils/ManekiModalWrapper';
 
-import { ManageLockActions } from './ManageLockAction';
+import { ManageLockActions } from './ManageLockActions';
 import { ManageStakeActions } from './ManageStakeActions';
 
 export const ManageModalContent = ({

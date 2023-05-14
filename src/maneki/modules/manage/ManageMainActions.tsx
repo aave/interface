@@ -13,6 +13,7 @@ import {
 import { BigNumber, Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -51,32 +52,34 @@ export const ManageMainActions = () => {
   const [claimables, setClaimables] = React.useState<Claimables[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
-
+  const { openManage } = useModalContext();
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
   // handle unlock action
   const handleClaimUnlock = () => {
-    // create contract
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
+    if (unlockedPAW.isZero()) return;
+    openManage(unlockedPAW.toString(), ModalType.ManageClaim);
+    // // create contract
+    // const signer = provider?.getSigner(currentAccount as string);
+    // const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
-    const promises = [];
+    // const promises = [];
 
-    // add contract call into promise arr
-    promises.push(contract.withdraw(unlockedPAW)); // withdraw unlocked paw
+    // // add contract call into promise arr
+    // promises.push(contract.withdraw(unlockedPAW)); // withdraw unlocked paw
 
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
-        alert('success');
-        setLoading(false);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-      });
+    // // call promise all nad handle sucess error
+    // Promise.all(promises)
+    //   .then(() => {
+    //     alert('success');
+    //     setLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     alert('error');
+    //     console.error(e);
+    //   });
   };
 
   // handle claim all vest action
