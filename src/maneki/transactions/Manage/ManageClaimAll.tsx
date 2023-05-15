@@ -58,9 +58,8 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
     const promises = [];
     promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
     Promise.all(promises)
-      .then((data) => {
+      .then(() => {
         setMainTxState({
-          txHash: data.hash,
           loading: false,
           success: true,
         });
