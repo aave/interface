@@ -35,6 +35,7 @@ export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLock
         MULTI_FEE_ADDR,
         BigNumber.from(toWeiString(amount))
       );
+      await approve.wait(1);
       setApprovalTxState({
         txHash: approve.hash,
         loading: false,
@@ -64,6 +65,7 @@ export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLock
       const signer = provider?.getSigner(currentAccount as string);
       const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
       const promises = await contract.stake(BigNumber.from(toWeiString(amount)), true);
+      await promises.wait(1);
       setMainTxState({
         loading: false,
         success: true,

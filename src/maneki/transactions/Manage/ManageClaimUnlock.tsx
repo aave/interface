@@ -23,22 +23,18 @@ export const ManageClaimUnlock = ({
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const theme = useTheme();
   useEffect(() => {
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-
-    setMainTxState({ loading: true });
-    promises.push(contract.withdraw(BigNumber.from(amount))); // withdraw unlocked paw
-
-    Promise.all(promises)
-      .then(() => {
+    const handleClaimUnlock = async () => {
+      setMainTxState({ loading: true });
+      const signer = provider?.getSigner(currentAccount as string);
+      const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
+      try {
+        const promises = await contract.withdraw(BigNumber.from(amount));
+        await promises.wait(1);
         setMainTxState({
           loading: false,
           success: true,
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         setMainTxState({
           loading: false,
           success: false,
@@ -50,7 +46,10 @@ export const ManageClaimUnlock = ({
           rawError: error,
           txAction: TxAction.MAIN_ACTION,
         });
-      });
+      }
+    };
+
+    handleClaimUnlock();
   }, []);
   return (
     <Box

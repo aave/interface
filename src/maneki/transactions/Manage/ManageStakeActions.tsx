@@ -34,6 +34,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
         MULTI_FEE_ADDR,
         BigNumber.from(toWeiString(amount))
       );
+      await approve.wait(1);
       setApprovalTxState({
         txHash: approve.hash,
         loading: false,
@@ -63,6 +64,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
       const signer = provider?.getSigner(currentAccount as string);
       const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
       const promises = await contract.stake(BigNumber.from(toWeiString(amount)), false);
+      await promises.wait(1);
       setMainTxState({
         loading: false,
         success: true,
@@ -84,8 +86,6 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
   };
 
   useEffect(() => {
-    // const signer = provider?.getSigner(currentAccount as string);
-    // const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
     const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);
     Promise.resolve(pawContract.allowance(currentAccount, MULTI_FEE_ADDR) as BigNumber).then(
       (value) => {

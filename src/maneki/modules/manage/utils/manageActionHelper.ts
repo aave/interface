@@ -40,6 +40,7 @@ export function convertUnixToDate(unixTimestamp: number) {
     weekday: 'long',
     month: 'short',
     day: 'numeric',
+    year: 'numeric',
   };
 
   const formattedDate = date.toLocaleDateString('en-US', options);
@@ -50,5 +51,5 @@ export function convertUnixToDate(unixTimestamp: number) {
     ':' +
     ('00' + (Math.abs(timezoneOffset) % 60)).slice(-2); // calculate the timezone string
 
-  return `${formattedDate} T${timezone}`;
+  return `${formattedDate}  T${timezone}`;
 }

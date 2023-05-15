@@ -142,6 +142,7 @@ export const ManageMainActions = () => {
                   variant="contained"
                   onClick={handleClaimUnlock}
                   sx={{ padding: '8px 24px' }}
+                  disabled={unlockedPAW.isZero() ? true : false}
                 >
                   Claim
                 </Button>
@@ -198,6 +199,7 @@ export const ManageMainActions = () => {
                   onClick={handleClaimAllVest}
                   variant="contained"
                   sx={{ padding: '8px 24px' }}
+                  disabled={totalVestsValue.isZero() ? true : false}
                 >
                   Claim
                 </Button>
@@ -222,6 +224,7 @@ export const ManageMainActions = () => {
                   onClick={handleClaimExpired}
                   variant="contained"
                   sx={{ padding: '8px 24px' }}
+                  disabled={expiredLockedPAW.isZero() ? true : false}
                 >
                   Claim
                 </Button>

@@ -52,19 +52,17 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
 
   useEffect(() => {
     if (claimables.length === 0) return;
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-    promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
-    Promise.all(promises)
-      .then(() => {
+    const handleClaimAll = async () => {
+      const signer = provider?.getSigner(currentAccount as string);
+      const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
+      try {
+        const promises = await contract.getReward(claimables.map((e) => e.token));
+        await promises.wait(1);
         setMainTxState({
           loading: false,
           success: true,
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         setMainTxState({
           loading: false,
           success: false,
@@ -76,7 +74,9 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
           rawError: error,
           txAction: TxAction.MAIN_ACTION,
         });
-      });
+      }
+    };
+    handleClaimAll();
   }, [claimables]);
   return (
     <Box

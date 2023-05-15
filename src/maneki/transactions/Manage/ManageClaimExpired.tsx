@@ -18,23 +18,18 @@ export const ManageClaimExpired = ({ symbol, isWrongNetwork, action }: ManekiMod
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const theme = useTheme();
   useEffect(() => {
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-
-    setMainTxState({ loading: true });
-    promises.push(contract.withdrawExpiredLocks()); // claim all expired locks
-
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
+    const handleClaimExpired = async () => {
+      setMainTxState({ loading: true });
+      const signer = provider?.getSigner(currentAccount as string);
+      const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
+      try {
+        const promises = await contract.withdrawExpiredLocks();
+        await promises.wait(1);
         setMainTxState({
           loading: false,
           success: true,
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         setMainTxState({
           loading: false,
           success: false,
@@ -46,7 +41,10 @@ export const ManageClaimExpired = ({ symbol, isWrongNetwork, action }: ManekiMod
           rawError: error,
           txAction: TxAction.MAIN_ACTION,
         });
-      });
+      }
+    };
+
+    handleClaimExpired();
   }, []);
   return (
     <Box
