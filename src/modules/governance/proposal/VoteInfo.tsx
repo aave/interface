@@ -21,10 +21,11 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   const voteOngoing = state === ProposalState.Active;
 
   // Messages
-  const alreadyVoted = voteOnProposal && voteOnProposal.votingPower !== '0';
-  const cannotVote = voteOngoing && powerAtProposalStart === '0';
-  const canVote =
-    powerAtProposalStart && voteOngoing && !alreadyVoted && powerAtProposalStart !== '0';
+  const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
+  const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
+  const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
+  const showCanVoteMsg =
+    powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
     <>
@@ -33,12 +34,12 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
       </Typography>
       {user ? (
         <>
-          {!alreadyVoted && !voteOngoing && (
+          {user && !didVote && !voteOngoing && (
             <Typography sx={{ textAlign: 'center' }} color="text.muted">
               <Trans>You did not participate in this proposal</Trans>
             </Typography>
           )}
-          {voteOngoing && (
+          {user && voteOngoing && (
             <Row
               caption={
                 <>
@@ -58,7 +59,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
               />
             </Row>
           )}
-          {alreadyVoted && (
+          {showAlreadyVotedMsg && (
             <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
               <Typography variant="subheader1">
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
@@ -75,12 +76,12 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
               </Typography>
             </Warning>
           )}
-          {cannotVote && (
+          {showCannotVoteMsg && (
             <Warning severity="warning" sx={{ my: 2 }}>
               <Trans>Not enough voting power to participate in this proposal</Trans>
             </Warning>
           )}
-          {canVote && (
+          {showCanVoteMsg && (
             <>
               <Button
                 color="success"
