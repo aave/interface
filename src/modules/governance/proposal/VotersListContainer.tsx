@@ -28,29 +28,29 @@ type VoterVoteHistoryItem = {
 };
 
 export type GovernanceVoter = {
-  _id: string; //mongodb objectid
-  aaveBalance: number; //2.6209877046554566
-  aavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
-  aaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  // _id: string; //mongodb objectid
+  // aaveBalance: number; //2.6209877046554566
+  // aavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  // aaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   address: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
-  ensAvatar: string | null; //null
+  // ensAvatar: string | null; //null
   ensName: string | null; //null
-  isSybilVerified: boolean;
-  lastUpdateTimestamp: number; //1601928545
-  proposalHistory: unknown[]; //[]
-  proposalVotingPower: number;
-  propositionPower: number; //2.6209877046554566
-  propositionWeight: number; //1.6381173154096605e-7
-  stkAaveBalance: number; //0
-  stkAavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
-  stkAaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  // isSybilVerified: boolean;
+  // lastUpdateTimestamp: number; //1601928545
+  // proposalHistory: unknown[]; //[]
+  votingPower: string;
+  // propositionPower: number; //2.6209877046554566
+  // propositionWeight: number; //1.6381173154096605e-7
+  // stkAaveBalance: number; //0
+  // stkAavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  // stkAaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   twitterAvatar: string | null;
-  twitterHandle: string | null;
-  twitterName: string | null;
+  // twitterHandle: string | null;
+  // twitterName: string | null;
   vote: 0 | 1; // 0 for nay, 1 for yae
   votingHistory: VoterVoteHistoryItem[]; //(2) [{…}, {…}]
-  votingPower: number; // the amount of voting power the user has - 2.6209877046554566
-  votingWeight: number; // the % that a single user contributes to the total - 1.6381173154096605e-7
+  // votingPower: number; // the amount of voting power the user has - 2.6209877046554566
+  // votingWeight: number; // the % that a single user contributes to the total - 1.6381173154096605e-7
 };
 
 type GovernanceProposalTopVotersResponse = [GovernanceVoter[], GovernanceVoter[]];
@@ -62,11 +62,7 @@ export type VotersData = {
 };
 
 const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
-  return a.proposalVotingPower < b.proposalVotingPower
-    ? 1
-    : a.proposalVotingPower > b.proposalVotingPower
-    ? -1
-    : 0;
+  return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
 };
 
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
@@ -93,19 +89,19 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
         const [yaes, nays]: GovernanceProposalTopVotersResponse = await resp.json();
         // Transform data for UI, sort by highest voting power
         const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => {
-          const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
+          // const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
           return {
             ...v,
             vote: 1,
-            proposalVotingPower: proposalVote?.votingPower ?? 0,
+            proposalVotingPower: v?.votingPower ?? 0,
           };
         });
         const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => {
-          const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
+          // const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
           return {
             ...v,
             vote: 0,
-            proposalVotingPower: proposalVote?.votingPower ?? 0,
+            proposalVotingPower: v?.votingPower ?? 0,
           };
         });
         const votersData: VotersData = {
@@ -113,6 +109,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           nays: noVoters.sort(sortByVotingPower),
           combined: yesVoters.concat(noVoters).sort(sortByVotingPower),
         };
+        console.log('votersData', votersData);
         setVoters(votersData);
       } else {
         setError(true);
