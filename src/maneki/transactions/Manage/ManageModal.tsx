@@ -3,7 +3,10 @@ import { BasicModal } from 'src/components/primitives/BasicModal';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { ManekiModalWrapper } from 'src/maneki/utils/ManekiModalWrapper';
 
-import { ManageModalClaims } from './ManageModalClaims';
+import { ManageClaimAll } from './ManageClaimAll';
+import { ManageClaimAllVest } from './ManageClaimAllVest';
+import { ManageClaimExpired } from './ManageClaimExpired';
+import { ManageClaimUnlock } from './ManageClaimUnlock';
 import { ManageModalContent } from './ManageModalContent';
 
 export const ManageModal = () => {
@@ -34,8 +37,8 @@ export const ManageModal = () => {
           </ManekiModalWrapper>
         </BasicModal>
       )}
-      {type == ModalType.ManageClaim && (
-        <BasicModal open={type === ModalType.ManageClaim} setOpen={close}>
+      {type == ModalType.ManageClaimUnlock && (
+        <BasicModal open={type === ModalType.ManageClaimUnlock} setOpen={close}>
           {/* Do something here for claims */}
           <ManekiModalWrapper
             title={<Trans>Claim</Trans>}
@@ -43,7 +46,45 @@ export const ManageModal = () => {
             action={'Claimed'}
             amount={args.manageAmount}
           >
-            {(params) => <ManageModalClaims {...params} amount={args.manageAmount || '0'} />}
+            {(params) => <ManageClaimUnlock {...params} amount={args.manageAmount || '0'} />}
+          </ManekiModalWrapper>
+        </BasicModal>
+      )}
+      {type == ModalType.ManageClaimAllVest && (
+        <BasicModal open={type === ModalType.ManageClaimAllVest} setOpen={close}>
+          {/* Do something here for claims */}
+          <ManekiModalWrapper
+            title={<Trans>Claim</Trans>}
+            symbol={'PAW'}
+            action={'Claimed'}
+            amount={args.manageAmount}
+          >
+            {(params) => <ManageClaimAllVest {...params} />}
+          </ManekiModalWrapper>
+        </BasicModal>
+      )}
+      {type == ModalType.ManageClaimExpired && (
+        <BasicModal open={type === ModalType.ManageClaimExpired} setOpen={close}>
+          {/* Do something here for claims */}
+          <ManekiModalWrapper
+            title={<Trans>Claim</Trans>}
+            symbol={'PAW'}
+            action={'Claimed'}
+            amount={args.manageAmount}
+          >
+            {(params) => <ManageClaimExpired {...params} />}
+          </ManekiModalWrapper>
+        </BasicModal>
+      )}
+      {type == ModalType.ManageClaimAll && (
+        <BasicModal open={type === ModalType.ManageClaimAll} setOpen={close}>
+          {/* Do something here for claims */}
+          <ManekiModalWrapper
+            title={<Trans>Claim</Trans>}
+            symbol={'PAW'}
+            amount={args.manageAmount}
+          >
+            {(params) => <ManageClaimAll {...params} />}
           </ManekiModalWrapper>
         </BasicModal>
       )}

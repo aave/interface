@@ -21,7 +21,7 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-import MULTI_FEE_ABI from './MultiFeeABI';
+// import MULTI_FEE_ABI from './MultiFeeABI';
 import {
   Claimables,
   ClaimablesTuple,
@@ -53,22 +53,39 @@ export const ManageMainActions = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const { openManage } = useModalContext();
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+  // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
   // handle unlock action
   const handleClaimUnlock = () => {
     if (unlockedPAW.isZero()) return;
-    openManage(unlockedPAW.toString(), ModalType.ManageClaim);
-    // // create contract
+    openManage(unlockedPAW.toString(), ModalType.ManageClaimUnlock);
+  };
+
+  // handle claim all vest action
+  const handleClaimAllVest = () => {
+    if (totalVestsValue.isZero()) return;
+    openManage(totalVestsValue.toString(), ModalType.ManageClaimAllVest);
+  };
+
+  // claim expired
+  const handleClaimExpired = () => {
+    if (expiredLockedPAW.isZero()) return;
+    openManage(expiredLockedPAW.toString(), ModalType.ManageClaimExpired);
+  };
+
+  // claim all
+  const handleClaimAll = () => {
+    // create contract
+    openManage('0', ModalType.ManageClaimAll);
     // const signer = provider?.getSigner(currentAccount as string);
     // const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
 
     // const promises = [];
 
     // // add contract call into promise arr
-    // promises.push(contract.withdraw(unlockedPAW)); // withdraw unlocked paw
+    // promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
 
     // // call promise all nad handle sucess error
     // Promise.all(promises)
@@ -80,75 +97,6 @@ export const ManageMainActions = () => {
     //     alert('error');
     //     console.error(e);
     //   });
-  };
-
-  // handle claim all vest action
-  const handleClaimAllVest = () => {
-    // create contract
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-
-    // add contract call into promise arr
-    promises.push(contract.exit(false)); // claim vested and unlocked
-
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
-        alert('success');
-        setLoading(false);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-      });
-  };
-
-  // claim expired
-  const handleClaimExpired = () => {
-    // create contract
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-
-    // add contract call into promise arr
-    promises.push(contract.withdrawExpiredLocks()); // claim all expired locks
-
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
-        alert('success');
-        setLoading(false);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-      });
-  };
-
-  // claim all
-  const handleClaimAll = () => {
-    // create contract
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    const promises = [];
-
-    // add contract call into promise arr
-    promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
-
-    // call promise all nad handle sucess error
-    Promise.all(promises)
-      .then(() => {
-        alert('success');
-        setLoading(false);
-      })
-      .catch((e) => {
-        alert('error');
-        console.error(e);
-      });
   };
 
   React.useEffect(() => {
