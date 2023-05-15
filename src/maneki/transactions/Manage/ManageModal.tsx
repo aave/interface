@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { utils } from 'ethers';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { ManekiModalWrapper } from 'src/maneki/utils/ManekiModalWrapper';
@@ -44,7 +45,7 @@ export const ManageModal = () => {
             title={<Trans>Claim</Trans>}
             symbol={'PAW'}
             action={'Claimed'}
-            amount={args.manageAmount}
+            amount={args.manageAmount && utils.formatUnits(args.manageAmount, 18)}
           >
             {(params) => <ManageClaimUnlock {...params} amount={args.manageAmount || '0'} />}
           </ManekiModalWrapper>
@@ -57,7 +58,7 @@ export const ManageModal = () => {
             title={<Trans>Claim</Trans>}
             symbol={'PAW'}
             action={'Claimed'}
-            amount={args.manageAmount}
+            amount={args.manageAmount && utils.formatUnits(args.manageAmount, 18)}
           >
             {(params) => <ManageClaimAllVest {...params} />}
           </ManekiModalWrapper>
@@ -70,7 +71,7 @@ export const ManageModal = () => {
             title={<Trans>Claim</Trans>}
             symbol={'PAW'}
             action={'Claimed'}
-            amount={args.manageAmount}
+            amount={args.manageAmount && utils.formatUnits(args.manageAmount, 18)}
           >
             {(params) => <ManageClaimExpired {...params} />}
           </ManekiModalWrapper>

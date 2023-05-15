@@ -77,26 +77,7 @@ export const ManageMainActions = () => {
 
   // claim all
   const handleClaimAll = () => {
-    // create contract
     openManage('0', ModalType.ManageClaimAll);
-    // const signer = provider?.getSigner(currentAccount as string);
-    // const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
-
-    // const promises = [];
-
-    // // add contract call into promise arr
-    // promises.push(contract.getReward(claimables.map((e) => e.token))); // claims all fees
-
-    // // call promise all nad handle sucess error
-    // Promise.all(promises)
-    //   .then(() => {
-    //     alert('success');
-    //     setLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     alert('error');
-    //     console.error(e);
-    //   });
   };
 
   React.useEffect(() => {

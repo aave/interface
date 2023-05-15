@@ -34,7 +34,7 @@ export const ManageQuickActions = () => {
 
   // handle lock action
   const handleLock = () => {
-    if (BigNumber.from(toWeiString(amountToStake)).isZero()) return;
+    if (BigNumber.from(toWeiString(amountToLock)).isZero()) return;
     openManage(amountToLock, ModalType.ManageLock);
   };
 
