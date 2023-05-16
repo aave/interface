@@ -60,7 +60,6 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           nays: nays.sort(sortByVotingPower),
           combined: yaes.concat(nays).sort(sortByVotingPower),
         };
-        console.log('votersData', votersData);
         setVoters(votersData);
       } else {
         setError(true);
