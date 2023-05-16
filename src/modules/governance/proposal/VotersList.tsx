@@ -18,7 +18,7 @@ export const VotersList = ({ compact = false, voters, sx }: VotersListProps): JS
         <Box sx={{ color: 'text.secondary' }}>—</Box>
       ) : (
         voters.map((voter) => (
-          <Fragment key={voter._id}>
+          <Fragment key={voter.address}>
             <VotersListItem voter={voter} compact={compact} />
           </Fragment>
         ))

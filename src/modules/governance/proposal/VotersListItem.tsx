@@ -84,8 +84,8 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             maxWidth: compact ? 82 : 96,
           }}
         >
-          <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>
-            {voter.vote ? 'YAE' : 'NAY'}
+          <Typography variant="subheader1" color={voter.support ? 'success.main' : 'error.main'}>
+            {voter.support ? 'YAE' : 'NAY'}
           </Typography>
           <FormattedNumber
             variant="subheader1"
