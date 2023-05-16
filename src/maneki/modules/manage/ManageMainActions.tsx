@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
@@ -9,6 +10,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import Image from 'next/image';
@@ -48,6 +51,8 @@ export const ManageMainActions = () => {
   const [claimables, setClaimables] = React.useState<Claimables[]>([]);
   const { mainActionsLoading, setMainActionsLoading } = useManageContext();
   const { provider, currentAccount } = useWeb3Context();
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
   // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -126,18 +131,20 @@ export const ManageMainActions = () => {
             leftComponent={
               <>
                 <Typography variant="h4" fontWeight={700}>
-                  Unlock PAW{' '}
+                  <Trans>Unlock PAW </Trans>
                 </Typography>
                 <Typography sx={{ width: '90%' }}>Staked PAW and expired PAW vests</Typography>
               </>
             }
             rightComponent={
               <>
-                <Typography>{utils.formatUnits(unlockedPAW, 18)} PAW</Typography>
+                <Typography>
+                  {downToSM && 'Amount: '} {utils.formatUnits(unlockedPAW, 18)} PAW
+                </Typography>
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
-                  sx={{ padding: '8px 24px' }}
+                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={unlockedPAW.isZero() ? true : false}
                 >
                   Claim
@@ -169,6 +176,7 @@ export const ManageMainActions = () => {
                   alignItems: 'center',
                 }}
               >
+                {downToSM && 'Amount: '}
                 {utils.formatUnits(vestedPAW, 18)}{' '}
               </Typography>
             }
@@ -194,7 +202,7 @@ export const ManageMainActions = () => {
                 <Button
                   onClick={handleClaimAllVest}
                   variant="contained"
-                  sx={{ padding: '8px 24px' }}
+                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={totalVestsValue.isZero() ? true : false}
                 >
                   Claim
@@ -215,11 +223,13 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>{utils.formatUnits(expiredLockedPAW, 18)} PAW</Typography>
+                <Typography>
+                  {downToSM && 'Amount: '} {utils.formatUnits(expiredLockedPAW, 18)} PAW
+                </Typography>
                 <Button
                   onClick={handleClaimExpired}
                   variant="contained"
-                  sx={{ padding: '8px 24px' }}
+                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={expiredLockedPAW.isZero() ? true : false}
                 >
                   Claim
@@ -316,18 +326,15 @@ export const ManageMainActions = () => {
           <Box
             sx={{
               display: 'flex',
+              flexDirection: downToSM ? 'column' : 'row',
               justifyContent: 'space-between',
+              gap: downToSM ? '8px' : 'auto',
             }}
           >
             <Typography>
               Total Value: {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)}
             </Typography>
-            <Button
-              onClick={handleClaimAll}
-              // sx={(theme) => ({ border: `1px solid ${theme.palette.primary.main}` })}
-              variant="contained"
-              sx={{ padding: '8px 24px' }}
-            >
+            <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
               Claim All
             </Button>
           </Box>

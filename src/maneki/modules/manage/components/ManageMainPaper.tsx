@@ -1,16 +1,18 @@
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 export default function ManageMainContainer({ children }: { children: ReactNode }) {
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Paper
       sx={{
         display: 'flex',
         flexDirection: 'column',
         gap: '24px',
-        padding: '32px',
+        padding: downToSM ? '12px' : '32px',
         borderRadius: '14px',
-        width: '92%',
+        width: downToSM ? '100%' : '92%',
         mb: '32px',
       }}
     >

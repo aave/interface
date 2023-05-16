@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, SxProps, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Paper,
+  SxProps,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { BigNumber } from 'ethers';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
@@ -72,6 +81,8 @@ export default function ManageQuickContentWrapper({
   buttonText,
   inputLabel,
 }: ManageQuickContentWrapperProps) {
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Paper
       sx={{
@@ -91,14 +102,14 @@ export default function ManageQuickContentWrapper({
           </Typography>
         </Box>
         <Box
-          sx={{
+          sx={(theme) => ({
             display: 'flex',
             gap: '8px',
             padding: '12px',
             border: '1px solid rgb(68, 73, 92)',
             borderRadius: '12px',
-            bgcolor: 'rgba(247, 147, 26, 0.1)',
-          }}
+            bgcolor: theme.palette.mode === 'light' ? 'rgba(247, 147, 26, 0.1)' : 'transparent',
+          })}
         >
           <Typography fontWeight={600} fontSize={12}>
             APR
@@ -121,7 +132,14 @@ export default function ManageQuickContentWrapper({
           {balancePAW} PAW
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: downToSM ? 'column' : 'row',
+          gap: downToSM ? '8px' : 'auto',
+        }}
+      >
         <CustomNumberFormat
           amountTo={amountTo}
           setAmountTo={setAmountTo}
@@ -135,7 +153,11 @@ export default function ManageQuickContentWrapper({
             },
           }}
         />
-        <Button onClick={handleClick} variant="contained" sx={{ padding: '0px 32px' }}>
+        <Button
+          onClick={handleClick}
+          variant="contained"
+          sx={{ padding: downToSM ? '6px 24px' : '0px 24px' }}
+        >
           {buttonText}
         </Button>
       </Box>
