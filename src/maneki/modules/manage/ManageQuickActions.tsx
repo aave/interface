@@ -14,18 +14,14 @@ import ManageQuickContentWrapper from './components/ManageQuickContentWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
 import { toWeiString } from './utils/stringConverter';
-// interface NumReturn {
-//   _hex: string;
-//   _isBigNumber: boolean;
-// }
 
 export const ManageQuickActions = () => {
-  const { balancePAW, setBalancePAW } = useManageContext();
+  const { balancePAW, setBalancePAW, quickActionsLoading, setQuickActionsLoading } =
+    useManageContext();
   const [stakingAPR, setStakingAPR] = React.useState<BigNumber>(BigNumber.from(-1));
   const [lockingAPR, setLockingAPR] = React.useState<BigNumber>(BigNumber.from(-1));
   const [amountToStake, setAmountToStake] = React.useState<string>('');
   const [amountToLock, setAmountToLock] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -46,6 +42,7 @@ export const ManageQuickActions = () => {
   };
 
   React.useEffect(() => {
+    if (!quickActionsLoading) return;
     // create contracts
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
     const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);
@@ -64,13 +61,12 @@ export const ManageQuickActions = () => {
         setBalancePAW(data[0]);
         setStakingAPR(data[1]);
         setLockingAPR(data[2]);
-
-        setLoading(false);
+        setQuickActionsLoading(false);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, [quickActionsLoading]);
 
-  if (loading) return <ManekiLoadingPaper description="Loading..." withCircle />;
+  if (quickActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '32px', minWidth: '30%' }}>

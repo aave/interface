@@ -4,6 +4,7 @@ import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from 'src/maneki/modules/manage/DataABI';
 import MULTI_FEE_ABI from 'src/maneki/modules/manage/MultiFeeABI';
 import {
@@ -21,6 +22,7 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalChildProps) => {
   const { provider, currentAccount } = useWeb3Context();
   const { setMainTxState, setTxError } = useModalContext();
+  const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
   const [claimables, setClaimables] = useState<Claimables[]>([]);
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -62,6 +64,9 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
           loading: false,
           success: true,
         });
+        setTopPanelLoading(true);
+        setMainActionsLoading(true);
+        setQuickActionsLoading(true);
       } catch (error) {
         setMainTxState({
           loading: false,

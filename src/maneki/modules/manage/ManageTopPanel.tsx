@@ -12,11 +12,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
-// interface NumReturn {
-//   _hex: string;
-//   _isBigNumber: boolean;
-// }
-
 export const ManageTopPanel = () => {
   const {
     stakedPAW,
@@ -25,10 +20,12 @@ export const ManageTopPanel = () => {
     setLockedPAW,
     lockedStakedValue,
     setLockedStakedValue,
+    topPanelLoading,
+    setTopPanelLoading,
   } = useManageContext();
   const [dailyPlatformFees, setDailyPlatformFees] = React.useState<BigNumber>(BigNumber.from(-1));
   const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<BigNumber>(BigNumber.from(-1));
-  const [loading, setLoading] = React.useState<boolean>(true);
+  // const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,7 +37,7 @@ export const ManageTopPanel = () => {
     .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
-    if (!provider) return;
+    if (!provider && !topPanelLoading) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
@@ -62,17 +59,18 @@ export const ManageTopPanel = () => {
         setLockedStakedValue(data[2]); // 8 Decimal Percision
         setDailyPlatformFees(data[3]); // 8 Decimal Percision
         setDailyPenaltyFees(data[4]); // 8 Decimal Percision
-        setLoading(false);
+        setTopPanelLoading(false);
       })
       .catch((e) => console.error(e));
-  }, [provider]);
+  }, [provider, topPanelLoading]);
+
   return (
     <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>}>
       {/* Staked paw display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Staked + Locked PAW</Trans>}
-        loading={loading}
+        loading={topPanelLoading}
       >
         <FormattedNumber
           value={utils.formatUnits(lockedStakedValue, 8)}
@@ -91,7 +89,11 @@ export const ManageTopPanel = () => {
       </TopInfoPanelItem>
 
       {/* Daily revenue display */}
-      <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Daily revenue</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Daily revenue</Trans>}
+        loading={topPanelLoading}
+      >
         <FormattedNumber
           value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees), 8)}
           symbol="USD"
@@ -105,7 +107,11 @@ export const ManageTopPanel = () => {
       </TopInfoPanelItem>
 
       {/* weekly revenue display */}
-      <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Weekly revenue</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Weekly revenue</Trans>}
+        loading={topPanelLoading}
+      >
         <FormattedNumber
           value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees).mul(7), 8)}
           symbol="USD"
@@ -122,7 +128,7 @@ export const ManageTopPanel = () => {
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily playform fees</Trans>}
-        loading={loading}
+        loading={topPanelLoading}
       >
         <FormattedNumber
           value={utils.formatUnits(dailyPlatformFees, 8)}
@@ -140,7 +146,7 @@ export const ManageTopPanel = () => {
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily penalty fees</Trans>}
-        loading={loading}
+        loading={topPanelLoading}
       >
         <FormattedNumber
           value={utils.formatUnits(dailyPenaltyFees, 8)}

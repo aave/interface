@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import MULTI_FEE_ABI from 'src/maneki/modules/manage/MultiFeeABI';
 import PAW_TOKEN_ABI from 'src/maneki/modules/manage/PAWTokenABI';
 import { toWeiString } from 'src/maneki/modules/manage/utils/stringConverter';
@@ -21,9 +22,9 @@ export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLock
   const { provider, currentAccount } = useWeb3Context();
   const { mainTxState, setMainTxState, setTxError, approvalTxState, setApprovalTxState } =
     useModalContext();
+  const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
   const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
-
   const handleApproval = async () => {
     setApprovalTxState({
       loading: true,
@@ -71,6 +72,9 @@ export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLock
         success: true,
         txHash: promises.hash,
       });
+      setTopPanelLoading(true);
+      setMainActionsLoading(true);
+      setQuickActionsLoading(true);
     } catch (error) {
       setMainTxState({
         loading: false,

@@ -14,6 +14,7 @@ import { BigNumber, Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
+import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -33,11 +34,6 @@ import {
 } from './utils/manageActionHelper';
 import { tokenImageMatching } from './utils/tokenMatching';
 
-// interface NumReturn {
-//   _hex: string;
-//   _isBigNumber: boolean;
-// }
-
 export const ManageMainActions = () => {
   const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
   const [vestedPAW, setVestedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
@@ -50,7 +46,7 @@ export const ManageMainActions = () => {
   const [locks, setLocks] = React.useState<VestEntry[]>([]);
   const [totalLocksValue, setTotalLocksValue] = React.useState(BigNumber.from(-1));
   const [claimables, setClaimables] = React.useState<Claimables[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const { mainActionsLoading, setMainActionsLoading } = useManageContext();
   const { provider, currentAccount } = useWeb3Context();
   const { openManage } = useModalContext();
   // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
@@ -81,7 +77,7 @@ export const ManageMainActions = () => {
   };
 
   React.useEffect(() => {
-    if (!provider) return;
+    if (!provider && !mainActionsLoading) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
     const promises = [];
@@ -114,12 +110,12 @@ export const ManageMainActions = () => {
         setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
         setTotalLocksValue(data[9] as BigNumber); // 8 Decimal percision
         setTotalVestsValue(data[10] as BigNumber); // 8 Decimal percision
-        setLoading(false);
+        setMainActionsLoading(false);
       })
       .catch((e) => console.error(e));
-  }, [provider]);
+  }, [provider, mainActionsLoading]);
 
-  if (loading) return <ManekiLoadingPaper description="Loading..." withCircle />;
+  if (mainActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
     <>

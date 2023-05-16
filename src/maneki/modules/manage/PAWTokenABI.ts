@@ -1,4 +1,4 @@
-const MANEKI_PAW_TOKEN = [
+const PAW_TOKEN_ABI = [
   {
     inputs: [
       { internalType: 'uint256', name: '_maxTotalSupply', type: 'uint256' },
@@ -179,4 +179,4 @@ const MANEKI_PAW_TOKEN = [
   },
 ];
 
-export default MANEKI_PAW_TOKEN;
+export default PAW_TOKEN_ABI;
