@@ -80,21 +80,14 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
     setVotersModalOpen(true);
   };
 
-  const listHeaderComponent = (
-    <Row sx={{ mb: 3 }}>
-      <Typography variant="subheader2" color="text.secondary">
-        <Trans>Top 10 addresses</Trans>
-      </Typography>
-      <Typography variant="subheader2" color="text.secondary">
-        <Trans>Votes</Trans>
-      </Typography>
-    </Row>
-  );
-
   if (loading)
     return (
       <Box sx={{ mt: 8, mb: 12 }}>
-        {listHeaderComponent}
+        <Row sx={{ mb: 3 }}>
+          <Typography sx={{ ml: 'auto' }} variant="subheader2" color="text.secondary">
+            <Trans>Votes</Trans>
+          </Typography>
+        </Row>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <CircularProgress size={24} sx={{ my: 4 }} />
         </Box>
@@ -104,7 +97,11 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   if (error)
     return (
       <Box sx={{ mt: 8, mb: 12 }}>
-        {listHeaderComponent}
+        <Row sx={{ mb: 3 }}>
+          <Typography sx={{ ml: 'auto' }} variant="subheader2" color="text.secondary">
+            <Trans>Votes</Trans>
+          </Typography>
+        </Row>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 8 }}>
           <Typography variant="helperText" color="error.main">
             <Trans>Failed to load proposal voters. Please refresh the page.</Trans>
@@ -117,7 +114,14 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
 
   return (
     <Box sx={{ my: 8 }}>
-      {listHeaderComponent}
+      <Row sx={{ mb: 3 }}>
+        <Typography variant="subheader2" color="text.secondary">
+          {voters.combined.length > 10 ? <Trans>Top 10 addresses</Trans> : <Trans>Addresses</Trans>}
+        </Typography>
+        <Typography variant="subheader2" color="text.secondary">
+          <Trans>Votes</Trans>
+        </Typography>
+      </Row>
       <VotersList
         compact={mdScreen}
         voters={voters.combined.slice(0, 10)}
