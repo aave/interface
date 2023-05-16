@@ -43,7 +43,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { breakpoints } = useTheme();
   const mdScreen = useMediaQuery(breakpoints.only('md'));
 
-  const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
+  const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-votes`;
   const queryParams = `?proposal=${proposalId}`;
 
   const getVoterInfo = async () => {
