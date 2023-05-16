@@ -60,7 +60,7 @@ interface ManageQuickContentWrapperProps {
   svgIcon?: ReactNode;
   title: string;
   aprValue: string;
-  descriptions: string[];
+  descriptions: ReactNode[];
   balancePAW: string;
   amountTo: string;
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
@@ -121,7 +121,7 @@ export default function ManageQuickContentWrapper({
       </Box>
       {descriptions.map((description, i) => (
         <Typography key={i} fontWeight={600} fontSize={'14px'}>
-          <Trans>{description}</Trans>
+          {description}
         </Typography>
       ))}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -156,7 +156,7 @@ export default function ManageQuickContentWrapper({
         <Button
           onClick={handleClick}
           variant="contained"
-          sx={{ padding: downToSM ? '6px 24px' : '0px 24px' }}
+          sx={{ padding: downToSM ? '8px 24px' : '0px 24px' }}
         >
           {buttonText}
         </Button>

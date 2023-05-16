@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Trans } from '@lingui/macro';
 import AddModeratorOutlinedIcon from '@mui/icons-material/AddModeratorOutlined';
 import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncryptionOutlined';
 import { Box } from '@mui/material';
@@ -64,6 +65,7 @@ export const ManageQuickActions = () => {
         setQuickActionsLoading(false);
       })
       .catch((e) => console.error(e));
+    //eslint-disable-next-line
   }, [quickActionsLoading]);
 
   if (quickActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
@@ -74,7 +76,9 @@ export const ManageQuickActions = () => {
         svgIcon={<AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Stake PAW'}
         aprValue={(stakingAPR.toNumber() / 100_000_000).toFixed(2)}
-        descriptions={['Stake PAW and earn platform fees with no lockup period.']}
+        descriptions={[
+          <Trans key={1}>Stake PAW and earn platform fees with no lockup period.</Trans>,
+        ]}
         balancePAW={utils.formatUnits(balancePAW, 18)}
         amountTo={amountToStake}
         setAmountTo={setAmountToStake}
@@ -87,8 +91,11 @@ export const ManageQuickActions = () => {
         title={'Lock PAW'}
         aprValue={(lockingAPR.toNumber() / 100_000_000).toFixed(2)}
         descriptions={[
-          'Lock PAW and earn platform fees and penalty fees in unlocked PAW.',
-          'Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw.',
+          <Trans key={1}>Lock PAW and earn platform fees and penalty fees in unlocked PAW.</Trans>,
+          <Trans key={2}>
+            Locked PAW is subject to a three month lock and will continue to earn fees after the
+            locks expire if you do not withdraw.
+          </Trans>,
         ]}
         balancePAW={utils.formatUnits(balancePAW, 18)}
         amountTo={amountToLock}

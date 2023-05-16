@@ -118,6 +118,7 @@ export const ManageMainActions = () => {
         setMainActionsLoading(false);
       })
       .catch((e) => console.error(e));
+    //eslint-disable-next-line
   }, [provider, mainActionsLoading]);
 
   if (mainActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
@@ -133,7 +134,9 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   <Trans>Unlock PAW </Trans>
                 </Typography>
-                <Typography sx={{ width: '90%' }}>Staked PAW and expired PAW vests</Typography>
+                <Typography sx={{ width: '90%' }}>
+                  <Trans>Staked PAW and expired PAW vests</Trans>
+                </Typography>
               </>
             }
             rightComponent={
@@ -147,7 +150,7 @@ export const ManageMainActions = () => {
                   sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={unlockedPAW.isZero() ? true : false}
                 >
-                  Claim
+                  <Trans>Claim</Trans>
                 </Button>
               </>
             }
@@ -157,13 +160,15 @@ export const ManageMainActions = () => {
             leftComponent={
               <>
                 <Typography variant="h4" fontWeight={700}>
-                  Vested PAW
+                  <Trans>Vested PAW</Trans>
                 </Typography>
                 <Typography sx={{ width: '90%' }}>
-                  PAW that can be claimed with a{' '}
-                  <Typography component={'span'} color="error.light">
-                    50% penalty
-                  </Typography>
+                  <Trans>
+                    PAW that can be claimed with a{' '}
+                    <Typography component={'span'} color="error.light">
+                      50% penalty
+                    </Typography>
+                  </Trans>
                 </Typography>
               </>
             }
@@ -186,10 +191,10 @@ export const ManageMainActions = () => {
             leftComponent={
               <>
                 <Typography variant="h4" fontWeight={700}>
-                  Claim all of the above
+                  <Trans>Claim all of the above</Trans>
                 </Typography>
                 <Typography sx={{ width: '90%' }}>
-                  Early Exit Penalty:{' '}
+                  <Trans>Early Exit Penalty: </Trans>
                   <Typography component="span" color={'error.light'}>
                     {utils.formatUnits(exitPenalty, 18)} PAW
                   </Typography>
@@ -205,7 +210,7 @@ export const ManageMainActions = () => {
                   sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={totalVestsValue.isZero() ? true : false}
                 >
-                  Claim
+                  <Trans>Claim</Trans>
                 </Button>
               </>
             }
@@ -214,10 +219,12 @@ export const ManageMainActions = () => {
             leftComponent={
               <>
                 <Typography variant="h4" fontWeight={700}>
-                  Expired Locked PAW
+                  <Trans>Expired Locked PAW</Trans>
                 </Typography>
                 <Typography sx={{ width: '90%' }}>
-                  PAW locks that have exceeded the 3 month lock period and are now withdrawable.
+                  <Trans>
+                    PAW locks that have exceeded the 3 month lock period and are now withdrawable.
+                  </Trans>
                 </Typography>
               </>
             }
@@ -232,20 +239,26 @@ export const ManageMainActions = () => {
                   sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
                   disabled={expiredLockedPAW.isZero() ? true : false}
                 >
-                  Claim
+                  <Trans>Claim</Trans>
                 </Button>
               </>
             }
           />
         </ManageMainPaper>
         <ManageMainPaper>
-          <Typography variant={'h3'}>PAW Vests</Typography>
+          <Typography variant={'h3'}>
+            <Trans>PAW Vests</Trans>
+          </Typography>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Expiry</TableCell>
+                  <TableCell>
+                    <Trans>Amount</Trans>
+                  </TableCell>
+                  <TableCell>
+                    <Trans>Expiry</Trans>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -259,17 +272,23 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           <Typography>
-            Total vested: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)}
+            <Trans>Total vested</Trans>: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)}
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
-          <Typography variant={'h3'}>PAW Locks</Typography>
+          <Typography variant={'h3'}>
+            <Trans>PAW Locks</Trans>
+          </Typography>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Expiry</TableCell>
+                  <TableCell>
+                    <Trans>Amount</Trans>
+                  </TableCell>
+                  <TableCell>
+                    <Trans>Expiry</Trans>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -286,18 +305,28 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           {/** Value in Uint256 */}
-          <Typography>Total locked: {utils.formatUnits(totalLockedPAW.toString(), 18)}</Typography>
+          <Typography>
+            <Trans>Total locked</Trans>: {utils.formatUnits(totalLockedPAW.toString(), 18)}
+          </Typography>
           {/** Value in USD */}
-          <Typography>Value: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)}</Typography>
+          <Typography>
+            <Trans>Value</Trans>: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)}
+          </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
-          <Typography variant={'h3'}>Claimable fees</Typography>
+          <Typography variant={'h3'}>
+            <Trans>Claimable fees</Trans>
+          </Typography>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ width: '50%' }}>Tokens</TableCell>
-                  <TableCell>Amount</TableCell>
+                  <TableCell sx={{ width: '50%' }}>
+                    <Trans>Tokens</Trans>
+                  </TableCell>
+                  <TableCell>
+                    <Trans>Amount</Trans>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -332,10 +361,11 @@ export const ManageMainActions = () => {
             }}
           >
             <Typography>
-              Total Value: {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)}
+              <Trans>Total Value</Trans>:{' '}
+              {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)}
             </Typography>
             <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
-              Claim All
+              <Trans>Claim All</Trans>
             </Button>
           </Box>
         </ManageMainPaper>

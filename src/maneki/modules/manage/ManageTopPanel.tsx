@@ -62,6 +62,7 @@ export const ManageTopPanel = () => {
         setTopPanelLoading(false);
       })
       .catch((e) => console.error(e));
+    //eslint-disable-next-line
   }, [provider, topPanelLoading]);
 
   return (
@@ -83,8 +84,12 @@ export const ManageTopPanel = () => {
           symbolsVariant={symbolsVariant}
         />
         <Box>
-          <Typography>Stake {utils.formatUnits(stakedPAW, 18)}</Typography>
-          <Typography>Lock {utils.formatUnits(lockedPAW, 18)}</Typography>
+          <Typography>
+            <Trans>Stake</Trans> {utils.formatUnits(stakedPAW, 18)}
+          </Typography>
+          <Typography>
+            <Trans>Lock</Trans> {utils.formatUnits(lockedPAW, 18)}
+          </Typography>
         </Box>
       </TopInfoPanelItem>
 
