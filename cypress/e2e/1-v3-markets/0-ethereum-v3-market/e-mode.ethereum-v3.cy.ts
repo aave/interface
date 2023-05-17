@@ -16,7 +16,7 @@ const testData = {
       hasApproval: true,
     },
     borrow: {
-      asset: assets.ethereumV3Market.wstETH,
+      asset: assets.ethereumV3Market.cbETH,
       amount: 9999,
       isMaxAmount: true,
       apyType: constants.borrowAPYType.default,
@@ -24,13 +24,13 @@ const testData = {
       isRisk: true,
     },
     deposit2: {
-      asset: assets.ethereumV3Market.wstETH,
+      asset: assets.ethereumV3Market.cbETH,
       amount: 100,
       hasApproval: false,
       isMaxAmount: true,
     },
     repay: {
-      asset: assets.ethereumV3Market.wstETH,
+      asset: assets.ethereumV3Market.cbETH,
       apyType: constants.apyType.variable,
       amount: 5,
       hasApproval: true,
