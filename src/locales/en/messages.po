@@ -1877,20 +1877,8 @@ msgstr "Supplying {symbol}"
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr "Swap"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr "Swap to"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr "Swapped"
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
-msgstr "Swapping"
+msgid "Switch"
+msgstr "Switch"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1911,6 +1899,18 @@ msgstr "Switch Network"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr "Switch to"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr "Switched"
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
+msgstr "Switching"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
