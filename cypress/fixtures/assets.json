@@ -986,6 +986,18 @@
       "shortName": "awstETH",
       "collateral": true,
       "wrapped": false
+    },
+    "cbETH": {
+      "fullName": "cbETH",
+      "shortName": "cbETH",
+      "collateral": true,
+      "wrapped": false
+    },
+    "acbETH": {
+      "fullName": "acbETH",
+      "shortName": "acbETH",
+      "collateral": true,
+      "wrapped": false
     }
   }
 }
