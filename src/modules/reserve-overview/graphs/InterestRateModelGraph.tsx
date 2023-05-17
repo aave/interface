@@ -29,6 +29,8 @@ type InterestRateModelType = {
   utilizationRate: string;
   baseVariableBorrowRate: string;
   baseStableBorrowRate: string;
+  totalLiquidityUSD: string;
+  totalDebtUSD: string;
 };
 
 type Rate = {
@@ -428,6 +430,23 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   {tooltipData.utilization}%
                 </Typography>
               </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                  <Trans>Additional borrows to reach targeted utilization</Trans>
+                </Typography>
+                <Typography variant="main12" color="primary">
+                  $
+                  {new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(
+                    (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                      parseFloat(reserve.totalDebtUSD)
+                  )}
+                </Typography>
+              </Box>
+
               {fields.map((field) => (
                 <Box key={field.name} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>

@@ -132,6 +132,10 @@ msgstr "Add to wallet"
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
 
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Additional borrows to reach targeted utilization"
+msgstr "Additional borrows to reach targeted utilization"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
