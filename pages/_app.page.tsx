@@ -10,6 +10,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
+import { CustomRPCModal } from 'src/components/custom-rpc-modal/CustomRPCModal';
 import { Meta } from 'src/components/Meta';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
@@ -93,6 +94,7 @@ export default function MyApp(props: MyAppProps) {
                               <SwapModal />
                               <FaucetModal />
                               <MigrateV3Modal />
+                              <CustomRPCModal />
                             </SharedDependenciesProvider>
                           </GasStationProvider>
                         </AppDataProvider>

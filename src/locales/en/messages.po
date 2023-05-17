@@ -124,6 +124,10 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Add Custom RPC URLs"
+msgstr "Add Custom RPC URLs"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
@@ -185,6 +189,14 @@ msgstr "Amount must be greater than 0"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
+
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Api Key"
+msgstr "Api Key"
+
+#: src/components/custom-rpc-modal/CustomRPCProvider.tsx
+msgid "Api key is not valid. Please try again with a different Api Key"
+msgstr "Api key is not valid. Please try again with a different Api Key"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
@@ -660,6 +672,14 @@ msgstr "Current v2 balance"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current votes"
 msgstr "Current votes"
+
+#: src/layouts/components/CustomRPCSwitcher.tsx
+msgid "Custom RPC"
+msgstr "Custom RPC"
+
+#: src/components/custom-rpc-modal/CustomRPCModal.tsx
+msgid "Custom Urls"
+msgstr "Custom Urls"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -1479,6 +1499,10 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
 msgstr "Quorum"
+
+#: src/components/custom-rpc-modal/NetworkInput.tsx
+msgid "RPC Url is not valid. Please try again with a different RPC Url"
+msgstr "RPC Url is not valid. Please try again with a different RPC Url"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
@@ -2651,6 +2675,8 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/custom-rpc-modal/CustomRPCProvider.tsx
+#: src/components/custom-rpc-modal/CustomRPCProvider.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx

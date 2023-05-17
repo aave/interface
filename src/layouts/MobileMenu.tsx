@@ -17,6 +17,8 @@ import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
 import { moreNavigation } from '../ui-config/menu-items';
+import { CustomRPCButton } from './components/CustomRPCButton';
+import { CustomRPCSwitcher } from './components/CustomRPCSwitcher';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
@@ -77,7 +79,9 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
               <List>
                 <DarkModeSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
-                <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
+                {<LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />}
+                <CustomRPCSwitcher />
+                <CustomRPCButton handleCLose={() => setOpen(false)} />
               </List>
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Links</Trans>}>

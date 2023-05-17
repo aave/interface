@@ -12,6 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { getMarketHelpData } from 'src/helpers/get-market-help-data';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
@@ -32,26 +33,6 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   const network: BaseNetworkConfig = networkConfigs[market.chainId];
 
   return { market, network };
-};
-
-export const getMarketHelpData = (marketName: string) => {
-  const testChains = [
-    'Görli',
-    'Ropsten',
-    'Mumbai',
-    'Sepolia',
-    'Fuji',
-    'Testnet',
-    'Kovan',
-    'Rinkeby',
-  ];
-  const arrayName = marketName.split(' ');
-  const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
-  return {
-    name: marketTitle,
-    testChainName: testChainName[0],
-  };
 };
 
 export type Market = {

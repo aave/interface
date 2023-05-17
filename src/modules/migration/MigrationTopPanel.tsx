@@ -5,8 +5,9 @@ import { useRouter } from 'next/router';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { getMarketHelpData } from 'src/helpers/get-market-help-data';
 
-import { getMarketHelpData, getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
+import { getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 
 export const MigrationTopPanel = () => {
