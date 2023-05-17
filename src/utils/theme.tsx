@@ -453,13 +453,13 @@ export function getThemedComponents(theme: Theme) {
             style: {
               background: 'transparent',
               borderColor: theme.palette.divider,
-              color: theme.palette.primary.main,
+              color: theme.palette.text.primary,
             },
           },
           {
             props: { color: 'primary', variant: 'contained' },
             style: {
-              color: 'black',
+              color: theme.palette.text.primary,
             },
           },
         ],
