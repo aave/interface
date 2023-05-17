@@ -62,7 +62,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountInUsd =
     Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(stakeGeneralResult?.usdPriceEth || 1, 18)));
+      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -57,7 +57,7 @@ export interface StakingPanelProps {
   stakeUserData?: StakeUserUiData['aave'];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
-  ethUsdPrice?: string;
+  ethPriceUsd?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
@@ -76,7 +76,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   icon,
   stakeData,
   stakeUserData,
-  ethUsdPrice,
+  ethPriceUsd,
   maxSlash,
 }) => {
   const { breakpoints } = useTheme();
@@ -100,16 +100,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
   );
 
-  const stakedUSD = formatEther(
+  const stakedUSD = formatUnits(
     BigNumber.from(stakeUserData?.stakeTokenUserBalance || '0')
       .mul(stakeData?.stakeTokenPriceEth || '0')
-      .div(ethUsdPrice || '1')
+      .mul(ethPriceUsd || '1'),
+    18 + 18 + 8 // userBalance (18), stakedTokenPriceEth (18), ethPriceUsd (8)
   );
 
-  const claimableUSD = formatEther(
+  const claimableUSD = formatUnits(
     BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
       .mul(stakeData?.rewardTokenPriceEth || '0')
-      .div(ethUsdPrice || '1')
+      .mul(ethPriceUsd || '1'),
+    18 + 18 + 8 // incentivesBalance (18), rewardTokenPriceEth (18), ethPriceUsd (8)
   );
 
   const aavePerMonth = formatEther(
