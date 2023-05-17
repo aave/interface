@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -45,7 +45,7 @@ export default function Staking() {
   }, [lg]);
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
-  const tvl = formatEther(
+  const tvl = formatUnits(
     BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
       .mul(stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
       .add(
@@ -53,7 +53,8 @@ export default function Staking() {
           stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
         )
       )
-      .div(stakeGeneralResult?.usdPriceEth || 1)
+      .mul(stakeGeneralResult?.ethPriceUsd || 1),
+    18 + 18 + 8 // 2x total supply (18 decimals), 1x ethPriceUSD (8 decimals)
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
@@ -113,7 +114,7 @@ export default function Staking() {
                   icon="aave"
                   stakeData={stakeGeneralResult?.aave}
                   stakeUserData={stakeUserResult?.aave}
-                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
@@ -134,7 +135,7 @@ export default function Staking() {
                   icon="stkbpt"
                   stakeData={stakeGeneralResult?.bpt}
                   stakeUserData={stakeUserResult?.bpt}
-                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
                   onStakeAction={() => openStake('bpt', 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}

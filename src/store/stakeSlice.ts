@@ -10,7 +10,7 @@ import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
 export type StakeGeneralUiData = {
-  usdPriceEth: string;
+  ethPriceUsd: string;
   aave: {
     stakeTokenTotalSupply: string;
     stakeCooldownSeconds: number;
@@ -34,20 +34,18 @@ export type StakeGeneralUiData = {
 };
 
 export type StakeUserUiData = {
-  usdPriceEth: string;
+  ethPriceUsd: string;
   aave: {
     stakeTokenUserBalance: string;
     underlyingTokenUserBalance: string;
     userCooldown: number;
     userIncentivesToClaim: string;
-    userPermitNonce: string;
   };
   bpt: {
     stakeTokenUserBalance: string;
     underlyingTokenUserBalance: string;
     userCooldown: number;
     userIncentivesToClaim: string;
-    userPermitNonce: string;
   };
 };
 
