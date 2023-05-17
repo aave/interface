@@ -459,7 +459,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'contained' },
             style: {
-              color: theme.palette.text.primary,
+              color: 'black',
             },
           },
         ],
