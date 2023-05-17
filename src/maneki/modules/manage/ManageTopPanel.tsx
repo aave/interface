@@ -132,7 +132,7 @@ export const ManageTopPanel = () => {
       {/* Platform fee display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
-        title={<Trans>Daily playform fees</Trans>}
+        title={<Trans>Daily platform fees</Trans>}
         loading={topPanelLoading}
       >
         <FormattedNumber
