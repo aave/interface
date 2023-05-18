@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-04 00:16\n"
+"PO-Revision-Date: 2023-05-17 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -140,6 +140,10 @@ msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "La dirección no es un contrato"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr ""
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -2352,6 +2356,8 @@ msgstr "Votó NAY"
 msgid "Voted YAE"
 msgstr "Votó YAE"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
