@@ -6,7 +6,6 @@ import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import manekiMetaImage from 'public/ManekiMetaImage.jpg';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
@@ -63,7 +62,7 @@ export default function MyApp(props: MyAppProps) {
       <Meta
         title={'Next Generation Lending Protocol'}
         description={'Maneki Next Generation Lending Protocol'}
-        imageUrl={manekiMetaImage.src}
+        imageUrl={'/ManekiMetaImage.jpg'}
       />
       <LanguageProvider>
         <Web3ReactProvider getLibrary={getWeb3Library}>
