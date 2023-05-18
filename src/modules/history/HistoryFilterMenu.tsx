@@ -118,7 +118,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
     <Box>
       <Button
         sx={{
-          minWidth: downToMD ? '100%' : 148,
+          minWidth: 148,
           maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
           justifyContent: 'space-between',
@@ -127,7 +127,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           border: '1px solid',
           borderColor: 'divider',
           borderRadius: '4px',
-          mr: 2,
+          mr: downToMD ? 0 : 2,
+          ml: downToMD ? 4 : 0,
           pl: 2,
           pr: 1,
         }}
