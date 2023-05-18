@@ -1,3 +1,7 @@
+import {
+  GeneralStakeUIDataHumanized,
+  GetUserStakeUIDataHumanized,
+} from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -7,7 +11,6 @@ import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { StakeGeneralUiData, StakeUserUiData } from 'src/store/stakeSlice';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';
@@ -53,8 +56,8 @@ export interface StakingPanelProps {
   onStakeRewardClaimAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
-  stakeData?: StakeGeneralUiData['aave'];
-  stakeUserData?: StakeUserUiData['aave'];
+  stakeData?: GeneralStakeUIDataHumanized['aave'];
+  stakeUserData?: GetUserStakeUIDataHumanized['aave'];
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   ethPriceUsd?: string;
@@ -83,6 +86,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
 
+  console.log('USERDATA');
+  console.log(stakeUserData);
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
   const userCooldown = stakeUserData?.userCooldown || 0;
@@ -101,7 +106,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   );
 
   const stakedUSD = formatUnits(
-    BigNumber.from(stakeUserData?.stakeTokenUserBalance || '0')
+    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0')
       .mul(stakeData?.stakeTokenPriceEth || '0')
       .mul(ethPriceUsd || '1'),
     18 + 18 + 8 // userBalance (18), stakedTokenPriceEth (18), ethPriceUsd (8)
@@ -115,7 +120,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   );
 
   const aavePerMonth = formatEther(
-    valueToBigNumber(stakeUserData?.stakeTokenUserBalance || '0')
+    valueToBigNumber(stakeUserData?.stakeTokenRedeemableAmount || '0')
       .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
       .multipliedBy(stakeData?.distributionPerSecond || '0')
       .multipliedBy('2592000')
@@ -260,7 +265,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               <Trans>Staked</Trans> {stakedToken}
             </>
           }
-          value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
+          value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
           valueUSD={stakedUSD}
           dataCy={`stakedBox_${stakedToken}`}
           // TODO: need fix text
@@ -339,7 +344,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               variant="outlined"
               fullWidth
               onClick={onCooldownAction}
-              disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+              disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
               data-cy={`coolDownBtn_${stakedToken}`}
             >
               <Trans>Cooldown to unstake</Trans>

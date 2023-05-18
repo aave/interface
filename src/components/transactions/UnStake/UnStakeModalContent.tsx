@@ -45,7 +45,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountRef = useRef<string>();
 
   const walletBalance = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance || '0',
+    stakeUserResult?.[stakeAssetName as StakingType].stakeTokenRedeemableAmount || '0',
     18
   );
 

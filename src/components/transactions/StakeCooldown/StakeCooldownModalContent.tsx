@@ -69,7 +69,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const unstakeWindowLineWidth =
     unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
 
-  const stakedAmount = stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance;
+  const stakedAmount = stakeUserResult?.[stakeAssetName as StakingType].stakeTokenRedeemableAmount;
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
