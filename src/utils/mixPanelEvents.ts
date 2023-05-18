@@ -1,12 +1,13 @@
 export const PAGEVIEW = 'Pageview';
 
 export const AUTH = {
-  CONNECT_WALLET: 'Connect wallet',
-  SWITCH_WALLET: 'Switch wallet',
-  MOCK_WALLET: 'Mock wallet',
-  DISCONNECT_WALLET: 'Disconnect wallet',
-  COPY_ADDRESS: 'Copy address',
-  VIEW_EXPLORER: 'View explorer',
+  CONNECT_WALLET_MODAL: 'Open Connect Wallet Modal', //done
+  CONNECT_WALLET: 'Connect wallet', //done
+  SWITCH_WALLET: 'Switch wallet', //done
+  MOCK_WALLET: 'Mock wallet', //done
+  DISCONNECT_WALLET: 'Disconnect wallet', //done
+  COPY_ADDRESS: 'Copy address', // done
+  VIEW_EXPLORER: 'View explorer', // done
 };
 
 export const GENERAL = {
@@ -189,11 +190,9 @@ export const DELEGATION = {
 };
 
 export const NAV_BAR = {
-  FAQ: 'FAQ Link',
-  DEVELOPERS: 'Developers Link',
-  DISCORD: 'Discord Link',
-  GITHUB: 'Github Link',
-  BUY_WITH_CRYPTO: 'Buy with crypto link',
+  MAIN_MENU: 'Main menu navigation', //done
+  MORE: 'More View', //done
+  MORE_NAV: 'More navigation', //done
 };
 
 export const SETTINGS = {

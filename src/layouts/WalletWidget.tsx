@@ -26,6 +26,8 @@ import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
@@ -47,6 +49,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
@@ -66,6 +69,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
+      trackEvent(AUTH.CONNECT_WALLET_MODAL);
       setWalletModalOpen(true);
     } else {
       setOpen(true);
@@ -76,17 +80,25 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const handleDisconnect = () => {
     if (connected) {
       disconnectWallet();
+      trackEvent(AUTH.DISCONNECT_WALLET);
       handleClose();
     }
   };
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
+    trackEvent(AUTH.COPY_ADDRESS);
     handleClose();
   };
 
   const handleSwitchWallet = (): void => {
     setWalletModalOpen(true);
+    trackEvent(AUTH.SWITCH_WALLET);
+    handleClose();
+  };
+
+  const handleViewOnExplorer = (): void => {
+    trackEvent(AUTH.VIEW_EXPLORER);
     handleClose();
   };
 
@@ -220,7 +232,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           <Box
             component={component}
             sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-            onClick={handleClose}
+            onClick={handleViewOnExplorer}
           >
             <ListItemIcon
               sx={{

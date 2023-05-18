@@ -75,7 +75,8 @@ const testData = {
   },
 };
 
-describe('wstETH INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
+//due caps
+describe.skip('wstETH INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({ v3: true });
 
