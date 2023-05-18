@@ -10,7 +10,7 @@ on:
 
 jobs:
   production:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment:
       name: Production
       url: 'https://app.aave.com'
@@ -64,7 +64,7 @@ jobs:
           tag: '${{ env.TAG }}'
 
   staging:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment:
       name: Staging
       url: 'https://staging.aave.com'
