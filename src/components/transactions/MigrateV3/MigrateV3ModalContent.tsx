@@ -1,16 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { useCallback } from 'react';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useMigrationData } from 'src/hooks/migration/useMigrationData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
-import {
-  selectedUserSupplyReservesForMigration,
-  selectSelectedBorrowReservesForMigrationV3,
-} from 'src/store/v3MigrationSelectors';
 import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -23,24 +17,14 @@ import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 export const MigrateV3ModalContent = () => {
-  const currentTimeStamp = useCurrentTimestamp(10);
-
-  const { supplyPositions, borrowPositions } = useRootStore(
-    useCallback(
-      (state) => ({
-        supplyPositions: selectedUserSupplyReservesForMigration(state, currentTimeStamp),
-        borrowPositions: selectSelectedBorrowReservesForMigrationV3(state, currentTimeStamp),
-      }),
-      [currentTimeStamp]
-    )
-  );
+  const { selectedSupplyReserves, selectedBorrowReservesV3 } = useMigrationData();
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
   const { currentChainId, setCurrentMarket, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const supplyAssets = supplyPositions.map((supplyAsset) => {
+  const supplyAssets = selectedSupplyReserves.map((supplyAsset) => {
     return {
       underlyingAsset: supplyAsset.underlyingAsset,
       iconSymbol: supplyAsset.reserve.iconSymbol,
@@ -50,7 +34,7 @@ export const MigrateV3ModalContent = () => {
     };
   });
 
-  const borrowsAssets = borrowPositions.map((asset) => {
+  const borrowsAssets = selectedBorrowReservesV3.map((asset) => {
     return {
       underlyingAsset: asset.debtKey,
       iconSymbol: asset.reserve.iconSymbol,

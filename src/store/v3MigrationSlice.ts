@@ -6,7 +6,11 @@ import {
   Pool,
   V3MigrationHelperService,
 } from '@aave/contract-helpers';
-import { MigrationDelegationApproval } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
+import {
+  MigrationDelegationApproval,
+  MigrationRepayAsset,
+  MigrationSupplyAsset,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumberish } from 'ethers';
@@ -14,17 +18,16 @@ import { produce } from 'immer';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { StateCreator } from 'zustand';
 
+import {
+  getMigrationSelectedSupplyIndex,
+  MappedBorrowReserve,
+  MappedSupplyReserves,
+} from './migrationFormatters';
 import { selectCurrentChainIdV3MarketData } from './poolSelectors';
 import { RootStore } from './root';
 import {
-  selectMigrationBorrowPermitPayloads,
-  selectMigrationRepayAssets,
   selectMigrationSelectedBorrowIndex,
-  selectMigrationSelectedSupplyIndex,
   selectMigrationSignedPermits,
-  selectUserReservesForMigration,
-  selectUserSupplyAssetsForMigrationNoPermit,
-  selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
 
 export type MigrationSelectedAsset = {
@@ -75,20 +78,30 @@ export type V3MigrationSlice = {
       deadline: string;
     }
   ) => Promise<string>;
-  getApprovePermitsForSelectedAssets: () => Approval[];
+  getApprovePermitsForSelectedAssets: (
+    borrowPermitPayloads: Approval[],
+    supplyPermitPayloads: Approval[]
+  ) => Approval[];
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
   toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => void;
   getMigratorAddress: () => string;
   getMigrationServiceInstance: () => V3MigrationHelperService;
   migrateWithPermits: (
     signature: SignatureLike[],
-    deadline: BigNumberish
+    deadline: BigNumberish,
+    supplyAssetsForMigrationNoPermit: MigrationSupplyAsset[],
+    repayAssets: MigrationRepayAsset[],
+    borrowPermitPayloads: Approval[]
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  migrateWithoutPermits: () => Promise<EthereumTransactionTypeExtended[]>;
+  migrateWithoutPermits: (
+    borrowPermitPayloads: Approval[],
+    supplyAssetsNoPermit: MigrationSupplyAsset[],
+    repayAssets: MigrationRepayAsset[]
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   resetMigrationSelectedAssets: () => void;
   enforceAsCollateral: (underlyingAsset: string) => void;
-  selectAllBorrow: (timestamp: number) => void;
-  selectAllSupply: (timestamp: number) => void;
+  selectAllBorrow: (borrowReserves: MappedBorrowReserve[]) => void;
+  selectAllSupply: (supplyReserves: MappedSupplyReserves[]) => void;
   getMigrationExceptionSupplyBalances: (supplies: MigrationSupplyException[]) => void;
 };
 
@@ -235,7 +248,10 @@ export const createV3MigrationSlice: StateCreator<
     enforceAsCollateral: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          const assetIndex = selectMigrationSelectedSupplyIndex(get(), underlyingAsset);
+          const assetIndex = getMigrationSelectedSupplyIndex(
+            get().selectedMigrationSupplyAssets,
+            underlyingAsset
+          );
           const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex]?.enforced;
           if (assetIndex >= 0) {
             draft.selectedMigrationSupplyAssets.forEach((asset) => {
@@ -252,8 +268,7 @@ export const createV3MigrationSlice: StateCreator<
         selectedMigrationSupplyAssets: [],
       });
     },
-    selectAllSupply: (currentTimestamp: number) => {
-      const { supplyReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+    selectAllSupply: (supplyReserves) => {
       if (
         get().selectedMigrationSupplyAssets.length == supplyReserves.length ||
         get().selectedMigrationSupplyAssets.length != 0
@@ -263,7 +278,11 @@ export const createV3MigrationSlice: StateCreator<
         const nonSelectedSupplies = supplyReserves
           .filter((supplyAsset) => supplyAsset.migrationDisabled === undefined)
           .filter(
-            ({ underlyingAsset }) => selectMigrationSelectedSupplyIndex(get(), underlyingAsset) < 0
+            ({ underlyingAsset }) =>
+              getMigrationSelectedSupplyIndex(
+                get().selectedMigrationSupplyAssets,
+                underlyingAsset
+              ) < 0
           )
           .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
 
@@ -275,8 +294,7 @@ export const createV3MigrationSlice: StateCreator<
         });
       }
     },
-    selectAllBorrow: (currentTimestamp: number) => {
-      const { borrowReserves } = selectUserReservesForMigration(get(), currentTimestamp);
+    selectAllBorrow: (borrowReserves) => {
       if (
         get().selectedMigrationBorrowAssets.length == borrowReserves.length ||
         get().selectedMigrationBorrowAssets.length != 0
@@ -299,48 +317,40 @@ export const createV3MigrationSlice: StateCreator<
         });
       }
     },
-    getApprovePermitsForSelectedAssets: () => {
-      const timestamp = dayjs().unix();
-
-      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp);
-
-      const supplyPermitPayloads = selectUserSupplyIncreasedReservesForMigrationPermits(
-        get(),
-        timestamp
-      ).map(({ reserve, increasedAmount }): Approval => {
-        return {
-          amount: increasedAmount,
-          underlyingAsset: reserve.aTokenAddress,
-          permitType: 'SUPPLY_MIGRATOR_V3',
-        };
-      });
-
+    getApprovePermitsForSelectedAssets: (borrowPermitPayloads, supplyPermitPayloads) => {
       const combinedPermitsPayloads = [...supplyPermitPayloads, ...borrowPermitPayloads];
       set({ approvalPermitsForMigrationAssets: combinedPermitsPayloads });
       return combinedPermitsPayloads;
     },
-    migrateWithoutPermits: () => {
+    migrateWithoutPermits: (
+      borrowPermitPayloads: Approval[],
+      supplyAssetsNoPermit: MigrationSupplyAsset[],
+      repayAssets: MigrationRepayAsset[]
+    ) => {
       const timestamp = dayjs().unix();
       set({ timestamp });
-      const supplyAssets = selectUserSupplyAssetsForMigrationNoPermit(get(), timestamp);
-      const repayAssets = selectMigrationRepayAssets(get(), timestamp);
       const user = get().account;
 
-      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp);
       const creditDelegationApprovals: MigrationDelegationApproval[] = borrowPermitPayloads.map(
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
 
       return get().getMigrationServiceInstance().migrate({
         repayAssets,
-        supplyAssets,
+        supplyAssets: supplyAssetsNoPermit,
         user,
         creditDelegationApprovals,
         signedCreditDelegationPermits: [],
         signedSupplyPermits: [],
       });
     },
-    migrateWithPermits: async (signatures: SignatureLike[], deadline: BigNumberish) => {
+    migrateWithPermits: async (
+      signatures: SignatureLike[],
+      deadline: BigNumberish,
+      supplyAssetsForMigrationNoPermit: MigrationSupplyAsset[],
+      repayAssets: MigrationRepayAsset[],
+      borrowPermitPayloads: Approval[]
+    ) => {
       const timestamp = dayjs().unix();
       set({ timestamp });
 
@@ -349,18 +359,15 @@ export const createV3MigrationSlice: StateCreator<
         signatures,
         deadline
       );
-      const supplyAssets = selectUserSupplyAssetsForMigrationNoPermit(get(), timestamp);
-      const repayAssets = selectMigrationRepayAssets(get(), timestamp);
       const user = get().account;
 
-      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp);
       const creditDelegationApprovals: MigrationDelegationApproval[] = borrowPermitPayloads.map(
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
 
       return get().getMigrationServiceInstance().migrate({
         repayAssets,
-        supplyAssets,
+        supplyAssets: supplyAssetsForMigrationNoPermit,
         user,
         creditDelegationApprovals,
         signedCreditDelegationPermits: creditDelegationPermits,

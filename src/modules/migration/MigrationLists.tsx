@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
+import { useMigrationData } from 'src/hooks/migration/useMigrationData';
+import { computeSelections } from 'src/store/migrationFormatters';
 import { useRootStore } from 'src/store/root';
-import {
-  computeSelections,
-  IsolatedReserve,
-  selectUserReservesForMigration,
-} from 'src/store/v3MigrationSelectors';
+import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
 import { MigrationList } from './MigrationList';
 
@@ -34,9 +32,7 @@ export const MigrationLists = ({
     selectedMigrationBorrowAssets: selectedBorrowAssets,
   } = useRootStore();
 
-  const { supplyReserves, borrowReserves } = useRootStore(
-    useCallback((state) => selectUserReservesForMigration(state, 0), [])
-  );
+  const { supplyReserves, borrowReserves } = useMigrationData();
 
   const isSupplyPositionsAvailable = supplyReserves.length > 0;
   const isBorrowPositionsAvailable = borrowReserves.length > 0;
