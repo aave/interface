@@ -4,6 +4,10 @@ import {
   Box,
   Button,
   CircularProgress,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   SvgIcon,
   Typography,
   useMediaQuery,
@@ -18,10 +22,11 @@ import {
   useTransactionHistory,
 } from 'src/hooks/useTransactionHistory';
 
+import { downloadData } from './downloadHelper';
 import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
-import TransactionRowItem from './TransactionRowItem';
+import TransactionMobileRowItem from './TransactionMobileRowItem';
 
 const groupByDate = (
   transactions: TransactionHistoryItem[]
@@ -42,16 +47,62 @@ const groupByDate = (
 
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  //const [loadingDownload, setLoadingDownload] = useState(false);
+  const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
+
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleDownloadMenuClose = () => {
+    setMenuAnchorEl(null);
+  };
 
   const {
     data: transactions,
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
-    //fetchForDownload,
+    fetchForDownload,
   } = useTransactionHistory();
+
+  const handleJsonDownload = async () => {
+    setLoadingDownload(true);
+    const data = await fetchForDownload({ searchQuery, filterQuery });
+    const jsonData = JSON.stringify(data, null, 2);
+    downloadData('transactions.json', jsonData, 'application/json');
+    setLoadingDownload(false);
+  };
+
+  const handleCsvDownload = async () => {
+    setLoadingDownload(true);
+    const data: TransactionHistoryItem[] = await fetchForDownload({ searchQuery, filterQuery });
+
+    // Getting all the unique headers
+    const headersSet = new Set<string>();
+    data.forEach((transaction) => {
+      Object.keys(transaction).forEach((key) => headersSet.add(key));
+    });
+
+    const headers: string[] = Array.from(headersSet);
+    let csvContent = headers.join(',') + '\n';
+
+    data.forEach((transaction: TransactionHistoryItem) => {
+      const row: string[] = headers.map((header) => {
+        const value = transaction[header as keyof TransactionHistoryItem];
+        if (typeof value === 'object') {
+          return JSON.stringify(value) ?? '';
+        }
+        return String(value) ?? '';
+      });
+      csvContent += row.join(',') + '\n';
+    });
+
+    downloadData('transactions.csv', csvContent, 'text/csv');
+    setLoadingDownload(false);
+  };
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
@@ -83,7 +134,6 @@ export const HistoryWrapperMobile = () => {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
-            mx: 4,
             alignItems: 'center',
           }}
         >
@@ -91,9 +141,51 @@ export const HistoryWrapperMobile = () => {
             <Trans>Transactions</Trans>
           </Typography>
           <Box sx={{ display: 'flex', gap: '22px' }}>
-            <SvgIcon sx={{ cursor: 'pointer' }}>
-              <DocumentDownloadIcon width={20} height={20} />
-            </SvgIcon>
+            {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
+            <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
+              <SvgIcon>
+                <DocumentDownloadIcon width={20} height={20} />
+              </SvgIcon>
+            </Box>
+            <Menu
+              anchorEl={menuAnchorEl}
+              open={Boolean(menuAnchorEl)}
+              onClose={handleDownloadMenuClose}
+            >
+              <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
+                <Trans>Export data to</Trans>
+              </Typography>
+              <MenuItem
+                onClick={() => {
+                  handleJsonDownload();
+                  handleDownloadMenuClose();
+                }}
+              >
+                <ListItemIcon>
+                  <SvgIcon>
+                    <DocumentDownloadIcon width={22} height={22} />
+                  </SvgIcon>
+                </ListItemIcon>
+                <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                  <Trans>.JSON</Trans>
+                </ListItemText>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCsvDownload();
+                  handleDownloadMenuClose();
+                }}
+              >
+                <ListItemIcon>
+                  <SvgIcon>
+                    <DocumentDownloadIcon width={22} height={22} />
+                  </SvgIcon>
+                </ListItemIcon>
+                <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                  <Trans>.CSV</Trans>
+                </ListItemText>
+              </MenuItem>
+            </Menu>
             <SvgIcon sx={{ cursor: 'pointer' }}>
               <SearchIcon width={20} height={20} />
             </SvgIcon>
@@ -119,18 +211,17 @@ export const HistoryWrapperMobile = () => {
       {!isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+            <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItem, index: number) => {
               const isLastItem = index === txns.length - 1;
               return (
                 <div ref={isLastItem ? lastElementRef : null} key={index}>
-                  <TransactionRowItem
+                  <TransactionMobileRowItem
                     transaction={
                       transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
                     }
-                    downToXSM={downToXSM}
                   />
                 </div>
               );
@@ -145,7 +236,6 @@ export const HistoryWrapperMobile = () => {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            p: 4,
             flex: 1,
             maxWidth: '468px',
             margin: '0 auto',
@@ -210,5 +300,3 @@ export const HistoryWrapperMobile = () => {
     </ListWrapper>
   );
 };
-
-export default HistoryWrapperMobile;
