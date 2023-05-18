@@ -272,7 +272,7 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           <Typography>
-            <Trans>Total vested</Trans>: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)}
+            <Trans>Total vested</Trans>: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)} USD
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -306,11 +306,11 @@ export const ManageMainActions = () => {
           </TableContainer>
           {/** Value in Uint256 */}
           <Typography>
-            <Trans>Total locked</Trans>: {utils.formatUnits(totalLockedPAW.toString(), 18)}
+            <Trans>Total locked</Trans>: {utils.formatUnits(totalLockedPAW.toString(), 18)} PAW
           </Typography>
           {/** Value in USD */}
           <Typography>
-            <Trans>Value</Trans>: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)}
+            <Trans>Value</Trans>: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)} USD
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -362,7 +362,7 @@ export const ManageMainActions = () => {
           >
             <Typography>
               <Trans>Total Value</Trans>:{' '}
-              {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)}
+              {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)} USD
             </Typography>
             <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
               <Trans>Claim All</Trans>
