@@ -14,16 +14,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".CSV"
 msgstr ".CSV"
 
 #: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".JSON"
 msgstr ".JSON"
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid ".{downloadFormat}"
-msgstr ".{downloadFormat}"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -384,6 +382,7 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
@@ -428,6 +427,7 @@ msgstr "Borrow cap is exceeded"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Borrow rate change"
 msgstr "Borrow rate change"
@@ -515,6 +515,7 @@ msgid "Can be executed"
 msgstr "Can be executed"
 
 #: src/components/TitleWithSearchBar.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -593,6 +594,7 @@ msgstr "Collateral is (mostly) the same currency that is being borrowed"
 msgid "Collateral to repay with"
 msgstr "Collateral to repay with"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -614,6 +616,7 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
@@ -652,10 +655,12 @@ msgstr "Cooldown to unstake"
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Copied"
 msgstr "Copied"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Copy"
 msgstr "Copy"
@@ -672,6 +677,7 @@ msgstr "Copy error message"
 msgid "Copy error text"
 msgstr "Copy error text"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
@@ -790,15 +796,6 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Download"
-msgstr "Download"
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Download transaction history"
-msgstr "Download transaction history"
-
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
 msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
@@ -900,6 +897,10 @@ msgstr "Expected amount to repay"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expires"
+
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Export data to"
+msgstr "Export data to"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -1157,10 +1158,12 @@ msgstr "Links"
 msgid "Liqudation"
 msgstr "Liqudation"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Liquidation"
 msgstr "Liquidation"
@@ -1350,6 +1353,7 @@ msgid "No search results{0}"
 msgstr "No search results{0}"
 
 #: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "No transactions yet."
 msgstr "No transactions yet."
 
@@ -1392,6 +1396,11 @@ msgstr "Not reached"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Nothing found"
+msgstr "Nothing found"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -1494,6 +1503,7 @@ msgstr "Powered by"
 msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Price data is not currently available for this reserve on the protocol subgraph"
@@ -1615,6 +1625,7 @@ msgstr "Repaid"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Repay"
 msgstr "Repay"
@@ -1649,6 +1660,10 @@ msgstr "Reserve factor is a percentage of interest which goes to a {0} that is c
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Reset"
+msgstr "Reset"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -1705,10 +1720,6 @@ msgstr "Select"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Select file format"
-msgstr "Select file format"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
@@ -1904,6 +1915,7 @@ msgstr "Supplied asset amount"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
@@ -2291,9 +2303,11 @@ msgid "Transaction overview"
 msgstr "Transaction overview"
 
 #: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
 msgstr "Transactions"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Tx hash"
 msgstr "Tx hash"
@@ -2431,6 +2445,7 @@ msgstr "View details"
 msgid "View on Explorer"
 msgstr "View on Explorer"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View on block explorer"
 msgstr "View on block explorer"
@@ -2492,6 +2507,11 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2516,6 +2536,7 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
@@ -2696,6 +2717,7 @@ msgstr "blocked activities"
 msgid "copy the error"
 msgstr "copy the error"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "disabled"
 msgstr "disabled"
@@ -2704,6 +2726,7 @@ msgstr "disabled"
 msgid "documentation"
 msgstr "documentation"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "enabled"
 msgstr "enabled"
@@ -2712,6 +2735,8 @@ msgstr "enabled"
 msgid "ends"
 msgstr "ends"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "for"
@@ -2794,10 +2819,6 @@ msgstr "{0} Balance"
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
-
-#: src/modules/history/HistoryTopPanel.tsx
-msgid "{0} History"
-msgstr "{0} History"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
