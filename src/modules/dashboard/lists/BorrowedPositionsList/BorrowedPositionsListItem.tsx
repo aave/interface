@@ -35,7 +35,7 @@ export const BorrowedPositionsListItem = ({
     variableBorrowAPY,
   } = reserve;
 
-  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT'];
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
   const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
   const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
 

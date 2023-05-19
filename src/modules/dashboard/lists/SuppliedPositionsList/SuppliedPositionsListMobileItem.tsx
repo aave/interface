@@ -36,7 +36,7 @@ export const SuppliedPositionsListMobileItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT'];
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
   const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
 
   const disableSwap =
