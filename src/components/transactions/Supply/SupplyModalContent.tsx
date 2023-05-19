@@ -7,6 +7,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
+import { latest } from 'immer/dist/internal';
 import React, { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
@@ -40,15 +41,25 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
+export interface SupplyModalWrapperProps {
+  modalWrapperProps: ModalWrapperProps;
+  latestPriceRaw: string;
+  latestPriceExpo: number;
+}
+
 export const SupplyModalContent = ({
-  underlyingAsset,
-  poolReserve,
-  userReserve,
-  isWrongNetwork,
-  nativeBalance,
-  tokenBalance,
-  symbol,
-}: ModalWrapperProps) => {
+  modalWrapperProps,
+  latestPriceRaw,
+  latestPriceExpo,
+}: SupplyModalWrapperProps) => {
+  const underlyingAsset = modalWrapperProps.underlyingAsset;
+  const poolReserve = modalWrapperProps.poolReserve;
+  const userReserve = modalWrapperProps.userReserve;
+  const symbol = modalWrapperProps.symbol;
+  const tokenBalance = modalWrapperProps.tokenBalance;
+  const nativeBalance = modalWrapperProps.nativeBalance;
+  const isWrongNetwork = modalWrapperProps.isWrongNetwork;
+
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -83,7 +94,7 @@ export const SupplyModalContent = ({
     poolReserve.formattedPriceInMarketReferenceCurrency
   );
   // TODO: is it correct to ut to -1 if user doesnt exist?
-  const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
+  const amountInUsd = new BigNumber(amount).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
   const totalCollateralMarketReferenceCurrencyAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(amountIntEth)
     : '-1';
