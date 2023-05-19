@@ -1849,8 +1849,8 @@ msgid "Supply balance"
 msgstr "Supply balance"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
-msgstr "Supply balance after swap"
+msgid "Supply balance after switch"
+msgstr "Supply balance after switch"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
