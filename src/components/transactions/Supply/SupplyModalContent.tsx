@@ -1,13 +1,8 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import {
-  calculateHealthFactorFromBalancesBigUnits,
-  USD_DECIMALS,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { latest } from 'immer/dist/internal';
 import React, { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
@@ -60,7 +55,7 @@ export const SupplyModalContent = ({
   const nativeBalance = modalWrapperProps.nativeBalance;
   const isWrongNetwork = modalWrapperProps.isWrongNetwork;
 
-  const { marketReferencePriceInUsd, user } = useAppDataContext();
+  const { user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { supplyCap, debtCeiling } = useAssetCaps();
