@@ -1,4 +1,5 @@
 import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -15,21 +16,24 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   return (
-    <Box
-      sx={{
-        display: isDesktop ? 'flex' : 'block',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-      }}
-    >
-      <Box sx={{ display: { xs: isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
-        <SuppliedPositionsList />
-        <SupplyAssetsList />
-      </Box>
+    <Box>
+      <MarketWarning marketName="proto_polygon" />
+      <Box
+        sx={{
+          display: isDesktop ? 'flex' : 'block',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}
+      >
+        <Box sx={{ display: { xs: isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
+          <SuppliedPositionsList />
+          <SupplyAssetsList />
+        </Box>
 
-      <Box sx={{ display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
-        <BorrowedPositionsList />
-        <BorrowAssetsList />
+        <Box sx={{ display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
+          <BorrowedPositionsList />
+          <BorrowAssetsList />
+        </Box>
       </Box>
     </Box>
   );
