@@ -13,6 +13,17 @@ import { formatProposal } from './utils/formatProposal';
 import { isProposalStateImmutable } from './utils/immutableStates';
 import { VoteBar } from './VoteBar';
 
+export const stateBadgeMap = {
+  Pending: 'New',
+  Canceled: 'Canceled',
+  Active: 'Voting Active',
+  Failed: 'Failed',
+  Succeeded: 'Passed',
+  Queued: 'Queued',
+  Expired: 'Expired',
+  Executed: 'Executed',
+};
+
 export function ProposalListItem({
   proposal,
   prerendered,
@@ -43,7 +54,9 @@ export function ProposalListItem({
 
   // Currently all cross-executors share this delay
   // TO-DO: invetigate if this can be changed, if so, query on-chain
-  const twoDayDelay = 172800;
+  // const twoDayDelay = 172800 + 14400;
+  const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
+  // const twoDaysAndFourHours = 172800 + 14400;
 
   const executedL2 =
     proposal.executionTime === 0
@@ -60,6 +73,7 @@ export function ProposalListItem({
     executorChain === 'L2' &&
     proposal.state !== 'Failed' &&
     proposal.state !== 'Canceled' &&
+    proposal.state === 'Executed' &&
     (executedL2 || pendingL2);
 
   return (
@@ -93,31 +107,54 @@ export function ProposalListItem({
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {ipfs.title}
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 3 }}>
-          <StateBadge state={proposal.state} crossChainBridge={'L1'} loading={mightBeStale} />
-
-          {displayL2StateBadge && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            // alignItems: 'center',
+            gap: 3,
+          }}
+        >
+          <Box>
             <StateBadge
-              crossChainBridge={executorChain}
-              state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
+              sx={{ marginRight: 2 }}
+              state={stateBadgeMap[proposal.state]}
+              // crossChainBridge={'L1'}
               loading={mightBeStale}
             />
-          )}
 
-          <FormattedProposalTime
-            state={proposal.state}
-            startTimestamp={proposal.startTimestamp}
-            executionTime={proposal.executionTime}
-            expirationTimestamp={proposal.expirationTimestamp}
-            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-            l2Execution={displayL2StateBadge}
-          />
-          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
-          <CheckBadge
-            text={<Trans>Differential</Trans>}
-            checked={diffReached}
-            loading={mightBeStale}
-          />
+            <FormattedProposalTime
+              state={proposal.state}
+              startTimestamp={proposal.startTimestamp}
+              executionTime={proposal.executionTime}
+              expirationTimestamp={proposal.expirationTimestamp}
+              executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+              l2Execution={displayL2StateBadge}
+            />
+          </Box>
+          <Box>
+            {displayL2StateBadge && pendingL2 && (
+              <>
+                <StateBadge
+                  sx={{ marginRight: 2 }}
+                  // crossChainBridge={executorChain}
+                  state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
+                  loading={mightBeStale}
+                />
+
+                <FormattedProposalTime
+                  state={proposal.state}
+                  startTimestamp={proposal.startTimestamp}
+                  executionTime={proposal.executionTime + twoDayDelay}
+                  expirationTimestamp={proposal.expirationTimestamp}
+                  executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                  l2Execution={displayL2StateBadge}
+                />
+              </>
+            )}
+          </Box>
+
           {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
@@ -131,6 +168,7 @@ export function ProposalListItem({
           ) : null}
         </Box>
       </Box>
+      <Box></Box>
       <Box
         sx={{
           flexGrow: 1,
@@ -140,6 +178,19 @@ export function ProposalListItem({
       >
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} loading={mightBeStale} />
         <VoteBar percent={nayPercent} votes={nayVotes} loading={mightBeStale} />
+        <Box
+          display="flex"
+          sx={{
+            mt: 3,
+          }}
+        >
+          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
+          <CheckBadge
+            text={<Trans>Differential</Trans>}
+            checked={diffReached}
+            loading={mightBeStale}
+          />
+        </Box>
       </Box>
     </Box>
   );

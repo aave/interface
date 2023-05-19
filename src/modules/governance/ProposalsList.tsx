@@ -148,14 +148,18 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           loadMore={handleLoadMore}
           hasMore={loadedProposals.length < filteredByQuery.length}
         >
-          {loadedProposals.map(({ proposal, prerendered, ipfs }) => (
-            <ProposalListItem
-              key={proposal.id}
-              proposal={proposal}
-              ipfs={ipfs}
-              prerendered={prerendered}
-            />
-          ))}
+          {loadedProposals
+            // .filter(({ proposal }) => {
+            //   return proposal.id === 229;
+            // })
+            .map(({ proposal, prerendered, ipfs }) => (
+              <ProposalListItem
+                key={proposal.id}
+                proposal={proposal}
+                ipfs={ipfs}
+                prerendered={prerendered}
+              />
+            ))}
         </InfiniteScroll>
       ) : (
         <NoSearchResults searchTerm={searchQuery} />

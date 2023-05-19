@@ -1,6 +1,9 @@
 import { normalize } from '@aave/math-utils';
 import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
+import { ProposalState } from '@aave/contract-helpers';
+
 import { Twitter } from '@mui/icons-material';
 import {
   Box,
@@ -114,6 +117,42 @@ export default function ProposalPage({
   const lgUp = useMediaQuery(breakpoints.up('lg'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
+  const delayedBridgeExecutors = [
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
+  ];
+  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
+  let proposalCrosschainBridge = false;
+  let executedL2;
+
+  if (proposal && proposal.targets && proposal.targets.length > 0) {
+    const hasDelayedExecutor = proposal.targets.filter((address) =>
+      lowercaseExecutors.includes(address.toLowerCase())
+    );
+    if (hasDelayedExecutor.length > 0) {
+      proposalCrosschainBridge = true;
+    }
+  }
+
+  // Currently all cross-executors share this delay
+  // TO-DO: invetigate if this can be changed, if so, query on-chain
+  // const twoDayDelay = 172800 + 14400;
+  const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
+  // const twoDaysAndFourHours = 172800 + 14400;
+
+  const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
+
+  const pendingL2 = proposalCrosschainBridge && !executedL2;
+
+  const displayL2StateBadge =
+    executorChain === 'L2' &&
+    proposal.state !== 'Failed' &&
+    proposal.state !== 'Canceled' &&
+    proposal.state === 'Executed' &&
+    (executedL2 || pendingL2);
+
   async function updateProposal() {
     if (!proposal) return;
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: proposal.id });
@@ -211,6 +250,26 @@ export default function ProposalPage({
                             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                             expirationTimestamp={proposal.expirationTimestamp}
                           />
+                        )}
+
+                        {displayL2StateBadge && pendingL2 && (
+                          <>
+                            <StateBadge
+                              sx={{ marginRight: 2 }}
+                              // crossChainBridge={executorChain}
+                              state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
+                              loading={mightBeStale}
+                            />
+
+                            <FormattedProposalTime
+                              state={proposal.state}
+                              startTimestamp={proposal.startTimestamp}
+                              executionTime={proposal.executionTime + twoDayDelay}
+                              expirationTimestamp={proposal.expirationTimestamp}
+                              executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                              l2Execution={displayL2StateBadge}
+                            />
+                          </>
                         )}
                       </Box>
                       <Box sx={{ flexGrow: 1 }} />

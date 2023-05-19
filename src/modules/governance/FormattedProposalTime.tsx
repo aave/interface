@@ -102,6 +102,8 @@ export function FormattedProposalTime({
           ) : (
             <Trans>Expires</Trans>
           )
+        ) : l2Execution ? (
+          <Trans>Can be executed on L2 </Trans>
         ) : (
           <Trans>Can be executed</Trans>
         )}

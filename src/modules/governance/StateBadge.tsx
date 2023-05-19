@@ -7,7 +7,7 @@ interface StateBadgeProps {
   crossChainBridge?: string;
 }
 
-const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
+const Badge = styled('span')<StateBadgeProps>(({ theme, state, ...rest }) => {
   const COLOR_MAP = {
     [ProposalState.Active]: theme.palette.secondary.main,
     [ProposalState.Queued]: theme.palette.warning.main,
@@ -20,6 +20,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
+    ...rest,
     ...theme.typography.subheader2,
     color,
     border: '1px solid',
@@ -41,10 +42,10 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   });
 });
 
-export function StateBadge({ state, loading, crossChainBridge }: StateBadgeProps) {
+export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
   return (
-    <Badge state={state}>
+    <Badge state={state} {...rest}>
       {state} {crossChainBridge}
     </Badge>
   );
