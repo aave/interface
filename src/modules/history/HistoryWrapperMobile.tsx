@@ -211,7 +211,6 @@ export const HistoryWrapperMobile = () => {
                 }}
                 placeholder="Search assets..."
                 onSearchTermChange={setSearchQuery}
-                searchTerm={searchQuery}
               />
               <Button onClick={() => handleCancelClick()}>
                 <Typography variant="buttonM">

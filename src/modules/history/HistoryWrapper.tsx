@@ -156,7 +156,6 @@ export const HistoryWrapper = () => {
             onSearchTermChange={setSearchQuery}
             placeholder="Search assets..."
             wrapperSx={{ width: '280px' }}
-            searchTerm={searchQuery}
           />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>

@@ -2,27 +2,23 @@ import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
   wrapperSx?: BoxProps;
   placeholder: string;
-  searchTerm: string;
 }
 
-export const SearchInput = ({
-  onSearchTermChange,
-  wrapperSx,
-  placeholder,
-  searchTerm,
-}: SearchInputProps) => {
+export const SearchInput = ({ onSearchTermChange, wrapperSx, placeholder }: SearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const handleClear = () => {
+    setSearchTerm('');
     onSearchTermChange('');
     inputEl.current?.focus();
   };
@@ -54,7 +50,7 @@ export const SearchInput = ({
         placeholder={placeholder}
         value={searchTerm}
         onChange={(e) => {
-          onSearchTermChange(e.target.value);
+          setSearchTerm(e.target.value);
           debounchedChangeHandler(e.target.value);
         }}
       />
