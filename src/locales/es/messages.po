@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-17 18:04\n"
+"PO-Revision-Date: 2023-05-18 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -143,7 +143,7 @@ msgstr "La dirección no es un contrato"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Addresses"
-msgstr ""
+msgstr "Direcciones"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
