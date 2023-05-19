@@ -50,6 +50,23 @@ interface MarketWarningProps {
   forum?: boolean;
 }
 
+export const PolygonWarning = () => {
+  return (
+    <Warning severity="error">
+      <Typography variant="caption">
+        <Trans>
+          A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the
+          interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it
+          is not possible to deposit, withdraw or transfer from the impacted reserves.
+        </Trans>
+        <Link href={getLink('proto_polygon', true)} target="_blank">
+          <Trans>Join the community discussion</Trans>
+        </Link>
+      </Typography>
+    </Warning>
+  );
+};
+
 export const MarketWarning = ({ marketName, forum }: MarketWarningProps) => {
   return (
     <Warning severity="error">

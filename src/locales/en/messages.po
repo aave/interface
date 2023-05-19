@@ -30,6 +30,7 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
+#: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is not possible to deposit, withdraw or transfer from the impacted reserves."
 msgstr "A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is not possible to deposit, withdraw or transfer from the impacted reserves."
 
@@ -1067,6 +1068,7 @@ msgstr "Isolated Debt Ceiling"
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
 msgstr "Join the community discussion"

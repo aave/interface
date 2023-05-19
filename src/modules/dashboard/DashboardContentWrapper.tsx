@@ -1,5 +1,6 @@
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { PolygonWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { useRootStore } from 'src/store/root';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -12,12 +13,13 @@ interface DashboardContentWrapperProps {
 
 export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperProps) => {
   const { breakpoints } = useTheme();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   return (
     <Box>
-      <MarketWarning marketName="proto_polygon" />
+      {currentMarketData.marketTitle === 'proto_polygon' && <PolygonWarning />}
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',
