@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -35,7 +36,13 @@ export const SuppliedPositionsListItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const disableSwap = !isActive || reserve.symbol == 'stETH';
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT'];
+  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
+  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
+
+  const disableSwap = !isActive || reserve.symbol == 'stETH' || isAffectedReserve;
+  const disableWithdraw = !isActive || isPolygonV2 || isAffectedReserve;
+  const disableSupply = !isActive || isFrozen || isPolygonV2 || isAffectedReserve;
 
   return (
     <ListItemWrapper
@@ -76,7 +83,7 @@ export const SuppliedPositionsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={!isActive}
+          disabled={disableWithdraw}
           variant="contained"
           onClick={() => openWithdraw(underlyingAsset)}
         >
@@ -94,7 +101,7 @@ export const SuppliedPositionsListItem = ({
           </Button>
         ) : (
           <Button
-            disabled={!isActive || isFrozen}
+            disabled={disableSupply}
             variant="outlined"
             onClick={() => openSupply(underlyingAsset)}
           >

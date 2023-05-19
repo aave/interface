@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -22,7 +22,7 @@ export const BorrowedPositionsListMobileItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: DashboardReserve) => {
-  const { currentMarket } = useProtocolDataContext();
+  const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { borrowCap } = useAssetCaps();
   const {
@@ -52,6 +52,14 @@ export const BorrowedPositionsListMobileItem = ({
   );
 
   const incentives = borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData;
+
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT'];
+  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
+  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
+
+  const disableRepay = !isActive || isAffectedReserve;
+  const disableBorrow =
+    !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed || isPolygonV2;
 
   return (
     <ListMobileItemWrapper
@@ -96,7 +104,7 @@ export const BorrowedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive}
+          disabled={disableRepay}
           variant="contained"
           onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
           sx={{ mr: 1.5 }}
@@ -105,7 +113,7 @@ export const BorrowedPositionsListMobileItem = ({
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
+          disabled={disableBorrow}
           variant="outlined"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth
