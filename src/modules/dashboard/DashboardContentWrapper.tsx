@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { PolygonWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useRootStore } from 'src/store/root';
@@ -16,10 +17,9 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
-
   return (
     <Box>
-      {currentMarketData.marketTitle === 'proto_polygon' && <PolygonWarning />}
+      {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3 && <PolygonWarning />}
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',
