@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { SearchInput } from 'src/components/SearchInput';
 import {
   ActionFields,
   applyTxHistoryFilters,
@@ -49,7 +50,7 @@ export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
-
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -58,6 +59,11 @@ export const HistoryWrapperMobile = () => {
 
   const handleDownloadMenuClose = () => {
     setMenuAnchorEl(null);
+  };
+
+  const handleCancelClick = () => {
+    setShowSearchBar(false);
+    setSearchQuery('');
   };
 
   const {
@@ -128,6 +134,7 @@ export const HistoryWrapperMobile = () => {
 
   return (
     <ListWrapper
+      wrapperSx={showSearchBar ? { px: 4 } : undefined}
       titleComponent={
         <Box
           sx={{
@@ -137,59 +144,82 @@ export const HistoryWrapperMobile = () => {
             alignItems: 'center',
           }}
         >
-          <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-            <Trans>Transactions</Trans>
-          </Typography>
-          <Box sx={{ display: 'flex', gap: '22px' }}>
-            {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
-            <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
-              <SvgIcon>
-                <DocumentDownloadIcon width={20} height={20} />
-              </SvgIcon>
+          {!showSearchBar && (
+            <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
+              <Trans>Transactions</Trans>
+            </Typography>
+          )}
+          {!showSearchBar && (
+            <Box sx={{ display: 'flex', gap: '22px' }}>
+              {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
+              <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
+                <SvgIcon>
+                  <DocumentDownloadIcon width={20} height={20} />
+                </SvgIcon>
+              </Box>
+              <Menu
+                anchorEl={menuAnchorEl}
+                open={Boolean(menuAnchorEl)}
+                onClose={handleDownloadMenuClose}
+              >
+                <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
+                  <Trans>Export data to</Trans>
+                </Typography>
+                <MenuItem
+                  onClick={() => {
+                    handleJsonDownload();
+                    handleDownloadMenuClose();
+                  }}
+                >
+                  <ListItemIcon>
+                    <SvgIcon>
+                      <DocumentDownloadIcon width={22} height={22} />
+                    </SvgIcon>
+                  </ListItemIcon>
+                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                    <Trans>.JSON</Trans>
+                  </ListItemText>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCsvDownload();
+                    handleDownloadMenuClose();
+                  }}
+                >
+                  <ListItemIcon>
+                    <SvgIcon>
+                      <DocumentDownloadIcon width={22} height={22} />
+                    </SvgIcon>
+                  </ListItemIcon>
+                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                    <Trans>.CSV</Trans>
+                  </ListItemText>
+                </MenuItem>
+              </Menu>
+              <Box onClick={() => setShowSearchBar(true)}>
+                <SvgIcon sx={{ cursor: 'pointer' }}>
+                  <SearchIcon width={20} height={20} />
+                </SvgIcon>
+              </Box>
             </Box>
-            <Menu
-              anchorEl={menuAnchorEl}
-              open={Boolean(menuAnchorEl)}
-              onClose={handleDownloadMenuClose}
-            >
-              <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
-                <Trans>Export data to</Trans>
-              </Typography>
-              <MenuItem
-                onClick={() => {
-                  handleJsonDownload();
-                  handleDownloadMenuClose();
+          )}
+          {showSearchBar && (
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', px: 0 }}>
+              <SearchInput
+                wrapperSx={{
+                  width: '320px',
                 }}
-              >
-                <ListItemIcon>
-                  <SvgIcon>
-                    <DocumentDownloadIcon width={22} height={22} />
-                  </SvgIcon>
-                </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-                  <Trans>.JSON</Trans>
-                </ListItemText>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCsvDownload();
-                  handleDownloadMenuClose();
-                }}
-              >
-                <ListItemIcon>
-                  <SvgIcon>
-                    <DocumentDownloadIcon width={22} height={22} />
-                  </SvgIcon>
-                </ListItemIcon>
-                <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-                  <Trans>.CSV</Trans>
-                </ListItemText>
-              </MenuItem>
-            </Menu>
-            <SvgIcon sx={{ cursor: 'pointer' }}>
-              <SearchIcon width={20} height={20} />
-            </SvgIcon>
-          </Box>
+                placeholder="Search assets..."
+                onSearchTermChange={setSearchQuery}
+                searchTerm={searchQuery}
+              />
+              <Button onClick={() => handleCancelClick()}>
+                <Typography variant="buttonM">
+                  <Trans>Cancel</Trans>
+                </Typography>
+              </Button>
+            </Box>
+          )}
         </Box>
       }
     >
