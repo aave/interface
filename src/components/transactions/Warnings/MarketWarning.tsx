@@ -14,7 +14,14 @@ const WarningMessage = ({ market }: { market: string }) => {
   } else if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else {
-    return <></>;
+    // TODO REMOVE AFTER AIP
+    return (
+      <Trans>
+        A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the
+        interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is
+        not possible to deposit, withdraw or transfer from the impacted reserves.
+      </Trans>
+    );
   }
 };
 
@@ -32,7 +39,9 @@ const getLink = (market: string, forum: boolean | undefined): string => {
       return 'https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647';
     }
   } else {
-    return '';
+    // TODO REMOVE AFTER AIP
+
+    return 'https://governance.aave.com/t/arfc-aave-v2-interest-rate-curve-recommendations-from-gauntlet-2023-04-21/12846/11';
   }
 };
 
