@@ -1,6 +1,6 @@
 import { Box, Tooltip, TooltipProps } from '@mui/material';
 
-export const DarkTooltip = ({ title, children }: TooltipProps) => {
+export const DarkTooltip = ({ title, children, wrap }: TooltipProps & { wrap?: boolean }) => {
   return (
     <div>
       <Tooltip
@@ -32,7 +32,7 @@ export const DarkTooltip = ({ title, children }: TooltipProps) => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              whiteSpace: 'nowrap',
+              whiteSpace: wrap ? 'normal' : 'nowrap',
             }}
           >
             {title}

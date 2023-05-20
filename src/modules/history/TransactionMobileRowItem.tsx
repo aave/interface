@@ -12,26 +12,12 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHistory';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { BorrowRateModeBlock } from './BorrowRateModeBlock';
-
-const PriceUnavailableTooltip = ({ price }: { price: string }) => {
-  if (Number(price) > 0) {
-    return <></>;
-  } else {
-    return (
-      <TextWithTooltip>
-        <Trans>
-          Price data is not currently available for this reserve on the protocol subgraph
-        </Trans>
-      </TextWithTooltip>
-    );
-  }
-};
+import { PriceUnavailable } from './PriceUnavailable';
 
 const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {
@@ -78,18 +64,12 @@ const ActionDetails = <K extends keyof ActionFields>({
             +
           </Typography>
           <DarkTooltip
+            wrap
             title={
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex' }}>
-                  <FormattedNumber
-                    compact
-                    compactThreshold={100000}
-                    symbol="USD"
-                    symbolsColor="common.white"
-                    value={Number(supplyTx.assetPriceUSD) * Number(formattedSupplyAmount)}
-                  />
-                  <PriceUnavailableTooltip price={supplyTx.assetPriceUSD} />
-                </Box>
+                <PriceUnavailable
+                  value={Number(supplyTx.assetPriceUSD) * Number(formattedSupplyAmount)}
+                />
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedSupplyAmount}
@@ -147,18 +127,12 @@ const ActionDetails = <K extends keyof ActionFields>({
             &minus;
           </Typography>
           <DarkTooltip
+            wrap
             title={
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex' }}>
-                  <FormattedNumber
-                    compact
-                    compactThreshold={100000}
-                    symbol="USD"
-                    symbolsColor="common.white"
-                    value={Number(borrowTx.assetPriceUSD) * Number(formattedBorrowAmount)}
-                  />
-                  <PriceUnavailableTooltip price={borrowTx.assetPriceUSD} />
-                </Box>
+                <PriceUnavailable
+                  value={Number(borrowTx.assetPriceUSD) * Number(formattedBorrowAmount)}
+                />
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedBorrowAmount}
@@ -216,18 +190,12 @@ const ActionDetails = <K extends keyof ActionFields>({
             &minus;
           </Typography>
           <DarkTooltip
+            wrap
             title={
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex' }}>
-                  <FormattedNumber
-                    compact
-                    compactThreshold={100000}
-                    symbol="USD"
-                    symbolsColor="common.white"
-                    value={Number(withdrawTx.assetPriceUSD) * Number(formattedWithdrawAmount)}
-                  />
-                  <PriceUnavailableTooltip price={withdrawTx.assetPriceUSD} />
-                </Box>
+                <PriceUnavailable
+                  value={Number(withdrawTx.assetPriceUSD) * Number(formattedWithdrawAmount)}
+                />
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedWithdrawAmount}
@@ -285,18 +253,12 @@ const ActionDetails = <K extends keyof ActionFields>({
             +
           </Typography>
           <DarkTooltip
+            wrap
             title={
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex' }}>
-                  <FormattedNumber
-                    compact
-                    compactThreshold={100000}
-                    symbol="USD"
-                    symbolsColor="common.white"
-                    value={Number(repayTx.assetPriceUSD) * Number(formattedRepayAmount)}
-                  />
-                  <PriceUnavailableTooltip price={repayTx.assetPriceUSD} />
-                </Box>
+                <PriceUnavailable
+                  value={Number(repayTx.assetPriceUSD) * Number(formattedRepayAmount)}
+                />
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedRepayAmount}
@@ -463,21 +425,15 @@ const ActionDetails = <K extends keyof ActionFields>({
                   &minus;
                 </Typography>
                 <DarkTooltip
+                  wrap
                   title={
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Box sx={{ display: 'flex' }}>
-                        <FormattedNumber
-                          compact
-                          compactThreshold={100000}
-                          symbol="USD"
-                          symbolsColor="common.white"
-                          value={
-                            Number(liquidationTx.collateralAssetPriceUSD) *
-                            Number(formattedCollateralAmount)
-                          }
-                        />
-                        <PriceUnavailableTooltip price={liquidationTx.collateralAssetPriceUSD} />
-                      </Box>
+                      <PriceUnavailable
+                        value={
+                          Number(liquidationTx.collateralAssetPriceUSD) *
+                          Number(formattedCollateralAmount)
+                        }
+                      />
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           value={formattedCollateralAmount}
@@ -552,21 +508,15 @@ const ActionDetails = <K extends keyof ActionFields>({
                   +
                 </Typography>
                 <DarkTooltip
+                  wrap
                   title={
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <Box sx={{ display: 'flex' }}>
-                        <FormattedNumber
-                          compact
-                          compactThreshold={100000}
-                          symbol="USD"
-                          symbolsColor="common.white"
-                          value={
-                            Number(liquidationTx.borrowAssetPriceUSD) *
-                            Number(formattedLiquidationBorrowAmount)
-                          }
-                        />
-                        <PriceUnavailableTooltip price={liquidationTx.borrowAssetPriceUSD} />
-                      </Box>
+                      <PriceUnavailable
+                        value={
+                          Number(liquidationTx.borrowAssetPriceUSD) *
+                          Number(formattedLiquidationBorrowAmount)
+                        }
+                      />
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           value={formattedLiquidationBorrowAmount}

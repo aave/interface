@@ -1503,8 +1503,7 @@ msgstr "Powered by"
 msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Price data is not currently available for this reserve on the protocol subgraph"
 
