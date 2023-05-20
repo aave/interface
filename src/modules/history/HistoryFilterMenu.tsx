@@ -185,6 +185,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             width: 280,
             maxHeight: 300,
             mt: 1,
+            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+            borderRadius: '4px',
           },
         }}
       >
