@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import {
@@ -65,6 +65,27 @@ export const HistoryWrapperMobile = () => {
     setShowSearchBar(false);
     setSearchQuery('');
   };
+
+  // Create ref to exclude search box from click handler below
+  const searchBarRef = useRef<HTMLElement | null>(null);
+
+  // Close search bar if it's open, has a blank query, and the clicked item is not the search box
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+      if (searchQuery === '' && showSearchBar) {
+        handleCancelClick();
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, showSearchBar]);
 
   const {
     data: transactions,
@@ -137,6 +158,7 @@ export const HistoryWrapperMobile = () => {
       wrapperSx={showSearchBar ? { px: 4 } : undefined}
       titleComponent={
         <Box
+          ref={searchBarRef}
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
