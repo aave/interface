@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { NoData } from 'src/components/primitives/NoData';
@@ -33,12 +34,19 @@ export const SupplyAssetsListItem = ({
   usageAsCollateralEnabledOnUser,
   detailsAddress,
 }: DashboardReserve) => {
-  const { currentMarket } = useProtocolDataContext();
+  const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
+
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
+  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
+  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(symbol);
+
+  const disableSupply =
+    !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached || isAffectedReserve;
 
   return (
     <ListItemWrapper
@@ -81,7 +89,7 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached}
+          disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset)}
         >
