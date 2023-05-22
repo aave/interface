@@ -1,9 +1,8 @@
+import { ProposalState } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
-import { ProposalState } from '@aave/contract-helpers';
-
 import { Twitter } from '@mui/icons-material';
 import {
   Box,
@@ -148,6 +147,7 @@ export default function ProposalPage({
 
   const displayL2StateBadge =
     executorChain === 'L2' &&
+    proposal &&
     proposal.state !== 'Failed' &&
     proposal.state !== 'Canceled' &&
     proposal.state === 'Executed' &&
@@ -215,9 +215,61 @@ export default function ProposalPage({
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
-              <Typography variant="h3">
-                <Trans>Proposal overview</Trans>
-              </Typography>
+              <Box display={'flex'} justifyContent="space-between">
+                <Box>
+                  <Typography variant="h3">
+                    <Trans>Proposal overview</Trans>
+                  </Typography>
+                </Box>
+
+                {ipfs && (
+                  <Box>
+                    <Button
+                      component="a"
+                      sx={{ minWidth: lgUp ? '160px' : '' }}
+                      target="_blank"
+                      rel="noopener"
+                      href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
+                      startIcon={
+                        <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
+                          <DownloadIcon />
+                        </SvgIcon>
+                      }
+                    >
+                      {lgUp && <Trans>Raw-Ipfs</Trans>}
+                    </Button>
+                    <Button
+                      component="a"
+                      sx={{ minWidth: lgUp ? '160px' : '' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        ipfs.title
+                      )}&url=${url}`}
+                      startIcon={<Twitter />}
+                    >
+                      {lgUp && <Trans>Share on twitter</Trans>}
+                    </Button>
+                    <Button
+                      sx={{ minWidth: lgUp ? '160px' : '' }}
+                      component="a"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
+                      startIcon={
+                        <LensIcon
+                          color={
+                            palette.mode === 'dark' ? palette.primary.light : palette.text.primary
+                          }
+                        />
+                      }
+                    >
+                      {lgUp && <Trans>Share on Lens</Trans>}
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+
               {metadataError ? (
                 <Box sx={{ px: { md: 18 }, pt: 8 }}>
                   <Warning severity="error">
@@ -239,21 +291,24 @@ export default function ProposalPage({
                           alignItems: 'center',
                         }}
                       >
-                        <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                          <StateBadge state={proposal.state} loading={loading} />
+                        <Box display="flex" sx={{ mr: '24px', mb: { md: 2, lg: 0 } }}>
+                          <Box display="flex" alignItems={'center'}>
+                            <StateBadge sx={{ mr: 2 }} state={proposal.state} loading={loading} />
+                            {!loading && (
+                              <FormattedProposalTime
+                                state={proposal.state}
+                                executionTime={proposal.executionTime}
+                                startTimestamp={proposal.startTimestamp}
+                                executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                                expirationTimestamp={proposal.expirationTimestamp}
+                                l2Execution={false}
+                              />
+                            )}
+                          </Box>
                         </Box>
-                        {!loading && (
-                          <FormattedProposalTime
-                            state={proposal.state}
-                            executionTime={proposal.executionTime}
-                            startTimestamp={proposal.startTimestamp}
-                            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                            expirationTimestamp={proposal.expirationTimestamp}
-                          />
-                        )}
 
                         {displayL2StateBadge && pendingL2 && (
-                          <>
+                          <Box display={'flex'} alignItems={'center'}>
                             <StateBadge
                               sx={{ marginRight: 2 }}
                               // crossChainBridge={executorChain}
@@ -269,52 +324,10 @@ export default function ProposalPage({
                               executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                               l2Execution={displayL2StateBadge}
                             />
-                          </>
+                          </Box>
                         )}
                       </Box>
                       <Box sx={{ flexGrow: 1 }} />
-                      <Button
-                        component="a"
-                        sx={{ minWidth: lgUp ? '160px' : '' }}
-                        target="_blank"
-                        rel="noopener"
-                        href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
-                        startIcon={
-                          <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
-                            <DownloadIcon />
-                          </SvgIcon>
-                        }
-                      >
-                        {lgUp && <Trans>Raw-Ipfs</Trans>}
-                      </Button>
-                      <Button
-                        component="a"
-                        sx={{ minWidth: lgUp ? '160px' : '' }}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                          ipfs.title
-                        )}&url=${url}`}
-                        startIcon={<Twitter />}
-                      >
-                        {lgUp && <Trans>Share on twitter</Trans>}
-                      </Button>
-                      <Button
-                        sx={{ minWidth: lgUp ? '160px' : '' }}
-                        component="a"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
-                        startIcon={
-                          <LensIcon
-                            color={
-                              palette.mode === 'dark' ? palette.primary.light : palette.text.primary
-                            }
-                          />
-                        }
-                      >
-                        {lgUp && <Trans>Share on Lens</Trans>}
-                      </Button>
                     </Box>
                   ) : (
                     <Typography variant="buttonL">
@@ -413,7 +426,10 @@ export default function ProposalPage({
                   <VotersListContainer proposal={proposal} />
                   <Row
                     caption={<Trans>State</Trans>}
-                    sx={{ height: 48 }}
+                    sx={{
+                      height: displayL2StateBadge && pendingL2 ? 96 : 48,
+                      alignItems: displayL2StateBadge && pendingL2 ? 'start' : 'center',
+                    }}
                     captionVariant="description"
                   >
                     <Box
@@ -424,7 +440,7 @@ export default function ProposalPage({
                       }}
                     >
                       <StateBadge state={proposal.state} loading={loading} />
-                      <Box sx={{ mt: 0.5 }}>
+                      <Box sx={{ mt: 0.5, mb: 2 }}>
                         <FormattedProposalTime
                           state={proposal.state}
                           startTimestamp={proposal.startTimestamp}
@@ -433,6 +449,33 @@ export default function ProposalPage({
                           executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                         />
                       </Box>
+
+                      {displayL2StateBadge && pendingL2 && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-end',
+                          }}
+                        >
+                          <StateBadge
+                            sx={{ marginRight: 2 }}
+                            // crossChainBridge={executorChain}
+                            state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
+                            loading={mightBeStale}
+                          />
+                          <Box sx={{ mt: 0.5 }}>
+                            <FormattedProposalTime
+                              state={proposal.state}
+                              startTimestamp={proposal.startTimestamp}
+                              executionTime={proposal.executionTime + twoDayDelay}
+                              expirationTimestamp={proposal.expirationTimestamp}
+                              executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                              l2Execution={displayL2StateBadge}
+                            />
+                          </Box>
+                        </Box>
+                      )}
                     </Box>
                   </Row>
                   <Row

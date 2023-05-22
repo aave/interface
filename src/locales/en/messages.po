@@ -640,6 +640,10 @@ msgstr "Copy error text"
 msgid "Created"
 msgstr "Created"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Cross-chain execution"
+msgstr "Cross-chain execution"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"

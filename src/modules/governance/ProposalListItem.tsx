@@ -13,17 +13,6 @@ import { formatProposal } from './utils/formatProposal';
 import { isProposalStateImmutable } from './utils/immutableStates';
 import { VoteBar } from './VoteBar';
 
-export const stateBadgeMap = {
-  Pending: 'New',
-  Canceled: 'Canceled',
-  Active: 'Voting Active',
-  Failed: 'Failed',
-  Succeeded: 'Passed',
-  Queued: 'Queued',
-  Expired: 'Expired',
-  Executed: 'Executed',
-};
-
 export function ProposalListItem({
   proposal,
   prerendered,
@@ -119,7 +108,7 @@ export function ProposalListItem({
           <Box>
             <StateBadge
               sx={{ marginRight: 2 }}
-              state={stateBadgeMap[proposal.state]}
+              state={proposal.state}
               // crossChainBridge={'L1'}
               loading={mightBeStale}
             />
@@ -168,7 +157,7 @@ export function ProposalListItem({
           ) : null}
         </Box>
       </Box>
-      <Box></Box>
+      <Box />
       <Box
         sx={{
           flexGrow: 1,
@@ -184,7 +173,12 @@ export function ProposalListItem({
             mt: 3,
           }}
         >
-          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
+          <CheckBadge
+            sx={{ mr: 3 }}
+            text={<Trans>Quorum</Trans>}
+            checked={quorumReached}
+            loading={mightBeStale}
+          />
           <CheckBadge
             text={<Trans>Differential</Trans>}
             checked={diffReached}
