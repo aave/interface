@@ -25,7 +25,7 @@ interface AirdropContentWrapperProps {
 export default function AirdropContentWrapper({
   title,
   mainHeader,
-  airdropStatus,
+  airdropStatus = 'Unavailable',
   description,
   entry,
   isClaimed,

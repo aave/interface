@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
-import { Contract } from 'ethers';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 
 import PieIcon from '../../../../public/icons/markets/pie-icon.svg';
@@ -12,11 +12,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
-interface NumReturn {
-  _hex: string;
-  _isBigNumber: boolean;
-}
-
 export const ManageTopPanel = () => {
   const {
     stakedPAW,
@@ -25,10 +20,12 @@ export const ManageTopPanel = () => {
     setLockedPAW,
     lockedStakedValue,
     setLockedStakedValue,
+    topPanelLoading,
+    setTopPanelLoading,
   } = useManageContext();
-  const [dailyPlatformFees, setDailyPlatformFees] = React.useState<number>(-1);
-  const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<number>(-1);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [dailyPlatformFees, setDailyPlatformFees] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [dailyPenaltyFees, setDailyPenaltyFees] = React.useState<BigNumber>(BigNumber.from(-1));
+  // const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,7 +37,7 @@ export const ManageTopPanel = () => {
     .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
-    if (!provider) return;
+    if (!provider && !topPanelLoading) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
@@ -55,60 +52,79 @@ export const ManageTopPanel = () => {
 
     // call promise all and get data
     Promise.all(promises)
-      .then((data: NumReturn[]) => {
+      .then((data: BigNumber[]) => {
         // dev change data setting logic here
-        setStakedPAW(parseInt(data[0]._hex, 16));
-        setLockedPAW(parseInt(data[1]._hex, 16));
-        setLockedStakedValue(parseInt(data[2]._hex, 16));
-        setDailyPlatformFees(parseInt(data[3]._hex, 16));
-        setDailyPenaltyFees(parseInt(data[4]._hex, 16));
-        setLoading(false);
+        setStakedPAW(data[0]); // 18 Decimal Percision
+        setLockedPAW(data[1]); // 18 Decimal Percision
+        setLockedStakedValue(data[2]); // 8 Decimal Percision
+        setDailyPlatformFees(data[3]); // 8 Decimal Percision
+        setDailyPenaltyFees(data[4]); // 8 Decimal Percision
+        setTopPanelLoading(false);
       })
       .catch((e) => console.error(e));
-  }, [provider]);
+    //eslint-disable-next-line
+  }, [provider, topPanelLoading]);
+
   return (
     <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>}>
       {/* Staked paw display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Staked + Locked PAW</Trans>}
-        loading={loading}
+        loading={topPanelLoading}
       >
         <FormattedNumber
-          value={lockedStakedValue.toString()}
+          value={utils.formatUnits(lockedStakedValue, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
-        Stake {stakedPAW}
-        Lock {lockedPAW}
+        <Box>
+          <Typography>
+            <Trans>Stake</Trans> {utils.formatUnits(stakedPAW, 18)}
+          </Typography>
+          <Typography>
+            <Trans>Lock</Trans> {utils.formatUnits(lockedPAW, 18)}
+          </Typography>
+        </Box>
       </TopInfoPanelItem>
 
       {/* Daily revenue display */}
-      <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Daily revenue</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Daily revenue</Trans>}
+        loading={topPanelLoading}
+      >
         <FormattedNumber
-          value={(dailyPlatformFees + dailyPenaltyFees).toString()}
+          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees), 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
 
       {/* weekly revenue display */}
-      <TopInfoPanelItem icon={<PieIcon />} title={<Trans>Weekly revenue</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Weekly revenue</Trans>}
+        loading={topPanelLoading}
+      >
         <FormattedNumber
-          value={(7 * (dailyPlatformFees + dailyPenaltyFees)).toString()}
+          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees).mul(7), 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -116,16 +132,17 @@ export const ManageTopPanel = () => {
       {/* Platform fee display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
-        title={<Trans>Daily playform fees</Trans>}
-        loading={loading}
+        title={<Trans>Daily platform fees</Trans>}
+        loading={topPanelLoading}
       >
         <FormattedNumber
-          value={dailyPlatformFees.toString()}
+          value={utils.formatUnits(dailyPlatformFees, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -134,15 +151,16 @@ export const ManageTopPanel = () => {
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily penalty fees</Trans>}
-        loading={loading}
+        loading={topPanelLoading}
       >
         <FormattedNumber
-          value={dailyPenaltyFees.toString()}
+          value={utils.formatUnits(dailyPenaltyFees, 8)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#A5A8B6"
+          isTopPanel
+          symbolsColor={theme.palette.text.secondary}
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>

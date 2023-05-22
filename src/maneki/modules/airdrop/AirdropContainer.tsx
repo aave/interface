@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { List, ListItem, ListItemText, Paper } from '@mui/material';
+import { List, ListItem, ListItemText } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 
@@ -241,11 +241,9 @@ export const AirdropContainer = () => {
     );
   }
 
-  // TODO add ui
   if (chainId != 97) {
-    return <Paper> Please connect to bsc testnet </Paper>;
+    return <ManekiLoadingPaper description="Please connect to bsc testnet" withCircle />;
   }
-
   if (loading) {
     return <ManekiLoadingPaper description="Loading..." withCircle />;
   }
