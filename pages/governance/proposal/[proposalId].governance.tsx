@@ -146,7 +146,7 @@ export default function ProposalPage({
   const pendingL2 = proposalCrosschainBridge && !executedL2;
 
   const displayL2StateBadge =
-    proposal &&
+    !!proposal &&
     executorChain === 'L2' &&
     proposal.state !== 'Failed' &&
     proposal.state !== 'Canceled' &&
@@ -306,7 +306,7 @@ export default function ProposalPage({
                                 startTimestamp={proposal.startTimestamp}
                                 executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                                 expirationTimestamp={proposal.expirationTimestamp}
-                                l2Execution={false}
+                                l2Execution={displayL2StateBadge}
                               />
                             )}
                           </Box>

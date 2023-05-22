@@ -5,13 +5,15 @@ interface StateBadgeProps {
   state: ProposalState;
   loading?: boolean;
   crossChainBridge?: string;
-  sx: Record<string, unknown>;
+  sx?: Record<string, unknown>;
 }
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge, ...rest }) => {
   const COLOR_MAP = {
     [ProposalState.Active]:
-      crossChainBridge === 'L2' ? theme.palette.info.main : theme.palette.error.main,
+      crossChainBridge === 'L2' && state !== 'Active'
+        ? theme.palette.info.main
+        : theme.palette.error.main,
     [ProposalState.Queued]: theme.palette.success.main,
     [ProposalState.Pending]:
       crossChainBridge === 'L1' && state === 'Pending'
