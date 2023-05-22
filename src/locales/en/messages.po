@@ -136,6 +136,10 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr "Addresses"
+
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Addresses ({0})"
@@ -1497,6 +1501,10 @@ msgstr "Reached"
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr "Read more here."
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2250,6 +2258,14 @@ msgstr "Unstake window"
 msgid "Unstaked"
 msgstr "Unstaked"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
@@ -2355,6 +2371,8 @@ msgstr "Voted NAY"
 msgid "Voted YAE"
 msgstr "Voted YAE"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
