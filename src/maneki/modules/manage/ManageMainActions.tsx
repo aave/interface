@@ -253,8 +253,8 @@ export const ManageMainActions = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <Trans>Amount</Trans>
+                  <TableCell sx={{ width: '40%' }}>
+                    <Trans>Amount</Trans> (PAW)
                   </TableCell>
                   <TableCell>
                     <Trans>Expiry</Trans>
@@ -283,8 +283,8 @@ export const ManageMainActions = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <Trans>Amount</Trans>
+                  <TableCell sx={{ width: '40%' }}>
+                    <Trans>Amount</Trans> (PAW)
                   </TableCell>
                   <TableCell>
                     <Trans>Expiry</Trans>
@@ -321,7 +321,7 @@ export const ManageMainActions = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ width: '50%' }}>
+                  <TableCell sx={{ width: '40%' }}>
                     <Trans>Tokens</Trans>
                   </TableCell>
                   <TableCell>

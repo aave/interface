@@ -169,7 +169,7 @@ export const marketsData: {
     chainId: parseInt(process.env.NEXT_PUBLIC_MANEKI_CHAINID as string) || 97,
     enabledFeatures: {},
     addresses: {
-      MERKLE_DIST: process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIS || '',
+      MERKLE_DIST: process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIST || '',
       LENDING_POOL_ADDRESS_PROVIDER:
         process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL_ADDRESS_PROVIDER || '',
       LENDING_POOL: process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL || '',
