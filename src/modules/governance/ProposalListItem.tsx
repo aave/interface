@@ -109,7 +109,7 @@ export function ProposalListItem({
             <StateBadge
               sx={{ marginRight: 2 }}
               state={proposal.state}
-              // crossChainBridge={'L1'}
+              crossChainBridge={'L1'}
               loading={mightBeStale}
             />
 

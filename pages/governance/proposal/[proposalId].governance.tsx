@@ -293,7 +293,12 @@ export default function ProposalPage({
                       >
                         <Box display="flex" sx={{ mr: '24px', mb: { md: 2, lg: 0 } }}>
                           <Box display="flex" alignItems={'center'}>
-                            <StateBadge sx={{ mr: 2 }} state={proposal.state} loading={loading} />
+                            <StateBadge
+                              crossChainBridge={executorChain}
+                              sx={{ mr: 2 }}
+                              state={proposal.state}
+                              loading={loading}
+                            />
                             {!loading && (
                               <FormattedProposalTime
                                 state={proposal.state}

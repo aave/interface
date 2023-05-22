@@ -11,8 +11,11 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge,
   const COLOR_MAP = {
     [ProposalState.Active]:
       crossChainBridge === 'L2' ? theme.palette.info.main : theme.palette.error.main,
-    [ProposalState.Queued]: theme.palette.warning.main,
-    [ProposalState.Pending]: theme.palette.warning.main,
+    [ProposalState.Queued]: theme.palette.success.main,
+    [ProposalState.Pending]:
+      crossChainBridge === 'L1' && state === 'Pending'
+        ? theme.palette.info.main
+        : theme.palette.warning.main,
     [ProposalState.Succeeded]: theme.palette.success.main,
     [ProposalState.Executed]: theme.palette.success.main,
     [ProposalState.Canceled]: theme.palette.primary.light,
@@ -45,6 +48,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge,
 
 export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
+  console.log('state', crossChainBridge, state);
 
   const stateBadgeMap = {
     Pending: crossChainBridge === 'L2' ? 'Pending' : 'New',
@@ -52,7 +56,7 @@ export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateB
     Active: 'Voting Active',
     Failed: 'Failed',
     Succeeded: 'Passed',
-    Queued: 'Queued',
+    Queued: 'Passed',
     Expired: 'Expired',
     Executed: 'Executed',
   };
