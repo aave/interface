@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-17 18:04\n"
+"PO-Revision-Date: 2023-05-21 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -32,6 +32,11 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
+msgstr ""
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is not possible to deposit, withdraw or transfer from the impacted reserves."
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
@@ -1068,6 +1073,7 @@ msgstr ""
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Τα απομονωμένα περιουσιακά στοιχεία έχουν περιορισμένη δανειοληπτική ικανότητα και άλλα περιουσιακά στοιχεία δεν μπορούν να χρησιμοποιηθούν ως εγγύηση."
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
 msgstr ""
