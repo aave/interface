@@ -15,13 +15,7 @@ const WarningMessage = ({ market }: { market: string }) => {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else {
     // TODO REMOVE AFTER AIP
-    return (
-      <Trans>
-        A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the
-        interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is
-        not possible to deposit, withdraw or transfer from the impacted reserves.
-      </Trans>
-    );
+    return <Trans>Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT.</Trans>;
   }
 };
 
@@ -55,12 +49,11 @@ export const PolygonWarning = () => {
     <Warning severity="error">
       <Typography variant="caption">
         <Trans>
-          A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the
-          interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it
-          is not possible to deposit, withdraw or transfer from the impacted reserves.
+          Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the
+          disruptions and the market will be operating as normal on ~25th May 13h00 UTC.{' '}
         </Trans>
         <Link href={getLink('proto_polygon', true)} target="_blank">
-          <Trans>Join the community discussion</Trans>
+          <Trans>Read more here.</Trans>
         </Link>
       </Typography>
     </Warning>
