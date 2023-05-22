@@ -41,6 +41,8 @@ export type MarketDataType = {
     MASTER_CHEF?: string;
     LP_TOKEN?: string;
     PAW_TOKEN?: string;
+    PAW_PRICE_ORACLE?: string;
+    PRICE_ORACLE?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -188,6 +190,8 @@ export const marketsData: {
       MASTER_CHEF: process.env.NEXT_PUBLIC_MANEKI_MASTER_CHEF || '',
       LP_TOKEN: process.env.NEXT_PUBLIC_MANEKI_LP_TOKEN || '',
       PAW_TOKEN: process.env.NEXT_PUBLIC_MANEKI_PAW_TOKEN || '',
+      PAW_PRICE_ORACLE: process.env.NEXT_PUBLIC_MANEKI_PAW_PRICE_ORACLE || '',
+      PRICE_ORACLE: process.env.NEXT_PUBLIC_MANEKI_PRICE_ORACLE || '',
     },
   },
   /*

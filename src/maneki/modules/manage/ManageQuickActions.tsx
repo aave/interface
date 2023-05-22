@@ -66,7 +66,7 @@ export const ManageQuickActions = () => {
       })
       .catch((e) => console.error(e));
     //eslint-disable-next-line
-  }, [quickActionsLoading]);
+  }, [currentAccount, quickActionsLoading]);
 
   if (quickActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 

@@ -63,7 +63,7 @@ export const ManageTopPanel = () => {
       })
       .catch((e) => console.error(e));
     //eslint-disable-next-line
-  }, [provider, topPanelLoading]);
+  }, [currentAccount, provider, topPanelLoading]);
 
   return (
     <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>}>
