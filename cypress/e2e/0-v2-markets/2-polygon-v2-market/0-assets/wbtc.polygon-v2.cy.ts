@@ -57,7 +57,7 @@ const testData = {
   },
 };
 
-describe.skip('WBTC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe('WBTC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
