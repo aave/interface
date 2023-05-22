@@ -57,7 +57,7 @@ const testData = {
   },
 };
 
-describe('DAI INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('DAI INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

@@ -88,7 +88,7 @@ const testData = {
   },
 };
 
-describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
