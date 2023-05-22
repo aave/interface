@@ -2,8 +2,10 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
+import { formatEther, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -51,7 +53,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   // Cooldown logic
   const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
-  const userCooldown = userStakeData?.userCooldown || 0;
+  const userCooldown = userStakeData?.userCooldownTimestamp || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
   const userCooldownDelta = now - userCooldown;
   const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
@@ -130,6 +132,29 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Link>
         .
       </Typography>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between',
+          pt: '6px',
+          pb: '30px',
+        }}
+      >
+        <Typography variant="description" color="text.primary">
+          <Trans>Amount to unstake</Trans>
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <TokenIcon symbol={stakeAssetName} sx={{ mr: 1, width: 14, height: 14 }} />
+          <FormattedNumber
+            value={formatEther(userStakeData?.stakeTokenRedeemableAmount || 0)}
+            variant="secondary14"
+            color="text.primary"
+          />
+        </Box>
+      </Box>
 
       <Box mb={6}>
         <Box
