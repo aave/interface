@@ -3243,6 +3243,19 @@
       "ipfsHash": "Qmb5QVkfH9GJdzSBbvENiWLXwC4o3iok4mWQwg5hEbdwDu",
       "originalHash": "0xbd4025b126376e7845780150adbe088f305d03bb15693e819a5819b03b3f3664",
       "id": 231
+    },
+    {
+      "title": "Activate Emode for rETH Aave Ethereum V3",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "Activate Emode for rETH Aave Ethereum V3",
+      "discussions": "https://governance.aave.com/t/arfc-activate-emode-for-reth-aave-ethereum-v3-pool/13034",
+      "created": "2023-05-22T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis AIP proposal presents Aave with the …",
+      "basename": "RETH_EMODE_ACTIVATION_AIP",
+      "description": "\n\n## Simple Summary\n\nThis AIP proposal presents Aave with the opportunity to activate emode for rETH on the Ethereum v3 Liquidity Pool.\n\n## Motivation\n\nrETH is a decentralized Liquid Staking Token minted by Rocket Pool operators.\n\nrETH is minted by Rocket Pool protocol when users Stake ETH via mini-pools or directly by depositing in the Deposit Pool.\n\nAllowing the activation of emode has a clear use-case for leveraged strategies based on rETH as collateral to both “long” rETH on secondary markets and increased staking yield via loops strategies.\n\nWith the current supply and borrowing caps, this activation can be done while keeping a conservative approach.\nFor more information about rETH please refer to [rETH V3 ARC](https://governance.aave.com/t/arc-onboard-reth-rocket-pool-eth-to-aave-v3-ethereum-market/11371)\n\n## Specification\n\nTicker: rETH (rETH)\n\nContract Address: 0xae78736Cd615f374D3085123A210448E74Fc6393\n\n|Risk Parameter| Current Value| Proposed Value|\n| --- | --- | --- |\n|Emode Category|0| 1 |\n\nThis AIP leverage `AaveV3PayloadEthereum` and `collateralsUpdates()` to set the `eModeCategory` to 1 (ETH-correlated assets category).\n\n```solidity\ncontract AaveV3ETHrETHEmode_20230522 is AaveV3PayloadEthereum {\n  function collateralsUpdates() public pure override returns (IEngine.CollateralUpdate[] memory) {\n    IEngine.CollateralUpdate[] memory collateralUpdate = new IEngine.CollateralUpdate[](1);\n\n    collateralUpdate[0] = IEngine.CollateralUpdate({\n      asset: AaveV3EthereumAssets.rETH_UNDERLYING,\n      ltv: EngineFlags.KEEP_CURRENT,\n      liqThreshold: EngineFlags.KEEP_CURRENT,\n      liqBonus: EngineFlags.KEEP_CURRENT,\n      debtCeiling: EngineFlags.KEEP_CURRENT,\n      liqProtocolFee: EngineFlags.KEEP_CURRENT,\n      eModeCategory: 1\n    });\n    return collateralUpdate;\n  }\n}\n```\n\n## Disclaimer\n\nThe Aave-Chan Initiative is not linked nor paid by Rocket Pool to publish this AIP.\n\nThe ACI supports LST diversity as part of its delegate platform\n\nAt the time of Writing, Marc Zeller, ACI's founder, does not hold any rETH but owns a small amount of RPL with the intention to use them to deploy Mini-pools in the future.\n\n## References\n\nA list of relevant links like for this proposal e.g.\n\n- [forum discussion](https://governance.aave.com/t/arfc-activate-emode-for-reth-aave-ethereum-v3-pool/13034)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3EthrETHEmode_20230522/AaveV3ETHrETHEmode_20230522test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3EthrETHEmode_20230522/AaveV3ETHrETHEmode_20230522.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmPVdqvncWyUS1sbEUJXELVxFAXmzFugqiTPnwLWMjgqxC",
+      "originalHash": "0x1128ef9ca9f89b3677e0b42b980fed6e4f298e1dfdf5b78e5023db368dad1139",
+      "id": 232
     }
   ]
 }
