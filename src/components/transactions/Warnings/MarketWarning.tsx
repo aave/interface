@@ -50,7 +50,7 @@ export const PolygonWarning = () => {
       <Typography variant="caption">
         <Trans>
           Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the
-          disruptions and the market will be operating as normal on ~25th May 13h00 UTC.{' '}
+          disruptions and the market will be operating as normal on ~26th May 13h00 UTC.{' '}
         </Trans>
         <Link href={getLink('proto_polygon', true)} target="_blank">
           <Trans>Read more here.</Trans>
