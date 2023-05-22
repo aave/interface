@@ -51,12 +51,8 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // Cooldown logic
-  const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
-  const userCooldown = userStakeData?.userCooldownTimestamp || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
-  const userCooldownDelta = now - userCooldown;
-  const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
 
   const cooldownPercent = valueToBigNumber(stakeCooldownSeconds)
     .dividedBy(stakeCooldownSeconds + stakeUnstakeWindow)
@@ -77,16 +73,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   let blockingError: ErrorType | undefined = undefined;
   if (stakedAmount === '0') {
     blockingError = ErrorType.NOT_ENOUGH_BALANCE;
-  } else if (isCooldownActive) {
-    blockingError = ErrorType.ALREADY_ON_COOLDOWN;
   }
 
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_BALANCE:
         return <Trans>Nothing staked</Trans>;
-      case ErrorType.ALREADY_ON_COOLDOWN:
-        return <Trans>Already on cooldown</Trans>;
       default:
         return null;
     }
