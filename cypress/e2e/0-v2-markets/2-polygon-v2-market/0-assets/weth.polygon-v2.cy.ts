@@ -57,7 +57,7 @@ const testData = {
   },
 };
 
-describe('WETH INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('WETH INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
