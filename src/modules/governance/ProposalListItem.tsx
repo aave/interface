@@ -127,7 +127,7 @@ export function ProposalListItem({
               <>
                 <StateBadge
                   sx={{ marginRight: 2 }}
-                  // crossChainBridge={executorChain}
+                  crossChainBridge={executorChain}
                   state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
                   loading={mightBeStale}
                 />

@@ -146,8 +146,8 @@ export default function ProposalPage({
   const pendingL2 = proposalCrosschainBridge && !executedL2;
 
   const displayL2StateBadge =
-    executorChain === 'L2' &&
     proposal &&
+    executorChain === 'L2' &&
     proposal.state !== 'Failed' &&
     proposal.state !== 'Canceled' &&
     proposal.state === 'Executed' &&
@@ -311,7 +311,7 @@ export default function ProposalPage({
                           <Box display={'flex'} alignItems={'center'}>
                             <StateBadge
                               sx={{ marginRight: 2 }}
-                              // crossChainBridge={executorChain}
+                              crossChainBridge={executorChain}
                               state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
                               loading={mightBeStale}
                             />
@@ -439,7 +439,11 @@ export default function ProposalPage({
                         alignItems: 'flex-end',
                       }}
                     >
-                      <StateBadge state={proposal.state} loading={loading} />
+                      <StateBadge
+                        state={proposal.state}
+                        crossChainBridge={executorChain}
+                        loading={loading}
+                      />
                       <Box sx={{ mt: 0.5, mb: 2 }}>
                         <FormattedProposalTime
                           state={proposal.state}
@@ -447,6 +451,7 @@ export default function ProposalPage({
                           executionTime={proposal.executionTime}
                           expirationTimestamp={proposal.expirationTimestamp}
                           executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                          l2Execution={displayL2StateBadge}
                         />
                       </Box>
 
@@ -460,7 +465,7 @@ export default function ProposalPage({
                         >
                           <StateBadge
                             sx={{ marginRight: 2 }}
-                            // crossChainBridge={executorChain}
+                            crossChainBridge={executorChain}
                             state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
                             loading={mightBeStale}
                           />

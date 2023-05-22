@@ -1,6 +1,5 @@
 import { ProposalState } from '@aave/contract-helpers';
 import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
-// import { Trans } from '@lingui/macro';
 
 interface StateBadgeProps {
   state: ProposalState;
@@ -8,38 +7,17 @@ interface StateBadgeProps {
   crossChainBridge?: string;
 }
 
-export const stateBadgeMap = {
-  Pending: 'New',
-  Canceled: 'Canceled',
-  Active: 'Voting Active',
-  Failed: 'Failed',
-  Succeeded: 'Passed',
-  Queued: 'Queued',
-  Expired: 'Expired',
-  Executed: 'Executed',
-};
-
-// export const stateBadgeMap = {
-//   Pending: <Trans>New</Trans>,
-//   Canceled: <Trans>Canceled</Trans>,
-//   Active: <Trans>Voting Active</Trans>,
-//   Failed: <Trans>Failed</Trans>,
-//   Succeeded: <Trans>Passed</Trans>,
-//   Queued: <Trans>Queued</Trans>,
-//   Expired: <Trans>Expired</Trans>,
-//   Executed: <Trans>Executed</Trans>,
-// };
-
-const Badge = styled('span')<StateBadgeProps>(({ theme, state, ...rest }) => {
+const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge, ...rest }) => {
   const COLOR_MAP = {
-    [ProposalState.Active]: theme.palette.error.main,
+    [ProposalState.Active]:
+      crossChainBridge === 'L2' ? theme.palette.info.main : theme.palette.error.main,
     [ProposalState.Queued]: theme.palette.warning.main,
     [ProposalState.Pending]: theme.palette.warning.main,
     [ProposalState.Succeeded]: theme.palette.success.main,
     [ProposalState.Executed]: theme.palette.success.main,
     [ProposalState.Canceled]: theme.palette.primary.light,
     [ProposalState.Expired]: theme.palette.primary.light,
-    [ProposalState.Failed]: theme.palette.primary.light,
+    [ProposalState.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
@@ -67,9 +45,21 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, ...rest }) => {
 
 export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
+
+  const stateBadgeMap = {
+    Pending: crossChainBridge === 'L2' ? 'Pending' : 'New',
+    Canceled: 'Canceled',
+    Active: 'Voting Active',
+    Failed: 'Failed',
+    Succeeded: 'Passed',
+    Queued: 'Queued',
+    Expired: 'Expired',
+    Executed: 'Executed',
+  };
+
   return (
-    <Badge state={state} {...rest}>
-      {stateBadgeMap[state]} {crossChainBridge}
+    <Badge state={state} crossChainBridge={crossChainBridge} {...rest}>
+      {stateBadgeMap[state]}
     </Badge>
   );
 }
