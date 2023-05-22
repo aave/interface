@@ -5,6 +5,7 @@ interface StateBadgeProps {
   state: ProposalState;
   loading?: boolean;
   crossChainBridge?: string;
+  sx: Record<string, unknown>;
 }
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge, ...rest }) => {
@@ -48,7 +49,6 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge,
 
 export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
-  console.log('state', crossChainBridge, state);
 
   const stateBadgeMap = {
     Pending: crossChainBridge === 'L2' ? 'Pending' : 'New',
