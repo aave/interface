@@ -33681,7 +33681,8 @@ var require_types2 = __commonJS({
       16666e5: "harmony",
       16667e5: "harmony_testnet",
       11155111: "sepolia",
-      534353: "scroll_alpha"
+      534353: "scroll_alpha",
+      1088: "metis_andromeda"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33708,6 +33709,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
       ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
+      ChainId7[ChainId7["metis_andromeda"] = 1088] = "metis_andromeda";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -64391,6 +64393,28 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER
     }
+  },
+  ["proto_metis_v3" /* proto_metis_v3 */]: {
+    marketTitle: "Metis",
+    chainId: import_contract_helpers2.ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Metis.POOL,
+      WETH_GATEWAY: "0x0",
+      // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: markets.AaveV3Metis.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
+    }
   }
 };
 
@@ -64725,6 +64749,19 @@ var networkConfigs = {
       name: "Fantom Bridge",
       url: "https://app.multichain.org/#/router"
     }
+  },
+  [import_contract_helpers3.ChainId.metis_andromeda]: {
+    name: "Metis Andromeda",
+    privateJsonRPCUrl: "https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: ["https://andromeda.metis.io/?owner=1088"],
+    baseAssetSymbol: "",
+    // N/A
+    wrappedBaseAssetSymbol: "",
+    // N/A
+    baseAssetDecimals: 0,
+    // N/A
+    explorerLink: "https://andromeda-explorer.metis.io",
+    networkLogoPath: "/icons/networks/metis.svg"
   }
 };
 

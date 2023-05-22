@@ -1,6 +1,6 @@
 {
-  "short_name": "Aave v3",
-  "name": "Aave v3",
+  "short_name": "Aave",
+  "name": "Aave",
   "description": "Non-custodial liquidity protocol",
   "iconPath": "aave.svg",
   "icons": [
@@ -12,6 +12,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#1B2030",
   "background_color": "#ffffff"
 }

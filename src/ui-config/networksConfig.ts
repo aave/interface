@@ -381,4 +381,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.multichain.org/#/router',
     },
   },
+  [ChainId.metis_andromeda]: {
+    name: 'Metis Andromeda',
+    privateJsonRPCUrl: 'https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://andromeda.metis.io/?owner=1088'],
+    baseAssetSymbol: '', // N/A
+    wrappedBaseAssetSymbol: '', // N/A
+    baseAssetDecimals: 0, // N/A
+    explorerLink: 'https://andromeda-explorer.metis.io',
+    networkLogoPath: '/icons/networks/metis.svg',
+  },
 } as const;
