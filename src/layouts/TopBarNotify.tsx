@@ -30,14 +30,6 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
     }
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWarning(false);
-    }, 20000); // Close Notify after 20 seconds
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleClose = () => {
     localStorage.setItem('warningBarOpen', 'false');
     setShowWarning(false);

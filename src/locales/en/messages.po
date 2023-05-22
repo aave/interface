@@ -29,11 +29,6 @@ msgstr "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
-#: src/components/transactions/Warnings/MarketWarning.tsx
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is not possible to deposit, withdraw or transfer from the impacted reserves."
-msgstr "A recently implemented AIP (Aave Improvement Proposal) has unexpectedly disrupted the interest rate strategy on the WETH, WBTC, WMATIC, and USDT reserves. As a consequence, it is not possible to deposit, withdraw or transfer from the impacted reserves."
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -1069,7 +1064,6 @@ msgid "Isolated assets have limited borrowing power and other assets cannot be u
 msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-#: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Join the community discussion"
 msgstr "Join the community discussion"
 
@@ -1498,6 +1492,10 @@ msgstr "Raw-Ipfs"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
 msgstr "Reached"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr "Read more here."
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2251,6 +2249,14 @@ msgstr "Unstake window"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
