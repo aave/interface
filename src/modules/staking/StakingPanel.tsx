@@ -12,7 +12,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
-import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';
 
 function secondsToDHMS(seconds: number) {
@@ -90,7 +89,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   console.log(stakeUserData);
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
-  const userCooldown = stakeUserData?.userCooldown || 0;
+  const userCooldown = stakeUserData?.userCooldownTimestamp || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
 
   const userCooldownDelta = now - userCooldown;
@@ -268,33 +267,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           value={formatEther(stakeUserData?.stakeTokenRedeemableAmount || '0')}
           valueUSD={stakedUSD}
           dataCy={`stakedBox_${stakedToken}`}
-          // TODO: need fix text
           bottomLineTitle={
-            <TextWithTooltip
-              variant="caption"
-              text={
-                isCooldownActive && !isUnstakeWindowActive ? (
-                  <Trans>Cooldown time left</Trans>
-                ) : isUnstakeWindowActive ? (
-                  <Trans>Time left to unstake</Trans>
-                ) : (
-                  <Trans>Cooldown period</Trans>
-                )
-              }
-            >
-              <>
-                {isCooldownActive && !isUnstakeWindowActive ? (
-                  <Trans>Time left to be able to withdraw your staked asset.</Trans>
-                ) : isUnstakeWindowActive ? (
-                  <Trans>Time left until the withdrawal window closes.</Trans>
-                ) : (
-                  <Trans>
-                    You can only withdraw your assets from the Security Module after the cooldown
-                    period ends and the unstake window is active.
-                  </Trans>
-                )}
-              </>
-            </TextWithTooltip>
+            <Typography variant="caption" color="text.secondary">
+              {isCooldownActive && !isUnstakeWindowActive ? (
+                <Trans>Cooldown time left</Trans>
+              ) : isUnstakeWindowActive ? (
+                <Trans>Time left to unstake</Trans>
+              ) : (
+                <Trans>Cooldown period</Trans>
+              )}
+            </Typography>
           }
           bottomLineComponent={
             <>
