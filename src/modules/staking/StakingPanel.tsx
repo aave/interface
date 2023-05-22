@@ -3,13 +3,25 @@ import {
   GetUserStakeUIDataHumanized,
 } from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Paper,
+  Stack,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -103,6 +115,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const availableToStake = formatEther(
     BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
   );
+
+  const availableToReactivateCooldown =
+    isCooldownActive &&
+    BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || 0).gt(
+      stakeUserData?.userCooldownAmount || 0
+    );
 
   const stakedUSD = formatUnits(
     BigNumber.from(stakeUserData?.stakeTokenRedeemableAmount || '0')
@@ -256,7 +274,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Button>
       </Box>
 
-      <Stack spacing={4} direction={{ xs: 'column', xsm: 'row' }} sx={{ mt: 4 }}>
+      <Stack
+        spacing={4}
+        direction={{ xs: 'column', xsm: 'row' }}
+        sx={{ mt: 4, alignItems: { xsm: 'start' } }}
+      >
         {/** Cooldown action */}
         <StakeActionBox
           title={
@@ -268,15 +290,31 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           valueUSD={stakedUSD}
           dataCy={`stakedBox_${stakedToken}`}
           bottomLineTitle={
-            <Typography variant="caption" color="text.secondary">
-              {isCooldownActive && !isUnstakeWindowActive ? (
-                <Trans>Cooldown time left</Trans>
-              ) : isUnstakeWindowActive ? (
-                <Trans>Time left to unstake</Trans>
-              ) : (
-                <Trans>Cooldown period</Trans>
-              )}
-            </Typography>
+            <TextWithTooltip
+              variant="caption"
+              text={
+                isCooldownActive && !isUnstakeWindowActive ? (
+                  <Trans>Cooldown time left</Trans>
+                ) : isUnstakeWindowActive ? (
+                  <Trans>Time left to unstake</Trans>
+                ) : (
+                  <Trans>Cooldown period</Trans>
+                )
+              }
+            >
+              <>
+                {isCooldownActive && !isUnstakeWindowActive ? (
+                  <Trans>Time left to be able to withdraw your staked asset.</Trans>
+                ) : isUnstakeWindowActive ? (
+                  <Trans>Time left until the withdrawal window closes.</Trans>
+                ) : (
+                  <Trans>
+                    You can only withdraw your assets from the Security Module after the cooldown
+                    period ends and the unstake window is active.
+                  </Trans>
+                )}
+              </>
+            </TextWithTooltip>
           }
           bottomLineComponent={
             <>
@@ -297,6 +335,33 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               )}
             </>
           }
+          cooldownAmount={
+            isCooldownActive || isUnstakeWindowActive ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  pt: 2,
+                }}
+              >
+                <Typography variant="caption" color="text.secondary">
+                  <Trans>Amount in cooldown</Trans>
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TokenIcon symbol={stakedToken} sx={{ mr: 1, width: 14, height: 14 }} />
+                  <FormattedNumber
+                    value={formatEther(stakeUserData?.userCooldownAmount || 0)}
+                    variant="secondary14"
+                    color="text.primary"
+                  />
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )
+          }
           gradientBorder={isUnstakeWindowActive}
         >
           {isUnstakeWindowActive && (
@@ -311,14 +376,46 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
-            <Button
-              variant="outlined"
-              fullWidth
-              disabled
-              data-cy={`awaitCoolDownBtn_${stakedToken}`}
-            >
-              <Trans>Cooling down...</Trans>
-            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '36px' }}>
+              <Button
+                variant="outlined"
+                fullWidth
+                disabled
+                data-cy={`awaitCoolDownBtn_${stakedToken}`}
+              >
+                <Trans>Cooling down...</Trans>
+              </Button>
+              {availableToReactivateCooldown && (
+                <DarkTooltip
+                  title={
+                    <Typography
+                      variant="caption"
+                      color="common.white"
+                      sx={{ textAlign: 'center', width: '162px' }}
+                    >
+                      <Trans>
+                        Reactivate cooldown period to unstake{' '}
+                        {Number(
+                          formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
+                        ).toFixed(2)}{' '}
+                        {stakedToken}
+                      </Trans>
+                    </Typography>
+                  }
+                >
+                  <Button
+                    variant="outlined"
+                    data-cy={`reCoolDownBtn_${stakedToken}`}
+                    sx={{ ml: 1, height: '36px' }}
+                    onClick={onCooldownAction}
+                  >
+                    <SvgIcon sx={{ width: 20, height: 20 }}>
+                      <RefreshIcon />
+                    </SvgIcon>
+                  </Button>
+                </DarkTooltip>
+              )}
+            </Box>
           )}
 
           {!isCooldownActive && (
