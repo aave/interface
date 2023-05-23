@@ -45,7 +45,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountRef = useRef<string>();
 
   const walletBalance = normalize(
-    stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance || '0',
+    stakeUserResult?.[stakeAssetName as StakingType].userCooldownAmount || '0',
     18
   );
 
@@ -61,8 +61,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   // staking token usd value
   const amountInUsd =
     Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(stakeGeneralResult?.usdPriceEth || 1, 18)));
+    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
+      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
