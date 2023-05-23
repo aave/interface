@@ -348,7 +348,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   <Trans>Amount in cooldown</Trans>
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon symbol={stakedToken} sx={{ mr: 1, width: 14, height: 14 }} />
+                  <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
                   <FormattedNumber
                     value={formatEther(stakeUserData?.userCooldownAmount || 0)}
                     variant="secondary14"
