@@ -30,6 +30,7 @@ testCases.forEach(
     asset: { fullName: string; shortName: string; address: string };
     amount: number;
     checkAmount: string;
+    checkAmountFinal: string;
     tabValue: string;
   }) => {
     describe(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName} V2 MARKET`, () => {
