@@ -856,9 +856,14 @@ msgstr "Expected amount to repay"
 msgid "Expires"
 msgstr "Expires"
 
+#: src/modules/governance/GovernanceTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
+
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "FORUM"
+msgstr "FORUM"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
@@ -1614,6 +1619,10 @@ msgstr "Risk details"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
+
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "SNAPSHOTS"
+msgstr "SNAPSHOTS"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."

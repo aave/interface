@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Typography } from '@mui/material';
+import ExternalLinkButton from 'src/components/ExternalLinkButton';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -36,15 +36,9 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
       </Typography>
       <Box>
         {onRampServices.map(({ name, makeLink, icon }) => (
-          <Button
+          <ExternalLinkButton
             key={name}
-            variant="outlined"
             size="large"
-            endIcon={
-              <SvgIcon>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            }
             fullWidth
             sx={{ px: 4, '&:not(:first-of-type)': { mt: 4 } }}
             href={makeLink({ cryptoSymbol, network, walletAddress })}
@@ -58,7 +52,7 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
                 {name}
               </Trans>
             </Box>
-          </Button>
+          </ExternalLinkButton>
         ))}
       </Box>
     </BasicModal>

@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import { Box, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import ExternalLinkButton from 'src/components/ExternalLinkButton';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
@@ -249,22 +249,15 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     compact
                   />
                 </PanelItem>
-                <Button
+                <ExternalLinkButton
                   href={currentNetworkConfig.explorerLinkBuilder({
                     address: reserve.interestRateStrategyAddress,
                   })}
-                  endIcon={
-                    <SvgIcon sx={{ width: 14, height: 14 }}>
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  }
-                  component={Link}
                   size="small"
-                  variant="outlined"
                   sx={{ verticalAlign: 'top' }}
                 >
                   <Trans>Interest rate strategy</Trans>
-                </Button>
+                </ExternalLinkButton>
               </Box>
               <InterestRateModelGraphContainer reserve={reserve} />
             </Box>

@@ -1,5 +1,5 @@
 import { normalize } from '@aave/math-utils';
-import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
+import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Twitter } from '@mui/icons-material';
 import {
@@ -24,10 +24,10 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ExternalLinkButton from 'src/components/ExternalLinkButton';
 import { Meta } from 'src/components/Meta';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
@@ -586,38 +586,20 @@ export default function ProposalPage({
                   )}
                   <Box sx={{ mt: 10, mb: 2, display: 'flex', gap: 2 }}>
                     {ipfs?.discussions && (
-                      <Button
-                        component={Link}
-                        target="_blank"
-                        rel="noopener"
-                        href={ipfs.discussions}
-                        variant="outlined"
-                        endIcon={
-                          <SvgIcon>
-                            <ExternalLinkIcon />
-                          </SvgIcon>
-                        }
-                      >
+                      <ExternalLinkButton target="_blank" rel="noopener" href={ipfs.discussions}>
                         <Trans>Forum discussion</Trans>
-                      </Button>
+                      </ExternalLinkButton>
                     )}
                     {prerendered && ( // only render the button for prerendered proposals as fro them we can be sure ci already ran
-                      <Button
-                        component={Link}
+                      <ExternalLinkButton
                         target="_blank"
                         rel="noopener"
                         href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
                           proposal.id
                         ).padStart(3, '0')}.md`}
-                        variant="outlined"
-                        endIcon={
-                          <SvgIcon>
-                            <ExternalLinkIcon />
-                          </SvgIcon>
-                        }
                       >
                         <Trans>Seatbelt report</Trans>
-                      </Button>
+                      </ExternalLinkButton>
                     )}
                   </Box>
                 </>
