@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-04 00:16\n"
+"PO-Revision-Date: 2023-05-22 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -140,6 +140,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "Η διεύθυνση δεν είναι συμβόλαιο"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr ""
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -1494,6 +1498,10 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Επιτεύχθηκε"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr ""
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr ""
@@ -2248,6 +2256,14 @@ msgstr "Παράθυρο ξεκλειδώματος"
 msgid "Unstaked"
 msgstr ""
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+msgstr ""
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr ""
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr ""
@@ -2353,6 +2369,8 @@ msgstr ""
 msgid "Voted YAE"
 msgstr ""
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx

@@ -14,7 +14,8 @@ const WarningMessage = ({ market }: { market: string }) => {
   } else if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else {
-    return <></>;
+    // TODO REMOVE AFTER AIP
+    return <Trans>Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT.</Trans>;
   }
 };
 
@@ -32,7 +33,9 @@ const getLink = (market: string, forum: boolean | undefined): string => {
       return 'https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647';
     }
   } else {
-    return '';
+    // TODO REMOVE AFTER AIP
+
+    return 'https://governance.aave.com/t/arfc-aave-v2-interest-rate-curve-recommendations-from-gauntlet-2023-04-21/12846/11';
   }
 };
 
@@ -40,6 +43,22 @@ interface MarketWarningProps {
   marketName: string;
   forum?: boolean;
 }
+
+export const PolygonWarning = () => {
+  return (
+    <Warning severity="error">
+      <Typography variant="caption">
+        <Trans>
+          Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the
+          disruptions and the market will be operating as normal on ~26th May 13h00 UTC.{' '}
+        </Trans>
+        <Link href={getLink('proto_polygon', true)} target="_blank">
+          <Trans>Read more here.</Trans>
+        </Link>
+      </Typography>
+    </Warning>
+  );
+};
 
 export const MarketWarning = ({ marketName, forum }: MarketWarningProps) => {
   return (

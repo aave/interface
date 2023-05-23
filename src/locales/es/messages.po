@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-04 00:16\n"
+"PO-Revision-Date: 2023-05-22 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -140,6 +140,10 @@ msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "La dirección no es un contrato"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr "Direcciones"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -1494,6 +1498,10 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Alcanzado"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr "Más información aquí."
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "El modo de solo lectura permite ver las posiciones de las direcciones en Aave, pero no podrás realizar transacciones."
@@ -2247,6 +2255,14 @@ msgstr "Ventana de unstakeo"
 msgid "Unstaked"
 msgstr "Unstakeado"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+msgstr "Actualización: Se han reportado interrupciones para WETH, WBTC, WMATIC y USDT."
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr "Actualización: Se han reportado interrupciones para WETH, WBTC, WMATIC y USDT. AIP 230 resolverá las interrupciones y el mercado funcionará con normalidad el ~26 de mayo a las 13h00 UTC."
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr "Úsalo para votar a favor o en contra de propuestas activas."
@@ -2352,6 +2368,8 @@ msgstr "Votó NAY"
 msgid "Voted YAE"
 msgstr "Votó YAE"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
