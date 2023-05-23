@@ -49,7 +49,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   // staking token usd value
   const amountInUsd =
     Number(maxAmountToClaim) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
+    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
       Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
 
   // error handler

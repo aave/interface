@@ -61,7 +61,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   // staking token usd value
   const amountInUsd =
     Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
+    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
       Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
 
   // error handler
