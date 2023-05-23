@@ -69,10 +69,6 @@ export const useStakeDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refetchStakeData();
 }, 60000);
 
-export const useWalletBalancesSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refetchWalletBalances();
-}, 60000);
-
 export const usePoolDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshPoolData();
 }, 60000);

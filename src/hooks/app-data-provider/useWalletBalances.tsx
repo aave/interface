@@ -4,7 +4,7 @@ import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
 import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
-import { selectCurrentWalletBalances } from '../../store/walletSelectors';
+import { usePoolTokensBalance } from '../pool/usePoolTokensBalance';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
 export interface WalletBalance {
@@ -14,14 +14,14 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const [balances, reserves, baseCurrencyData] = useRootStore((state) => [
-    selectCurrentWalletBalances(state),
+  const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance();
+  const [reserves, baseCurrencyData] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
   ]);
 
+  const walletBalances = balances ?? [];
   // process data
-  const walletBalances = balances || [];
   let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
@@ -54,6 +54,6 @@ export const useWalletBalances = () => {
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
-    loading: !walletBalances.length || !reserves.length,
+    loading: balancesLoading || !reserves.length,
   };
 };
