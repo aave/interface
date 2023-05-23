@@ -97,8 +97,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
 
-  console.log('USERDATA');
-  console.log(stakeUserData);
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
   const userCooldown = stakeUserData?.userCooldownTimestamp || 0;
@@ -376,12 +374,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
-            <Box sx={{ display: 'flex', alignItems: 'center', height: '36px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
                 variant="outlined"
                 fullWidth
                 disabled
                 data-cy={`awaitCoolDownBtn_${stakedToken}`}
+                sx={{ height: '36px' }}
               >
                 <Trans>Cooling down...</Trans>
               </Button>
@@ -406,7 +405,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   <Button
                     variant="outlined"
                     data-cy={`reCoolDownBtn_${stakedToken}`}
-                    sx={{ ml: 1, height: '36px' }}
+                    sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                     onClick={onCooldownAction}
                   >
                     <SvgIcon sx={{ width: 20, height: 20 }}>
