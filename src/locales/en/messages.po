@@ -858,6 +858,10 @@ msgid "Expected amount to repay"
 msgstr "Expected amount to repay"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expected execution on"
+msgstr "Expected execution on"
+
+#: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expires"
 

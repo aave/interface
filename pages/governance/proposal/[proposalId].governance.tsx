@@ -442,8 +442,8 @@ export default function ProposalPage({
                   <Row
                     caption={<Trans>State</Trans>}
                     sx={{
-                      height: displayL2StateBadge && pendingL2 ? 96 : 48,
-                      alignItems: displayL2StateBadge && pendingL2 ? 'start' : 'center',
+                      height: displayL2StateBadge ? 96 : 48,
+                      alignItems: displayL2StateBadge ? 'start' : 'center',
                     }}
                     captionVariant="description"
                   >
@@ -455,6 +455,7 @@ export default function ProposalPage({
                       }}
                     >
                       <StateBadge
+                        pendingL2={pendingL2}
                         state={proposal.state}
                         crossChainBridge={executorChain}
                         loading={loading}
@@ -470,7 +471,7 @@ export default function ProposalPage({
                         />
                       </Box>
 
-                      {displayL2StateBadge && pendingL2 && (
+                      {displayL2StateBadge && (
                         <Box
                           sx={{
                             display: 'flex',

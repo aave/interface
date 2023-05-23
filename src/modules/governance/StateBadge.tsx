@@ -6,6 +6,7 @@ interface StateBadgeProps {
   loading?: boolean;
   crossChainBridge?: string;
   sx?: Record<string, unknown>;
+  pendingL2?: boolean;
 }
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge, ...rest }) => {
@@ -16,9 +17,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge,
         : theme.palette.error.main,
     [ProposalState.Queued]: theme.palette.success.main,
     [ProposalState.Pending]:
-      crossChainBridge === 'L1' && state === 'Pending'
-        ? theme.palette.info.main
-        : theme.palette.warning.main,
+      state === 'Pending' ? theme.palette.info.main : theme.palette.warning.main,
     [ProposalState.Succeeded]: theme.palette.success.main,
     [ProposalState.Executed]: theme.palette.success.main,
     [ProposalState.Canceled]: theme.palette.primary.light,
@@ -49,11 +48,18 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state, crossChainBridge,
   });
 });
 
-export function StateBadge({ state, loading, crossChainBridge, ...rest }: StateBadgeProps) {
+export function StateBadge({
+  state,
+  loading,
+  pendingL2,
+  crossChainBridge,
+  ...rest
+}: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
+  console.log('crossChainBridge', crossChainBridge);
 
   const stateBadgeMap = {
-    Pending: crossChainBridge === 'L2' ? 'Pending' : 'New',
+    Pending: pendingL2 && crossChainBridge === 'L2' ? 'Pending' : 'New',
     Canceled: 'Canceled',
     Active: 'Voting Active',
     Failed: 'Failed',

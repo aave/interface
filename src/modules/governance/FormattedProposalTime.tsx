@@ -26,6 +26,8 @@ export function FormattedProposalTime({
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
   const twoDayDelay = 172800;
+  const oneDayDelay = 86400;
+
   const executionTimeWithL2 = executionTime + twoDayDelay;
 
   if ([ProposalState.Pending].includes(state)) {
@@ -60,6 +62,24 @@ export function FormattedProposalTime({
       </Typography>
     );
   }
+
+  // Note: We default 1 day from today to assume execution
+  if ([ProposalState.Succeeded].includes(state)) {
+    return (
+      <Typography component="span" variant="caption">
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: { xs: 'none', md: 'inline' } }}
+        >
+          <Trans> Expected execution on</Trans>
+          &nbsp;
+        </Typography>
+        {dayjs.unix(timestamp + oneDayDelay).format('MMM DD, YYYY')}
+      </Typography>
+    );
+  }
+
   if (
     [
       ProposalState.Canceled,
