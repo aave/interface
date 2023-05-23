@@ -39,11 +39,13 @@ export const stake = (
     amount,
     checkAmount,
     tabValue,
+    hasApproval,
   }: {
     asset: { fullName: string; shortName: string; address: string };
     amount: number;
     checkAmount: string;
     tabValue: string;
+    hasApproval: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -66,7 +68,7 @@ export const stake = (
     });
     it(`Set amount`, () => {
       cy.setAmount(amount, false);
-      cy.doConfirm(false, _actionName);
+      cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
     it(`Check staked amount`, () => {
@@ -137,6 +139,37 @@ export const activateCooldown = (
       cy.get(`[data-cy="awaitCoolDownBtn_${asset.shortName}"]`, {
         timeout: 70000,
       }).should('be.visible', { timeout: 50000 });
+    });
+  });
+};
+
+export const reCallCooldown = (
+  {
+    asset,
+  }: {
+    asset: { fullName: string; shortName: string; address: string };
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  const _shortName = asset.shortName;
+  const _actionName = `Cooldown to unstake`;
+
+  return describe(`Stake ${_shortName}`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    it(`open reactivate cooldown`, () => {
+      cy.get(`[data-cy="reCoolDownBtn_${asset.shortName}"]`).click();
+    });
+    it(`Confirm`, () => {
+      cy.get(`[data-cy="cooldownAcceptCheckbox"]`).click();
+      cy.doConfirm(true, _actionName);
+    });
+    doCloseModal();
+    it(`Check recooldown button is hidden`, () => {
+      cy.get(`[data-cy="reCoolDownBtn_${asset.shortName}"]`, { timeout: 70000 }).should(
+        'not.exist',
+        { timeout: 50000 }
+      );
     });
   });
 };
