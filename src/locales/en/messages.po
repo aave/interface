@@ -2381,6 +2381,10 @@ msgstr "Votes"
 msgid "Voting"
 msgstr "Voting"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Voting ends"
+msgstr "Voting ends"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -2389,6 +2393,10 @@ msgstr "Voting power"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
 msgstr "Voting results"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Voting starts"
+msgstr "Voting starts"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Wallet Balance"
@@ -2617,10 +2625,6 @@ msgstr "copy the error"
 msgid "documentation"
 msgstr "documentation"
 
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "ends"
-msgstr "ends"
-
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -2652,10 +2656,6 @@ msgstr "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapp
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "staking view"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "starts"
-msgstr "starts"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"

@@ -124,7 +124,6 @@ export default function ProposalPage({
   ];
   const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
   let proposalCrosschainBridge = false;
-  let executedL2;
 
   if (proposal && proposal.targets && proposal.targets.length > 0) {
     const hasDelayedExecutor = proposal.targets.filter((address) =>
@@ -138,8 +137,15 @@ export default function ProposalPage({
   // Currently all cross-executors share this delay
   // TO-DO: invetigate if this can be changed, if so, query on-chain
   // const twoDayDelay = 172800 + 14400;
-  const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
-  // const twoDaysAndFourHours = 172800 + 14400;
+  const twoDayDelay = 172800; // 2 days 4 hours (small buffer)
+
+  let executedL2;
+  if (proposal) {
+    executedL2 =
+      proposal.executionTime === 0
+        ? false
+        : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
+  }
 
   const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
 
@@ -199,6 +205,9 @@ export default function ProposalPage({
   const proposalHasExpired: boolean = proposal
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
+
+  console.log('pendingL2', pendingL2, executedL2);
+  console.log('proposal', proposal);
 
   return (
     <>
@@ -312,13 +321,14 @@ export default function ProposalPage({
                           </Box>
                         </Box>
 
-                        {displayL2StateBadge && pendingL2 && (
+                        {displayL2StateBadge && (
                           <Box display={'flex'} alignItems={'center'}>
                             <StateBadge
                               sx={{ marginRight: 2 }}
                               crossChainBridge={executorChain}
                               state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
                               loading={mightBeStale}
+                              // pendingL2={pendingL2}
                             />
 
                             <FormattedProposalTime

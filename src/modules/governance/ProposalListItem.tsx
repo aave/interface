@@ -1,4 +1,4 @@
-import { ProposalState } from '@aave/contract-helpers';
+// import { ProposalState } from '@aave/contract-helpers';
 import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -122,7 +122,7 @@ export function ProposalListItem({
               l2Execution={displayL2StateBadge}
             />
           </Box>
-          <Box>
+          {/* <Box>
             {displayL2StateBadge && pendingL2 && (
               <>
                 <StateBadge
@@ -142,7 +142,7 @@ export function ProposalListItem({
                 />
               </>
             )}
-          </Box>
+          </Box> */}
 
           {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>

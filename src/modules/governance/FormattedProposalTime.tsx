@@ -36,8 +36,8 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
-          {state}&nbsp;
-          <Trans>starts</Trans>
+          {/* {state}&nbsp; */}
+          <Trans>Voting starts</Trans>
           &nbsp;
         </Typography>
         {dayjs.unix(startTimestamp).fromNow()}
@@ -53,7 +53,7 @@ export function FormattedProposalTime({
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
           {state}&nbsp;
-          <Trans>ends</Trans>
+          <Trans>Voting ends</Trans>
           &nbsp;
         </Typography>
         {dayjs.unix(expirationTimestamp).fromNow()}
@@ -67,8 +67,10 @@ export function FormattedProposalTime({
       ProposalState.Failed,
       ProposalState.Succeeded,
       ProposalState.Executed,
-    ].includes(state) &&
-    !l2Execution
+    ].includes(state)
+
+    // &&
+    // !l2Execution
   ) {
     return (
       <Typography component="span" variant="caption">
