@@ -853,6 +853,10 @@ msgstr "Error connecting. Try refreshing the page."
 msgid "Executed"
 msgstr "Executed"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expected Execution"
+msgstr "Expected Execution"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
 msgstr "Expected amount to repay"
@@ -860,10 +864,6 @@ msgstr "Expected amount to repay"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expected execution on"
 msgstr "Expected execution on"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "Expires"
-msgstr "Expires"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"

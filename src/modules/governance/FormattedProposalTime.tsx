@@ -26,9 +26,12 @@ export function FormattedProposalTime({
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
   const twoDayDelay = 172800;
-  const oneDayDelay = 86400;
+  // const oneDayDelay = 86400;
 
   const executionTimeWithL2 = executionTime + twoDayDelay;
+
+  const crossChainExecutionTime = l2Execution ? executionTimeWithL2 : executionTime;
+  const canBeExecuted = timestamp > crossChainExecutionTime;
 
   if ([ProposalState.Pending].includes(state)) {
     return (
@@ -75,7 +78,7 @@ export function FormattedProposalTime({
           <Trans> Expected execution on</Trans>
           &nbsp;
         </Typography>
-        {dayjs.unix(timestamp + oneDayDelay).format('MMM DD, YYYY')}
+        {dayjs.unix(timestamp + expirationTimestamp).format('MMM DD, YYYY')}
       </Typography>
     );
   }
@@ -87,10 +90,8 @@ export function FormattedProposalTime({
       ProposalState.Failed,
       ProposalState.Succeeded,
       ProposalState.Executed,
-    ].includes(state)
-
-    // &&
-    // !l2Execution
+    ].includes(state) &&
+    !l2Execution
   ) {
     return (
       <Typography component="span" variant="caption">
@@ -103,14 +104,14 @@ export function FormattedProposalTime({
           <Trans>on</Trans>
           &nbsp;
         </Typography>
+
         {dayjs
           .unix(state === ProposalState.Executed ? executionTime : expirationTimestamp)
           .format('MMM DD, YYYY')}
       </Typography>
     );
   }
-  const crossChainExecutionTime = l2Execution ? executionTimeWithL2 : executionTime;
-  const canBeExecuted = timestamp > crossChainExecutionTime;
+
   return (
     <Typography component="span" variant="caption">
       <Typography
@@ -122,7 +123,7 @@ export function FormattedProposalTime({
           l2Execution ? (
             <Trans>Executed</Trans>
           ) : (
-            <Trans>Expires</Trans>
+            <Trans>Expected Execution</Trans>
           )
         ) : l2Execution ? (
           <Trans>Cross-chain execution </Trans>
@@ -131,11 +132,16 @@ export function FormattedProposalTime({
         )}
         &nbsp;
       </Typography>
-      {dayjs
-        .unix(
-          canBeExecuted && !l2Execution ? executionTimeWithGracePeriod : crossChainExecutionTime
-        )
-        .fromNow()}
+
+      {!l2Execution
+        ? dayjs
+            .unix(state === ProposalState.Executed ? executionTime : expirationTimestamp)
+            .format('MMM DD, YYYY')
+        : dayjs
+            .unix(
+              canBeExecuted && !l2Execution ? executionTimeWithGracePeriod : crossChainExecutionTime
+            )
+            .fromNow()}
     </Typography>
   );
 }

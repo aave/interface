@@ -315,7 +315,7 @@ export default function ProposalPage({
                                 startTimestamp={proposal.startTimestamp}
                                 executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                                 expirationTimestamp={proposal.expirationTimestamp}
-                                l2Execution={displayL2StateBadge}
+                                l2Execution={false}
                               />
                             )}
                           </Box>
