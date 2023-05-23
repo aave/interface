@@ -352,7 +352,7 @@ export const ManageMainActions = () => {
                   <TableCell>
                     <Trans>Amount</Trans>
                   </TableCell>
-                  <TableCell>Value(USD)</TableCell>
+                  <TableCell>Value (USD)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -370,14 +370,13 @@ export const ManageMainActions = () => {
                       ].toUpperCase()}`}</Typography>
                     </TableCell>
                     <TableCell>
-                      {/** Map this to string of uint256 */}
-                      {utils.formatUnits(claimable.amount.toString(), 18)}
+                      <FormattedNumber value={utils.formatUnits(claimable.amount, 18)} />
                     </TableCell>
                     <TableCell>
                       <FormattedNumber
                         value={utils.formatUnits(claimable.value, 10)}
                         symbol="USD"
-                        visibleDecimals={2}
+                        visibleDecimals={3}
                         symbolsColor={theme.palette.text.secondary}
                       />
                     </TableCell>
