@@ -16,7 +16,7 @@ import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { downloadData, groupByDate } from './helpers';
+import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryWrapperMobile } from './HistoryWrapperMobile';
@@ -40,7 +40,8 @@ export const HistoryWrapper = () => {
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
     const data = await fetchForDownload({ searchQuery, filterQuery });
-    const jsonData = JSON.stringify(data, null, 2);
+    const formattedData = formatTransactionData(data, false);
+    const jsonData = JSON.stringify(formattedData, null, 2);
     downloadData('transactions.json', jsonData, 'application/json');
     setLoadingDownload(false);
   };
@@ -48,17 +49,19 @@ export const HistoryWrapper = () => {
   const handleCsvDownload = async () => {
     setLoadingDownload(true);
     const data: TransactionHistoryItem[] = await fetchForDownload({ searchQuery, filterQuery });
+    const formattedData = formatTransactionData(data, true);
 
     // Getting all the unique headers
     const headersSet = new Set<string>();
-    data.forEach((transaction) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formattedData.forEach((transaction: any) => {
       Object.keys(transaction).forEach((key) => headersSet.add(key));
     });
 
     const headers: string[] = Array.from(headersSet);
     let csvContent = headers.join(',') + '\n';
 
-    data.forEach((transaction: TransactionHistoryItem) => {
+    formattedData.forEach((transaction: TransactionHistoryItem) => {
       const row: string[] = headers.map((header) => {
         const value = transaction[header as keyof TransactionHistoryItem];
         if (typeof value === 'object') {
@@ -257,7 +260,6 @@ export const HistoryWrapper = () => {
             sx={{
               height: 36,
               width: 186,
-              backgroundColor: '#EAEBEF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
