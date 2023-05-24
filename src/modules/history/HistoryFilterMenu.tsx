@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 
 import { FilterOptions } from './types';
@@ -50,8 +50,16 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   currentFilter,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
+
+  useEffect(() => {
+    onFilterChange(localFilter);
+  }, [localFilter, onFilterChange]);
+
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  const allSelected = currentFilter.length === 0;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -59,6 +67,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 
   const handleClose = () => {
     setAnchorEl(null);
+    onFilterChange(currentFilter);
   };
 
   const handleFilterClick = (filter: FilterOptions | undefined) => {
@@ -69,14 +78,18 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         newFilter = currentFilter.filter((item) => item !== filter);
       } else {
         newFilter = [...currentFilter, filter];
+        // Checks if all filter options are selected,  enum length is divided by 2 based on how Typescript creates object from enum
+        if (newFilter.length === Object.keys(FilterOptions).length / 2) {
+          newFilter = [];
+        }
       }
     }
 
-    onFilterChange(newFilter);
+    setLocalFilter(newFilter);
   };
 
   const FilterButtonLabel = () => {
-    if (currentFilter.length === 0) {
+    if (allSelected) {
       return <Trans>All transactions</Trans>;
     } else {
       const displayLimit = 2;
@@ -103,7 +116,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 
   const handleClearFilter = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onFilterChange([]);
+    setLocalFilter([]);
   };
 
   return (
@@ -144,7 +157,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             <FilterButtonLabel />
           </Typography>
         </Box>
-        {currentFilter.length > 0 && (
+        {!allSelected && (
           <DarkTooltip
             title={
               <Typography variant="caption" color="common.white">
@@ -185,7 +198,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         <MenuItem
           onClick={() => handleFilterClick(undefined)}
           sx={{
-            background: currentFilter.length === 0 ? theme.palette.background.surface : undefined,
+            background: allSelected ? theme.palette.background.surface : undefined,
             display: 'flex',
             justifyContent: 'space-between',
           }}
@@ -193,7 +206,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           <Typography variant="subheader1" color="text.primary">
             <Trans>All transactions</Trans>
           </Typography>
-          {currentFilter.length === 0 && (
+          {allSelected && (
             <SvgIcon sx={{ fontSize: '16px' }}>
               <CheckIcon />
             </SvgIcon>
