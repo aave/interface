@@ -10,37 +10,17 @@ import {
   MenuItem,
   SvgIcon,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 
-import { downloadData } from './downloadHelper';
+import { downloadData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
-import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
 import { ActionFields, FilterOptions, TransactionHistoryItem } from './types';
-
-const groupByDate = (
-  transactions: TransactionHistoryItem[]
-): Record<string, TransactionHistoryItem[]> => {
-  return transactions.reduce((grouped, transaction) => {
-    const date = new Intl.DateTimeFormat(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(new Date(transaction.timestamp * 1000));
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
-    grouped[date].push(transaction);
-    return grouped;
-  }, {} as Record<string, TransactionHistoryItem[]>);
-};
 
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -141,8 +121,6 @@ export const HistoryWrapperMobile = () => {
     },
     [fetchNextPage, isLoading]
   );
-  const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const flatTxns = transactions?.pages?.flatMap((page) => page) || [];
   const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns });
@@ -242,20 +220,12 @@ export const HistoryWrapperMobile = () => {
     >
       <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
 
-      {isLoading &&
-        (downToXSM ? (
-          <>
-            <HistoryMobileItemLoader />
-            <HistoryMobileItemLoader />
-          </>
-        ) : (
-          <>
-            <HistoryItemLoader />
-            <HistoryItemLoader />
-          </>
-        ))}
-
-      {!isEmpty ? (
+      {isLoading ? (
+        <>
+          <HistoryMobileItemLoader />
+          <HistoryMobileItemLoader />
+        </>
+      ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
             <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>

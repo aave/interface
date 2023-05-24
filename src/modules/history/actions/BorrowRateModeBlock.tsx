@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React from 'react';
 
-import { ActionFields, TransactionHistoryItem } from './types';
+import { ActionFields, TransactionHistoryItem } from '../types';
 
 export const BorrowRateModeBlock = ({
   swapBorrowRateTx,

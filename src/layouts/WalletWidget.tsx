@@ -265,7 +265,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 <ExternalLinkIcon />
               </SvgIcon>
             </ListItemIcon>
-
             <ListItemText>
               <Trans>View on Explorer</Trans>
             </ListItemText>

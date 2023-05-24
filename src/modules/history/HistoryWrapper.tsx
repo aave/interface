@@ -16,28 +16,12 @@ import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+import { downloadData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryWrapperMobile } from './HistoryWrapperMobile';
 import TransactionRowItem from './TransactionRowItem';
 import { ActionFields, FilterOptions, TransactionHistoryItem } from './types';
-
-const groupByDate = (
-  transactions: TransactionHistoryItem[]
-): Record<string, TransactionHistoryItem[]> => {
-  return transactions.reduce((grouped, transaction) => {
-    const date = new Intl.DateTimeFormat(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(new Date(transaction.timestamp * 1000));
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
-    grouped[date].push(transaction);
-    return grouped;
-  }, {} as Record<string, TransactionHistoryItem[]>);
-};
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,18 +35,6 @@ export const HistoryWrapper = () => {
     isFetchingNextPage,
     fetchForDownload,
   } = useTransactionHistory();
-
-  const downloadData = (fileName: string, content: string, mimeType: string) => {
-    const file = new Blob([content], { type: mimeType });
-    const downloadUrl = URL.createObjectURL(file);
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(downloadUrl);
-  };
 
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
@@ -196,14 +168,12 @@ export const HistoryWrapper = () => {
         </Box>
       </Box>
 
-      {isLoading && (
+      {isLoading ? (
         <>
           <HistoryItemLoader />
           <HistoryItemLoader />
         </>
-      )}
-
-      {!isEmpty ? (
+      ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
             <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
