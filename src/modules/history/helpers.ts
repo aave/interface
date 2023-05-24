@@ -1,7 +1,13 @@
 import { formatUnits } from 'ethers/lib/utils';
 import { fetchIconSymbolAndName, IconSymbolInterface } from 'src/ui-config/reservePatches';
 
-import { TransactionHistoryItem } from './types';
+import {
+  hasAmountAndReserve,
+  hasCollateralReserve,
+  hasPrincipalReserve,
+  hasReserve,
+  TransactionHistoryItemUnion,
+} from './types';
 
 export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp: number }) => {
   const date = new Date(unixTimestamp * 1000);
@@ -29,8 +35,8 @@ export const downloadData = (fileName: string, content: string, mimeType: string
 };
 
 export const groupByDate = (
-  transactions: TransactionHistoryItem[]
-): Record<string, TransactionHistoryItem[]> => {
+  transactions: TransactionHistoryItemUnion[]
+): Record<string, TransactionHistoryItemUnion[]> => {
   return transactions.reduce((grouped, transaction) => {
     const date = new Intl.DateTimeFormat(undefined, {
       year: 'numeric',
@@ -42,7 +48,7 @@ export const groupByDate = (
     }
     grouped[date].push(transaction);
     return grouped;
-  }, {} as Record<string, TransactionHistoryItem[]>);
+  }, {} as Record<string, TransactionHistoryItemUnion[]>);
 };
 
 interface MappedReserveData {
@@ -73,23 +79,31 @@ export const fetchIconSymbolAndNameHistorical = ({
   return updatedPatch;
 };
 
+interface FormatTransactionDataParams {
+  data: TransactionHistoryItemUnion[];
+  csv: boolean;
+}
+
 // Format raw data for CSV/JSON download
-// Uses any because txns are of interface ActionFields with different scehams, and creating a union subset is very messy
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const formatTransactionData = (data: any, csv?: boolean): any => {
+export const formatTransactionData = ({
+  data,
+  csv,
+}: FormatTransactionDataParams): TransactionHistoryItemUnion[] => {
+  // Using any since txn objects can have different fields based on ActionFields, using union type + type guards gets extrenely complicated
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data.map((transaction: any) => {
     const newTransaction = { ...transaction };
 
     // Format amounts in reserve decimals, and stringify reserve objects to fix CSV formatting
-    if (transaction.amount && transaction.reserve) {
+    if (hasAmountAndReserve(transaction)) {
       newTransaction.amount = formatUnits(transaction.amount, transaction.reserve.decimals);
     }
-    if (csv && transaction.reserve) {
+    if (hasReserve(transaction) && csv) {
       const jsonString = JSON.stringify(transaction.reserve);
       newTransaction.reserve = `"${jsonString.replace(/"/g, '""')}"`;
     }
-    if (transaction.collateralAmount && transaction.collateralReserve) {
+
+    if (hasCollateralReserve(transaction) && transaction.collateralAmount) {
       newTransaction.collateralAmount = formatUnits(
         transaction.collateralAmount,
         transaction.collateralReserve.decimals
@@ -100,7 +114,7 @@ export const formatTransactionData = (data: any, csv?: boolean): any => {
       }
     }
 
-    if (transaction.principalAmount && transaction.principalReserve) {
+    if (hasPrincipalReserve(transaction) && transaction.principalAmount) {
       newTransaction.principalAmount = formatUnits(
         transaction.principalAmount,
         transaction.principalReserve.decimals

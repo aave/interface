@@ -20,7 +20,7 @@ import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
-import { ActionFields, FilterOptions, TransactionHistoryItem } from './types';
+import { FilterOptions, TransactionHistoryItemUnion } from './types';
 
 export const HistoryWrapperMobile = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,7 +75,7 @@ export const HistoryWrapperMobile = () => {
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
     const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData(data, false);
+    const formattedData = formatTransactionData({ data, csv: false });
     const jsonData = JSON.stringify(formattedData, null, 2);
     downloadData('transactions.json', jsonData, 'application/json');
     setLoadingDownload(false);
@@ -83,22 +83,24 @@ export const HistoryWrapperMobile = () => {
 
   const handleCsvDownload = async () => {
     setLoadingDownload(true);
-    const data: TransactionHistoryItem[] = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData(data, true);
+    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
+      searchQuery,
+      filterQuery,
+    });
+    const formattedData = formatTransactionData({ data, csv: true });
 
     // Getting all the unique headers
     const headersSet = new Set<string>();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    formattedData.forEach((transaction: any) => {
+    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
       Object.keys(transaction).forEach((key) => headersSet.add(key));
     });
 
     const headers: string[] = Array.from(headersSet);
     let csvContent = headers.join(',') + '\n';
 
-    formattedData.forEach((transaction: TransactionHistoryItem) => {
+    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
       const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItem];
+        const value = transaction[header as keyof TransactionHistoryItemUnion];
         if (typeof value === 'object') {
           return JSON.stringify(value) ?? '';
         }
@@ -236,14 +238,12 @@ export const HistoryWrapperMobile = () => {
             <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>
               {date}
             </Typography>
-            {txns.map((transaction: TransactionHistoryItem, index: number) => {
+            {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
               const isLastItem = index === txns.length - 1;
               return (
                 <div ref={isLastItem ? lastElementRef : null} key={index}>
                   <TransactionMobileRowItem
-                    transaction={
-                      transaction as TransactionHistoryItem & ActionFields[keyof ActionFields]
-                    }
+                    transaction={transaction as TransactionHistoryItemUnion}
                   />
                 </div>
               );

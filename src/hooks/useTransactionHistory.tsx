@@ -1,5 +1,12 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { actionFilterMap, HistoryFilters, TransactionHistoryItem } from 'src/modules/history/types';
+import {
+  actionFilterMap,
+  hasCollateralReserve,
+  hasPrincipalReserve,
+  hasReserve,
+  HistoryFilters,
+  TransactionHistoryItemUnion,
+} from 'src/modules/history/types';
 import {
   USER_TRANSACTIONS_V2,
   USER_TRANSACTIONS_V2_WITH_POOL,
@@ -12,22 +19,36 @@ export const applyTxHistoryFilters = ({
   searchQuery,
   filterQuery,
   txns,
-}: HistoryFilters & { txns: TransactionHistoryItem[] }) => {
-  let filteredTxns: TransactionHistoryItem[];
+}: HistoryFilters & { txns: TransactionHistoryItemUnion[] }) => {
+  let filteredTxns: TransactionHistoryItemUnion[];
 
   // Apply seach filter
   if (searchQuery.length > 0) {
     const lowerSearchQuery = searchQuery.toLowerCase();
 
-    // txn may or may not contain certain reserve fields depending on tx type
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    filteredTxns = txns.filter((txn: any) => {
-      const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase() ?? '';
-      const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase() ?? '';
-      const collateralName = txn?.collateralReserve?.name?.toLowerCase() ?? '';
-      const principalName = txn?.principalReserve?.name?.toLowerCase() ?? '';
-      const symbol = txn?.reserve?.symbol?.toLowerCase() ?? '';
-      const name = txn?.reserve?.name?.toLowerCase() ?? '';
+    filteredTxns = txns.filter((txn: TransactionHistoryItemUnion) => {
+      let collateralSymbol = '';
+      let principalSymbol = '';
+      let collateralName = '';
+      let principalName = '';
+      let symbol = '';
+      let name = '';
+
+      if (hasCollateralReserve(txn)) {
+        collateralSymbol = txn.collateralReserve.symbol.toLowerCase();
+        collateralName = txn.collateralReserve.name.toLowerCase();
+      }
+
+      if (hasPrincipalReserve(txn)) {
+        principalSymbol = txn.principalReserve.symbol.toLowerCase();
+        principalName = txn.principalReserve.name.toLowerCase();
+      }
+
+      if (hasReserve(txn)) {
+        symbol = txn.reserve.symbol.toLowerCase();
+        name = txn.reserve.name.toLowerCase();
+      }
+
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
       const altName = name.includes('ether') ? 'ethereum' : '';
 
@@ -47,7 +68,7 @@ export const applyTxHistoryFilters = ({
 
   // apply txn type filter
   if (filterQuery.length > 0) {
-    filteredTxns = filteredTxns.filter((txn: TransactionHistoryItem) => {
+    filteredTxns = filteredTxns.filter((txn: TransactionHistoryItemUnion) => {
       if (filterQuery.includes(actionFilterMap(txn.action))) {
         return true;
       } else {
@@ -127,7 +148,7 @@ export const useTransactionHistory = () => {
   const fetchForDownload = async ({
     searchQuery,
     filterQuery,
-  }: HistoryFilters): Promise<TransactionHistoryItem[]> => {
+  }: HistoryFilters): Promise<TransactionHistoryItemUnion[]> => {
     const allTransactions = [];
     const batchSize = 100;
     let skip = 0;
@@ -159,7 +180,7 @@ export const useTransactionHistory = () => {
     isFetchingNextPage,
     isError,
     error,
-  }: UseInfiniteQueryResult<TransactionHistoryItem[], Error> = useInfiniteQuery(
+  }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
     [
       QueryKeys.TRANSACTION_HISTORY,
       account,
@@ -180,8 +201,8 @@ export const useTransactionHistory = () => {
     {
       enabled: !!account && !!currentMarketData.subgraphUrl,
       getNextPageParam: (
-        lastPage: TransactionHistoryItem[],
-        allPages: TransactionHistoryItem[][]
+        lastPage: TransactionHistoryItemUnion[],
+        allPages: TransactionHistoryItemUnion[][]
       ) => {
         const moreDataAvailable = lastPage.length === 100;
         if (!moreDataAvailable) {
