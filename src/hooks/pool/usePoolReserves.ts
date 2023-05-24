@@ -1,24 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-type UsePoolReservesArgs = {
-  lendingPoolAddressProvider: string;
-};
-
-export const usePoolReserves = ({ lendingPoolAddressProvider }: UsePoolReservesArgs) => {
+export const usePoolReserves = (marketData: MarketDataType) => {
   const { uiPoolService } = useSharedDependencies();
   return useQuery({
-    queryFn: () => uiPoolService.getReservesHumanized({ lendingPoolAddressProvider }),
-    queryKey: [QueryKeys.POOL_RESERVES, lendingPoolAddressProvider, uiPoolService.toHash()],
+    queryFn: () => uiPoolService.getReservesHumanized(marketData),
+    queryKey: [QueryKeys.POOL_RESERVES, marketData],
     refetchInterval: POLLING_INTERVAL,
   });
 };
 
 export const useCMPoolReserves = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  return usePoolReserves({
-    lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  return usePoolReserves(currentMarketData);
 };

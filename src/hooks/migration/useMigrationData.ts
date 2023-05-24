@@ -42,33 +42,19 @@ export const useMigrationData = () => {
     selectCurrentChainIdV2MarketData(store)
   );
 
-  const { data: userPoolReserveV3 } = useUserPoolReserves({
-    lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: userPoolReserveV3 } = useUserPoolReserves(currentChainIdV3MarketData);
 
-  const { data: userPoolReserveV2 } = useUserPoolReserves({
-    lendingPoolAddressProvider: currentChainIdV2MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: userPoolReserveV2 } = useUserPoolReserves(currentChainIdV2MarketData);
 
-  const { data: poolReserveV3 } = usePoolReserves({
-    lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: poolReserveV3 } = usePoolReserves(currentChainIdV3MarketData);
 
-  const { data: poolReserveV2 } = usePoolReserves({
-    lendingPoolAddressProvider: currentChainIdV2MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: poolReserveV2 } = usePoolReserves(currentChainIdV2MarketData);
 
-  const { data: v2UserIncentiveData } = useUserIncentiveData({
-    lendingPoolAddressProvider: currentChainIdV2MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: v2UserIncentiveData } = useUserIncentiveData(currentChainIdV2MarketData);
 
-  const { data: v3ReserveIncentiveData } = useReserveIncentiveData({
-    lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: v3ReserveIncentiveData } = useReserveIncentiveData(currentChainIdV3MarketData);
 
-  const { data: v2ReserveIncentiveData } = useReserveIncentiveData({
-    lendingPoolAddressProvider: currentChainIdV2MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: v2ReserveIncentiveData } = useReserveIncentiveData(currentChainIdV2MarketData);
 
   const poolReserveV3Data = {
     reserves: poolReserveV3?.reservesData,

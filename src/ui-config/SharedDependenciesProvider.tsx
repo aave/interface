@@ -16,7 +16,7 @@ interface SharedDependenciesContext {
   governanceWalletBalanceService: WalletBalanceService;
   poolTokensBalanceService: WalletBalanceService;
   uiStakeDataService: UiStakeDataService;
-  uiIncentivesDataService?: UiIncentivesDataService;
+  uiIncentivesDataService: UiIncentivesDataService;
   uiPoolService: UiPoolService;
 }
 
@@ -60,18 +60,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     stakeConfig.stakeDataProvider,
     stakingChainId
   );
-  const uiIncentivesDataService = currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER
-    ? new UiIncentivesDataService(
-        currentProvider,
-        currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER,
-        currentMarketData.chainId
-      )
-    : undefined;
-  const uiPoolService = new UiPoolService(
-    currentProvider,
-    currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
-    currentMarketData.chainId
-  );
+  const uiIncentivesDataService = new UiIncentivesDataService(getProvider);
+  const uiPoolService = new UiPoolService(getProvider);
 
   return (
     <SharedDependenciesContext.Provider

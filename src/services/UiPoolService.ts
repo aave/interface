@@ -1,38 +1,31 @@
-import {
-  ReservesHelperInput,
-  UiPoolDataProvider,
-  UserReservesHelperInput,
-} from '@aave/contract-helpers';
+import { ReservesDataHumanized, UiPoolDataProvider } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
-import { Hashable } from 'src/utils/types';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-export class UiPoolService implements Hashable {
-  private readonly uiPoolDataProviderService: UiPoolDataProvider;
+export class UiPoolService {
+  constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  constructor(
-    provider: Provider,
-    uiPoolDataProviderAddress: string,
-    public readonly chainId: number
-  ) {
-    this.uiPoolDataProviderService = new UiPoolDataProvider({
-      uiPoolDataProviderAddress,
-      provider: provider,
-      chainId,
+  private getUiPoolDataProvider(marketData: MarketDataType) {
+    const provider = this.getProvider(marketData.chainId);
+    return new UiPoolDataProvider({
+      uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER,
+      provider,
+      chainId: marketData.chainId,
     });
   }
-  async getReservesHumanized({ lendingPoolAddressProvider }: ReservesHelperInput) {
-    return this.uiPoolDataProviderService.getReservesHumanized({
-      lendingPoolAddressProvider,
+
+  async getReservesHumanized(marketData: MarketDataType): Promise<ReservesDataHumanized> {
+    const uiPoolDataProvider = this.getUiPoolDataProvider(marketData);
+    return uiPoolDataProvider.getReservesHumanized({
+      lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     });
   }
-  async getUserReservesHumanized({ user, lendingPoolAddressProvider }: UserReservesHelperInput) {
-    return this.uiPoolDataProviderService.getUserReservesHumanized({
+
+  async getUserReservesHumanized(marketData: MarketDataType, user: string) {
+    const uiPoolDataProvider = this.getUiPoolDataProvider(marketData);
+    return uiPoolDataProvider.getUserReservesHumanized({
       user,
-      lendingPoolAddressProvider,
+      lendingPoolAddressProvider: marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     });
-  }
-
-  public toHash() {
-    return this.chainId.toString();
   }
 }

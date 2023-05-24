@@ -54,9 +54,7 @@ export default function V3Migration() {
     v3UserSummaryAfterMigration,
   } = useMigrationData();
 
-  const { data: userPoolReserveV3 } = useUserPoolReserves({
-    lendingPoolAddressProvider: currentChainIdV3MarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  });
+  const { data: userPoolReserveV3 } = useUserPoolReserves(currentChainIdV3MarketData);
 
   useEffect(() => {
     if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
