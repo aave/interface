@@ -17,21 +17,29 @@ export const applyTxHistoryFilters = ({
 
   // Apply seach filter
   if (searchQuery.length > 0) {
+    const lowerSearchQuery = searchQuery.toLowerCase();
+
     // txn may or may not contain certain reserve fields depending on tx type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filteredTxns = txns.filter((txn: any) => {
-      const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase(); // for liquidationcall
-      const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase(); // for liquidationcall
-      const symbol = txn?.reserve?.symbol?.toLowerCase(); // for all other reserve actions
-      if (
-        (symbol && symbol.includes(searchQuery.toLowerCase())) ||
-        (collateralSymbol && collateralSymbol.includes(searchQuery.toLowerCase())) ||
-        (principalSymbol && principalSymbol.includes(searchQuery.toLowerCase()))
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      const collateralSymbol = txn?.collateralReserve?.symbol?.toLowerCase() ?? '';
+      const principalSymbol = txn?.principalReserve?.symbol?.toLowerCase() ?? '';
+      const collateralName = txn?.collateralReserve?.name?.toLowerCase() ?? '';
+      const principalName = txn?.principalReserve?.name?.toLowerCase() ?? '';
+      const symbol = txn?.reserve?.symbol?.toLowerCase() ?? '';
+      const name = txn?.reserve?.name?.toLowerCase() ?? '';
+      // handle special case where user searches for ethereum but asset names are abbreviated as ether
+      const altName = name.includes('ether') ? 'ethereum' : '';
+
+      return (
+        symbol.includes(lowerSearchQuery) ||
+        collateralSymbol.includes(lowerSearchQuery) ||
+        principalSymbol.includes(lowerSearchQuery) ||
+        name.includes(lowerSearchQuery) ||
+        altName.includes(lowerSearchQuery) ||
+        collateralName.includes(lowerSearchQuery) ||
+        principalName.includes(lowerSearchQuery)
+      );
     });
   } else {
     filteredTxns = txns;
