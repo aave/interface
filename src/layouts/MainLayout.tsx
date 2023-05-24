@@ -7,14 +7,13 @@ import TopBarNotify from './TopBarNotify';
 
 const notifyText = (
   <Trans>
-    <strong>Important: </strong>An upcoming Aave Governance Proposal may adjust E-Mode and pose
-    liquidation risks to certain positions.
+    <strong>Important: </strong>An Aave Governance Proposal regarding changes to E-Mode parameters
+    is now live and may impact the health factor of certain positions.
   </Trans>
 );
 
 // Gaunlet AIP for emode liquidations
-const learnMoreLink =
-  'https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550';
+const learnMoreLink = 'https://app.aave.com/governance/proposal/?proposalId=233';
 
 export function MainLayout({ children }: { children: ReactNode }) {
   return (
