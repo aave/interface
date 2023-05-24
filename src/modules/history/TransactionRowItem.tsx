@@ -13,12 +13,12 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ActionFields, TransactionHistoryItem } from 'src/hooks/useTransactionHistory';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { BorrowRateModeBlock } from './BorrowRateModeBlock';
 import { PriceUnavailable } from './PriceUnavailable';
+import { ActionFields, TransactionHistoryItem } from './types';
 
 const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {

@@ -47,6 +47,7 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+
 const queryClient = new QueryClient();
 
 interface MyAppProps extends AppProps {

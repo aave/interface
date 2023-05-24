@@ -13,18 +13,14 @@ import React, { useCallback, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
-import {
-  ActionFields,
-  applyTxHistoryFilters,
-  TransactionHistoryItem,
-  useTransactionHistory,
-} from 'src/hooks/useTransactionHistory';
+import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
+import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryWrapperMobile } from './HistoryWrapperMobile';
 import TransactionRowItem from './TransactionRowItem';
+import { ActionFields, FilterOptions, TransactionHistoryItem } from './types';
 
 const groupByDate = (
   transactions: TransactionHistoryItem[]

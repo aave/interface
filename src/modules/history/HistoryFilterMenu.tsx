@@ -15,19 +15,11 @@ import {
 import React, { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 
+import { FilterOptions } from './types';
+
 interface HistoryFilterMenuProps {
   onFilterChange: (filter: FilterOptions[]) => void;
   currentFilter: FilterOptions[];
-}
-
-export enum FilterOptions {
-  SUPPLY,
-  BORROW,
-  WITHDRAW,
-  REPAY,
-  RATECHANGE,
-  COLLATERALCHANGE,
-  LIQUIDATION,
 }
 
 interface FilterLabelProps {

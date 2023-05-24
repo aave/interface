@@ -16,18 +16,14 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
-import {
-  ActionFields,
-  applyTxHistoryFilters,
-  TransactionHistoryItem,
-  useTransactionHistory,
-} from 'src/hooks/useTransactionHistory';
+import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 
 import { downloadData } from './downloadHelper';
-import { FilterOptions, HistoryFilterMenu } from './HistoryFilterMenu';
+import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
 import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
+import { ActionFields, FilterOptions, TransactionHistoryItem } from './types';
 
 const groupByDate = (
   transactions: TransactionHistoryItem[]
