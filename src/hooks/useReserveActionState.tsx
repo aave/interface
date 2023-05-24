@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Stack, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -29,7 +30,7 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { currentNetworkConfig, currentChainId } = useRootStore();
+  const { currentNetworkConfig, currentChainId, currentMarketData } = useRootStore();
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;
@@ -40,14 +41,19 @@ export const useReserveActionState = ({
   const eModeBorrowDisabled =
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
+  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
+  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
+
   return {
-    disableSupplyButton: balance === '0' || maxAmountToSupply === '0',
+    disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isAffectedReserve,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
       isolationModeBorrowDisabled ||
       eModeBorrowDisabled ||
-      maxAmountToBorrow === '0',
+      maxAmountToBorrow === '0' ||
+      isPolygonV2,
     alerts: (
       <Stack gap={3}>
         {balance === '0' && (

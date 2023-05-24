@@ -5,7 +5,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
-import { IsolatedBadge } from 'src/components/isolationMode/IsolatedBadge';
+import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -228,7 +228,7 @@ export const MigrationListItem = ({
                   <SvgIcon sx={{ color: 'warning.main', fontSize: '20px' }}>
                     <ExclamationCircleIcon />
                   </SvgIcon>
-                  <IsolatedBadge />
+                  <IsolatedEnabledBadge />
                 </Box>
               ) : (
                 <CheckRoundedIcon fontSize="small" color="success" />

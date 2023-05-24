@@ -68,7 +68,7 @@ describe(`DELEGATION SPEC`, () => {
     false
   );
   revoke({ asset: initAssets.aave.asset }, skipTestState, true);
-  revoke({ asset: initAssets.stkAave.asset }, skipTestState, true);
+  revoke({ asset: initAssets.stkAave.asset, isChoice: false }, skipTestState, true);
   verifyPower(
     {
       votingPower: '2,000.00',

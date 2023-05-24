@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -15,12 +15,14 @@ import { ListValueRow } from '../ListValueRow';
 
 export const BorrowedPositionsListMobileItem = ({
   reserve,
-  totalBorrows,
-  totalBorrowsUSD,
+  variableBorrows,
+  variableBorrowsUSD,
+  stableBorrows,
+  stableBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
 }: DashboardReserve) => {
-  const { currentMarket } = useProtocolDataContext();
+  const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { borrowCap } = useAssetCaps();
   const {
@@ -37,6 +39,28 @@ export const BorrowedPositionsListMobileItem = ({
     underlyingAsset,
   } = reserve;
 
+  const totalBorrows = Number(
+    borrowRateMode === InterestRate.Variable ? variableBorrows : stableBorrows
+  );
+
+  const totalBorrowsUSD = Number(
+    borrowRateMode === InterestRate.Variable ? variableBorrowsUSD : stableBorrowsUSD
+  );
+
+  const apy = Number(
+    borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
+  );
+
+  const incentives = borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData;
+
+  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
+  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
+  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
+
+  const disableRepay = !isActive || isAffectedReserve;
+  const disableBorrow =
+    !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed || isPolygonV2;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -50,20 +74,13 @@ export const BorrowedPositionsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
-        value={Number(totalBorrows)}
-        subValue={Number(totalBorrowsUSD)}
-        disabled={Number(totalBorrows) === 0}
+        value={totalBorrows}
+        subValue={totalBorrowsUSD}
+        disabled={totalBorrows === 0}
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
-        <IncentivesCard
-          value={Number(
-            borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
-          )}
-          incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
-          symbol={symbol}
-          variant="secondary14"
-        />
+        <IncentivesCard value={apy} incentives={incentives} symbol={symbol} variant="secondary14" />
       </Row>
 
       <Row
@@ -87,7 +104,7 @@ export const BorrowedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive}
+          disabled={disableRepay}
           variant="contained"
           onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
           sx={{ mr: 1.5 }}
@@ -96,7 +113,7 @@ export const BorrowedPositionsListMobileItem = ({
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
+          disabled={disableBorrow}
           variant="outlined"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth

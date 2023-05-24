@@ -7,6 +7,7 @@ import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
+import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
@@ -24,7 +25,8 @@ export type RootStore = StakeSlice &
   IncentiveSlice &
   GovernanceSlice &
   V3MigrationSlice &
-  WalletDomainsSlice;
+  WalletDomainsSlice &
+  LayoutSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -38,6 +40,7 @@ export const useRootStore = create<RootStore>()(
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
         ...createWalletDomainsSlice(...args),
+        ...createLayoutSlice(...args),
       };
     })
   )

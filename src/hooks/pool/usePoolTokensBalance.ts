@@ -8,6 +8,7 @@ export const usePoolTokensBalance = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
   const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
+  const lendingPoolAddress = currentMarketData.addresses.LENDING_POOL;
   return useQuery({
     queryFn: () =>
       poolTokensBalanceService.getPoolTokensBalances({ user, lendingPoolAddressProvider }),
@@ -15,6 +16,7 @@ export const usePoolTokensBalance = () => {
       QueryKeys.POOL_TOKENS,
       user,
       lendingPoolAddressProvider,
+      lendingPoolAddress,
       poolTokensBalanceService.toHash(),
     ],
     enabled: !!user,

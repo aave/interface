@@ -3,7 +3,7 @@ import {
   V3MigrationHelperSignedCreditDelegationPermit,
   V3MigrationHelperSignedPermit,
 } from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
-import { FormatReserveUSDResponse, valueToBigNumber } from '@aave/math-utils';
+import { FormatReserveUSDResponse } from '@aave/math-utils';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumberish } from 'ethers';
@@ -47,38 +47,20 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
-      let increasedAmount = userReserve.stableBorrows;
-      if (userReserve.reserve.stableBorrowAPY == '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.stableBorrows,
-          userReserve.reserve.stableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Stable,
-        increasedStableBorrows: increasedAmount,
+        increasedStableBorrows: userReserve.stableBorrows,
         increasedVariableBorrows: '0',
         debtKey: userReserve.reserve.stableDebtTokenAddress,
       });
     }
     if (userReserve.variableBorrows !== '0') {
-      let increasedAmount = userReserve.variableBorrows;
-      if (userReserve.reserve.variableBorrowAPY === '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.variableBorrows,
-          userReserve.reserve.variableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Variable,
         increasedStableBorrows: '0',
-        increasedVariableBorrows: increasedAmount,
+        increasedVariableBorrows: userReserve.variableBorrows,
         debtKey: userReserve.reserve.variableDebtTokenAddress,
       });
     }
@@ -167,21 +149,6 @@ export const selectMigrationSignedPermits = (
     supplyPermits,
     creditDelegationPermits,
   };
-};
-
-const addPercent = (amount: string) => {
-  const convertedAmount = valueToBigNumber(amount);
-  return convertedAmount.plus(convertedAmount.div(1000)).toString();
-};
-
-// adding  7 days of either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
-const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
-  const convertedAmount = valueToBigNumber(amount);
-  const convertedBorrowAPY = valueToBigNumber(borrowAPY);
-  return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
-    .toString();
 };
 
 export const selectIsMigrationAvailable = (store: RootStore) => {

@@ -64,7 +64,7 @@ export const useParaSwapTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
-  const { walletApprovalMethodPreference, generateSignatureRequst } = useRootStore();
+  const { walletApprovalMethodPreference, generateSignatureRequest } = useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -136,7 +136,7 @@ export const useParaSwapTransactionHandler = ({
       try {
         // deadline is an hour after signature
         const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-        const unsingedPayload = await generateSignatureRequst({
+        const unsingedPayload = await generateSignatureRequest({
           token: underlyingAsset,
           amount: amount,
           deadline,

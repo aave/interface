@@ -33652,7 +33652,7 @@ var require_types2 = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/types.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.Stake = exports2.GovernanceVote = exports2.ProtocolAction = exports2.eEthereumTxType = exports2.ChainId = exports2.ChainIdToNetwork = exports2.InterestRate = void 0;
+    exports2.DEFAULT_DEADLINE = exports2.Stake = exports2.GovernanceVote = exports2.ProtocolAction = exports2.eEthereumTxType = exports2.ChainId = exports2.ChainIdToNetwork = exports2.InterestRate = void 0;
     var InterestRate;
     (function(InterestRate2) {
       InterestRate2["None"] = "None";
@@ -33680,7 +33680,9 @@ var require_types2 = __commonJS({
       420: "optimism_goerli",
       16666e5: "harmony",
       16667e5: "harmony_testnet",
-      11155111: "sepolia"
+      11155111: "sepolia",
+      534353: "scroll_alpha",
+      1088: "metis_andromeda"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33706,6 +33708,8 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["harmony_testnet"] = 16667e5] = "harmony_testnet";
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
+      ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
+      ChainId7[ChainId7["metis_andromeda"] = 1088] = "metis_andromeda";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -33738,6 +33742,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
       ProtocolAction2["vote"] = "vote";
+      ProtocolAction2["approval"] = "approval";
+      ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
     (function(GovernanceVote2) {
@@ -33750,6 +33756,7 @@ var require_types2 = __commonJS({
       Stake2["aave"] = "aave";
       Stake2["bpt"] = "bpt";
     })(Stake = exports2.Stake || (exports2.Stake = {}));
+    exports2.DEFAULT_DEADLINE = Math.floor(Date.now() / 1e3 + 3600).toString();
   }
 });
 
@@ -35250,7 +35257,7 @@ var require_utils6 = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/utils.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.augustusToAmountOffsetFromCalldata = exports2.mintAmountsPerToken = exports2.gasLimitRecommendations = exports2.SURPLUS = exports2.uniswapEthAmount = exports2.API_ETH_MOCK_ADDRESS = exports2.SUPER_BIG_ALLOWANCE_NUMBER = exports2.MAX_UINT_AMOUNT = exports2.DEFAULT_APPROVE_AMOUNT = exports2.DEFAULT_NULL_VALUE_ON_TX = exports2.getTxValue = exports2.decimalsToCurrencyUnits = exports2.canBeEnsAddress = exports2.valueToWei = void 0;
+    exports2.convertPopulatedTx = exports2.augustusToAmountOffsetFromCalldata = exports2.mintAmountsPerToken = exports2.gasLimitRecommendations = exports2.SURPLUS = exports2.uniswapEthAmount = exports2.API_ETH_MOCK_ADDRESS = exports2.SUPER_BIG_ALLOWANCE_NUMBER = exports2.MAX_UINT_AMOUNT = exports2.DEFAULT_APPROVE_AMOUNT = exports2.DEFAULT_NULL_VALUE_ON_TX = exports2.getTxValue = exports2.decimalsToCurrencyUnits = exports2.canBeEnsAddress = exports2.valueToWei = void 0;
     var bignumber_js_1 = require_bignumber2();
     var ethers_1 = require_lib31();
     var types_1 = require_types2();
@@ -35279,6 +35286,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.default]: {
         limit: "210000",
         recommended: "210000"
+      },
+      [types_1.ProtocolAction.approval]: {
+        limit: "65000",
+        recommended: "65000"
+      },
+      [types_1.ProtocolAction.creditDelegationApproval]: {
+        limit: "55000",
+        recommended: "55000"
       },
       [types_1.ProtocolAction.supply]: {
         limit: "300000",
@@ -35398,6 +35413,10 @@ var require_utils6 = __commonJS({
       }
     };
     exports2.augustusToAmountOffsetFromCalldata = augustusToAmountOffsetFromCalldata;
+    var convertPopulatedTx = (tx) => {
+      return Object.assign(Object.assign({}, tx), { value: tx.value ? ethers_1.BigNumber.from(tx.value) : ethers_1.BigNumber.from("0") });
+    };
+    exports2.convertPopulatedTx = convertPopulatedTx;
   }
 });
 
@@ -35444,6 +35463,24 @@ var require_BaseService = __commonJS({
             gasLimit: utils_1.gasLimitRecommendations[action].recommended,
             gasPrice: gasPrice.toString()
           };
+        });
+        this.estimateGasLimit = (_0) => __async(this, [_0], function* ({ tx, gasSurplus, action, skipGasEstimation }) {
+          const gasLimit = action ? ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[action].limit) : ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.default].limit);
+          if (skipGasEstimation) {
+            tx.gasLimit = gasLimit;
+            return tx;
+          }
+          let estimatedGasLimit = ethers_1.BigNumber.from("0");
+          try {
+            estimatedGasLimit = yield (0, gasStation_1.estimateGasByNetwork)(Object.assign(Object.assign({}, tx), { value: tx.value ? tx.value.toHexString() : utils_1.DEFAULT_NULL_VALUE_ON_TX }), this.provider, gasSurplus);
+          } catch (_) {
+          }
+          if (estimatedGasLimit.gt(gasLimit)) {
+            tx.gasLimit = estimatedGasLimit;
+          } else {
+            tx.gasLimit = gasLimit;
+          }
+          return tx;
         });
         this.contractFactory = contractFactory;
         this.provider = provider;
@@ -40951,6 +40988,9 @@ var require_IERC20Detailed_factory = __commonJS({
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
     };
     exports2.IERC20Detailed__factory = IERC20Detailed__factory;
     var _abi = [
@@ -41053,9 +41093,10 @@ var require_erc20_contract = __commonJS({
     exports2.ERC20Service = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var ethers_1 = require_lib31();
+    var utils_1 = require_utils5();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
-    var utils_1 = require_utils6();
+    var utils_2 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var IERC20Detailed__factory_1 = require_IERC20Detailed_factory();
@@ -41065,10 +41106,20 @@ var require_erc20_contract = __commonJS({
         this.tokenDecimals = {};
         this.tokenMetadata = {};
         this.approve = this.approve.bind(this);
+        this.approveTxData = this.approveTxData.bind(this);
         this.isApproved = this.isApproved.bind(this);
         this.getTokenData = this.getTokenData.bind(this);
         this.decimalsOf = this.decimalsOf.bind(this);
+        this.contractInterface = IERC20Detailed__factory_1.IERC20Detailed__factory.createInterface();
       }
+      /**
+       * Generate approval tx data with legacy method, call tx() and gas() callbacks for tx data and gas estimation respectively
+       * @param {string} user - Address to check allowance for
+       * @param {string} token - Token which the user is spending
+       * @param {string} spender - Address which is spending the tokens
+       * @param {string} amount - Amount to approve
+       * @returns {EthereumTransactionTypeExtended} legacy transaction response
+       */
       approve({ user, token, spender, amount }) {
         const erc20Contract = this.getContractInstance(token);
         const txCallback = this.generateTxCallback({
@@ -41083,20 +41134,73 @@ var require_erc20_contract = __commonJS({
           gas: this.generateTxPriceEstimation([], txCallback)
         };
       }
+      /**
+       * Generate approval tx data, ready to sign and submit to blockchain
+       * @param {string} user - Address to check allowance for
+       * @param {string} token - Token which the user is spending
+       * @param {string} spender - Address which is spending the tokens
+       * @param {string} amount - Amount to approve
+       * @returns {PopulatedTransaction} Transaction response
+       */
+      approveTxData({ user, token, spender, amount }) {
+        const tx = {};
+        const txData = this.contractInterface.encodeFunctionData("approve", [
+          spender,
+          amount
+        ]);
+        tx.data = txData;
+        tx.to = token;
+        tx.from = user;
+        tx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.approval].recommended);
+        return tx;
+      }
+      /**
+       * Qeuries whether user has approved spender to transfer tokens up to the specific amount
+       * @param {string} user - Address to check allowance for
+       * @param {string} token - Token which the user is spending
+       * @param {string} spender - Address which is spending the tokens
+       * @param {string} amount - Amount of token to checkif spender has allowance for
+       * @returns {boolean} true if user has approved spender contract for greater than passed amount, false otherwise
+       */
       isApproved(_0) {
-        return __async(this, arguments, function* ({ user, token, spender, amount }) {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+        return __async(this, arguments, function* ({ user, token, spender, amount, nativeDecimals }) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return true;
           const decimals = yield this.decimalsOf(token);
           const erc20Contract = this.getContractInstance(token);
           const allowance = yield erc20Contract.allowance(user, spender);
-          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_1.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_2.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_2.valueToWei)(nativeDecimals ? (0, utils_1.formatUnits)(amount, decimals) : amount, decimals));
           return allowance.gte(amountBNWithDecimals);
         });
       }
+      /**
+       * Fetches the approval allowance of a user for a specific token and spender
+       * @param {string} user - Address to check allowance for
+       * @param {string} token - Token which the user is spending
+       * @param {string} spender - Address which is spending the tokens
+       * @returns {number} The user's approved allowance, in standard decimal units, -1 for max allowance
+       */
+      approvedAmount(_0) {
+        return __async(this, arguments, function* ({ user, token, spender }) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
+            return -1;
+          const erc20Contract = this.getContractInstance(token);
+          const allowance = yield erc20Contract.allowance(user, spender);
+          if (allowance.toString() === utils_2.MAX_UINT_AMOUNT) {
+            return -1;
+          }
+          const decimals = yield this.decimalsOf(token);
+          return Number(ethers_1.ethers.utils.formatUnits(allowance, decimals));
+        });
+      }
+      /**
+       * Fetches the decimals of an ERC20 token, used for formatting amounts
+       * @param {string} token - ERC20 token address
+       * @returns {number} Decimal units of token amounts
+       */
       decimalsOf(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return 18;
           if (!this.tokenDecimals[token]) {
             const erc20Contract = this.getContractInstance(token);
@@ -41105,9 +41209,14 @@ var require_erc20_contract = __commonJS({
           return this.tokenDecimals[token];
         });
       }
+      /**
+       * Return basic details of an ERC20
+       * @param {string} token - ERC20 token address
+       * @returns {TokenMetadataType} ERC20 token metadata
+       */
       getTokenData(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             return {
               name: "Ethereum",
               symbol: "ETH",
@@ -41156,11 +41265,30 @@ var require_erc20_contract = __commonJS({
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("spender")),
+      tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Object)
+    ], ERC20Service.prototype, "approveTxData", null);
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("spender")),
       tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)("amount")),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [Object]),
       tslib_1.__metadata("design:returntype", Promise)
     ], ERC20Service.prototype, "isApproved", null);
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("spender")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], ERC20Service.prototype, "approvedAmount", null);
     tslib_1.__decorate([
       methodValidators_1.ERC20Validator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
@@ -42000,6 +42128,9 @@ var require_IDebtTokenBase_factory = __commonJS({
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
     };
     exports2.IDebtTokenBase__factory = IDebtTokenBase__factory;
     var _abi = [
@@ -42067,6 +42198,7 @@ var require_baseDebtToken_contract = __commonJS({
       constructor(provider, erc20Service) {
         super(provider, IDebtTokenBase__factory_1.IDebtTokenBase__factory);
         this.erc20Service = erc20Service;
+        this.debtTokenInterface = IDebtTokenBase__factory_1.IDebtTokenBase__factory.createInterface();
       }
       approveDelegation({ user, delegatee, debtTokenAddress, amount }) {
         const debtTokenContract = this.getContractInstance(debtTokenAddress);
@@ -42082,13 +42214,31 @@ var require_baseDebtToken_contract = __commonJS({
           gas: this.generateTxPriceEstimation([], txCallback)
         };
       }
+      approvedDelegationAmount(_0) {
+        return __async(this, arguments, function* ({ user, delegatee, debtTokenAddress }) {
+          const debtTokenContract = this.getContractInstance(debtTokenAddress);
+          const allowance = yield debtTokenContract.borrowAllowance(user, delegatee);
+          const decimals = yield this.erc20Service.decimalsOf(debtTokenAddress);
+          return Number(ethers_1.ethers.utils.formatUnits(allowance, decimals));
+        });
+      }
+      generateApproveDelegationTxData({ user, delegatee, debtTokenAddress, amount }) {
+        const txData = this.debtTokenInterface.encodeFunctionData("approveDelegation", [delegatee, amount]);
+        const approveDelegationTx = {
+          data: txData,
+          to: debtTokenAddress,
+          from: user,
+          gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.creditDelegationApproval].recommended)
+        };
+        return approveDelegationTx;
+      }
       isDelegationApproved(_0) {
-        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount }) {
+        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount, nativeDecimals }) {
           const decimals = yield this.erc20Service.decimalsOf(debtTokenAddress);
           const debtTokenContract = this.getContractInstance(debtTokenAddress);
           const delegatedAllowance = yield debtTokenContract.borrowAllowance(allowanceGiver, allowanceReceiver);
-          const amountBNWithDecimals = ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
-          return delegatedAllowance.gt(amountBNWithDecimals);
+          const amountBNWithDecimals = nativeDecimals ? ethers_1.BigNumber.from(amount) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          return delegatedAllowance.gte(amountBNWithDecimals);
         });
       }
     };
@@ -42102,6 +42252,25 @@ var require_baseDebtToken_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", [Object]),
       tslib_1.__metadata("design:returntype", Object)
     ], BaseDebtToken.prototype, "approveDelegation", null);
+    tslib_1.__decorate([
+      methodValidators_1.DebtTokenValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("delegatee")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], BaseDebtToken.prototype, "approvedDelegationAmount", null);
+    tslib_1.__decorate([
+      methodValidators_1.DebtTokenValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("delegatee")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
+      tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Object)
+    ], BaseDebtToken.prototype, "generateApproveDelegationTxData", null);
     tslib_1.__decorate([
       methodValidators_1.DebtTokenValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("debtTokenAddress")),
@@ -42126,6 +42295,9 @@ var require_IWETHGateway_factory = __commonJS({
     var IWETHGateway__factory = class {
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
       }
     };
     exports2.IWETHGateway__factory = IWETHGateway__factory;
@@ -42261,6 +42433,40 @@ var require_wethgateway_contract = __commonJS({
         this.withdrawETH = this.withdrawETH.bind(this);
         this.repayETH = this.repayETH.bind(this);
         this.borrowETH = this.borrowETH.bind(this);
+        this.wethGatewayInstance = IWETHGateway__factory_1.IWETHGateway__factory.createInterface();
+        this.generateDepositEthTxData = (args) => {
+          var _a7, _b;
+          const txData = this.wethGatewayInstance.encodeFunctionData("depositETH", [
+            args.lendingPool,
+            (_a7 = args.onBehalfOf) !== null && _a7 !== void 0 ? _a7 : args.user,
+            (_b = args.referralCode) !== null && _b !== void 0 ? _b : "0"
+          ]);
+          const actionTx = {
+            data: txData,
+            to: this.wethGatewayAddress,
+            from: args.user,
+            value: ethers_1.BigNumber.from(args.amount),
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].limit)
+          };
+          return actionTx;
+        };
+        this.generateBorrowEthTxData = (args) => {
+          var _a7;
+          const numericRateMode = args.interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          const txData = this.wethGatewayInstance.encodeFunctionData("borrowETH", [
+            args.lendingPool,
+            args.amount,
+            numericRateMode,
+            (_a7 = args.referralCode) !== null && _a7 !== void 0 ? _a7 : "0"
+          ]);
+          const actionTx = {
+            data: txData,
+            to: this.wethGatewayAddress,
+            from: args.user,
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrowETH].limit)
+          };
+          return actionTx;
+        };
       }
       depositETH({ lendingPool, user, amount, onBehalfOf, referralCode }) {
         const convertedAmount = (0, utils_1.valueToWei)(amount, 18);
@@ -42285,6 +42491,9 @@ var require_wethgateway_contract = __commonJS({
           const txs = [];
           const convertedAmount = (0, utils_1.valueToWei)(amount, 18);
           const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          if (!debtTokenAddress) {
+            throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+          }
           const delegationApproved = yield this.baseDebtTokenService.isDelegationApproved({
             debtTokenAddress,
             allowanceGiver: user,
@@ -42428,6 +42637,9 @@ var require_ILendingPool_factory = __commonJS({
     var ILendingPool__factory = class {
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
       }
     };
     exports2.ILendingPool__factory = ILendingPool__factory;
@@ -43397,6 +43609,102 @@ var require_lendingPool_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], LendingPool.prototype, "flashLiquidation", null);
     exports2.LendingPool = LendingPool;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/lendingPool-contract-bundle/index.js
+var require_lendingPool_contract_bundle = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/lendingPool-contract-bundle/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.LendingPoolBundle = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
+    var utils_1 = require_utils6();
+    var erc20_contract_1 = require_erc20_contract();
+    var ILendingPool__factory_1 = require_ILendingPool_factory();
+    var synthetix_contract_1 = require_synthetix_contract();
+    var wethgateway_contract_1 = require_wethgateway_contract();
+    var LendingPoolBundle = class extends BaseService_1.default {
+      constructor(provider, lendingPoolConfig) {
+        super(provider, ILendingPool__factory_1.ILendingPool__factory);
+        const { LENDING_POOL, WETH_GATEWAY } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.lendingPoolAddress = LENDING_POOL !== null && LENDING_POOL !== void 0 ? LENDING_POOL : "";
+        this.wethGatewayAddress = WETH_GATEWAY !== null && WETH_GATEWAY !== void 0 ? WETH_GATEWAY : "";
+        this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY);
+        this.contractInterface = ILendingPool__factory_1.ILendingPool__factory.createInterface();
+        this.depositTxBuilder = {
+          getApprovedAmount: (props) => __async(this, null, function* () {
+            const spender = props.token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase() ? this.wethGatewayAddress : this.lendingPoolAddress;
+            const amount = yield this.erc20Service.approvedAmount(Object.assign(Object.assign({}, props), { spender }));
+            return Object.assign(Object.assign({}, props), { spender, amount: amount.toString() });
+          }),
+          generateTxData: ({ user, reserve, amount, onBehalfOf, referralCode }) => {
+            let actionTx = {};
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              actionTx = this.wethGatewayService.generateDepositEthTxData({
+                lendingPool: this.lendingPoolAddress,
+                user,
+                amount,
+                onBehalfOf,
+                referralCode
+              });
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("deposit", [
+                reserve,
+                amount,
+                onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+              ]);
+              actionTx.to = this.lendingPoolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].recommended);
+            }
+            return actionTx;
+          }
+        };
+        this.borrowTxBuilder = {
+          generateTxData: ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode }) => {
+            let actionTx = {};
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              if (!debtTokenAddress) {
+                throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+              }
+              actionTx = this.wethGatewayService.generateBorrowEthTxData({
+                lendingPool: this.lendingPoolAddress,
+                user,
+                amount,
+                debtTokenAddress,
+                interestRateMode,
+                referralCode: referralCodeParam
+              });
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("borrow", [
+                reserve,
+                amount,
+                numericRateMode,
+                referralCodeParam,
+                onBehalfOfParam
+              ]);
+              actionTx.to = this.lendingPoolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
+            }
+            return actionTx;
+          }
+        };
+      }
+    };
+    exports2.LendingPoolBundle = LendingPoolBundle;
   }
 });
 
@@ -44873,13 +45181,125 @@ var require_IGovernanceV2Helper_factory = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.IGovernanceV2Helper__factory = void 0;
     var ethers_1 = require_lib31();
-    var IGovernanceV2Helper__factory = class {
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IGovernanceV2Helper__factory = IGovernanceV2Helper__factory;
     var _abi = [
+      {
+        inputs: [],
+        name: "ONE_HUNDRED_WITH_PRECISION",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "tokens",
+            type: "address[]"
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "nonce",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "expiry",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct IGovernanceV2Helper.DelegateTokensBySigData[]",
+            name: "data",
+            type: "tuple[]"
+          }
+        ],
+        name: "delegateTokensBySig",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "tokens",
+            type: "address[]"
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "delegatee",
+                type: "address"
+              },
+              {
+                internalType: "enum IGovernancePowerDelegationToken.DelegationType",
+                name: "delegationType",
+                type: "uint8"
+              },
+              {
+                internalType: "uint256",
+                name: "nonce",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "expiry",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct IGovernanceV2Helper.DelegateTokensByTypeBySigData[]",
+            name: "data",
+            type: "tuple[]"
+          }
+        ],
+        name: "delegateTokensByTypeBySig",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
       {
         inputs: [
           {
@@ -45214,6 +45634,16 @@ var require_IGovernanceV2Helper_factory = __commonJS({
         type: "function"
       }
     ];
+    var IGovernanceV2Helper__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IGovernanceV2Helper__factory = IGovernanceV2Helper__factory;
+    IGovernanceV2Helper__factory.abi = _abi;
   }
 });
 
@@ -45349,6 +45779,42 @@ var require_governance_contract = __commonJS({
           return (yield govContract.getProposalsCount()).toNumber();
         });
       }
+      delegateTokensBySig(_0) {
+        return __async(this, arguments, function* ({ user, tokens, data }) {
+          const helper = IGovernanceV2Helper__factory_1.IGovernanceV2Helper__factory.connect(this.aaveGovernanceV2HelperAddress, this.provider);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return helper.populateTransaction.delegateTokensBySig(tokens, data);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.GOV_DELEGATION_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      delegateTokensByTypeBySig(_0) {
+        return __async(this, arguments, function* ({ user, tokens, data }) {
+          const helper = IGovernanceV2Helper__factory_1.IGovernanceV2Helper__factory.connect(this.aaveGovernanceV2HelperAddress, this.provider);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return helper.populateTransaction.delegateTokensByTypeBySig(tokens, data);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.GOV_DELEGATION_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
     };
     tslib_1.__decorate([
       methodValidators_1.GovValidator,
@@ -45400,6 +45866,22 @@ var require_governance_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", []),
       tslib_1.__metadata("design:returntype", Promise)
     ], AaveGovernanceService2.prototype, "getProposalsCount", null);
+    tslib_1.__decorate([
+      methodValidators_1.GovHelperValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)("tokens")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], AaveGovernanceService2.prototype, "delegateTokensBySig", null);
+    tslib_1.__decorate([
+      methodValidators_1.GovHelperValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)("tokens")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], AaveGovernanceService2.prototype, "delegateTokensByTypeBySig", null);
     exports2.AaveGovernanceService = AaveGovernanceService2;
   }
 });
@@ -45805,6 +46287,7 @@ var require_governance_power_delegation_contract = __commonJS({
             types: {
               EIP712Domain: [
                 { name: "name", type: "string" },
+                { name: "version", type: "string" },
                 { name: "chainId", type: "uint256" },
                 { name: "verifyingContract", type: "address" }
               ],
@@ -45817,6 +46300,7 @@ var require_governance_power_delegation_contract = __commonJS({
             primaryType: "Delegate",
             domain: {
               name: governanceTokenName,
+              version: "1",
               chainId,
               verifyingContract: governanceToken
             },
@@ -45837,6 +46321,7 @@ var require_governance_power_delegation_contract = __commonJS({
             types: {
               EIP712Domain: [
                 { name: "name", type: "string" },
+                { name: "version", type: "string" },
                 { name: "chainId", type: "uint256" },
                 { name: "verifyingContract", type: "address" }
               ],
@@ -45850,6 +46335,7 @@ var require_governance_power_delegation_contract = __commonJS({
             primaryType: "DelegateByType",
             domain: {
               name: governanceTokenName,
+              version: "1",
               chainId,
               verifyingContract: governanceToken
             },
@@ -46094,954 +46580,6 @@ var require_erc20_2612 = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], ERC20_2612Service.prototype, "getNonce", null);
     exports2.ERC20_2612Service = ERC20_2612Service;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js
-var require_IL2Pool_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IL2Pool__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "borrow",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args1",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "args2",
-            type: "bytes32"
-          }
-        ],
-        name: "liquidationCall",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "rebalanceStableBorrowRate",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "repay",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "repayWithATokens",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "r",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "s",
-            type: "bytes32"
-          }
-        ],
-        name: "repayWithPermit",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "setUserUseReserveAsCollateral",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "supply",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "r",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "s",
-            type: "bytes32"
-          }
-        ],
-        name: "supplyWithPermit",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "swapBorrowRateMode",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "args",
-            type: "bytes32"
-          }
-        ],
-        name: "withdraw",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      }
-    ];
-    var IL2Pool__factory = class {
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IL2Pool__factory = IL2Pool__factory;
-    IL2Pool__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js
-var require_L2Encoder_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2Encoder__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "contract IPool",
-            name: "pool",
-            type: "address"
-          }
-        ],
-        stateMutability: "nonpayable",
-        type: "constructor"
-      },
-      {
-        inputs: [],
-        name: "POOL",
-        outputs: [
-          {
-            internalType: "contract IPool",
-            name: "",
-            type: "address"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "interestRateMode",
-            type: "uint256"
-          },
-          {
-            internalType: "uint16",
-            name: "referralCode",
-            type: "uint16"
-          }
-        ],
-        name: "encodeBorrowParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "collateralAsset",
-            type: "address"
-          },
-          {
-            internalType: "address",
-            name: "debtAsset",
-            type: "address"
-          },
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "debtToCover",
-            type: "uint256"
-          },
-          {
-            internalType: "bool",
-            name: "receiveAToken",
-            type: "bool"
-          }
-        ],
-        name: "encodeLiquidationCall",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "encodeRebalanceStableBorrowRate",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "interestRateMode",
-            type: "uint256"
-          }
-        ],
-        name: "encodeRepayParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "interestRateMode",
-            type: "uint256"
-          }
-        ],
-        name: "encodeRepayWithATokensParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "interestRateMode",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256"
-          },
-          {
-            internalType: "uint8",
-            name: "permitV",
-            type: "uint8"
-          },
-          {
-            internalType: "bytes32",
-            name: "permitR",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "permitS",
-            type: "bytes32"
-          }
-        ],
-        name: "encodeRepayWithPermitParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "bool",
-            name: "useAsCollateral",
-            type: "bool"
-          }
-        ],
-        name: "encodeSetUserUseReserveAsCollateral",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint16",
-            name: "referralCode",
-            type: "uint16"
-          }
-        ],
-        name: "encodeSupplyParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint16",
-            name: "referralCode",
-            type: "uint16"
-          },
-          {
-            internalType: "uint256",
-            name: "deadline",
-            type: "uint256"
-          },
-          {
-            internalType: "uint8",
-            name: "permitV",
-            type: "uint8"
-          },
-          {
-            internalType: "bytes32",
-            name: "permitR",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "permitS",
-            type: "bytes32"
-          }
-        ],
-        name: "encodeSupplyWithPermitParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "interestRateMode",
-            type: "uint256"
-          }
-        ],
-        name: "encodeSwapBorrowRateMode",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "asset",
-            type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          }
-        ],
-        name: "encodeWithdrawParams",
-        outputs: [
-          {
-            internalType: "bytes32",
-            name: "",
-            type: "bytes32"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ];
-    var _bytecode = "0x60a060405234801561001057600080fd5b5060405161143138038061143183398101604081905261002f91610040565b6001600160a01b0316608052610070565b60006020828403121561005257600080fd5b81516001600160a01b038116811461006957600080fd5b9392505050565b6080516113606100d16000396000818161016b0152818161027e015281816103760152818161043f015281816105180152818161062e0152818161073c015281816107fc0152818161094101528181610a700152610b5501526113606000f3fe608060405234801561001057600080fd5b50600436106100d45760003560e01c806388d5185211610081578063b76398e41161005b578063b76398e414610200578063fc0eed8514610213578063fed63a931461022157600080fd5b806388d51852146101b25780638da7fb18146101da5780639d2ffc1b146101ed57600080fd5b80635cc7bc10116100b25780635cc7bc1014610125578063671a7fae146101385780637535d2461461016657600080fd5b80631a64acf2146100d95780631a8f6dee146100ff5780631fd3479714610112575b600080fd5b6100ec6100e7366004610e66565b610234565b6040519081526020015b60405180910390f35b6100ec61010d366004610eb0565b61032c565b6100ec610120366004610ee9565b6103f5565b6100ec610133366004610ee9565b6104ce565b61014b610146366004610f2b565b6105e0565b604080519384526020840192909252908201526060016100f6565b61018d7f000000000000000000000000000000000000000000000000000000000000000081565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100f6565b6101c56101c0366004610fa9565b6106f0565b604080519283526020830191909152016100f6565b6100ec6101e836600461100d565b6108e2565b6100ec6101fb36600461100d565b6108f7565b6100ec61020e366004611042565b610a26565b6100ec61010d366004611084565b61014b61022f3660046110b9565b610b07565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156102c6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102ea9190611207565b60e081015190915060006102fd87610c5d565b9050600061030a87610d08565b60109290921b60909290921b60989690961b9590950101019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156103be573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906103e29190611207565b60e00151601084901b0191505092915050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610487573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104ab9190611207565b60e081015190915060006104be85610d08565b60101b9190910195945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610560573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105849190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff85146105c3576105be85610c5d565b6104be565b5071ffffffffffffffffffffffffffffffff000001949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610676573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061069a9190611207565b60e081015190915060006106ad8c610c5d565b905060006106ba8b610d9b565b905060008a60c01b8260a01b018d60901b018360101b0184019050808a8a97509750975050505050509750975097945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8681166004830152600091829182917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610786573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107aa9190611207565b60e08101516040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8a8116600483015292935090916000917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610846573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061086a9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff89146108a9576108a489610c5d565b6108bb565b6fffffffffffffffffffffffffffffffff5b60109290921b9390930160208a901b019550608087901b0193505050509550959350505050565b60006108ef8484846108f7565b949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610989573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109ad9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff86146109ec576109e786610c5d565b6109fe565b6fffffffffffffffffffffffffffffffff5b90506000610a0b86610d08565b60901b60109290921b91909101919091019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610ab8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610adc9190611207565b60e08101519091506000610aef86610c5d565b60101b609086901b0191909101925050509392505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610b9d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bc19190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c14610c0057610bfb8c610c5d565b610c12565b6fffffffffffffffffffffffffffffffff5b90506000610c1f8c610d08565b90506000610c2c8c610d9b565b60b89b909b1b60989b909b1b9a909a0160909190911b0160109190911b01019b959a50939850939650505050505050565b60006fffffffffffffffffffffffffffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602760248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203160448201527f323820626974730000000000000000000000000000000000000000000000000060648201526084015b60405180910390fd5b5090565b600060ff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602560248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203860448201527f20626974730000000000000000000000000000000000000000000000000000006064820152608401610cfb565b600063ffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203360448201527f32206269747300000000000000000000000000000000000000000000000000006064820152608401610cfb565b73ffffffffffffffffffffffffffffffffffffffff81168114610e5357600080fd5b50565b61ffff81168114610e5357600080fd5b60008060008060808587031215610e7c57600080fd5b8435610e8781610e31565b935060208501359250604085013591506060850135610ea581610e56565b939692955090935050565b60008060408385031215610ec357600080fd5b8235610ece81610e31565b91506020830135610ede81610e31565b809150509250929050565b60008060408385031215610efc57600080fd5b8235610f0781610e31565b946020939093013593505050565b803560ff81168114610f2657600080fd5b919050565b600080600080600080600060e0888a031215610f4657600080fd5b8735610f5181610e31565b9650602088013595506040880135610f6881610e56565b945060608801359350610f7d60808901610f15565b925060a0880135915060c0880135905092959891949750929550565b80358015158114610f2657600080fd5b600080600080600060a08688031215610fc157600080fd5b8535610fcc81610e31565b94506020860135610fdc81610e31565b93506040860135610fec81610e31565b92506060860135915061100160808701610f99565b90509295509295909350565b60008060006060848603121561102257600080fd5b833561102d81610e31565b95602085013595506040909401359392505050565b60008060006060848603121561105757600080fd5b833561106281610e31565b925060208401359150604084013561107981610e56565b809150509250925092565b6000806040838503121561109757600080fd5b82356110a281610e31565b91506110b060208401610f99565b90509250929050565b600080600080600080600060e0888a0312156110d457600080fd5b87356110df81610e31565b9650602088013595506040880135945060608801359350610f7d60808901610f15565b6040516101e0810167ffffffffffffffff8111828210171561114d577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60405290565b60006020828403121561116557600080fd5b6040516020810181811067ffffffffffffffff821117156111af577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114610f2657600080fd5b805164ffffffffff81168114610f2657600080fd5b8051610f2681610e56565b8051610f2681610e31565b60006101e0828403121561121a57600080fd5b611222611102565b61122c8484611153565b815261123a602084016111bc565b602082015261124b604084016111bc565b604082015261125c606084016111bc565b606082015261126d608084016111bc565b608082015261127e60a084016111bc565b60a082015261128f60c084016111dc565b60c08201526112a060e084016111f1565b60e08201526101006112b38185016111fc565b908201526101206112c58482016111fc565b908201526101406112d78482016111fc565b908201526101606112e98482016111fc565b908201526101806112fb8482016111bc565b908201526101a061130d8482016111bc565b908201526101c061131f8482016111bc565b90820152939250505056fea2646970667358221220550a5d1ca13779d56fd6a3f9cf5cee982d93d61310d74a95690bcec9ee75ab4a64736f6c634300080a0033";
-    var L2Encoder__factory = class extends ethers_1.ContractFactory {
-      constructor(...args) {
-        if (args.length === 1) {
-          super(_abi, _bytecode, args[0]);
-        } else {
-          super(...args);
-        }
-      }
-      deploy(pool, overrides) {
-        return super.deploy(pool, overrides || {});
-      }
-      getDeployTransaction(pool, overrides) {
-        return super.getDeployTransaction(pool, overrides || {});
-      }
-      attach(address) {
-        return super.attach(address);
-      }
-      connect(signer) {
-        return super.connect(signer);
-      }
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.L2Encoder__factory = L2Encoder__factory;
-    L2Encoder__factory.bytecode = _bytecode;
-    L2Encoder__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js
-var require_v3_pool_rollups = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2Pool = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
-    var types_1 = require_types2();
-    var utils_1 = require_utils6();
-    var methodValidators_1 = require_methodValidators();
-    var paramValidators_1 = require_paramValidators();
-    var IL2Pool__factory_1 = require_IL2Pool_factory();
-    var L2Encoder__factory_1 = require_L2Encoder_factory();
-    var L2Pool = class extends BaseService_1.default {
-      constructor(provider, l2PoolConfig) {
-        super(provider, IL2Pool__factory_1.IL2Pool__factory);
-        const { l2PoolAddress, encoderAddress } = l2PoolConfig !== null && l2PoolConfig !== void 0 ? l2PoolConfig : {};
-        this.l2PoolAddress = l2PoolAddress !== null && l2PoolAddress !== void 0 ? l2PoolAddress : "";
-        this.encoderAddress = encoderAddress !== null && encoderAddress !== void 0 ? encoderAddress : "";
-      }
-      supply(_0, _1) {
-        return __async(this, arguments, function* ({ user, reserve, amount, referralCode }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeSupplyParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.supply(encodedParams);
-            }),
-            from: user,
-            value: (0, utils_1.getTxValue)(reserve, amount)
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.supply)
-          });
-          return txs;
-        });
-      }
-      supplyWithPermit(_0, _1) {
-        return __async(this, arguments, function* ({ user, reserve, amount, deadline, referralCode, permitR, permitS, permitV }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeSupplyWithPermitParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0, deadline, permitV, permitR, permitS);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.supplyWithPermit(encodedParams[0], permitR, permitS);
-            }),
-            from: user
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback)
-          });
-          return txs;
-        });
-      }
-      withdraw(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount }) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeWithdrawParams(reserve, amount);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.withdraw(encodedParams);
-            }),
-            from: user,
-            action: types_1.ProtocolAction.withdraw
-          });
-          return [
-            {
-              tx: txCallback,
-              txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.supply)
-            }
-          ];
-        });
-      }
-      borrow(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, referralCode }) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeBorrowParams(reserve, amount, numericRateMode, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.borrow(encodedParams);
-            }),
-            from: user
-          });
-          return [
-            {
-              tx: txCallback,
-              txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback)
-            }
-          ];
-        });
-      }
-      repay(_0, _1) {
-        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeRepayParams(reserve, amount, numericRateMode);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.repay(encodedParams);
-            }),
-            from: user,
-            value: (0, utils_1.getTxValue)(reserve, amount)
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
-          });
-          return txs;
-        });
-      }
-      repayWithPermit(_0, _1) {
-        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, permitR, permitS, permitV, deadline }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeRepayWithPermitParams(reserve, amount, numericRateMode, deadline, permitV, permitR, permitS);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.repayWithPermit(encodedParams[0], permitR, permitS);
-            }),
-            from: user,
-            value: (0, utils_1.getTxValue)(reserve, amount)
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
-          });
-          return txs;
-        });
-      }
-      repayWithATokens(_0, _1) {
-        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeRepayWithATokensParams(reserve, amount, numericRateMode);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.repayWithATokens(encodedParams);
-            }),
-            from: user,
-            value: (0, utils_1.getTxValue)(reserve, amount)
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
-          });
-          return txs;
-        });
-      }
-      swapBorrowRateMode(_0) {
-        return __async(this, arguments, function* ({ reserve, numericRateMode, user }) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeSwapBorrowRateMode(reserve, numericRateMode);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.swapBorrowRateMode(encodedParams);
-            }),
-            from: user
-          });
-          return [
-            {
-              tx: txCallback,
-              txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback)
-            }
-          ];
-        });
-      }
-      setUserUseReserveAsCollateral(_0) {
-        return __async(this, arguments, function* ({ reserve, usageAsCollateral, user }) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeSetUserUseReserveAsCollateral(reserve, usageAsCollateral);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.setUserUseReserveAsCollateral(encodedParams);
-            }),
-            from: user
-          });
-          return [
-            {
-              tx: txCallback,
-              txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback)
-            }
-          ];
-        });
-      }
-      liquidationCall(_0, _1) {
-        return __async(this, arguments, function* ({ liquidator, liquidatedUser, debtReserve, collateralReserve, debtToCover, getAToken }, txs) {
-          const encoder = this.getEncoder();
-          const encodedParams = yield encoder.encodeLiquidationCall(collateralReserve, debtReserve, liquidatedUser, debtToCover, getAToken !== null && getAToken !== void 0 ? getAToken : false);
-          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
-          const txCallback = this.generateTxCallback({
-            rawTxMethod: () => __async(this, null, function* () {
-              return l2PoolContract.populateTransaction.liquidationCall(encodedParams[0], encodedParams[1]);
-            }),
-            from: liquidator,
-            value: (0, utils_1.getTxValue)(debtReserve, debtToCover)
-          });
-          txs.push({
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.liquidationCall)
-          });
-          return txs;
-        });
-      }
-      getEncoder() {
-        if (!this.encoderContract && this.encoderAddress !== "") {
-          this.encoderContract = L2Encoder__factory_1.L2Encoder__factory.connect(this.encoderAddress, this.provider);
-        }
-        return this.encoderContract;
-      }
-    };
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "supply", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "supplyWithPermit", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "withdraw", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "borrow", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "repay", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "repayWithPermit", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "repayWithATokens", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "swapBorrowRateMode", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "setUserUseReserveAsCollateral", null);
-    tslib_1.__decorate([
-      methodValidators_1.L2PValidator,
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object, Array]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], L2Pool.prototype, "liquidationCall", null);
-    exports2.L2Pool = L2Pool;
   }
 });
 
@@ -48681,6 +48219,1037 @@ var require_IPool_factory = __commonJS({
   }
 });
 
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js
+var require_IL2Pool_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IL2Pool__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "borrow",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args1",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "args2",
+            type: "bytes32"
+          }
+        ],
+        name: "liquidationCall",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "rebalanceStableBorrowRate",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "repay",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "repayWithATokens",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "repayWithPermit",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "setUserUseReserveAsCollateral",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "supply",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "supplyWithPermit",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "swapBorrowRateMode",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "withdraw",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
+    var IL2Pool__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IL2Pool__factory = IL2Pool__factory;
+    IL2Pool__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js
+var require_L2Encoder_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.L2Encoder__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "contract IPool",
+            name: "pool",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
+        inputs: [],
+        name: "POOL",
+        outputs: [
+          {
+            internalType: "contract IPool",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          }
+        ],
+        name: "encodeBorrowParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "collateralAsset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "debtAsset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "debtToCover",
+            type: "uint256"
+          },
+          {
+            internalType: "bool",
+            name: "receiveAToken",
+            type: "bool"
+          }
+        ],
+        name: "encodeLiquidationCall",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "encodeRebalanceStableBorrowRate",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeRepayParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeRepayWithATokensParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "permitV",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitR",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitS",
+            type: "bytes32"
+          }
+        ],
+        name: "encodeRepayWithPermitParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "bool",
+            name: "useAsCollateral",
+            type: "bool"
+          }
+        ],
+        name: "encodeSetUserUseReserveAsCollateral",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          }
+        ],
+        name: "encodeSupplyParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "permitV",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitR",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitS",
+            type: "bytes32"
+          }
+        ],
+        name: "encodeSupplyWithPermitParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeSwapBorrowRateMode",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "encodeWithdrawParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var _bytecode = "0x60a060405234801561001057600080fd5b5060405161143138038061143183398101604081905261002f91610040565b6001600160a01b0316608052610070565b60006020828403121561005257600080fd5b81516001600160a01b038116811461006957600080fd5b9392505050565b6080516113606100d16000396000818161016b0152818161027e015281816103760152818161043f015281816105180152818161062e0152818161073c015281816107fc0152818161094101528181610a700152610b5501526113606000f3fe608060405234801561001057600080fd5b50600436106100d45760003560e01c806388d5185211610081578063b76398e41161005b578063b76398e414610200578063fc0eed8514610213578063fed63a931461022157600080fd5b806388d51852146101b25780638da7fb18146101da5780639d2ffc1b146101ed57600080fd5b80635cc7bc10116100b25780635cc7bc1014610125578063671a7fae146101385780637535d2461461016657600080fd5b80631a64acf2146100d95780631a8f6dee146100ff5780631fd3479714610112575b600080fd5b6100ec6100e7366004610e66565b610234565b6040519081526020015b60405180910390f35b6100ec61010d366004610eb0565b61032c565b6100ec610120366004610ee9565b6103f5565b6100ec610133366004610ee9565b6104ce565b61014b610146366004610f2b565b6105e0565b604080519384526020840192909252908201526060016100f6565b61018d7f000000000000000000000000000000000000000000000000000000000000000081565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100f6565b6101c56101c0366004610fa9565b6106f0565b604080519283526020830191909152016100f6565b6100ec6101e836600461100d565b6108e2565b6100ec6101fb36600461100d565b6108f7565b6100ec61020e366004611042565b610a26565b6100ec61010d366004611084565b61014b61022f3660046110b9565b610b07565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156102c6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102ea9190611207565b60e081015190915060006102fd87610c5d565b9050600061030a87610d08565b60109290921b60909290921b60989690961b9590950101019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156103be573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906103e29190611207565b60e00151601084901b0191505092915050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610487573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104ab9190611207565b60e081015190915060006104be85610d08565b60101b9190910195945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610560573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105849190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff85146105c3576105be85610c5d565b6104be565b5071ffffffffffffffffffffffffffffffff000001949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610676573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061069a9190611207565b60e081015190915060006106ad8c610c5d565b905060006106ba8b610d9b565b905060008a60c01b8260a01b018d60901b018360101b0184019050808a8a97509750975050505050509750975097945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8681166004830152600091829182917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610786573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107aa9190611207565b60e08101516040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8a8116600483015292935090916000917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610846573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061086a9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff89146108a9576108a489610c5d565b6108bb565b6fffffffffffffffffffffffffffffffff5b60109290921b9390930160208a901b019550608087901b0193505050509550959350505050565b60006108ef8484846108f7565b949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610989573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109ad9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff86146109ec576109e786610c5d565b6109fe565b6fffffffffffffffffffffffffffffffff5b90506000610a0b86610d08565b60901b60109290921b91909101919091019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610ab8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610adc9190611207565b60e08101519091506000610aef86610c5d565b60101b609086901b0191909101925050509392505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610b9d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bc19190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c14610c0057610bfb8c610c5d565b610c12565b6fffffffffffffffffffffffffffffffff5b90506000610c1f8c610d08565b90506000610c2c8c610d9b565b60b89b909b1b60989b909b1b9a909a0160909190911b0160109190911b01019b959a50939850939650505050505050565b60006fffffffffffffffffffffffffffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602760248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203160448201527f323820626974730000000000000000000000000000000000000000000000000060648201526084015b60405180910390fd5b5090565b600060ff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602560248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203860448201527f20626974730000000000000000000000000000000000000000000000000000006064820152608401610cfb565b600063ffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203360448201527f32206269747300000000000000000000000000000000000000000000000000006064820152608401610cfb565b73ffffffffffffffffffffffffffffffffffffffff81168114610e5357600080fd5b50565b61ffff81168114610e5357600080fd5b60008060008060808587031215610e7c57600080fd5b8435610e8781610e31565b935060208501359250604085013591506060850135610ea581610e56565b939692955090935050565b60008060408385031215610ec357600080fd5b8235610ece81610e31565b91506020830135610ede81610e31565b809150509250929050565b60008060408385031215610efc57600080fd5b8235610f0781610e31565b946020939093013593505050565b803560ff81168114610f2657600080fd5b919050565b600080600080600080600060e0888a031215610f4657600080fd5b8735610f5181610e31565b9650602088013595506040880135610f6881610e56565b945060608801359350610f7d60808901610f15565b925060a0880135915060c0880135905092959891949750929550565b80358015158114610f2657600080fd5b600080600080600060a08688031215610fc157600080fd5b8535610fcc81610e31565b94506020860135610fdc81610e31565b93506040860135610fec81610e31565b92506060860135915061100160808701610f99565b90509295509295909350565b60008060006060848603121561102257600080fd5b833561102d81610e31565b95602085013595506040909401359392505050565b60008060006060848603121561105757600080fd5b833561106281610e31565b925060208401359150604084013561107981610e56565b809150509250925092565b6000806040838503121561109757600080fd5b82356110a281610e31565b91506110b060208401610f99565b90509250929050565b600080600080600080600060e0888a0312156110d457600080fd5b87356110df81610e31565b9650602088013595506040880135945060608801359350610f7d60808901610f15565b6040516101e0810167ffffffffffffffff8111828210171561114d577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60405290565b60006020828403121561116557600080fd5b6040516020810181811067ffffffffffffffff821117156111af577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114610f2657600080fd5b805164ffffffffff81168114610f2657600080fd5b8051610f2681610e56565b8051610f2681610e31565b60006101e0828403121561121a57600080fd5b611222611102565b61122c8484611153565b815261123a602084016111bc565b602082015261124b604084016111bc565b604082015261125c606084016111bc565b606082015261126d608084016111bc565b608082015261127e60a084016111bc565b60a082015261128f60c084016111dc565b60c08201526112a060e084016111f1565b60e08201526101006112b38185016111fc565b908201526101206112c58482016111fc565b908201526101406112d78482016111fc565b908201526101606112e98482016111fc565b908201526101806112fb8482016111bc565b908201526101a061130d8482016111bc565b908201526101c061131f8482016111bc565b90820152939250505056fea2646970667358221220550a5d1ca13779d56fd6a3f9cf5cee982d93d61310d74a95690bcec9ee75ab4a64736f6c634300080a0033";
+    var L2Encoder__factory = class extends ethers_1.ContractFactory {
+      constructor(...args) {
+        if (args.length === 1) {
+          super(_abi, _bytecode, args[0]);
+        } else {
+          super(...args);
+        }
+      }
+      deploy(pool, overrides) {
+        return super.deploy(pool, overrides || {});
+      }
+      getDeployTransaction(pool, overrides) {
+        return super.getDeployTransaction(pool, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.L2Encoder__factory = L2Encoder__factory;
+    L2Encoder__factory.bytecode = _bytecode;
+    L2Encoder__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js
+var require_v3_pool_rollups = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.L2Pool = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
+    var utils_1 = require_utils5();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
+    var utils_2 = require_utils6();
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IPool__factory_1 = require_IPool_factory();
+    var IL2Pool__factory_1 = require_IL2Pool_factory();
+    var L2Encoder__factory_1 = require_L2Encoder_factory();
+    var L2Pool = class extends BaseService_1.default {
+      constructor(provider, l2PoolConfig) {
+        super(provider, IL2Pool__factory_1.IL2Pool__factory);
+        const { l2PoolAddress, encoderAddress } = l2PoolConfig !== null && l2PoolConfig !== void 0 ? l2PoolConfig : {};
+        this.l2PoolAddress = l2PoolAddress !== null && l2PoolAddress !== void 0 ? l2PoolAddress : "";
+        this.encoderAddress = encoderAddress !== null && encoderAddress !== void 0 ? encoderAddress : "";
+        this.encoderInterface = L2Encoder__factory_1.L2Encoder__factory.createInterface();
+        this.l2PoolContractInstance = IL2Pool__factory_1.IL2Pool__factory.createInterface();
+        this.poolContractInstance = IPool__factory_1.IPool__factory.createInterface();
+        this.generateSupplyTxData = ({ user, reserve, onBehalfOf, amount, referralCode }) => {
+          const actionTx = {};
+          const txData = this.poolContractInstance.encodeFunctionData("supply", [
+            reserve,
+            amount,
+            onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+            referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.from = user;
+          actionTx.data = txData;
+          return actionTx;
+        };
+        this.generateBorrowTxData = ({ user, reserve, amount, numericRateMode, referralCode, onBehalfOf }) => {
+          const actionTx = {};
+          const txData = this.poolContractInstance.encodeFunctionData("borrow", [
+            reserve,
+            amount,
+            numericRateMode,
+            referralCode !== null && referralCode !== void 0 ? referralCode : "0",
+            onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.from = user;
+          actionTx.data = txData;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
+          return actionTx;
+        };
+        this.generateSupplyWithPermitTxData = ({ user, reserve, amount, onBehalfOf, referralCode, deadline, permitR, permitS, permitV }) => {
+          const actionTx = {};
+          const txData = this.poolContractInstance.encodeFunctionData("supplyWithPermit", [
+            reserve,
+            amount,
+            onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+            referralCode !== null && referralCode !== void 0 ? referralCode : "0",
+            deadline,
+            permitV,
+            permitR,
+            permitS
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.from = user;
+          actionTx.data = txData;
+          return actionTx;
+        };
+        this.generateEncodedSupplyTxData = ({ encodedTxData, user }) => {
+          const actionTx = {};
+          const txData = this.l2PoolContractInstance.encodeFunctionData("supply", [
+            encodedTxData
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supply].limit);
+          return actionTx;
+        };
+        this.generateEncodedBorrowTxData = ({ encodedTxData, user }) => {
+          const actionTx = {};
+          const txData = this.l2PoolContractInstance.encodeFunctionData("borrow", [
+            encodedTxData
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
+          return actionTx;
+        };
+        this.generateEncodedSupplyWithPermitTxData = ({ encodedTxData, signature, user }) => {
+          const actionTx = {};
+          const decomposedSignature = (0, utils_1.splitSignature)(signature);
+          const txData = this.l2PoolContractInstance.encodeFunctionData("supplyWithPermit", [encodedTxData, decomposedSignature.r, decomposedSignature.s]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].limit);
+          return actionTx;
+        };
+      }
+      supply(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, referralCode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSupplyParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.supply(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_2.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.supply)
+          });
+          return txs;
+        });
+      }
+      supplyWithPermit(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, deadline, referralCode, permitR, permitS, permitV }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSupplyWithPermitParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0, deadline, permitV, permitR, permitS);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.supplyWithPermit(encodedParams[0], permitR, permitS);
+            }),
+            from: user
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback)
+          });
+          return txs;
+        });
+      }
+      withdraw(_0) {
+        return __async(this, arguments, function* ({ user, reserve, amount }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeWithdrawParams(reserve, amount);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.withdraw(encodedParams);
+            }),
+            from: user,
+            action: types_1.ProtocolAction.withdraw
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.supply)
+            }
+          ];
+        });
+      }
+      borrow(_0) {
+        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, referralCode }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeBorrowParams(reserve, amount, numericRateMode, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.borrow(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      repay(_0, _1) {
+        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayParams(reserve, amount, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repay(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_2.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      repayWithPermit(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, permitR, permitS, permitV, deadline }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayWithPermitParams(reserve, amount, numericRateMode, deadline, permitV, permitR, permitS);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repayWithPermit(encodedParams[0], permitR, permitS);
+            }),
+            from: user,
+            value: (0, utils_2.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      repayWithATokens(_0, _1) {
+        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayWithATokensParams(reserve, amount, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repayWithATokens(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_2.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      swapBorrowRateMode(_0) {
+        return __async(this, arguments, function* ({ reserve, numericRateMode, user }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSwapBorrowRateMode(reserve, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.swapBorrowRateMode(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      setUserUseReserveAsCollateral(_0) {
+        return __async(this, arguments, function* ({ reserve, usageAsCollateral, user }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSetUserUseReserveAsCollateral(reserve, usageAsCollateral);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.setUserUseReserveAsCollateral(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      liquidationCall(_0, _1) {
+        return __async(this, arguments, function* ({ liquidator, liquidatedUser, debtReserve, collateralReserve, debtToCover, getAToken }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeLiquidationCall(collateralReserve, debtReserve, liquidatedUser, debtToCover, getAToken !== null && getAToken !== void 0 ? getAToken : false);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.liquidationCall(encodedParams[0], encodedParams[1]);
+            }),
+            from: liquidator,
+            value: (0, utils_2.getTxValue)(debtReserve, debtToCover)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.liquidationCall)
+          });
+          return txs;
+        });
+      }
+      getEncoder() {
+        if (!this.encoderContract && this.encoderAddress !== "") {
+          this.encoderContract = L2Encoder__factory_1.L2Encoder__factory.connect(this.encoderAddress, this.provider);
+        }
+        return this.encoderContract;
+      }
+    };
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "supply", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "supplyWithPermit", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "withdraw", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "borrow", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "repay", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "repayWithPermit", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "repayWithATokens", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "swapBorrowRateMode", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "setUserUseReserveAsCollateral", null);
+    tslib_1.__decorate([
+      methodValidators_1.L2PValidator,
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object, Array]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], L2Pool.prototype, "liquidationCall", null);
+    exports2.L2Pool = L2Pool;
+  }
+});
+
 // node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract/index.js
 var require_v3_pool_contract = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract/index.js"(exports2) {
@@ -49690,6 +50259,192 @@ var require_v3_pool_contract = __commonJS({
   }
 });
 
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract-bundle/index.js
+var require_v3_pool_contract_bundle = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract-bundle/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.PoolBundle = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var bytes_1 = require_lib2();
+    var ethers_1 = require_lib31();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var types_1 = require_types2();
+    var utils_1 = require_utils6();
+    var erc20_2612_1 = require_erc20_2612();
+    var erc20_contract_1 = require_erc20_contract();
+    var synthetix_contract_1 = require_synthetix_contract();
+    var v3_pool_contract_1 = require_v3_pool_contract();
+    var IPool__factory_1 = require_IPool_factory();
+    var v3_pool_rollups_1 = require_v3_pool_rollups();
+    var wethgateway_contract_1 = require_wethgateway_contract();
+    var PoolBundle = class extends BaseService_1.default {
+      constructor(provider, lendingPoolConfig) {
+        super(provider, IPool__factory_1.IPool__factory);
+        const { POOL, WETH_GATEWAY, L2_ENCODER } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.poolAddress = POOL !== null && POOL !== void 0 ? POOL : "";
+        this.l2EncoderAddress = L2_ENCODER !== null && L2_ENCODER !== void 0 ? L2_ENCODER : "";
+        this.wethGatewayAddress = WETH_GATEWAY !== null && WETH_GATEWAY !== void 0 ? WETH_GATEWAY : "";
+        this.v3PoolService = new v3_pool_contract_1.Pool(provider, lendingPoolConfig);
+        this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
+        this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY);
+        this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
+          l2PoolAddress: this.poolAddress,
+          encoderAddress: this.l2EncoderAddress
+        });
+        this.contractInterface = IPool__factory_1.IPool__factory.createInterface();
+        this.supplyTxBuilder = {
+          getApprovedAmount: (props) => __async(this, null, function* () {
+            const spender = props.token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase() ? this.wethGatewayAddress : this.poolAddress;
+            const amount = yield this.erc20Service.approvedAmount(Object.assign(Object.assign({}, props), { spender }));
+            return Object.assign(Object.assign({}, props), { spender, amount: amount.toString() });
+          }),
+          generateTxData: ({ user, reserve, amount, onBehalfOf, referralCode, useOptimizedPath, encodedTxData }) => {
+            let actionTx = {};
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              actionTx = this.wethGatewayService.generateDepositEthTxData({
+                lendingPool: this.poolAddress,
+                user,
+                amount,
+                onBehalfOf: onBehalfOfParam,
+                referralCode: referralCodeParam
+              });
+            } else if (useOptimizedPath) {
+              if (encodedTxData) {
+                actionTx = this.l2PoolService.generateEncodedSupplyTxData({
+                  encodedTxData,
+                  user
+                });
+              } else {
+                const args = {
+                  user,
+                  reserve,
+                  amount,
+                  onBehalfOf: onBehalfOfParam,
+                  referralCode: referralCodeParam
+                };
+                actionTx = this.l2PoolService.generateSupplyTxData(args);
+              }
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("supply", [
+                reserve,
+                amount,
+                onBehalfOfParam,
+                referralCodeParam
+              ]);
+              actionTx.to = this.poolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supply].recommended);
+            }
+            return actionTx;
+          },
+          generateSignedTxData: ({ user, reserve, amount, onBehalfOf, referralCode, useOptimizedPath, signature, deadline, encodedTxData }) => {
+            const decomposedSignature = (0, bytes_1.splitSignature)(signature);
+            let populatedTx = {};
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            if (useOptimizedPath) {
+              if (encodedTxData) {
+                populatedTx = this.l2PoolService.generateEncodedSupplyWithPermitTxData({
+                  encodedTxData,
+                  user,
+                  signature
+                });
+              } else {
+                const args = {
+                  user,
+                  reserve,
+                  amount,
+                  referralCode: referralCodeParam,
+                  onBehalfOf: onBehalfOfParam,
+                  permitR: decomposedSignature.r,
+                  permitS: decomposedSignature.s,
+                  permitV: decomposedSignature.v,
+                  deadline: Number(deadline)
+                };
+                populatedTx = this.l2PoolService.generateSupplyWithPermitTxData(args);
+              }
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("supplyWithPermit", [
+                reserve,
+                amount,
+                onBehalfOfParam,
+                referralCodeParam,
+                deadline,
+                decomposedSignature.v,
+                decomposedSignature.r,
+                decomposedSignature.s
+              ]);
+              populatedTx.to = this.poolAddress;
+              populatedTx.from = user;
+              populatedTx.data = txData;
+              populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].recommended);
+            }
+            return populatedTx;
+          }
+        };
+        this.borrowTxBuilder = {
+          generateTxData: ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode, useOptimizedPath, encodedTxData }) => {
+            let actionTx = {};
+            const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              if (!debtTokenAddress) {
+                throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
+              }
+              actionTx = this.wethGatewayService.generateBorrowEthTxData({
+                lendingPool: this.poolAddress,
+                user,
+                amount,
+                debtTokenAddress,
+                interestRateMode,
+                referralCode: referralCodeParam
+              });
+            } else if (useOptimizedPath) {
+              if (encodedTxData) {
+                actionTx = this.l2PoolService.generateEncodedBorrowTxData({
+                  encodedTxData,
+                  user
+                });
+              } else {
+                const args = {
+                  user,
+                  reserve,
+                  amount,
+                  onBehalfOf: onBehalfOfParam,
+                  referralCode: referralCodeParam,
+                  numericRateMode
+                };
+                actionTx = this.l2PoolService.generateBorrowTxData(args);
+              }
+            } else {
+              const txData = this.contractInterface.encodeFunctionData("borrow", [
+                reserve,
+                amount,
+                numericRateMode,
+                referralCodeParam,
+                onBehalfOfParam
+              ]);
+              actionTx.to = this.poolAddress;
+              actionTx.from = user;
+              actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
+            }
+            return actionTx;
+          }
+        };
+      }
+    };
+    exports2.PoolBundle = PoolBundle;
+  }
+});
+
 // node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/IMigrationHelper__factory.js
 var require_IMigrationHelper_factory = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/v3-migration-contract/typechain/IMigrationHelper__factory.js"(exports2) {
@@ -49967,6 +50722,7 @@ var require_v3_migration_contract = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.V3MigrationHelperService = void 0;
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var bignumber_js_1 = tslib_1.__importDefault(require_bignumber2());
     var ethers_1 = require_lib31();
     var baseDebtToken_contract_1 = require_baseDebtToken_contract();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
@@ -50029,26 +50785,28 @@ var require_v3_migration_contract = __commonJS({
       }
       approveDelegationTokens(user, assets) {
         return __async(this, null, function* () {
-          console.log(assets, "assets");
           const assetsApproved = yield Promise.all(assets.map((_0) => __async(this, [_0], function* ({ amount, debtTokenAddress }) {
             return this.baseDebtTokenService.isDelegationApproved({
               debtTokenAddress,
               allowanceGiver: user,
               allowanceReceiver: this.MIGRATOR_ADDRESS,
-              amount
+              amount,
+              nativeDecimals: true
             });
           })));
-          console.log(assetsApproved, "assetsApproved");
           return assetsApproved.map((approved, index) => {
             if (approved) {
               return;
             }
             const asset = assets[index];
+            const originalAmount = new bignumber_js_1.default(asset.amount);
+            const tenPercent = originalAmount.dividedBy(10);
+            const amountPlusBuffer = originalAmount.plus(tenPercent).toFixed(0);
             return this.baseDebtTokenService.approveDelegation({
               user,
               delegatee: this.MIGRATOR_ADDRESS,
               debtTokenAddress: asset.debtTokenAddress,
-              amount: asset.amount
+              amount: amountPlusBuffer
             });
           }).filter((tx) => Boolean(tx));
         });
@@ -50060,7 +50818,8 @@ var require_v3_migration_contract = __commonJS({
               amount,
               spender: this.MIGRATOR_ADDRESS,
               token: aToken,
-              user
+              user,
+              nativeDecimals: true
             });
           })));
           return assetsApproved.map((approved, index) => {
@@ -53211,6 +53970,7 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_incentive_controller_v2(), exports2);
     tslib_1.__exportStar(require_erc20_contract(), exports2);
     tslib_1.__exportStar(require_lendingPool_contract(), exports2);
+    tslib_1.__exportStar(require_lendingPool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_faucet_contract(), exports2);
     tslib_1.__exportStar(require_v3_faucet_contract(), exports2);
     tslib_1.__exportStar(require_staking_contract(), exports2);
@@ -53218,6 +53978,7 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_types6(), exports2);
     tslib_1.__exportStar(require_governance_power_delegation_contract(), exports2);
     tslib_1.__exportStar(require_v3_pool_contract(), exports2);
+    tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
     tslib_1.__exportStar(require_v3_migration_contract(), exports2);
@@ -53233,7 +53994,7 @@ var require_AaveGovernanceV2 = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveGovernanceV2.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.CROSSCHAIN_FORWARDER_ARBITRUM = exports2.CROSSCHAIN_FORWARDER_OPTIMISM = exports2.CROSSCHAIN_FORWARDER_POLYGON = exports2.ARBITRUM_BRIDGE_EXECUTOR = exports2.OPTIMISM_BRIDGE_EXECUTOR = exports2.POLYGON_BRIDGE_EXECUTOR = exports2.ARC_TIMELOCK = exports2.LONG_EXECUTOR = exports2.SHORT_EXECUTOR = exports2.GOV_STRATEGY = exports2.GOV = void 0;
+    exports2.CROSSCHAIN_FORWARDER_METIS = exports2.CROSSCHAIN_FORWARDER_ARBITRUM = exports2.CROSSCHAIN_FORWARDER_OPTIMISM = exports2.CROSSCHAIN_FORWARDER_POLYGON = exports2.METIS_BRIDGE_EXECUTOR = exports2.ARBITRUM_BRIDGE_EXECUTOR = exports2.OPTIMISM_BRIDGE_EXECUTOR = exports2.POLYGON_BRIDGE_EXECUTOR = exports2.ARC_TIMELOCK = exports2.LONG_EXECUTOR = exports2.SHORT_EXECUTOR = exports2.GOV_STRATEGY = exports2.GOV = void 0;
     exports2.GOV = "0xEC568fffba86c094cf06b22134B23074DFE2252c";
     exports2.GOV_STRATEGY = "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e";
     exports2.SHORT_EXECUTOR = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
@@ -53242,9 +54003,11 @@ var require_AaveGovernanceV2 = __commonJS({
     exports2.POLYGON_BRIDGE_EXECUTOR = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
     exports2.OPTIMISM_BRIDGE_EXECUTOR = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.ARBITRUM_BRIDGE_EXECUTOR = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
+    exports2.METIS_BRIDGE_EXECUTOR = "0x8EC77963068474a45016938Deb95E603Ca82a029";
     exports2.CROSSCHAIN_FORWARDER_POLYGON = "0x158a6bC04F0828318821baE797f50B0A1299d45b";
     exports2.CROSSCHAIN_FORWARDER_OPTIMISM = "0x5f5C02875a8e9B5A26fbd09040ABCfDeb2AA6711";
-    exports2.CROSSCHAIN_FORWARDER_ARBITRUM = "0x2e2B1F112C4D79A9D22464F0D345dE9b792705f1";
+    exports2.CROSSCHAIN_FORWARDER_ARBITRUM = "0xd1B3E25fD7C8AE7CADDC6F71b461b79CD4ddcFa3";
+    exports2.CROSSCHAIN_FORWARDER_METIS = "0x2fe52ef191f0be1d98459bdad2f1d3160336c08f";
   }
 });
 
@@ -53264,7 +54027,7 @@ var require_AaveV2Ethereum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Ethereum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5";
     exports2.POOL = "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9";
     exports2.POOL_CONFIGURATOR = "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756";
@@ -53274,7 +54037,6 @@ var require_AaveV2Ethereum = __commonJS({
     exports2.POOL_ADMIN = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
     exports2.EMERGENCY_ADMIN = "0xCA76Ebd8617a03126B6FB84F9b1c1A0fB71C2633";
     exports2.COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
-    exports2.COLLECTOR_CONTROLLER = "0x3d569673dAa0575c936c7c67c4E6AedA69CC630C";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5";
     exports2.EMISSION_MANAGER = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
     exports2.CHAIN_ID = 1;
@@ -53294,16 +54056,16 @@ var require_AaveV3Ethereum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Ethereum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.STATIC_A_TOKEN_FACTORY = exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e";
     exports2.POOL = "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2";
     exports2.POOL_CONFIGURATOR = "0x64b761D848206f447Fe2dd461b0c635Ec39EbB27";
     exports2.ORACLE = "0x54586bE62E3c3580375aE3723C145253060Ca0C2";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3";
     exports2.ACL_MANAGER = "0xc2aaCf6553D20d1e9d78E365AAba8032af9c85b0";
     exports2.ACL_ADMIN = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
     exports2.COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
-    exports2.COLLECTOR_CONTROLLER = "0x3d569673dAa0575c936c7c67c4E6AedA69CC630C";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x7EfFD7b47Bfd17e52fB7559d3f924201b9DbfF3d";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xaC725CB59D16C81061BDeA61041a8A5e73DA9EC6";
@@ -53312,12 +54074,15 @@ var require_AaveV3Ethereum = __commonJS({
     exports2.EMISSION_MANAGER = "0x223d844fc4B006D67c0cDbd39371A9F73f69d974";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0xbaA999AC55EAce41CcAE355c77809e68Bb345170";
     exports2.WETH_GATEWAY = "0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C";
+    exports2.RATES_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x1809f186D680f239420B56948C58F8DbbCdf1E18";
     exports2.SWAP_COLLATERAL_ADAPTER = "0x872fBcb1B582e8Cd0D0DD4327fBFa0B4C2730995";
-    exports2.LISTING_ENGINE = "0xC51e6E38d406F98049622Ca54a6096a23826B426";
+    exports2.LISTING_ENGINE = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
     exports2.WALLET_BALANCE_PROVIDER = "0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2";
     exports2.UI_POOL_DATA_PROVIDER = "0x91c0eA31b49B69Ea18607702c5d9aC360bf3dE7d";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6";
+    exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = "0x21714092D90c7265F52fdfDae068EC11a23C6248";
+    exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
   }
 });
 
@@ -53326,7 +54091,7 @@ var require_AaveV2EthereumAMM = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2EthereumAMM.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xAcc030EF66f9dFEAE9CbB0cd1B25654b82cFA8d5";
     exports2.POOL = "0x7937D4799803FbBe595ed57278Bc4cA21f3bFfCB";
     exports2.POOL_CONFIGURATOR = "0x23A875eDe3F1030138701683e42E9b16A7F87768";
@@ -53336,7 +54101,6 @@ var require_AaveV2EthereumAMM = __commonJS({
     exports2.POOL_ADMIN = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
     exports2.EMERGENCY_ADMIN = "0xB9062896ec3A615a4e4444DF183F0531a77218AE";
     exports2.COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
-    exports2.COLLECTOR_CONTROLLER = "0x3d569673dAa0575c936c7c67c4E6AedA69CC630C";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x0000000000000000000000000000000000000000";
     exports2.EMISSION_MANAGER = "0x0000000000000000000000000000000000000000";
     exports2.CHAIN_ID = 1;
@@ -53353,7 +54117,7 @@ var require_AaveV2EthereumArc = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2EthereumArc.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.PERMISSION_MANAGER = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.PERMISSION_MANAGER = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x6FdfafB66d39cD72CFE7984D3Bbcc76632faAb00";
     exports2.POOL = "0x37D7306019a38Af123e4b245Eb6C28AF552e0bB0";
     exports2.POOL_CONFIGURATOR = "0x4e1c7865e7BE78A7748724Fa0409e88dc14E67aA";
@@ -53363,7 +54127,6 @@ var require_AaveV2EthereumArc = __commonJS({
     exports2.POOL_ADMIN = "0xAce1d11d836cb3F51Ef658FD4D353fFb3c301218";
     exports2.EMERGENCY_ADMIN = "0x33B09130b035d6D7e57d76fEa0873d9545FA7557";
     exports2.COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
-    exports2.COLLECTOR_CONTROLLER = "0x3d569673dAa0575c936c7c67c4E6AedA69CC630C";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x0000000000000000000000000000000000000000";
     exports2.EMISSION_MANAGER = "0x0000000000000000000000000000000000000000";
     exports2.CHAIN_ID = 1;
@@ -53376,7 +54139,7 @@ var require_AaveV2Goerli = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Goerli.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.FAUCET = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.FAUCET = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x5E52dEc931FFb32f609681B8438A51c675cc232d";
     exports2.POOL = "0x4bd5643ac6f66a5237E18bfA7d47cF22f1c9F210";
     exports2.POOL_CONFIGURATOR = "0x88B1D3d97656De3Ec44FEDDfa109AF7fb8C2837D";
@@ -53386,7 +54149,6 @@ var require_AaveV2Goerli = __commonJS({
     exports2.POOL_ADMIN = "0x77c45699A715A64A7a7796d5CEe884cf617D5254";
     exports2.EMERGENCY_ADMIN = "0x77c45699A715A64A7a7796d5CEe884cf617D5254";
     exports2.COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
-    exports2.COLLECTOR_CONTROLLER = "address(0)";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x0000000000000000000000000000000000000000";
     exports2.EMISSION_MANAGER = "0x0000000000000000000000000000000000000000";
     exports2.CHAIN_ID = 5;
@@ -53404,16 +54166,16 @@ var require_AaveV3Sepolia = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x0496275d34753A48320CA58103d5220d394FF77F";
     exports2.POOL = "0xE7EC1B0015eb2ADEedb1B7f9F1Ce82F9DAD6dF08";
     exports2.POOL_CONFIGURATOR = "0x9EB3fd3b5b405c29825dD5eEB7b31A08f9510397";
     exports2.ORACLE = "0x132C06E86CcCf93Afef7B33f0FF3e2E97EECf8f6";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xC7832d5ACDDbdA5a7c9d1Fa9F677f9a84b7a4125";
     exports2.ACL_MANAGER = "0x3F7E88aD1938634150A3480ac5a58706F7a7655A";
     exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
     exports2.COLLECTOR = "0x3246D6476dCc255b64342911D267F6CA3013068d";
-    exports2.COLLECTOR_CONTROLLER = "0x50BAA7eEA31c82F829d5a41DC086391D827bd829";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x74269d0f5f1C2C44663f0214f2EE42c00a144460";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x177F4611B27Cb66f5E6A51B4DD956f37A75F883B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xfbC748B4f6FFB9997B8dcC10Fb7494620747a82c";
@@ -53433,16 +54195,16 @@ var require_AaveV3Goerli = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Goerli.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xC911B590248d127aD18546B186cC6B324e99F02c";
     exports2.POOL = "0x7b5C526B7F8dfdff278b4a3e045083FBA4028790";
     exports2.POOL_CONFIGURATOR = "0x3b35da485b4daceFf52d499aa6C14dFE233a51CD";
     exports2.ORACLE = "0x9F616c65b5298E24e155E4486e114516BC635b63";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xa41E284482F9923E265832bE59627d91432da76C";
     exports2.ACL_MANAGER = "0x30417E3105a111c4e8C697Df66d26fC68d43656F";
     exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
     exports2.COLLECTOR = "0xF45122b5fcfA72550B8Ed2D48f3aEeFcA1167415";
-    exports2.COLLECTOR_CONTROLLER = "0x2DA49A23658d231b129F43bea4903C3682ab0Ed6";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xbE540b86E7b61624458ca928e9065e2133dBCA3a";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x1a80eF9C6a2eAD07E8F42FB1CBb426587EEe0D7D";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xB5024bED4fb5ca8D9ea5E8b016FC4dbe50e94a32";
@@ -53462,16 +54224,16 @@ var require_AaveV3GoerliGho = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3GoerliGho.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x4dd5ab8Fb385F2e12aDe435ba7AFA812F1d364D0";
     exports2.POOL = "0x617Cf26407193E32a771264fB5e9b8f09715CdfB";
     exports2.POOL_CONFIGURATOR = "0x04eA6B2a9E82Bd58bC95B8eA2b90496356dD969F";
     exports2.ORACLE = "0xcb601629B36891c43943e3CDa2eB18FAc38B5c4e";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xB7d8ff9949dB06D8387C28332045b8F734641755";
     exports2.ACL_MANAGER = "0x9C94757E231AdF6c90f89259DFA0841a1bf8172f";
     exports2.ACL_ADMIN = "0x2892e37624Ec31CC42502f297821109700270971";
     exports2.COLLECTOR = "0x1A47958e231848C664863D213bC27b018934477D";
-    exports2.COLLECTOR_CONTROLLER = "0x32ceB13aDe3D8B6951Fd00cE3cFaB6B7204B3d68";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x8688FEF353f4940061b4893d563de1C487Aa92Fd";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x877880d5E01b483add2f3223B709a26b622F0852";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x46Dbc9aeF756a594a61fcbB35902F24103044cBf";
@@ -53491,7 +54253,7 @@ var require_AaveV2Mumbai = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Mumbai.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x178113104fEcbcD7fF8669a0150721e231F0FD4B";
     exports2.POOL = "0x9198F13B08E299d85E096929fA9781A1E3d5d827";
     exports2.POOL_CONFIGURATOR = "0xc3c37E2aA3dc66464fa3C29ce2a6EC85beFC45e1";
@@ -53501,7 +54263,6 @@ var require_AaveV2Mumbai = __commonJS({
     exports2.POOL_ADMIN = "0x943E44157dC0302a5CEb172374d1749018a00994";
     exports2.EMERGENCY_ADMIN = "0x943E44157dC0302a5CEb172374d1749018a00994";
     exports2.COLLECTOR = "0x943E44157dC0302a5CEb172374d1749018a00994";
-    exports2.COLLECTOR_CONTROLLER = "address(0)";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xd41aE58e803Edf4304334acCE4DC4Ec34a63C644";
     exports2.EMISSION_MANAGER = "0x943E44157dC0302a5CEb172374d1749018a00994";
     exports2.CHAIN_ID = 80001;
@@ -53519,16 +54280,16 @@ var require_AaveV3Mumbai = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Mumbai.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xeb7A892BB04A8f836bDEeBbf60897A7Af1Bf5d7F";
     exports2.POOL = "0x0b913A76beFF3887d35073b8e5530755D60F78C7";
     exports2.POOL_CONFIGURATOR = "0x1147c3fE425bB6596D08Baba106167b190897821";
     exports2.ORACLE = "0xf0E6744a59177014738e1eF920dc676fb3b8CB62";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xacB5aDd3029C5004f726e8411033E6202Bc3dd01";
     exports2.ACL_MANAGER = "0x18e94ec692587dEb6f64c3c8e234dB076aAf8A35";
     exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
     exports2.COLLECTOR = "0x270EfFE95AE74FF6a6d839Ca1E7f89d1ddbdb920";
-    exports2.COLLECTOR_CONTROLLER = "0xCF5D1aB9C3bfE512b86BBA04cba8d21D842Aa656";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x67D1846E97B6541bA730f0C24899B0Ba3Be0D087";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xfaf04252248861B759709e10B1b746269370F0aa";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xF347E9FC8bD0a1Ad70F1AE6c1A499bbBaf4Cce6D";
@@ -53548,7 +54309,7 @@ var require_AaveV2Polygon = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Polygon.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xd05e3E715d945B59290df0ae8eF85c1BdB684744";
     exports2.POOL = "0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf";
     exports2.POOL_CONFIGURATOR = "0x26db2B833021583566323E3b8985999981b9F1F3";
@@ -53557,8 +54318,7 @@ var require_AaveV2Polygon = __commonJS({
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x7551b5D2763519d4e37e8B81929D336De671d46d";
     exports2.POOL_ADMIN = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
     exports2.EMERGENCY_ADMIN = "0x1450F2898D6bA2710C98BE9CAF3041330eD5ae58";
-    exports2.COLLECTOR = "0x7734280A4337F37Fbf4651073Db7c28C80B339e9";
-    exports2.COLLECTOR_CONTROLLER = "0xDB89487A449274478e984665b8692AfC67459deF";
+    exports2.COLLECTOR = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x357D51124f59836DeD84c8a1730D72B749d8BC23";
     exports2.EMISSION_MANAGER = "0x2bB25175d9B0F8965780209EB558Cc3b56cA6d32";
     exports2.CHAIN_ID = 137;
@@ -53578,16 +54338,16 @@ var require_AaveV3Polygon = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.STATIC_A_TOKEN_FACTORY = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb023e699F5a33916Ea823A16485e259257cA8Bd1";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
     exports2.COLLECTOR = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
-    exports2.COLLECTOR_CONTROLLER = "0xDB89487A449274478e984665b8692AfC67459deF";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53596,12 +54356,14 @@ var require_AaveV3Polygon = __commonJS({
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
     exports2.WETH_GATEWAY = "0x1e4b7A6b903680eab0c5dAbcb8fD429cD2a9598c";
+    exports2.RATES_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x10D2fA27166d94894d850a9a851EE06870F14b09";
     exports2.SWAP_COLLATERAL_ADAPTER = "0x6a4b2b595d369c963493Fc704CF48e42FAd8260b";
-    exports2.LISTING_ENGINE = "0xEDaD55FB5F4020bF51016614B3301B1FEff8BE46";
+    exports2.LISTING_ENGINE = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xC69728f11E9E6127733751c8410432913123acf1";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x874313A46e4957D29FAAC43BF5Eb2B144894f557";
+    exports2.STATIC_A_TOKEN_FACTORY = "0xFcd9720b0Ea09c70E53727E08Bc131d77800B112";
   }
 });
 
@@ -53610,7 +54372,7 @@ var require_AaveV2Fuji = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Fuji.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f";
     exports2.POOL = "0x76cc67FF2CC77821A70ED14321111Ce381C2594D";
     exports2.POOL_CONFIGURATOR = "0x4ceBAFAAcc6Cb26FD90E4cDe138Eb812442bb5f3";
@@ -53620,7 +54382,6 @@ var require_AaveV2Fuji = __commonJS({
     exports2.POOL_ADMIN = "0x1128d177BdaA74Ae68EB06e693f4CbA6BF427a5e";
     exports2.EMERGENCY_ADMIN = "0x1128d177BdaA74Ae68EB06e693f4CbA6BF427a5e";
     exports2.COLLECTOR = "0xB45F5C501A22288dfdb897e5f73E189597e09288";
-    exports2.COLLECTOR_CONTROLLER = "address(0)";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xa1EF206fb9a8D8186157FC817fCddcC47727ED55";
     exports2.EMISSION_MANAGER = "0x3b60cABB2C0e9ADe3e364b1F9752342A5D6079e2";
     exports2.CHAIN_ID = 43113;
@@ -53638,16 +54399,16 @@ var require_AaveV3Fuji = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fuji.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x220c6A7D868FC38ECB47d5E69b99e9906300286A";
     exports2.POOL = "0xf319Bb55994dD1211bC34A7A26A336C6DD0B1b00";
     exports2.POOL_CONFIGURATOR = "0x8F3433F242C852916Bd1850916De1C0767E88DDf";
     exports2.ORACLE = "0xB9107870a2e22b9cd4B51ED5483212Cb9eAE0329";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x0B59871DF373136bB7753A7A2675b47ffA0ccC86";
     exports2.ACL_MANAGER = "0x2faBdE81944E97D6dbAAa71BEDAF36229F51bC12";
     exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
     exports2.COLLECTOR = "0x7768248E1Ff75612c18324bad06bb393c1206980";
-    exports2.COLLECTOR_CONTROLLER = "0xA63d1Ee9043Ba6Ae6608A87DaE082826b586eAE1";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xe39e0498cB9df939b992f935f95936eAEdA7431c";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x4C2A4fD3686701AFb38d8722256eF52F519c179e";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x960B582cbc9B25865B1bcc301057089348dF75A9";
@@ -53667,7 +54428,7 @@ var require_AaveV2Avalanche = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV2Avalanche.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.MIGRATION_HELPER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.CHAIN_ID = exports2.EMISSION_MANAGER = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.EMERGENCY_ADMIN = exports2.POOL_ADMIN = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.LENDING_RATE_ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f";
     exports2.POOL = "0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C";
     exports2.POOL_CONFIGURATOR = "0x230B618aD4C475393A7239aE03630042281BD86e";
@@ -53677,7 +54438,6 @@ var require_AaveV2Avalanche = __commonJS({
     exports2.POOL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.EMERGENCY_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.COLLECTOR = "0x467b92aF281d14cB6809913AD016a607b5ba8A36";
-    exports2.COLLECTOR_CONTROLLER = "address(0)";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9";
     exports2.EMISSION_MANAGER = "0x5CfCd7E6D055Ba4f7B998914336254aDE3F69f26";
     exports2.CHAIN_ID = 43114;
@@ -53699,16 +54459,16 @@ var require_AaveV3Avalanche = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.STATIC_A_TOKEN_FACTORY = exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.COLLECTOR = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
-    exports2.COLLECTOR_CONTROLLER = "0xaCbE7d574EF8dC39435577eb638167Aca74F79f0";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53717,14 +54477,16 @@ var require_AaveV3Avalanche = __commonJS({
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
     exports2.WETH_GATEWAY = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
+    exports2.RATES_FACTORY = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x4fB0Ba43a5415f312cf5FA10d16Ff6dbA697d9aA";
     exports2.SWAP_COLLATERAL_ADAPTER = "0x00e39085C877328619FDB2a47d995c516a5fA869";
-    exports2.LISTING_ENGINE = "0x165e90Bd0a41d08fA1891CcDCEe315D7b83B3419";
+    exports2.LISTING_ENGINE = "0x49581e5575F49263f556b91daf8fb41D7854D94B";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xF71DBe0FAEF1473ffC607d4c555dfF0aEaDb878d";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x265d414f80b0fca9505710e6F16dB4b67555D365";
     exports2.PROOF_OF_RESERVE = "0xab22988D93d5F942fC6B6c6Ea285744809D1d9Cc";
     exports2.PROOF_OF_RESERVE_AGGREGATOR = "0x80f2c02224a2E548FC67c0bF705eBFA825dd5439";
+    exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
   }
 });
 
@@ -53733,16 +54495,16 @@ var require_AaveV3Arbitrum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
+    exports2.PRICE_ORACLE_SENTINEL = "0xF876d26041a4Fdc7A787d209DC3D2795dDc74f1e";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
-    exports2.COLLECTOR_CONTROLLER = "0xC3301b30f4EcBfd59dE0d74e89690C1a70C6f21B";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53752,12 +54514,14 @@ var require_AaveV3Arbitrum = __commonJS({
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
     exports2.WETH_GATEWAY = "0xB5Ee21786D28c5Ba61661550879475976B707099";
     exports2.SWAP_COLLATERAL_ADAPTER = "0xb20bd14259089e63d1f49d8d887ABA783Ce5dAc2";
+    exports2.RATES_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0xB0526BFb4047aE1147DC7caAF3F1653904C2D568";
-    exports2.LISTING_ENGINE = "0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D";
+    exports2.LISTING_ENGINE = "0x0EfdfC1A940DE4E7E6acC9Bb801481f81B17fd20";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
+    exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
   }
 });
 
@@ -53766,16 +54530,16 @@ var require_AaveV3ArbitrumGoerli = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x4EEE0BB72C2717310318f27628B3c8a708E4951C";
     exports2.POOL = "0xeAA2F46aeFd7BDe8fB91Df1B277193079b727655";
     exports2.POOL_CONFIGURATOR = "0x8bf6ed3FDa90c4111E491D2BDdd57589Ffb0c161";
     exports2.ORACLE = "0xaEA17ddD7cEDD233f851e1cFd2cBca42F488772d";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x2Fc0604AE02FA8AB833f135B0C01dFa45f88DAa2";
     exports2.ACL_MANAGER = "0xb8141857d82eC821141c17FA74dfeF062EB8594D";
     exports2.ACL_ADMIN = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
     exports2.COLLECTOR = "0x0b6d37C5dCC56c50EA13991C8B95f9c898aA2172";
-    exports2.COLLECTOR_CONTROLLER = "0xe7999aBDF90cD4b040C1107C14F2F430E818FE45";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x82F8904357Ba2fb7e7Cf6dcAA277289bF4481D7D";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x0aAFea73B7099a3C612dEDAACeB861FAE15fd207";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x9734b9BE76885FF2806963cE49c6a74dBF166EE3";
@@ -53796,16 +54560,16 @@ var require_AaveV3FantomTestnet = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3FantomTestnet.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xC809bea009Ca8DAA680f6A1c4Ca020D550210736";
     exports2.POOL = "0x95b1B6470eAF8cC4A03d2D44C6b54eBB8ede8C30";
     exports2.POOL_CONFIGURATOR = "0x91ce34267F11EcB54b2601Ed1C43188cE465dabB";
     exports2.ORACLE = "0xDd6BCF7EF3dbA79b03D61De36Cc292661c664efD";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x221b58772526669172acCA8B68f6905086c81569";
     exports2.ACL_MANAGER = "0xbB27a8D0D19fB0c43364Bd26AEB8Fc131F4dA40F";
     exports2.ACL_ADMIN = "0xaDdfe0b2342800ebD67C30d1c2Bd479E4D498BD5";
     exports2.COLLECTOR = "0xE4A880b56B4790632753c7393cC51FefFd965678";
-    exports2.COLLECTOR_CONTROLLER = "0x03766578530956F5f9d7726ED71d55277093cA20";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xa45B99c552a2D576B272cc9bFbEB131427ae5148";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xd116069eaBD82DA3A18CA9c5231c1DbB3279Dc0b";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x7074f39fb7A91C251798DAF614dB4e9893c89349";
@@ -53825,16 +54589,16 @@ var require_AaveV3Fantom = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fantom.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xfd6f3c1845604C8AE6c6E402ad17fb9885160754";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x39CB97b105173b56b5a2b4b33AD25d6a50E6c949";
     exports2.COLLECTOR = "0xBe85413851D195fC6341619cD68BfDc26a25b928";
-    exports2.COLLECTOR_CONTROLLER = "0xc0F0cFBbd0382BcE3B93234E4BFb31b2aaBE36aD";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53856,16 +54620,16 @@ var require_AaveV3Harmony = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Harmony.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0x3C90887Ede8D65ccb2777A5d577beAb2548280AD";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xb2f0C5f37f4beD2cB51C44653cD5D84866BDcd2D";
     exports2.COLLECTOR = "0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31";
-    exports2.COLLECTOR_CONTROLLER = "0xeaC16519923774Fd7723d3D5E442a1e2E46BA962";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53885,16 +54649,16 @@ var require_AaveV3Optimism = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
-    exports2.COLLECTOR_CONTROLLER = "0xA77E4A084d7d4f064E326C0F6c0aCefd47A5Cb21";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
@@ -53904,12 +54668,14 @@ var require_AaveV3Optimism = __commonJS({
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
     exports2.WETH_GATEWAY = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
     exports2.SWAP_COLLATERAL_ADAPTER = "0xBC2Ff189e0349Ca73D9b78c172FC2B40025abE2a";
+    exports2.RATES_FACTORY = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
     exports2.REPAY_WITH_COLLATERAL_ADAPTER = "0x66d340EB9D3dCe0f78e813E2F991B7CE54a1a28c";
-    exports2.LISTING_ENGINE = "0x7b8Fa4540246554e77FCFf140f9114de00F8bB8D";
+    exports2.LISTING_ENGINE = "0x7A9A9c14B35E58ffa1cC84aB421acE0FdcD289E3";
     exports2.WALLET_BALANCE_PROVIDER = "0xBc790382B3686abffE4be14A030A96aC6154023a";
     exports2.UI_POOL_DATA_PROVIDER = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
+    exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
   }
 });
 
@@ -53918,16 +54684,16 @@ var require_AaveV3OptimismGoerli = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3OptimismGoerli.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x0b8FAe5f9Bf5a1a5867FB5b39fF4C028b1C2ebA9";
     exports2.POOL = "0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7";
     exports2.POOL_CONFIGURATOR = "0x98EC9f3e5A0E5aDB16BAAdEB96a110BceeaC0067";
     exports2.ORACLE = "0x2366d0cE3f44D81f7b2D40C64288b5eAA7593049";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x861d7d4A46C63b92461631CC77a9f2aeAcFfA10d";
     exports2.ACL_MANAGER = "0x3e965db7b1BaA260B65208e3F508eD84344ebd75";
     exports2.ACL_ADMIN = "0xaDdfe0b2342800ebD67C30d1c2Bd479E4D498BD5";
     exports2.COLLECTOR = "0x026E3e3363843e16e3D6d21e068c981A4F55e5d2";
-    exports2.COLLECTOR_CONTROLLER = "0xD7eFB74039B8f2B4Eb08C2a6bef64B40F196395B";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x062BB55A42875366DB1B7D227B73621C33a6cB6b";
     exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x7675E8C3e91A11D721D0292331c5ee28ed8996ee";
     exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xF8707057529639A3da9D951054DE89f66d01B3e9";
@@ -53940,6 +54706,67 @@ var require_AaveV3OptimismGoerli = __commonJS({
     exports2.UI_POOL_DATA_PROVIDER = "0x9277eFbB991536a98a1aA8b735E9D26d887104C1";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x4157398c5abB5211F51F5B551E3e240c5568dbD4";
     exports2.L2_ENCODER = "0x14AA09449fac437b5c0110614be2C08610e38f62";
+  }
+});
+
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ScrollAlpha.js
+var require_AaveV3ScrollAlpha = __commonJS({
+  "node_modules/@bgd-labs/aave-address-book/dist/AaveV3ScrollAlpha.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.POOL_ADDRESSES_PROVIDER = "0xCA35Ae4cc948Dae8a1d3C77ed1C5CBC2e73b290D";
+    exports2.POOL = "0x556345b249008Bf2f52B7097ceB5bE798F32dAe9";
+    exports2.POOL_CONFIGURATOR = "0x88A4811E6009ad13EA879261806E5a6071F3F788";
+    exports2.ORACLE = "0x269D5C1854fcA3bede6BFc8935118c99020b13f0";
+    exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x36002d10bB238594c58aec104620555a545D517C";
+    exports2.ACL_MANAGER = "0x550CC76fD6C4E4502cB4F79f26ee15f4E4681D57";
+    exports2.ACL_ADMIN = "0x8A52430a0a83d2bA00A88758340e4b640BDfC4FC";
+    exports2.COLLECTOR = "0x500A5dc53fD22bdBBe37bE9cc00cB67F24e233d1";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x318101F73b388C73b5A2Da39B4De54f335D77A0D";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xf7798f65d3d1A1Af1a68d8B4322638559A47bC83";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xF087700794eb98b193D8f95fFEc0E1a02e195e28";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x2bb98A7F11a81AE07443f192Daae04f815F2c878";
+    exports2.CHAIN_ID = 534353;
+    exports2.EMISSION_MANAGER = "0x41A9A5615a912E47F99e16484880009c7c65707b";
+    exports2.WETH_GATEWAY = "0x410Fda971c841Aaf34be5F5539b40503c7F12AC2";
+    exports2.FAUCET = "0x55530C4E1ADFf14cB5760C6750FeBFbEB57E6753";
+    exports2.WALLET_BALANCE_PROVIDER = "0x2B45F4A959B5Fc8fc22b457424685f17eDae4592";
+    exports2.UI_POOL_DATA_PROVIDER = "0x45dFc7A61AD24918C9315733223fD1e55E9B2B59";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0x109e475c0Bf9E525dABB65A4Aec07c1e65100a99";
+    exports2.L2_ENCODER = "0x997a8208902e1259dDf676Eb37FeD31A2f77110B";
+  }
+});
+
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.js
+var require_AaveV3Metis = __commonJS({
+  "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.LISTING_ENGINE = exports2.RATES_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.POOL_ADDRESSES_PROVIDER = "0xB9FABd7500B2C6781c35Dd48d54f81fc2299D7AF";
+    exports2.POOL = "0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57";
+    exports2.POOL_CONFIGURATOR = "0x69FEE8F261E004453BE0800BC9039717528645A6";
+    exports2.ORACLE = "0x38D36e85E47eA6ff0d18B0adF12E5fC8984A6f8e";
+    exports2.PRICE_ORACLE_SENTINEL = "0xE2566C39db9559D318fB3a00D7B5992CBeeA8567";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x99411FC17Ad1B56f49719E3850B2CDcc0f9bBFd8";
+    exports2.ACL_MANAGER = "0xcDCb65fc657B701a5100a12eFB663978E7e8fFB8";
+    exports2.ACL_ADMIN = "0x8EC77963068474a45016938Deb95E603Ca82a029";
+    exports2.COLLECTOR = "0xB5b64c7E00374e766272f8B442Cd261412D4b118";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x30C1b8F0490fa0908863d6Cbd2E36400b4310A6B";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x246405C70461f93513C74606815615c24c5C8C79";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xE7fA271BD76FC9c6F2F968976E9f4f553256E02f";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52aC2476Fc6F788B4c5A9B12Cfcb7fDB163955f4";
+    exports2.CHAIN_ID = 1088;
+    exports2.EMISSION_MANAGER = "0xfDb2580A1ac4CDc67E4236738b28af59e2022Dd2";
+    exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x9E7B73ffD9D2026F3ff4212c29E209E09C8A91F5";
+    exports2.WALLET_BALANCE_PROVIDER = "0x1df710eb1E2FD9C21494aF2BFb1F210a4185885b";
+    exports2.UI_POOL_DATA_PROVIDER = "0x7dd60bd8507fDC3d300d53427b7AE566701a7320";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0x3e7BC5EcE0f22DbB16c3e3EeA288a10A57d68927";
+    exports2.L2_ENCODER = "0x9f3A1B399A9074eBA63Dc4fc274bE2A2b2d80cB9";
+    exports2.RATES_FACTORY = "0x87Aaba7cf8e1F319d0E3402d68017171201dEcd5";
+    exports2.LISTING_ENGINE = "0x857720ad258db0ACb180e76A5526c72CFCe6F8A7";
   }
 });
 
@@ -53980,7 +54807,7 @@ var require_AaveAddressBook = __commonJS({
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.AaveV3OptimismGoerli = exports2.AaveV3Optimism = exports2.AaveV3Harmony = exports2.AaveV3Fantom = exports2.AaveV3FantomTestnet = exports2.AaveV3ArbitrumGoerli = exports2.AaveV3Arbitrum = exports2.AaveV3Avalanche = exports2.AaveV2Avalanche = exports2.AaveV3Fuji = exports2.AaveV2Fuji = exports2.AaveV3Polygon = exports2.AaveV2Polygon = exports2.AaveV3Mumbai = exports2.AaveV2Mumbai = exports2.AaveV3GoerliGho = exports2.AaveV3Goerli = exports2.AaveV3Sepolia = exports2.AaveV2Goerli = exports2.AaveV2EthereumArc = exports2.AaveV2EthereumAMM = exports2.AaveV3Ethereum = exports2.AaveV2Ethereum = exports2.AaveSafetyModule = exports2.AaveGovernanceV2 = void 0;
+    exports2.AaveV3Metis = exports2.AaveV3ScrollAlpha = exports2.AaveV3OptimismGoerli = exports2.AaveV3Optimism = exports2.AaveV3Harmony = exports2.AaveV3Fantom = exports2.AaveV3FantomTestnet = exports2.AaveV3ArbitrumGoerli = exports2.AaveV3Arbitrum = exports2.AaveV3Avalanche = exports2.AaveV2Avalanche = exports2.AaveV3Fuji = exports2.AaveV2Fuji = exports2.AaveV3Polygon = exports2.AaveV2Polygon = exports2.AaveV3Mumbai = exports2.AaveV2Mumbai = exports2.AaveV3GoerliGho = exports2.AaveV3Goerli = exports2.AaveV3Sepolia = exports2.AaveV2Goerli = exports2.AaveV2EthereumArc = exports2.AaveV2EthereumAMM = exports2.AaveV3Ethereum = exports2.AaveV2Ethereum = exports2.AaveSafetyModule = exports2.AaveGovernanceV2 = void 0;
     exports2.AaveGovernanceV2 = __importStar2(require_AaveGovernanceV2());
     exports2.AaveSafetyModule = __importStar2(require_AaveSafetyModule());
     exports2.AaveV2Ethereum = __importStar2(require_AaveV2Ethereum());
@@ -54006,6 +54833,8 @@ var require_AaveAddressBook = __commonJS({
     exports2.AaveV3Harmony = __importStar2(require_AaveV3Harmony());
     exports2.AaveV3Optimism = __importStar2(require_AaveV3Optimism());
     exports2.AaveV3OptimismGoerli = __importStar2(require_AaveV3OptimismGoerli());
+    exports2.AaveV3ScrollAlpha = __importStar2(require_AaveV3ScrollAlpha());
+    exports2.AaveV3Metis = __importStar2(require_AaveV3Metis());
   }
 });
 
@@ -63076,7 +63905,7 @@ var governanceConfig = {
     AAVE_GOVERNANCE_V2: "0xEC568fffba86c094cf06b22134B23074DFE2252c",
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: "0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7",
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
-    AAVE_GOVERNANCE_V2_HELPER: "0x16ff7583ea21055bf5f929ec4b896d997ff35847"
+    AAVE_GOVERNANCE_V2_HELPER: "0xBb7baf0534423e3108E1D03c259104cDba2C1cB7"
   },
   ipfsGateway: "https://cloudflare-ipfs.com/ipfs",
   fallbackIpfsGateway: "https://ipfs.io/ipfs"
@@ -63371,6 +64200,25 @@ var marketsData = {
       L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER
     }
   },
+  ["proto_scroll_alpha_v3" /* proto_scroll_alpha_v3 */]: {
+    marketTitle: "Scroll Alpha G\xF6rli",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.scroll_alpha,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ScrollAlpha.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3ScrollAlpha.POOL,
+      WETH_GATEWAY: markets.AaveV3ScrollAlpha.WETH_GATEWAY,
+      FAUCET: markets.AaveV3ScrollAlpha.FAUCET,
+      WALLET_BALANCE_PROVIDER: markets.AaveV3ScrollAlpha.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ScrollAlpha.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: markets.AaveV3ScrollAlpha.L2_ENCODER
+    }
+  },
   ["proto_fantom_v3" /* proto_fantom_v3 */]: {
     marketTitle: "Fantom",
     v3: true,
@@ -63544,6 +64392,28 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: markets.AaveV2Fuji.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER
+    }
+  },
+  ["proto_metis_v3" /* proto_metis_v3 */]: {
+    marketTitle: "Metis",
+    chainId: import_contract_helpers2.ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Metis.POOL,
+      WETH_GATEWAY: "0x0",
+      // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: markets.AaveV3Metis.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
     }
   }
 };
@@ -63811,6 +64681,28 @@ var networkConfigs = {
     //   url: 'https://app.optimism.io/bridge',
     // },
   },
+  [import_contract_helpers3.ChainId.scroll_alpha]: {
+    name: "Scroll Alpha",
+    publicJsonRPCUrl: [
+      "https://alpha-rpc.scroll.io/l2",
+      "https://scroll-alphanet.public.blastapi.io"
+    ],
+    publicJsonRPCWSUrl: "wss://scroll-alphanet.public.blastapi.io",
+    // protocolDataUrl: '',
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://blockscout.scroll.io",
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/scroll.svg"
+    // bridge: {
+    //   icon: '/icons/bridge/scroll.svg',
+    //   name: 'Scroll Alpha Bridge',
+    //   url: 'https://scroll.io/alpha/bridge',
+    // },
+  },
   [import_contract_helpers3.ChainId.fantom]: {
     name: "Fantom",
     privateJsonRPCUrl: "https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
@@ -63857,6 +64749,19 @@ var networkConfigs = {
       name: "Fantom Bridge",
       url: "https://app.multichain.org/#/router"
     }
+  },
+  [import_contract_helpers3.ChainId.metis_andromeda]: {
+    name: "Metis Andromeda",
+    privateJsonRPCUrl: "https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: ["https://andromeda.metis.io/?owner=1088"],
+    baseAssetSymbol: "",
+    // N/A
+    wrappedBaseAssetSymbol: "",
+    // N/A
+    baseAssetDecimals: 0,
+    // N/A
+    explorerLink: "https://andromeda-explorer.metis.io",
+    networkLogoPath: "/icons/networks/metis.svg"
   }
 };
 
