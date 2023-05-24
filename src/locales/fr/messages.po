@@ -1217,7 +1217,7 @@ msgstr "Valeur de liquidation"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Loading"
-msgstr ""
+msgstr "Chargement"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
@@ -2152,7 +2152,7 @@ msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou <0
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen by Maneki community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Maneki governance forum</0> for further updates."
-msgstr ""
+msgstr "Ces actifs sont temporairement gelés par les décisions de la communauté Maneki, ce qui signifie qu'il n'est plus possible d'offrir/d'emprunter ou d'échanger les taux de ces actifs. Les retraits et les remboursements de dettes sont autorisés. Suivez le <0>forum de gouvernance Maneki</0> pour d'autres mises à jour."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2258,7 +2258,7 @@ msgstr "Pour emprunter, vous devez fournir tout actif à utiliser comme garantie
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant Maneki smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr ""
+msgstr "Pour continuer, vous devez autoriser les contrats intelligents Maneki à déplacer vos fonds de votre portefeuille. Selon l'actif et le portefeuille que vous utilisez, cela se fait en signant le message d'autorisation (gaz gratuit) ou en soumettant une transaction d'approbation (nécessite du gaz). <0>En savoir plus</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."

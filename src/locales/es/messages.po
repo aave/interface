@@ -1217,7 +1217,7 @@ msgstr "Valor de liquidación"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Loading"
-msgstr ""
+msgstr "Cargando"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
@@ -1245,8 +1245,8 @@ msgid "Locking Failed"
 msgstr "Bloqueo fallido"
 
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
-msgid "Bloqueando {symbol}"
-msgstr ""
+msgid "Locking {symbol}"
+msgstr "Bloqueando {symbol}"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -2152,7 +2152,7 @@ msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar 
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen by Maneki community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Maneki governance forum</0> for further updates."
-msgstr ""
+msgstr "Estos activos están congelados temporalmente por decisiones de la comunidad de Maneki, lo que significa que no están disponibles más suministro/préstamo o intercambio de tasas de estos activos. Se permiten retiros y pagos de deuda. Siga el <0>foro de gobierno de Maneki</0> para obtener más actualizaciones."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2258,7 +2258,7 @@ msgstr "Para tomar prestado, necesitas suministrar cualquier activo para ser uti
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant Maneki smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr ""
+msgstr "Para continuar, debe otorgar permiso a los contratos inteligentes de Maneki para mover sus fondos de su billetera. Según el activo y la billetera que use, se hace firmando el mensaje de permiso (sin gasolina) o enviando una transacción de aprobación (requiere gasolina). <0>Más información</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
