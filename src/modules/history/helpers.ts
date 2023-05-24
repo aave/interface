@@ -1,3 +1,5 @@
+import { fetchIconSymbolAndName, IconSymbolInterface } from 'src/ui-config/reservePatches';
+
 import { TransactionHistoryItem } from './types';
 
 export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp: number }) => {
@@ -41,3 +43,31 @@ export const groupByDate = (
     return grouped;
   }, {} as Record<string, TransactionHistoryItem[]>);
 };
+
+interface MappedReserveData {
+  underlyingAsset: string;
+  name: string;
+  symbol: string;
+  iconSymbol: string;
+}
+
+export function fetchIconSymbolAndNameHistorical({
+  underlyingAsset,
+  symbol,
+  name,
+}: IconSymbolInterface): MappedReserveData {
+  // Re-use general patches
+  const reservePatch = fetchIconSymbolAndName({ underlyingAsset, symbol, name });
+
+  // Fix AMM market names and symbol, specific to tx history
+  const updatedPatch = {
+    underlyingAsset,
+    symbol: reservePatch.symbol.includes('Amm')
+      ? reservePatch.iconSymbol.replace(/_/g, '')
+      : reservePatch.symbol,
+    name: reservePatch.name ?? (name || ''),
+    iconSymbol: reservePatch.iconSymbol || '',
+  };
+
+  return updatedPatch;
+}

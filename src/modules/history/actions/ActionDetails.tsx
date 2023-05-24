@@ -6,9 +6,9 @@ import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
+import { fetchIconSymbolAndNameHistorical } from '../helpers';
 import { PriceUnavailable } from '../PriceUnavailable';
 import { ActionFields, TransactionHistoryItem } from '../types';
 
@@ -46,7 +46,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
     case 'Supply':
     case 'Deposit':
       const supplyTx = transaction as TransactionHistoryItem<ActionFields['Supply']>;
-      const formattedSupplyReserve = fetchIconSymbolAndName(supplyTx.reserve);
+      const formattedSupplyReserve = fetchIconSymbolAndNameHistorical(supplyTx.reserve);
       const formattedSupplyAmount = formatUnits(supplyTx.amount, supplyTx.reserve.decimals);
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -109,7 +109,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
     case 'Borrow':
       const borrowTx = transaction as TransactionHistoryItem<ActionFields['Borrow']>;
-      const formattedBorrowReserve = fetchIconSymbolAndName(borrowTx.reserve);
+      const formattedBorrowReserve = fetchIconSymbolAndNameHistorical(borrowTx.reserve);
       const formattedBorrowAmount = formatUnits(borrowTx.amount, borrowTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -172,7 +172,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
     case 'RedeemUnderlying':
       const withdrawTx = transaction as TransactionHistoryItem<ActionFields['RedeemUnderlying']>;
-      const formattedWithdrawReserve = fetchIconSymbolAndName(withdrawTx.reserve);
+      const formattedWithdrawReserve = fetchIconSymbolAndNameHistorical(withdrawTx.reserve);
       const formattedWithdrawAmount = formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -235,7 +235,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
     case 'Repay':
       const repayTx = transaction as TransactionHistoryItem<ActionFields['Repay']>;
-      const formattedRepayReserve = fetchIconSymbolAndName(repayTx.reserve);
+      const formattedRepayReserve = fetchIconSymbolAndNameHistorical(repayTx.reserve);
       const formattedRepayAmount = formatUnits(repayTx.amount, repayTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -300,7 +300,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const collateralUsageTx = transaction as TransactionHistoryItem<
         ActionFields['UsageAsCollateral']
       >;
-      const formattedCollateralReserve = fetchIconSymbolAndName(collateralUsageTx.reserve);
+      const formattedCollateralReserve = fetchIconSymbolAndNameHistorical(
+        collateralUsageTx.reserve
+      );
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography variant="description" color="text.primary">
@@ -348,7 +350,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const swapBorrowRateTx = transaction as TransactionHistoryItem<
         ActionFields['SwapBorrowRate']
       >;
-      const formattedSwapReserve = fetchIconSymbolAndName(swapBorrowRateTx.reserve);
+      const formattedSwapReserve = fetchIconSymbolAndNameHistorical(swapBorrowRateTx.reserve);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <BorrowRateModeBlock from={true} swapBorrowRateTx={swapBorrowRateTx} />
@@ -381,10 +383,10 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
     case 'LiquidationCall':
       const liquidationTx = transaction as TransactionHistoryItem<ActionFields['LiquidationCall']>;
-      const formattedLiquidationColatReserve = fetchIconSymbolAndName(
+      const formattedLiquidationColatReserve = fetchIconSymbolAndNameHistorical(
         liquidationTx.collateralReserve
       );
-      const formattedLiquidationBorrowReserve = fetchIconSymbolAndName(
+      const formattedLiquidationBorrowReserve = fetchIconSymbolAndNameHistorical(
         liquidationTx.principalReserve
       );
       const formattedCollateralAmount = formatUnits(

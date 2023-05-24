@@ -85,7 +85,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   LUSD: 'LUSD Stablecoin',
 };
 
-interface IconSymbolInterface {
+export interface IconSymbolInterface {
   underlyingAsset: string;
   symbol: string;
   name?: string;
