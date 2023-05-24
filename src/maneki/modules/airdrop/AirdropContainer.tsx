@@ -274,7 +274,7 @@ export const AirdropContainer = () => {
             <ListItemText
               sx={{
                 p: 0,
-                fontSize: '12px',
+                fontSize: { sm: '18px', md: '12px' },
               }}
             >
               - <Trans>This airdrop is distributed to Venus members.</Trans>
@@ -284,7 +284,7 @@ export const AirdropContainer = () => {
             <ListItemText
               sx={{
                 p: 0,
-                fontSize: '12px',
+                fontSize: { sm: '18px', md: '12px' },
               }}
             >
               - <Trans>This is a one-time airdrop.</Trans>
@@ -304,7 +304,8 @@ export const AirdropContainer = () => {
           <ListItem>
             <ListItemText
               sx={{
-                fontSize: '12px',
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
               }}
             >
               - <Trans>This airdrop is distributed to Social Media members.</Trans>
@@ -313,7 +314,8 @@ export const AirdropContainer = () => {
           <ListItem>
             <ListItemText
               sx={{
-                fontSize: '12px',
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
               }}
             >
               - <Trans>This is a one-time airdrop.</Trans>
@@ -329,64 +331,9 @@ export const AirdropContainer = () => {
         <ManekiLoadingPaper description="Generating Hashes..." withCircle />
       ) : (
         <>
-          {/* AirdropContentWrapper can be convert for Mobile view */}
-          {/* <AirdropContentWrapper
-            title="Venus"
-            mainHeader="Venus Airdrop"
-            airdropStatus="Ongoing"
-            entry={entry}
-            isClaimed={isClaimed}
-            setAirdropNumber={0}
-            description={
-              <List>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This airdrop is distributed to Venus members.</Trans>
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This is a one-time airdrop.</Trans>
-                  </ListItemText>
-                </ListItem>
-              </List>
-            }
-          />
-          <AirdropContentWrapper
-            title="Social Media"
-            mainHeader="Social Media Airdrop"
-            airdropStatus="Ongoing"
-            entry={entrySocmed}
-            isClaimed={isClaimedSocmed}
-            setAirdropNumber={1}
-            description={
-              <List>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This airdrop is distributed to Social Media members.</Trans>
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This is a one-time airdrop.</Trans>
-                  </ListItemText>
-                </ListItem>
-              </List>
-            }
-          /> */}
           {downToSM ? (
             airdropList.map((airdrop, index) => {
-              return (
-                <AirdropContentWrapper
-                  key={index}
-                  title={airdrop.title}
-                  status={airdrop.status}
-                  tooltipContent={airdrop.tooltipContent}
-                  entry={airdrop.entry}
-                  isClaimed={airdrop.isClaimed}
-                  airdropNumber={airdrop.airdropNumber}
-                />
-              );
+              return <AirdropContentWrapper key={index} {...airdrop} />;
             })
           ) : (
             <AirdropTable airdropList={airdropList} />

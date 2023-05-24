@@ -1410,6 +1410,7 @@ msgstr "No voting power"
 msgid "None"
 msgstr "None"
 
+#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
 #: src/maneki/modules/airdrop/AirdropTable.tsx
 msgid "Not Eligible"
 msgstr "Not Eligible"
@@ -2600,10 +2601,6 @@ msgstr "Yes"
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
-
-#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
-msgid "You are not eligle to claim from {title}"
-msgstr "You are not eligle to claim from {title}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
