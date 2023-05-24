@@ -3,59 +3,21 @@ import {
   StakingService,
   UiStakeDataProvider,
 } from '@aave/contract-helpers';
+import {
+  GeneralStakeUIDataHumanized,
+  GetUserStakeUIDataHumanized,
+} from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
-export type StakeGeneralUiData = {
-  usdPriceEth: string;
-  aave: {
-    stakeTokenTotalSupply: string;
-    stakeCooldownSeconds: number;
-    stakeUnstakeWindow: number;
-    stakeTokenPriceEth: string;
-    rewardTokenPriceEth: string;
-    stakeApy: string;
-    distributionPerSecond: string;
-    distributionEnd: string;
-  };
-  bpt: {
-    stakeTokenTotalSupply: string;
-    stakeCooldownSeconds: number;
-    stakeUnstakeWindow: number;
-    stakeTokenPriceEth: string;
-    rewardTokenPriceEth: string;
-    stakeApy: string;
-    distributionPerSecond: string;
-    distributionEnd: string;
-  };
-};
-
-export type StakeUserUiData = {
-  usdPriceEth: string;
-  aave: {
-    stakeTokenUserBalance: string;
-    underlyingTokenUserBalance: string;
-    userCooldown: number;
-    userIncentivesToClaim: string;
-    userPermitNonce: string;
-  };
-  bpt: {
-    stakeTokenUserBalance: string;
-    underlyingTokenUserBalance: string;
-    userCooldown: number;
-    userIncentivesToClaim: string;
-    userPermitNonce: string;
-  };
-};
-
 export interface StakeSlice {
   refetchStakeData: () => Promise<void>;
   stakeDataLoading: boolean;
-  stakeUserResult?: StakeUserUiData;
-  stakeGeneralResult?: StakeGeneralUiData;
+  stakeUserResult?: GetUserStakeUIDataHumanized;
+  stakeGeneralResult?: GeneralStakeUIDataHumanized;
   stake: (args: {
     token: string;
     amount: string;

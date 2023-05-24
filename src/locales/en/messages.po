@@ -43,11 +43,6 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-msgid "ACTIVATE COOLDOWN"
-msgstr "ACTIVATE COOLDOWN"
-
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "APR"
@@ -59,8 +54,8 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/history/BorrowRateModeBlock.tsx
-#: src/modules/history/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
@@ -136,6 +131,11 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+msgid "Activate Cooldown"
+msgstr "Activate Cooldown"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
@@ -147,6 +147,10 @@ msgstr "Add {0} to wallet to track your balance."
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr "Addresses"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -184,10 +188,6 @@ msgstr "Allows you to decide whether to use a supplied asset as collateral. An a
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Already on cooldown"
-msgstr "Already on cooldown"
-
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -195,9 +195,17 @@ msgstr "Already on cooldown"
 msgid "Amount"
 msgstr "Amount"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Amount in cooldown"
+msgstr "Amount in cooldown"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Amount to unstake"
+msgstr "Amount to unstake"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
@@ -382,8 +390,7 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
@@ -427,8 +434,7 @@ msgstr "Borrow cap is exceeded"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "Borrow rate change"
 
@@ -594,8 +600,7 @@ msgstr "Collateral is (mostly) the same currency that is being borrowed"
 msgid "Collateral to repay with"
 msgstr "Collateral to repay with"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -616,8 +621,7 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
 
@@ -677,8 +681,7 @@ msgstr "Copy error message"
 msgid "Copy error text"
 msgstr "Copy error text"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
 
@@ -1158,13 +1161,11 @@ msgstr "Links"
 msgid "Liqudation"
 msgstr "Liqudation"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidation"
 msgstr "Liquidation"
 
@@ -1575,6 +1576,15 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
+msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr "Read more here."
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -1624,8 +1634,7 @@ msgstr "Repaid"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Repay"
 msgstr "Repay"
 
@@ -1820,7 +1829,7 @@ msgstr "Spanish"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
-#: src/modules/history/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
 
@@ -1914,8 +1923,7 @@ msgstr "Supplied asset amount"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Supply"
@@ -2070,8 +2078,8 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
-msgstr "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgstr "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -2354,6 +2362,14 @@ msgstr "Unstake window"
 msgid "Unstaked"
 msgstr "Unstaked"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
@@ -2408,7 +2424,7 @@ msgstr "VOTE YAE"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
-#: src/modules/history/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
 msgstr "Variable"
 
@@ -2465,6 +2481,8 @@ msgstr "Voted NAY"
 msgid "Voted YAE"
 msgstr "Voted YAE"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -2535,8 +2553,7 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
 
@@ -2716,8 +2733,7 @@ msgstr "blocked activities"
 msgid "copy the error"
 msgstr "copy the error"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
 msgstr "disabled"
 
@@ -2725,8 +2741,7 @@ msgstr "disabled"
 msgid "documentation"
 msgstr "documentation"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "enabled"
 msgstr "enabled"
 
@@ -2734,10 +2749,8 @@ msgstr "enabled"
 msgid "ends"
 msgstr "ends"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "for"
 msgstr "for"
 
