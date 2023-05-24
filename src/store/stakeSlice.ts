@@ -1,12 +1,4 @@
-import {
-  EthereumTransactionTypeExtended,
-  StakingService,
-  UiStakeDataProvider,
-} from '@aave/contract-helpers';
-import {
-  GeneralStakeUIDataHumanized,
-  GetUserStakeUIDataHumanized,
-} from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
+import { EthereumTransactionTypeExtended, StakingService } from '@aave/contract-helpers';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
@@ -14,10 +6,6 @@ import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
 export interface StakeSlice {
-  refetchStakeData: () => Promise<void>;
-  stakeDataLoading: boolean;
-  stakeUserResult?: GetUserStakeUIDataHumanized;
-  stakeGeneralResult?: GeneralStakeUIDataHumanized;
   stake: (args: {
     token: string;
     amount: string;
@@ -36,7 +24,7 @@ export const createStakeSlice: StateCreator<
   [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   StakeSlice
-> = (set, get) => {
+> = (_, get) => {
   function getCorrectProvider() {
     const currentNetworkConfig = get().currentNetworkConfig;
     const isStakeFork =
@@ -45,34 +33,6 @@ export const createStakeSlice: StateCreator<
     return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
   }
   return {
-    stakeDataLoading: true,
-    refetchStakeData: async () => {
-      const uiStakeDataProvider = new UiStakeDataProvider({
-        provider: getCorrectProvider(),
-        uiStakeDataProvider: stakeConfig.stakeDataProvider,
-      });
-      const promises: Promise<void>[] = [];
-      try {
-        promises.push(
-          uiStakeDataProvider
-            .getGeneralStakeUIDataHumanized()
-            .then((generalStakeData) => set({ stakeGeneralResult: generalStakeData }))
-        );
-        if (get().account) {
-          promises.push(
-            uiStakeDataProvider
-              .getUserStakeUIDataHumanized({
-                user: get().account,
-              })
-              .then((userStakeData) => set({ stakeUserResult: userStakeData }))
-          );
-        }
-        await Promise.all(promises);
-      } catch (e) {
-        console.log('error fetching general stake data');
-      }
-      set({ stakeDataLoading: false });
-    },
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {

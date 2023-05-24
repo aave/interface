@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useRootStore } from 'src/store/root';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -16,7 +16,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   stakedToken,
   icon,
 }) => {
-  const stakeGeneralResult = useRootStore((state) => state.stakeGeneralResult);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData();
   let stakingAPY = '';
 
   if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
