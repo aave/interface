@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
@@ -10,6 +10,7 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
+import AirdropContentWrapper from './AirdropContentWrapper';
 import AirdropTable from './AirdropTable';
 import randomAddrs from './devRandAddr';
 import randomAddrs2 from './devRandAddr2';
@@ -151,6 +152,8 @@ export const AirdropContainer = () => {
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
     // get entries
@@ -270,6 +273,7 @@ export const AirdropContainer = () => {
           <ListItem>
             <ListItemText
               sx={{
+                p: 0,
                 fontSize: '12px',
               }}
             >
@@ -279,6 +283,7 @@ export const AirdropContainer = () => {
           <ListItem>
             <ListItemText
               sx={{
+                p: 0,
                 fontSize: '12px',
               }}
             >
@@ -369,7 +374,23 @@ export const AirdropContainer = () => {
               </List>
             }
           /> */}
-          <AirdropTable airdropList={airdropList} />
+          {downToSM ? (
+            airdropList.map((airdrop, index) => {
+              return (
+                <AirdropContentWrapper
+                  key={index}
+                  title={airdrop.title}
+                  status={airdrop.status}
+                  tooltipContent={airdrop.tooltipContent}
+                  entry={airdrop.entry}
+                  isClaimed={airdrop.isClaimed}
+                  airdropNumber={airdrop.airdropNumber}
+                />
+              );
+            })
+          ) : (
+            <AirdropTable airdropList={airdropList} />
+          )}
         </>
       )}
     </>

@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Box,
@@ -110,8 +111,15 @@ export default function AirdropTable({ airdropList }: { airdropList: airdropList
                       }}
                       variant="contained"
                       sx={{ p: '8px 24px' }}
+                      disabled={!airdrop.entry || airdrop.isClaimed}
                     >
-                      Claim
+                      {!airdrop.entry ? (
+                        <Trans>Not Eligible</Trans>
+                      ) : airdrop.isClaimed ? (
+                        <Trans>Claimed</Trans>
+                      ) : (
+                        <Trans>Claim</Trans>
+                      )}
                     </Button>
                   </TableCell>
                 </TableRow>
