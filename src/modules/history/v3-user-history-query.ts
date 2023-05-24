@@ -28,9 +28,6 @@ query UserTransactions($userAddress: String!, $first: Int!, $skip: Int!) {
     ... on Borrow {
       amount
       borrowRateMode
-      borrowRate
-      stableTokenDebt
-      variableTokenDebt
       reserve {
         symbol
         decimals

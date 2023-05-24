@@ -6,6 +6,7 @@ import {
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
+  hasSwapBorrowRate,
   TransactionHistoryItemUnion,
 } from './types';
 
@@ -125,12 +126,22 @@ export const formatTransactionData = ({
       }
     }
 
+    if (hasSwapBorrowRate(transaction)) {
+      // RAY units (10^27) * 100 to express as percentage
+      newTransaction.variableBorrowRate = formatUnits(transaction.variableBorrowRate, 25) + ' %';
+      newTransaction.stableBorrowRate = formatUnits(transaction.stableBorrowRate, 25) + ' %';
+    }
+
     // Match V2 action names with V3
     if (transaction.action === 'Deposit') {
       newTransaction.action = 'Supply';
     }
     if (transaction.action === 'Swap') {
       newTransaction.action = 'SwapBorrowRate';
+    }
+    // Consistent with UI
+    if (transaction.action === 'RedeemUnderlying') {
+      newTransaction.action = 'Withdraw';
     }
 
     return newTransaction;

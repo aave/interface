@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import { formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 
 import { ActionFields, TransactionHistoryItem } from '../types';
@@ -18,7 +19,7 @@ export const BorrowRateModeBlock = ({
           <Trans>Variable</Trans>
         </Typography>
         <Typography variant="secondary14" color="text.primary" pr={0.5}>
-          {(Number(swapBorrowRateTx.variableBorrowRate) / 10e25).toFixed(2)}%
+          {Number(formatUnits(swapBorrowRateTx.variableBorrowRate, 25)).toFixed(2)}%
         </Typography>
         <Typography variant="description" color="text.primary">
           <Trans>APY</Trans>
@@ -32,7 +33,7 @@ export const BorrowRateModeBlock = ({
           <Trans>Stable</Trans>
         </Typography>
         <Typography variant="secondary14" color="text.primary" pr={0.5}>
-          {(Number(swapBorrowRateTx.stableBorrowRate) / 10e25).toFixed(2)}%
+          {Number(formatUnits(swapBorrowRateTx.stableBorrowRate, 25)).toFixed(2)}%
         </Typography>
         <Typography variant="description" color="text.primary">
           <Trans>APY</Trans>

@@ -50,7 +50,7 @@ export const applyTxHistoryFilters = ({
       }
 
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
-      const altName = name.includes('ether') ? 'ethereum' : '';
+      const altName = name.includes('ether') && !name.includes('tether') ? 'ethereum' : '';
 
       return (
         symbol.includes(lowerSearchQuery) ||

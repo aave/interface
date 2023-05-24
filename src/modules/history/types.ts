@@ -129,6 +129,18 @@ export const hasAmountAndReserve = (
   );
 };
 
+export const hasSwapBorrowRate = (
+  txn: TransactionHistoryItemUnion
+): txn is
+  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
+  | TransactionHistoryItem<ActionFields['Swap']> => {
+  return (
+    (txn as TransactionHistoryItem<ActionFields['SwapBorrowRate']>).variableBorrowRate !==
+      undefined &&
+    (txn as TransactionHistoryItem<ActionFields['SwapBorrowRate']>).stableBorrowRate !== undefined
+  );
+};
+
 export enum FilterOptions {
   SUPPLY,
   BORROW,
