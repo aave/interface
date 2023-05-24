@@ -28,6 +28,7 @@ export const HistoryWrapperMobile = () => {
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchResetKey, setSearchResetKey] = useState(0);
 
   const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -207,6 +208,7 @@ export const HistoryWrapperMobile = () => {
                 }}
                 placeholder="Search assets..."
                 onSearchTermChange={setSearchQuery}
+                key={searchResetKey}
               />
               <Button onClick={() => handleCancelClick()}>
                 <Typography variant="buttonM">
@@ -273,6 +275,7 @@ export const HistoryWrapperMobile = () => {
             onClick={() => {
               setSearchQuery('');
               setFilterQuery([]);
+              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
             }}
           >
             Reset Filters

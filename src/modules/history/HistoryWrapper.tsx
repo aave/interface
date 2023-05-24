@@ -27,6 +27,7 @@ export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
+  const [searchResetKey, setSearchResetKey] = useState(0);
 
   const {
     data: transactions,
@@ -124,6 +125,7 @@ export const HistoryWrapper = () => {
             onSearchTermChange={setSearchQuery}
             placeholder="Search assets..."
             wrapperSx={{ width: '280px' }}
+            key={searchResetKey}
           />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
@@ -223,6 +225,7 @@ export const HistoryWrapper = () => {
             onClick={() => {
               setSearchQuery('');
               setFilterQuery([]);
+              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
             }}
           >
             Reset Filters
