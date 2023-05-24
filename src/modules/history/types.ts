@@ -73,6 +73,62 @@ export type ActionFields = {
   };
 };
 
+export type TransactionHistoryItemUnion =
+  | TransactionHistoryItem<ActionFields['Supply']>
+  | TransactionHistoryItem<ActionFields['Deposit']>
+  | TransactionHistoryItem<ActionFields['Borrow']>
+  | TransactionHistoryItem<ActionFields['Repay']>
+  | TransactionHistoryItem<ActionFields['RedeemUnderlying']>
+  | TransactionHistoryItem<ActionFields['LiquidationCall']>
+  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
+  | TransactionHistoryItem<ActionFields['Swap']>
+  | TransactionHistoryItem<ActionFields['UsageAsCollateral']>;
+
+// Type guards
+export const hasCollateralReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is TransactionHistoryItem<ActionFields['LiquidationCall']> => {
+  return (
+    (txn as TransactionHistoryItem<ActionFields['LiquidationCall']>).collateralReserve !== undefined
+  );
+};
+
+export const hasPrincipalReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is TransactionHistoryItem<ActionFields['LiquidationCall']> => {
+  return (
+    (txn as TransactionHistoryItem<ActionFields['LiquidationCall']>).principalReserve !== undefined
+  );
+};
+
+export const hasReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is
+  | TransactionHistoryItem<ActionFields['Supply']>
+  | TransactionHistoryItem<ActionFields['Deposit']>
+  | TransactionHistoryItem<ActionFields['Borrow']>
+  | TransactionHistoryItem<ActionFields['Repay']>
+  | TransactionHistoryItem<ActionFields['RedeemUnderlying']>
+  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
+  | TransactionHistoryItem<ActionFields['Swap']>
+  | TransactionHistoryItem<ActionFields['UsageAsCollateral']> => {
+  return (txn as TransactionHistoryItem<ActionFields['Supply']>).reserve !== undefined;
+};
+
+export const hasAmountAndReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is
+  | TransactionHistoryItem<ActionFields['Supply']>
+  | TransactionHistoryItem<ActionFields['Deposit']>
+  | TransactionHistoryItem<ActionFields['Borrow']>
+  | TransactionHistoryItem<ActionFields['Repay']>
+  | TransactionHistoryItem<ActionFields['RedeemUnderlying']> => {
+  return (
+    (txn as TransactionHistoryItem<ActionFields['Supply']>).amount !== undefined &&
+    (txn as TransactionHistoryItem<ActionFields['Supply']>).reserve !== undefined
+  );
+};
+
 export enum FilterOptions {
   SUPPLY,
   BORROW,
