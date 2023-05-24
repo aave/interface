@@ -89,7 +89,8 @@ export const ManageMainActions = () => {
   };
 
   React.useEffect(() => {
-    if (!provider && !mainActionsLoading) return;
+    if (!currentAccount) setMainActionsLoading(true);
+    if (!provider) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
     const pawPriceOracleContract = new Contract(

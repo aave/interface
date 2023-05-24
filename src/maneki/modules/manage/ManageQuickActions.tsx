@@ -43,7 +43,7 @@ export const ManageQuickActions = () => {
   };
 
   React.useEffect(() => {
-    if (!quickActionsLoading) return;
+    if (!currentAccount) setQuickActionsLoading(true);
     // create contracts
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
     const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);

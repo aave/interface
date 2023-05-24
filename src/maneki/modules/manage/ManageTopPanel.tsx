@@ -37,7 +37,8 @@ export const ManageTopPanel = () => {
     .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
-    if (!provider && !topPanelLoading) return;
+    if (!currentAccount) setTopPanelLoading(true);
+    if (!provider) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
 
