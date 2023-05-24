@@ -493,6 +493,10 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Can be executed cross chain"
+msgstr "Can be executed cross chain"
+
 #: src/components/TitleWithSearchBar.tsx
 msgid "Cancel"
 msgstr "Cancel"
@@ -643,10 +647,6 @@ msgstr "Copy error text"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
 msgstr "Created"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "Cross-chain execution"
-msgstr "Cross-chain execution"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
@@ -849,13 +849,12 @@ msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
-#: src/modules/governance/FormattedProposalTime.tsx
 msgid "Executed"
 msgstr "Executed"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-msgid "Expected Execution"
-msgstr "Expected Execution"
+msgid "Executed on"
+msgstr "Executed on"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"

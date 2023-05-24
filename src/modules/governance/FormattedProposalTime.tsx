@@ -21,7 +21,7 @@ export function FormattedProposalTime({
   executionTime,
   startTimestamp,
   expirationTimestamp,
-  executionTimeWithGracePeriod,
+  // executionTimeWithGracePeriod,
   l2Execution,
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
@@ -32,6 +32,8 @@ export function FormattedProposalTime({
 
   const crossChainExecutionTime = l2Execution ? executionTimeWithL2 : executionTime;
   const canBeExecuted = timestamp > crossChainExecutionTime;
+
+  console.log('PROPOSAL STATE', state);
 
   if ([ProposalState.Pending].includes(state)) {
     return (
@@ -83,6 +85,25 @@ export function FormattedProposalTime({
     );
   }
 
+  if ([ProposalState.Queued].includes(state)) {
+    console.log('FSDSDS');
+    return (
+      <Typography component="span" variant="caption">
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: { xs: 'none', md: 'inline' } }}
+        >
+          <Trans> Can be executed</Trans>
+          &nbsp;
+        </Typography>
+        {/* {dayjs.unix(timestamp + expirationTimestamp).format('MMM DD, YYYY')} */}
+
+        {dayjs.unix(executionTime).fromNow()}
+      </Typography>
+    );
+  }
+
   if (
     [
       ProposalState.Canceled,
@@ -112,6 +133,13 @@ export function FormattedProposalTime({
     );
   }
 
+  // if l2 execution and it is not > twodays + execution time
+
+  // console.log('canBeExecuted', canBeExecuted, !l2Execution, canBeExecuted && !l2Execution);
+  // console.log('state', state);
+
+  // For cross chain
+
   return (
     <Typography component="span" variant="caption">
       <Typography
@@ -119,29 +147,11 @@ export function FormattedProposalTime({
         color="text.secondary"
         sx={{ display: { xs: 'none', md: 'inline' } }}
       >
-        {canBeExecuted ? (
-          l2Execution ? (
-            <Trans>Executed</Trans>
-          ) : (
-            <Trans>Expected Execution</Trans>
-          )
-        ) : l2Execution ? (
-          <Trans>Cross-chain execution </Trans>
-        ) : (
-          <Trans>Can be executed</Trans>
-        )}
+        {canBeExecuted ? <Trans>Executed on</Trans> : <Trans>Can be executed cross chain</Trans>}
         &nbsp;
       </Typography>
 
-      {!l2Execution
-        ? dayjs
-            .unix(state === ProposalState.Executed ? executionTime : expirationTimestamp)
-            .format('MMM DD, YYYY')
-        : dayjs
-            .unix(
-              canBeExecuted && !l2Execution ? executionTimeWithGracePeriod : crossChainExecutionTime
-            )
-            .fromNow()}
+      {dayjs.unix(executionTimeWithL2).format('MMM DD, YYYY')}
     </Typography>
   );
 }

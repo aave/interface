@@ -22,48 +22,48 @@ export function ProposalListItem({
     formatProposal(proposal);
   const { palette } = useTheme();
 
-  const delayedBridgeExecutors = [
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
-  ];
-  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
+  // const delayedBridgeExecutors = [
+  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
+  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
+  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
+  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
+  // ];
+  // const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
 
-  let proposalCrosschainBridge = false;
+  // let proposalCrosschainBridge = false;
 
-  if (proposal.targets && proposal.targets.length > 0) {
-    const hasDelayedExecutor = proposal.targets.filter((address) =>
-      lowercaseExecutors.includes(address.toLowerCase())
-    );
-    if (hasDelayedExecutor.length > 0) {
-      proposalCrosschainBridge = true;
-    }
-  }
+  // if (proposal.targets && proposal.targets.length > 0) {
+  //   const hasDelayedExecutor = proposal.targets.filter((address) =>
+  //     lowercaseExecutors.includes(address.toLowerCase())
+  //   );
+  //   if (hasDelayedExecutor.length > 0) {
+  //     proposalCrosschainBridge = true;
+  //   }
+  // }
 
   // Currently all cross-executors share this delay
   // TO-DO: invetigate if this can be changed, if so, query on-chain
   // const twoDayDelay = 172800 + 14400;
-  const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
+  // const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
   // const twoDaysAndFourHours = 172800 + 14400;
 
-  const executedL2 =
-    proposal.executionTime === 0
-      ? false
-      : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
+  // const executedL2 =
+  //   proposal.executionTime === 0
+  //     ? false
+  //     : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
 
-  const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
+  // const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
 
-  const pendingL2 = proposalCrosschainBridge && !executedL2;
+  // const pendingL2 = proposalCrosschainBridge && !executedL2;
 
-  const displayL2StateBadge =
-    executorChain === 'L2' &&
-    proposal.state !== 'Failed' &&
-    proposal.state !== 'Canceled' &&
-    proposal.state === 'Executed' &&
-    (executedL2 || pendingL2);
+  // const displayL2StateBadge =
+  //   executorChain === 'L2' &&
+  //   proposal.state !== 'Failed' &&
+  //   proposal.state !== 'Canceled' &&
+  //   proposal.state === 'Executed' &&
+  //   (executedL2 || pendingL2);
 
   return (
     <Box
@@ -119,7 +119,7 @@ export function ProposalListItem({
               executionTime={proposal.executionTime}
               expirationTimestamp={proposal.expirationTimestamp}
               executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-              l2Execution={displayL2StateBadge}
+              l2Execution={false}
             />
           </Box>
           {/* <Box>
