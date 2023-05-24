@@ -10,7 +10,6 @@ there is command for development/debuging/local executing tests:
 
 - `yarn run test:open` - it's open visual window with all test and manual executing
 
-
 _steps:_
 
 1. install dependencies `yarn`
