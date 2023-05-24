@@ -363,14 +363,46 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           gradientBorder={isUnstakeWindowActive}
         >
           {isUnstakeWindowActive && (
-            <Button
-              variant="gradient"
-              fullWidth
-              onClick={onUnstakeAction}
-              data-cy={`unstakeBtn_${stakedToken}`}
-            >
-              <Trans>Unstake now</Trans>
-            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button
+                variant="gradient"
+                fullWidth
+                onClick={onUnstakeAction}
+                data-cy={`unstakeBtn_${stakedToken}`}
+              >
+                <Trans>Unstake now</Trans>
+              </Button>
+              {availableToReactivateCooldown && (
+                <DarkTooltip
+                  title={
+                    <Typography
+                      variant="caption"
+                      color="common.white"
+                      sx={{ textAlign: 'center', width: '162px' }}
+                    >
+                      <Trans>
+                        Reactivate cooldown period to unstake{' '}
+                        {Number(
+                          formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0)
+                        ).toFixed(2)}{' '}
+                        {stakedToken}
+                      </Trans>
+                    </Typography>
+                  }
+                >
+                  <Button
+                    variant="outlined"
+                    data-cy={`reCoolDownBtn_${stakedToken}`}
+                    sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
+                    onClick={onCooldownAction}
+                  >
+                    <SvgIcon sx={{ width: 20, height: 20 }}>
+                      <RefreshIcon />
+                    </SvgIcon>
+                  </Button>
+                </DarkTooltip>
+              )}
+            </Box>
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
