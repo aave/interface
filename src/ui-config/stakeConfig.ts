@@ -14,7 +14,7 @@ export interface StakeConfig {
 
 export const stakeConfig: StakeConfig = {
   chainId: ChainId.mainnet,
-  stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
+  stakeDataProvider: '0x5E045cfb738F01bC73CEAFF783F4C16e8B14090b',
   tokens: {
     [Stake.aave]: {
       TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',

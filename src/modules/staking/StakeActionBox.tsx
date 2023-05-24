@@ -11,6 +11,7 @@ interface StakeActionBoxProps {
   children: ReactNode;
   bottomLineTitle: ReactNode;
   bottomLineComponent: ReactNode;
+  cooldownAmount?: ReactNode;
   gradientBorder?: boolean;
   dataCy: string;
 }
@@ -24,6 +25,7 @@ export const StakeActionBox = ({
   bottomLineComponent,
   gradientBorder,
   dataCy,
+  cooldownAmount,
 }: StakeActionBoxProps) => {
   return (
     <Box
@@ -92,6 +94,7 @@ export const StakeActionBox = ({
         >
           {bottomLineComponent}
         </Row>
+        {cooldownAmount}
       </Box>
     </Box>
   );
