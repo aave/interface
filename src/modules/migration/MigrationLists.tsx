@@ -1,8 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
-import { useMigrationData } from 'src/hooks/migration/useMigrationData';
-import { computeSelections } from 'src/store/migrationFormatters';
+import {
+  computeSelections,
+  MappedBorrowReserve,
+  MappedSupplyReserves,
+} from 'src/store/migrationFormatters';
 import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
@@ -16,6 +19,8 @@ interface MigrationListsProps {
   loading?: boolean;
   emodeCategoryId?: number;
   isolatedReserveV3?: IsolatedReserve;
+  supplyReserves: MappedSupplyReserves[];
+  borrowReserves: MappedBorrowReserve[];
 }
 
 export const MigrationLists = ({
@@ -26,13 +31,13 @@ export const MigrationLists = ({
   loading,
   isolatedReserveV3,
   emodeCategoryId,
+  supplyReserves,
+  borrowReserves,
 }: MigrationListsProps) => {
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
     selectedMigrationBorrowAssets: selectedBorrowAssets,
   } = useRootStore();
-
-  const { supplyReserves, borrowReserves } = useMigrationData();
 
   const isSupplyPositionsAvailable = supplyReserves.length > 0;
   const isBorrowPositionsAvailable = borrowReserves.length > 0;

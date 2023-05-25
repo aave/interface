@@ -597,57 +597,43 @@ export const getSelectedBorrowReservesForMigration = (
   );
 };
 
+interface SelectedBorrowReserveV3 extends MappedBorrowReserve {
+  debtKey: string;
+}
+
 export const getSelectedBorrowReservesForMigrationV3 = (
   poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
+  selectedBorrowReserves: MappedBorrowReserve[],
   currentTimestamp: number
-) => {
+): SelectedBorrowReserveV3[] => {
   const { userReservesData: userReservesDataV3 } = getPoolUserSummary(
     poolReservesV3,
     currentTimestamp
   );
-  const selectedUserReserves = getSelectedBorrowReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    selectedMigrationBorrowAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  )
-    .filter((userReserve) => userReserve.migrationDisabled === undefined)
-    // debtKey should be mapped for v3Migration
-    .map((borrowReserve) => {
-      let debtKey = borrowReserve.debtKey;
-      const borrowReserveV3 = userReservesDataV3.find(
-        (userReserve) => userReserve.underlyingAsset == borrowReserve.underlyingAsset
-      );
+  return (
+    selectedBorrowReserves
+      .filter((userReserve) => userReserve.migrationDisabled === undefined)
+      // debtKey should be mapped for v3Migration
+      .map((borrowReserve) => {
+        let debtKey = borrowReserve.debtKey;
+        const borrowReserveV3 = userReservesDataV3.find(
+          (userReserve) => userReserve.underlyingAsset == borrowReserve.underlyingAsset
+        );
 
-      if (borrowReserveV3) {
-        if (borrowReserve.interestRate == InterestRate.Variable) {
-          debtKey = borrowReserveV3.reserve.variableDebtTokenAddress;
-        } else {
-          debtKey = borrowReserveV3.reserve.stableDebtTokenAddress;
+        if (borrowReserveV3) {
+          if (borrowReserve.interestRate == InterestRate.Variable) {
+            debtKey = borrowReserveV3.reserve.variableDebtTokenAddress;
+          } else {
+            debtKey = borrowReserveV3.reserve.stableDebtTokenAddress;
+          }
         }
-      }
 
-      return {
-        ...borrowReserve,
-        debtKey,
-      };
-    });
-
-  return selectedUserReserves;
+        return {
+          ...borrowReserve,
+          debtKey,
+        };
+      })
+  );
 };
 
 export const getMigrationUnderluingAssetWithExceptionsByV3Key = (
@@ -668,7 +654,7 @@ export const getV3UserSummaryAfterMigration = (
   v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
   v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
   selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
+  selectedBorrowReservesV3: SelectedBorrowReserveV3[],
   migrationExceptionsMap: MigrationExceptionsMap,
   migrationExceptionsLoading: boolean,
   currentNetworkConfig: NetworkConfig,
@@ -687,18 +673,6 @@ export const getV3UserSummaryAfterMigration = (
     currentNetworkConfig,
     currentTimestamp
   );
-  const borrows = getSelectedBorrowReservesForMigrationV3(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    selectedMigrationBorrowAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
 
   //TODO: refactor that to be more efficient
   const suppliesMap = supplies.reduce((obj, item) => {
@@ -706,10 +680,10 @@ export const getV3UserSummaryAfterMigration = (
     return obj;
   }, {} as Record<string, typeof supplies[0]>);
 
-  const borrowsMap = borrows.reduce((obj, item) => {
+  const borrowsMap = selectedBorrowReservesV3.reduce((obj, item) => {
     obj[item.debtKey] = item;
     return obj;
-  }, {} as Record<string, typeof borrows[0]>);
+  }, {} as Record<string, typeof selectedBorrowReservesV3[0]>);
 
   const userReserves = poolReserveV3Summary.userReservesData.map((userReserveData) => {
     const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];

@@ -26,6 +26,7 @@ import { useCurrentTimestamp } from '../useCurrentTimestamp';
 
 export const useMigrationData = () => {
   const currentTimeStamp = useCurrentTimestamp(10);
+  console.log(1);
 
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
@@ -42,19 +43,40 @@ export const useMigrationData = () => {
     selectCurrentChainIdV2MarketData(store)
   );
 
-  const { data: userPoolReserveV3 } = useUserPoolReserves(currentChainIdV3MarketData);
+  const { data: userPoolReserveV3, isLoading: userPoolReserveV3Loading } = useUserPoolReserves(
+    currentChainIdV3MarketData
+  );
 
-  const { data: userPoolReserveV2 } = useUserPoolReserves(currentChainIdV2MarketData);
+  const { data: userPoolReserveV2, isLoading: userPoolReserveV2Loading } = useUserPoolReserves(
+    currentChainIdV2MarketData
+  );
 
-  const { data: poolReserveV3 } = usePoolReserves(currentChainIdV3MarketData);
+  const { data: poolReserveV3, isLoading: poolReserveV3Loading } = usePoolReserves(
+    currentChainIdV3MarketData
+  );
 
-  const { data: poolReserveV2 } = usePoolReserves(currentChainIdV2MarketData);
+  const { data: poolReserveV2, isLoading: poolReserveV2Loading } = usePoolReserves(
+    currentChainIdV2MarketData
+  );
 
-  const { data: v2UserIncentiveData } = useUserIncentiveData(currentChainIdV2MarketData);
+  const { data: v2UserIncentiveData, isLoading: v2UserIncentiveDataLoading } = useUserIncentiveData(
+    currentChainIdV2MarketData
+  );
 
-  const { data: v3ReserveIncentiveData } = useReserveIncentiveData(currentChainIdV3MarketData);
+  const { data: v3ReserveIncentiveData, isLoading: v3ReserveIncentiveDataLoading } =
+    useReserveIncentiveData(currentChainIdV3MarketData);
 
-  const { data: v2ReserveIncentiveData } = useReserveIncentiveData(currentChainIdV2MarketData);
+  const { data: v2ReserveIncentiveData, isLoading: v2ReserveIncentiveDataLoading } =
+    useReserveIncentiveData(currentChainIdV2MarketData);
+
+  const isLoading =
+    userPoolReserveV3Loading ||
+    userPoolReserveV2Loading ||
+    poolReserveV3Loading ||
+    poolReserveV2Loading ||
+    v2UserIncentiveDataLoading ||
+    v3ReserveIncentiveDataLoading ||
+    v2ReserveIncentiveDataLoading;
 
   const poolReserveV3Data = {
     reserves: poolReserveV3?.reservesData,
@@ -71,6 +93,25 @@ export const useMigrationData = () => {
     userEmodeCategoryId: userPoolReserveV2?.userEmodeCategoryId,
     userReserves: userPoolReserveV2?.userReserves,
   };
+
+  const selectedBorrowReserves = getSelectedBorrowReservesForMigration(
+    poolReserveV3Data,
+    poolReserveV2Data,
+    v2UserIncentiveData || [],
+    v2ReserveIncentiveData || [],
+    selectedSupplyAssets,
+    selectedBorrowAssets,
+    migrationExceptions,
+    exceptionsBalancesLoading,
+    currentNetworkConfig,
+    currentTimeStamp
+  );
+
+  const selectedBorrowReservesV3 = getSelectedBorrowReservesForMigrationV3(
+    poolReserveV3Data,
+    selectedBorrowReserves,
+    currentTimeStamp
+  );
 
   const {
     supplyReserves,
@@ -110,7 +151,7 @@ export const useMigrationData = () => {
     v2UserIncentiveData || [],
     v2ReserveIncentiveData || [],
     selectedSupplyAssets,
-    selectedBorrowAssets,
+    selectedBorrowReservesV3,
     migrationExceptions,
     exceptionsBalancesLoading,
     currentNetworkConfig,
@@ -147,32 +188,6 @@ export const useMigrationData = () => {
       permitType: 'SUPPLY_MIGRATOR_V3',
     };
   });
-
-  const selectedBorrowReserves = getSelectedBorrowReservesForMigration(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
-  );
-
-  const selectedBorrowReservesV3 = getSelectedBorrowReservesForMigrationV3(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
-  );
 
   const selectedSupplyReserves = getUserSupplyReservesForMigration(
     poolReserveV3Data,
@@ -226,5 +241,6 @@ export const useMigrationData = () => {
     repayAssets,
     selectedBorrowReservesV3,
     selectedSupplyReserves,
+    isLoading,
   };
 };

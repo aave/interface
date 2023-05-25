@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useMigrationData } from 'src/hooks/migration/useMigrationData';
 import { useUserPoolReserves } from 'src/hooks/pool/useUserPoolReserves';
 import { usePermissions } from 'src/hooks/usePermissions';
@@ -21,7 +20,6 @@ import { selectCurrentChainIdV3MarketData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 
 export default function V3Migration() {
-  const { loading } = useAppDataContext();
   const { loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const theme = useTheme();
@@ -52,20 +50,19 @@ export default function V3Migration() {
     v2UserSummaryAfterMigration,
     v3UserSummaryBeforeMigration,
     v3UserSummaryAfterMigration,
+    isLoading,
   } = useMigrationData();
 
   const { data: userPoolReserveV3 } = useUserPoolReserves(currentChainIdV3MarketData);
 
   useEffect(() => {
-    if (getMigrationExceptionSupplyBalances && supplyReserves.length > 0) {
+    if (supplyReserves.length > 0) {
       getMigrationExceptionSupplyBalances(supplyReserves);
     }
   }, [getMigrationExceptionSupplyBalances, supplyReserves]);
 
   useEffect(() => {
-    if (resetMigrationSelectedAssets) {
-      resetMigrationSelectedAssets();
-    }
+    resetMigrationSelectedAssets();
   }, [resetMigrationSelectedAssets]);
 
   const enabledAsCollateral = (canBeEnforced: boolean, underlyingAsset: string) => {
@@ -92,14 +89,16 @@ export default function V3Migration() {
       {user && !isPermissionsLoading ? (
         <ContentContainer>
           <MigrationLists
-            loading={loading}
+            loading={isLoading}
+            supplyReserves={supplyReserves}
+            borrowReserves={borrowReserves}
             onSelectAllSupplies={handleToggleAllSupply}
             onSelectAllBorrows={handleToggleAllBorrow}
             emodeCategoryId={userPoolReserveV3?.userEmodeCategoryId}
             isolatedReserveV3={isolatedReserveV3}
             suppliesPositions={
               <>
-                {loading ? (
+                {isLoading ? (
                   <>
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
@@ -145,7 +144,7 @@ export default function V3Migration() {
             }
             borrowsPositions={
               <>
-                {loading ? (
+                {isLoading ? (
                   <>
                     <MigrationListItemLoader />
                     <MigrationListItemLoader />
@@ -181,7 +180,7 @@ export default function V3Migration() {
               !Object.keys(selectedSupplyAssets).length && !Object.keys(selectedBorrowAssets).length
             }
             enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
-            loading={loading}
+            loading={isLoading}
           />
         </ContentContainer>
       ) : (
