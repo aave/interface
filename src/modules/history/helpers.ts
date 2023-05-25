@@ -90,10 +90,11 @@ export const formatTransactionData = ({
   data,
   csv,
 }: FormatTransactionDataParams): TransactionHistoryItemUnion[] => {
-  // Using any since txn objects can have different fields based on ActionFields, using union type + type guards gets extrenely complicated
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return data.map((transaction: any) => {
-    const newTransaction = { ...transaction };
+  return data.map((transaction: TransactionHistoryItemUnion) => {
+    // Using any since txn objects can have different fields based on ActionFields, using union type + type guards gets extrenely complicated for formatting newTransaction
+    //    since csv requires reserves formatted as strings with escape characters
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newTransaction: any = { ...transaction };
 
     // Format amounts in reserve decimals, and stringify reserve objects to fix CSV formatting
     if (hasAmountAndReserve(transaction)) {

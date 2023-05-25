@@ -64,13 +64,15 @@ export const HistoryWrapperMobile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, showSearchBar]);
 
+  const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
+
   const {
     data: transactions,
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
     fetchForDownload,
-  } = useTransactionHistory();
+  } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
@@ -284,7 +286,7 @@ export const HistoryWrapperMobile = () => {
             Reset Filters
           </Button>
         </Box>
-      ) : (
+      ) : !isFetchingNextPage ? (
         <Box
           sx={{
             display: 'flex',
@@ -300,6 +302,8 @@ export const HistoryWrapperMobile = () => {
             <Trans>No transactions yet.</Trans>
           </Typography>
         </Box>
+      ) : (
+        <></>
       )}
 
       <Box

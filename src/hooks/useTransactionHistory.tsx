@@ -1,4 +1,5 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -79,11 +80,13 @@ export const applyTxHistoryFilters = ({
   return filteredTxns;
 };
 
-export const useTransactionHistory = () => {
+export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: boolean }) => {
   const [currentMarketData, account] = useRootStore((state) => [
     state.currentMarketData,
     state.account,
   ]);
+
+  const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
   // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
   let selectedPool: string | undefined = undefined;
@@ -212,6 +215,22 @@ export const useTransactionHistory = () => {
       },
     }
   );
+
+  // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
+  useEffect(() => {
+    if (isFilterActive && hasNextPage && !isFetchingNextPage) {
+      setShouldKeepFetching(true);
+    } else {
+      setShouldKeepFetching(false);
+    }
+  }, [isFilterActive, hasNextPage, isFetchingNextPage]);
+
+  // Trigger a fetch when shouldKeepFetching is set to true
+  useEffect(() => {
+    if (shouldKeepFetching) {
+      fetchNextPage();
+    }
+  }, [shouldKeepFetching, fetchNextPage]);
 
   return {
     data,

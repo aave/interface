@@ -29,13 +29,15 @@ export const HistoryWrapper = () => {
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
 
+  const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
+
   const {
     data: transactions,
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
     fetchForDownload,
-  } = useTransactionHistory();
+  } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
@@ -234,7 +236,7 @@ export const HistoryWrapper = () => {
             Reset Filters
           </Button>
         </Box>
-      ) : (
+      ) : !isFetchingNextPage ? (
         <Box
           sx={{
             display: 'flex',
@@ -250,6 +252,8 @@ export const HistoryWrapper = () => {
             <Trans>No transactions yet.</Trans>
           </Typography>
         </Box>
+      ) : (
+        <></>
       )}
 
       <Box
