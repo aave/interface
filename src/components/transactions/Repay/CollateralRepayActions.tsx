@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { OptimalRate } from 'paraswap-core';
+import { updatePythPriceTx } from 'src/helpers/pythHelpers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -22,6 +23,7 @@ export interface RepayActionProps extends BoxProps {
   useFlashLoan: boolean;
   blocked: boolean;
   maxSlippage: number;
+  updateData: string[];
 }
 
 export const CollateralRepayActions = ({
@@ -38,6 +40,7 @@ export const CollateralRepayActions = ({
   useFlashLoan,
   blocked,
   maxSlippage,
+  updateData,
   ...props
 }: RepayActionProps) => {
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
@@ -58,6 +61,7 @@ export const CollateralRepayActions = ({
           priceRoute,
           useFlashLoan,
           blocked,
+          updateData,
         });
       },
       skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
@@ -72,6 +76,8 @@ export const CollateralRepayActions = ({
       ],
     });
 
+  const sequentialtxs = () => updatePythPriceTx(updateData).then(action);
+
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
@@ -84,9 +90,9 @@ export const CollateralRepayActions = ({
       isWrongNetwork={isWrongNetwork}
       sx={sx}
       {...props}
-      handleAction={action}
+      handleAction={sequentialtxs}
       handleApproval={() => approval()}
-      actionText={<Trans>Repay {symbol}</Trans>}
+      actionText={<Trans>Update Price & Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
   );

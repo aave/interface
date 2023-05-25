@@ -40,7 +40,15 @@ export const RepayModalContent = ({
   nativeBalance,
   isWrongNetwork,
   debtType,
-}: ModalWrapperProps & { debtType: InterestRate }) => {
+  latestPriceRaw: latestPriceRaw,
+  latestPriceExpo: latestPriceExpo,
+  latestPriceUpdateData: latestPriceUpdateData,
+}: ModalWrapperProps & {
+  debtType: InterestRate;
+  latestPriceRaw: string;
+  latestPriceExpo: number;
+  latestPriceUpdateData: string[];
+}) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
@@ -67,10 +75,11 @@ export const RepayModalContent = ({
     debtType === InterestRate.Stable
       ? userReserve?.stableBorrows || '0'
       : userReserve?.variableBorrows || '0';
-  const debtUSD = new BigNumber(debt)
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+  const debtUSD = new BigNumber(debt).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
+  // const debtUSD = new BigNumber(debt)
+  //   .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+  //   .multipliedBy(marketReferencePriceInUsd)
+  //   .shiftedBy(-USD_DECIMALS);
 
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
@@ -173,9 +182,12 @@ export const RepayModalContent = ({
     .toString(10);
   const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
   const displayAmountAfterRepayInUsd = displayAmountAfterRepay
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+    .multipliedBy(latestPriceRaw)
+    .shiftedBy(latestPriceExpo);
+  // const displayAmountAfterRepayInUsd = displayAmountAfterRepay
+  //   .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+  //   .multipliedBy(marketReferencePriceInUsd)
+  //   .shiftedBy(-USD_DECIMALS);
 
   const maxRepayWithDustRemaining = isMaxSelected && displayAmountAfterRepayInUsd.toNumber() > 0;
 
@@ -186,18 +198,18 @@ export const RepayModalContent = ({
         collateralBalanceMarketReferenceCurrency:
           repayWithATokens && usageAsCollateralEnabledOnUser
             ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
-                valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+                valueToBigNumber(latestPriceRaw).multipliedBy(amount).shiftedBy(latestPriceExpo)
               )
             : user?.totalCollateralUSD || '0',
         borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
-          valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+          valueToBigNumber(latestPriceRaw).multipliedBy(amount).shiftedBy(latestPriceExpo)
         ),
         currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
       }).toString(10)
     : user?.healthFactor;
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
 
   if (repayTxState.success)
     return (
@@ -263,6 +275,7 @@ export const RepayModalContent = ({
         symbol={modalSymbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
+        updateData={latestPriceUpdateData}
       />
     </>
   );

@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { utils } from 'ethers';
+import { updatePythPriceTx } from 'src/helpers/pythHelpers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -20,6 +21,7 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   repayWithATokens: boolean;
   blocked?: boolean;
+  updateData: string[];
 }
 
 export const RepayActions = ({
@@ -32,6 +34,7 @@ export const RepayActions = ({
   debtType,
   repayWithATokens,
   blocked,
+  updateData,
   ...props
 }: RepayActionProps) => {
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -52,6 +55,7 @@ export const RepayActions = ({
           poolReserve,
           isWrongNetwork,
           symbol,
+          updateData,
         });
       },
       handleGetPermitTxns: async (signature, deadline) => {
@@ -65,11 +69,14 @@ export const RepayActions = ({
           repayWithATokens,
           signature,
           deadline,
+          updateData,
         });
       },
       skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
       deps: [amountToRepay, poolAddress, repayWithATokens],
     });
+
+  const sequentialtxs = () => updatePythPriceTx(updateData).then(action);
 
   return (
     <TxActionsWrapper
@@ -84,9 +91,9 @@ export const RepayActions = ({
       isWrongNetwork={isWrongNetwork}
       sx={sx}
       {...props}
-      handleAction={action}
+      handleAction={sequentialtxs}
       handleApproval={() => approval(amountToRepay, poolAddress)}
-      actionText={<Trans>Repay {symbol}</Trans>}
+      actionText={<Trans>Update Price & Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
   );

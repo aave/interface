@@ -37,7 +37,15 @@ export function CollateralRepayModalContent({
   debtType,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps & { debtType: InterestRate }) {
+  latestPriceRaw: latestPriceRaw,
+  latestPriceExpo: latestPriceExpo,
+  latestPriceUpdateData: latestPriceUpdateData,
+}: ModalWrapperProps & {
+  debtType: InterestRate;
+  latestPriceRaw: string;
+  latestPriceExpo: number;
+  latestPriceUpdateData: string[];
+}) {
   const { user, marketReferencePriceInUsd, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
@@ -79,7 +87,7 @@ export function CollateralRepayModalContent({
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
-  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
 
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
@@ -135,9 +143,8 @@ export function CollateralRepayModalContent({
   // this would show as certain amount left to repay when we are actually repaying all debt
   const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(outputAmount, debt));
   const displayAmountAfterRepayInUsd = amountAfterRepay
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+    .multipliedBy(latestPriceRaw)
+    .shiftedBy(latestPriceExpo);
 
   // calculate impact based on $ difference
   const priceImpact =
@@ -148,9 +155,9 @@ export function CollateralRepayModalContent({
       : '0';
 
   let blockingError: ErrorType | undefined = undefined;
-  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
-    fromAssetData.priceInUSD
-  );
+  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0')
+    .multipliedBy(latestPriceRaw)
+    .shiftedBy(latestPriceExpo);
   if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
@@ -279,6 +286,7 @@ export function CollateralRepayModalContent({
         priceRoute={priceRoute}
         blocked={blockingError !== undefined}
         maxSlippage={Number(maxSlippage)}
+        updateData={latestPriceUpdateData}
       />
     </>
   );
