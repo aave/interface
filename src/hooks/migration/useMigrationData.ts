@@ -26,7 +26,6 @@ import { useCurrentTimestamp } from '../useCurrentTimestamp';
 
 export const useMigrationData = () => {
   const currentTimeStamp = useCurrentTimestamp(10);
-  console.log(1);
 
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
@@ -94,24 +93,7 @@ export const useMigrationData = () => {
     userReserves: userPoolReserveV2?.userReserves,
   };
 
-  const selectedBorrowReserves = getSelectedBorrowReservesForMigration(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
-  );
-
-  const selectedBorrowReservesV3 = getSelectedBorrowReservesForMigrationV3(
-    poolReserveV3Data,
-    selectedBorrowReserves,
-    currentTimeStamp
-  );
+  const v3UserSummaryBeforeMigration = getPoolUserSummary(poolReserveV3Data, currentTimeStamp);
 
   const {
     supplyReserves,
@@ -127,7 +109,18 @@ export const useMigrationData = () => {
     migrationExceptions,
     exceptionsBalancesLoading,
     currentNetworkConfig,
+    v3UserSummaryBeforeMigration,
     currentTimeStamp
+  );
+
+  const selectedBorrowReserves = getSelectedBorrowReservesForMigration(
+    selectedBorrowAssets,
+    borrowReserves
+  );
+
+  const selectedBorrowReservesV3 = getSelectedBorrowReservesForMigrationV3(
+    selectedBorrowReserves,
+    v3UserSummaryBeforeMigration
   );
 
   const selectedSupplyReserves = getUserSupplyReservesForMigration(
@@ -137,32 +130,25 @@ export const useMigrationData = () => {
   );
 
   const v2UserSummaryAfterMigration = getV2UserSummaryAfterMigration(
-    poolReserveV3Data,
     poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
     selectedSupplyAssets,
     selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
+    borrowReserves,
     currentTimeStamp
   );
-
-  const v3UserSummaryBeforeMigration = getPoolUserSummary(poolReserveV3Data, currentTimeStamp);
 
   const v3UserSummaryAfterMigration = getV3UserSummaryAfterMigration(
     poolReserveV3Data,
     selectedBorrowReservesV3,
     migrationExceptions,
     selectedSupplyReserves,
+    v3UserSummaryBeforeMigration,
     currentTimeStamp
   );
 
   const borrowPermitPayloads = getMigrationBorrowPermitPayloads(
-    poolReserveV3Data,
     selectedBorrowReserves,
-    currentTimeStamp
+    v3UserSummaryBeforeMigration
   );
 
   const userSupplyIncreasedReservesForMigrationPermits =

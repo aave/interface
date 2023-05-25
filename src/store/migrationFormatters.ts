@@ -1,10 +1,8 @@
 import {
   InterestRate,
-  PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
   tEthereumAddress,
-  UserReserveDataHumanized,
   valueToWei,
 } from '@aave/contract-helpers';
 import {
@@ -219,7 +217,7 @@ export const getPoolUserSummary = (
   currentTimestamp: number
 ): UserSummary => {
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReserve);
-  const formattedReservesV3 = formatReservesAndIncentives({
+  const formattedReserves = formatReservesAndIncentives({
     reserves: poolReserve.reserves ?? [],
     reserveIncentives: poolReserve.reserveIncentives ?? [],
     currentTimestamp,
@@ -228,7 +226,7 @@ export const getPoolUserSummary = (
   });
   return formatUserSummary({
     currentTimestamp,
-    formattedReserves: formattedReservesV3,
+    formattedReserves,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     userReserves: poolReserve.userReserves ?? [],
@@ -254,12 +252,10 @@ export const getUserReservesForMigration = (
   migrationExceptionsMap: MigrationExceptionsMap,
   migrationExceptionsLoading: boolean,
   currentNetworkConfig: NetworkConfig,
+  v3UserSummary: UserSummary,
   currentTimestamp: number
 ): UserReservesForMigration => {
-  const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = getPoolUserSummary(
-    poolReservesV3,
-    currentTimestamp
-  );
+  const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = v3UserSummary;
 
   const v2BaseCurrencyData = selectFormatBaseCurrencyData(poolReservesV2);
   const formattedReservesV2 = formatReserves(
@@ -454,29 +450,12 @@ export const getMigrationSelectedSupplyIndex = (
 };
 
 export const getV2UserSummaryAfterMigration = (
-  poolReservesV3: PoolReserve,
   poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
   selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
+  borrowReservesV3: MappedBorrowReserve[],
   currentTimestamp: number
 ) => {
-  const { borrowReserves: borrowReservesV3 } = getUserReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
-
   const userReserves =
     poolReservesV2?.userReserves?.map((userReserve) => {
       let scaledATokenBalance = userReserve.scaledATokenBalance;
@@ -522,14 +501,15 @@ export const getV2UserSummaryAfterMigration = (
 
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReservesV2);
 
-  return getFormatUserSummaryForMigration(
-    poolReservesV2?.reserves,
-    poolReservesV2?.reserveIncentives,
+  const poolReserve = {
+    reserves: poolReservesV2?.reserves,
+    reserveIncentives: poolReservesV2?.reserveIncentives,
     userReserves,
     baseCurrencyData,
-    currentTimestamp,
-    poolReservesV2?.userEmodeCategoryId
-  );
+    userEmodeCategoryId: poolReservesV2?.userEmodeCategoryId,
+  };
+
+  return getPoolUserSummary(poolReserve, currentTimestamp);
 };
 
 export const getUserSupplyReservesForMigration = (
@@ -561,28 +541,9 @@ export const getUserSupplyReservesForMigration = (
 };
 
 export const getSelectedBorrowReservesForMigration = (
-  poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
-  currentTimestamp: number
+  borrowReserves: MappedBorrowReserve[]
 ) => {
-  const { borrowReserves } = getUserReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
   return borrowReserves.filter(
     (userReserve) =>
       selectMigrationSelectedBorrowIndex(selectedMigrationBorrowAssets, userReserve) >= 0
@@ -594,14 +555,10 @@ interface SelectedBorrowReserveV3 extends MappedBorrowReserve {
 }
 
 export const getSelectedBorrowReservesForMigrationV3 = (
-  poolReservesV3: PoolReserve,
   selectedBorrowReserves: MappedBorrowReserve[],
-  currentTimestamp: number
+  v3UserSummary: UserSummary
 ): SelectedBorrowReserveV3[] => {
-  const { userReservesData: userReservesDataV3 } = getPoolUserSummary(
-    poolReservesV3,
-    currentTimestamp
-  );
+  const { userReservesData: userReservesDataV3 } = v3UserSummary;
   return (
     selectedBorrowReserves
       .filter((userReserve) => userReserve.migrationDisabled === undefined)
@@ -645,10 +602,9 @@ export const getV3UserSummaryAfterMigration = (
   selectedBorrowReservesV3: SelectedBorrowReserveV3[],
   migrationExceptionsMap: MigrationExceptionsMap,
   selectedSupplyReserves: MappedSupplyReserves[],
+  v3UserSummary: UserSummary,
   currentTimestamp: number
 ) => {
-  const poolReserveV3Summary = getPoolUserSummary(poolReservesV3, currentTimestamp);
-
   //TODO: refactor that to be more efficient
   const suppliesMap = selectedSupplyReserves.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
@@ -660,7 +616,7 @@ export const getV3UserSummaryAfterMigration = (
     return obj;
   }, {} as Record<string, typeof selectedBorrowReservesV3[0]>);
 
-  const userReserves = poolReserveV3Summary.userReservesData.map((userReserveData) => {
+  const userReserves = v3UserSummary.userReservesData.map((userReserveData) => {
     const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];
     const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
 
@@ -717,14 +673,15 @@ export const getV3UserSummaryAfterMigration = (
 
   const baseCurrencyData = selectFormatBaseCurrencyData(poolReservesV3);
 
-  const formattedUserSummary = getFormatUserSummaryForMigration(
-    poolReservesV3?.reserves,
-    poolReservesV3?.reserveIncentives,
+  const poolReserve = {
+    reserves: poolReservesV3?.reserves,
+    reserveIncentive: poolReservesV3.reserveIncentives,
     userReserves,
     baseCurrencyData,
-    currentTimestamp,
-    poolReservesV3?.userEmodeCategoryId
-  );
+    userEmodeCategoryId: poolReservesV3?.userEmodeCategoryId,
+  };
+
+  const formattedUserSummary = getPoolUserSummary(poolReserve, currentTimestamp);
 
   // return the smallest object possible for migration page
   return {
@@ -737,14 +694,10 @@ export const getV3UserSummaryAfterMigration = (
 };
 
 export const getMigrationBorrowPermitPayloads = (
-  poolReservesV3: PoolReserve,
   selectedBorrowReserves: MappedBorrowReserve[],
-  currentTimestamp: number
+  v3UserSummary: UserSummary
 ): Approval[] => {
-  const { userReservesData: userReservesDataV3 } = getPoolUserSummary(
-    poolReservesV3,
-    currentTimestamp
-  );
+  const { userReservesData: userReservesDataV3 } = v3UserSummary;
 
   const reserveDebts: ReserveDebtApprovalPayload = {};
 
@@ -867,35 +820,6 @@ export const computeSelections = (
     activeSelections: selectedEnabledReserves,
     activeUnselected: unselectedEnabledReserves,
   };
-};
-
-export const getFormatUserSummaryForMigration = (
-  reserves: ReserveDataHumanized[] = [],
-  reserveIncentives: ReservesIncentiveDataHumanized[] = [],
-  userReserves: UserReserveDataHumanized[] = [],
-  baseCurrencyData: PoolBaseCurrencyHumanized,
-  currentTimestamp: number,
-  userEmodeCategoryId = 0
-) => {
-  const { marketReferenceCurrencyDecimals, marketReferenceCurrencyPriceInUsd } = baseCurrencyData;
-  const formattedReserves = formatReservesAndIncentives({
-    reserves: reserves,
-    reserveIncentives,
-    currentTimestamp,
-    marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
-  });
-
-  const formattedSummary = formatUserSummary({
-    currentTimestamp,
-    formattedReserves,
-    marketReferenceCurrencyDecimals: marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: marketReferenceCurrencyPriceInUsd,
-    userReserves,
-    userEmodeCategoryId,
-  });
-
-  return formattedSummary;
 };
 
 export const getUserReservesMapFromUserReserves = (
