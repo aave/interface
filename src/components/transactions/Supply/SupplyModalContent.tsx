@@ -36,25 +36,21 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
-export interface SupplyModalWrapperProps {
-  modalWrapperProps: ModalWrapperProps;
+export const SupplyModalContent = ({
+  underlyingAsset,
+  poolReserve,
+  userReserve,
+  isWrongNetwork,
+  nativeBalance,
+  tokenBalance,
+  latestPriceRaw: latestPriceRaw,
+  latestPriceExpo: latestPriceExpo,
+  latestPriceUpdateData: latestPriceUpdateData,
+}: ModalWrapperProps & {
   latestPriceRaw: string;
   latestPriceExpo: number;
-}
-
-export const SupplyModalContent = ({
-  modalWrapperProps,
-  latestPriceRaw,
-  latestPriceExpo,
-}: SupplyModalWrapperProps) => {
-  const underlyingAsset = modalWrapperProps.underlyingAsset;
-  const poolReserve = modalWrapperProps.poolReserve;
-  const userReserve = modalWrapperProps.userReserve;
-  const symbol = modalWrapperProps.symbol;
-  const tokenBalance = modalWrapperProps.tokenBalance;
-  const nativeBalance = modalWrapperProps.nativeBalance;
-  const isWrongNetwork = modalWrapperProps.isWrongNetwork;
-
+  latestPriceUpdateData: string[];
+}) => {
   const { user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -272,12 +268,12 @@ export const SupplyModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <SupplyActions
-        poolReserve={poolReserve}
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
         poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
-        symbol={symbol}
-        blocked={blockingError !== undefined}
+        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+        blocked={false}
+        updateData={latestPriceUpdateData}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { utils } from 'ethers';
+import { updatePythPriceTx } from 'src/helpers/pythHelpers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -11,12 +12,12 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
-  poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   poolAddress: string;
   symbol: string;
   blocked: boolean;
+  updateData: string[];
 }
 
 export const SupplyActions = ({
@@ -26,6 +27,7 @@ export const SupplyActions = ({
   sx,
   symbol,
   blocked,
+  updateData,
   ...props
 }: SupplyActionProps) => {
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -44,6 +46,7 @@ export const SupplyActions = ({
           poolAddress,
           symbol,
           blocked,
+          updateData,
         });
       },
       handleGetPermitTxns: async (signature, deadline) => {
@@ -58,6 +61,8 @@ export const SupplyActions = ({
       deps: [amountToSupply, poolAddress],
     });
 
+  const sequentialtxs = () => updatePythPriceTx(updateData).then(action);
+
   return (
     <TxActionsWrapper
       blocked={blocked}
@@ -67,10 +72,10 @@ export const SupplyActions = ({
       requiresAmount
       amount={amountToSupply}
       preparingTransactions={loadingTxns}
-      actionText={<Trans>Supply {symbol}</Trans>}
+      actionText={<Trans>Update Price & Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
       handleApproval={() => approval(amountToSupply, poolAddress)}
-      handleAction={action}
+      handleAction={sequentialtxs}
       requiresApproval={requiresApproval}
       sx={sx}
       {...props}
