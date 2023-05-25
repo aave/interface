@@ -147,7 +147,17 @@ export function FormattedProposalTime({
         color="text.secondary"
         sx={{ display: { xs: 'none', md: 'inline' } }}
       >
-        {canBeExecuted ? <Trans>Executed on</Trans> : <Trans>Can be executed cross chain</Trans>}
+        {canBeExecuted ? (
+          l2Execution ? (
+            <Trans>Executed cross chain</Trans>
+          ) : (
+            <Trans>Can be executed cross chain</Trans>
+          )
+        ) : l2Execution ? (
+          <Trans>Can be executed cross chain</Trans>
+        ) : (
+          <Trans>Executed on</Trans>
+        )}
         &nbsp;
       </Typography>
 

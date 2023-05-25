@@ -156,6 +156,8 @@ export default function ProposalPage({
     executorChain === 'L2' &&
     proposal.state !== 'Failed' &&
     proposal.state !== 'Canceled' &&
+    proposal.state !== 'Pending' &&
+    proposal.state !== 'Active' &&
     (executedL2 || pendingL2Execution);
 
   async function updateProposal() {
@@ -488,7 +490,7 @@ export default function ProposalPage({
                             <FormattedProposalTime
                               state={proposal.state}
                               startTimestamp={proposal.startTimestamp}
-                              executionTime={proposal.executionTime + twoDayDelay}
+                              executionTime={proposal.executionTime}
                               expirationTimestamp={proposal.expirationTimestamp}
                               executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                               l2Execution={displayL2StateBadge}

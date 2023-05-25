@@ -494,6 +494,7 @@ msgid "Can be executed"
 msgstr "Can be executed"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed cross chain"
 msgstr "Can be executed cross chain"
 
@@ -851,6 +852,10 @@ msgstr "Error connecting. Try refreshing the page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Executed cross chain"
+msgstr "Executed cross chain"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Executed on"
