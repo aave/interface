@@ -327,10 +327,6 @@ msgstr "Borrow cap is exceeded"
 msgid "Borrow power used"
 msgstr "Borrow power used"
 
-#: src/components/transactions/Borrow/BorrowActions.tsx
-msgid "Borrow {symbol}"
-msgstr "Borrow {symbol}"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
@@ -1344,11 +1340,6 @@ msgstr "Repay with"
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
-msgid "Repay {symbol}"
-msgstr "Repay {symbol}"
-
-#: src/components/transactions/Repay/CollateralRepayActions.tsx
-#: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
 
@@ -1596,10 +1587,6 @@ msgstr "Supply cap is exceeded"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
-
-#: src/components/transactions/Supply/SupplyActions.tsx
-msgid "Supply {symbol}"
-msgstr "Supply {symbol}"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"
@@ -1927,6 +1914,23 @@ msgstr "Unstake window"
 msgid "Unstaked"
 msgstr "Unstaked"
 
+#: src/components/transactions/Borrow/BorrowActions.tsx
+msgid "Update Price & Borrow {symbol}"
+msgstr "Update Price & Borrow {symbol}"
+
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
+#: src/components/transactions/Repay/RepayActions.tsx
+msgid "Update Price & Repay {symbol}"
+msgstr "Update Price & Repay {symbol}"
+
+#: src/components/transactions/Supply/SupplyActions.tsx
+msgid "Update Price & Supply {symbol}"
+msgstr "Update Price & Supply {symbol}"
+
+#: src/components/transactions/Withdraw/WithdrawActions.tsx
+msgid "Update Price & Withdraw {symbol}"
+msgstr "Update Price & Withdraw {symbol}"
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -2111,10 +2115,6 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
 msgstr "Withdraw"
-
-#: src/components/transactions/Withdraw/WithdrawActions.tsx
-msgid "Withdraw {symbol}"
-msgstr "Withdraw {symbol}"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
