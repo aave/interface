@@ -130,6 +130,12 @@ export const useMigrationData = () => {
     currentTimeStamp
   );
 
+  const selectedSupplyReserves = getUserSupplyReservesForMigration(
+    selectedSupplyAssets,
+    supplyReserves,
+    isolatedReserveV3
+  );
+
   const v2UserSummaryAfterMigration = getV2UserSummaryAfterMigration(
     poolReserveV3Data,
     poolReserveV2Data,
@@ -147,84 +153,36 @@ export const useMigrationData = () => {
 
   const v3UserSummaryAfterMigration = getV3UserSummaryAfterMigration(
     poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
     selectedBorrowReservesV3,
     migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
+    selectedSupplyReserves,
     currentTimeStamp
   );
 
   const borrowPermitPayloads = getMigrationBorrowPermitPayloads(
     poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
+    selectedBorrowReserves,
     currentTimeStamp
   );
 
-  const supplyPermitPayloads = getUserSupplyIncreasedReservesForMigrationPermits(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
-  ).map(({ reserve, increasedAmount }): Approval => {
-    return {
-      amount: increasedAmount,
-      underlyingAsset: reserve.aTokenAddress,
-      permitType: 'SUPPLY_MIGRATOR_V3',
-    };
-  });
+  const userSupplyIncreasedReservesForMigrationPermits =
+    getUserSupplyIncreasedReservesForMigrationPermits(selectedSupplyReserves);
 
-  const selectedSupplyReserves = getUserSupplyReservesForMigration(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
+  const supplyPermitPayloads = userSupplyIncreasedReservesForMigrationPermits.map(
+    ({ reserve, increasedAmount }): Approval => {
+      return {
+        amount: increasedAmount,
+        underlyingAsset: reserve.aTokenAddress,
+        permitType: 'SUPPLY_MIGRATOR_V3',
+      };
+    }
   );
 
   const supplyAssetsNoPermit = getUserSupplyAssetsForMigrationNoPermit(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
+    userSupplyIncreasedReservesForMigrationPermits
   );
 
-  const repayAssets = getMigrationRepayAssets(
-    poolReserveV3Data,
-    poolReserveV2Data,
-    v2UserIncentiveData || [],
-    v2ReserveIncentiveData || [],
-    selectedSupplyAssets,
-    selectedBorrowAssets,
-    migrationExceptions,
-    exceptionsBalancesLoading,
-    currentNetworkConfig,
-    currentTimeStamp
-  );
+  const repayAssets = getMigrationRepayAssets(selectedBorrowReserves);
 
   return {
     supplyReserves,

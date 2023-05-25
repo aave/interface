@@ -236,6 +236,15 @@ export const getPoolUserSummary = (
   });
 };
 
+interface UserReservesForMigration {
+  totalCollateralUSD: string;
+  totalBorrowsUSD: string;
+  healthFactor: string;
+  borrowReserves: MappedBorrowReserve[];
+  supplyReserves: MappedSupplyReserves[];
+  isolatedReserveV3?: IsolatedReserve;
+}
+
 export const getUserReservesForMigration = (
   poolReservesV3: PoolReserve,
   poolReservesV2: PoolReserve,
@@ -246,7 +255,7 @@ export const getUserReservesForMigration = (
   migrationExceptionsLoading: boolean,
   currentNetworkConfig: NetworkConfig,
   currentTimestamp: number
-) => {
+): UserReservesForMigration => {
   const { userReservesData: userReserveV3Data, ...v3ReservesUserSummary } = getPoolUserSummary(
     poolReservesV3,
     currentTimestamp
@@ -524,27 +533,10 @@ export const getV2UserSummaryAfterMigration = (
 };
 
 export const getUserSupplyReservesForMigration = (
-  poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
   selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
-  currentTimestamp: number
+  supplyReserves: MappedSupplyReserves[],
+  isolatedReserveV3?: IsolatedReserve
 ) => {
-  const { supplyReserves, isolatedReserveV3 } = getUserReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
   const selectedUserReserves = supplyReserves.filter(
     (userReserve) =>
       getMigrationSelectedSupplyIndex(selectedMigrationSupplyAssets, userReserve.underlyingAsset) >=
@@ -650,35 +642,18 @@ export const getMigrationUnderluingAssetWithExceptionsByV3Key = (
 
 export const getV3UserSummaryAfterMigration = (
   poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
   selectedBorrowReservesV3: SelectedBorrowReserveV3[],
   migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
+  selectedSupplyReserves: MappedSupplyReserves[],
   currentTimestamp: number
 ) => {
   const poolReserveV3Summary = getPoolUserSummary(poolReservesV3, currentTimestamp);
 
-  const supplies = getUserSupplyReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
-
   //TODO: refactor that to be more efficient
-  const suppliesMap = supplies.reduce((obj, item) => {
+  const suppliesMap = selectedSupplyReserves.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
     return obj;
-  }, {} as Record<string, typeof supplies[0]>);
+  }, {} as Record<string, typeof selectedSupplyReserves[0]>);
 
   const borrowsMap = selectedBorrowReservesV3.reduce((obj, item) => {
     obj[item.debtKey] = item;
@@ -763,36 +738,17 @@ export const getV3UserSummaryAfterMigration = (
 
 export const getMigrationBorrowPermitPayloads = (
   poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
+  selectedBorrowReserves: MappedBorrowReserve[],
   currentTimestamp: number
 ): Approval[] => {
   const { userReservesData: userReservesDataV3 } = getPoolUserSummary(
     poolReservesV3,
     currentTimestamp
   );
-  const selectedUserReserves = getSelectedBorrowReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    selectedMigrationBorrowAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  );
 
   const reserveDebts: ReserveDebtApprovalPayload = {};
 
-  selectedUserReserves
+  selectedBorrowReserves
     .filter((userReserve) => userReserve.migrationDisabled === undefined)
     .forEach((userReserve) => {
       const borrowReserveV3 = userReservesDataV3.find(
@@ -836,28 +792,14 @@ export const getMigrationBorrowPermitPayloads = (
   });
 };
 
+interface UserSupplyIncreasedReservesForMigrationPermits extends MappedSupplyReserves {
+  increasedAmount: string;
+}
+
 export const getUserSupplyIncreasedReservesForMigrationPermits = (
-  poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
-  currentTimestamp: number
-) => {
-  return getUserSupplyReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  ).map((userReserve) => {
+  selectedSupplyReserves: MappedSupplyReserves[]
+): UserSupplyIncreasedReservesForMigrationPermits[] => {
+  return selectedSupplyReserves.map((userReserve) => {
     const increasedAmount = addPercent(userReserve.underlyingBalance);
     const valueInWei = valueToWei(increasedAmount, userReserve.reserve.decimals);
     return { ...userReserve, increasedAmount: valueInWei };
@@ -865,63 +807,26 @@ export const getUserSupplyIncreasedReservesForMigrationPermits = (
 };
 
 export const getUserSupplyAssetsForMigrationNoPermit = (
-  poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
-  currentTimestamp: number
+  userSupplyIncreasedReservesForMigrationPermits: UserSupplyIncreasedReservesForMigrationPermits[]
 ): MigrationSupplyAsset[] => {
-  const selectedUserSupplyReserves = getUserSupplyIncreasedReservesForMigrationPermits(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
+  return userSupplyIncreasedReservesForMigrationPermits.map(
+    ({ underlyingAsset, reserve, increasedAmount }) => {
+      const deadline = Math.floor(Date.now() / 1000 + 3600);
+      return {
+        amount: increasedAmount,
+        aToken: reserve.aTokenAddress,
+        underlyingAsset: underlyingAsset,
+        deadline,
+      };
+    }
   );
-  return selectedUserSupplyReserves.map(({ underlyingAsset, reserve, increasedAmount }) => {
-    const deadline = Math.floor(Date.now() / 1000 + 3600);
-    return {
-      amount: increasedAmount,
-      aToken: reserve.aTokenAddress,
-      underlyingAsset: underlyingAsset,
-      deadline,
-    };
-  });
 };
 
 export const getMigrationRepayAssets = (
-  poolReservesV3: PoolReserve,
-  poolReservesV2: PoolReserve,
-  v2UserIncentiveData: UserReservesIncentivesDataHumanized[],
-  v2ReserveIncentiveData: ReservesIncentiveDataHumanized[],
-  selectedMigrationSupplyAssets: MigrationSelectedAsset[],
-  selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[],
-  migrationExceptionsMap: MigrationExceptionsMap,
-  migrationExceptionsLoading: boolean,
-  currentNetworkConfig: NetworkConfig,
-  currentTimestamp: number
+  selectedBorrowReserves: MappedBorrowReserve[]
 ): MigrationRepayAsset[] => {
   const deadline = Math.floor(Date.now() / 1000 + 3600);
-  return getSelectedBorrowReservesForMigration(
-    poolReservesV3,
-    poolReservesV2,
-    v2UserIncentiveData,
-    v2ReserveIncentiveData,
-    selectedMigrationSupplyAssets,
-    selectedMigrationBorrowAssets,
-    migrationExceptionsMap,
-    migrationExceptionsLoading,
-    currentNetworkConfig,
-    currentTimestamp
-  ).map((userReserve) => ({
+  return selectedBorrowReserves.map((userReserve) => ({
     underlyingAsset: userReserve.underlyingAsset,
     amount:
       // TODO: verify which digits
