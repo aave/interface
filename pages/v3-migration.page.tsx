@@ -51,6 +51,12 @@ export default function V3Migration() {
     v3UserSummaryBeforeMigration,
     v3UserSummaryAfterMigration,
     isLoading,
+    selectedSupplyReserves,
+    selectedBorrowReservesV3,
+    borrowPermitPayloads,
+    supplyPermitPayloads,
+    supplyAssetsNoPermit,
+    repayAssets,
   } = useMigrationData();
 
   const { data: userPoolReserveV3 } = useUserPoolReserves(currentChainIdV3MarketData);
@@ -181,6 +187,12 @@ export default function V3Migration() {
             }
             enteringIsolationMode={isolatedReserveV3?.enteringIsolationMode || false}
             loading={isLoading}
+            selectedSupplyReserves={selectedSupplyReserves}
+            selectedBorrowReservesV3={selectedBorrowReservesV3}
+            borrowPermitPayloads={borrowPermitPayloads}
+            supplyPermitPayloads={supplyPermitPayloads}
+            supplyAssetsNoPermit={supplyAssetsNoPermit}
+            repayAssets={repayAssets}
           />
         </ContentContainer>
       ) : (

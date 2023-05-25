@@ -17,7 +17,14 @@ import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
 export const MigrateV3ModalContent = () => {
-  const { selectedSupplyReserves, selectedBorrowReservesV3 } = useMigrationData();
+  const {
+    selectedSupplyReserves,
+    selectedBorrowReservesV3,
+    borrowPermitPayloads,
+    supplyPermitPayloads,
+    supplyAssetsNoPermit,
+    repayAssets,
+  } = useMigrationData();
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
   const { currentChainId, setCurrentMarket, currentMarket } = useProtocolDataContext();
@@ -108,7 +115,14 @@ export const MigrateV3ModalContent = () => {
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <MigrateV3Actions isWrongNetwork={isWrongNetwork} blocked={false} />
+      <MigrateV3Actions
+        isWrongNetwork={isWrongNetwork}
+        blocked={false}
+        borrowPermitPayloads={borrowPermitPayloads}
+        supplyPermitPayloads={supplyPermitPayloads}
+        supplyAssetsNoPermit={supplyAssetsNoPermit}
+        repayAssets={repayAssets}
+      />
     </>
   );
 };

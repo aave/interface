@@ -1,3 +1,7 @@
+import {
+  MigrationRepayAsset,
+  MigrationSupplyAsset,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -17,8 +21,10 @@ import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { MappedSupplyReserves, SelectedBorrowReserveV3 } from 'src/store/migrationFormatters';
 
 import { HFChange } from './HFChange';
 
@@ -35,6 +41,12 @@ interface MigrationBottomPanelProps {
   disableButton?: boolean;
   loading?: boolean;
   enteringIsolationMode: boolean;
+  selectedSupplyReserves: MappedSupplyReserves[];
+  selectedBorrowReservesV3: SelectedBorrowReserveV3[];
+  borrowPermitPayloads: Approval[];
+  supplyPermitPayloads: Approval[];
+  supplyAssetsNoPermit: MigrationSupplyAsset[];
+  repayAssets: MigrationRepayAsset[];
 }
 
 enum ErrorType {
@@ -52,6 +64,12 @@ export const MigrationBottomPanel = ({
   disableButton,
   enteringIsolationMode,
   loading,
+  selectedSupplyReserves,
+  selectedBorrowReservesV3,
+  borrowPermitPayloads,
+  supplyPermitPayloads,
+  supplyAssetsNoPermit,
+  repayAssets,
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
   const downToSM = useMediaQuery(breakpoints.down('sm'));
@@ -60,6 +78,17 @@ export const MigrationBottomPanel = ({
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
+
+  const openV3MigrationModal = () => {
+    openV3Migration(
+      selectedSupplyReserves,
+      selectedBorrowReservesV3,
+      borrowPermitPayloads,
+      supplyPermitPayloads,
+      supplyAssetsNoPermit,
+      repayAssets
+    );
+  };
 
   const {
     healthFactor: hfV3AfterChange,
@@ -197,7 +226,7 @@ export const MigrationBottomPanel = ({
 
         <Box>
           <Button
-            onClick={openV3Migration}
+            onClick={openV3MigrationModal}
             disabled={!isChecked || blockingError !== undefined}
             sx={{ width: '100%', height: '44px' }}
             variant={!isChecked || blockingError !== undefined ? 'contained' : 'gradient'}

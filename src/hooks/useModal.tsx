@@ -1,7 +1,13 @@
 import { InterestRate } from '@aave/contract-helpers';
+import {
+  MigrationRepayAsset,
+  MigrationSupplyAsset,
+} from '@aave/contract-helpers/dist/esm/v3-migration-contract/v3MigrationTypes';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { MappedSupplyReserves, SelectedBorrowReserveV3 } from 'src/store/migrationFormatters';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export enum ModalType {
@@ -61,7 +67,14 @@ export interface ModalContextType<T extends ModalArgsType> {
   openSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
-  openV3Migration: () => void;
+  openV3Migration: (
+    selectedSupplyReserves: MappedSupplyReserves[],
+    selectedBorrowReservesV3: SelectedBorrowReserveV3[],
+    borrowPermitPayloads: Approval[],
+    supplyPermitPayloads: Approval[],
+    supplyAssetsNoPermit: MigrationSupplyAsset[],
+    repayAssets: MigrationRepayAsset[]
+  ) => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
   type?: ModalType;

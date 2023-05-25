@@ -276,7 +276,6 @@ export const getUserReservesForMigration = (
       reserveIncentives: v2ReserveIncentiveData,
       userIncentives: v2UserIncentiveData,
     });
-
   const userEmodeCategoryId = poolReservesV3?.userEmodeCategoryId;
   let isolatedReserveV3: IsolatedReserve | undefined =
     getIsolationModeForMigration(v3ReservesUserSummary);
@@ -550,7 +549,7 @@ export const getSelectedBorrowReservesForMigration = (
   );
 };
 
-interface SelectedBorrowReserveV3 extends MappedBorrowReserve {
+export interface SelectedBorrowReserveV3 extends MappedBorrowReserve {
   debtKey: string;
 }
 
