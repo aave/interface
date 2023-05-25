@@ -21,7 +21,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
 
   const [showWarning, setShowWarning] = useState(true);
 
-  const [mobileMenuOpen] = useRootStore((state) => [state.mobileMenuOpen]);
+  const [mobileDrawerOpen] = useRootStore((state) => [state.mobileDrawerOpen]);
 
   useEffect(() => {
     const warningBarOpen = localStorage.getItem('warningBarOpen');
@@ -36,7 +36,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
   };
 
   // Note: hide warnings when mobile menu is open
-  if (mobileMenuOpen) return null;
+  if (mobileDrawerOpen) return null;
 
   if (showWarning) {
     return (
