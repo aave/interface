@@ -9,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
@@ -99,6 +99,15 @@ export const HistoryWrapper = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
+  const flatTxns = useMemo(
+    () => transactions?.pages?.flatMap((page) => page) || [],
+    [transactions]
+  );
+  const filteredTxns = useMemo(
+    () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
+    [searchQuery, filterQuery, flatTxns]
+  );
+
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
@@ -112,8 +121,6 @@ export const HistoryWrapper = () => {
     return <HistoryWrapperMobile />;
   }
 
-  const flatTxns = transactions?.pages?.flatMap((page) => page) || [];
-  const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns });
   const isEmpty = filteredTxns.length === 0;
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 

@@ -11,7 +11,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
@@ -130,8 +130,14 @@ export const HistoryWrapperMobile = () => {
     [fetchNextPage, isLoading]
   );
 
-  const flatTxns = transactions?.pages?.flatMap((page) => page) || [];
-  const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns });
+  const flatTxns = useMemo(
+    () => transactions?.pages?.flatMap((page) => page) || [],
+    [transactions]
+  );
+  const filteredTxns = useMemo(
+    () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
+    [searchQuery, filterQuery, flatTxns]
+  );
   const isEmpty = filteredTxns.length === 0;
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
