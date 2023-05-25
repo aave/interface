@@ -36575,7 +36575,7 @@ var require_methodValidators = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/validators/methodValidators.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.V3MigratorValidator = exports2.StackeUiDataProviderValidator = exports2.GovDelegationValidator = exports2.GovValidator = exports2.GovHelperValidator = exports2.WETHValidator = exports2.FaucetValidator = exports2.SignStakingValidator = exports2.StakingValidator = exports2.RepayWithCollateralValidator = exports2.LiquiditySwapValidator = exports2.ERC20Validator = exports2.SynthetixValidator = exports2.DebtTokenValidator = exports2.IncentivesValidator = exports2.UiIncentiveDataProviderValidator = exports2.LPValidatorV3 = exports2.L2PValidator = exports2.LPValidator = exports2.LPSwapCollateralValidatorV3 = exports2.LPRepayWithCollateralValidatorV3 = exports2.LPSwapCollateralValidator = exports2.LPRepayWithCollateralValidator = exports2.LPFlashLiquidationValidatorV3 = exports2.LPFlashLiquidationValidator = void 0;
+    exports2.V3MigratorValidator = exports2.StakeUiDataProviderValidator = exports2.GovDelegationValidator = exports2.GovValidator = exports2.GovHelperValidator = exports2.WETHValidator = exports2.FaucetValidator = exports2.SignStakingValidator = exports2.StakingValidator = exports2.RepayWithCollateralValidator = exports2.LiquiditySwapValidator = exports2.ERC20Validator = exports2.SynthetixValidator = exports2.DebtTokenValidator = exports2.IncentivesValidator = exports2.UiIncentiveDataProviderValidator = exports2.LPValidatorV3 = exports2.L2PValidator = exports2.LPValidator = exports2.LPSwapCollateralValidatorV3 = exports2.LPRepayWithCollateralValidatorV3 = exports2.LPSwapCollateralValidator = exports2.LPRepayWithCollateralValidator = exports2.LPFlashLiquidationValidatorV3 = exports2.LPFlashLiquidationValidator = void 0;
     var ethers_1 = require_lib31();
     var validations_1 = require_validations();
     function LPFlashLiquidationValidator(target, propertyName, descriptor) {
@@ -36917,14 +36917,14 @@ var require_methodValidators = __commonJS({
       };
     }
     exports2.GovDelegationValidator = GovDelegationValidator;
-    function StackeUiDataProviderValidator(target, propertyName, descriptor) {
+    function StakeUiDataProviderValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function() {
         (0, validations_1.isEthAddressValidator)(target, propertyName, arguments);
         return method.apply(this, arguments);
       };
     }
-    exports2.StackeUiDataProviderValidator = StackeUiDataProviderValidator;
+    exports2.StakeUiDataProviderValidator = StakeUiDataProviderValidator;
     function V3MigratorValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function() {
@@ -38932,29 +38932,181 @@ var require_wallet_balance_provider = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakeUiHelperFactory.js
-var require_StakeUiHelperFactory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakeUiHelperFactory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakedTokenDataProviderFactory.js
+var require_StakedTokenDataProviderFactory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakedTokenDataProviderFactory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.StakeUiHelperFactory = void 0;
+    exports2.StakedTokenDataProvider__factory = void 0;
     var ethers_1 = require_lib31();
-    var StakeUiHelperFactory = class {
+    var StakedTokenDataProvider__factory = class extends ethers_1.ContractFactory {
+      constructor(signer) {
+        super(_abi, _bytecode, signer);
+      }
+      deploy(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides) {
+        return super.deploy(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides || {});
+      }
+      getDeployTransaction(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides) {
+        return super.getDeployTransaction(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
     };
-    exports2.StakeUiHelperFactory = StakeUiHelperFactory;
+    exports2.StakedTokenDataProvider__factory = StakedTokenDataProvider__factory;
     var _abi = [
       {
+        inputs: [
+          {
+            internalType: "address",
+            name: "aave",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "stkAave",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "bpt",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "stkBpt",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "ethUsdPriceFeed",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "aavePriceFeed",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "bptPriceFeed",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
         inputs: [],
-        name: "getGeneralStakeUIData",
+        name: "AAVE",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "AAVE_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "BPT",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "BPT_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "ETH_USD_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "STAKED_AAVE",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "STAKED_BPT",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getAllStakedTokenData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -38969,7 +39121,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -38993,15 +39145,20 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
             type: "tuple"
           },
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -39016,7 +39173,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -39040,13 +39197,13 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
             type: "tuple"
           },
           {
             internalType: "uint256",
-            name: "",
+            name: "ethPrice",
             type: "uint256"
           }
         ],
@@ -39061,13 +39218,209 @@ var require_StakeUiHelperFactory = __commonJS({
             type: "address"
           }
         ],
+        name: "getAllStakedTokenUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkAaveUserData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkBptUserData",
+            type: "tuple"
+          },
+          {
+            internalType: "uint256",
+            name: "ethPrice",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
         name: "getStkAaveData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -39082,7 +39435,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -39104,35 +39457,10 @@ var require_StakeUiHelperFactory = __commonJS({
                 internalType: "uint256",
                 name: "distributionEnd",
                 type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
             type: "tuple"
           }
         ],
@@ -39147,13 +39475,218 @@ var require_StakeUiHelperFactory = __commonJS({
             type: "address"
           }
         ],
+        name: "getStkAaveUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkAaveUserData",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getStkBptAaveUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkBptUserData",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
         name: "getStkBptData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -39168,87 +39701,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [],
-        name: "getStkGeneralAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -39272,591 +39725,16 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
             type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [],
-        name: "getStkGeneralBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getStkUserAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getStkUserBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getStkUsersAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getStkUsersBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getUserStakeUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getUserUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getUsersStakeUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
           }
         ],
         stateMutability: "view",
         type: "function"
       }
     ];
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/types.js
-var require_types5 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/types.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
+    var _bytecode = "0x6101606040523480156200001257600080fd5b50604051620013f4380380620013f483398101604081905262000035916200009b565b6001600160601b0319606097881b811660e05295871b86166101005293861b85166101205291851b841661014052841b8316608052831b821660a05290911b1660c0526200012f565b80516001600160a01b03811681146200009657600080fd5b919050565b600080600080600080600060e0888a031215620000b6578283fd5b620000c1886200007e565b9650620000d1602089016200007e565b9550620000e1604089016200007e565b9450620000f1606089016200007e565b935062000101608089016200007e565b92506200011160a089016200007e565b91506200012160c089016200007e565b905092959891949750929550565b60805160601c60a05160601c60c05160601c60e05160601c6101005160601c6101205160601c6101405160601c611202620001f2600039806101bb528061028952806102b452806102e2528061036a52806104a652806104d15280610a4f52508061022e525080610252528061033f528061044f528061047a52806105cd52806105f8528061062a52806109ec52508061020a5250806105965280610a895250806101e65280610840525080610306528061039252806104fa52506112026000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063ad809caa1161008c578063cca44f0a11610066578063cca44f0a14610167578063cfe7b3121461018b578063eaf5b48f14610193578063f9f2634f146101a6576100cf565b8063ad809caa14610140578063b0f0abe914610148578063b7d1a98d14610150576100cf565b80632c1aa8d2146100d457806345afe360146100f257806348ccda3c146101075780634f0640861461010f5780638e6a6941146101175780639f8bf4da1461011f575b600080fd5b6100dc6101ae565b6040516100e99190611109565b60405180910390f35b6100fa6101e4565b6040516100e991906110f5565b6100fa610208565b6100fa61022c565b6100fa610250565b61013261012d366004610f46565b610274565b6040516100e9929190611144565b6100fa6102e0565b6100fa610304565b610158610328565b6040516100e993929190611118565b61017a610175366004610f46565b610428565b6040516100e9959493929190611161565b6100fa610594565b6101326101a1366004610f46565b6105b8565b6100dc61061d565b6101b6610e94565b6101df7f000000000000000000000000000000000000000000000000000000000000000061064a565b905090565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b61027c610e94565b610284610ee9565b6102ad7f000000000000000000000000000000000000000000000000000000000000000061064a565b91506102d97f000000000000000000000000000000000000000000000000000000000000000084610b4f565b9050915091565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b610330610e94565b610338610e94565b60006103637f000000000000000000000000000000000000000000000000000000000000000061064a565b925061038e7f000000000000000000000000000000000000000000000000000000000000000061064a565b91507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b1580156103e957600080fd5b505afa1580156103fd573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104219190610f85565b9050909192565b610430610e94565b610438610ee9565b610440610e94565b610448610ee9565b60006104737f000000000000000000000000000000000000000000000000000000000000000061064a565b945061049f7f000000000000000000000000000000000000000000000000000000000000000087610b4f565b93506104ca7f000000000000000000000000000000000000000000000000000000000000000061064a565b92506104f67f000000000000000000000000000000000000000000000000000000000000000087610b4f565b91507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561055157600080fd5b505afa158015610565573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105899190610f85565b905091939590929450565b7f000000000000000000000000000000000000000000000000000000000000000081565b6105c0610e94565b6105c8610ee9565b6105f17f000000000000000000000000000000000000000000000000000000000000000061064a565b91506102d97f000000000000000000000000000000000000000000000000000000000000000084610b4f565b610625610e94565b6101df7f00000000000000000000000000000000000000000000000000000000000000005b610652610e94565b816001600160a01b03166318160ddd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561068b57600080fd5b505afa15801561069f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106c39190610f85565b80825260405163266d6a8360e11b81526001600160a01b03841691634cdad506916106f191906004016111ab565b60206040518083038186803b15801561070957600080fd5b505afa15801561071d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107419190610f85565b816020018181525050816001600160a01b03166372b49d636040518163ffffffff1660e01b815260040160206040518083038186803b15801561078357600080fd5b505afa158015610797573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107bb9190610f85565b816040018181525050816001600160a01b031663359c4a966040518163ffffffff1660e01b815260040160206040518083038186803b1580156107fd57600080fd5b505afa158015610811573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108359190610f85565b8160600181815250507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561089757600080fd5b505afa1580156108ab573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108cf9190610f85565b8160a0018181525050816001600160a01b031663919cd40f6040518163ffffffff1660e01b815260040160206040518083038186803b15801561091157600080fd5b505afa158015610925573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109499190610f85565b6101008201819052421061095e5760006109dc565b604051631e23703160e31b81526001600160a01b0383169063f11b81889061098a9085906004016110f5565b60606040518083038186803b1580156109a257600080fd5b505afa1580156109b6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109da9190610f9d565b515b6001600160801b031660e08201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b039081169083161415610a4d5760a0810151608082015260e08101518151610a43916001600160801b031690610e6b565b60c0820152610b4a565b7f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316826001600160a01b03161415610b4a577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b158015610ae057600080fd5b505afa158015610af4573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b189190610f85565b6080820181905260a082015160e08301518351610b44936001600160801b039092169092029102610e6b565b60c08201525b919050565b610b57610ee9565b6040516370a0823160e01b81526001600160a01b038416906370a0823190610b839085906004016110f5565b60206040518083038186803b158015610b9b57600080fd5b505afa158015610baf573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bd39190610f85565b81526040516346df7f7160e11b81526001600160a01b03841690638dbefee290610c019085906004016110f5565b60206040518083038186803b158015610c1957600080fd5b505afa158015610c2d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610c519190610f85565b816060018181525050826001600160a01b031663312f6b836040518163ffffffff1660e01b815260040160206040518083038186803b158015610c9357600080fd5b505afa158015610ca7573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610ccb9190610f69565b6001600160a01b03166370a08231836040518263ffffffff1660e01b8152600401610cf691906110f5565b60206040518083038186803b158015610d0e57600080fd5b505afa158015610d22573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d469190610f85565b6040808301919091528151905163266d6a8360e11b81526001600160a01b03851691634cdad50691610d7b91906004016111ab565b60206040518083038186803b158015610d9357600080fd5b505afa158015610da7573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610dcb9190610f85565b602082015260405163091030c360e01b81526001600160a01b0384169063091030c390610dfc9085906004016110f5565b604080518083038186803b158015610e1357600080fd5b505afa158015610e27573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e4b9190610ffe565b6001600160d81b031660a083015264ffffffffff16608082015292915050565b600081610e7a57506000610e8e565b8164496cebb800840281610e8a57fe5b0490505b92915050565b6040518061012001604052806000815260200160008152602001600081526020016000815260200160008152602001600081526020016000815260200160006001600160801b03168152602001600081525090565b6040518060c0016040528060008152602001600081526020016000815260200160008152602001600064ffffffffff16815260200160006001600160d81b031681525090565b80516001600160801b0381168114610b4a57600080fd5b600060208284031215610f57578081fd5b8135610f62816111b4565b9392505050565b600060208284031215610f7a578081fd5b8151610f62816111b4565b600060208284031215610f96578081fd5b5051919050565b600060608284031215610fae578081fd5b6040516060810181811067ffffffffffffffff82111715610fcb57fe5b604052610fd783610f2f565b8152610fe560208401610f2f565b6020820152604083015160408201528091505092915050565b60008060408385031215611010578081fd5b825164ffffffffff81168114611024578182fd5b60208401519092506001600160d81b0381168114611040578182fd5b809150509250929050565b805182526020810151602083015260408101516040830152606081015160608301526080810151608083015260a081015160a083015260c081015160c08301526001600160801b0360e08201511660e08301526101008082015181840152505050565b8051825260208082015190830152604080820151908301526060808201519083015260808082015164ffffffffff169083015260a0908101516001600160d81b0316910152565b6001600160a01b0391909116815260200190565b6101208101610e8e828461104b565b6102608101611127828661104b565b61113561012083018561104b565b82610240830152949350505050565b6101e08101611153828561104b565b610f626101208301846110ae565b6103e08101611170828861104b565b61117e6101208301876110ae565b61118c6101e083018661104b565b61119a6103008301856110ae565b826103c08301529695505050505050565b90815260200190565b6001600160a01b03811681146111c957600080fd5b5056fea2646970667358221220273c9b55009ee92e111a4be9075dfee70ec45d01bd9b462c1168dd428da4e0cc64736f6c63430007050033";
   }
 });
 
@@ -39869,82 +39747,95 @@ var require_uiStakeDataProvider_contract = __commonJS({
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
-    var StakeUiHelperFactory_1 = require_StakeUiHelperFactory();
-    tslib_1.__exportStar(require_types5(), exports2);
+    var StakedTokenDataProviderFactory_1 = require_StakedTokenDataProviderFactory();
     var UiStakeDataProvider = class {
       constructor(context) {
-        this._contract = StakeUiHelperFactory_1.StakeUiHelperFactory.connect(context.uiStakeDataProvider, context.provider);
+        this._contract = StakedTokenDataProviderFactory_1.StakedTokenDataProvider__factory.connect(context.uiStakeDataProvider, context.provider);
       }
       getUserStakeUIData(_0) {
         return __async(this, arguments, function* ({ user }) {
-          return this._contract.getUserStakeUIData(user);
+          const { stkAaveData, stkAaveUserData, stkBptData, stkBptUserData, ethPrice } = yield this._contract.getAllStakedTokenUserData(user);
+          return {
+            stkAaveData: Object.assign(Object.assign({}, stkAaveData), { stakedTokenUserBalance: stkAaveUserData.stakedTokenUserBalance, underlyingTokenUserBalance: stkAaveUserData.underlyingTokenUserBalance, stakedTokenRedeemableAmount: stkAaveUserData.stakedTokenRedeemableAmount, userCooldownAmount: stkAaveUserData.userCooldownAmount, userCooldownTimestamp: stkAaveUserData.userCooldownTimestamp, rewardsToClaim: stkAaveUserData.rewardsToClaim }),
+            stkBptData: Object.assign(Object.assign({}, stkBptData), { stakedTokenUserBalance: stkBptUserData.stakedTokenUserBalance, underlyingTokenUserBalance: stkBptUserData.underlyingTokenUserBalance, stakedTokenRedeemableAmount: stkBptUserData.stakedTokenRedeemableAmount, userCooldownAmount: stkBptUserData.userCooldownAmount, userCooldownTimestamp: stkBptUserData.userCooldownTimestamp, rewardsToClaim: stkBptUserData.rewardsToClaim }),
+            ethPrice
+          };
         });
       }
       getUserStakeUIDataHumanized(_0) {
         return __async(this, arguments, function* ({ user }) {
-          const { 0: aave, 1: bpt, 2: usdPriceEth } = yield this.getUserStakeUIData({ user });
+          const contractResult = yield this.getUserStakeUIData({ user });
           return {
             aave: {
-              stakeTokenUserBalance: aave.stakeTokenUserBalance.toString(),
-              underlyingTokenUserBalance: aave.underlyingTokenUserBalance.toString(),
-              userCooldown: aave.userCooldown.toNumber(),
-              userIncentivesToClaim: aave.userIncentivesToClaim.toString(),
-              userPermitNonce: aave.userPermitNonce.toString()
+              stakeTokenUserBalance: contractResult.stkAaveData.stakedTokenUserBalance.toString(),
+              underlyingTokenUserBalance: contractResult.stkAaveData.underlyingTokenUserBalance.toString(),
+              stakeTokenRedeemableAmount: contractResult.stkAaveData.stakedTokenRedeemableAmount.toString(),
+              userCooldownAmount: contractResult.stkAaveData.userCooldownAmount.toString(),
+              userCooldownTimestamp: contractResult.stkAaveData.userCooldownTimestamp,
+              userIncentivesToClaim: contractResult.stkAaveData.rewardsToClaim.toString()
             },
             bpt: {
-              stakeTokenUserBalance: bpt.stakeTokenUserBalance.toString(),
-              underlyingTokenUserBalance: bpt.underlyingTokenUserBalance.toString(),
-              userCooldown: bpt.userCooldown.toNumber(),
-              userIncentivesToClaim: bpt.userIncentivesToClaim.toString(),
-              userPermitNonce: bpt.userPermitNonce.toString()
+              stakeTokenUserBalance: contractResult.stkBptData.stakedTokenUserBalance.toString(),
+              underlyingTokenUserBalance: contractResult.stkBptData.underlyingTokenUserBalance.toString(),
+              stakeTokenRedeemableAmount: contractResult.stkBptData.stakedTokenRedeemableAmount.toString(),
+              userCooldownAmount: contractResult.stkBptData.userCooldownAmount.toString(),
+              userCooldownTimestamp: contractResult.stkBptData.userCooldownTimestamp,
+              userIncentivesToClaim: contractResult.stkBptData.rewardsToClaim.toString()
             },
-            usdPriceEth: usdPriceEth.toString()
+            ethPriceUsd: contractResult.ethPrice.toString()
           };
         });
       }
       getGeneralStakeUIData() {
         return __async(this, null, function* () {
-          return this._contract.getGeneralStakeUIData();
+          const { stkAaveData, stkBptData, ethPrice } = yield this._contract.getAllStakedTokenData();
+          return {
+            stkAaveData,
+            stkBptData,
+            ethPrice
+          };
         });
       }
       getGeneralStakeUIDataHumanized() {
         return __async(this, null, function* () {
-          const { 0: aave, 1: bpt, 2: usdPriceEth } = yield this.getGeneralStakeUIData();
+          const contractResult = yield this.getGeneralStakeUIData();
           return {
             aave: {
-              stakeTokenTotalSupply: aave.stakeTokenTotalSupply.toString(),
-              stakeCooldownSeconds: aave.stakeCooldownSeconds.toNumber(),
-              stakeUnstakeWindow: aave.stakeUnstakeWindow.toNumber(),
-              stakeTokenPriceEth: aave.stakeTokenPriceEth.toString(),
-              rewardTokenPriceEth: aave.rewardTokenPriceEth.toString(),
-              stakeApy: aave.stakeApy.toString(),
-              distributionPerSecond: aave.distributionPerSecond.toString(),
-              distributionEnd: aave.distributionEnd.toString()
+              stakeTokenTotalSupply: contractResult.stkAaveData.stakedTokenTotalSupply.toString(),
+              stakeTokenTotalRedeemableAmount: contractResult.stkAaveData.stakedTokenTotalRedeemableAmount.toString(),
+              stakeCooldownSeconds: contractResult.stkAaveData.stakeCooldownSeconds.toNumber(),
+              stakeUnstakeWindow: contractResult.stkAaveData.stakeUnstakeWindow.toNumber(),
+              stakeTokenPriceEth: contractResult.stkAaveData.stakedTokenPriceEth.toString(),
+              rewardTokenPriceEth: contractResult.stkAaveData.rewardTokenPriceEth.toString(),
+              stakeApy: contractResult.stkAaveData.stakeApy.toString(),
+              distributionPerSecond: contractResult.stkAaveData.distributionPerSecond.toString(),
+              distributionEnd: contractResult.stkAaveData.distributionEnd.toString()
             },
             bpt: {
-              stakeTokenTotalSupply: bpt.stakeTokenTotalSupply.toString(),
-              stakeCooldownSeconds: bpt.stakeCooldownSeconds.toNumber(),
-              stakeUnstakeWindow: bpt.stakeUnstakeWindow.toNumber(),
-              stakeTokenPriceEth: bpt.stakeTokenPriceEth.toString(),
-              rewardTokenPriceEth: bpt.rewardTokenPriceEth.toString(),
-              stakeApy: bpt.stakeApy.toString(),
-              distributionPerSecond: bpt.distributionPerSecond.toString(),
-              distributionEnd: bpt.distributionEnd.toString()
+              stakeTokenTotalSupply: contractResult.stkBptData.stakedTokenTotalSupply.toString(),
+              stakeTokenTotalRedeemableAmount: contractResult.stkAaveData.stakedTokenTotalRedeemableAmount.toString(),
+              stakeCooldownSeconds: contractResult.stkBptData.stakeCooldownSeconds.toNumber(),
+              stakeUnstakeWindow: contractResult.stkBptData.stakeUnstakeWindow.toNumber(),
+              stakeTokenPriceEth: contractResult.stkBptData.stakedTokenPriceEth.toString(),
+              rewardTokenPriceEth: contractResult.stkBptData.rewardTokenPriceEth.toString(),
+              stakeApy: contractResult.stkBptData.stakeApy.toString(),
+              distributionPerSecond: contractResult.stkBptData.distributionPerSecond.toString(),
+              distributionEnd: contractResult.stkBptData.distributionEnd.toString()
             },
-            usdPriceEth: usdPriceEth.toString()
+            ethPriceUsd: contractResult.ethPrice.toString()
           };
         });
       }
     };
     tslib_1.__decorate([
-      methodValidators_1.StackeUiDataProviderValidator,
+      methodValidators_1.StakeUiDataProviderValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [Object]),
       tslib_1.__metadata("design:returntype", Promise)
     ], UiStakeDataProvider.prototype, "getUserStakeUIData", null);
     tslib_1.__decorate([
-      methodValidators_1.StackeUiDataProviderValidator,
+      methodValidators_1.StakeUiDataProviderValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [Object]),
@@ -45648,7 +45539,7 @@ var require_IGovernanceV2Helper_factory = __commonJS({
 });
 
 // node_modules/@aave/contract-helpers/dist/cjs/governance-contract/types.js
-var require_types6 = __commonJS({
+var require_types5 = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/governance-contract/types.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -45687,7 +45578,7 @@ var require_governance_contract = __commonJS({
     var IAaveGovernanceV2__factory_1 = require_IAaveGovernanceV2_factory();
     var IGovernanceStrategy__factory_1 = require_IGovernanceStrategy_factory();
     var IGovernanceV2Helper__factory_1 = require_IGovernanceV2Helper_factory();
-    var types_2 = require_types6();
+    var types_2 = require_types5();
     var humanizeProposal = (rawProposal) => {
       return {
         id: Number(rawProposal.id.toString()),
@@ -53975,7 +53866,7 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_faucet_contract(), exports2);
     tslib_1.__exportStar(require_staking_contract(), exports2);
     tslib_1.__exportStar(require_governance_contract(), exports2);
-    tslib_1.__exportStar(require_types6(), exports2);
+    tslib_1.__exportStar(require_types5(), exports2);
     tslib_1.__exportStar(require_governance_power_delegation_contract(), exports2);
     tslib_1.__exportStar(require_v3_pool_contract(), exports2);
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);

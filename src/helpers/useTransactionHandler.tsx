@@ -105,6 +105,8 @@ export const useTransactionHandler = ({
         queryClient.invalidateQueries({ queryKey: [QueryKeys.RESERVE_INCENTIVE_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
       } catch (e) {
         // TODO: what to do with this error?
         try {

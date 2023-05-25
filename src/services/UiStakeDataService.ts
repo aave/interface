@@ -2,48 +2,6 @@ import { UiStakeDataProvider } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
 import { Hashable } from 'src/utils/types';
 
-export type StakeGeneralUiData = {
-  usdPriceEth: string;
-  aave: {
-    stakeTokenTotalSupply: string;
-    stakeCooldownSeconds: number;
-    stakeUnstakeWindow: number;
-    stakeTokenPriceEth: string;
-    rewardTokenPriceEth: string;
-    stakeApy: string;
-    distributionPerSecond: string;
-    distributionEnd: string;
-  };
-  bpt: {
-    stakeTokenTotalSupply: string;
-    stakeCooldownSeconds: number;
-    stakeUnstakeWindow: number;
-    stakeTokenPriceEth: string;
-    rewardTokenPriceEth: string;
-    stakeApy: string;
-    distributionPerSecond: string;
-    distributionEnd: string;
-  };
-};
-
-export type StakeUserUiData = {
-  usdPriceEth: string;
-  aave: {
-    stakeTokenUserBalance: string;
-    underlyingTokenUserBalance: string;
-    userCooldown: number;
-    userIncentivesToClaim: string;
-    userPermitNonce: string;
-  };
-  bpt: {
-    stakeTokenUserBalance: string;
-    underlyingTokenUserBalance: string;
-    userCooldown: number;
-    userIncentivesToClaim: string;
-    userPermitNonce: string;
-  };
-};
-
 type GetUserStakeUIDataHumanizedParams = {
   user: string;
 };
