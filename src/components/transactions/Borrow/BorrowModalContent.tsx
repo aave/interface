@@ -107,7 +107,16 @@ export const BorrowModalContent = ({
   unwrap: borrowUnWrapped,
   setUnwrap: setBorrowUnWrapped,
   symbol,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  latestPriceRaw: latestPriceRaw,
+  latestPriceExpo: latestPriceExpo,
+  latestPriceUpdateData: latestPriceUpdateData,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  latestPriceRaw: string;
+  latestPriceExpo: number;
+  latestPriceUpdateData: string[];
+}) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -135,10 +144,13 @@ export const BorrowModalContent = ({
   };
 
   // health factor calculations
+  // const amountToBorrowInUsd = valueToBigNumber(amount)
+  //   .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+  //   .multipliedBy(marketReferencePriceInUsd)
+  //   .shiftedBy(-USD_DECIMALS);
   const amountToBorrowInUsd = valueToBigNumber(amount)
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+    .multipliedBy(latestPriceRaw)
+    .shiftedBy(latestPriceExpo);
 
   const newHealthFactor = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
@@ -151,7 +163,7 @@ export const BorrowModalContent = ({
     newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
@@ -328,6 +340,7 @@ export const BorrowModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        updateData={latestPriceUpdateData}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>

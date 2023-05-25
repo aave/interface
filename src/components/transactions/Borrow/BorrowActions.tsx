@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { updatePythPriceTx } from 'src/helpers/pythHelpers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -15,6 +16,7 @@ export interface BorrowActionsProps extends BoxProps {
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
+  updateData: string[];
 }
 
 export const BorrowActions = ({
@@ -25,6 +27,7 @@ export const BorrowActions = ({
   interestRateMode,
   isWrongNetwork,
   blocked,
+  updateData,
   sx,
 }: BorrowActionsProps) => {
   const borrow = useRootStore((state) => state.borrow);
@@ -46,6 +49,8 @@ export const BorrowActions = ({
       deps: [amountToBorrow, interestRateMode],
     });
 
+  const sequentialtxs = () => updatePythPriceTx(updateData).then(action);
+
   return (
     <TxActionsWrapper
       blocked={blocked}
@@ -54,8 +59,8 @@ export const BorrowActions = ({
       requiresAmount={true}
       amount={amountToBorrow}
       isWrongNetwork={isWrongNetwork}
-      handleAction={action}
-      actionText={<Trans>Borrow {symbol}</Trans>}
+      handleAction={sequentialtxs}
+      actionText={<Trans>Update Price & Borrow {symbol}</Trans>}
       actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
       handleApproval={() => approval(amountToBorrow, poolAddress)}
       requiresApproval={requiresApproval}
