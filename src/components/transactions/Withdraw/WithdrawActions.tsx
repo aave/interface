@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { updatePythPriceTx } from 'src/helpers/pythHelpers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -13,6 +14,7 @@ export interface WithdrawActionsProps extends BoxProps {
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
+  updateData: string[];
 }
 
 export const WithdrawActions = ({
@@ -22,6 +24,7 @@ export const WithdrawActions = ({
   isWrongNetwork,
   symbol,
   blocked,
+  updateData,
   sx,
 }: WithdrawActionsProps) => {
   const withdraw = useRootStore((state) => state.withdraw);
@@ -39,6 +42,8 @@ export const WithdrawActions = ({
       deps: [amountToWithdraw, poolAddress],
     });
 
+  const sequentialtxs = () => updatePythPriceTx(updateData).then(action);
+
   return (
     <TxActionsWrapper
       blocked={blocked}
@@ -49,8 +54,8 @@ export const WithdrawActions = ({
       isWrongNetwork={isWrongNetwork}
       requiresAmount
       actionInProgressText={<Trans>Withdrawing {symbol}</Trans>}
-      actionText={<Trans>Withdraw {symbol}</Trans>}
-      handleAction={action}
+      actionText={<Trans>Update Price & Withdraw {symbol}</Trans>}
+      handleAction={sequentialtxs}
       handleApproval={() => approval(amountToWithdraw, poolAddress)}
       requiresApproval={requiresApproval}
       sx={sx}

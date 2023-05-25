@@ -33,7 +33,16 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  latestPriceRaw: latestPriceRaw,
+  latestPriceExpo: latestPriceExpo,
+  latestPriceUpdateData: latestPriceUpdateData,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  latestPriceRaw: string;
+  latestPriceExpo: number;
+  latestPriceUpdateData: string[];
+}) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -148,7 +157,7 @@ export const WithdrawModalContent = ({
   };
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve?.reserve.priceInUSD || 0);
+  const usdValue = valueToBigNumber(amount).multipliedBy(latestPriceRaw).shiftedBy(latestPriceExpo);
 
   if (withdrawTxState.success)
     return (
@@ -260,6 +269,7 @@ export const WithdrawModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        updateData={latestPriceUpdateData}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
