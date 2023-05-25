@@ -3279,6 +3279,19 @@
       "ipfsHash": "QmSejtU39pfFud1DmZiiZ3KrKawuFq6Fi97ZiJQB8eZu1Z",
       "originalHash": "0x40110ec9619df34dcd84c1b553fe2bbd51e433e4e96caafb85b0949745790620",
       "id": 234
+    },
+    {
+      "title": "DeFi Saver Aave V3 FlashBorrowers Whitelist Part II",
+      "author": "Marc Zeller (@marczeller), Aave-Chan initiative",
+      "shortDescription": "DeFi Saver Aave V3 FlashBorrowers Whitelist Part II",
+      "discussions": "https://governance.aave.com/t/arfc-add-defi-saver-to-flashborrowers-on-aave-v3/12410",
+      "created": "2023-05-24T00:00:00.000Z",
+      "preview": "## Simple Summary\nThis proposal presents Aave governance with the …",
+      "basename": "DFS-FLASHBORROWERS-PART-II",
+      "description": "\n\n## Simple Summary\nThis proposal presents Aave governance with the opportunity to whitelist DeFi Saver as part of FlashBorrowers of Aave V3 on Optimism liquidity pool.\n\n## Motivation\nDeFi Saver has a long-standing history of synergies with the Aave Protocol, being one of the first third-party integrations of Aave V1 in 2020.\n\nCurrently, every flashloan has a 9 bps fee that rewards liquidity providers in Aave. While flashloans were created by Aave, the ecosystem as a whole has replicated this feature, and most protocols do not implement any fees.\n\nThe ACI does not support waiving the fees for flashloans in general, as we firmly believe that users’ funds used, even in the context of a single transaction, should be rewarded.\n\nHowever, some strategic use cases of V3, such as emode, are very fee-sensitive as they mobilize high leverage. Waiving the DeFi Saver flashloan fees is expected to make these strategies more convenient and profitable, leading to increased borrow volume and thus increased Aave DAO revenue.\n\nThis proposal presents Aave governance with the opportunity to whitelist DeFi Saver as a part of FlashBorrowers of Aave V3 Optimism liquidity pool.\n\nThis AIP present Aave with the same code as [AIP-196](https://app.aave.com/governance/proposal/196/) but due to  a failed execution of the Optimism payload on the OP side of the cross-chain governance bridge, we are resubmitting it.\nCode stays unchanged.\n\n## Specification\n\nThis AIP aims to implement a single payload, which will simply call addFlashBorrower() on the ACL_MANAGER contract.\n\n```solidity\n\ncontract AaveV3OptDFSFlashBorrowActivation is IProposalGenericExecutor {\n  address public constant FL_AAVE_V3 = 0xfbcF23D2BeF8A2C491cfa4dD409D8dF12d431c85;\n  address public constant FL_ACTION = 0xE668197A175E7A2143222a028470c6ABBBD183F6;\n\n  function execute() external {\n    AaveV3Optimism.ACL_MANAGER.addFlashBorrower(FL_AAVE_V3);\n    AaveV3Optimism.ACL_MANAGER.addFlashBorrower(FL_ACTION);\n  }\n}\n```\n\n## References\n\nA list of relevant links like for this proposal:\n\n- [forum discussion](https://governance.aave.com/t/arfc-add-defi-saver-to-flashborrowers-on-aave-v3/12410)\n- [tests](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3DFSFlashBorrow_20230403/AaveV3ETHDFSFlashBorrowActivation_20230403_test.t.sol)\n- [proposalCode](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3DFSFlashBorrow_20230524/AaveV3DFSFlashBorrow_20230524.sol)\n\n## Security Considerations\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmTuRnQ6T83CTQi4sa4uvuaeZfrZwZyTBb3Y6cgjWhgZgY",
+      "originalHash": "0x52affc618852d41e36f23c5c5c9e0d888e584fe4afeb52923c28bffb5986982d",
+      "id": 235
     }
   ]
 }
