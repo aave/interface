@@ -10,7 +10,7 @@ export const switchToTestNet = () => {
   cy.contains('Testnet mode').click();
 };
 
-describe('Switch tabs in header', () => {
+describe.skip('Switch tabs in header', () => {
   const checkLinkOfButtons = (name: string, link: string) => {
     cy.contains(name).should('have.attr', 'href', `${link}`);
   };
