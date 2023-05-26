@@ -207,11 +207,6 @@ export default function ProposalPage({
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
 
-  console.log('pendingL2Execution', pendingL2Execution, executedL2);
-  console.log('proposal', proposal);
-
-  // console.log('displayk2', displayL2StateBadge);
-
   return (
     <>
       {ipfs && (

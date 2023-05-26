@@ -55,7 +55,6 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
-          {state}&nbsp;
           <Trans>Voting ends</Trans>
           &nbsp;
         </Typography>
