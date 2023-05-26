@@ -26,6 +26,7 @@ import {
   ReserveIncentiveResponse,
 } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
+import BigNumber from 'bignumber.js';
 import { BigNumberish } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -668,7 +669,8 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
  */
 export const selectMigrationBorrowPermitPayloads = (
   store: RootStore,
-  timestamp: number
+  timestamp: number,
+  buffer?: boolean
 ): Approval[] => {
   const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
   const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp);
@@ -711,8 +713,15 @@ export const selectMigrationBorrowPermitPayloads = (
     const debt = reserveDebts[key];
     const totalDebt = valueToBigNumber(debt.stableDebtAmount).plus(debt.variableDebtAmount);
     const combinedAmountInWei = valueToWei(totalDebt.toString(), debt.decimals);
+    let bufferedAmount = combinedAmountInWei;
+    if (buffer) {
+      const amountBN = new BigNumber(bufferedAmount);
+      const tenPercent = amountBN.dividedBy(10);
+      bufferedAmount = amountBN.plus(tenPercent).toFixed(0);
+    }
+
     return {
-      amount: combinedAmountInWei,
+      amount: bufferedAmount,
       underlyingAsset: debt.variableDebtTokenAddress,
       permitType: 'BORROW_MIGRATOR_V3',
     };
