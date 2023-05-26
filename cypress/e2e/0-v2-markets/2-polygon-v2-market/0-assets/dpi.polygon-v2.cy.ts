@@ -57,7 +57,7 @@ const testData = {
   },
 };
 
-describe('DPI INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('DPI INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

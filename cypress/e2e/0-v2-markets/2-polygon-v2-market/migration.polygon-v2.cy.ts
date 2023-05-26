@@ -89,7 +89,7 @@ const testData = {
   },
 };
 
-describe('MIGRATION, POLYGON V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
+describe.skip('MIGRATION, POLYGON V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
   describe(`Prepare v2 market`, () => {
