@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
+import { NoData } from 'src/components/primitives/NoData';
 
 import PieIcon from '../../../../public/icons/markets/pie-icon.svg';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
@@ -72,98 +73,120 @@ export const ManageTopPanel = () => {
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Staked + Locked PAW</Trans>}
-        loading={topPanelLoading}
+        loading={currentAccount ? topPanelLoading : false}
       >
-        <FormattedNumber
-          value={utils.formatUnits(lockedStakedValue, 8)}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-          compact
-          isTopPanel
-          symbolsColor={theme.palette.text.secondary}
-          symbolsVariant={symbolsVariant}
-        />
-        <Box>
-          <Typography>
-            <Trans>Stake</Trans> {utils.formatUnits(stakedPAW, 18)}
-          </Typography>
-          <Typography>
-            <Trans>Lock</Trans> {utils.formatUnits(lockedPAW, 18)}
-          </Typography>
-        </Box>
+        {currentAccount ? (
+          <>
+            <FormattedNumber
+              value={utils.formatUnits(lockedStakedValue, 8)}
+              symbol="USD"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              isTopPanel
+              symbolsColor={theme.palette.text.secondary}
+              symbolsVariant={symbolsVariant}
+            />
+            <Box>
+              <Typography>
+                <Trans>Stake</Trans> {utils.formatUnits(stakedPAW, 18)}
+              </Typography>
+              <Typography>
+                <Trans>Lock</Trans> {utils.formatUnits(lockedPAW, 18)}
+              </Typography>
+            </Box>
+          </>
+        ) : (
+          <NoData />
+        )}
       </TopInfoPanelItem>
 
       {/* Daily revenue display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily revenue</Trans>}
-        loading={topPanelLoading}
+        loading={currentAccount ? topPanelLoading : false}
       >
-        <FormattedNumber
-          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees), 8)}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-          compact
-          isTopPanel
-          symbolsColor={theme.palette.text.secondary}
-          symbolsVariant={symbolsVariant}
-        />
+        {currentAccount ? (
+          <FormattedNumber
+            value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees), 8)}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            visibleDecimals={2}
+            compact
+            isTopPanel
+            symbolsColor={theme.palette.text.secondary}
+            symbolsVariant={symbolsVariant}
+          />
+        ) : (
+          <NoData />
+        )}
       </TopInfoPanelItem>
 
       {/* weekly revenue display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Weekly revenue</Trans>}
-        loading={topPanelLoading}
+        loading={currentAccount ? topPanelLoading : false}
       >
-        <FormattedNumber
-          value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees).mul(7), 8)}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-          compact
-          isTopPanel
-          symbolsColor={theme.palette.text.secondary}
-          symbolsVariant={symbolsVariant}
-        />
+        {currentAccount ? (
+          <FormattedNumber
+            value={utils.formatUnits(dailyPlatformFees.add(dailyPenaltyFees).mul(7), 8)}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            visibleDecimals={2}
+            compact
+            isTopPanel
+            symbolsColor={theme.palette.text.secondary}
+            symbolsVariant={symbolsVariant}
+          />
+        ) : (
+          <NoData />
+        )}
       </TopInfoPanelItem>
 
       {/* Platform fee display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily platform fees</Trans>}
-        loading={topPanelLoading}
+        loading={currentAccount ? topPanelLoading : false}
       >
-        <FormattedNumber
-          value={utils.formatUnits(dailyPlatformFees, 8)}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-          compact
-          isTopPanel
-          symbolsColor={theme.palette.text.secondary}
-          symbolsVariant={symbolsVariant}
-        />
+        {currentAccount ? (
+          <FormattedNumber
+            value={utils.formatUnits(dailyPlatformFees, 8)}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            visibleDecimals={2}
+            compact
+            isTopPanel
+            symbolsColor={theme.palette.text.secondary}
+            symbolsVariant={symbolsVariant}
+          />
+        ) : (
+          <NoData />
+        )}
       </TopInfoPanelItem>
 
       {/* Penalty Fee display */}
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Daily penalty fees</Trans>}
-        loading={topPanelLoading}
+        loading={currentAccount ? topPanelLoading : false}
       >
-        <FormattedNumber
-          value={utils.formatUnits(dailyPenaltyFees, 8)}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-          compact
-          isTopPanel
-          symbolsColor={theme.palette.text.secondary}
-          symbolsVariant={symbolsVariant}
-        />
+        {currentAccount ? (
+          <FormattedNumber
+            value={utils.formatUnits(dailyPenaltyFees, 8)}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            visibleDecimals={2}
+            compact
+            isTopPanel
+            symbolsColor={theme.palette.text.secondary}
+            symbolsVariant={symbolsVariant}
+          />
+        ) : (
+          <NoData />
+        )}
       </TopInfoPanelItem>
     </TopInfoPanel>
   );
