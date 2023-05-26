@@ -103,6 +103,8 @@ export const useTransactionHandler = ({
         mounted.current && successCallback && successCallback(txnResult);
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {

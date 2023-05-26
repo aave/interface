@@ -9059,10 +9059,10 @@
       "executionTime": 1684932815,
       "forVotes": "632113063183192501796930",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1685364815,
@@ -9094,10 +9094,10 @@
       "executionTime": 1684929011,
       "forVotes": "630016205033528745748364",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1685361011,
@@ -9126,22 +9126,22 @@
       ],
       "startBlock": 17323163,
       "endBlock": 17342363,
-      "executionTime": 0,
-      "forVotes": "231043562777978048067553",
+      "executionTime": 1685179475,
+      "forVotes": "438970096204104593579539",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1685611475,
       "proposalCreated": 17315963,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x1128ef9ca9f89b3677e0b42b980fed6e4f298e1dfdf5b78e5023db368dad1139",
       "startTimestamp": 1684859867,
       "creationTimestamp": 1684772255,
-      "expirationTimestamp": 1685090747
+      "expirationTimestamp": 1685090267
     },
     {
       "id": 233,
@@ -9170,7 +9170,7 @@
       "startBlock": 17325938,
       "endBlock": 17345138,
       "executionTime": 0,
-      "forVotes": "0",
+      "forVotes": "440055869871996913323708",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -9184,7 +9184,7 @@
       "ipfsHash": "0x597779e8a7564df81730fbb0522ee52147427851c335df92bc297d332de34dc2",
       "startTimestamp": 1684893527,
       "creationTimestamp": 1684805939,
-      "expirationTimestamp": 1685124047
+      "expirationTimestamp": 1685126651
     },
     {
       "id": 234,
@@ -9221,21 +9221,56 @@
       "startBlock": 17330785,
       "endBlock": 17349985,
       "executionTime": 0,
-      "forVotes": "0",
+      "forVotes": "439881900694610940994344",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 17323585,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x40110ec9619df34dcd84c1b553fe2bbd51e433e4e96caafb85b0949745790620",
+      "startTimestamp": 1684952387,
       "creationTimestamp": 1684865015,
-      "startTimestamp": 1684951811,
-      "expirationTimestamp": 1685182211
+      "expirationTimestamp": 1685184815
+    },
+    {
+      "id": 235,
+      "creator": "0x329c54289Ff5D6B7b7daE13592C6B1EDA1543eD4",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x5f5C02875a8e9B5A26fbd09040ABCfDeb2AA6711"
+      ],
+      "signatures": [
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x000000000000000000000000510b59f8258cf0bbeca9477fc774001b58df9a09"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 17342197,
+      "endBlock": 17361397,
+      "executionTime": 0,
+      "forVotes": "316524524974242206615210",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Active",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 17334997,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x52affc618852d41e36f23c5c5c9e0d888e584fe4afeb52923c28bffb5986982d",
+      "startTimestamp": 1685091023,
+      "creationTimestamp": 1685003519,
+      "expirationTimestamp": 1685321759
     }
   ]
 }

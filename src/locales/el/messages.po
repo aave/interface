@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-24 00:16\n"
+"PO-Revision-Date: 2023-05-24 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,7 +27,7 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr ""
 
 #: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
+msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
 msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
@@ -1502,6 +1502,7 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Επιτεύχθηκε"
 
+#: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgstr ""
