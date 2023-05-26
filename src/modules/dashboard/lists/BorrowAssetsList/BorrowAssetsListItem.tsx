@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
@@ -29,11 +28,8 @@ export const BorrowAssetsListItem = ({
   isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
-
-  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
-
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0 || isPolygonV2;
+  const { currentMarket } = useProtocolDataContext();
+  const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
     <ListItemWrapper
@@ -73,7 +69,7 @@ export const BorrowAssetsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={disableBorrow}
+          disabled={borrowButtonDisable}
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
         >
