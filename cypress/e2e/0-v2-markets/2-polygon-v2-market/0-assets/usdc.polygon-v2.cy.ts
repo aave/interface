@@ -66,7 +66,7 @@ const testData = {
   },
 };
 
-describe.skip('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
