@@ -22,48 +22,7 @@ export function ProposalListItem({
     formatProposal(proposal);
   const { palette } = useTheme();
 
-  // const delayedBridgeExecutors = [
-  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
-  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
-  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
-  //   AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
-  // ];
-  // const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
-
-  // let proposalCrosschainBridge = false;
-
-  // if (proposal.targets && proposal.targets.length > 0) {
-  //   const hasDelayedExecutor = proposal.targets.filter((address) =>
-  //     lowercaseExecutors.includes(address.toLowerCase())
-  //   );
-  //   if (hasDelayedExecutor.length > 0) {
-  //     proposalCrosschainBridge = true;
-  //   }
-  // }
-
-  // Currently all cross-executors share this delay
-  // TO-DO: invetigate if this can be changed, if so, query on-chain
-  // const twoDayDelay = 172800 + 14400;
-  // const twoDayDelay = 172800 + 7200; // 180000 twoDays2hours
-  // const twoDaysAndFourHours = 172800 + 14400;
-
-  // const executedL2 =
-  //   proposal.executionTime === 0
-  //     ? false
-  //     : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
-
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
-
-  // const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
-
-  // const pendingL2 = proposalCrosschainBridge && !executedL2;
-
-  // const displayL2StateBadge =
-  //   executorChain === 'L2' &&
-  //   proposal.state !== 'Failed' &&
-  //   proposal.state !== 'Canceled' &&
-  //   proposal.state === 'Executed' &&
-  //   (executedL2 || pendingL2);
 
   return (
     <Box
@@ -90,7 +49,7 @@ export function ProposalListItem({
 
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          // justifyContent: 'space-between',
         }}
       >
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -122,28 +81,6 @@ export function ProposalListItem({
               l2Execution={false}
             />
           </Box>
-          {/* <Box>
-            {displayL2StateBadge && pendingL2 && (
-              <>
-                <StateBadge
-                  sx={{ marginRight: 2 }}
-                  crossChainBridge={executorChain}
-                  state={pendingL2 ? ProposalState.Pending : ProposalState.Executed}
-                  loading={mightBeStale}
-                />
-
-                <FormattedProposalTime
-                  state={proposal.state}
-                  startTimestamp={proposal.startTimestamp}
-                  executionTime={proposal.executionTime + twoDayDelay}
-                  expirationTimestamp={proposal.expirationTimestamp}
-                  executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                  l2Execution={displayL2StateBadge}
-                />
-              </>
-            )}
-          </Box> */}
-
           {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
