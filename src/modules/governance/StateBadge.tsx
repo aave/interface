@@ -22,7 +22,7 @@ const Badge = styled('span')<StateBadgeProps>(
       [ProposalState.Executed]: pendingL2Execution ? '#2EBAC6' : theme.palette.success.main,
       [ProposalState.Canceled]: theme.palette.primary.light,
       [ProposalState.Expired]: theme.palette.primary.light,
-      [ProposalState.Failed]: theme.palette.error.main,
+      [ProposalState.Failed]: theme.palette.primary.light,
     };
     const color = COLOR_MAP[state] || '#000';
     return experimental_sx({

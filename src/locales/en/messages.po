@@ -494,10 +494,6 @@ msgid "Can be collateral"
 msgstr "Can be collateral"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-msgid "Can be executed"
-msgstr "Can be executed"
-
-#: src/modules/governance/FormattedProposalTime.tsx
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed cross chain"
 msgstr "Can be executed cross chain"
@@ -869,6 +865,7 @@ msgstr "Executed on"
 msgid "Expected amount to repay"
 msgstr "Expected amount to repay"
 
+#: src/modules/governance/FormattedProposalTime.tsx
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expected execution on"
 msgstr "Expected execution on"

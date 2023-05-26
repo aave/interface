@@ -303,7 +303,7 @@ export default function ProposalPage({
                           alignItems: 'center',
                         }}
                       >
-                        <Box display="flex" sx={{ mr: '24px', mb: { md: 2, lg: 0 } }}>
+                        <Box display="flex" sx={{ mr: '24px', mb: { xs: 2, md: 2, lg: 0 } }}>
                           <Box display="flex" alignItems={'center'}>
                             <StateBadge
                               crossChainBridge={'L1'}

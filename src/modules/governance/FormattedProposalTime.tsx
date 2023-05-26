@@ -38,11 +38,7 @@ export function FormattedProposalTime({
   if ([ProposalState.Pending].includes(state)) {
     return (
       <Typography component="span" variant="caption">
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
-        >
+        <Typography variant="caption" color="text.secondary" sx={{ display: { md: 'inline' } }}>
           {/* {state}&nbsp; */}
           <Trans>Voting starts</Trans>
           &nbsp;
@@ -57,7 +53,7 @@ export function FormattedProposalTime({
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
+          sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
           {state}&nbsp;
           <Trans>Voting ends</Trans>
@@ -75,7 +71,7 @@ export function FormattedProposalTime({
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
+          sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
           <Trans> Expected execution on</Trans>
           &nbsp;
@@ -92,9 +88,9 @@ export function FormattedProposalTime({
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
+          sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
-          <Trans> Can be executed</Trans>
+          <Trans> Expected execution on</Trans>
           &nbsp;
         </Typography>
         {/* {dayjs.unix(timestamp + expirationTimestamp).format('MMM DD, YYYY')} */}
@@ -119,7 +115,7 @@ export function FormattedProposalTime({
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
+          sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
           {state}&nbsp;
           <Trans>on</Trans>
@@ -133,11 +129,6 @@ export function FormattedProposalTime({
     );
   }
 
-  // if l2 execution and it is not > twodays + execution time
-
-  // console.log('canBeExecuted', canBeExecuted, !l2Execution, canBeExecuted && !l2Execution);
-  // console.log('state', state);
-
   // For cross chain
 
   return (
@@ -145,7 +136,7 @@ export function FormattedProposalTime({
       <Typography
         variant="caption"
         color="text.secondary"
-        sx={{ display: { xs: 'none', md: 'inline' } }}
+        sx={{ display: { xs: 'inline', md: 'inline' } }}
       >
         {canBeExecuted ? (
           l2Execution ? (
