@@ -14,7 +14,7 @@ const WarningMessage = ({ market }: { market: string }) => {
   } else if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else {
-    return <></>;
+    return null;
   }
 };
 
