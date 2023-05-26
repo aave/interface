@@ -78,37 +78,6 @@ export enum MigrationDisabled {
   NotEnoughtSupplies,
 }
 
-export const selectMigrationUnderlyingAssetWithExceptions = (
-  store: RootStore,
-  reserve: {
-    underlyingAsset: string;
-  }
-): string => {
-  const defaultUnderlyingAsset = reserve?.underlyingAsset;
-  if (!store.exceptionsBalancesLoading && store.migrationExceptions[defaultUnderlyingAsset]) {
-    return store.migrationExceptions[defaultUnderlyingAsset].v3UnderlyingAsset;
-  }
-  return defaultUnderlyingAsset;
-};
-
-export const selectMigrationAssetBalanceWithExceptions = (
-  store: RootStore,
-  reserve: {
-    underlyingAsset: string;
-    underlyingBalance: string;
-  }
-) => {
-  const underlyingAssetAddress = selectMigrationUnderlyingAssetWithExceptions(store, reserve);
-  if (!store.exceptionsBalancesLoading) {
-    const exceptionAsset = store.migrationExceptions[underlyingAssetAddress];
-    if (exceptionAsset) {
-      return exceptionAsset.amount;
-    }
-    return reserve.underlyingBalance;
-  }
-  return reserve.underlyingBalance;
-};
-
 export type IsolatedReserve = FormatReserveUSDResponse & { enteringIsolationMode?: boolean };
 
 export const selectMigrationSignedPermits = (
