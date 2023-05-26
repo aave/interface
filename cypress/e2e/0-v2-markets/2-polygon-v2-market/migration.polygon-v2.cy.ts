@@ -88,7 +88,7 @@ const testData = {
     ],
   },
 };
-//skip due ci
+
 describe.skip('MIGRATION, POLYGON V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});

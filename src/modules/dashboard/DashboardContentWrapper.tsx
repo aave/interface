@@ -1,6 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import { PolygonWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useRootStore } from 'src/store/root';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
@@ -19,7 +18,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
   return (
     <Box>
-      {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3 && <PolygonWarning />}
+      {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',

@@ -1,4 +1,4 @@
-import { ChainId, InterestRate } from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -22,7 +22,7 @@ export const BorrowedPositionsListMobileItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: DashboardReserve) => {
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { borrowCap } = useAssetCaps();
   const {
@@ -53,13 +53,7 @@ export const BorrowedPositionsListMobileItem = ({
 
   const incentives = borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData;
 
-  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
-  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
-  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
-
-  const disableRepay = !isActive || isAffectedReserve;
-  const disableBorrow =
-    !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed || isPolygonV2;
+  const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
 
   return (
     <ListMobileItemWrapper
@@ -104,7 +98,7 @@ export const BorrowedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={disableRepay}
+          disabled={!isActive}
           variant="contained"
           onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
           sx={{ mr: 1.5 }}
