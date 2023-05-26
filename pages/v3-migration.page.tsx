@@ -3,7 +3,6 @@ import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { useMigrationData } from 'src/hooks/migration/useMigrationData';
 import { useUserPoolReserves } from 'src/hooks/pool/useUserPoolReserves';
 import { usePermissions } from 'src/hooks/usePermissions';
@@ -206,10 +205,5 @@ export default function V3Migration() {
 }
 
 V3Migration.getLayout = function getLayout(page: React.ReactElement) {
-  return (
-    <MainLayout>
-      {page}
-      <MigrateV3Modal />
-    </MainLayout>
-  );
+  return <MainLayout>{page}</MainLayout>;
 };

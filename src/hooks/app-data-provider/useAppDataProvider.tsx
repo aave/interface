@@ -100,6 +100,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     userEmodeCategoryId,
     reservesIncentives ?? []
   );
+  console.log(user);
   const eModes = formatEmodes(reserves ?? []);
 
   const proportions = user.userReservesData.reduce(

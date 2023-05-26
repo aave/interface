@@ -7,15 +7,22 @@ import { useEffect, useState } from 'react';
  * @returns current timestamp - when forkTimeAhead is set the time will be forwarded by the specified amount.
  */
 export function useCurrentTimestamp(updateInterval = 15): number {
-  const [timestamp, setTimestamp] = useState(dayjs().unix());
+  const [timeTravel, setTimeTravel] = useState(0);
+  const [timestamp, setTimestamp] = useState(0);
 
   useEffect(() => {
     const intervalHandlerID = setInterval(
-      () => setTimestamp(dayjs().unix()),
+      () => setTimestamp(dayjs().unix() + timeTravel),
       1000 * updateInterval
     );
     return () => clearInterval(intervalHandlerID);
-  }, [updateInterval]);
+  }, [updateInterval, timeTravel]);
+
+  useEffect(() => {
+    const forwardTime = Number(localStorage.getItem('forkTimeAhead') || 0);
+    setTimeTravel(forwardTime);
+    setTimestamp(dayjs().unix() + forwardTime);
+  }, []);
 
   return timestamp;
 }

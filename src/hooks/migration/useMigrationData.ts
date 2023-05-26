@@ -26,7 +26,6 @@ import { useCurrentTimestamp } from '../useCurrentTimestamp';
 
 export const useMigrationData = () => {
   const currentTimeStamp = useCurrentTimestamp(10);
-  console.log(currentTimeStamp);
 
   const {
     selectedMigrationSupplyAssets: selectedSupplyAssets,
