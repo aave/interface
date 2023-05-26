@@ -32,7 +32,13 @@ export default function Staking() {
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
-  const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
+  const {
+    openStake,
+    openStakeCooldown,
+    openUnstake,
+    openStakeRewardsClaim,
+    openStakeRewardsRestakeClaim,
+  } = useModalContext();
 
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
@@ -121,6 +127,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  onStakeRewardClaimRestakeAction={() => openStakeRewardsRestakeClaim('aave')}
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>

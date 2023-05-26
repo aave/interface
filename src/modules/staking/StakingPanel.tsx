@@ -65,6 +65,7 @@ function SecondsToString({ seconds }: { seconds: number }) {
 export interface StakingPanelProps {
   onStakeAction?: () => void;
   onStakeRewardClaimAction?: () => void;
+  onStakeRewardClaimRestakeAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
   stakeData?: GeneralStakeUIDataHumanized['aave'];
@@ -81,6 +82,7 @@ export interface StakingPanelProps {
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
   onStakeRewardClaimAction,
+  onStakeRewardClaimRestakeAction,
   onCooldownAction,
   onUnstakeAction,
   stakeTitle,
@@ -477,15 +479,28 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             />
           }
         >
-          <Button
-            variant="contained"
-            onClick={onStakeRewardClaimAction}
-            fullWidth
-            disabled={stakeUserData?.userIncentivesToClaim === '0'}
-            data-cy={`claimBtn_${stakedToken}`}
-          >
-            <Trans>Claim AAVE</Trans>
-          </Button>
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Button
+              variant="contained"
+              onClick={onStakeRewardClaimAction}
+              disabled={stakeUserData?.userIncentivesToClaim === '0'}
+              data-cy={`claimBtn_${stakedToken}`}
+              style={{ flex: 1, marginRight: 10 }} // marginRight adds space between buttons
+            >
+              <Trans>Claim</Trans>
+            </Button>
+            {stakedToken === 'AAVE' && (
+              <Button
+                variant="contained"
+                onClick={onStakeRewardClaimRestakeAction}
+                disabled={stakeUserData?.userIncentivesToClaim === '0'}
+                data-cy={`claimBtn_${stakedToken}`}
+                style={{ flex: 1 }} // marginLeft adds space between buttons
+              >
+                <Trans>Restake</Trans>
+              </Button>
+            )}
+          </Box>
         </StakeActionBox>
       </Stack>
 
