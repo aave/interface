@@ -14,8 +14,7 @@ const WarningMessage = ({ market }: { market: string }) => {
   } else if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
   } else {
-    // TODO REMOVE AFTER AIP
-    return <Trans>Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT.</Trans>;
+    return <></>;
   }
 };
 
@@ -33,9 +32,7 @@ const getLink = (market: string, forum: boolean | undefined): string => {
       return 'https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647';
     }
   } else {
-    // TODO REMOVE AFTER AIP
-
-    return 'https://governance.aave.com/t/arfc-aave-v2-interest-rate-curve-recommendations-from-gauntlet-2023-04-21/12846/11';
+    return '';
   }
 };
 
