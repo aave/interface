@@ -10,13 +10,13 @@ import {
   useTheme,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
-import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
@@ -89,20 +89,22 @@ export function AppHeader() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         sx={(theme) => ({
-          height: headerHeight,
+          height: '80px',
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.background.header,
+          bgcolor: 'transparent',
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-            xsm: '8px 25px',
+            xsm: '20px 100px',
           },
           display: 'flex',
           alignItems: 'center',
-          flexDirection: 'space-between',
-          boxShadow: '0px 0px 10px 0px rgba(100,100,100,0.2)',
+          flexDirection: 'row',
+          // gap: '50px',
+          // justifyContent: 'space-between',
+          // boxShadow: '0px 0px 10px 0px rgba(100,100,100,0.2)',
         })}
       >
         <Box
@@ -117,8 +119,12 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          {/* <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} /> */}
-          <img src={uiConfig.appLogo} alt="An SVG of an Cat" height={38} />
+          <Image
+            src="/maneki-logo-2.png"
+            alt="Svg of maneki logo"
+            width={'129.6px'}
+            height={'59.2px'}
+          />
         </Box>
         <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (

@@ -101,14 +101,13 @@ export const BorrowAssetsListMobileItem = ({
           disabled={borrowButtonDisable}
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
-          sx={{ mr: 1.5 }}
+          sx={{ mr: 1.5, color: 'background.default' }}
           fullWidth
         >
           <Trans>Borrow</Trans>
         </Button>
         <Button
           variant="outlined"
-          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           fullWidth

@@ -39,16 +39,16 @@ export function SettingsMenu() {
   return (
     <>
       <Button
-        variant="surface"
+        variant="wallet"
         aria-label="settings"
         id="settings-button"
         aria-controls={settingsOpen ? 'settings-menu' : undefined}
         aria-expanded={settingsOpen ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleSettingsClick}
-        sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
+        sx={{ minWidth: 'unset', ml: 2, padding: '12px' }}
       >
-        <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
+        <SvgIcon sx={{ color: 'background.default' }} fontSize="small">
           <CogIcon />
         </SvgIcon>
       </Button>

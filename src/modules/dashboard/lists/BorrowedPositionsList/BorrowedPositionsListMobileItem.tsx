@@ -90,7 +90,7 @@ export const BorrowedPositionsListMobileItem = ({
           disabled={!isActive}
           variant="contained"
           onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
-          sx={{ mr: 1.5 }}
+          sx={{ mr: 1.5, color: 'background.default' }}
           fullWidth
         >
           <Trans>Repay</Trans>
@@ -98,7 +98,6 @@ export const BorrowedPositionsListMobileItem = ({
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
-          sx={{ color: 'text.primary' }}
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth
         >

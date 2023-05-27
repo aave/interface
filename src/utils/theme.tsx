@@ -11,6 +11,7 @@ import { createTheme } from '@mui/material/styles';
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
+import { uiConfig } from 'src/uiConfig';
 
 const theme = createTheme();
 const {
@@ -122,6 +123,7 @@ declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     surface: true;
     gradient: true;
+    wallet: true;
   }
 }
 
@@ -444,6 +446,19 @@ export function getThemedComponents(theme: Theme) {
               transition: 'all 0.2s ease',
               '&:hover, &.Mui-focusVisible': {
                 background: theme.palette.gradients.aaveGradient,
+                opacity: '0.9',
+              },
+            },
+          },
+          {
+            props: { variant: 'wallet' },
+            style: {
+              padding: '10px 20px',
+              color: theme.palette.background.default,
+              background: theme.palette.primary.main,
+              transition: 'all 0.2s ease',
+              '&:hover, &.Mui-focusVisible': {
+                background: theme.palette.primary.main,
                 opacity: '0.9',
               },
             },
@@ -797,6 +812,11 @@ export function getThemedComponents(theme: Theme) {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
+            backgroundImage:
+              theme.palette.mode === 'light' ? `url(${uiConfig.mainBackground})` : '',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
+            backgroundSize: '100% 60%',
             fontFamily: FONT,
             fontWeight: 400,
             fontSize: pxToRem(14),

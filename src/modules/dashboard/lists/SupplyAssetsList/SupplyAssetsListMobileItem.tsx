@@ -93,14 +93,13 @@ export const SupplyAssetsListMobileItem = ({
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
           variant="contained"
           onClick={() => openSupply(underlyingAsset)}
-          sx={{ mr: 1.5 }}
+          sx={{ mr: 1.5, color: 'background.default' }}
           fullWidth
         >
           <Trans>Supply</Trans>
         </Button>
         <Button
           variant="outlined"
-          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth
