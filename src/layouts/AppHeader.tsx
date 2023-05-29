@@ -94,17 +94,11 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: 'transparent',
-          padding: {
-            xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-            xsm: '20px 100px',
-          },
+          bgcolor: mobileMenuOpen ? theme.palette.background.paper : 'transparent',
+          padding: md ? '8px 20px' : '20px 100px',
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'row',
-          // gap: '50px',
-          // justifyContent: 'space-between',
-          // boxShadow: '0px 0px 10px 0px rgba(100,100,100,0.2)',
         })}
       >
         <Box
@@ -122,8 +116,8 @@ export function AppHeader() {
           <Image
             src="/maneki-logo-2.png"
             alt="Svg of maneki logo"
-            width={'129.6px'}
-            height={'59.2px'}
+            width={mobileMenuOpen ? '77.76px' : '129.6px'}
+            height={mobileMenuOpen ? '35.52px' : '59.2px'}
           />
         </Box>
         <Box sx={{ mr: sm ? 1 : 3 }}>

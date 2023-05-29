@@ -49,19 +49,18 @@ export default function ReserveOverview() {
           }}
         >
           <StyledToggleButtonGroup
-            color="primary"
             value={mode}
             exclusive
             onChange={(_, value) => setMode(value)}
-            sx={{ width: { xs: '100%', xsm: '359px' }, margin: { xsm: 'auto' }, height: '44px' }}
+            sx={{ width: '100%', height: '44px' }}
           >
             <StyledToggleButton disableRipple value="overview" disabled={mode === 'overview'}>
-              <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
+              <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                 <Trans>Overview</Trans>
               </Typography>
             </StyledToggleButton>
             <StyledToggleButton disableRipple value="actions" disabled={mode === 'actions'}>
-              <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
+              <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                 <Trans>Your info</Trans>
               </Typography>
             </StyledToggleButton>

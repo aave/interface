@@ -41,6 +41,7 @@ export const ConnectWalletPaper = ({
           fill: theme.palette.text.secondary,
         }}
       />
+      {/* <Image src="/maneki-logo-3.png" width="282px" height="192px" alt="maneki logo" /> */}
       <>
         {loading ? (
           <CircularProgress />

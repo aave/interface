@@ -43,15 +43,15 @@ export default function Home() {
               value={mode}
               exclusive
               onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+              sx={{ width: '100%', height: '44px' }}
             >
               <StyledToggleButton disableRipple value="supply" disabled={mode === 'supply'}>
-                <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
+                <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                   <Trans>Supply</Trans>
                 </Typography>
               </StyledToggleButton>
               <StyledToggleButton disableRipple value="borrow" disabled={mode === 'borrow'}>
-                <Typography variant="subheader1" sx={{ color: '#FEFEFE' }}>
+                <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                   <Trans>Borrow</Trans>
                 </Typography>
               </StyledToggleButton>
