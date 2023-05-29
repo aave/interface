@@ -193,7 +193,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       shadow: {
         markets: getColor('#FFEDEB', '#EBEBEF1F'),
-        dashboard: getColor('#FFEDEB', 'none'),
+        dashboard: getColor('#0000001a', 'none'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {

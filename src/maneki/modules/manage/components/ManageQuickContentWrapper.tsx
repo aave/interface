@@ -90,7 +90,7 @@ export default function ManageQuickContentWrapper({
         flexDirection: 'column',
         gap: '24px',
         padding: '32px',
-        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 3px 0px',
+        boxShadow: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
         borderRadius: '14px',
       }}
     >

@@ -52,7 +52,7 @@ export default function AirdropTable({ airdropList }: { airdropList: airdropList
         py: { xs: 3.5, xsm: 4 },
         borderRadius: '10px',
         mx: 'auto',
-        boxShadow: `0px 4px 250px ${theme.palette.shadow.markets}`,
+        boxShadow: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
       })}
     >
       <TableContainer>

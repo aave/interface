@@ -25,7 +25,7 @@ export default function AirdropContentWrapper({
         borderRadius: '10px',
         mx: 'auto',
         mb: '32px',
-        boxShadow: `0px 4px 250px ${theme.palette.shadow.markets}`,
+        boxShadow: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
       })}
     >
       <Box>

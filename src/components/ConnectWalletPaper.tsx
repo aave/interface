@@ -30,6 +30,7 @@ export const ConnectWalletPaper = ({
         textAlign: 'center',
         p: 4,
         flex: 1,
+        boxShadow: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
         ...sx,
       }}
     >

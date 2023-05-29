@@ -14,6 +14,7 @@ export default function ManageMainContainer({ children }: { children: ReactNode 
         borderRadius: '14px',
         width: downToSM ? '100%' : '92%',
         mb: '32px',
+        boxShadow: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
       }}
     >
       {children}
