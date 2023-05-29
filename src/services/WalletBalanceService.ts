@@ -14,6 +14,16 @@ interface GovernanceTokensBalance {
   aAave: string;
 }
 
+type GetPoolWalletBalances = {
+  user: string;
+  lendingPoolAddressProvider: string;
+};
+
+type UserPoolTokensBalances = {
+  address: string;
+  amount: string;
+};
+
 export class WalletBalanceService implements Hashable {
   private readonly walletBalanceService: WalletBalanceProvider;
 
@@ -42,6 +52,22 @@ export class WalletBalanceService implements Hashable {
       aAave: normalize(balances[1].toString(), 18),
       stkAave: normalize(balances[2].toString(), 18),
     };
+  }
+
+  async getPoolTokensBalances({
+    user,
+    lendingPoolAddressProvider,
+  }: GetPoolWalletBalances): Promise<UserPoolTokensBalances[]> {
+    const { 0: tokenAddresses, 1: balances } =
+      await this.walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
+        user,
+        lendingPoolAddressProvider
+      );
+    const mappedBalances = tokenAddresses.map((address, ix) => ({
+      address: address.toLowerCase(),
+      amount: balances[ix].toString(),
+    }));
+    return mappedBalances;
   }
 
   public toHash() {

@@ -22,8 +22,8 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
 #: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
-msgstr "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
+msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
+msgstr "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -32,11 +32,6 @@ msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-msgid "ACTIVATE COOLDOWN"
-msgstr "ACTIVATE COOLDOWN"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -124,6 +119,11 @@ msgstr "Action cannot be performed because the reserve is paused"
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+msgid "Activate Cooldown"
+msgstr "Activate Cooldown"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
@@ -171,10 +171,6 @@ msgstr "Allows you to decide whether to use a supplied asset as collateral. An a
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Already on cooldown"
-msgstr "Already on cooldown"
-
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -182,9 +178,17 @@ msgstr "Already on cooldown"
 msgid "Amount"
 msgstr "Amount"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Amount in cooldown"
+msgstr "Amount in cooldown"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Amount to unstake"
+msgstr "Amount to unstake"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
@@ -1493,6 +1497,11 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
+msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
+
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Read more here."
 msgstr "Read more here."
@@ -1981,8 +1990,8 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
-msgstr "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgstr "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -2249,10 +2258,6 @@ msgstr "Unstake window"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
-msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."

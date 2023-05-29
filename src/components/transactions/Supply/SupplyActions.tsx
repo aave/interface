@@ -3,6 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
@@ -11,6 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -71,8 +73,7 @@ export const SupplyActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-      useBackgroundDataProvider();
+    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const permitAvailable = tryPermit(poolAddress);
     const { signTxData, sendTx } = useWeb3Context();
 
@@ -217,7 +218,7 @@ export const SupplyActions = React.memo(
             success: true,
           });
         }
-        refetchWalletBalances();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
