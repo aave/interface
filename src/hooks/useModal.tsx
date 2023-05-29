@@ -23,6 +23,7 @@ export enum ModalType {
   GovVote,
   V3Migration,
   RevokeGovDelegation,
+  StakeRewardsClaimRestake,
 }
 
 export interface ModalArgsType {
@@ -55,7 +56,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
   openStakeRewardsClaim: (stakeAssetName: string) => void;
-  openStakeRewardsRestakeClaim: (stakeAssetName: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -138,9 +139,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.StakeRewardClaim);
           setArgs({ stakeAssetName });
         },
-        openStakeRewardsRestakeClaim: (stakeAssetName) => {
-          setType(ModalType.StakeRewardClaimRestake);
-          setArgs({ stakeAssetName });
+        openStakeRewardsRestakeClaim: (stakeAssetName, icon) => {
+          setType(ModalType.StakeRewardsClaimRestake);
+          setArgs({ stakeAssetName, icon });
         },
         openClaimRewards: () => {
           setType(ModalType.ClaimRewards);

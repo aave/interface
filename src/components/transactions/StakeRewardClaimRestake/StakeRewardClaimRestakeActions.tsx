@@ -23,12 +23,12 @@ export const StakeRewardClaimRestakeActions = ({
   selectedToken,
   ...props
 }: StakeRewardClaimRestakeActionProps) => {
-  const claimStakeRewards = useRootStore((state) => state.claimStakeRewards);
+  const claimStakeRewardsRestake = useRootStore((state) => state.claimStakeRewardsRestake);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return claimStakeRewards({
+      return claimStakeRewardsRestake({
         token: selectedToken,
         amount: amountToClaim,
       });

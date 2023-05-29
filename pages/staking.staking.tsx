@@ -10,6 +10,7 @@ import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
+import { StakeRewardClaimRestakeModal } from 'src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModal';
 import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
@@ -127,7 +128,9 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
-                  onStakeRewardClaimRestakeAction={() => openStakeRewardsRestakeClaim('aave')}
+                  onStakeRewardClaimRestakeAction={() =>
+                    openStakeRewardsRestakeClaim('aave', 'AAVE')
+                  }
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>
@@ -178,6 +181,7 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
       <StakeCooldownModal />
       <UnStakeModal />
       <StakeRewardClaimModal />
+      <StakeRewardClaimRestakeModal />
       {/** End of modals */}
     </MainLayout>
   );

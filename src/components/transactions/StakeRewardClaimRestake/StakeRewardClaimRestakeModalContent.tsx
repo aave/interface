@@ -1,7 +1,8 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -10,16 +11,18 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { StakeRewardClaimActions } from '../StakeRewardClaim/StakeRewardClaimActions';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { StakeRewardClaimRestakeActions } from './StakeRewardClaimRestakeActions';
 
 export type StakeRewardClaimRestakeProps = {
   stakeAssetName: string;
+  icon: string;
 };
 
 export enum ErrorType {
@@ -28,7 +31,10 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimRestakeProps) => {
+export const StakeRewardClaimRestakeModalContent = ({
+  stakeAssetName,
+  icon,
+}: StakeRewardClaimRestakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -39,13 +45,21 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
-  const amount = '-1';
   const maxAmountToClaim = normalize(
     stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
     18
   );
+  const isMaxSelected = _amount === '-1';
+  const amount = maxAmountToClaim;
 
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxAmountToClaim : value;
+    setAmount(value);
+  };
   // staking token usd value
   const amountInUsd =
     Number(maxAmountToClaim) *
@@ -90,27 +104,42 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
 
   return (
     <>
-      <TxModalTitle title="Restake AAVE rewards" symbol={rewardsSymbol} />
+      <TxModalTitle title="Restake AAVE rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
+      <CooldownWarning />
+      <AssetInput
+        value={amount}
+        onChange={handleChange}
+        usdValue={amountInUsd.toString()}
+        symbol={icon}
+        assets={[
+          {
+            balance: maxAmountToClaim.toString(),
+            symbol: icon,
+          },
+        ]}
+        isMaxSelected={isMaxSelected}
+        maxValue={maxAmountToClaim.toString()}
+        balanceText={<Trans>Amount claimable</Trans>}
+      />
+
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
           {handleBlocked()}
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLineWithSub
-          description={<Trans>Amount</Trans>}
-          symbol={rewardsSymbol}
-          futureValue={maxAmountToClaim}
-          futureValueUSD={amountInUsd.toString()}
+        <DetailsNumberLine
+          description={<Trans>Staking APR</Trans>}
+          value={Number(stakeData?.stakeApy || '0') / 10000}
+          percent
         />
       </TxModalDetails>
-
       {txError && <GasEstimationError txError={txError} />}
 
-      <StakeRewardClaimActions
+      <StakeRewardClaimRestakeActions
         sx={{ mt: '48px' }}
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}

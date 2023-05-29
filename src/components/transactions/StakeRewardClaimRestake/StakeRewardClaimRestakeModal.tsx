@@ -2,14 +2,17 @@ import React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';
-import { StakeRewardClaimModalContent } from './StakeRewardClaimModalContent';
+import { StakeRewardClaimRestakeModalContent } from './StakeRewardClaimRestakeModalContent';
 
 export const StakeRewardClaimRestakeModal = () => {
   const { type, close, args } = useModalContext();
   return (
-    <BasicModal open={type === ModalType.StakeRewardClaim} setOpen={close}>
-      {args?.stakeAssetName && (
-        <StakeRewardClaimModalContent stakeAssetName={args.stakeAssetName} />
+    <BasicModal open={type === ModalType.StakeRewardsClaimRestake} setOpen={close}>
+      {args?.icon && args?.stakeAssetName && (
+        <StakeRewardClaimRestakeModalContent
+          stakeAssetName={args.stakeAssetName}
+          icon={args.icon}
+        />
       )}
     </BasicModal>
   );
