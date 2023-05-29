@@ -35,7 +35,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
     setShowWarning(false);
   };
 
-  // Note: hide warning when mobile menu is open
+  // Note: hide warnings when mobile menu is open
   if (mobileDrawerOpen) return null;
 
   if (showWarning) {
