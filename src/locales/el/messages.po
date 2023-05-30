@@ -1217,7 +1217,7 @@ msgstr "Αξία ρευστοποίησης"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Loading"
-msgstr ""
+msgstr "Φόρτωση"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
@@ -2154,7 +2154,7 @@ msgstr "Υπήρξε κάποιο σφάλμα. Προσπαθήστε να αλ
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen by Maneki community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Maneki governance forum</0> for further updates."
-msgstr ""
+msgstr "Αυτά τα περιουσιακά στοιχεία δεσμεύονται προσωρινά με αποφάσεις της κοινότητας Maneki, πράγμα που σημαίνει ότι δεν είναι διαθέσιμη περαιτέρω προμήθεια / δανεισμός ή ανταλλαγή επιτοκίων αυτών των περιουσιακών στοιχείων. Επιτρέπονται αναλήψεις και αποπληρωμή οφειλών. Ακολουθήστε το <0>φόρουμ διακυβέρνησης Maneki</0> για περαιτέρω ενημερώσεις."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2260,7 +2260,7 @@ msgstr "Για να δανειστείτε πρέπει να προσκομίσ�
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant Maneki smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
-msgstr ""
+msgstr "Για να συνεχίσετε, πρέπει να παραχωρήσετε την άδεια Maneki smart contracts να μετακινήσει τα χρήματά σας από το πορτοφόλι σας. Ανάλογα με το περιουσιακό στοιχείο και το πορτοφόλι που χρησιμοποιείτε, αυτό γίνεται με την υπογραφή του μηνύματος άδειας (χωρίς αέριο) ή με την υποβολή μιας συναλλαγής έγκρισης (απαιτείται φυσικό αέριο). <0>Μάθετε περισσότερα</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."

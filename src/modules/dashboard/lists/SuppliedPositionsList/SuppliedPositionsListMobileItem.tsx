@@ -86,7 +86,7 @@ export const SuppliedPositionsListMobileItem = ({
           disabled={!isActive}
           variant="contained"
           onClick={() => openWithdraw(underlyingAsset)}
-          sx={{ mr: 1.5 }}
+          sx={{ mr: 1.5, color: 'background.default' }}
           fullWidth
         >
           <Trans>Withdraw</Trans>
@@ -96,7 +96,6 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            sx={{ color: 'text.primary' }}
             onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
@@ -106,7 +105,6 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            sx={{ color: 'text.primary' }}
             onClick={() => openSupply(underlyingAsset)}
             fullWidth
           >

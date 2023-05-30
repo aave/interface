@@ -5,14 +5,23 @@ import { BigNumber } from 'ethers';
 export interface Claimables {
   token: string;
   amount: BigNumber;
+  value: BigNumber;
+}
+
+export interface PriceOracleType {
+  [key: string]: BigNumber;
 }
 
 export type ClaimablesTuple = [string, BigNumber];
 
-export function convertClaimables(claimables: ClaimablesTuple[]): Claimables[] {
+export function convertClaimables(
+  claimables: ClaimablesTuple[],
+  priceOracles: PriceOracleType
+): Claimables[] {
   const claimablesObject: Claimables[] = claimables.map(([token, amount]) => ({
     token,
     amount,
+    value: amount.div(priceOracles[token]),
   }));
   return claimablesObject;
 }

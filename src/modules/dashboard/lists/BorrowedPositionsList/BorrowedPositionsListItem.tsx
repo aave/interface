@@ -80,6 +80,7 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
+          sx={{ color: 'background.default' }}
           onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode, isFrozen)}
         >
           <Trans>Repay</Trans>
@@ -87,7 +88,6 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
-          sx={{ color: 'text.primary' }}
           onClick={() => openBorrow(reserve.underlyingAsset)}
         >
           <Trans>Borrow</Trans>

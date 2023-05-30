@@ -24,6 +24,7 @@ export default function ManekiLoadingPaper({
         textAlign: 'center',
         p: 4,
         flex: 1,
+        boxShaodw: `0px 10px 30px 10px ${theme.palette.shadow.dashboard}`,
         ...sx,
       }}
     >

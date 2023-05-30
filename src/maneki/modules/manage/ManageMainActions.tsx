@@ -16,7 +16,10 @@ import {
 import { BigNumber, Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
+import MANEKI_PAW_PRICE_ORACLE_ABI from 'src/maneki/abi/pawPriceOracleABI';
+import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
@@ -32,10 +35,11 @@ import {
   convertClaimables,
   convertUnixToDate,
   convertVestEntry,
+  PriceOracleType,
   VestEntry,
   VestEntryTuple,
 } from './utils/manageActionHelper';
-import { tokenImageMatching } from './utils/tokenMatching';
+import { addressReserveMatching, addressSymbolMatching } from './utils/tokenMatching';
 
 export const ManageMainActions = () => {
   const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
@@ -54,10 +58,13 @@ export const ManageMainActions = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
+
   // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
-
+  const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses
+    .PAW_PRICE_ORACLE as string;
+  const MANEKI_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses.PRICE_ORACLE as string;
   // handle unlock action
   const handleClaimUnlock = () => {
     if (unlockedPAW.isZero()) return;
@@ -82,9 +89,20 @@ export const ManageMainActions = () => {
   };
 
   React.useEffect(() => {
-    if (!provider && !mainActionsLoading) return;
+    if (!currentAccount) setMainActionsLoading(true);
+    if (!provider) return;
     // create contract
     const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const pawPriceOracleContract = new Contract(
+      MANEKI_PAW_PRICE_ORACLE_ADDR,
+      MANEKI_PAW_PRICE_ORACLE_ABI,
+      provider
+    );
+    const priceOracleContract = new Contract(
+      MANEKI_PRICE_ORACLE_ADDR,
+      MANEKI_PRICE_ORACLE_ABI,
+      provider
+    );
     const promises = [];
 
     // add contract call into promise arr
@@ -99,11 +117,14 @@ export const ManageMainActions = () => {
     promises.push(contract.getClaimableRewards(currentAccount)); // claimables
     promises.push(contract.getTotalPawLockedValue(currentAccount)); // locked value
     promises.push(contract.getTotalPawVestingValue(currentAccount)); // vesting value
-
+    promises.push(pawPriceOracleContract.latestAnswer()); // PAW price in USD
+    promises.push(priceOracleContract.getAssetsPrices(Object.values(addressReserveMatching)));
     // call promise all and get data
     Promise.all(promises)
-      .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[])[]) => {
+      .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[] | BigNumber[])[]) => {
         // dev change data setting logic here
+        const priceOracleObj: PriceOracleType | undefined = {};
+        const keys = Object.keys(addressSymbolMatching);
         setUnlockedPAW(data[0] as BigNumber); // 18 Decimal percision
         setVestedPAW(data[1] as BigNumber); // 18 Decimal percision
         setExitPenalty(data[2] as BigNumber); // 18 Decimal percision
@@ -112,14 +133,19 @@ export const ManageMainActions = () => {
         setTotalClaimableValue(data[5] as BigNumber); // 8 Decimal percision
         setVests(convertVestEntry(data[6] as VestEntryTuple[]));
         setLocks(convertVestEntry(data[7] as VestEntryTuple[]));
-        setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
         setTotalLocksValue(data[9] as BigNumber); // 8 Decimal percision
         setTotalVestsValue(data[10] as BigNumber); // 8 Decimal percision
+        priceOracleObj[keys[0]] = data[11] as BigNumber; // 8 Decimal percision
+        (data[12] as BigNumber[]).map((d, i) => {
+          // 8 Decimal percision
+          priceOracleObj[keys[i + 1]] = d;
+        });
+        setClaimables(convertClaimables(data[8] as ClaimablesTuple[], priceOracleObj));
         setMainActionsLoading(false);
       })
       .catch((e) => console.error(e));
     //eslint-disable-next-line
-  }, [provider, mainActionsLoading]);
+  }, [currentAccount, provider, mainActionsLoading]);
 
   if (mainActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
@@ -327,6 +353,7 @@ export const ManageMainActions = () => {
                   <TableCell>
                     <Trans>Amount</Trans>
                   </TableCell>
+                  <TableCell>Value (USD)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -334,18 +361,25 @@ export const ManageMainActions = () => {
                   <TableRow key={i}>
                     <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                       <Image
-                        alt={`token image for ${tokenImageMatching[claimable.token]}`}
-                        src={`/icons/tokens/${tokenImageMatching[claimable.token]}.svg`}
+                        alt={`token image for ${addressSymbolMatching[claimable.token]}`}
+                        src={`/icons/tokens/${addressSymbolMatching[claimable.token]}.svg`}
                         width={24}
                         height={24}
                       />
-                      <Typography>{`m${tokenImageMatching[
+                      <Typography>{`m${addressSymbolMatching[
                         claimable.token
                       ].toUpperCase()}`}</Typography>
                     </TableCell>
                     <TableCell>
-                      {/** Map this to string of uint256 */}
-                      {utils.formatUnits(claimable.amount.toString(), 18)}
+                      <FormattedNumber value={utils.formatUnits(claimable.amount, 18)} />
+                    </TableCell>
+                    <TableCell>
+                      <FormattedNumber
+                        value={utils.formatUnits(claimable.value, 10)}
+                        symbol="USD"
+                        visibleDecimals={3}
+                        symbolsColor={theme.palette.text.secondary}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}

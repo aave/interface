@@ -83,13 +83,13 @@ export const SupplyAssetsListItem = ({
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
           variant="contained"
+          sx={{ color: 'background.default' }}
           onClick={() => openSupply(underlyingAsset)}
         >
           <Trans>Supply</Trans>
         </Button>
         <Button
           variant="outlined"
-          sx={{ color: 'text.primary' }}
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
         >

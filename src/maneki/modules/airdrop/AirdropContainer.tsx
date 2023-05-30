@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -10,6 +11,7 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
 import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
 import AirdropContentWrapper from './AirdropContentWrapper';
+import AirdropTable from './AirdropTable';
 import randomAddrs from './devRandAddr';
 import randomAddrs2 from './devRandAddr2';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
@@ -21,11 +23,18 @@ interface entryType {
   index: number;
 }
 
+export interface airdropListType {
+  title: string;
+  status: ReactElement;
+  entry: entryType | null;
+  isClaimed: boolean;
+  airdropNumber: number;
+  tooltipContent: ReactElement;
+}
 const empty = '0x0000000000000000000000000000000000000000000000000000000000000000';
 // DEV change this
 // const MERKLE_DIST_ADDR = '0xe3267CCF277a2C1dB29AB3A7f0583eCD6d2Bb635';
 const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
-
 const padWidth = (str: string, width: number): string => {
   let res = '';
   let currSize = str.length - 3; //0x
@@ -118,6 +127,7 @@ const getMerkleProof = (inputArray: string[], n: number) => {
 
 export const AirdropContainer = () => {
   const { currentAccount, loading: web3Loading, provider, chainId } = useWeb3Context();
+
   const {
     merkleRoot,
     setMerkleRoot,
@@ -142,6 +152,8 @@ export const AirdropContainer = () => {
   const [entry, setEntry] = React.useState<entryType | null>(null);
   const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
     // get entries
@@ -175,7 +187,7 @@ export const AirdropContainer = () => {
 
       const newentrySocmed = dataArr2.find((e) => e.address == addr);
       entryFoundSocmed = newentrySocmed;
-      entryFoundIdxSocmed = dataArr2.findIndex((e) => e.address == entryFound?.address);
+      entryFoundIdxSocmed = dataArr2.findIndex((e) => e.address == entryFoundSocmed?.address);
 
       setEntry(newEntry || null);
       setEntrySocmed(newentrySocmed || null);
@@ -230,6 +242,7 @@ export const AirdropContainer = () => {
     return () => {
       // cleanup
     };
+    //eslint-disable-next-line
   }, [currentAccount, provider]);
 
   if (!currentAccount || web3Loading) {
@@ -242,62 +255,89 @@ export const AirdropContainer = () => {
   }
 
   if (chainId != 97) {
-    return <ManekiLoadingPaper description="Please connect to bsc testnet" withCircle />;
+    return <ManekiLoadingPaper description="Please connect to bsc testnet" />;
   }
   if (loading) {
     return <ManekiLoadingPaper description="Loading..." withCircle />;
   }
+
+  const airdropList: airdropListType[] = [
+    {
+      title: 'Venus',
+      status: <Trans>Ongoing</Trans>,
+      entry: entry,
+      isClaimed: isClaimed,
+      airdropNumber: 0,
+      tooltipContent: (
+        <List>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This airdrop is distributed to Venus members.</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This is a one-time airdrop.</Trans>
+            </ListItemText>
+          </ListItem>
+        </List>
+      ),
+    },
+    {
+      title: 'Social Media',
+      status: <Trans>Ongoing</Trans>,
+      entry: entrySocmed,
+      isClaimed: isClaimedSocmed,
+      airdropNumber: 1,
+      tooltipContent: (
+        <List>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This airdrop is distributed to Social Media members.</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This is a one-time airdrop.</Trans>
+            </ListItemText>
+          </ListItem>
+        </List>
+      ),
+    },
+  ];
   return (
     <>
       {(merkleRoot == '' && !isClaimed) || (merkleRootSocmed == '' && !isClaimedSocmed) ? (
         <ManekiLoadingPaper description="Generating Hashes..." withCircle />
       ) : (
         <>
-          <AirdropContentWrapper
-            title="Venus"
-            mainHeader="Venus Airdrop"
-            airdropStatus="Ongoing"
-            entry={entry}
-            isClaimed={isClaimed}
-            setAirdropNumber={0}
-            description={
-              <List>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This airdrop is distributed to Venus members.</Trans>
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This is a one-time airdrop.</Trans>
-                  </ListItemText>
-                </ListItem>
-              </List>
-            }
-          />
-          {/*socmed section */}
-          <AirdropContentWrapper
-            title="Social Media"
-            mainHeader="Social Media Airdrop"
-            airdropStatus="Ongoing"
-            entry={entrySocmed}
-            isClaimed={isClaimedSocmed}
-            setAirdropNumber={1}
-            description={
-              <List>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This airdrop is distributed to Social Media members.</Trans>
-                  </ListItemText>
-                </ListItem>
-                <ListItem>
-                  <ListItemText>
-                    - <Trans>This is a one-time airdrop.</Trans>
-                  </ListItemText>
-                </ListItem>
-              </List>
-            }
-          />
+          {downToSM ? (
+            airdropList.map((airdrop, index) => {
+              return <AirdropContentWrapper key={index} {...airdrop} />;
+            })
+          ) : (
+            <AirdropTable airdropList={airdropList} />
+          )}
         </>
       )}
     </>
