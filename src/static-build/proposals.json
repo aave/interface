@@ -9316,8 +9316,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x0ca46e519ea882777cc3eca0136cbf0177c16f5538b60803f57defd5ad11e4b5",
       "creationTimestamp": 1685389439,
-      "startTimestamp": 1685476379,
-      "expirationTimestamp": 1685706779
+      "startTimestamp": 1685476523,
+      "expirationTimestamp": 1685706923
     }
   ]
 }
