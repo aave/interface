@@ -8,7 +8,6 @@
 // eslint-disable @typescript-eslint/ban-ts-comment
 
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge';
-import { JsonRpcProvider } from '@ethersproject/providers';
 import { providers, Signer, utils } from 'ethers';
 
 export class CustomizedBridge extends Eip1193Bridge {
@@ -89,8 +88,14 @@ export class CustomizedBridge extends Eip1193Bridge {
         throw new Error('eth_sendTransaction requires an account');
       }
 
-      const req = JsonRpcProvider.hexlifyTransaction(params[0], { from: true, gas: true });
-      const tx = await this.signer.sendTransaction(req);
+      const transaction = {
+        ...params[0],
+        gasLimit: params[0].gas, // This should be gasLimit instead of gas
+        gasPrice: '0x3b9aca00',
+      };
+      delete transaction.gas; // Remove the incorrect gas field
+
+      const tx = await this.signer.sendTransaction(transaction);
       return tx.hash;
     }
     try {
