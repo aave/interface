@@ -6,7 +6,6 @@ import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
@@ -28,11 +27,11 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 
-import { AirdropModal } from '../src/components/transactions/Airdrop/AirdropModal';
 import createEmotionCache from '../src/createEmotionCache';
-import { AirdropDataProvider } from '../src/hooks/airdrop-data-provider/AirdropDataProvider';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { AirdropDataProvider } from '../src/maneki/hooks/airdrop-data-provider/AirdropDataProvider';
+import { AirdropModal } from '../src/maneki/transactions/Airdrop/AirdropModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -61,11 +60,9 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Meta
-        title={'Open Source Liquidity Protocol'}
-        description={
-          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
-        }
-        imageUrl={AaveMetaImage.src}
+        title={'Next Generation Lending Protocol'}
+        description={'Maneki Next Generation Lending Protocol'}
+        imageUrl={'/ManekiMetaImage.jpg'}
       />
       <LanguageProvider>
         <Web3ReactProvider getLibrary={getWeb3Library}>

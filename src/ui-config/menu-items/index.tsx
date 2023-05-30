@@ -27,14 +27,19 @@ export const navigation: Navigation[] = [
     title: t`Dashboard`,
     dataCy: 'menuDashboard',
   },
+  // {
+  //   link: ROUTES.staking,
+  //   title: t`Stake`,
+  //   dataCy: 'menuStake',
+  //   isVisible: () =>
+  //     process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+  //     process.env.NEXT_PUBLIC_ENV === 'prod' &&
+  //     !ENABLE_TESTNET,
+  // },
   {
-    link: ROUTES.staking,
-    title: t`Stake`,
-    dataCy: 'menuStake',
-    isVisible: () =>
-      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-      process.env.NEXT_PUBLIC_ENV === 'prod' &&
-      !ENABLE_TESTNET,
+    link: ROUTES.managePaw,
+    title: t`Manage PAW`,
+    dataCy: 'menuManagePaw',
   },
   {
     link: ROUTES.airdrop,

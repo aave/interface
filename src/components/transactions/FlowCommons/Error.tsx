@@ -41,8 +41,15 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
 
         <Typography>
           <Trans>
-            You can report incident to our <Link href="https://discord.gg/7kHKnkDEUf">Discord</Link>{' '}
-            or <Link href="https://github.com/aave/interface">Github</Link>.
+            You can report incident to our{' '}
+            <Link target="_blank" href="https://discord.gg/7kHKnkDEUf">
+              Discord
+            </Link>{' '}
+            or{' '}
+            <Link target="_blank" href="https://github.com/aave/interface">
+              Github
+            </Link>
+            .
           </Trans>
         </Typography>
 
@@ -50,7 +57,7 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           variant="outlined"
           onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
-          sx={{ mt: 6 }}
+          sx={{ mt: 6, color: 'text.primary' }}
         >
           <Trans>Copy error text</Trans>
 

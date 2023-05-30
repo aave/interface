@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper } from '@mui/material';
+import { List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { Contract, ethers } from 'ethers';
 import * as React from 'react';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
-import { useAirdropContext } from '../../../hooks/airdrop-data-provider/AirdropDataProvider';
-import { useModalContext } from '../../../hooks/useModal';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
+import { marketsData } from '../../../ui-config/marketsConfig';
+import { useAirdropContext } from '../../hooks/airdrop-data-provider/AirdropDataProvider';
+import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
+import AirdropContentWrapper from './AirdropContentWrapper';
+import AirdropTable from './AirdropTable';
 import randomAddrs from './devRandAddr';
+import randomAddrs2 from './devRandAddr2';
 import MERKLE_DIST_ABI from './MerkleDistAbi';
 
 interface entryType {
@@ -18,9 +23,18 @@ interface entryType {
   index: number;
 }
 
+export interface airdropListType {
+  title: string;
+  status: ReactElement;
+  entry: entryType | null;
+  isClaimed: boolean;
+  airdropNumber: number;
+  tooltipContent: ReactElement;
+}
 const empty = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const MERKLE_DIST_ADDR = '0xb774d3c78123f7171B7F3Ce31a4a90e1Ab9968a3';
-
+// DEV change this
+// const MERKLE_DIST_ADDR = '0xe3267CCF277a2C1dB29AB3A7f0583eCD6d2Bb635';
+const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
 const padWidth = (str: string, width: number): string => {
   let res = '';
   let currSize = str.length - 3; //0x
@@ -112,8 +126,8 @@ const getMerkleProof = (inputArray: string[], n: number) => {
 }; // getMerkleProof
 
 export const AirdropContainer = () => {
-  const { openAirDrop } = useModalContext();
   const { currentAccount, loading: web3Loading, provider, chainId } = useWeb3Context();
+
   const {
     merkleRoot,
     setMerkleRoot,
@@ -124,21 +138,45 @@ export const AirdropContainer = () => {
     setReceiver,
     isClaimed,
     setIsClaimed,
+
+    merkleRootSocmed,
+    setMerkleRootSocmed,
+    setEntryAmoutSocmed,
+    setProofsSocmed,
+    setIndexSocmed,
+    setClaimIndexSocmed,
+    setReceiverSocmed,
+    isClaimedSocmed,
+    setIsClaimedSocmed,
   } = useAirdropContext();
   const [entry, setEntry] = React.useState<entryType | null>(null);
+  const [entrySocmed, setEntrySocmed] = React.useState<entryType | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
     // get entries
     const dataArr: entryType[] = randomAddrs;
+    const dataArr2: entryType[] = randomAddrs2;
+
     // dev: if accurate can switch to entry.index
     const hashedArr: string[] = dataArr.map((entry, i) => leafHash(entry.address, entry.amount, i));
+    const hashedArrSocmed: string[] = dataArr2.map((entry, i) =>
+      leafHash(entry.address, entry.amount, i)
+    );
+
     const _merkleroot = getMerkleRoot(hashedArr);
-    setMerkleRoot(_merkleroot);
+    const _merklerootSocmed = getMerkleRoot(hashedArrSocmed);
+    console.log('merkleroot ', _merkleroot);
+    console.log('merkleroot2 ', _merklerootSocmed);
 
     // check eligibility
     let entryFound = dataArr.find((e) => e.address == currentAccount);
     let entryFoundIdx = dataArr.findIndex((e) => e.address == currentAccount);
+
+    let entryFoundSocmed = dataArr2.find((e) => e.address == currentAccount);
+    let entryFoundIdxSocmed = dataArr2.findIndex((e) => e.address == currentAccount);
 
     // DEV : remove prompts
     if (!entryFound) {
@@ -147,22 +185,33 @@ export const AirdropContainer = () => {
       entryFound = newEntry;
       entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
 
+      const newentrySocmed = dataArr2.find((e) => e.address == addr);
+      entryFoundSocmed = newentrySocmed;
+      entryFoundIdxSocmed = dataArr2.findIndex((e) => e.address == entryFoundSocmed?.address);
+
       setEntry(newEntry || null);
+      setEntrySocmed(newentrySocmed || null);
     }
 
-    if (!entryFound) return;
+    if (!entryFound && !entryFoundSocmed) return;
 
     // create contract
     setLoading(true);
     const merkleDistontract = new Contract(MERKLE_DIST_ADDR, MERKLE_DIST_ABI, provider);
-    merkleDistontract
-      // check isclaimed
-      .isClaimed(entryFound.claimIdx, entryFound.index)
-      .then((data: boolean) => {
-        setIsClaimed(data);
+    const readActions = [];
 
-        // set context data
-        if (!data && entryFound) {
+    readActions.push(merkleDistontract.isClaimed(entryFound?.claimIdx, entryFound?.index)); // entry from venus
+    readActions.push(
+      merkleDistontract.isClaimed(entryFoundSocmed?.claimIdx, entryFoundSocmed?.index)
+    ); // entry from socmed
+
+    const VENUS_IDX = 0;
+    const SOCMED_IDX = 1;
+    Promise.all(readActions)
+      .then((data) => {
+        // venus validation
+        setIsClaimed(data[VENUS_IDX]);
+        if (!data[VENUS_IDX] && entryFound) {
           setClaimIndex(entryFound.claimIdx);
           setIndex(entryFoundIdx); // can just use entryFound.idx if its accurate
           // setIndex(entryFound.index);
@@ -172,6 +221,20 @@ export const AirdropContainer = () => {
           setEntryAmout(entryFound.amount);
           setReceiver(entryFound.address);
         }
+
+        // socmed validation
+        setIsClaimedSocmed(data[SOCMED_IDX]);
+        if (!data[SOCMED_IDX] && entryFoundSocmed) {
+          setClaimIndexSocmed(entryFoundSocmed.claimIdx);
+          setIndexSocmed(entryFoundIdxSocmed); // can just use entryFound.idx if its accurate
+          // setIndex(entryFound.index);
+          setMerkleRootSocmed(getMerkleRoot(hashedArrSocmed));
+          setProofsSocmed(getMerkleProof(hashedArrSocmed, entryFoundIdxSocmed)); // can just use entryFound.idx if its accurate
+          // setProofs(getMerkleProof(hashedArr, entryFound.index));
+          setEntryAmoutSocmed(entryFoundSocmed.amount);
+          setReceiverSocmed(entryFoundSocmed.address);
+        }
+
         setLoading(false);
       })
       .catch((e: unknown) => console.error(e));
@@ -179,6 +242,7 @@ export const AirdropContainer = () => {
     return () => {
       // cleanup
     };
+    //eslint-disable-next-line
   }, [currentAccount, provider]);
 
   if (!currentAccount || web3Loading) {
@@ -190,41 +254,92 @@ export const AirdropContainer = () => {
     );
   }
 
-  // TODO add ui
   if (chainId != 97) {
-    return <Paper> Please connect to bsc testnet </Paper>;
+    return <ManekiLoadingPaper description="Please connect to bsc testnet" />;
   }
-
   if (loading) {
-    return <Paper> Loading.. </Paper>;
+    return <ManekiLoadingPaper description="Loading..." withCircle />;
   }
 
-  if (!entry) {
-    return <Paper> You are not eligible to claim airdrop </Paper>;
-  }
-
-  if (isClaimed) {
-    return <Paper> You already claimed airdrop </Paper>;
-  }
-
-  return (
-    <Paper>
-      {merkleRoot == '' ? (
-        <Box>Generating hashes..</Box>
-      ) : (
-        <Box>
-          <Box>You are eligle to claim airdrop of {entry.amount / 1000000000000000000} PAW</Box>
-          <Box>
-            <Button
-              //   disabled={!isActive}
-              onClick={openAirDrop}
-              variant="contained"
+  const airdropList: airdropListType[] = [
+    {
+      title: 'Venus',
+      status: <Trans>Ongoing</Trans>,
+      entry: entry,
+      isClaimed: isClaimed,
+      airdropNumber: 0,
+      tooltipContent: (
+        <List>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
             >
-              <Trans>claim airdrop</Trans>
-            </Button>
-          </Box>
-        </Box>
+              - <Trans>This airdrop is distributed to Venus members.</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This is a one-time airdrop.</Trans>
+            </ListItemText>
+          </ListItem>
+        </List>
+      ),
+    },
+    {
+      title: 'Social Media',
+      status: <Trans>Ongoing</Trans>,
+      entry: entrySocmed,
+      isClaimed: isClaimedSocmed,
+      airdropNumber: 1,
+      tooltipContent: (
+        <List>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This airdrop is distributed to Social Media members.</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              sx={{
+                p: 0,
+                fontSize: { sm: '18px', md: '12px' },
+              }}
+            >
+              - <Trans>This is a one-time airdrop.</Trans>
+            </ListItemText>
+          </ListItem>
+        </List>
+      ),
+    },
+  ];
+  return (
+    <>
+      {(merkleRoot == '' && !isClaimed) || (merkleRootSocmed == '' && !isClaimedSocmed) ? (
+        <ManekiLoadingPaper description="Generating Hashes..." withCircle />
+      ) : (
+        <>
+          {downToSM ? (
+            airdropList.map((airdrop, index) => {
+              return <AirdropContentWrapper key={index} {...airdrop} />;
+            })
+          ) : (
+            <AirdropTable airdropList={airdropList} />
+          )}
+        </>
       )}
-    </Paper>
+    </>
   );
 };

@@ -11,6 +11,7 @@ import { createTheme } from '@mui/material/styles';
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
+import { uiConfig } from 'src/uiConfig';
 
 const theme = createTheme();
 const {
@@ -24,6 +25,7 @@ declare module '@mui/material/styles/createPalette' {
 
   interface TypeText {
     muted: string;
+    custom1: string;
   }
 
   interface TypeBackground {
@@ -32,6 +34,7 @@ declare module '@mui/material/styles/createPalette' {
     surface: string;
     header: string;
     disabled: string;
+    custom1: string;
   }
 
   interface Palette {
@@ -120,6 +123,7 @@ declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     surface: true;
     gradient: true;
+    wallet: true;
   }
 }
 
@@ -135,7 +139,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: getColor('#F7931A', '#EAEBEF'),
+        main: getColor('#FFA725', '#EAEBEF'),
         light: getColor('#f8a23a', '#F1F1F3'),
         dark: getColor('#dd7d08', '#D2D4DC'),
       },
@@ -177,6 +181,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         secondary: getColor('#27282B', '#A5A8B6'),
         disabled: getColor('#2f2f37', '#62677B'),
         muted: getColor('#2f2f37', '#8E92A3'),
+        custom1: getColor('#52545b', '#8E92A3'),
       },
       background: {
         default: getColor('#FEFEFE', '#1B2030'),
@@ -184,10 +189,11 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         surface: getColor('#F7F7F9', '#383D51'),
         header: getColor('#FFEDEB', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        custom1: getColor('#EBEBEF8F', '#EBEBEF4D'),
       },
       shadow: {
         markets: getColor('#FFEDEB', '#EBEBEF1F'),
-        dashboard: getColor('#FFEDEB', 'none'),
+        dashboard: getColor('#0000001a', 'none'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
@@ -228,7 +234,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(28),
-        color: '#121418',
+        color: 'text.primary',
       },
       h2: {
         fontFamily: FONT,
@@ -236,7 +242,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: 'unset',
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
-        color: '#121418',
+        color: 'text.primary',
       },
       h3: {
         fontFamily: FONT,
@@ -445,11 +451,24 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           {
+            props: { variant: 'wallet' },
+            style: {
+              padding: '10px 20px',
+              color: theme.palette.background.default,
+              background: theme.palette.primary.main,
+              transition: 'all 0.2s ease',
+              '&:hover, &.Mui-focusVisible': {
+                background: theme.palette.primary.main,
+                opacity: '0.9',
+              },
+            },
+          },
+          {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
+              background: 'transparent',
               borderColor: theme.palette.divider,
-              color: 'black',
+              color: theme.palette.text.primary,
             },
           },
           {
@@ -793,6 +812,11 @@ export function getThemedComponents(theme: Theme) {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
+            backgroundImage:
+              theme.palette.mode === 'light' ? `url(${uiConfig.mainBackground})` : '',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed',
+            backgroundSize: '100% 60%',
             fontFamily: FONT,
             fontWeight: 400,
             fontSize: pxToRem(14),

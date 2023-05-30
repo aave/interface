@@ -39,7 +39,7 @@ export const ListWrapper = ({
         mt: withTopMargin ? 4 : 0,
         borderRadius: '20px',
         boxShadow: isDashboard
-          ? `0px 4px 250px ${theme.palette.shadow.dashboard}`
+          ? `0px 10px 30px 5px ${theme.palette.shadow.dashboard}`
           : `0px 4px 250px ${theme.palette.shadow.markets}`,
       })}
     >

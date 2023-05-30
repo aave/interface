@@ -1,7 +1,6 @@
-import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { uiConfig } from '../../uiConfig';
 import { PageTitle, PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
@@ -17,16 +16,16 @@ export const TopInfoPanel = ({
   bridge,
   children,
 }: TopInfoPanelProps) => {
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  // const theme = useTheme();
+  // const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box
       sx={{
-        backgroundImage: theme.palette.mode === 'dark' ? 'none' : `url(${uiConfig.infoBackground})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: downToSM ? '80% 100%' : '200% 100%',
-        backgroundSize: downToSM ? '40% 40%' : '80% 80%',
-        bgcolor: 'background.header',
+        // backgroundImage: theme.palette.mode === 'dark' ? 'none' : `url(${uiConfig.infoBackground})`,
+        // backgroundRepeat: 'no-repeat',
+        // backgroundPosition: downToSM ? '80% 100%' : '200% 100%',
+        // backgroundSize: downToSM ? '40% 40%' : '80% 80%',
+        bgcolor: 'transparent',
         pt: { xs: 10, md: 12 },
         pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },
         color: 'text.primary',
