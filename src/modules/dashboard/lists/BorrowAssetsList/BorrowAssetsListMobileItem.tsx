@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
@@ -31,11 +30,9 @@ export const BorrowAssetsListMobileItem = ({
   isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const { currentMarket } = useProtocolDataContext();
 
-  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
-
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0 || isPolygonV2;
+  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
   return (
     <ListMobileItemWrapper
