@@ -38,6 +38,8 @@ export const SupplyAssetsListMobileItem = ({
   const { supplyCap: supplyCapUsage } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
+  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -90,7 +92,7 @@ export const SupplyAssetsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached}
+          disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset)}
           sx={{ mr: 1.5 }}

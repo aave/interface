@@ -21,7 +21,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
 
   const [showWarning, setShowWarning] = useState(true);
 
-  const [mobileMenuOpen] = useRootStore((state) => [state.mobileMenuOpen]);
+  const [mobileDrawerOpen] = useRootStore((state) => [state.mobileDrawerOpen]);
 
   useEffect(() => {
     const warningBarOpen = localStorage.getItem('warningBarOpen');
@@ -30,21 +30,13 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
     }
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWarning(false);
-    }, 20000); // Close Notify after 20 seconds
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleClose = () => {
     localStorage.setItem('warningBarOpen', 'false');
     setShowWarning(false);
   };
 
   // Note: hide warnings when mobile menu is open
-  if (mobileMenuOpen) return null;
+  if (mobileDrawerOpen) return null;
 
   if (showWarning) {
     return (
@@ -72,18 +64,11 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
         >
           <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
             <Typography component="div">
-              <Trans>
-                {notifyText}
-                {/* On April 24, 2023, E-mode parameters will be changed in accordance with the AIP.
-                Please read the proposal and adjust your open positions accordingly to avoid
-                liquidations. */}
-              </Trans>
-
+              <Trans>{notifyText}</Trans>
               {md ? (
                 <Link
                   sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
                   target={'_blank'}
-                  // href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
                   href={learnMoreLink}
                 >
                   <Trans>Learn more</Trans>
@@ -98,7 +83,6 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
                 target={'_blank'}
                 size="small"
                 href={learnMoreLink}
-                // href="https://snapshot.org/#/aave.eth/proposal/0x84deca82139320b2570f04211b249e37b8a7602b4a0ed70e6fa772c9f6e94550"
                 sx={{
                   minWidth: '90px',
                   marginLeft: 5,

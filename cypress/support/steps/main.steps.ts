@@ -428,7 +428,7 @@ export const swap = (
 ) => {
   const _shortNameFrom = fromAsset.shortName;
   const _shortNameTo = toAsset.shortName;
-  const _actionName = 'Swap';
+  const _actionName = 'Switch';
 
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -437,7 +437,7 @@ export const swap = (
       cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
         .find(`[data-cy=swapButton]`)
         .click();
-      cy.get(`[data-cy=Modal] h2:contains("Swap ${_shortNameFrom}")`).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Switch ${_shortNameFrom}")`).should('be.visible');
     });
     it('Choose swapping options: swap to asset', () => {
       cy.get('[data-cy=Modal]').as('Modal');

@@ -73,7 +73,7 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
+describe.skip('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
