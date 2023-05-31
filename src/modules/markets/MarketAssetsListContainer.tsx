@@ -15,7 +15,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
@@ -62,13 +62,6 @@ export const MarketAssetsListContainer = () => {
       }
     >
       {showFrozenMarketWarning && (
-        <Box mx={6}>
-          <MarketWarning marketName={currentNetworkConfig.name} forum />
-        </Box>
-      )}
-
-      {/* TODO REMOVE AFTER AIP */}
-      {currentMarket === 'proto_polygon' && (
         <Box mx={6}>
           <MarketWarning marketName={currentNetworkConfig.name} forum />
         </Box>

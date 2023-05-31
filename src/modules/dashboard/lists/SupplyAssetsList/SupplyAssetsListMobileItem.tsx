@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -32,19 +31,14 @@ export const SupplyAssetsListMobileItem = ({
   underlyingAsset,
   detailsAddress,
 }: DashboardReserve) => {
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
-  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
-  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
-  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(symbol);
-
-  const disableSupply =
-    !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached || isAffectedReserve;
+  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   return (
     <ListMobileItemWrapper

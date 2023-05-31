@@ -12,7 +12,7 @@ export const SwapModal = () => {
   }>;
   return (
     <BasicModal open={type === ModalType.Swap} setOpen={close}>
-      <ModalWrapper title={<Trans>Swap</Trans>} underlyingAsset={args.underlyingAsset}>
+      <ModalWrapper title={<Trans>Switch</Trans>} underlyingAsset={args.underlyingAsset}>
         {(params) => <SwapModalContent {...params} />}
       </ModalWrapper>
     </BasicModal>
