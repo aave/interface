@@ -62,7 +62,6 @@ export function getMaxAmountAvailableToBorrow(
   }
 
   const shouldAddMargin =
-    true ||
     /**
      * When a user has borrows we assume the debt is increasing faster then the supply.
      * That's a simplification that might not be true, but doesn't matter in most cases.
