@@ -2,6 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import ClaimAllVestTopPanel from 'src/maneki/modules/markets/ClaimAllVestTopPanel';
 
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
 import TotalBorrowIcon from '../../../public/icons/markets/total-borrow-indicator.svg';
@@ -82,6 +83,7 @@ export const MarketsTopPanel = () => {
           isTopPanel
         />
       </TopInfoPanelItem>
+      <ClaimAllVestTopPanel />
     </TopInfoPanel>
   );
 };
