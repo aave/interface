@@ -89,7 +89,14 @@ export class CustomizedBridge extends Eip1193Bridge {
         throw new Error('eth_sendTransaction requires an account');
       }
 
+      params[0].gasLimit = params[0].gas;
+      delete params[0].gas;
+
       const req = JsonRpcProvider.hexlifyTransaction(params[0], { from: true, gas: true });
+
+      req.gasLimit = req.gas;
+      delete req.gas;
+
       const tx = await this.signer.sendTransaction(req);
       return tx.hash;
     }
