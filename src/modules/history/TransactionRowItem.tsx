@@ -92,7 +92,13 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
             >
               <Box
                 onClick={() => handleCopy(explorerLink)}
-                sx={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  height: '22px',
+                }}
               >
                 {!downToMD && (
                   <React.Fragment>
@@ -114,8 +120,6 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
                     fontSize: '14px',
                     color: copyStatus ? 'green' : downToSM ? 'text.muted' : 'text.secondary',
                     cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
                   }}
                 >
                   {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
@@ -123,13 +127,20 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
               </Box>
             </DarkTooltip>
             <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
-              <Link href={explorerLink}>
+              <Link
+                href={explorerLink}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  height: '22px',
+                }}
+              >
                 <SvgIcon
                   sx={{
                     fontSize: '14px',
                     color: downToSM ? 'text.muted' : 'text.secondary',
-                    display: 'flex',
-                    alignItems: 'center',
                   }}
                 >
                   <ArrowOutward />
