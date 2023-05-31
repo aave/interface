@@ -117,7 +117,7 @@ export const SwapModalDetails = ({
       />
 
       <Row
-        caption={<Trans>Supply balance after swap</Trans>}
+        caption={<Trans>Supply balance after switch</Trans>}
         captionVariant="description"
         mb={4}
         align="flex-start"

@@ -92,7 +92,7 @@ export const SuppliedPositionsListItem = ({
             onClick={() => openSwap(underlyingAsset)}
             data-cy={`swapButton`}
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button
