@@ -432,19 +432,45 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               </Box>
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
-                  <Trans>Additional borrows to reach targeted utilization</Trans>
-                </Typography>
-                <Typography variant="main12" color="primary">
-                  $
-                  {new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }).format(
-                    (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
-                      parseFloat(reserve.totalDebtUSD)
-                  )}
-                </Typography>
+                {(tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                  parseFloat(reserve.totalDebtUSD) >
+                0 ? (
+                  <>
+                    <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                      <Trans>Borrow amount to reach {tooltipData.utilization}% utilization</Trans>
+                    </Typography>
+                    <Typography variant="main12" color="primary">
+                      $
+                      {new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(
+                        (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                          parseFloat(reserve.totalDebtUSD)
+                      )}
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                      <Trans>
+                        Repayment amount to reach {tooltipData.utilization}% utilization
+                      </Trans>
+                    </Typography>
+                    <Typography variant="main12" color="primary">
+                      $
+                      {new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(
+                        Math.abs(
+                          (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                            parseFloat(reserve.totalDebtUSD)
+                        )
+                      )}
+                    </Typography>
+                  </>
+                )}
               </Box>
 
               {fields.map((field) => (

@@ -132,10 +132,6 @@ msgstr "Add to wallet"
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
 
-#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
-msgid "Additional borrows to reach targeted utilization"
-msgstr "Additional borrows to reach targeted utilization"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
@@ -385,6 +381,10 @@ msgstr "Borrow APY, stable"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Borrow amount to reach {0}% utilization"
+msgstr "Borrow amount to reach {0}% utilization"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
@@ -1558,6 +1558,10 @@ msgstr "Repay {symbol}"
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Repayment amount to reach {0}% utilization"
+msgstr "Repayment amount to reach {0}% utilization"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
