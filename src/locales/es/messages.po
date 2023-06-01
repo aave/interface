@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-26 18:04\n"
+"PO-Revision-Date: 2023-05-31 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -25,10 +25,6 @@ msgstr "<0>Ampleforth</0> es un activo con rebase. Visita la <1>documentación</
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
-
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
-msgstr "<0>Importante: </0>Ya está disponible una Propuesta del Gobierno de Aave con respecto a los cambios en los parámetros del E-Mode y podría afectar el factor de salud de ciertas posiciones."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -764,8 +760,8 @@ msgid "Discord channel"
 msgstr "Canal de Discord"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
-msgstr "Debido a la mecánica interna de stETH requerida para el soporte del rebase, no es posible realizar un intercambio de garantías donde stETH es el token de origen."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
+msgstr "Debido a mecánicas internas de stETH requeridas para el soporte del rebase, no es posible realizar un cambio de garantía donde stETH es el token de origen."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
@@ -1439,8 +1435,8 @@ msgid "Preview tx and migrate"
 msgstr "Previsualizar la tx y migrar"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-msgstr "El impacto en el precio es la diferencia entre el valor total de los tokens de entrada intercambiados y el de los tokens de destino obtenidos (en USD), que resulta de la liquidez limitada del par del intercambio."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "El impacto del precio es la diferencia entre el valor total de los tokens de entrada cambiados y los tokens de destino obtenidos (en USD), que resulta de la liquidez limitada del par de cambio."
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
@@ -1867,8 +1863,8 @@ msgid "Supply balance"
 msgstr "Balance de suministro"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
-msgstr "Balance de suministro tras el intercambio"
+msgid "Supply balance after switch"
+msgstr "Balance del suministro después del cambio"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1895,20 +1891,8 @@ msgstr "Suministrando {symbol}"
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr "Intercambiar"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr "Intercambiar a"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr "Intercambiado"
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
-msgstr "Intercambiando"
+msgid "Switch"
+msgstr "Cambiar"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1929,6 +1913,18 @@ msgstr "Cambiar de red"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Tasa de cambio"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr "Cambiar a"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr "Cambiado"
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
+msgstr "Cambiando"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"

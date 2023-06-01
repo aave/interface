@@ -21,10 +21,6 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
-msgstr "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
-
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -759,8 +755,8 @@ msgid "Discord channel"
 msgstr "Discord channel"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
-msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
+msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
@@ -1434,8 +1430,8 @@ msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
@@ -1862,8 +1858,8 @@ msgid "Supply balance"
 msgstr "Supply balance"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
-msgstr "Supply balance after swap"
+msgid "Supply balance after switch"
+msgstr "Supply balance after switch"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1890,20 +1886,8 @@ msgstr "Supplying {symbol}"
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr "Swap"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr "Swap to"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr "Swapped"
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
-msgstr "Swapping"
+msgid "Switch"
+msgstr "Switch"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1924,6 +1908,18 @@ msgstr "Switch Network"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr "Switch to"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr "Switched"
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
+msgstr "Switching"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"

@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-26 18:04\n"
+"PO-Revision-Date: 2023-05-31 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -24,10 +24,6 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr ""
-
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
 msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
@@ -764,7 +760,7 @@ msgid "Discord channel"
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -1439,7 +1435,7 @@ msgid "Preview tx and migrate"
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
@@ -1867,7 +1863,7 @@ msgid "Supply balance"
 msgstr "Bilan d'approvisionnement"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
+msgid "Supply balance after switch"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -1895,20 +1891,8 @@ msgstr "Fournir {symbole}"
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr "Swap"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
+msgid "Switch"
 msgstr ""
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
-msgstr "Échange"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1929,6 +1913,18 @@ msgstr "Changer de réseau"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Taux de changement"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
