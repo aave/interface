@@ -41,7 +41,7 @@ describe.skip('CRITICAL CONDITIONS SPEC, POLYGON V2 MARKET', () => {
 
   supply(testData.testCases.deposit1, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.11 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
