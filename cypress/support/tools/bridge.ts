@@ -88,7 +88,10 @@ export class CustomizedBridge extends Eip1193Bridge {
       if (!this.signer) {
         throw new Error('eth_sendTransaction requires an account');
       }
-
+      // This is a bit of a hack to get around out of gas errors during cypress tests.
+      // Hexlify expects the gasLimit property to be set, which it will copy the value
+      // and set the gas property to that value. But when the transaction is sent, the property
+      // needs to be gasLimit.
       params[0].gasLimit = params[0].gas;
       delete params[0].gas;
 
