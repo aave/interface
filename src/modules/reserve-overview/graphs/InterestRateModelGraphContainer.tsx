@@ -53,6 +53,8 @@ export const InterestRateModelGraphContainer = ({
               variableRateSlope1: reserve.variableRateSlope1,
               variableRateSlope2: reserve.variableRateSlope2,
               stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
+              totalLiquidityUSD: reserve.totalLiquidityUSD,
+              totalDebtUSD: reserve.totalDebtUSD,
             }}
           />
         )}
