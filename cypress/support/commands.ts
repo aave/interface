@@ -1,6 +1,7 @@
 import 'cypress-wait-until';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**
@@ -46,6 +47,13 @@ declare global {
        * This will switch dashboard view to Supply
        */
       doSwitchToDashboardSupplyView(): void;
+      /**
+       * This will switch market
+       * @param marketName string
+       * @param isV3 boolean
+       * @example cy.doSwitchMarket('mainnet', true)
+       */
+      doSwitchMarket(marketName: string, isV3: boolean): void;
     }
   }
 }
@@ -65,9 +73,13 @@ Cypress.Commands.add(
   (hasApproval: boolean, actionName?: string, assetName?: string) => {
     cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
     if (!hasApproval) {
-      cy.get(`[data-cy=approvalButton]`, { timeout: 20000 }).should('not.be.disabled').click();
+      cy.get(`[data-cy=approvalButton]`, { timeout: 20000 })
+        .last()
+        .should('not.be.disabled')
+        .click({ force: true });
     }
     cy.get('[data-cy=actionButton]', { timeout: 30000 })
+      .last()
       .should('not.be.disabled')
       .then(($btn) => {
         if (assetName && actionName) {
@@ -77,7 +89,7 @@ Cypress.Commands.add(
           expect($btn.first()).to.contain(`${actionName}`);
         }
       })
-      .click();
+      .click({ force: true });
     cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
   }
 );
@@ -115,6 +127,16 @@ Cypress.Commands.add('doSwitchToDashboardBorrowView', () => {
 
 Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
   switchDashboardView('Supply', 'supplies');
+});
+
+Cypress.Commands.add('doSwitchMarket', (marketName: string, isV3: boolean) => {
+  cy.get('[data-cy="marketSelector"]').click();
+  cy.get(`[data-cy="markets_switch_button_${isV3 ? 'v3' : 'v2'}"]`).then(($btn) => {
+    if (!$btn.attr('aria-passed')) {
+      $btn.click();
+    }
+  });
+  cy.get(`[data-value="fork_proto_${isV3 ? marketName + '_v3' : marketName}"]`).click();
 });
 
 export {};

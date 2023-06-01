@@ -213,12 +213,15 @@ export const repay = (
     it(`Choose ${repayOption} repay option`, () => {
       switch (repayOption) {
         case constants.repayType.collateral:
-          cy.get('[data-cy=Modal] button').contains('Collateral').click().should('not.be.disabled');
+          cy.get('[data-cy=Modal] button')
+            .contains('Collateral')
+            .click({ force: true })
+            .should('not.be.disabled');
           break;
         case constants.repayType.wallet:
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
-            .click()
+            .click({ force: true })
             .should('not.be.disabled');
           break;
         case constants.repayType.default:
@@ -226,7 +229,7 @@ export const repay = (
         default:
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
-            .click()
+            .click({ force: true })
             .should('not.be.disabled');
           break;
       }
@@ -425,7 +428,7 @@ export const swap = (
 ) => {
   const _shortNameFrom = fromAsset.shortName;
   const _shortNameTo = toAsset.shortName;
-  const _actionName = 'Swap';
+  const _actionName = 'Switch';
 
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -434,7 +437,7 @@ export const swap = (
       cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
         .find(`[data-cy=swapButton]`)
         .click();
-      cy.get(`[data-cy=Modal] h2:contains("Swap ${_shortNameFrom}")`).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Switch ${_shortNameFrom}")`).should('be.visible');
     });
     it('Choose swapping options: swap to asset', () => {
       cy.get('[data-cy=Modal]').as('Modal');
@@ -666,7 +669,84 @@ export const emodeActivating = (
  */
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+    cy.get('[data-cy=CloseModalIcon]').last().should('not.be.disabled').click({ force: true });
     cy.get('[data-cy=Modal]').should('not.exist');
+  });
+};
+
+/**
+ * This action start from v2 market page
+ */
+export const migration = (
+  {
+    supplies,
+    borrows,
+    isAllSupplies = false,
+    isAllBorrows = false,
+  }: {
+    supplies: { shortName: string; switchCollateral?: boolean }[];
+    borrows: { shortName: string; isStable?: boolean }[];
+    isAllSupplies?: boolean;
+    isAllBorrows?: boolean;
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  return describe(`Migration process`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    before(`Open migration page`, () => {
+      cy.get(`[data-cy="migration-button"]`).click();
+      cy.wait(10000); //TODO: optimise awaiting upload migratiopn board
+    });
+    if (isAllSupplies) {
+      it(`Select all supplies`, () => {
+        cy.get(`[data-cy="migration-checkbox-all"]`).first().click();
+      });
+    } else {
+      supplies.forEach(($asset) => {
+        it(`Choose supply asset ${$asset.shortName}`, () => {
+          cy.get(`[data-cy="migration-supply-${$asset.shortName}"]`)
+            .find(`[data-cy="migration-checkbox"]`)
+            .click();
+        });
+      });
+    }
+    if (isAllBorrows) {
+      it(`Select all borrows`, () => {
+        cy.get(`[data-cy="migration-checkbox-all"]`).last().click();
+      });
+    } else {
+      borrows.forEach(($asset) => {
+        it(`Choose borrow asset ${$asset.shortName}`, () => {
+          cy.get(
+            `[data-cy="migration-borrow-${$asset.isStable ? 'Stable' : 'Variable'}-${
+              $asset.shortName
+            }"]`
+          )
+            .find(`[data-cy="migration-checkbox"]`)
+            .click();
+        });
+      });
+    }
+    it(`Agree and open migration`, () => {
+      cy.get(`[data-cy="migration-risk-checkbox"]`).click();
+      cy.get(`[data-cy="migration-button"]`).click();
+    });
+    it(`Migration modal`, () => {
+      cy.wait(2000);
+      cy.get('[data-cy=Modal]')
+        .find('[data-cy=approveButtonChange]')
+        .last()
+        .click({ force: true })
+        .get('[data-cy=approveOption_Transaction]')
+        .first()
+        .click({ force: true });
+      cy.wait(2000);
+      cy.doConfirm(false, `Migration`);
+    });
+    doCloseModal();
+    it(`Move back to dashboard page`, () => {
+      cy.get(`[data-cy="goBack-btn"]`).click();
+    });
   });
 };

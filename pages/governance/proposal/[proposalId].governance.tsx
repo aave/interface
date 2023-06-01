@@ -21,7 +21,6 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -32,7 +31,6 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
@@ -52,6 +50,7 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
+import { LensIcon } from '../../../src/components/icons/LensIcon';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -111,8 +110,8 @@ export default function ProposalPage({
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
-  const { breakpoints } = useTheme();
-  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
+  const { breakpoints, palette } = useTheme();
+  const lgUp = useMediaQuery(breakpoints.up('lg'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -165,7 +164,11 @@ export default function ProposalPage({
   return (
     <>
       {ipfs && (
-        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+        <Meta
+          imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
+          title={ipfs.title}
+          description={ipfs.shortDescription}
+        />
       )}
       <ProposalTopPanel />
 
@@ -213,6 +216,7 @@ export default function ProposalPage({
                       <Box sx={{ flexGrow: 1 }} />
                       <Button
                         component="a"
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener"
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
@@ -222,10 +226,11 @@ export default function ProposalPage({
                           </SvgIcon>
                         }
                       >
-                        {xsmUp && <Trans>Raw-Ipfs</Trans>}
+                        {lgUp && <Trans>Raw-Ipfs</Trans>}
                       </Button>
                       <Button
                         component="a"
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -233,7 +238,23 @@ export default function ProposalPage({
                         )}&url=${url}`}
                         startIcon={<Twitter />}
                       >
-                        {xsmUp && <Trans>Share on twitter</Trans>}
+                        {lgUp && <Trans>Share on twitter</Trans>}
+                      </Button>
+                      <Button
+                        sx={{ minWidth: lgUp ? '160px' : '' }}
+                        component="a"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
+                        startIcon={
+                          <LensIcon
+                            color={
+                              palette.mode === 'dark' ? palette.primary.light : palette.text.primary
+                            }
+                          />
+                        }
+                      >
+                        {lgUp && <Trans>Share on Lens</Trans>}
                       </Button>
                     </Box>
                   ) : (
@@ -616,7 +637,6 @@ export default function ProposalPage({
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider />
       {page}
       <GovVoteModal />
     </MainLayout>

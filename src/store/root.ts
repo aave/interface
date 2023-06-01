@@ -7,12 +7,14 @@ import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
+import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
+import { createWalletDomainsSlice, WalletDomainsSlice } from './walletDomains';
 import { createWalletSlice, WalletSlice } from './walletSlice';
 
 enableMapSet();
@@ -23,7 +25,9 @@ export type RootStore = StakeSlice &
   PoolSlice &
   IncentiveSlice &
   GovernanceSlice &
-  V3MigrationSlice;
+  V3MigrationSlice &
+  WalletDomainsSlice &
+  LayoutSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -36,6 +40,8 @@ export const useRootStore = create<RootStore>()(
         ...createIncentiveSlice(...args),
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
+        ...createWalletDomainsSlice(...args),
+        ...createLayoutSlice(...args),
       };
     })
   )
@@ -59,14 +65,6 @@ if (typeof document !== 'undefined') {
   };
 }
 
-export const useStakeDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refetchStakeData();
-}, 60000);
-
-export const useWalletBalancesSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refetchWalletBalances();
-}, 60000);
-
 export const usePoolDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshPoolData();
 }, 60000);
@@ -77,10 +75,6 @@ export const usePoolDataV3Subscription = createSingletonSubscriber(() => {
 
 export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshIncentiveData();
-}, 60000);
-
-export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshGovernanceData();
 }, 60000);
 
 let latest: V3FaucetService;
@@ -113,6 +107,18 @@ useRootStore.subscribe(
         });
     } else {
       setFaucetPermissioned(false);
+    }
+  },
+  { fireImmediately: true }
+);
+
+useRootStore.subscribe(
+  (state) => state.account,
+  (account) => {
+    if (account) {
+      useRootStore.getState().fetchConnectedWalletDomains();
+    } else {
+      useRootStore.getState().clearWalletDomains();
     }
   },
   { fireImmediately: true }

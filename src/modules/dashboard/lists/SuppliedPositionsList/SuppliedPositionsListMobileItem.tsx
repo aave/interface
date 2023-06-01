@@ -35,6 +35,10 @@ export const SuppliedPositionsListMobileItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
+  const disableSwap = !isActive || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive;
+  const disableSupply = !isActive || isFrozen;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -83,7 +87,7 @@ export const SuppliedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive}
+          disabled={disableWithdraw}
           variant="contained"
           onClick={() => openWithdraw(underlyingAsset)}
           sx={{ mr: 1.5 }}
@@ -94,16 +98,16 @@ export const SuppliedPositionsListMobileItem = ({
 
         {isSwapButton ? (
           <Button
-            disabled={!isActive || isFrozen}
+            disabled={disableSwap}
             variant="outlined"
             onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button
-            disabled={!isActive || isFrozen}
+            disabled={disableSupply}
             variant="outlined"
             onClick={() => openSupply(underlyingAsset)}
             fullWidth

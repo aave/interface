@@ -36,9 +36,11 @@ export const SupplyAssetsListItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
-  // Hide the asset to prevent it from being supplied if supply cap has been reached
+  // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
-  if (supplyCapUsage.isMaxed) return null;
+  const isMaxCapReached = supplyCapUsage.isMaxed;
+
+  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   return (
     <ListItemWrapper
@@ -55,7 +57,7 @@ export const SupplyAssetsListItem = ({
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
         withTooltip
-        disabled={Number(walletBalance) === 0}
+        disabled={Number(walletBalance) === 0 || isMaxCapReached}
         capsComponent={
           <CapsHint
             capType={CapType.supplyCap}
@@ -81,7 +83,7 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+          disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset)}
         >

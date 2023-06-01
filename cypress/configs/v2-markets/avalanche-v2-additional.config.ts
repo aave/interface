@@ -10,6 +10,7 @@ export default defineConfig({
     specPattern: [
       folder + 'swap.avalanche-v2.cy.ts',
       folder + 'critical-conditions.avalanche-v2.cy.ts',
+      folder + 'migration.avalanche-v2.cy.ts',
     ],
   },
 });

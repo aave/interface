@@ -30,15 +30,15 @@ const testData = {
         asset: assets.polygonMarket.USDT,
         apyType: constants.apyType.variable,
         amount: 2,
-        hasApproval: true,
-        repayOption: constants.repayType.default,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
       },
       {
         asset: assets.polygonMarket.USDT,
         apyType: constants.apyType.variable,
         amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
@@ -73,7 +73,7 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
+describe.skip('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

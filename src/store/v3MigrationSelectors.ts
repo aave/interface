@@ -26,6 +26,7 @@ import {
   ReserveIncentiveResponse,
 } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
+import BigNumber from 'bignumber.js';
 import { BigNumberish } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -84,44 +85,37 @@ export type V3Rates = {
   vIncentivesData?: ReserveIncentiveResponse[];
   sIncentivesData?: ReserveIncentiveResponse[];
   priceInUSD: string;
+  ltv?: string;
+  liquidationThreshold?: string;
+};
+
+type ReserveDebtApprovalPayload = {
+  [underlyingAsset: string]: {
+    variableDebtTokenAddress: string;
+    decimals: number;
+    stableDebtAmount: string;
+    variableDebtAmount: string;
+  };
 };
 
 export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserReserveData[]) => {
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
-      let increasedAmount = userReserve.stableBorrows;
-      if (userReserve.reserve.stableBorrowAPY == '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.stableBorrows,
-          userReserve.reserve.stableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Stable,
-        increasedStableBorrows: increasedAmount,
+        increasedStableBorrows: userReserve.stableBorrows,
         increasedVariableBorrows: '0',
         debtKey: userReserve.reserve.stableDebtTokenAddress,
       });
     }
     if (userReserve.variableBorrows !== '0') {
-      let increasedAmount = userReserve.variableBorrows;
-      if (userReserve.reserve.variableBorrowAPY === '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.variableBorrows,
-          userReserve.reserve.variableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Variable,
         increasedStableBorrows: '0',
-        increasedVariableBorrows: increasedAmount,
+        increasedVariableBorrows: userReserve.variableBorrows,
         debtKey: userReserve.reserve.variableDebtTokenAddress,
       });
     }
@@ -314,6 +308,15 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       const availableSupplies = valueToBigNumber(v3SupplyAsset.reserve.supplyCap).minus(
         v3SupplyAsset.reserve.totalLiquidity
       );
+
+      let ltv = v3SupplyAsset.reserve.formattedBaseLTVasCollateral;
+      if (
+        userEmodeCategoryId !== 0 &&
+        v3SupplyAsset.reserve.eModeCategoryId !== userEmodeCategoryId
+      ) {
+        ltv = v3SupplyAsset.reserve.formattedEModeLtv;
+      }
+
       v3Rates = {
         stableBorrowAPY: v3SupplyAsset.stableBorrowAPY,
         variableBorrowAPY: v3SupplyAsset.reserve.variableBorrowAPY,
@@ -322,6 +325,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3SupplyAsset.reserve.vIncentivesData,
         sIncentivesData: v3SupplyAsset.reserve.sIncentivesData,
         priceInUSD: v3SupplyAsset.reserve.priceInUSD,
+        ltv,
       };
       if (v3SupplyAsset.reserve.isFrozen) {
         migrationDisabled = MigrationDisabled.ReserveFrozen;
@@ -361,11 +365,17 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (isolatedReserveV3 && !selectedReserve.borrowableInIsolation) {
       disabledForMigration = MigrationDisabled.IsolationModeBorrowDisabled;
     }
-    if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
-      disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
-    }
+
     const v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+
     if (v3BorrowAsset) {
+      let liquidationThreshold = v3BorrowAsset.reserve.formattedReserveLiquidationThreshold;
+
+      if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
+        disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
+        liquidationThreshold = v3BorrowAsset.reserve.formattedEModeLiquidationThreshold;
+      }
+
       v3Rates = {
         stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
         variableBorrowAPY: v3BorrowAsset.reserve.variableBorrowAPY,
@@ -374,6 +384,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
         vIncentivesData: v3BorrowAsset.reserve.vIncentivesData,
         sIncentivesData: v3BorrowAsset.reserve.sIncentivesData,
         priceInUSD: v3BorrowAsset.reserve.priceInUSD,
+        liquidationThreshold,
       };
       const notEnoughLiquidityOnV3 = valueToBigNumber(
         valueToWei(userReserve.increasedStableBorrows, userReserve.reserve.decimals)
@@ -524,16 +535,6 @@ const addPercent = (amount: string) => {
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
 };
 
-// adding  7 days of either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
-const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
-  const convertedAmount = valueToBigNumber(amount);
-  const convertedBorrowAPY = valueToBigNumber(borrowAPY);
-  return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
-    .toString();
-};
-
 export const selectSelectedBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
   const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
   return borrowReserves.filter(
@@ -658,37 +659,73 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
   );
 };
 
+/**
+ * Returns the required approval/permit payload to migrate the selected borrow reserves.
+ * The amount to migrate is the sum of the variable debt and the stable debt positions for an asset.
+ * Since all debt migrated to V3 becomes variable, the credit delegation approval/permit will be for the variable debt token address.
+ * @param store - root store
+ * @param timestamp - current timestamp
+ * @returns array of approval payloads
+ */
 export const selectMigrationBorrowPermitPayloads = (
   store: RootStore,
-  timestamp: number
+  timestamp: number,
+  buffer?: boolean
 ): Approval[] => {
-  const borrowUserReserves = selectSelectedBorrowReservesForMigrationV3(store, timestamp);
+  const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
+  const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp);
 
-  const stableUserReserves: Record<string, MigrationUserReserve> = {};
-  borrowUserReserves
-    .filter((userReserve) => userReserve.interestRate == InterestRate.Stable)
-    .forEach((item) => {
-      stableUserReserves[item.underlyingAsset] = item;
-    });
+  const reserveDebts: ReserveDebtApprovalPayload = {};
 
-  return borrowUserReserves
-    .filter((userReserve) => userReserve.interestRate == InterestRate.Variable)
-    .map(({ increasedVariableBorrows, underlyingAsset, debtKey, reserve }) => {
-      const stableUserReserve = stableUserReserves[underlyingAsset];
-      let combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows);
-      if (stableUserReserve) {
-        const increasedStableBorrows = stableUserReserve.increasedStableBorrows;
-        combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows).plus(
-          valueToBigNumber(increasedStableBorrows)
-        );
+  selectedUserReserves
+    .filter((userReserve) => userReserve.migrationDisabled === undefined)
+    .forEach((userReserve) => {
+      const borrowReserveV3 = userReservesDataV3.find(
+        (v3Reserve) => v3Reserve.underlyingAsset === userReserve.underlyingAsset
+      );
+      if (!borrowReserveV3) {
+        return;
       }
-      const combinedAmountInWei = valueToWei(combinedIncreasedAmount.toString(), reserve.decimals);
-      return {
-        amount: combinedAmountInWei,
-        underlyingAsset: debtKey,
-        permitType: 'BORROW_MIGRATOR_V3',
-      };
+
+      if (!reserveDebts[userReserve.underlyingAsset]) {
+        reserveDebts[userReserve.underlyingAsset] = {
+          variableDebtTokenAddress: borrowReserveV3.reserve.variableDebtTokenAddress,
+          decimals: borrowReserveV3.reserve.decimals,
+          stableDebtAmount: '0',
+          variableDebtAmount: '0',
+        };
+      }
+
+      const debt = reserveDebts[userReserve.underlyingAsset];
+
+      if (userReserve.interestRate === InterestRate.Stable) {
+        debt.stableDebtAmount = valueToBigNumber(debt.stableDebtAmount)
+          .plus(valueToBigNumber(userReserve.increasedStableBorrows))
+          .toString();
+      } else if (userReserve.interestRate === InterestRate.Variable) {
+        debt.variableDebtAmount = valueToBigNumber(debt.variableDebtAmount)
+          .plus(valueToBigNumber(userReserve.increasedVariableBorrows))
+          .toString();
+      }
     });
+
+  return Object.keys(reserveDebts).map<Approval>((key) => {
+    const debt = reserveDebts[key];
+    const totalDebt = valueToBigNumber(debt.stableDebtAmount).plus(debt.variableDebtAmount);
+    const combinedAmountInWei = valueToWei(totalDebt.toString(), debt.decimals);
+    let bufferedAmount = combinedAmountInWei;
+    if (buffer) {
+      const amountBN = new BigNumber(bufferedAmount);
+      const tenPercent = amountBN.dividedBy(10);
+      bufferedAmount = amountBN.plus(tenPercent).toFixed(0);
+    }
+
+    return {
+      amount: bufferedAmount,
+      underlyingAsset: debt.variableDebtTokenAddress,
+      permitType: 'BORROW_MIGRATOR_V3',
+    };
+  });
 };
 
 export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimestamp: number) => {
@@ -778,6 +815,10 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   // return the smallest object possible for migration page
   return {
     healthFactor: formattedUserSummary.healthFactor,
+    currentLoanToValue: formattedUserSummary.currentLoanToValue,
+    totalCollateralMarketReferenceCurrency:
+      formattedUserSummary.totalCollateralMarketReferenceCurrency,
+    totalBorrowsMarketReferenceCurrency: formattedUserSummary.totalBorrowsMarketReferenceCurrency,
   };
 };
 

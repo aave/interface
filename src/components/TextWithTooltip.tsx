@@ -1,5 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
+import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
@@ -11,8 +11,10 @@ export interface TextWithTooltipProps extends TypographyProps {
   iconSize?: number;
   iconMargin?: number;
   color?: string;
+  textColor?: string;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
+  wrapperProps?: BoxProps;
 }
 
 export const TextWithTooltip = ({
@@ -22,13 +24,18 @@ export const TextWithTooltip = ({
   iconMargin,
   color,
   children,
+  textColor,
+  wrapperProps: { sx: boxSx, ...boxRest } = {},
   ...rest
 }: TextWithTooltipProps) => {
   const [open, setOpen] = useState(false);
-
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {text && <Typography {...rest}>{text}</Typography>}
+    <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
+      {text && (
+        <Typography {...rest} color={textColor}>
+          {text}
+        </Typography>
+      )}
 
       <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={setOpen}>
         <IconButton

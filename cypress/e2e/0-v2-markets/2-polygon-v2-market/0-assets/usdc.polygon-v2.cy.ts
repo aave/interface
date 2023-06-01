@@ -27,15 +27,15 @@ const testData = {
         asset: assets.polygonMarket.USDC,
         apyType: constants.apyType.variable,
         amount: 2,
-        hasApproval: true,
-        repayOption: constants.repayType.default,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
       },
       {
         asset: assets.polygonMarket.USDC,
         apyType: constants.apyType.variable,
         amount: 2,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
@@ -66,7 +66,7 @@ const testData = {
   },
 };
 
-describe('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('USDC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -27,7 +28,9 @@ interface Props {
 }
 
 function HideOnScroll({ children }: Props) {
-  const trigger = useScrollTrigger();
+  const { breakpoints } = useTheme();
+  const md = useMediaQuery(breakpoints.down('md'));
+  const trigger = useScrollTrigger({ threshold: md ? 160 : 80 });
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -41,12 +44,17 @@ export function AppHeader() {
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useRootStore((state) => [
+    state.mobileDrawerOpen,
+    state.setMobileDrawerOpen,
+  ]);
+
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (mobileMenuOpen && !md) {
-      setMobileMenuOpen(false);
+    if (mobileDrawerOpen && !md) {
+      setMobileDrawerOpen(false);
     }
     if (walletWidgetOpen) {
       setWalletWidgetOpen(false);
@@ -55,6 +63,16 @@ export function AppHeader() {
   }, [md]);
 
   const headerHeight = 48;
+
+  const toggleWalletWigit = (state: boolean) => {
+    if (md) setMobileDrawerOpen(state);
+    setWalletWidgetOpen(state);
+  };
+
+  const toggleMobileMenu = (state: boolean) => {
+    if (md) setMobileDrawerOpen(state);
+    setMobileMenuOpen(state);
+  };
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
@@ -149,7 +167,7 @@ export function AppHeader() {
         {!mobileMenuOpen && (
           <WalletWidget
             open={walletWidgetOpen}
-            setOpen={setWalletWidgetOpen}
+            setOpen={toggleWalletWigit}
             headerHeight={headerHeight}
           />
         )}
@@ -162,7 +180,7 @@ export function AppHeader() {
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <MobileMenu
               open={mobileMenuOpen}
-              setOpen={setMobileMenuOpen}
+              setOpen={toggleMobileMenu}
               headerHeight={headerHeight}
             />
           </Box>

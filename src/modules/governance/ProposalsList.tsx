@@ -1,21 +1,17 @@
-import { ProposalState } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
-import {
-  Box,
-  LinearProgress,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
+import { LinearProgress, Paper } from '@mui/material';
+import Fuse from 'fuse.js';
 import { GovernancePageProps } from 'pages/governance/index.governance';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
+import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalListItem } from './ProposalListItem';
 import { enhanceProposalWithTimes } from './utils/formatProposal';
 
@@ -25,10 +21,14 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const [updatingPendingProposals, setUpdatingPendingProposals] = useState(true);
   const [proposals, setProposals] = useState(initialProposals);
   const [proposalFilter, setProposalFilter] = useState<string>('all');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setProposalFilter(event.target.value as string);
-  };
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loadedIndex, setLoadedIndex] = useState(1);
+  const searchEngineRef = useRef(
+    new Fuse(initialProposals, {
+      keys: ['ipfs.title', 'ipfs.shortDescription'],
+      threshold: 0.3,
+    })
+  );
 
   async function fetchNewProposals() {
     try {
@@ -43,7 +43,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             proposal.ipfsHash,
             governanceConfig.ipfsGateway
           );
-          nextProposals.push({
+          nextProposals.unshift({
             ipfs: {
               id: i,
               originalHash: proposal.ipfsHash,
@@ -53,7 +53,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             prerendered: false,
           });
         }
-        setProposals((p) => [...p, ...nextProposals]);
+        nextProposals.map((elem) => searchEngineRef.current.add(elem));
+        setProposals((p) => [...nextProposals, ...p]);
       }
       setLoadingNewProposals(false);
     } catch (e) {
@@ -65,8 +66,6 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     const pendingProposals = proposals.filter(
       ({ proposal }) => !isProposalStateImmutable(proposal)
     );
-    console.log('update pending proposals', pendingProposals.length);
-
     try {
       if (pendingProposals.length) {
         const updatedProposals = await Promise.all(
@@ -79,8 +78,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         );
         setProposals((proposals) => {
           updatedProposals.map((proposal) => {
-            proposals[proposal.id].proposal = proposal;
-            proposals[proposal.id].prerendered = false;
+            proposals[proposals.length - 1 - proposal.id].proposal = proposal;
+            proposals[proposals.length - 1 - proposal.id].prerendered = false;
           });
           return proposals;
         });
@@ -94,50 +93,73 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(fetchNewProposals, 60000, false, [proposals.length]);
   usePolling(updatePendingProposals, 30000, false, [proposals.length]);
 
+  const filteredByState = useMemo(() => {
+    // filters by proposal state and pins large executors at the top
+
+    const filtered = proposals
+      .filter((item) => proposalFilter === 'all' || item.proposal.state === proposalFilter)
+      .reduce(
+        (
+          accumulator: GovernancePageProps['proposals'],
+          current: GovernancePageProps['proposals'][0]
+        ) =>
+          current.proposal.state === 'Active' &&
+          current.proposal.executor === AaveGovernanceV2.LONG_EXECUTOR
+            ? [current, ...accumulator]
+            : [...accumulator, current],
+        []
+      );
+
+    searchEngineRef.current.setCollection(filtered);
+    return filtered;
+  }, [proposals, proposalFilter]);
+
+  const filteredByQuery = useMemo(() => {
+    if (!searchQuery) return filteredByState;
+    const filteredByQuery = searchEngineRef.current.search(searchQuery);
+    return filteredByQuery.map((elem) => elem.item);
+  }, [searchQuery, filteredByState]);
+
+  const loadedProposals = useMemo(
+    () => filteredByQuery.slice(0, loadedIndex * 10),
+    [filteredByQuery, loadedIndex]
+  );
+
+  const onSearchTermChange = (value: string) => {
+    setLoadedIndex(1);
+    setSearchQuery(value);
+  };
+
+  const handleLoadMore = () => {
+    setLoadedIndex((loadedIndex) => loadedIndex + 1);
+  };
+
   return (
-    <div>
-      <Box
-        sx={{
-          px: 6,
-          py: 8,
-          display: 'flex',
-          alignItems: 'center',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Typography variant="h3" sx={{ flexGrow: 1 }}>
-          <Trans>Proposals</Trans>
-        </Typography>
-        <Typography sx={{ mx: 4 }}>
-          <Trans>Filter</Trans>
-        </Typography>
-        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
-          <MenuItem value="all">
-            <Trans>All proposals</Trans>
-          </MenuItem>
-          {Object.keys(ProposalState).map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
-      </Box>
+    <Paper>
+      <ProposalListHeader
+        proposalFilter={proposalFilter}
+        handleProposalFilterChange={setProposalFilter}
+        handleSearchQueryChange={onSearchTermChange}
+      />
       {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
-      {proposals
-        .slice()
-        .reverse()
-        .filter(
-          (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
-        )
-        .map(({ proposal, prerendered, ipfs }) => (
-          <ProposalListItem
-            key={proposal.id}
-            proposal={proposal}
-            ipfs={ipfs}
-            prerendered={prerendered}
-          />
-        ))}
-    </div>
+      {loadedProposals.length ? (
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={handleLoadMore}
+          hasMore={loadedProposals.length < filteredByQuery.length}
+        >
+          {loadedProposals.map(({ proposal, prerendered, ipfs }) => (
+            <ProposalListItem
+              key={proposal.id}
+              proposal={proposal}
+              ipfs={ipfs}
+              prerendered={prerendered}
+            />
+          ))}
+        </InfiniteScroll>
+      ) : (
+        <NoSearchResults searchTerm={searchQuery} />
+      )}
+    </Paper>
   );
 }

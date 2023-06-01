@@ -46,6 +46,7 @@ const head = [
   },
   {
     title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    sortKey: 'typeAPY',
   },
 ];
 
@@ -183,10 +184,7 @@ export const BorrowedPositionsList = () => {
                 {downToXSM ? (
                   <BorrowedPositionsListMobileItem {...item} />
                 ) : (
-                  <BorrowedPositionsListItem
-                    {...item}
-                    key={item.underlyingAsset + item.borrowRateMode}
-                  />
+                  <BorrowedPositionsListItem {...item} />
                 )}
               </AssetCapsProvider>
             </Fragment>

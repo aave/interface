@@ -9,7 +9,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { BigNumber, providers } from 'ethers';
+import { BigNumber, PopulatedTransaction, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -39,7 +39,7 @@ export type Web3Data = {
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
-  sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
@@ -73,6 +73,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
+  const setAccountLoading = useRootStore((store) => store.setAccountLoading);
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -305,7 +306,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
   // If we used current account then the tx could get executed
-  const sendTx = async (txData: transactionType): Promise<TransactionResponse> => {
+  const sendTx = async (
+    txData: transactionType | PopulatedTransaction
+  ): Promise<TransactionResponse> => {
     if (provider) {
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);
@@ -419,6 +422,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     setAccount(account?.toLowerCase());
   }, [account]);
+
+  useEffect(() => {
+    setAccountLoading(loading);
+  }, [loading]);
 
   return (
     <Web3Context.Provider

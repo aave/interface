@@ -6,22 +6,27 @@ import {
   IconButton,
   SvgIcon,
   Typography,
+  TypographyProps,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-import { MarketAssetSearchInput } from './MarketAssetSearchInput';
+import { SearchInput } from './SearchInput';
 
-interface MarketAssetListTitleProps {
-  marketTitle: string;
+interface TitleWithSearchBarProps<C extends React.ElementType> {
   onSearchTermChange: (value: string) => void;
+  searchPlaceholder: string;
+  titleProps?: TypographyProps<C, { component?: C }>;
+  title: ReactNode;
 }
 
-export const MarketAssetListTitle = ({
-  marketTitle,
+export const TitleWithSearchBar = <T extends React.ElementType>({
   onSearchTermChange,
-}: MarketAssetListTitleProps) => {
+  searchPlaceholder,
+  titleProps,
+  title,
+}: TitleWithSearchBarProps<T>) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
@@ -45,8 +50,8 @@ export const MarketAssetListTitle = ({
       }}
     >
       {showMarketTitle && (
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          {marketTitle} <Trans>assets</Trans>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }} {...titleProps}>
+          {title}
         </Typography>
       )}
       <Box
@@ -68,7 +73,16 @@ export const MarketAssetListTitle = ({
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <MarketAssetSearchInput onSearchTermChange={onSearchTermChange} />
+            <SearchInput
+              wrapperSx={{
+                width: {
+                  xs: '100%',
+                  sm: '340px',
+                },
+              }}
+              placeholder={searchPlaceholder}
+              onSearchTermChange={onSearchTermChange}
+            />
             {sm && (
               <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
                 <Typography variant="buttonM">

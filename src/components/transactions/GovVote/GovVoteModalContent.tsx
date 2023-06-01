@@ -1,11 +1,12 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -39,6 +40,7 @@ export const GovVoteModalContent = ({
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { palette } = useTheme();
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -73,7 +75,32 @@ export const GovVoteModalContent = ({
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action={<Trans>Vote</Trans>} />;
+
+  if (txState.success)
+    return (
+      <TxSuccessView
+        customAction={
+          <Box mt={5}>
+            <Button
+              component="a"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://lenster.xyz/?url=${
+                window.location.href
+              }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
+              startIcon={
+                <LensIcon
+                  color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
+                />
+              }
+            >
+              <Trans>Share on Lens</Trans>
+            </Button>
+          </Box>
+        }
+        customText={<Trans>Thank you for voting!!</Trans>}
+      />
+    );
 
   return (
     <>

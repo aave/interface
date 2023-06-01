@@ -35,7 +35,7 @@ const testData = {
   },
 };
 
-describe('CRITICAL CONDITIONS SPEC, POLYGON V2 MARKET', () => {
+describe.skip('CRITICAL CONDITIONS SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

@@ -1,6 +1,7 @@
 import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
+import { queryClient } from 'pages/_app.page';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
@@ -9,6 +10,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -63,9 +65,8 @@ export const useParaSwapTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-    useBackgroundDataProvider();
-  const { walletApprovalMethodPreference, generateSignatureRequst } = useRootStore();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
+  const { walletApprovalMethodPreference, generateSignatureRequest } = useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -107,8 +108,7 @@ export const useParaSwapTransactionHandler = ({
       try {
         await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
-
-        refetchWalletBalances();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
@@ -136,7 +136,7 @@ export const useParaSwapTransactionHandler = ({
       try {
         // deadline is an hour after signature
         const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-        const unsingedPayload = await generateSignatureRequst({
+        const unsingedPayload = await generateSignatureRequest({
           token: underlyingAsset,
           amount: amount,
           deadline,
