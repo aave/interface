@@ -1,6 +1,6 @@
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -234,6 +234,8 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       },
     ];
 
+    const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+
     return (
       <>
         <svg width={width} height={height}>
@@ -431,12 +433,19 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                 </Typography>
               </Box>
 
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: isMobile ? '180px' : '100%',
+                  mb: 2,
+                }}
+              >
                 {(tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
                   parseFloat(reserve.totalDebtUSD) >
                 0 ? (
                   <>
-                    <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
                       <Trans>Borrow amount to reach {tooltipData.utilization}% utilization</Trans>
                     </Typography>
                     <Typography variant="main12" color="primary">
@@ -452,7 +461,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   </>
                 ) : (
                   <>
-                    <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
                       <Trans>
                         Repayment amount to reach {tooltipData.utilization}% utilization
                       </Trans>
