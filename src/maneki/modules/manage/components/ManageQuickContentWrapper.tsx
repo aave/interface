@@ -12,6 +12,7 @@ import {
 import { BigNumber } from 'ethers';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { countDecimals, toWeiString } from '../utils/stringConverter';
 
@@ -114,13 +115,11 @@ export default function ManageQuickContentWrapper({
           <Typography fontWeight={600} fontSize={12}>
             APR
           </Typography>
-          <Typography fontWeight={800} fontSize={16}>
-            {aprValue} %
-          </Typography>
+          <FormattedNumber value={aprValue} percent sx={{ fontWeight: 800, fontSize: 16 }} />
         </Box>
       </Box>
       {descriptions.map((description, i) => (
-        <Typography key={i} fontWeight={600} fontSize={'14px'}>
+        <Typography key={i} fontWeight={500} fontSize={'14px'}>
           {description}
         </Typography>
       ))}
@@ -128,9 +127,12 @@ export default function ManageQuickContentWrapper({
         <Typography fontSize={16} fontWeight={500}>
           <Trans>Wallet Balance</Trans> :
         </Typography>
-        <Typography fontSize={16} fontWeight={600}>
-          {balancePAW} PAW
-        </Typography>
+        <FormattedNumber
+          value={balancePAW}
+          visibleDecimals={7}
+          sx={{ fontWeight: 500, fontSize: 16 }}
+          symbol="PAW"
+        />
       </Box>
       <Box
         sx={{

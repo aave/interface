@@ -82,11 +82,6 @@ const ClaimAllVestTopPanel = () => {
       }
     };
     getTokensAddress();
-    // async function to get lending protocol a token
-    //   const aTokensAddresses = lendingProtocolContract.getAllATokens();
-
-    // chefIncentivesContract.claim(currentAccount, aTokensAddresses);
-    // then another fucntion to pass
   }, [currentAccount, provider]);
   return (
     <Box

@@ -87,13 +87,25 @@ export const ManageTopPanel = () => {
               symbolsColor={theme.palette.text.secondary}
               symbolsVariant={symbolsVariant}
             />
-            <Box>
+            <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
-                <Trans>Stake</Trans> {utils.formatUnits(stakedPAW, 18)}
+                <Trans>Stake</Trans>:
               </Typography>
+              <FormattedNumber
+                value={utils.formatUnits(stakedPAW, 18)}
+                visibleDecimals={7}
+                symbol="PAW"
+              />
+            </Box>
+            <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
-                <Trans>Lock</Trans> {utils.formatUnits(lockedPAW, 18)}
+                <Trans>Lock</Trans>:
               </Typography>
+              <FormattedNumber
+                value={utils.formatUnits(lockedPAW, 18)}
+                visibleDecimals={7}
+                symbol="PAW"
+              />
             </Box>
           </>
         ) : (
