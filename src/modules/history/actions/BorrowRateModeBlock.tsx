@@ -7,15 +7,12 @@ import { ActionFields, TransactionHistoryItem } from '../types';
 
 export const BorrowRateModeBlock = ({
   swapBorrowRateTx,
-  from,
+  borrowRateMode,
 }: {
   swapBorrowRateTx: TransactionHistoryItem<ActionFields['SwapBorrowRate']>;
-  from?: boolean;
+  borrowRateMode: string;
 }) => {
-  if (
-    (from && swapBorrowRateTx.borrowRateModeFrom === 'Variable') ||
-    swapBorrowRateTx.borrowRateModeFrom.toString() === '2'
-  ) {
+  if (borrowRateMode === 'Variable' || borrowRateMode === '2') {
     return (
       <>
         <Typography variant="description" color="text.primary" pr={0.5}>

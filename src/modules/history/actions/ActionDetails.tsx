@@ -353,11 +353,17 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const formattedSwapReserve = fetchIconSymbolAndNameHistorical(swapBorrowRateTx.reserve);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <BorrowRateModeBlock from={true} swapBorrowRateTx={swapBorrowRateTx} />
+          <BorrowRateModeBlock
+            borrowRateMode={swapBorrowRateTx.borrowRateModeFrom.toString()}
+            swapBorrowRateTx={swapBorrowRateTx}
+          />
           <SvgIcon sx={{ fontSize: '20px', px: 1 }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
-          <BorrowRateModeBlock swapBorrowRateTx={swapBorrowRateTx} />
+          <BorrowRateModeBlock
+            borrowRateMode={swapBorrowRateTx.borrowRateModeTo.toString()}
+            swapBorrowRateTx={swapBorrowRateTx}
+          />
           <Typography variant="caption" color="text.secondary" px={2}>
             <Trans>for</Trans>
           </Typography>
