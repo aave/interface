@@ -64,6 +64,7 @@ export default function MyApp(props: MyAppProps) {
   React.useEffect(() => {
     if (MIXPANEL_TOKEN) {
       mixpanel.init(MIXPANEL_TOKEN, {
+        ip: false,
         api_host: MIXPANEL_API_HOST,
       });
     } else {
