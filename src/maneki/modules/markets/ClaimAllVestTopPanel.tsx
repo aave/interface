@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { NoData } from 'src/components/primitives/NoData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import CHEF_INCENTIVES_CONTROLLER_ABI from 'src/maneki/abi/chefIncentivesControllerABI';
 import LENDING_PROTOCOL_DATA_PROVIDER_ABI from 'src/maneki/abi/lendingProtocolDataProviderABI';
@@ -45,6 +46,7 @@ const ClaimAllVestTopPanel = () => {
       const promise = await chefIncentivesContract.claim(currentAccount, addresses);
       await promise.wait(1);
       setButtonState('success');
+      setTotalVests(BigNumber.from(-1));
     } catch (error) {
       setButtonState('error');
     }
@@ -90,6 +92,7 @@ const ClaimAllVestTopPanel = () => {
     };
     getTokensAddress();
     setRefresh(false);
+    //eslint-disable-next-line
   }, [currentAccount, provider, refresh]);
   return (
     <Box
@@ -106,12 +109,16 @@ const ClaimAllVestTopPanel = () => {
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
         <Typography sx={{ fontWeight: '500', fontSize: '14px' }}>Total Vests: </Typography>
-        <FormattedNumber
-          value={utils.formatUnits(totalVests, 18)}
-          visibleDecimals={7}
-          sx={{ fontWeight: '500', fontSize: '14px' }}
-          symbol="PAW"
-        />
+        {totalVests.lt(0) ? (
+          <NoData />
+        ) : (
+          <FormattedNumber
+            value={utils.formatUnits(totalVests, 18)}
+            visibleDecimals={7}
+            sx={{ fontWeight: '500', fontSize: '14px' }}
+            symbol="PAW"
+          />
+        )}
       </Box>
 
       {buttonState === 'enable' && (
