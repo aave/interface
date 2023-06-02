@@ -2309,6 +2309,10 @@ msgstr "Transaction failed"
 msgid "Transaction history"
 msgstr "Transaction history"
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history is not currently available for this market"
+msgstr "Transaction history is not currently available for this market"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Transaction overview"
