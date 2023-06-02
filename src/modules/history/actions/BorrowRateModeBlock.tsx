@@ -12,7 +12,10 @@ export const BorrowRateModeBlock = ({
   swapBorrowRateTx: TransactionHistoryItem<ActionFields['SwapBorrowRate']>;
   from?: boolean;
 }) => {
-  if (from && swapBorrowRateTx.borrowRateModeFrom === 'Variable') {
+  if (
+    (from && swapBorrowRateTx.borrowRateModeFrom === 'Variable') ||
+    swapBorrowRateTx.borrowRateModeFrom.toString() === '2'
+  ) {
     return (
       <>
         <Typography variant="description" color="text.primary" pr={0.5}>
