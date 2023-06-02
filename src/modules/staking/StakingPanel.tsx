@@ -23,7 +23,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
 
@@ -301,8 +301,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 )
               }
               event={{
-                eventName: STAKE.COOLDOWN_INFO,
+                eventName: GENERAL.TOOL_TIP,
                 eventParams: {
+                  tooltip: 'Staking cooldown',
                   funnel: 'Staking Page',
                   assetName: stakedToken,
                 },

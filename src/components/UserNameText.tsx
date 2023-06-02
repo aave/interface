@@ -49,7 +49,7 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
             href={link}
             target="_blank"
             sx={{ display: 'flex' }}
-            onClick={() => trackEvent(GENERAL.ETHERSCAN_LINK, { funnel: funnel })}
+            onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { funnel: funnel, Link: 'Etherscan' })}
           >
             <SvgIcon sx={{ fontSize: iconSize }}>
               <ExternalLinkIcon />

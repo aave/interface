@@ -8,7 +8,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export function VotingPowerInfoPanel() {
   const { currentAccount } = useWeb3Context();
@@ -40,8 +40,9 @@ export function VotingPowerInfoPanel() {
               variant="description"
               textColor="text.secondary"
               event={{
-                eventName: GOVERNANCE_PAGE.VOTING_POWER_INFO_ICON,
+                eventName: GENERAL.TOOL_TIP,
                 eventParams: {
+                  tooltip: 'Voting Power',
                   funnel: 'Governance Page',
                 },
               }}
@@ -71,8 +72,9 @@ export function VotingPowerInfoPanel() {
               variant="description"
               textColor="text.secondary"
               event={{
-                eventName: GOVERNANCE_PAGE.PROP_POWER_INFO_ICON,
+                eventName: GENERAL.TOOL_TIP,
                 eventParams: {
+                  tooltip: 'Proposition Power',
                   funnel: 'Governance Page',
                 },
               }}

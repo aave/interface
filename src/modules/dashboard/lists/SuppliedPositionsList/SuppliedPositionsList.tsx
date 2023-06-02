@@ -8,7 +8,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
@@ -45,8 +45,8 @@ const head = [
     title: (
       <CollateralSwitchTooltip
         event={{
-          eventName: DASHBOARD.TOOLTIP_COLLATERAL_SWITCH,
-          eventParams: {},
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'Collateral Switch' },
         }}
         text={<Trans>Collateral</Trans>}
         key="Collateral"
@@ -143,8 +143,8 @@ export const SuppliedPositionsList = () => {
                 tooltip={
                   <TotalSupplyAPYTooltip
                     event={{
-                      eventName: DASHBOARD.TOTAL_SUPPLIED_TOOLTIP_APY,
-                      eventParams: {},
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Supplied APY' },
                     }}
                   />
                 }
@@ -155,8 +155,8 @@ export const SuppliedPositionsList = () => {
                 tooltip={
                   <CollateralTooltip
                     event={{
-                      eventName: DASHBOARD.TOOLTIP_SUPPLIED_COLLATERAL,
-                      eventParams: {},
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Supplied Collateral' },
                     }}
                   />
                 }

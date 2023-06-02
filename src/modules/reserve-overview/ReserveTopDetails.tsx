@@ -20,7 +20,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -254,7 +254,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
               <Link
                 onClick={() =>
-                  trackEvent(RESERVE_DETAILS.ORACLE_PRICE, {
+                  trackEvent(GENERAL.EXTERNAL_LINK, {
+                    Link: 'Oracle Price',
                     oracle: poolReserve?.priceOracle,
                     assetName: poolReserve.name,
                     asset: poolReserve.underlyingAsset,

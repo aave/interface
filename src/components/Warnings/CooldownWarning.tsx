@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../primitives/Link';
 import { Warning } from '../primitives/Warning';
@@ -21,7 +21,11 @@ export const CooldownWarning = () => {
           <Link
             href="https://docs.aave.com/faq/migration-and-staking"
             fontWeight={500}
-            onClick={() => trackEvent(STAKE.COOLDOWN_WARNING_LINK)}
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                Link: 'Cooldown Period Warning',
+              })
+            }
           >
             <Trans>Learn more</Trans>
           </Link>

@@ -7,7 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useRootStore } from 'src/store/root';
 import { ExplorerLinkBuilderProps } from 'src/ui-config/networksConfig';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 interface ReserveFactorOverviewProps {
   collectorContract: string;
@@ -38,8 +38,9 @@ export const ReserveFactorOverview = ({
         title={
           <ReserveFactorTooltip
             event={{
-              eventName: RESERVE_DETAILS.RESERVE_FACTOR_INFO,
+              eventName: GENERAL.TOOL_TIP,
               eventParams: {
+                tooltip: 'Reserve factor',
                 asset: reserveAsset,
                 assetName: reserveName,
               },
@@ -69,7 +70,8 @@ export const ReserveFactorOverview = ({
       >
         <Link
           onClick={() => {
-            trackEvent(RESERVE_DETAILS.COLLECTOR_CONTRACT, {
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              Link: 'Collector Contract ' + reserveName,
               asset: reserveAsset,
               assetName: reserveName,
             });

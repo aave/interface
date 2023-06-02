@@ -14,7 +14,7 @@ export const GetABPToken = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    trackEvent(STAKE.GET_ABP_TOKEN, {});
+    trackEvent(STAKE.OPEN_GET_ABP_TOKEN, {});
     setAnchorEl(event.currentTarget);
   };
 

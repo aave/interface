@@ -67,7 +67,9 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
           <Avatar src={twitterAvatar ?? blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
           <Link
             href={`https://etherscan.io/address/${address}`}
-            onClick={() => trackEvent(GENERAL.ETHERSCAN_LINK, { funnel: 'AIP VOTERS' })}
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
+            }
           >
             <Typography
               variant="subheader1"
