@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Paper,
   SvgIcon,
   Typography,
   useMediaQuery,
@@ -15,6 +16,8 @@ import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
+import LoveGhost from '/public/loveGhost.svg';
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
@@ -37,6 +40,7 @@ export const HistoryWrapper = () => {
     fetchNextPage,
     isFetchingNextPage,
     fetchForDownload,
+    subgraphUrl,
   } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
@@ -95,7 +99,6 @@ export const HistoryWrapper = () => {
     [fetchNextPage, isLoading]
   );
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
@@ -107,6 +110,27 @@ export const HistoryWrapper = () => {
     () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
     [searchQuery, filterQuery, flatTxns]
   );
+
+  if (!subgraphUrl) {
+    return (
+      <Paper
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          p: 4,
+          flex: 1,
+        }}
+      >
+        <LoveGhost style={{ marginBottom: '16px' }} />
+        <Typography variant={downToMD ? 'h4' : 'h3'}>
+          <Trans>Transaction history is not currently available for this market</Trans>
+        </Typography>
+      </Paper>
+    );
+  }
 
   if (!currentAccount) {
     return (
@@ -199,10 +223,7 @@ export const HistoryWrapper = () => {
               const isLastItem = index === txns.length - 1;
               return (
                 <div ref={isLastItem ? lastElementRef : null} key={index}>
-                  <TransactionRowItem
-                    transaction={transaction as TransactionHistoryItemUnion}
-                    downToXSM={downToXSM}
-                  />
+                  <TransactionRowItem transaction={transaction as TransactionHistoryItemUnion} />
                 </div>
               );
             })}

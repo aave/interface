@@ -252,7 +252,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli',
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli', needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Goerli.POOL,
@@ -299,7 +299,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',
+    //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
@@ -345,7 +345,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',
+    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fuji.POOL,
@@ -364,7 +364,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
@@ -429,7 +429,7 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom-testnet',
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom-testnet',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
@@ -514,7 +514,7 @@ export const marketsData: {
       incentives: true,
       faucet: true,
     },
-    subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',
+    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Mumbai.POOL,
