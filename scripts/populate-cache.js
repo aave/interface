@@ -33744,6 +33744,9 @@ var require_types2 = __commonJS({
       ProtocolAction2["vote"] = "vote";
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
+      ProtocolAction2["stake"] = "stake";
+      ProtocolAction2["claimRewards"] = "claimRewards";
+      ProtocolAction2["setUsageAsCollateral"] = "setUsageAsCollateral";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
     (function(GovernanceVote2) {
@@ -35354,6 +35357,18 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
         recommended: "125000"
+      },
+      [types_1.ProtocolAction.stake]: {
+        limit: "395000",
+        recommended: "395000"
+      },
+      [types_1.ProtocolAction.claimRewards]: {
+        limit: "275000",
+        recommended: "275000"
+      },
+      [types_1.ProtocolAction.setUsageAsCollateral]: {
+        limit: "138000",
+        recommended: "138000"
       }
     };
     exports2.mintAmountsPerToken = {
@@ -43035,13 +43050,14 @@ var require_lendingPool_contract = __commonJS({
           rawTxMethod: () => __async(this, null, function* () {
             return lendingPoolContract.populateTransaction.setUserUseReserveAsCollateral(reserve, usageAsCollateral);
           }),
-          from: user
+          from: user,
+          action: types_1.ProtocolAction.setUsageAsCollateral
         });
         return [
           {
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback)
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.setUsageAsCollateral)
           }
         ];
       }
@@ -44115,17 +44131,17 @@ var require_staking_contract = __commonJS({
             });
             txs.push(approveTx);
           }
-          console.log(stakingContract);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
               return stakingContract.populateTransaction.stake(onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, convertedAmount);
             }),
-            from: user
+            from: user,
+            action: types_1.ProtocolAction.stake
           });
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.STAKE_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.stake)
           });
           return txs;
         });
@@ -44191,13 +44207,14 @@ var require_staking_contract = __commonJS({
               return stakingContract.populateTransaction.claimRewards(user, convertedAmount);
             }),
             from: user,
-            gasSurplus: 20
+            gasSurplus: 20,
+            action: types_1.ProtocolAction.claimRewards
           });
           return [
             {
               tx: txCallback,
               txType: types_1.eEthereumTxType.STAKE_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback)
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.claimRewards)
             }
           ];
         });
