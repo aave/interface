@@ -1,9 +1,12 @@
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
+import { Warning } from 'src/components/primitives/Warning';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -38,10 +41,14 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, skipLoad, disa
     state,
     gasPriceData: { data },
   } = useGasStation();
+
+  const { walletBalances } = useWalletBalances();
+  const nativeBalanceUSD = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD;
+
   const { reserves } = useAppDataContext();
-  const {
-    currentNetworkConfig: { wrappedBaseAssetSymbol },
-  } = useProtocolDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const { name, baseAssetSymbol, wrappedBaseAssetSymbol } = currentNetworkConfig;
+
   const { loadingTxns } = useModalContext();
 
   const wrappedAsset = reserves.find(
@@ -54,19 +61,29 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, skipLoad, disa
       : undefined;
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
-      <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
+    <Stack gap={6}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+        <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
 
-      {loadingTxns && !skipLoad ? (
-        <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-      ) : totalGasCostsUsd && !disabled ? (
-        <>
-          <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
-          <GasTooltip />
-        </>
-      ) : (
-        '-'
+        {loadingTxns && !skipLoad ? (
+          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+        ) : totalGasCostsUsd && !disabled ? (
+          <>
+            <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+            <GasTooltip />
+          </>
+        ) : (
+          '-'
+        )}
+      </Box>
+      {!disabled && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
+            You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}
+            {name} network. Please deposit {baseAssetSymbol} from another account.
+          </Warning>
+        </Box>
       )}
-    </Box>
+    </Stack>
   );
 };
