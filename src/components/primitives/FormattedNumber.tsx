@@ -9,14 +9,23 @@ interface CompactNumberProps {
   value: string | number;
   visibleDecimals?: number;
   roundDown?: boolean;
+  compactThreshold?: number;
 }
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-function CompactNumber({ value, visibleDecimals = 2, roundDown }: CompactNumberProps) {
+function CompactNumber({
+  value,
+  visibleDecimals = 2,
+  roundDown,
+  compactThreshold,
+}: CompactNumberProps) {
   const bnValue = valueToBigNumber(value);
 
-  const integerPlaces = bnValue.toFixed(0).length;
+  let integerPlaces = bnValue.toFixed(0).length;
+  if (compactThreshold && Number(value) <= compactThreshold) {
+    integerPlaces = 0;
+  }
   const significantDigitsGroup = Math.min(
     Math.floor(integerPlaces ? (integerPlaces - 1) / 3 : 0),
     POSTFIXES.length - 1
@@ -50,6 +59,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsColor?: string;
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
+  compactThreshold?: number;
 }
 
 export function FormattedNumber({
@@ -61,6 +71,7 @@ export function FormattedNumber({
   symbolsVariant,
   symbolsColor,
   roundDown,
+  compactThreshold,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
@@ -125,7 +136,12 @@ export function FormattedNumber({
           minimumFractionDigits: decimals,
         }).format(formattedNumber)
       ) : (
-        <CompactNumber value={formattedNumber} visibleDecimals={decimals} roundDown={roundDown} />
+        <CompactNumber
+          value={formattedNumber}
+          visibleDecimals={decimals}
+          roundDown={roundDown}
+          compactThreshold={compactThreshold}
+        />
       )}
 
       {percent && (

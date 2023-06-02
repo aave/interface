@@ -1,3 +1,5 @@
+import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
+
 /**
  * Maps onchain symbols to different symbols.
  * This is useful when you want to explode symbols via _ to render multiple symbols or when the symbol has a bridge prefix or suffix.
@@ -83,33 +85,55 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   LUSD: 'LUSD Stablecoin',
 };
 
-export function fetchIconSymbolAndName({
-  underlyingAsset,
-  symbol,
-  name,
-}: {
+export interface IconSymbolInterface {
   underlyingAsset: string;
   symbol: string;
   name?: string;
-}) {
-  // guni symbols are just broken (G-UNI for all tokens)
-  if (
-    underlyingAsset.toLowerCase() === '0x50379f632ca68d36e50cfbc8f78fe16bd1499d1e'.toLowerCase()
-  ) {
-    return { iconSymbol: 'GUNI_DAI_USDC', name: 'G-UNI DAI/USDC', symbol };
-  }
-  if (
-    underlyingAsset.toLowerCase() === '0xd2eec91055f07fe24c9ccb25828ecfefd4be0c41'.toLowerCase()
-  ) {
-    return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT', symbol };
-  }
-  if (
-    underlyingAsset.toLowerCase() === '0xa693B19d2931d498c5B318dF961919BB4aee87a5'.toLowerCase()
-  ) {
-    return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
+}
+
+interface IconMapInterface {
+  iconSymbol: string;
+  name?: string;
+}
+
+export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
+  const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0x50379f632ca68d36e50cfbc8f78fe16bd1499d1e': {
+      iconSymbol: 'GUNI_DAI_USDC',
+      name: 'G-UNI DAI/USDC',
+    },
+    '0xd2eec91055f07fe24c9ccb25828ecfefd4be0c41': {
+      iconSymbol: 'GUNI_USDC_USDT',
+      name: 'G-UNI USDC/USDT',
+    },
+    '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
+    '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
+    '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5': { iconSymbol: 'BPT_WBTC_WETH' },
+    '0xdfc14d2af169b0d36c4eff567ada9b2e0cae044f': { iconSymbol: 'UNI_AAVE_WETH' },
+    '0xb6909b960dbbe7392d405429eb2b3649752b4838': { iconSymbol: 'UNI_BAT_WETH' },
+    '0x3da1313ae46132a397d90d95b1424a9a7e3e0fce': { iconSymbol: 'UNI_CRV_WETH' },
+    '0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5': { iconSymbol: 'UNI_DAI_USDC' },
+    '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11': { iconSymbol: 'UNI_DAI_WETH' },
+    '0xa2107fa5b38d9bbd2c461d6edf11b11a50f6b974': { iconSymbol: 'UNI_LINK_WETH' },
+    '0xc2adda861f89bbb333c90c492cb837741916a225': { iconSymbol: 'UNI_MKR_WETH' },
+    '0x8bd1661da98ebdd3bd080f0be4e6d9be8ce9858c': { iconSymbol: 'UNI_REN_WETH' },
+    '0x43ae24960e5534731fc831386c07755a2dc33d47': { iconSymbol: 'UNI_SNX_WETH' },
+    '0xd3d2e2692501a5c9ca623199d38826e513033a17': { iconSymbol: 'UNI_UNI_WETH' },
+    '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc': { iconSymbol: 'UNI_USDC_WETH' },
+    '0x004375dff511095cc5a197a54140a24efef3a416': { iconSymbol: 'UNI_BTC_USDC' },
+    '0xbb2b8038a1640196fbe3e38816f3e67cba72d940': { iconSymbol: 'UNI_WBTC_WETH' },
+    '0x2fdbadf3c4d5a8666bc06645b8358ab803996e28': { iconSymbol: 'UNI_YFI_WETH' },
+  };
+
+  const lowerUnderlyingAsset = underlyingAsset.toLowerCase();
+  if (underlyingAssetMap.hasOwnProperty(lowerUnderlyingAsset)) {
+    return {
+      ...underlyingAssetMap[lowerUnderlyingAsset],
+      symbol,
+    };
   }
 
-  const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
+  const unifiedSymbol = unPrefixSymbol((SYMBOL_MAP[symbol] || symbol).toUpperCase(), 'AMM');
   return {
     iconSymbol: unifiedSymbol,
     name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || name || unifiedSymbol,
