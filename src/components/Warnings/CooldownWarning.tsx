@@ -15,7 +15,7 @@ export const CooldownWarning = () => {
       </Typography>
       <Typography variant="caption">
         <Trans>
-          The cooldown period is the time required prior to unstaking your tokens (10 days). You can
+          The cooldown period is the time required prior to unstaking your tokens (20 days). You can
           only withdraw your assets from the Security Module after the cooldown period and within
           the unstake window.
           <Link

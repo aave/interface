@@ -5,6 +5,7 @@ import {
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
+import { queryClient } from 'pages/_app.page';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,6 +13,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -61,8 +63,7 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-    useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const {
@@ -118,7 +119,10 @@ export const useTransactionHandler = ({
         mounted.current && successCallback && successCallback(txnResult);
 
         updateTransaction(currentChainId, txnResult.hash, { txState: 'success', ...eventTxInfo });
-        refetchWalletBalances();
+        // refetchWalletBalances();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {

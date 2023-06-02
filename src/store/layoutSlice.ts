@@ -3,8 +3,8 @@ import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
 export type LayoutSlice = {
-  setMobileMenuOpen: (eventName: boolean) => void;
-  mobileMenuOpen: boolean;
+  setMobileDrawerOpen: (eventName: boolean) => void;
+  mobileDrawerOpen: boolean;
 };
 
 export const createLayoutSlice: StateCreator<
@@ -14,9 +14,9 @@ export const createLayoutSlice: StateCreator<
   LayoutSlice
 > = (set) => {
   return {
-    mobileMenuOpen: false,
-    setMobileMenuOpen: (value: boolean) => {
-      set({ mobileMenuOpen: value });
+    mobileDrawerOpen: false,
+    setMobileDrawerOpen: (value: boolean) => {
+      set({ mobileDrawerOpen: value });
     },
   };
 };

@@ -37,6 +37,8 @@ export const BorrowedPositionsListItem = ({
     name,
   } = reserve;
 
+  const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
+
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
@@ -96,7 +98,7 @@ export const BorrowedPositionsListItem = ({
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
+          disabled={disableBorrow}
           variant="outlined"
           onClick={() => {
             openBorrow(reserve.underlyingAsset, currentMarket, name, 'dashboard');

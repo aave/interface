@@ -53,6 +53,8 @@ export const BorrowedPositionsListMobileItem = ({
 
   const incentives = borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData;
 
+  const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -107,7 +109,7 @@ export const BorrowedPositionsListMobileItem = ({
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
+          disabled={disableBorrow}
           variant="outlined"
           onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           fullWidth

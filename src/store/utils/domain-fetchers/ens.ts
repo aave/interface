@@ -7,7 +7,6 @@ const mainnetProvider = getENSProvider();
 const getEnsName = async (address: string): Promise<string | null> => {
   try {
     const name = await mainnetProvider.lookupAddress(address);
-    console.log(name);
     return name;
   } catch (error) {
     console.error('ENS name lookup error', error);

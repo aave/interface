@@ -9,10 +9,14 @@ msgstr ""
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-04-18 12:06\n"
 =======
 "PO-Revision-Date: 2023-04-24 12:05\n"
 >>>>>>> upstream/main
+=======
+"PO-Revision-Date: 2023-06-01 18:04\n"
+>>>>>>> sync-main/main
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -30,10 +34,6 @@ msgstr "<0>Ampleforth</0> es un activo con rebase. Visita la <1>documentación</
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
 
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
-msgstr "<0>Importante: </0>Una próxima propuesta del Gobierno de Aave podría ajustar el E-Mode y plantear riesgos de liquidación para ciertas posiciones."
-
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Tolerancia de deslizamiento </0><1>{selectedSlippage}% </1><2>{0}</2>"
@@ -41,11 +41,6 @@ msgstr "<0>Tolerancia de deslizamiento </0><1>{selectedSlippage}% </1><2>{0}</2>
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "Los poseedores de AAVE (solo en la red de Ethereum) pueden stakear sus AAVE en el Módulo de Seguridad para añadir más seguridad al protocolo y ganar Incentivos de Seguridad. En el caso de un evento de déficit, se puede recortar hasta el 30% de tu stakeo para cubrir el déficit, proporcionando una capa adicional de protección al protocolo."
-
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-msgid "ACTIVATE COOLDOWN"
-msgstr "ACTIVAR COOLDOWN"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -133,6 +128,11 @@ msgstr "No se puede realizar la acción porque la reserva está pausada"
 msgid "Action requires an active reserve"
 msgstr "La acción requiere una reserva activa"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+msgid "Activate Cooldown"
+msgstr "Activar Cooldown"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Añadir a la cartera"
@@ -144,6 +144,10 @@ msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "La dirección no es un contrato"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
+msgstr "Direcciones"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -176,10 +180,6 @@ msgstr "Te permite decidir si utilizar un activo suministrado como garantía. Un
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estables</1>, donde la tasa variable puede aumentar o disminuir según la cantidad de liquidez en la reserva, y la tasa estable permanecerá igual durante la duración de tu préstamo."
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Already on cooldown"
-msgstr "Ya en cooldown"
-
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -187,9 +187,17 @@ msgstr "Ya en cooldown"
 msgid "Amount"
 msgstr "Cantidad"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Amount in cooldown"
+msgstr "Cantidad en cooldown"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "La cantidad debe ser mayor que 0"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Amount to unstake"
+msgstr "Cantidad para unstakear"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
@@ -276,7 +284,6 @@ msgstr "El activo no está listado"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "El suministro de activos está limitado a una cierta cantidad para reducir la exposición del protocolo a este activo y ayudar a manejar los riesgos implicados."
 
-#: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Assets"
@@ -391,6 +398,10 @@ msgstr "APY préstamo, estable"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "APY préstamo, variable"
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Borrow amount to reach {0}% utilization"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
@@ -761,8 +772,8 @@ msgid "Discord channel"
 msgstr "Canal de Discord"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
-msgstr "Debido a la mecánica interna de stETH requerida para el soporte del rebase, no es posible realizar un intercambio de garantías donde stETH es el token de origen."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
+msgstr "Debido a mecánicas internas de stETH requeridas para el soporte del rebase, no es posible realizar un cambio de garantía donde stETH es el token de origen."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
@@ -1436,8 +1447,8 @@ msgid "Preview tx and migrate"
 msgstr "Previsualizar la tx y migrar"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-msgstr "El impacto en el precio es la diferencia entre el valor total de los tokens de entrada intercambiados y el de los tokens de destino obtenidos (en USD), que resulta de la liquidez limitada del par del intercambio."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "El impacto del precio es la diferencia entre el valor total de los tokens de entrada cambiados y los tokens de destino obtenidos (en USD), que resulta de la liquidez limitada del par de cambio."
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
@@ -1498,6 +1509,15 @@ msgstr "Raw-Ipfs"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
 msgstr "Alcanzado"
+
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
+msgstr "Reactivar el periodo de cooldown para unstakear {0} {stakedToken}"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
+msgstr "Más información aquí."
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -1564,6 +1584,10 @@ msgstr "Pagar {symbol}"
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Pagando {symbol}"
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Repayment amount to reach {0}% utilization"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
@@ -1859,8 +1883,8 @@ msgid "Supply balance"
 msgstr "Balance de suministro"
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
-msgstr "Balance de suministro tras el intercambio"
+msgid "Supply balance after switch"
+msgstr "Balance del suministro después del cambio"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1887,20 +1911,8 @@ msgstr "Suministrando {symbol}"
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr "Intercambiar"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr "Intercambiar a"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr "Intercambiado"
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
-msgstr "Intercambiando"
+msgid "Switch"
+msgstr "Cambiar"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1921,6 +1933,18 @@ msgstr "Cambiar de red"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Tasa de cambio"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr "Cambiar a"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr "Cambiado"
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
+msgstr "Cambiando"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
@@ -1987,8 +2011,8 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "La garantía elegida no puede ser liquidada"
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
-msgstr "El período de cooldown es el tiempo requerido antes de unstakear tus tokens (10 días). Solo puedes retirar tus activos del Módulo de Seguridad después del período de cooldown y dentro de la ventana de tiempo de unstakeo.<0>Aprende más</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgstr "El periodo de cooldown es el tiempo requerido antes de unstakear tus tokens (20 días). Solo puedes retirar tus activos del Módulo de Seguridad después del periodo de cooldown y dentro de la ventana de unstakeo.<0>Aprende más</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -2256,6 +2280,10 @@ msgstr "Ventana de unstakeo"
 msgid "Unstaked"
 msgstr "Unstakeado"
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr "Actualización: Se han reportado interrupciones para WETH, WBTC, WMATIC y USDT. AIP 230 resolverá las interrupciones y el mercado funcionará con normalidad el ~26 de mayo a las 13h00 UTC."
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr "Úsalo para votar a favor o en contra de propuestas activas."
@@ -2361,6 +2389,8 @@ msgstr "Votó NAY"
 msgid "Voted YAE"
 msgstr "Votó YAE"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx

@@ -16,6 +16,7 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -58,11 +59,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         {loading ? (
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
-          <img
-            src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
-            width="40px"
-            height="40px"
-            alt=""
+          <TokenIcon
+            symbol={poolReserve.iconSymbol.toLowerCase()}
+            sx={{ height: '40px', width: '40px' }}
           />
         )}
       </Box>

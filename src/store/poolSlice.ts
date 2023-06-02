@@ -38,7 +38,7 @@ import {
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import { PopulatedTransaction, Signature, utils } from 'ethers';
+import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
@@ -114,6 +114,7 @@ export interface PoolSlice {
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
   ) => Promise<ApproveDelegationType>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
+  estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -630,6 +631,16 @@ export const createPoolSlice: StateCreator<
         },
       };
       return JSON.stringify(typeData);
+    },
+    estimateGasLimit: async (tx: PopulatedTransaction) => {
+      const provider = get().jsonRpcProvider();
+      const defaultGasLimit: BigNumber = tx.gasLimit ? tx.gasLimit : BigNumber.from('0');
+      delete tx.gasLimit;
+      let estimatedGas = await provider.estimateGas(tx);
+      estimatedGas = estimatedGas.mul(115).div(100); // Add 15% buffer
+      // use the max of the 2 values, airing on the side of caution to prioritize having enough gas vs submitting w/ most efficient gas limit
+      tx.gasLimit = estimatedGas.gt(defaultGasLimit) ? estimatedGas : defaultGasLimit;
+      return tx;
     },
   };
 };

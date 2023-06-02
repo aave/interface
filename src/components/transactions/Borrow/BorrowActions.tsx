@@ -9,6 +9,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -16,6 +17,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -41,12 +43,19 @@ export const BorrowActions = React.memo(
     blocked,
     sx,
   }: BorrowActionsProps) => {
-    const {
+    const [
       borrow,
       getCreditDelegationApprovedAmount,
       currentMarketData,
       generateApproveDelegation,
-    } = useRootStore();
+      estimateGasLimit,
+    ] = useRootStore((state) => [
+      state.borrow,
+      state.getCreditDelegationApprovedAmount,
+      state.currentMarketData,
+      state.generateApproveDelegation,
+      state.estimateGasLimit,
+    ]);
     const {
       approvalTxState,
       mainTxState,
@@ -57,8 +66,7 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-      useBackgroundDataProvider();
+    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
@@ -66,7 +74,7 @@ export const BorrowActions = React.memo(
     const approval = async () => {
       try {
         if (requiresApproval && approvedAmount) {
-          const approveDelegationTxData = generateApproveDelegation({
+          let approveDelegationTxData = generateApproveDelegation({
             debtTokenAddress:
               interestRateMode === InterestRate.Variable
                 ? poolReserve.variableDebtTokenAddress
@@ -74,8 +82,8 @@ export const BorrowActions = React.memo(
             delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
             amount: MAX_UINT_AMOUNT,
           });
-
           setApprovalTxState({ ...approvalTxState, loading: true });
+          approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
           const response = await sendTx(approveDelegationTxData);
           await response.wait(1);
           setApprovalTxState({
@@ -98,7 +106,7 @@ export const BorrowActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const txData = borrow({
+        let borrowTxData = borrow({
           amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
           reserve: poolAddress,
           interestRateMode,
@@ -107,14 +115,15 @@ export const BorrowActions = React.memo(
               ? poolReserve.variableDebtTokenAddress
               : poolReserve.stableDebtTokenAddress,
         });
-        const response = await sendTx(txData);
+        borrowTxData = await estimateGasLimit(borrowTxData);
+        const response = await sendTx(borrowTxData);
         await response.wait(1);
         setMainTxState({
           txHash: response.hash,
           loading: false,
           success: true,
         });
-        refetchWalletBalances();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (error) {

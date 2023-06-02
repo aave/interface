@@ -3,6 +3,7 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
@@ -11,6 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -50,6 +52,7 @@ export const SupplyActions = React.memo(
       generateSignatureRequest,
       generateApproval,
       walletApprovalMethodPreference,
+      estimateGasLimit,
     ] = useRootStore((state) => [
       state.tryPermit,
       state.supply,
@@ -58,6 +61,7 @@ export const SupplyActions = React.memo(
       state.generateSignatureRequest,
       state.generateApproval,
       state.walletApprovalMethodPreference,
+      state.estimateGasLimit,
     ]);
     const {
       approvalTxState,
@@ -69,8 +73,7 @@ export const SupplyActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
-      useBackgroundDataProvider();
+    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const permitAvailable = tryPermit(poolAddress);
     const { signTxData, sendTx } = useWeb3Context();
 
@@ -158,9 +161,9 @@ export const SupplyActions = React.memo(
               success: true,
             });
           } else {
-            const approveTxData = generateApproval(approvedAmount);
-
+            let approveTxData = generateApproval(approvedAmount);
             setApprovalTxState({ ...approvalTxState, loading: true });
+            approveTxData = await estimateGasLimit(approveTxData);
             const response = await sendTx(approveTxData);
             await response.wait(1);
             setApprovalTxState({
@@ -187,14 +190,14 @@ export const SupplyActions = React.memo(
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
         if (usePermit && signatureParams) {
-          const signedTxData = supplyWithPermit({
+          let signedSupplyWithPermitTxData = supplyWithPermit({
             signature: signatureParams.signature,
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
             deadline: signatureParams.deadline,
           });
-
-          const response = await sendTx(signedTxData);
+          signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
+          const response = await sendTx(signedSupplyWithPermitTxData);
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
@@ -202,11 +205,12 @@ export const SupplyActions = React.memo(
             success: true,
           });
         } else {
-          const txData = supply({
+          let supplyTxData = supply({
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
           });
-          const response = await sendTx(txData);
+          supplyTxData = await estimateGasLimit(supplyTxData);
+          const response = await sendTx(supplyTxData);
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
@@ -214,7 +218,7 @@ export const SupplyActions = React.memo(
             success: true,
           });
         }
-        refetchWalletBalances();
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (error) {

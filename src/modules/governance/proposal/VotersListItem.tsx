@@ -15,7 +15,7 @@ type VotersListItemProps = {
 };
 
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
-  const { address, ensName, proposalVotingPower, twitterAvatar } = voter;
+  const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
   const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -58,7 +58,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
       : 0;
 
   // Don't show any results that come back with zero or negative voting power
-  if (voter.proposalVotingPower <= 0) return null;
+  if (voter.votingPower <= 0) return null;
 
   return (
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
@@ -90,8 +90,8 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             maxWidth: compact ? 82 : 96,
           }}
         >
-          <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>
-            {voter.vote ? 'YAE' : 'NAY'}
+          <Typography variant="subheader1" color={voter.support ? 'success.main' : 'error.main'}>
+            {voter.support ? 'YAE' : 'NAY'}
           </Typography>
           <FormattedNumber
             variant="subheader1"

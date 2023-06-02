@@ -43,6 +43,7 @@ export const SupplyAssetsListItem = ({
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   return (
     <ListItemWrapper
@@ -85,7 +86,7 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached}
+          disabled={disableSupply}
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');

@@ -32755,7 +32755,8 @@ var require_types2 = __commonJS({
       16666e5: "harmony",
       16667e5: "harmony_testnet",
       11155111: "sepolia",
-      534353: "scroll_alpha"
+      534353: "scroll_alpha",
+      1088: "metis_andromeda"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -32782,6 +32783,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["zkevm_testnet"] = 1402] = "zkevm_testnet";
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
       ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
+      ChainId7[ChainId7["metis_andromeda"] = 1088] = "metis_andromeda";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -32814,6 +32816,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
       ProtocolAction2["vote"] = "vote";
+      ProtocolAction2["approval"] = "approval";
+      ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
     (function(GovernanceVote2) {
@@ -34345,6 +34349,14 @@ var require_utils6 = __commonJS({
         limit: "210000",
         recommended: "210000"
       },
+      [types_1.ProtocolAction.approval]: {
+        limit: "65000",
+        recommended: "65000"
+      },
+      [types_1.ProtocolAction.creditDelegationApproval]: {
+        limit: "55000",
+        recommended: "55000"
+      },
       [types_1.ProtocolAction.supply]: {
         limit: "300000",
         recommended: "300000"
@@ -35551,7 +35563,7 @@ var require_methodValidators = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/validators/methodValidators.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.V3MigratorValidator = exports2.StackeUiDataProviderValidator = exports2.GovDelegationValidator = exports2.GovValidator = exports2.GovHelperValidator = exports2.WETHValidator = exports2.FaucetValidator = exports2.SignStakingValidator = exports2.StakingValidator = exports2.RepayWithCollateralValidator = exports2.LiquiditySwapValidator = exports2.ERC20Validator = exports2.SynthetixValidator = exports2.DebtTokenValidator = exports2.IncentivesValidator = exports2.UiIncentiveDataProviderValidator = exports2.LPValidatorV3 = exports2.L2PValidator = exports2.LPValidator = exports2.LPSwapCollateralValidatorV3 = exports2.LPRepayWithCollateralValidatorV3 = exports2.LPSwapCollateralValidator = exports2.LPRepayWithCollateralValidator = exports2.LPFlashLiquidationValidatorV3 = exports2.LPFlashLiquidationValidator = void 0;
+    exports2.V3MigratorValidator = exports2.StakeUiDataProviderValidator = exports2.GovDelegationValidator = exports2.GovValidator = exports2.GovHelperValidator = exports2.WETHValidator = exports2.FaucetValidator = exports2.SignStakingValidator = exports2.StakingValidator = exports2.RepayWithCollateralValidator = exports2.LiquiditySwapValidator = exports2.ERC20Validator = exports2.SynthetixValidator = exports2.DebtTokenValidator = exports2.IncentivesValidator = exports2.UiIncentiveDataProviderValidator = exports2.LPValidatorV3 = exports2.L2PValidator = exports2.LPValidator = exports2.LPSwapCollateralValidatorV3 = exports2.LPRepayWithCollateralValidatorV3 = exports2.LPSwapCollateralValidator = exports2.LPRepayWithCollateralValidator = exports2.LPFlashLiquidationValidatorV3 = exports2.LPFlashLiquidationValidator = void 0;
     var ethers_1 = require_lib31();
     var validations_1 = require_validations();
     function LPFlashLiquidationValidator(target, propertyName, descriptor) {
@@ -35850,14 +35862,14 @@ var require_methodValidators = __commonJS({
       };
     }
     exports2.GovDelegationValidator = GovDelegationValidator;
-    function StackeUiDataProviderValidator(target, propertyName, descriptor) {
+    function StakeUiDataProviderValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function() {
         (0, validations_1.isEthAddressValidator)(target, propertyName, arguments);
         return method.apply(this, arguments);
       };
     }
-    exports2.StackeUiDataProviderValidator = StackeUiDataProviderValidator;
+    exports2.StakeUiDataProviderValidator = StakeUiDataProviderValidator;
     function V3MigratorValidator(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function() {
@@ -37816,29 +37828,181 @@ var require_wallet_balance_provider = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakeUiHelperFactory.js
-var require_StakeUiHelperFactory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakeUiHelperFactory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakedTokenDataProviderFactory.js
+var require_StakedTokenDataProviderFactory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/typechain/StakedTokenDataProviderFactory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.StakeUiHelperFactory = void 0;
+    exports2.StakedTokenDataProvider__factory = void 0;
     var ethers_1 = require_lib31();
-    var StakeUiHelperFactory = class {
+    var StakedTokenDataProvider__factory = class extends ethers_1.ContractFactory {
+      constructor(signer) {
+        super(_abi, _bytecode, signer);
+      }
+      deploy(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides) {
+        return super.deploy(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides || {});
+      }
+      getDeployTransaction(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides) {
+        return super.getDeployTransaction(aave, stkAave, bpt, stkBpt, ethUsdPriceFeed, aavePriceFeed, bptPriceFeed, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
     };
-    exports2.StakeUiHelperFactory = StakeUiHelperFactory;
+    exports2.StakedTokenDataProvider__factory = StakedTokenDataProvider__factory;
     var _abi = [
       {
+        inputs: [
+          {
+            internalType: "address",
+            name: "aave",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "stkAave",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "bpt",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "stkBpt",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "ethUsdPriceFeed",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "aavePriceFeed",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "bptPriceFeed",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
         inputs: [],
-        name: "getGeneralStakeUIData",
+        name: "AAVE",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "AAVE_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "BPT",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "BPT_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "ETH_USD_PRICE_FEED",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "STAKED_AAVE",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "STAKED_BPT",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getAllStakedTokenData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -37853,7 +38017,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -37877,15 +38041,20 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
             type: "tuple"
           },
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -37900,7 +38069,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -37924,13 +38093,13 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
             type: "tuple"
           },
           {
             internalType: "uint256",
-            name: "",
+            name: "ethPrice",
             type: "uint256"
           }
         ],
@@ -37945,13 +38114,209 @@ var require_StakeUiHelperFactory = __commonJS({
             type: "address"
           }
         ],
+        name: "getAllStakedTokenUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkAaveUserData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkBptUserData",
+            type: "tuple"
+          },
+          {
+            internalType: "uint256",
+            name: "ethPrice",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
         name: "getStkAaveData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -37966,7 +38331,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -37988,35 +38353,10 @@ var require_StakeUiHelperFactory = __commonJS({
                 internalType: "uint256",
                 name: "distributionEnd",
                 type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
             type: "tuple"
           }
         ],
@@ -38031,13 +38371,218 @@ var require_StakeUiHelperFactory = __commonJS({
             type: "address"
           }
         ],
+        name: "getStkAaveUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkAaveData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkAaveUserData",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getStkBptAaveUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeCooldownSeconds",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeUnstakeWindow",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardTokenPriceEth",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakeApy",
+                type: "uint256"
+              },
+              {
+                internalType: "uint128",
+                name: "distributionPerSecond",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "distributionEnd",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "stakedTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenRedeemableAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "underlyingTokenUserBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "rewardsToClaim",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "userCooldownTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "userCooldownAmount",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedTokenDataProvider.StakedTokenUserData",
+            name: "stkBptUserData",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
         name: "getStkBptData",
         outputs: [
           {
             components: [
               {
                 internalType: "uint256",
-                name: "stakeTokenTotalSupply",
+                name: "stakedTokenTotalSupply",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "stakedTokenTotalRedeemableAmount",
                 type: "uint256"
               },
               {
@@ -38052,87 +38597,7 @@ var require_StakeUiHelperFactory = __commonJS({
               },
               {
                 internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [],
-        name: "getStkGeneralAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
+                name: "stakedTokenPriceEth",
                 type: "uint256"
               },
               {
@@ -38156,591 +38621,16 @@ var require_StakeUiHelperFactory = __commonJS({
                 type: "uint256"
               }
             ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
+            internalType: "struct IStakedTokenDataProvider.StakedTokenData",
+            name: "stkBptData",
             type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [],
-        name: "getStkGeneralBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.GeneralStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getStkUserAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getStkUserBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getStkUsersAaveData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getStkUsersBptData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getUserStakeUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address"
-          }
-        ],
-        name: "getUserUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenTotalSupply",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeCooldownSeconds",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeUnstakeWindow",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "rewardTokenPriceEth",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeApy",
-                type: "uint256"
-              },
-              {
-                internalType: "uint128",
-                name: "distributionPerSecond",
-                type: "uint128"
-              },
-              {
-                internalType: "uint256",
-                name: "distributionEnd",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.AssetUIData",
-            name: "",
-            type: "tuple"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address[]",
-            name: "user",
-            type: "address[]"
-          }
-        ],
-        name: "getUsersStakeUIData",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          },
-          {
-            components: [
-              {
-                internalType: "uint256",
-                name: "stakeTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "underlyingTokenUserBalance",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userCooldown",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userIncentivesToClaim",
-                type: "uint256"
-              },
-              {
-                internalType: "uint256",
-                name: "userPermitNonce",
-                type: "uint256"
-              }
-            ],
-            internalType: "struct StakeUIHelperI.UserStakeUIData[]",
-            name: "",
-            type: "tuple[]"
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
           }
         ],
         stateMutability: "view",
         type: "function"
       }
     ];
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/types.js
-var require_types5 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/uiStakeDataProvider-contract/types.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
+    var _bytecode = "0x6101606040523480156200001257600080fd5b50604051620013f4380380620013f483398101604081905262000035916200009b565b6001600160601b0319606097881b811660e05295871b86166101005293861b85166101205291851b841661014052841b8316608052831b821660a05290911b1660c0526200012f565b80516001600160a01b03811681146200009657600080fd5b919050565b600080600080600080600060e0888a031215620000b6578283fd5b620000c1886200007e565b9650620000d1602089016200007e565b9550620000e1604089016200007e565b9450620000f1606089016200007e565b935062000101608089016200007e565b92506200011160a089016200007e565b91506200012160c089016200007e565b905092959891949750929550565b60805160601c60a05160601c60c05160601c60e05160601c6101005160601c6101205160601c6101405160601c611202620001f2600039806101bb528061028952806102b452806102e2528061036a52806104a652806104d15280610a4f52508061022e525080610252528061033f528061044f528061047a52806105cd52806105f8528061062a52806109ec52508061020a5250806105965280610a895250806101e65280610840525080610306528061039252806104fa52506112026000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063ad809caa1161008c578063cca44f0a11610066578063cca44f0a14610167578063cfe7b3121461018b578063eaf5b48f14610193578063f9f2634f146101a6576100cf565b8063ad809caa14610140578063b0f0abe914610148578063b7d1a98d14610150576100cf565b80632c1aa8d2146100d457806345afe360146100f257806348ccda3c146101075780634f0640861461010f5780638e6a6941146101175780639f8bf4da1461011f575b600080fd5b6100dc6101ae565b6040516100e99190611109565b60405180910390f35b6100fa6101e4565b6040516100e991906110f5565b6100fa610208565b6100fa61022c565b6100fa610250565b61013261012d366004610f46565b610274565b6040516100e9929190611144565b6100fa6102e0565b6100fa610304565b610158610328565b6040516100e993929190611118565b61017a610175366004610f46565b610428565b6040516100e9959493929190611161565b6100fa610594565b6101326101a1366004610f46565b6105b8565b6100dc61061d565b6101b6610e94565b6101df7f000000000000000000000000000000000000000000000000000000000000000061064a565b905090565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b61027c610e94565b610284610ee9565b6102ad7f000000000000000000000000000000000000000000000000000000000000000061064a565b91506102d97f000000000000000000000000000000000000000000000000000000000000000084610b4f565b9050915091565b7f000000000000000000000000000000000000000000000000000000000000000081565b7f000000000000000000000000000000000000000000000000000000000000000081565b610330610e94565b610338610e94565b60006103637f000000000000000000000000000000000000000000000000000000000000000061064a565b925061038e7f000000000000000000000000000000000000000000000000000000000000000061064a565b91507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b1580156103e957600080fd5b505afa1580156103fd573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104219190610f85565b9050909192565b610430610e94565b610438610ee9565b610440610e94565b610448610ee9565b60006104737f000000000000000000000000000000000000000000000000000000000000000061064a565b945061049f7f000000000000000000000000000000000000000000000000000000000000000087610b4f565b93506104ca7f000000000000000000000000000000000000000000000000000000000000000061064a565b92506104f67f000000000000000000000000000000000000000000000000000000000000000087610b4f565b91507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561055157600080fd5b505afa158015610565573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105899190610f85565b905091939590929450565b7f000000000000000000000000000000000000000000000000000000000000000081565b6105c0610e94565b6105c8610ee9565b6105f17f000000000000000000000000000000000000000000000000000000000000000061064a565b91506102d97f000000000000000000000000000000000000000000000000000000000000000084610b4f565b610625610e94565b6101df7f00000000000000000000000000000000000000000000000000000000000000005b610652610e94565b816001600160a01b03166318160ddd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561068b57600080fd5b505afa15801561069f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106c39190610f85565b80825260405163266d6a8360e11b81526001600160a01b03841691634cdad506916106f191906004016111ab565b60206040518083038186803b15801561070957600080fd5b505afa15801561071d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107419190610f85565b816020018181525050816001600160a01b03166372b49d636040518163ffffffff1660e01b815260040160206040518083038186803b15801561078357600080fd5b505afa158015610797573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107bb9190610f85565b816040018181525050816001600160a01b031663359c4a966040518163ffffffff1660e01b815260040160206040518083038186803b1580156107fd57600080fd5b505afa158015610811573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108359190610f85565b8160600181815250507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b15801561089757600080fd5b505afa1580156108ab573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108cf9190610f85565b8160a0018181525050816001600160a01b031663919cd40f6040518163ffffffff1660e01b815260040160206040518083038186803b15801561091157600080fd5b505afa158015610925573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109499190610f85565b6101008201819052421061095e5760006109dc565b604051631e23703160e31b81526001600160a01b0383169063f11b81889061098a9085906004016110f5565b60606040518083038186803b1580156109a257600080fd5b505afa1580156109b6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109da9190610f9d565b515b6001600160801b031660e08201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b039081169083161415610a4d5760a0810151608082015260e08101518151610a43916001600160801b031690610e6b565b60c0820152610b4a565b7f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316826001600160a01b03161415610b4a577f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03166350d25bcd6040518163ffffffff1660e01b815260040160206040518083038186803b158015610ae057600080fd5b505afa158015610af4573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b189190610f85565b6080820181905260a082015160e08301518351610b44936001600160801b039092169092029102610e6b565b60c08201525b919050565b610b57610ee9565b6040516370a0823160e01b81526001600160a01b038416906370a0823190610b839085906004016110f5565b60206040518083038186803b158015610b9b57600080fd5b505afa158015610baf573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bd39190610f85565b81526040516346df7f7160e11b81526001600160a01b03841690638dbefee290610c019085906004016110f5565b60206040518083038186803b158015610c1957600080fd5b505afa158015610c2d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610c519190610f85565b816060018181525050826001600160a01b031663312f6b836040518163ffffffff1660e01b815260040160206040518083038186803b158015610c9357600080fd5b505afa158015610ca7573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610ccb9190610f69565b6001600160a01b03166370a08231836040518263ffffffff1660e01b8152600401610cf691906110f5565b60206040518083038186803b158015610d0e57600080fd5b505afa158015610d22573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d469190610f85565b6040808301919091528151905163266d6a8360e11b81526001600160a01b03851691634cdad50691610d7b91906004016111ab565b60206040518083038186803b158015610d9357600080fd5b505afa158015610da7573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610dcb9190610f85565b602082015260405163091030c360e01b81526001600160a01b0384169063091030c390610dfc9085906004016110f5565b604080518083038186803b158015610e1357600080fd5b505afa158015610e27573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e4b9190610ffe565b6001600160d81b031660a083015264ffffffffff16608082015292915050565b600081610e7a57506000610e8e565b8164496cebb800840281610e8a57fe5b0490505b92915050565b6040518061012001604052806000815260200160008152602001600081526020016000815260200160008152602001600081526020016000815260200160006001600160801b03168152602001600081525090565b6040518060c0016040528060008152602001600081526020016000815260200160008152602001600064ffffffffff16815260200160006001600160d81b031681525090565b80516001600160801b0381168114610b4a57600080fd5b600060208284031215610f57578081fd5b8135610f62816111b4565b9392505050565b600060208284031215610f7a578081fd5b8151610f62816111b4565b600060208284031215610f96578081fd5b5051919050565b600060608284031215610fae578081fd5b6040516060810181811067ffffffffffffffff82111715610fcb57fe5b604052610fd783610f2f565b8152610fe560208401610f2f565b6020820152604083015160408201528091505092915050565b60008060408385031215611010578081fd5b825164ffffffffff81168114611024578182fd5b60208401519092506001600160d81b0381168114611040578182fd5b809150509250929050565b805182526020810151602083015260408101516040830152606081015160608301526080810151608083015260a081015160a083015260c081015160c08301526001600160801b0360e08201511660e08301526101008082015181840152505050565b8051825260208082015190830152604080820151908301526060808201519083015260808082015164ffffffffff169083015260a0908101516001600160d81b0316910152565b6001600160a01b0391909116815260200190565b6101208101610e8e828461104b565b6102608101611127828661104b565b61113561012083018561104b565b82610240830152949350505050565b6101e08101611153828561104b565b610f626101208301846110ae565b6103e08101611170828861104b565b61117e6101208301876110ae565b61118c6101e083018661104b565b61119a6103008301856110ae565b826103c08301529695505050505050565b90815260200190565b6001600160a01b03811681146111c957600080fd5b5056fea2646970667358221220273c9b55009ee92e111a4be9075dfee70ec45d01bd9b462c1168dd428da4e0cc64736f6c63430007050033";
   }
 });
 
@@ -38753,82 +38643,95 @@ var require_uiStakeDataProvider_contract = __commonJS({
     var tslib_1 = require_tslib();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
-    var StakeUiHelperFactory_1 = require_StakeUiHelperFactory();
-    tslib_1.__exportStar(require_types5(), exports2);
+    var StakedTokenDataProviderFactory_1 = require_StakedTokenDataProviderFactory();
     var UiStakeDataProvider = class {
       constructor(context) {
-        this._contract = StakeUiHelperFactory_1.StakeUiHelperFactory.connect(context.uiStakeDataProvider, context.provider);
+        this._contract = StakedTokenDataProviderFactory_1.StakedTokenDataProvider__factory.connect(context.uiStakeDataProvider, context.provider);
       }
       getUserStakeUIData(_0) {
         return __async(this, arguments, function* ({ user }) {
-          return this._contract.getUserStakeUIData(user);
+          const { stkAaveData, stkAaveUserData, stkBptData, stkBptUserData, ethPrice } = yield this._contract.getAllStakedTokenUserData(user);
+          return {
+            stkAaveData: Object.assign(Object.assign({}, stkAaveData), { stakedTokenUserBalance: stkAaveUserData.stakedTokenUserBalance, underlyingTokenUserBalance: stkAaveUserData.underlyingTokenUserBalance, stakedTokenRedeemableAmount: stkAaveUserData.stakedTokenRedeemableAmount, userCooldownAmount: stkAaveUserData.userCooldownAmount, userCooldownTimestamp: stkAaveUserData.userCooldownTimestamp, rewardsToClaim: stkAaveUserData.rewardsToClaim }),
+            stkBptData: Object.assign(Object.assign({}, stkBptData), { stakedTokenUserBalance: stkBptUserData.stakedTokenUserBalance, underlyingTokenUserBalance: stkBptUserData.underlyingTokenUserBalance, stakedTokenRedeemableAmount: stkBptUserData.stakedTokenRedeemableAmount, userCooldownAmount: stkBptUserData.userCooldownAmount, userCooldownTimestamp: stkBptUserData.userCooldownTimestamp, rewardsToClaim: stkBptUserData.rewardsToClaim }),
+            ethPrice
+          };
         });
       }
       getUserStakeUIDataHumanized(_0) {
         return __async(this, arguments, function* ({ user }) {
-          const { 0: aave, 1: bpt, 2: usdPriceEth } = yield this.getUserStakeUIData({ user });
+          const contractResult = yield this.getUserStakeUIData({ user });
           return {
             aave: {
-              stakeTokenUserBalance: aave.stakeTokenUserBalance.toString(),
-              underlyingTokenUserBalance: aave.underlyingTokenUserBalance.toString(),
-              userCooldown: aave.userCooldown.toNumber(),
-              userIncentivesToClaim: aave.userIncentivesToClaim.toString(),
-              userPermitNonce: aave.userPermitNonce.toString()
+              stakeTokenUserBalance: contractResult.stkAaveData.stakedTokenUserBalance.toString(),
+              underlyingTokenUserBalance: contractResult.stkAaveData.underlyingTokenUserBalance.toString(),
+              stakeTokenRedeemableAmount: contractResult.stkAaveData.stakedTokenRedeemableAmount.toString(),
+              userCooldownAmount: contractResult.stkAaveData.userCooldownAmount.toString(),
+              userCooldownTimestamp: contractResult.stkAaveData.userCooldownTimestamp,
+              userIncentivesToClaim: contractResult.stkAaveData.rewardsToClaim.toString()
             },
             bpt: {
-              stakeTokenUserBalance: bpt.stakeTokenUserBalance.toString(),
-              underlyingTokenUserBalance: bpt.underlyingTokenUserBalance.toString(),
-              userCooldown: bpt.userCooldown.toNumber(),
-              userIncentivesToClaim: bpt.userIncentivesToClaim.toString(),
-              userPermitNonce: bpt.userPermitNonce.toString()
+              stakeTokenUserBalance: contractResult.stkBptData.stakedTokenUserBalance.toString(),
+              underlyingTokenUserBalance: contractResult.stkBptData.underlyingTokenUserBalance.toString(),
+              stakeTokenRedeemableAmount: contractResult.stkBptData.stakedTokenRedeemableAmount.toString(),
+              userCooldownAmount: contractResult.stkBptData.userCooldownAmount.toString(),
+              userCooldownTimestamp: contractResult.stkBptData.userCooldownTimestamp,
+              userIncentivesToClaim: contractResult.stkBptData.rewardsToClaim.toString()
             },
-            usdPriceEth: usdPriceEth.toString()
+            ethPriceUsd: contractResult.ethPrice.toString()
           };
         });
       }
       getGeneralStakeUIData() {
         return __async(this, null, function* () {
-          return this._contract.getGeneralStakeUIData();
+          const { stkAaveData, stkBptData, ethPrice } = yield this._contract.getAllStakedTokenData();
+          return {
+            stkAaveData,
+            stkBptData,
+            ethPrice
+          };
         });
       }
       getGeneralStakeUIDataHumanized() {
         return __async(this, null, function* () {
-          const { 0: aave, 1: bpt, 2: usdPriceEth } = yield this.getGeneralStakeUIData();
+          const contractResult = yield this.getGeneralStakeUIData();
           return {
             aave: {
-              stakeTokenTotalSupply: aave.stakeTokenTotalSupply.toString(),
-              stakeCooldownSeconds: aave.stakeCooldownSeconds.toNumber(),
-              stakeUnstakeWindow: aave.stakeUnstakeWindow.toNumber(),
-              stakeTokenPriceEth: aave.stakeTokenPriceEth.toString(),
-              rewardTokenPriceEth: aave.rewardTokenPriceEth.toString(),
-              stakeApy: aave.stakeApy.toString(),
-              distributionPerSecond: aave.distributionPerSecond.toString(),
-              distributionEnd: aave.distributionEnd.toString()
+              stakeTokenTotalSupply: contractResult.stkAaveData.stakedTokenTotalSupply.toString(),
+              stakeTokenTotalRedeemableAmount: contractResult.stkAaveData.stakedTokenTotalRedeemableAmount.toString(),
+              stakeCooldownSeconds: contractResult.stkAaveData.stakeCooldownSeconds.toNumber(),
+              stakeUnstakeWindow: contractResult.stkAaveData.stakeUnstakeWindow.toNumber(),
+              stakeTokenPriceEth: contractResult.stkAaveData.stakedTokenPriceEth.toString(),
+              rewardTokenPriceEth: contractResult.stkAaveData.rewardTokenPriceEth.toString(),
+              stakeApy: contractResult.stkAaveData.stakeApy.toString(),
+              distributionPerSecond: contractResult.stkAaveData.distributionPerSecond.toString(),
+              distributionEnd: contractResult.stkAaveData.distributionEnd.toString()
             },
             bpt: {
-              stakeTokenTotalSupply: bpt.stakeTokenTotalSupply.toString(),
-              stakeCooldownSeconds: bpt.stakeCooldownSeconds.toNumber(),
-              stakeUnstakeWindow: bpt.stakeUnstakeWindow.toNumber(),
-              stakeTokenPriceEth: bpt.stakeTokenPriceEth.toString(),
-              rewardTokenPriceEth: bpt.rewardTokenPriceEth.toString(),
-              stakeApy: bpt.stakeApy.toString(),
-              distributionPerSecond: bpt.distributionPerSecond.toString(),
-              distributionEnd: bpt.distributionEnd.toString()
+              stakeTokenTotalSupply: contractResult.stkBptData.stakedTokenTotalSupply.toString(),
+              stakeTokenTotalRedeemableAmount: contractResult.stkAaveData.stakedTokenTotalRedeemableAmount.toString(),
+              stakeCooldownSeconds: contractResult.stkBptData.stakeCooldownSeconds.toNumber(),
+              stakeUnstakeWindow: contractResult.stkBptData.stakeUnstakeWindow.toNumber(),
+              stakeTokenPriceEth: contractResult.stkBptData.stakedTokenPriceEth.toString(),
+              rewardTokenPriceEth: contractResult.stkBptData.rewardTokenPriceEth.toString(),
+              stakeApy: contractResult.stkBptData.stakeApy.toString(),
+              distributionPerSecond: contractResult.stkBptData.distributionPerSecond.toString(),
+              distributionEnd: contractResult.stkBptData.distributionEnd.toString()
             },
-            usdPriceEth: usdPriceEth.toString()
+            ethPriceUsd: contractResult.ethPrice.toString()
           };
         });
       }
     };
     tslib_1.__decorate([
-      methodValidators_1.StackeUiDataProviderValidator,
+      methodValidators_1.StakeUiDataProviderValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [Object]),
       tslib_1.__metadata("design:returntype", Promise)
     ], UiStakeDataProvider.prototype, "getUserStakeUIData", null);
     tslib_1.__decorate([
-      methodValidators_1.StackeUiDataProviderValidator,
+      methodValidators_1.StakeUiDataProviderValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [Object]),
@@ -39977,9 +39880,10 @@ var require_erc20_contract = __commonJS({
     exports2.ERC20Service = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
+    var utils_1 = require_utils5();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
-    var utils_1 = require_utils6();
+    var utils_2 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var IERC20Detailed__factory_1 = require_IERC20Detailed_factory();
@@ -40018,26 +39922,27 @@ var require_erc20_contract = __commonJS({
         tx.data = txData;
         tx.to = token;
         tx.from = user;
+        tx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.approval].recommended);
         return tx;
       }
       isApproved(_0) {
-        return __async(this, arguments, function* ({ user, token, spender, amount }) {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+        return __async(this, arguments, function* ({ user, token, spender, amount, nativeDecimals }) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return true;
           const decimals = yield this.decimalsOf(token);
           const erc20Contract = this.getContractInstance(token);
           const allowance = yield erc20Contract.allowance(user, spender);
-          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_1.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          const amountBNWithDecimals = amount === "-1" ? ethers_1.BigNumber.from(utils_2.SUPER_BIG_ALLOWANCE_NUMBER) : ethers_1.BigNumber.from((0, utils_2.valueToWei)(nativeDecimals ? (0, utils_1.formatUnits)(amount, decimals) : amount, decimals));
           return allowance.gte(amountBNWithDecimals);
         });
       }
       approvedAmount(_0) {
         return __async(this, arguments, function* ({ user, token, spender }) {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return -1;
           const erc20Contract = this.getContractInstance(token);
           const allowance = yield erc20Contract.allowance(user, spender);
-          if (allowance.toString() === utils_1.MAX_UINT_AMOUNT) {
+          if (allowance.toString() === utils_2.MAX_UINT_AMOUNT) {
             return -1;
           }
           const decimals = yield this.decimalsOf(token);
@@ -40046,7 +39951,7 @@ var require_erc20_contract = __commonJS({
       }
       decimalsOf(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase())
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase())
             return 18;
           if (!this.tokenDecimals[token]) {
             const erc20Contract = this.getContractInstance(token);
@@ -40057,7 +39962,7 @@ var require_erc20_contract = __commonJS({
       }
       getTokenData(token) {
         return __async(this, null, function* () {
-          if (token.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+          if (token.toLowerCase() === utils_2.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             return {
               name: "Ethereum",
               symbol: "ETH",
@@ -41067,17 +40972,18 @@ var require_baseDebtToken_contract = __commonJS({
         const approveDelegationTx = {
           data: txData,
           to: debtTokenAddress,
-          from: user
+          from: user,
+          gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.creditDelegationApproval].recommended)
         };
         return approveDelegationTx;
       }
       isDelegationApproved(_0) {
-        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount }) {
+        return __async(this, arguments, function* ({ debtTokenAddress, allowanceGiver, allowanceReceiver, amount, nativeDecimals }) {
           const decimals = yield this.erc20Service.decimalsOf(debtTokenAddress);
           const debtTokenContract = this.getContractInstance(debtTokenAddress);
           const delegatedAllowance = yield debtTokenContract.borrowAllowance(allowanceGiver, allowanceReceiver);
-          const amountBNWithDecimals = ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
-          return delegatedAllowance.gt(amountBNWithDecimals);
+          const amountBNWithDecimals = nativeDecimals ? ethers_1.BigNumber.from(amount) : ethers_1.BigNumber.from((0, utils_1.valueToWei)(amount, decimals));
+          return delegatedAllowance.gte(amountBNWithDecimals);
         });
       }
     };
@@ -41284,7 +41190,8 @@ var require_wethgateway_contract = __commonJS({
             data: txData,
             to: this.wethGatewayAddress,
             from: args.user,
-            value: ethers_1.BigNumber.from(args.amount)
+            value: ethers_1.BigNumber.from(args.amount),
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].limit)
           };
           return actionTx;
         };
@@ -41300,7 +41207,8 @@ var require_wethgateway_contract = __commonJS({
           const actionTx = {
             data: txData,
             to: this.wethGatewayAddress,
-            from: args.user
+            from: args.user,
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrowETH].limit)
           };
           return actionTx;
         };
@@ -42452,7 +42360,8 @@ var require_lendingPool_contract_bundle = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.LendingPoolBundle = void 0;
-    var tslib_1 = require_tslib();
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
@@ -42496,6 +42405,7 @@ var require_lendingPool_contract_bundle = __commonJS({
               actionTx.to = this.lendingPoolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.deposit].recommended);
             }
             return actionTx;
           }
@@ -42529,6 +42439,7 @@ var require_lendingPool_contract_bundle = __commonJS({
               actionTx.to = this.lendingPoolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
             return actionTx;
           }
@@ -44475,7 +44386,7 @@ var require_IGovernanceV2Helper_factory = __commonJS({
 });
 
 // node_modules/@aave/contract-helpers/dist/cjs/governance-contract/types.js
-var require_types6 = __commonJS({
+var require_types5 = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/governance-contract/types.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -44514,7 +44425,7 @@ var require_governance_contract = __commonJS({
     var IAaveGovernanceV2__factory_1 = require_IAaveGovernanceV2_factory();
     var IGovernanceStrategy__factory_1 = require_IGovernanceStrategy_factory();
     var IGovernanceV2Helper__factory_1 = require_IGovernanceV2Helper_factory();
-    var types_2 = require_types6();
+    var types_2 = require_types5();
     var humanizeProposal = (rawProposal) => {
       return {
         id: Number(rawProposal.id.toString()),
@@ -47706,7 +47617,8 @@ var require_v3_pool_rollups = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.L2Pool = void 0;
-    var tslib_1 = require_tslib();
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
     var utils_1 = require_utils5();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
@@ -47750,6 +47662,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.from = user;
           actionTx.data = txData;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
           return actionTx;
         };
         this.generateSupplyWithPermitTxData = ({ user, reserve, amount, onBehalfOf, referralCode, deadline, permitR, permitS, permitV }) => {
@@ -47777,6 +47690,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supply].limit);
           return actionTx;
         };
         this.generateEncodedBorrowTxData = ({ encodedTxData, user }) => {
@@ -47787,6 +47701,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.borrow].limit);
           return actionTx;
         };
         this.generateEncodedSupplyWithPermitTxData = ({ encodedTxData, signature, user }) => {
@@ -47796,6 +47711,7 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.to = this.l2PoolAddress;
           actionTx.data = txData;
           actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].limit);
           return actionTx;
         };
       }
@@ -49088,6 +49004,7 @@ var require_v3_pool_contract_bundle = __commonJS({
     exports2.PoolBundle = void 0;
     var tslib_1 = require_tslib();
     var bytes_1 = require_lib2();
+    var ethers_1 = require_lib31();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
@@ -49159,6 +49076,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               actionTx.to = this.poolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supply].recommended);
             }
             return actionTx;
           },
@@ -49202,6 +49120,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               populatedTx.to = this.poolAddress;
               populatedTx.from = user;
               populatedTx.data = txData;
+              populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].recommended);
             }
             return populatedTx;
           }
@@ -49252,6 +49171,7 @@ var require_v3_pool_contract_bundle = __commonJS({
               actionTx.to = this.poolAddress;
               actionTx.from = user;
               actionTx.data = txData;
+              actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
             return actionTx;
           }
@@ -49538,7 +49458,8 @@ var require_v3_migration_contract = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.V3MigrationHelperService = void 0;
-    var tslib_1 = require_tslib();
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var bignumber_js_1 = tslib_1.__importDefault(require_bignumber2());
     var ethers_1 = require_lib31();
     var baseDebtToken_contract_1 = require_baseDebtToken_contract();
     var BaseService_1 = tslib_1.__importDefault(require_BaseService());
@@ -49601,26 +49522,28 @@ var require_v3_migration_contract = __commonJS({
       }
       approveDelegationTokens(user, assets) {
         return __async(this, null, function* () {
-          console.log(assets, "assets");
           const assetsApproved = yield Promise.all(assets.map((_0) => __async(this, [_0], function* ({ amount, debtTokenAddress }) {
             return this.baseDebtTokenService.isDelegationApproved({
               debtTokenAddress,
               allowanceGiver: user,
               allowanceReceiver: this.MIGRATOR_ADDRESS,
-              amount
+              amount,
+              nativeDecimals: true
             });
           })));
-          console.log(assetsApproved, "assetsApproved");
           return assetsApproved.map((approved, index) => {
             if (approved) {
               return;
             }
             const asset = assets[index];
+            const originalAmount = new bignumber_js_1.default(asset.amount);
+            const tenPercent = originalAmount.dividedBy(10);
+            const amountPlusBuffer = originalAmount.plus(tenPercent).toFixed(0);
             return this.baseDebtTokenService.approveDelegation({
               user,
               delegatee: this.MIGRATOR_ADDRESS,
               debtTokenAddress: asset.debtTokenAddress,
-              amount: asset.amount
+              amount: amountPlusBuffer
             });
           }).filter((tx) => Boolean(tx));
         });
@@ -49632,7 +49555,8 @@ var require_v3_migration_contract = __commonJS({
               amount,
               spender: this.MIGRATOR_ADDRESS,
               token: aToken,
-              user
+              user,
+              nativeDecimals: true
             });
           })));
           return assetsApproved.map((approved, index) => {
@@ -52673,7 +52597,7 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_faucet_contract(), exports2);
     tslib_1.__exportStar(require_staking_contract(), exports2);
     tslib_1.__exportStar(require_governance_contract(), exports2);
-    tslib_1.__exportStar(require_types6(), exports2);
+    tslib_1.__exportStar(require_types5(), exports2);
     tslib_1.__exportStar(require_governance_power_delegation_contract(), exports2);
     tslib_1.__exportStar(require_v3_pool_contract(), exports2);
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
@@ -52754,7 +52678,7 @@ var require_AaveV3Ethereum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Ethereum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e";
     exports2.POOL = "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2";
     exports2.POOL_CONFIGURATOR = "0x64b761D848206f447Fe2dd461b0c635Ec39EbB27";
@@ -52781,6 +52705,7 @@ var require_AaveV3Ethereum = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6";
     exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = "0x21714092D90c7265F52fdfDae068EC11a23C6248";
     exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x82dcCF206Ae2Ab46E2099e663F70DeE77caE7778";
   }
 });
 
@@ -53036,20 +52961,20 @@ var require_AaveV3Polygon = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb023e699F5a33916Ea823A16485e259257cA8Bd1";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x9441B65EE553F70df9C77d45d3283B6BC24F222d";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
     exports2.COLLECTOR = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0xCf85FF1c37c594a10195F7A9Ab85CBb0a03f69dE";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x79b5e91037AE441dE0d9e6fd3Fd85b96B83d4E93";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
     exports2.CHAIN_ID = 137;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -53062,6 +52987,7 @@ var require_AaveV3Polygon = __commonJS({
     exports2.UI_POOL_DATA_PROVIDER = "0xC69728f11E9E6127733751c8410432913123acf1";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x874313A46e4957D29FAAC43BF5Eb2B144894f557";
     exports2.STATIC_A_TOKEN_FACTORY = "0xFcd9720b0Ea09c70E53727E08Bc131d77800B112";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
   }
 });
 
@@ -53135,7 +53061,7 @@ var require_AaveV2Avalanche = __commonJS({
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x65285E9dfab318f57051ab2b139ccCf232945451";
     exports2.POOL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.EMERGENCY_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
-    exports2.COLLECTOR = "0x467b92aF281d14cB6809913AD016a607b5ba8A36";
+    exports2.COLLECTOR = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9";
     exports2.EMISSION_MANAGER = "0x5CfCd7E6D055Ba4f7B998914336254aDE3F69f26";
     exports2.CHAIN_ID = 43114;
@@ -53157,20 +53083,20 @@ var require_AaveV3Avalanche = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.COLLECTOR = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0x1E81af09001aD208BDa68FF022544dB2102A752d";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x893411580e590D62dDBca8a703d61Cc4A8c7b2b9";
     exports2.CHAIN_ID = 43114;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -53185,6 +53111,7 @@ var require_AaveV3Avalanche = __commonJS({
     exports2.PROOF_OF_RESERVE = "0xab22988D93d5F942fC6B6c6Ea285744809D1d9Cc";
     exports2.PROOF_OF_RESERVE_AGGREGATOR = "0x80f2c02224a2E548FC67c0bF705eBFA825dd5439";
     exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xD2C92b5A793e196aB11dBefBe3Af6BddeD6c3DD5";
   }
 });
 
@@ -53193,20 +53120,20 @@ var require_AaveV3Arbitrum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
     exports2.PRICE_ORACLE_SENTINEL = "0xF876d26041a4Fdc7A787d209DC3D2795dDc74f1e";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0x1Be1798b70aEe431c2986f7ff48d9D1fa350786a";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x0c2C95b24529664fE55D4437D7A31175CFE6c4f7";
     exports2.CHAIN_ID = 42161;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -53220,6 +53147,7 @@ var require_AaveV3Arbitrum = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
     exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xADf86b537eF08591c2777E144322E8b0Ca7E82a7";
   }
 });
 
@@ -53347,20 +53275,20 @@ var require_AaveV3Optimism = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xd9Ca4878dd38B021583c1B669905592EAe76E044";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0xbCb167bDCF14a8F791d6f4A6EDd964aed2F8813B";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x04a8D477eE202aDCE1682F5902e1160455205b12";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
     exports2.CHAIN_ID = 10;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -53374,6 +53302,7 @@ var require_AaveV3Optimism = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
     exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
   }
 });
 
@@ -53413,27 +53342,27 @@ var require_AaveV3ScrollAlpha = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
-    exports2.POOL_ADDRESSES_PROVIDER = "0xCA35Ae4cc948Dae8a1d3C77ed1C5CBC2e73b290D";
-    exports2.POOL = "0x556345b249008Bf2f52B7097ceB5bE798F32dAe9";
-    exports2.POOL_CONFIGURATOR = "0x88A4811E6009ad13EA879261806E5a6071F3F788";
-    exports2.ORACLE = "0x269D5C1854fcA3bede6BFc8935118c99020b13f0";
+    exports2.POOL_ADDRESSES_PROVIDER = "0x52A27dC690F8652288194Dd2bc523863eBdEa236";
+    exports2.POOL = "0x48914C788295b5db23aF2b5F0B3BE775C4eA9440";
+    exports2.POOL_CONFIGURATOR = "0x63BB78Fbac521998BD6E33f1a960677c7a1d4F10";
+    exports2.ORACLE = "0x4B7C7D2EbcDc1015D35F617596318C15d9d24e59";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x36002d10bB238594c58aec104620555a545D517C";
-    exports2.ACL_MANAGER = "0x550CC76fD6C4E4502cB4F79f26ee15f4E4681D57";
-    exports2.ACL_ADMIN = "0x8A52430a0a83d2bA00A88758340e4b640BDfC4FC";
-    exports2.COLLECTOR = "0x500A5dc53fD22bdBBe37bE9cc00cB67F24e233d1";
-    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x318101F73b388C73b5A2Da39B4De54f335D77A0D";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xf7798f65d3d1A1Af1a68d8B4322638559A47bC83";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xF087700794eb98b193D8f95fFEc0E1a02e195e28";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x2bb98A7F11a81AE07443f192Daae04f815F2c878";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xaE58b3Be9E159bDEc67Ada8507CA3001c80725Ee";
+    exports2.ACL_MANAGER = "0x166601A0Cc6Cf979e2f0eF94EC5363B6BC24061C";
+    exports2.ACL_ADMIN = "0xA5bf8BC3c35D9F92b038254B9B8675266f6b62c0";
+    exports2.COLLECTOR = "0x104Cd7695C9247096F7AD37d3258B63c9675A00e";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xa76F05D0cdf599E0186dec880F2FA480fd0c5280";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x0Eae78c97347bf6FCF784Aa91CABC4aCdB5cc2dd";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xAb8eaAE8383Abe28203cB6e6FAa0477B2fb97f07";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0xC696d1c66Aa9F42764eE44fCc454a07a24aCe256";
     exports2.CHAIN_ID = 534353;
-    exports2.EMISSION_MANAGER = "0x41A9A5615a912E47F99e16484880009c7c65707b";
-    exports2.WETH_GATEWAY = "0x410Fda971c841Aaf34be5F5539b40503c7F12AC2";
-    exports2.FAUCET = "0x55530C4E1ADFf14cB5760C6750FeBFbEB57E6753";
-    exports2.WALLET_BALANCE_PROVIDER = "0x2B45F4A959B5Fc8fc22b457424685f17eDae4592";
-    exports2.UI_POOL_DATA_PROVIDER = "0x45dFc7A61AD24918C9315733223fD1e55E9B2B59";
-    exports2.UI_INCENTIVE_DATA_PROVIDER = "0x109e475c0Bf9E525dABB65A4Aec07c1e65100a99";
-    exports2.L2_ENCODER = "0x997a8208902e1259dDf676Eb37FeD31A2f77110B";
+    exports2.EMISSION_MANAGER = "0x01dd3Ad7D942406C47acd5b70cBad28fd377c6f2";
+    exports2.WETH_GATEWAY = "0x57ce905CfD7f986A929A26b006f797d181dB706e";
+    exports2.FAUCET = "0x357A307A8036D54b454BD15B3B1A0fE4B9e8A561";
+    exports2.WALLET_BALANCE_PROVIDER = "0x6c68e975764a56e62AF3d1C8209F789779Eb763B";
+    exports2.UI_POOL_DATA_PROVIDER = "0xDC55BcFC0963608401A4bA6298624E5895f8250a";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0xBf67A725F976d4A7C1fa9ea5303FD57D13CA0A37";
+    exports2.L2_ENCODER = "0x3Bb33c67908D0d58F8d7349cBe726ff3b059e0fC";
   }
 });
 
@@ -53442,7 +53371,7 @@ var require_AaveV3Metis = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.LISTING_ENGINE = exports2.RATES_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.LISTING_ENGINE = exports2.RATES_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xB9FABd7500B2C6781c35Dd48d54f81fc2299D7AF";
     exports2.POOL = "0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57";
     exports2.POOL_CONFIGURATOR = "0x69FEE8F261E004453BE0800BC9039717528645A6";
@@ -53465,6 +53394,7 @@ var require_AaveV3Metis = __commonJS({
     exports2.L2_ENCODER = "0x9f3A1B399A9074eBA63Dc4fc274bE2A2b2d80cB9";
     exports2.RATES_FACTORY = "0x87Aaba7cf8e1F319d0E3402d68017171201dEcd5";
     exports2.LISTING_ENGINE = "0x857720ad258db0ACb180e76A5526c72CFCe6F8A7";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x5f4d15d761528c57a5C30c43c1DAb26Fc5452731";
   }
 });
 
@@ -63017,6 +62947,28 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER
     }
+  },
+  ["proto_metis_v3" /* proto_metis_v3 */]: {
+    marketTitle: "Metis",
+    chainId: import_contract_helpers2.ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: markets.AaveV3Metis.POOL,
+      WETH_GATEWAY: "0x0",
+      // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: markets.AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: markets.AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: markets.AaveV3Metis.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
+    }
   }
 };
 
@@ -63306,6 +63258,19 @@ var networkConfigs = {
       name: "Fantom Bridge",
       url: "https://app.multichain.org/#/router"
     }
+  },
+  [import_contract_helpers3.ChainId.metis_andromeda]: {
+    name: "Metis Andromeda",
+    privateJsonRPCUrl: "https://metis-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: ["https://andromeda.metis.io/?owner=1088"],
+    baseAssetSymbol: "",
+    // N/A
+    wrappedBaseAssetSymbol: "",
+    // N/A
+    baseAssetDecimals: 0,
+    // N/A
+    explorerLink: "https://andromeda-explorer.metis.io",
+    networkLogoPath: "/icons/networks/metis.svg"
   }
 };
 

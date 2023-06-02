@@ -9,10 +9,14 @@ msgstr ""
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-04-17 18:04\n"
 =======
 "PO-Revision-Date: 2023-04-21 18:04\n"
 >>>>>>> upstream/main
+=======
+"PO-Revision-Date: 2023-06-01 18:04\n"
+>>>>>>> sync-main/main
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -30,21 +34,12 @@ msgstr ""
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr ""
 
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An upcoming Aave Governance Proposal may adjust E-Mode and pose liquidation risks to certain positions."
-msgstr ""
-
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr ""
-
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
-msgid "ACTIVATE COOLDOWN"
 msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -133,6 +128,11 @@ msgstr ""
 msgid "Action requires an active reserve"
 msgstr ""
 
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
+msgid "Activate Cooldown"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr ""
@@ -143,6 +143,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
+msgstr ""
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Addresses"
 msgstr ""
 
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -176,10 +180,6 @@ msgstr ""
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 msgstr ""
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Already on cooldown"
-msgstr ""
-
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -187,8 +187,16 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Amount in cooldown"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
+msgstr ""
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Amount to unstake"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -276,7 +284,6 @@ msgstr ""
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr ""
 
-#: src/modules/dashboard/lists/ListHeader.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Assets"
@@ -390,6 +397,10 @@ msgstr ""
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
+msgstr ""
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Borrow amount to reach {0}% utilization"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -761,7 +772,7 @@ msgid "Discord channel"
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -1436,7 +1447,7 @@ msgid "Preview tx and migrate"
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
@@ -1497,6 +1508,15 @@ msgstr ""
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
+msgid "Reactivate cooldown period to unstake {0} {stakedToken}"
+msgstr ""
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Read more here."
 msgstr ""
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
@@ -1563,6 +1583,10 @@ msgstr ""
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
+msgstr ""
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Repayment amount to reach {0}% utilization"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
@@ -1855,7 +1879,7 @@ msgid "Supply balance"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
+msgid "Supply balance after switch"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -1883,19 +1907,7 @@ msgstr ""
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
+msgid "Switch"
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
@@ -1916,6 +1928,18 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
@@ -1983,7 +2007,7 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr ""
 
 #: src/components/Warnings/CooldownWarning.tsx
-msgid "The cooldown period is the time required prior to unstaking your tokens (10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -2252,6 +2276,10 @@ msgstr ""
 msgid "Unstaked"
 msgstr ""
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
+msgstr ""
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
 msgstr ""
@@ -2357,6 +2385,8 @@ msgstr ""
 msgid "Voted YAE"
 msgstr ""
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx

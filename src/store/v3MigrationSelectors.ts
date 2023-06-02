@@ -26,6 +26,7 @@ import {
   ReserveIncentiveResponse,
 } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SignatureLike } from '@ethersproject/bytes';
+import BigNumber from 'bignumber.js';
 import { BigNumberish } from 'ethers';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -101,38 +102,20 @@ export const selectSplittedBorrowsForMigration = (userReserves: ComputedUserRese
   const splittedUserReserves: MigrationUserReserve[] = [];
   userReserves.forEach((userReserve) => {
     if (userReserve.stableBorrows !== '0') {
-      let increasedAmount = userReserve.stableBorrows;
-      if (userReserve.reserve.stableBorrowAPY == '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.stableBorrows,
-          userReserve.reserve.stableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Stable,
-        increasedStableBorrows: increasedAmount,
+        increasedStableBorrows: userReserve.stableBorrows,
         increasedVariableBorrows: '0',
         debtKey: userReserve.reserve.stableDebtTokenAddress,
       });
     }
     if (userReserve.variableBorrows !== '0') {
-      let increasedAmount = userReserve.variableBorrows;
-      if (userReserve.reserve.variableBorrowAPY === '0') {
-        increasedAmount = addPercent(increasedAmount);
-      } else {
-        increasedAmount = add1WeekBorrowAPY(
-          userReserve.variableBorrows,
-          userReserve.reserve.variableBorrowAPY
-        );
-      }
       splittedUserReserves.push({
         ...userReserve,
         interestRate: InterestRate.Variable,
         increasedStableBorrows: '0',
-        increasedVariableBorrows: increasedAmount,
+        increasedVariableBorrows: userReserve.variableBorrows,
         debtKey: userReserve.reserve.variableDebtTokenAddress,
       });
     }
@@ -552,16 +535,6 @@ const addPercent = (amount: string) => {
   return convertedAmount.plus(convertedAmount.div(1000)).toString();
 };
 
-// adding  7 days of either stable or variable debt APY similar to swap
-// https://github.com/aave/interface/blob/main/src/hooks/paraswap/common.ts#L230
-const add1WeekBorrowAPY = (amount: string, borrowAPY: string) => {
-  const convertedAmount = valueToBigNumber(amount);
-  const convertedBorrowAPY = valueToBigNumber(borrowAPY);
-  return convertedAmount
-    .plus(convertedAmount.multipliedBy(convertedBorrowAPY).dividedBy(360 / 7))
-    .toString();
-};
-
 export const selectSelectedBorrowReservesForMigration = (store: RootStore, timestamp: number) => {
   const { borrowReserves } = selectUserReservesForMigration(store, timestamp);
   return borrowReserves.filter(
@@ -696,7 +669,8 @@ export const selectV2UserSummaryAfterMigration = (store: RootStore, currentTimes
  */
 export const selectMigrationBorrowPermitPayloads = (
   store: RootStore,
-  timestamp: number
+  timestamp: number,
+  buffer?: boolean
 ): Approval[] => {
   const { userReservesData: userReservesDataV3 } = selectV3UserSummary(store, timestamp);
   const selectedUserReserves = selectSelectedBorrowReservesForMigration(store, timestamp);
@@ -739,8 +713,15 @@ export const selectMigrationBorrowPermitPayloads = (
     const debt = reserveDebts[key];
     const totalDebt = valueToBigNumber(debt.stableDebtAmount).plus(debt.variableDebtAmount);
     const combinedAmountInWei = valueToWei(totalDebt.toString(), debt.decimals);
+    let bufferedAmount = combinedAmountInWei;
+    if (buffer) {
+      const amountBN = new BigNumber(bufferedAmount);
+      const tenPercent = amountBN.dividedBy(10);
+      bufferedAmount = amountBN.plus(tenPercent).toFixed(0);
+    }
+
     return {
-      amount: combinedAmountInWei,
+      amount: bufferedAmount,
       underlyingAsset: debt.variableDebtTokenAddress,
       permitType: 'BORROW_MIGRATOR_V3',
     };

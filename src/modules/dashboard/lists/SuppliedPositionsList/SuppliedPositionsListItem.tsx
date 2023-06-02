@@ -39,6 +39,8 @@ export const SuppliedPositionsListItem = ({
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
   const disableSwap = !isActive || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive;
+  const disableSupply = !isActive || isFrozen;
 
   return (
     <ListItemWrapper
@@ -87,7 +89,7 @@ export const SuppliedPositionsListItem = ({
 
       <ListButtonsColumn>
         <Button
-          disabled={!isActive}
+          disabled={disableWithdraw}
           variant="contained"
           onClick={() => {
             openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
@@ -112,11 +114,11 @@ export const SuppliedPositionsListItem = ({
             }}
             data-cy={`swapButton`}
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button
-            disabled={!isActive || isFrozen}
+            disabled={disableSupply}
             variant="outlined"
             onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           >

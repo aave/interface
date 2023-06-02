@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -11,25 +11,27 @@ import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
 import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
-import { useRootStore, useStakeDataSubscription } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();
-  const [stakeGeneralResult, stakeUserResult, stakeDataLoading] = useRootStore((state) => [
-    state.stakeGeneralResult,
-    state.stakeUserResult,
-    state.stakeDataLoading,
-  ]);
-  useStakeDataSubscription();
+
+  const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData();
+  const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
+    useGeneralStakeUiData();
+
+  const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
+
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
 
   const { breakpoints } = useTheme();
@@ -45,7 +47,7 @@ export default function Staking() {
   }, [lg]);
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
-  const tvl = formatEther(
+  const tvl = formatUnits(
     BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
       .mul(stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
       .add(
@@ -53,7 +55,8 @@ export default function Staking() {
           stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
         )
       )
-      .div(stakeGeneralResult?.usdPriceEth || 1)
+      .mul(stakeGeneralResult?.ethPriceUsd || 1),
+    18 + 18 + 8 // 2x total supply (18 decimals), 1x ethPriceUSD (8 decimals)
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
@@ -65,31 +68,6 @@ export default function Staking() {
 
   const isStakeAAVE = mode === 'aave';
 
-  const handleOpenStake = () => {
-    openStake('aave', 'AAVE');
-  };
-  const handleOpenCoolDown = () => {
-    openStakeCooldown('aave');
-  };
-
-  const handleOpenOnUnstake = () => {
-    openUnstake('aave', 'AAVE');
-  };
-  const handleOpenClaimStakingRewards = () => {
-    openStakeRewardsClaim('aave');
-  };
-  const handleOpenStakeABPT = () => {
-    openStake('bpt', 'stkBPT');
-  };
-  const handleOpenCoolDownAPBT = () => {
-    openStakeCooldown('bpt');
-  };
-  const handleOpenOnUnstakeABPT = () => {
-    openUnstake('bpt', 'stkBPT');
-  };
-  const handleOpenClaimStakingRewardsABPT = () => {
-    openStakeRewardsClaim('bpt');
-  };
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
@@ -138,18 +116,12 @@ export default function Staking() {
                   icon="aave"
                   stakeData={stakeGeneralResult?.aave}
                   stakeUserData={stakeUserResult?.aave}
-                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
-                  onStakeAction={handleOpenStake}
-                  onCooldownAction={handleOpenCoolDown}
-                  onUnstakeAction={handleOpenOnUnstake}
-                  onStakeRewardClaimAction={handleOpenClaimStakingRewards}
-                  headerAction={
-                    <BuyWithFiat
-                      cryptoSymbol="AAVE"
-                      networkMarketName={network}
-                      funnel={'AAVE Staking'}
-                    />
-                  }
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
+                  onStakeAction={() => openStake('aave', 'AAVE')}
+                  onCooldownAction={() => openStakeCooldown('aave')}
+                  onUnstakeAction={() => openUnstake('aave', 'AAVE')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>
               <Grid
@@ -165,11 +137,11 @@ export default function Staking() {
                   icon="stkbpt"
                   stakeData={stakeGeneralResult?.bpt}
                   stakeUserData={stakeUserResult?.bpt}
-                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
-                  onStakeAction={handleOpenStakeABPT}
-                  onCooldownAction={handleOpenCoolDownAPBT}
-                  onUnstakeAction={handleOpenOnUnstakeABPT}
-                  onStakeRewardClaimAction={handleOpenClaimStakingRewardsABPT}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
+                  onStakeAction={() => openStake('bpt', 'stkBPT')}
+                  onCooldownAction={() => openStakeCooldown('bpt')}
+                  onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
                   headerAction={<GetABPToken />}
                 />
               </Grid>

@@ -50,7 +50,7 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
