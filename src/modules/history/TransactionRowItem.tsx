@@ -24,16 +24,14 @@ function ActionTitle({ action }: { action: string }) {
 
 interface TransactionHistoryItemProps {
   transaction: TransactionHistoryItem & ActionFields[keyof ActionFields];
-  downToXSM: boolean;
 }
 
-function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemProps) {
+function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
   const [currentNetworkConfig] = useRootStore((state) => [state.currentNetworkConfig]);
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleCopy = async (text: string) => {
     navigator.clipboard.writeText(text);
@@ -57,7 +55,7 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
   return (
     <Box px={6}>
       <ListItem
-        px={downToXSM ? 4 : 3}
+        px={3}
         sx={{
           borderWidth: `1px 0 0 0`,
           borderStyle: `solid`,
@@ -118,7 +116,7 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
                   sx={{
                     m: 1,
                     fontSize: '14px',
-                    color: copyStatus ? 'green' : downToSM ? 'text.muted' : 'text.secondary',
+                    color: copyStatus ? 'green' : 'text.secondary',
                     cursor: 'pointer',
                   }}
                 >
@@ -140,7 +138,7 @@ function TransactionRowItem({ transaction, downToXSM }: TransactionHistoryItemPr
                 <SvgIcon
                   sx={{
                     fontSize: '14px',
-                    color: downToSM ? 'text.muted' : 'text.secondary',
+                    color: 'text.secondary',
                   }}
                 >
                   <ArrowOutward />

@@ -241,5 +241,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     isError,
     error,
     fetchForDownload,
+    subgraphUrl: currentMarketData.subgraphUrl,
   };
 };
