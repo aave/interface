@@ -522,6 +522,10 @@ msgstr "Claim AAVE"
 msgid "Claim All"
 msgstr "Claim All"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim All Vests"
+msgstr "Claim All Vests"
+
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAllVest.tsx
@@ -916,6 +920,10 @@ msgstr "Enter ETH address"
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
 msgstr "Enter an amount"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Error"
+msgstr "Error"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
@@ -1949,6 +1957,10 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Success"
+msgstr "Success"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"

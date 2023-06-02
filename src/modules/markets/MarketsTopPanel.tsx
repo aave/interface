@@ -2,6 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import ClaimAllVestTopPanel from 'src/maneki/modules/markets/ClaimAllVestTopPanel';
 
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -14,6 +15,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
+  const { currentAccount } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -83,7 +85,7 @@ export const MarketsTopPanel = () => {
           isTopPanel
         />
       </TopInfoPanelItem>
-      <ClaimAllVestTopPanel />
+      {currentAccount && <ClaimAllVestTopPanel />}
     </TopInfoPanel>
   );
 };

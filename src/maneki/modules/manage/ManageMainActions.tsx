@@ -28,7 +28,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-// import MULTI_FEE_ABI from './MultiFeeABI';
 import {
   Claimables,
   ClaimablesTuple,
@@ -59,7 +58,6 @@ export const ManageMainActions = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
 
-  // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
   const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses
