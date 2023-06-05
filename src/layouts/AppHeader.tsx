@@ -95,7 +95,7 @@ export function AppHeader() {
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
           bgcolor: mobileMenuOpen ? theme.palette.background.paper : 'transparent',
-          padding: md ? '8px 20px' : '20px 100px',
+          padding: md ? '8px 12px' : '20px 100px',
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'row',

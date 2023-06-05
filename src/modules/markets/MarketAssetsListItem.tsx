@@ -86,8 +86,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
-
-      <ListColumn>
+      {/* This removes stable apy */}
+      {/* <ListColumn>
         <IncentivesCard
           value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
           incentives={reserve.sIncentivesData || []}
@@ -98,7 +98,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && !reserve.isFrozen && (
           <ReserveSubheader value={'Disabled'} />
         )}
-      </ListColumn>
+      </ListColumn> */}
 
       <ListColumn maxWidth={95} minWidth={95} align="right">
         <Button

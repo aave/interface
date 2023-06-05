@@ -343,13 +343,13 @@ const WrappedBaseAssetSelector = ({
       sx={{ width: '100%', height: '36px', p: 0.5, mb: 4 }}
     >
       <StyledToggleButton disableRipple value={assetSymbol}>
-        <Typography variant="subheader1" sx={{ mr: 1, color: '#FEFEFE' }}>
+        <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
           {assetSymbol}
         </Typography>
       </StyledToggleButton>
 
       <StyledToggleButton disableRipple value={baseAssetSymbol}>
-        <Typography variant="subheader1" sx={{ mr: 1, color: '#FEFEFE' }}>
+        <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
           {baseAssetSymbol}
         </Typography>
       </StyledToggleButton>
