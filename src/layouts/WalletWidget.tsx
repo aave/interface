@@ -384,6 +384,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           onClick={handleClick}
           sx={{
             // p: connected || readOnlyModeAddress ? '5px 8px' : undefined,
+            p: md ? '8px 8px' : '10px 20px',
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
           startIcon={(connected || readOnlyModeAddress) && !hideWalletAccountText && accountAvatar}
