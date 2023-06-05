@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+// import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -45,17 +45,17 @@ const listHeaders = [
     ),
     sortKey: 'variableBorrowAPY',
   },
-  {
-    title: (
-      <StableAPYTooltip
-        text={<Trans>Borrow APY, stable</Trans>}
-        key="APY_list_stable_type"
-        variant="subheader2"
-      />
-    ),
-    sortKey: 'stableBorrowAPY',
-  },
-];
+  // {
+  //   title: (
+  //     <StableAPYTooltip
+  //       text={<Trans>Borrow APY, stable</Trans>}
+  //       key="APY_list_stable_type"
+  //       variant="subheader2"
+  //     />
+  //   ),
+  //   sortKey: 'stableBorrowAPY',
+  // },
+]; // Removed Stable Apy
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
