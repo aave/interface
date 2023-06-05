@@ -181,6 +181,18 @@ msgstr "Amount"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered please report it to our Maneki Team."
+msgstr "An Issue was encountered please report it to our Maneki Team."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
+msgstr "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
+msgstr "An Issue was encountered while attempting to <0>load</0> total vests PAW."
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
@@ -366,7 +378,6 @@ msgstr "Borrow"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
@@ -522,6 +533,10 @@ msgstr "Claim AAVE"
 msgid "Claim All"
 msgstr "Claim All"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim All Vests"
+msgstr "Claim All Vests"
+
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAllVest.tsx
@@ -529,6 +544,10 @@ msgstr "Claim All"
 #: src/maneki/transactions/Manage/ManageClaimUnlock.tsx
 msgid "Claim Failed"
 msgstr "Claim Failed"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim Successful"
+msgstr "Claim Successful"
 
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 msgid "Claim airdrop"
@@ -593,6 +612,14 @@ msgstr "Claiming Unlock PAW"
 #: src/maneki/transactions/Airdrop/AirdropActions.tsx
 msgid "Claiming {symbol}"
 msgstr "Claiming {symbol}"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh and copy</0> error message."
+msgstr "Click on button to <0>refresh and copy</0> error message."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh</0> and view your new vests balance."
+msgstr "Click on button to <0>refresh</0> and view your new vests balance."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -728,19 +755,95 @@ msgid "Dark mode"
 msgstr "Dark mode"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr "Data couldn't be fetched, please reload graph."
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+msgid "Debt"
+msgstr "Debt"
+
+#: src/ui-config/errorMapping.tsx
+msgid "Debt ceiling is exceeded"
+msgstr "Debt ceiling is exceeded"
+
+#: src/ui-config/errorMapping.tsx
+msgid "Debt ceiling is not zero"
+msgstr "Debt ceiling is not zero"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "Delegate"
+msgstr "Delegate"
+
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx
+msgid "Delegating"
+msgstr "Delegating"
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Delegation"
+msgstr "Delegation"
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
+msgid "Details"
+msgstr "Details"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
 msgstr "Developers"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: src/modules/governance/ProposalListItem.tsx
+msgid "Differential"
+msgstr "Differential"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+#: src/modules/dashboard/DashboardEModeButton.tsx
+msgid "Disable E-Mode"
+msgstr "Disable E-Mode"
+
+#: src/layouts/AppHeader.tsx
+msgid "Disable testnet"
+msgstr "Disable testnet"
+
+#: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
+msgid "Disable {symbol} as collateral"
+msgstr "Disable {symbol} as collateral"
+
+#: src/components/ReserveSubheader.tsx
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
+msgid "Disabled"
+msgstr "Disabled"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Disabling E-Mode"
+msgstr "Disabling E-Mode"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
+msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Disconnect Wallet"
+msgstr "Disconnect Wallet"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
-
 
 #: pages/500.page.tsx
 msgid "Discord channel"
@@ -870,21 +973,85 @@ msgstr "Expiry"
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Failed to load proposal voters. Please refresh the page."
+msgstr "Failed to load proposal voters. Please refresh the page."
+
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+#: src/components/transactions/Faucet/FaucetModal.tsx
+#: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetItemLoader.tsx
+#: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
+
+#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
+#: src/components/transactions/Faucet/FaucetActions.tsx
+msgid "Faucet {0}"
+msgstr "Faucet {0}"
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Fetching data..."
+msgstr "Fetching data..."
+
+#: src/modules/governance/ProposalListHeader.tsx
+#: src/modules/governance/ProposalListHeader.tsx
+msgid "Filter"
+msgstr "Filter"
+
+#: src/components/infoTooltips/MigrationDisabledTooltip.tsx
+msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
+msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
+
+#: src/ui-config/errorMapping.tsx
+msgid "For repayment of a specific type of debt, the user needs to have debt that type"
+msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
+msgstr "Forum discussion"
+
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "French"
+msgstr "French"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr "Frozen assets"
+
+#: src/modules/staking/StakingHeader.tsx
+msgid "Funds in the Safety Module"
+msgstr "Funds in the Safety Module"
+
+#: src/modules/staking/GetABPToken.tsx
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP Token"
+msgstr "Get ABP Token"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/SettingsMenu.tsx
+msgid "Global settings"
+msgstr "Global settings"
+
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+#: src/modules/migration/MigrationTopPanel.tsx
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
+msgid "Go Back"
+msgstr "Go Back"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Go to Balancer Pool"
+msgstr "Go to Balancer Pool"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Manage PAW"
-msgstr "Manage PAW"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1077,6 +1244,10 @@ msgstr "Liquidation value"
 msgid "Loading"
 msgstr "Loading"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Loading Error"
+msgstr "Loading Error"
+
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
 msgstr "Loading data..."
@@ -1127,17 +1298,60 @@ msgstr "Maneki Airdrops"
 msgid "Market"
 msgstr "Market"
 
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
 msgstr "Markets"
 
-#: src/utils/eMode.ts
-msgid "Stablecoin"
-msgstr "Stablecoin"
+#: src/components/transactions/AssetInput.tsx
+msgid "Max"
+msgstr "Max"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "TGE"
-msgstr "TGE"
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+msgid "Max LTV"
+msgstr "Max LTV"
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Max slashing"
+msgstr "Max slashing"
+
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
+msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
+
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
+msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
+
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Maximum loan to value"
+msgstr "Maximum loan to value"
+
+#: src/layouts/MobileMenu.tsx
+msgid "Menu"
+msgstr "Menu"
+
+#: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
+msgid "Migrate"
+msgstr "Migrate"
+
+#: src/components/TopInfoPanel/PageTitle.tsx
+msgid "Migrate to V3"
+msgstr "Migrate to V3"
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+msgid "Migrate to v3"
+msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
@@ -1350,6 +1564,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr "Please connect your wallet to get free testnet assets."
 
 #: src/maneki/modules/manage/ManageContainer.tsx
+#: src/maneki/modules/tge/TGEContainer.tsx
 msgid "Please connect your wallet to manage your PAW."
 msgstr "Please connect your wallet to manage your PAW."
 
@@ -1652,6 +1867,10 @@ msgstr "Slippage is the difference between the quoted and received amounts from 
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Something Went Wrong"
+msgstr "Something Went Wrong"
+
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
@@ -1877,6 +2096,11 @@ msgstr "Switching E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
+
+#: src/maneki/modules/tge/TGETopPanel.tsx
+#: src/ui-config/menu-items/index.tsx
+msgid "TGE"
+msgstr "TGE"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2112,6 +2336,10 @@ msgstr "Top 10 addresses"
 msgid "Total Value"
 msgstr "Total Value"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Total Vests"
+msgstr "Total Vests"
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"
@@ -2165,6 +2393,10 @@ msgstr "Track wallet"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Transaction Error"
+msgstr "Transaction Error"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2474,6 +2706,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
+msgstr "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -2686,4 +2922,3 @@ msgstr "{s}s"
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
-

@@ -28,7 +28,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-
 import {
   Claimables,
   ClaimablesTuple,
@@ -234,7 +233,6 @@ export const ManageMainActions = () => {
                   sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                 />
               </Box>
-
             }
           />
           <ManageMainPrimaryWrapper
@@ -345,7 +343,8 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           <Typography>
-            <Trans>Total vested</Trans>: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)} USD
+            <Trans>Total vested</Trans>: {Number(utils.formatUnits(totalVestsValue, 8)).toFixed(2)}{' '}
+            USD{' '}
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -388,7 +387,7 @@ export const ManageMainActions = () => {
           </Box>
           {/** Value in USD */}
           <Typography>
-            <Trans>Value</Trans>: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)} USD
+            <Trans>Value</Trans>: {Number(utils.formatUnits(totalLocksValue, 8)).toFixed(2)} USD
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -448,7 +447,7 @@ export const ManageMainActions = () => {
           >
             <Typography>
               <Trans>Total Value</Trans>:{' '}
-              {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)} USD
+              {Number(utils.formatUnits(totalClaimableValue, 8)).toFixed(2)} USD
             </Typography>
             <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
               <Trans>Claim All</Trans>
