@@ -181,6 +181,18 @@ msgstr "Amount"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered please report it to our Maneki Team."
+msgstr "An Issue was encountered please report it to our Maneki Team."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
+msgstr "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
+msgstr "An Issue was encountered while attempting to <0>load</0> total vests PAW."
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
@@ -534,6 +546,10 @@ msgstr "Claim All Vests"
 msgid "Claim Failed"
 msgstr "Claim Failed"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim Successful"
+msgstr "Claim Successful"
+
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 msgid "Claim airdrop"
 msgstr "Claim airdrop"
@@ -597,6 +613,14 @@ msgstr "Claiming Unlock PAW"
 #: src/maneki/transactions/Airdrop/AirdropActions.tsx
 msgid "Claiming {symbol}"
 msgstr "Claiming {symbol}"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh and copy</0> error message."
+msgstr "Click on button to <0>refresh and copy</0> error message."
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh</0> and view your new vests balance."
+msgstr "Click on button to <0>refresh</0> and view your new vests balance."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -921,10 +945,6 @@ msgstr "Enter ETH address"
 msgid "Enter an amount"
 msgstr "Enter an amount"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
-msgid "Error"
-msgstr "Error"
-
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
@@ -1224,6 +1244,10 @@ msgstr "Liquidation value"
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Loading"
 msgstr "Loading"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Loading Error"
+msgstr "Loading Error"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
@@ -1843,6 +1867,10 @@ msgstr "Slippage is the difference between the quoted and received amounts from 
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Something Went Wrong"
+msgstr "Something Went Wrong"
+
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
@@ -1957,10 +1985,6 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
-
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
-msgid "Success"
-msgstr "Success"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2361,6 +2385,10 @@ msgstr "Track wallet"
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Transaction Error"
+msgstr "Transaction Error"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
 msgstr "Transaction failed"
@@ -2668,6 +2696,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
+msgstr "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
