@@ -479,13 +479,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             />
           }
         >
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { sm: 'row', xs: 'column' },
+              justifyContent: 'space-between',
+            }}
+          >
             <Button
               variant="contained"
               onClick={onStakeRewardClaimAction}
               disabled={stakeUserData?.userIncentivesToClaim === '0'}
               data-cy={`claimBtn_${stakedToken}`}
-              style={{ flex: 1, marginRight: 10 }} // marginRight adds space between buttons
+              sx={{
+                flex: 1,
+                mb: { xs: 2, sm: 0 },
+                mr: { xs: 0, sm: 1 },
+              }}
             >
               <Trans>Claim</Trans>
             </Button>

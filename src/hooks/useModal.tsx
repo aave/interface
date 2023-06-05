@@ -55,7 +55,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string) => void;
+  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
   openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
@@ -135,9 +135,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.StakeCooldown);
           setArgs({ stakeAssetName });
         },
-        openStakeRewardsClaim: (stakeAssetName) => {
+        openStakeRewardsClaim: (stakeAssetName, icon) => {
           setType(ModalType.StakeRewardClaim);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
         },
         openStakeRewardsRestakeClaim: (stakeAssetName, icon) => {
           setType(ModalType.StakeRewardsClaimRestake);

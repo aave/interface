@@ -187,10 +187,10 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
 
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Amount claimable"
 msgstr "Amount claimable"
@@ -507,12 +507,10 @@ msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "CLAIM {symbol}"
 msgstr "CLAIM {symbol}"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
@@ -1567,6 +1565,10 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Quorum"
 msgstr "Quorum"
 
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "RESTAKING {symbol}"
+msgstr "RESTAKING {symbol}"
+
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
@@ -1684,6 +1686,10 @@ msgstr "Reset"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Restake"
 msgstr "Restake"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restake {symbol}"
+msgstr "Restake {symbol}"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"

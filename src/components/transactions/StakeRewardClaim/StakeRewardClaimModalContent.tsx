@@ -1,7 +1,8 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React from 'react';
+import { parseUnits } from 'ethers/lib/utils';
+import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -10,16 +11,18 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 
 export type StakeRewardClaimProps = {
   stakeAssetName: string;
+  icon: string;
 };
 
 export enum ErrorType {
@@ -28,10 +31,12 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
+export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const { data: stakeUserResult } = useUserStakeUiData();
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
@@ -40,12 +45,17 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
 
-  const amount = '-1';
   const maxAmountToClaim = normalize(
     stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
     18
   );
-
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? maxAmountToClaim : _amount;
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxAmountToClaim : value;
+    setAmount(value);
+  };
   // staking token usd value
   const amountInUsd =
     Number(maxAmountToClaim) *
@@ -99,14 +109,22 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLineWithSub
-          description={<Trans>Amount</Trans>}
-          symbol={rewardsSymbol}
-          futureValue={maxAmountToClaim}
-          futureValueUSD={amountInUsd.toString()}
-        />
-      </TxModalDetails>
+      <AssetInput
+        value={amount}
+        onChange={handleChange}
+        usdValue={amountInUsd.toString()}
+        symbol={icon}
+        assets={[
+          {
+            balance: maxAmountToClaim.toString(),
+            symbol: icon,
+          },
+        ]}
+        isMaxSelected={isMaxSelected}
+        maxValue={maxAmountToClaim.toString()}
+        balanceText={<Trans>Amount claimable</Trans>}
+      />
+      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
       {txError && <GasEstimationError txError={txError} />}
 

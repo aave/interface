@@ -127,7 +127,7 @@ export default function Staking() {
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave', 'AAVE')}
                   onStakeRewardClaimRestakeAction={() =>
                     openStakeRewardsRestakeClaim('aave', 'AAVE')
                   }
@@ -151,7 +151,7 @@ export default function Staking() {
                   onStakeAction={() => openStake('bpt', 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
               </Grid>

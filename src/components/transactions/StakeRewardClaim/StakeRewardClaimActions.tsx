@@ -33,7 +33,7 @@ export const StakeRewardClaimActions = ({
         amount: amountToClaim,
       });
     },
-    skip: blocked,
+    skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,
     deps: [],
   });
 

@@ -23,17 +23,17 @@ export const StakeRewardClaimRestakeActions = ({
   selectedToken,
   ...props
 }: StakeRewardClaimRestakeActionProps) => {
-  const claimStakeRewardsRestake = useRootStore((state) => state.claimStakeRewardsRestake);
+  const claimRewardsAndStake = useRootStore((state) => state.claimRewardsAndStake);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return claimStakeRewardsRestake({
+      return claimRewardsAndStake({
         token: selectedToken,
         amount: amountToClaim,
       });
     },
-    skip: blocked,
+    skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,
     deps: [],
   });
 
@@ -43,8 +43,8 @@ export const StakeRewardClaimRestakeActions = ({
       blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
-      actionText={<Trans>CLAIM {symbol}</Trans>}
-      actionInProgressText={<Trans>CLAIMING {symbol}</Trans>}
+      actionText={<Trans>Restake {symbol}</Trans>}
+      actionInProgressText={<Trans>RESTAKING {symbol}</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
       sx={sx}

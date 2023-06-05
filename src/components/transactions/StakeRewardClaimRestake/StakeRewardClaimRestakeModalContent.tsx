@@ -53,13 +53,14 @@ export const StakeRewardClaimRestakeModalContent = ({
     18
   );
   const isMaxSelected = _amount === '-1';
-  const amount = maxAmountToClaim;
+  const amount = isMaxSelected ? maxAmountToClaim : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToClaim : value;
     setAmount(value);
   };
+
   // staking token usd value
   const amountInUsd =
     Number(maxAmountToClaim) *
