@@ -1569,6 +1569,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr ""
 
 #: src/maneki/modules/manage/ManageContainer.tsx
+#: src/maneki/modules/tge/TGEContainer.tsx
 msgid "Please connect your wallet to manage your PAW."
 msgstr ""
 
@@ -2102,6 +2103,11 @@ msgstr ""
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Αλλαγή ποσοστού"
+
+#: src/maneki/modules/tge/TGETopPanel.tsx
+#: src/ui-config/menu-items/index.tsx
+msgid "TGE"
+msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
