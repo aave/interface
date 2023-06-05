@@ -50,8 +50,8 @@ export const useTransactionHandler = ({
   skip,
   protocolAction,
   deps = [],
-  eventTxInfo,
-}: UseTransactionHandlerProps) => {
+}: //eventTxInfo,
+UseTransactionHandlerProps) => {
   const {
     approvalTxState,
     setApprovalTxState,
@@ -118,8 +118,6 @@ export const useTransactionHandler = ({
         await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
 
-        updateTransaction(currentChainId, txnResult.hash, { txState: 'success', ...eventTxInfo });
-        // refetchWalletBalances();
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });

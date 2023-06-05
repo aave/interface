@@ -8,15 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-<<<<<<< HEAD
-"PO-Revision-Date: 2023-04-17 18:04\n"
-=======
-"PO-Revision-Date: 2023-04-21 18:04\n"
->>>>>>> upstream/main
-=======
-"PO-Revision-Date: 2023-06-01 18:04\n"
->>>>>>> sync-main/main
+"PO-Revision-Date: 2023-06-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -25,6 +17,16 @@ msgstr ""
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".CSV"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".JSON"
+msgstr ""
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -53,6 +55,8 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
@@ -167,6 +171,11 @@ msgstr "Tout est fait !"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "Toutes les propositions"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "All transactions"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
@@ -381,6 +390,8 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Emprunter"
@@ -427,6 +438,10 @@ msgstr "Le plafond d'emprunt est dépassé"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Puissance d'emprunt utilisée"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Borrow rate change"
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
@@ -511,6 +526,7 @@ msgid "Can be executed"
 msgstr "Peut être exécuté"
 
 #: src/components/TitleWithSearchBar.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
 msgstr ""
 
@@ -575,6 +591,7 @@ msgstr "Collatérale"
 msgid "Collateral balance after repay"
 msgstr ""
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Collateral change"
@@ -588,6 +605,7 @@ msgstr "La garantie est (principalement) la même devise que celle qui est empru
 msgid "Collateral to repay with"
 msgstr ""
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -608,6 +626,7 @@ msgstr "L'utilisation de la garantie est limitée en raison du mode d'isolement.
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collatéralisation"
 
@@ -645,6 +664,16 @@ msgstr "Temps de recharge pour déstaker"
 msgid "Cooling down..."
 msgstr "Refroidissement..."
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copied"
+msgstr ""
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copy"
+msgstr ""
+
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copier l'adresse"
@@ -656,6 +685,10 @@ msgstr ""
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copier le texte d'erreur"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Covered debt"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -872,6 +905,10 @@ msgstr ""
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
 msgstr "Expire"
+
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Export data to"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -1125,6 +1162,18 @@ msgstr ""
 msgid "Links"
 msgstr "Liens"
 
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Liqudation"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidated collateral"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidation"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Seuil de liquidation <0/>"
@@ -1309,6 +1358,11 @@ msgstr "Aucune récompense à réclamer"
 msgid "No search results{0}"
 msgstr ""
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "No transactions yet."
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr "Pas de pouvoir de vote"
@@ -1348,6 +1402,11 @@ msgstr "Non atteint"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Aucun emprunt pour l'instant"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Nothing found"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -1421,6 +1480,10 @@ msgstr ""
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Veuillez connecter votre portefeuille pour voir vos fournitures, vos emprunts et vos positions ouvertes."
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Please connect your wallet to view transaction history."
+msgstr ""
+
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr ""
@@ -1444,6 +1507,10 @@ msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Preview tx and migrate"
+msgstr ""
+
+#: src/modules/history/PriceUnavailable.tsx
+msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
@@ -1500,6 +1567,10 @@ msgstr ""
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
 msgstr "Quorum"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Rate change"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
@@ -1567,6 +1638,8 @@ msgstr ""
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Repay"
 msgstr "Rembourser"
 
@@ -1604,6 +1677,10 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Statut et configuration de la réserve"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Reset"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -1761,6 +1838,7 @@ msgstr "Espagnol"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Stable"
 
@@ -1853,6 +1931,8 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Fournir"
@@ -2229,9 +2309,28 @@ msgstr ""
 msgid "Transaction failed"
 msgstr "La transaction a échoué"
 
+#: src/layouts/WalletWidget.tsx
+#: src/modules/history/HistoryTopPanel.tsx
+msgid "Transaction history"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history is not currently available for this market"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Aperçu des transactions"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Transactions"
+msgstr ""
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Tx hash"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2334,6 +2433,7 @@ msgstr "VOTER OUI"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
 msgstr "Variable"
 
@@ -2368,6 +2468,11 @@ msgstr "Voir détails"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "Voir sur l'explorer"
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View on block explorer"
+msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -2428,6 +2533,11 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+msgstr ""
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr ""
@@ -2451,6 +2561,8 @@ msgstr ""
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Withdraw"
 msgstr "Retirer"
 
@@ -2630,13 +2742,26 @@ msgstr ""
 msgid "copy the error"
 msgstr "copier l'erreur"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "disabled"
+msgstr ""
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "enabled"
 msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "Prend fin"
+
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "for"
+msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
