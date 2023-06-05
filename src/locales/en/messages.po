@@ -2331,6 +2331,10 @@ msgstr "Top 10 addresses"
 msgid "Total Value"
 msgstr "Total Value"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Total Vests"
+msgstr "Total Vests"
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"

@@ -138,7 +138,9 @@ const ClaimAllVestTopPanel = () => {
       })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <Typography sx={{ fontWeight: '500', fontSize: '14px' }}>Total Vests: </Typography>
+        <Typography sx={{ fontWeight: '500', fontSize: '14px' }}>
+          <Trans>Total Vests</Trans>:{' '}
+        </Typography>
         {totalVests.lt(0) ? (
           <NoData />
         ) : (
