@@ -75,7 +75,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Stake PAW'}
-        aprValue={stakingAPR.div(100_000_000).toNumber().toFixed(2)}
+        aprValue={utils.formatUnits(stakingAPR, 8)}
         descriptions={[
           <Trans key={1}>Stake PAW and earn platform fees with no lockup period.</Trans>,
         ]}
@@ -89,7 +89,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Lock PAW'}
-        aprValue={lockingAPR.div(100_000_000).toNumber().toFixed(2)}
+        aprValue={utils.formatUnits(lockingAPR, 8)}
         descriptions={[
           <Trans key={1}>Lock PAW and earn platform fees and penalty fees in unlocked PAW.</Trans>,
           <Trans key={2}>

@@ -180,7 +180,6 @@ export const ManageMainActions = () => {
                   )}
                   <FormattedNumber
                     value={utils.formatUnits(unlockedPAW, 18)}
-                    visibleDecimals={7}
                     symbol="PAW"
                     sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                   />
@@ -229,7 +228,6 @@ export const ManageMainActions = () => {
                 )}
                 <FormattedNumber
                   value={utils.formatUnits(vestedPAW, 18)}
-                  visibleDecimals={7}
                   symbol="PAW"
                   sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                 />
@@ -250,7 +248,6 @@ export const ManageMainActions = () => {
                   <FormattedNumber
                     color={'error.light'}
                     value={utils.formatUnits(exitPenalty, 18)}
-                    visibleDecimals={7}
                   />
                   <Typography color={'error.light'}>PAW</Typography>
                 </Box>
@@ -300,7 +297,6 @@ export const ManageMainActions = () => {
                   )}
                   <FormattedNumber
                     value={utils.formatUnits(expiredLockedPAW, 18)}
-                    visibleDecimals={7}
                     symbol="PAW"
                     sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                   />
@@ -336,11 +332,8 @@ export const ManageMainActions = () => {
               <TableBody>
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
-                    <TableCell>
-                      <FormattedNumber
-                        value={utils.formatUnits(vest.amount, 18)}
-                        visibleDecimals={7}
-                      />
+                    <TableCell sx={{ pl: '30px' }}>
+                      <FormattedNumber value={utils.formatUnits(vest.amount, 18)} />
                     </TableCell>
                     <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
                   </TableRow>
@@ -371,11 +364,8 @@ export const ManageMainActions = () => {
               <TableBody>
                 {locks.map((lock, i) => (
                   <TableRow key={i}>
-                    <TableCell>
-                      <FormattedNumber
-                        value={utils.formatUnits(lock.amount, 18)}
-                        visibleDecimals={7}
-                      />
+                    <TableCell sx={{ pl: '30px' }}>
+                      <FormattedNumber value={utils.formatUnits(lock.amount, 18)} />
                     </TableCell>
                     <TableCell>{convertUnixToDate(lock.expiry.toNumber() * 1000)}</TableCell>
                   </TableRow>
@@ -390,7 +380,6 @@ export const ManageMainActions = () => {
             </Typography>
             <FormattedNumber
               value={utils.formatUnits(totalLockedPAW.toString(), 18)}
-              visibleDecimals={7}
               symbol="PAW"
             />
           </Box>

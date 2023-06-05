@@ -91,21 +91,13 @@ export const ManageTopPanel = () => {
               <Typography>
                 <Trans>Stake</Trans>:
               </Typography>
-              <FormattedNumber
-                value={utils.formatUnits(stakedPAW, 18)}
-                visibleDecimals={7}
-                symbol="PAW"
-              />
+              <FormattedNumber value={utils.formatUnits(stakedPAW, 18)} symbol="PAW" />
             </Box>
             <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
                 <Trans>Lock</Trans>:
               </Typography>
-              <FormattedNumber
-                value={utils.formatUnits(lockedPAW, 18)}
-                visibleDecimals={7}
-                symbol="PAW"
-              />
+              <FormattedNumber value={utils.formatUnits(lockedPAW, 18)} symbol="PAW" />
             </Box>
           </>
         ) : (

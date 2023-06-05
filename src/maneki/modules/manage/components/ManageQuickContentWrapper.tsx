@@ -127,12 +127,7 @@ export default function ManageQuickContentWrapper({
         <Typography fontSize={16} fontWeight={500}>
           <Trans>Wallet Balance</Trans> :
         </Typography>
-        <FormattedNumber
-          value={balancePAW}
-          visibleDecimals={7}
-          sx={{ fontWeight: 500, fontSize: 16 }}
-          symbol="PAW"
-        />
+        <FormattedNumber value={balancePAW} sx={{ fontWeight: 500, fontSize: 16 }} symbol="PAW" />
       </Box>
       <Box
         sx={{
