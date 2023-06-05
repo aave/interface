@@ -28,6 +28,7 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
+
 import {
   Claimables,
   ClaimablesTuple,
@@ -184,6 +185,7 @@ export const ManageMainActions = () => {
                     sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                   />
                 </Box>
+
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
@@ -232,6 +234,7 @@ export const ManageMainActions = () => {
                   sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                 />
               </Box>
+
             }
           />
           <ManageMainPrimaryWrapper
