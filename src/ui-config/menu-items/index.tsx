@@ -47,6 +47,11 @@ export const navigation: Navigation[] = [
     dataCy: 'menuAirdrop',
   },
   {
+    link: ROUTES.tge,
+    title: t`TGE`,
+    dataCy: 'menuTGE',
+  },
+  {
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
