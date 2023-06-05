@@ -211,6 +211,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         onClick={() => {
           setOpen(false);
           router.push(ROUTES.history);
+          trackEvent(AUTH.VIEW_TX_HISTORY);
         }}
       >
         <ListItemIcon

@@ -8,6 +8,7 @@ export const AUTH = {
   DISCONNECT_WALLET: 'Disconnect wallet', //done
   COPY_ADDRESS: 'Copy address', // done
   VIEW_EXPLORER: 'View explorer', // done
+  VIEW_TX_HISTORY: 'View Tx History',
 };
 
 export const GENERAL = {
@@ -109,6 +110,12 @@ export const YOUR_INFO_RESERVE_DETAILS = {
   BORROW_INFO_ICON: 'View borrow info icon your info reserve page', // done
   SUPPLY_RESERVE: 'Supply assets your info reserve page', // done removed for DASHBOARD.BORROW_DASHBOARD with funnel property
   BORROW_RESERVE: 'Borrow assets your info reserve page', // done removed for DASHBOARD.BORROW_DASHBOARD with funnel property
+};
+
+export const TRANSACTION_HISTORY = {
+  COPY_TX_ADDRESS: 'Copy Tx Address',
+  DOWNLOAD: 'Tx Histoy Download',
+  FILTER: 'Tx History Filter Selected',
 };
 
 export const SUPPLY_MODAL = {
