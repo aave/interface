@@ -33744,6 +33744,9 @@ var require_types2 = __commonJS({
       ProtocolAction2["vote"] = "vote";
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
+      ProtocolAction2["stake"] = "stake";
+      ProtocolAction2["claimRewards"] = "claimRewards";
+      ProtocolAction2["setUsageAsCollateral"] = "setUsageAsCollateral";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
     (function(GovernanceVote2) {
@@ -35354,6 +35357,18 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
         recommended: "125000"
+      },
+      [types_1.ProtocolAction.stake]: {
+        limit: "395000",
+        recommended: "395000"
+      },
+      [types_1.ProtocolAction.claimRewards]: {
+        limit: "275000",
+        recommended: "275000"
+      },
+      [types_1.ProtocolAction.setUsageAsCollateral]: {
+        limit: "138000",
+        recommended: "138000"
       }
     };
     exports2.mintAmountsPerToken = {
@@ -43035,13 +43050,14 @@ var require_lendingPool_contract = __commonJS({
           rawTxMethod: () => __async(this, null, function* () {
             return lendingPoolContract.populateTransaction.setUserUseReserveAsCollateral(reserve, usageAsCollateral);
           }),
-          from: user
+          from: user,
+          action: types_1.ProtocolAction.setUsageAsCollateral
         });
         return [
           {
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback)
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.setUsageAsCollateral)
           }
         ];
       }
@@ -44115,17 +44131,17 @@ var require_staking_contract = __commonJS({
             });
             txs.push(approveTx);
           }
-          console.log(stakingContract);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
               return stakingContract.populateTransaction.stake(onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, convertedAmount);
             }),
-            from: user
+            from: user,
+            action: types_1.ProtocolAction.stake
           });
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.STAKE_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.stake)
           });
           return txs;
         });
@@ -44191,13 +44207,14 @@ var require_staking_contract = __commonJS({
               return stakingContract.populateTransaction.claimRewards(user, convertedAmount);
             }),
             from: user,
-            gasSurplus: 20
+            gasSurplus: 20,
+            action: types_1.ProtocolAction.claimRewards
           });
           return [
             {
               tx: txCallback,
               txType: types_1.eEthereumTxType.STAKE_ACTION,
-              gas: this.generateTxPriceEstimation([], txCallback)
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.claimRewards)
             }
           ];
         });
@@ -53947,7 +53964,7 @@ var require_AaveV3Ethereum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Ethereum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e";
     exports2.POOL = "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2";
     exports2.POOL_CONFIGURATOR = "0x64b761D848206f447Fe2dd461b0c635Ec39EbB27";
@@ -53974,6 +53991,7 @@ var require_AaveV3Ethereum = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6";
     exports2.DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = "0x21714092D90c7265F52fdfDae068EC11a23C6248";
     exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x82dcCF206Ae2Ab46E2099e663F70DeE77caE7778";
   }
 });
 
@@ -54229,20 +54247,20 @@ var require_AaveV3Polygon = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb023e699F5a33916Ea823A16485e259257cA8Bd1";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x9441B65EE553F70df9C77d45d3283B6BC24F222d";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
     exports2.COLLECTOR = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0xCf85FF1c37c594a10195F7A9Ab85CBb0a03f69dE";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x79b5e91037AE441dE0d9e6fd3Fd85b96B83d4E93";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
     exports2.CHAIN_ID = 137;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -54255,6 +54273,7 @@ var require_AaveV3Polygon = __commonJS({
     exports2.UI_POOL_DATA_PROVIDER = "0xC69728f11E9E6127733751c8410432913123acf1";
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x874313A46e4957D29FAAC43BF5Eb2B144894f557";
     exports2.STATIC_A_TOKEN_FACTORY = "0xFcd9720b0Ea09c70E53727E08Bc131d77800B112";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
   }
 });
 
@@ -54328,7 +54347,7 @@ var require_AaveV2Avalanche = __commonJS({
     exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x65285E9dfab318f57051ab2b139ccCf232945451";
     exports2.POOL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.EMERGENCY_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
-    exports2.COLLECTOR = "0x467b92aF281d14cB6809913AD016a607b5ba8A36";
+    exports2.COLLECTOR = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9";
     exports2.EMISSION_MANAGER = "0x5CfCd7E6D055Ba4f7B998914336254aDE3F69f26";
     exports2.CHAIN_ID = 43114;
@@ -54350,20 +54369,20 @@ var require_AaveV3Avalanche = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.PROOF_OF_RESERVE_AGGREGATOR = exports2.PROOF_OF_RESERVE = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.SWAP_COLLATERAL_ADAPTER = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
     exports2.COLLECTOR = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0x1E81af09001aD208BDa68FF022544dB2102A752d";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x893411580e590D62dDBca8a703d61Cc4A8c7b2b9";
     exports2.CHAIN_ID = 43114;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -54378,6 +54397,7 @@ var require_AaveV3Avalanche = __commonJS({
     exports2.PROOF_OF_RESERVE = "0xab22988D93d5F942fC6B6c6Ea285744809D1d9Cc";
     exports2.PROOF_OF_RESERVE_AGGREGATOR = "0x80f2c02224a2E548FC67c0bF705eBFA825dd5439";
     exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xD2C92b5A793e196aB11dBefBe3Af6BddeD6c3DD5";
   }
 });
 
@@ -54386,20 +54406,20 @@ var require_AaveV3Arbitrum = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
     exports2.PRICE_ORACLE_SENTINEL = "0xF876d26041a4Fdc7A787d209DC3D2795dDc74f1e";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0x1Be1798b70aEe431c2986f7ff48d9D1fa350786a";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x0c2C95b24529664fE55D4437D7A31175CFE6c4f7";
     exports2.CHAIN_ID = 42161;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -54413,6 +54433,7 @@ var require_AaveV3Arbitrum = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
     exports2.STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0xADf86b537eF08591c2777E144322E8b0Ca7E82a7";
   }
 });
 
@@ -54540,20 +54561,20 @@ var require_AaveV3Optimism = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.STATIC_A_TOKEN_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.LISTING_ENGINE = exports2.REPAY_WITH_COLLATERAL_ADAPTER = exports2.RATES_FACTORY = exports2.SWAP_COLLATERAL_ADAPTER = exports2.WETH_GATEWAY = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
     exports2.POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     exports2.POOL_CONFIGURATOR = "0x8145eddDf43f50276641b55bd3AD95944510021E";
     exports2.ORACLE = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xd9Ca4878dd38B021583c1B669905592EAe76E044";
     exports2.ACL_MANAGER = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
     exports2.ACL_ADMIN = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
     exports2.COLLECTOR = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
     exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_2 = "0xbCb167bDCF14a8F791d6f4A6EDd964aed2F8813B";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x04a8D477eE202aDCE1682F5902e1160455205b12";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
     exports2.CHAIN_ID = 10;
     exports2.EMISSION_MANAGER = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
     exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
@@ -54567,6 +54588,7 @@ var require_AaveV3Optimism = __commonJS({
     exports2.UI_INCENTIVE_DATA_PROVIDER = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
     exports2.L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
     exports2.STATIC_A_TOKEN_FACTORY = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
   }
 });
 
@@ -54606,27 +54628,27 @@ var require_AaveV3ScrollAlpha = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.FAUCET = exports2.WETH_GATEWAY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
-    exports2.POOL_ADDRESSES_PROVIDER = "0xCA35Ae4cc948Dae8a1d3C77ed1C5CBC2e73b290D";
-    exports2.POOL = "0x556345b249008Bf2f52B7097ceB5bE798F32dAe9";
-    exports2.POOL_CONFIGURATOR = "0x88A4811E6009ad13EA879261806E5a6071F3F788";
-    exports2.ORACLE = "0x269D5C1854fcA3bede6BFc8935118c99020b13f0";
+    exports2.POOL_ADDRESSES_PROVIDER = "0x52A27dC690F8652288194Dd2bc523863eBdEa236";
+    exports2.POOL = "0x48914C788295b5db23aF2b5F0B3BE775C4eA9440";
+    exports2.POOL_CONFIGURATOR = "0x63BB78Fbac521998BD6E33f1a960677c7a1d4F10";
+    exports2.ORACLE = "0x4B7C7D2EbcDc1015D35F617596318C15d9d24e59";
     exports2.PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
-    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0x36002d10bB238594c58aec104620555a545D517C";
-    exports2.ACL_MANAGER = "0x550CC76fD6C4E4502cB4F79f26ee15f4E4681D57";
-    exports2.ACL_ADMIN = "0x8A52430a0a83d2bA00A88758340e4b640BDfC4FC";
-    exports2.COLLECTOR = "0x500A5dc53fD22bdBBe37bE9cc00cB67F24e233d1";
-    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0x318101F73b388C73b5A2Da39B4De54f335D77A0D";
-    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0xf7798f65d3d1A1Af1a68d8B4322638559A47bC83";
-    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xF087700794eb98b193D8f95fFEc0E1a02e195e28";
-    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x2bb98A7F11a81AE07443f192Daae04f815F2c878";
+    exports2.AAVE_PROTOCOL_DATA_PROVIDER = "0xaE58b3Be9E159bDEc67Ada8507CA3001c80725Ee";
+    exports2.ACL_MANAGER = "0x166601A0Cc6Cf979e2f0eF94EC5363B6BC24061C";
+    exports2.ACL_ADMIN = "0xA5bf8BC3c35D9F92b038254B9B8675266f6b62c0";
+    exports2.COLLECTOR = "0x104Cd7695C9247096F7AD37d3258B63c9675A00e";
+    exports2.DEFAULT_INCENTIVES_CONTROLLER = "0xa76F05D0cdf599E0186dec880F2FA480fd0c5280";
+    exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = "0x0Eae78c97347bf6FCF784Aa91CABC4aCdB5cc2dd";
+    exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xAb8eaAE8383Abe28203cB6e6FAa0477B2fb97f07";
+    exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0xC696d1c66Aa9F42764eE44fCc454a07a24aCe256";
     exports2.CHAIN_ID = 534353;
-    exports2.EMISSION_MANAGER = "0x41A9A5615a912E47F99e16484880009c7c65707b";
-    exports2.WETH_GATEWAY = "0x410Fda971c841Aaf34be5F5539b40503c7F12AC2";
-    exports2.FAUCET = "0x55530C4E1ADFf14cB5760C6750FeBFbEB57E6753";
-    exports2.WALLET_BALANCE_PROVIDER = "0x2B45F4A959B5Fc8fc22b457424685f17eDae4592";
-    exports2.UI_POOL_DATA_PROVIDER = "0x45dFc7A61AD24918C9315733223fD1e55E9B2B59";
-    exports2.UI_INCENTIVE_DATA_PROVIDER = "0x109e475c0Bf9E525dABB65A4Aec07c1e65100a99";
-    exports2.L2_ENCODER = "0x997a8208902e1259dDf676Eb37FeD31A2f77110B";
+    exports2.EMISSION_MANAGER = "0x01dd3Ad7D942406C47acd5b70cBad28fd377c6f2";
+    exports2.WETH_GATEWAY = "0x57ce905CfD7f986A929A26b006f797d181dB706e";
+    exports2.FAUCET = "0x357A307A8036D54b454BD15B3B1A0fE4B9e8A561";
+    exports2.WALLET_BALANCE_PROVIDER = "0x6c68e975764a56e62AF3d1C8209F789779Eb763B";
+    exports2.UI_POOL_DATA_PROVIDER = "0xDC55BcFC0963608401A4bA6298624E5895f8250a";
+    exports2.UI_INCENTIVE_DATA_PROVIDER = "0xBf67A725F976d4A7C1fa9ea5303FD57D13CA0A37";
+    exports2.L2_ENCODER = "0x3Bb33c67908D0d58F8d7349cBe726ff3b059e0fC";
   }
 });
 
@@ -54635,7 +54657,7 @@ var require_AaveV3Metis = __commonJS({
   "node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.LISTING_ENGINE = exports2.RATES_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
+    exports2.CAPS_PLUS_RISK_STEWARD = exports2.LISTING_ENGINE = exports2.RATES_FACTORY = exports2.L2_ENCODER = exports2.UI_INCENTIVE_DATA_PROVIDER = exports2.UI_POOL_DATA_PROVIDER = exports2.WALLET_BALANCE_PROVIDER = exports2.POOL_ADDRESSES_PROVIDER_REGISTRY = exports2.EMISSION_MANAGER = exports2.CHAIN_ID = exports2.DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = exports2.DEFAULT_A_TOKEN_IMPL_REV_1 = exports2.DEFAULT_INCENTIVES_CONTROLLER = exports2.COLLECTOR = exports2.ACL_ADMIN = exports2.ACL_MANAGER = exports2.AAVE_PROTOCOL_DATA_PROVIDER = exports2.PRICE_ORACLE_SENTINEL = exports2.ORACLE = exports2.POOL_CONFIGURATOR = exports2.POOL = exports2.POOL_ADDRESSES_PROVIDER = void 0;
     exports2.POOL_ADDRESSES_PROVIDER = "0xB9FABd7500B2C6781c35Dd48d54f81fc2299D7AF";
     exports2.POOL = "0x90df02551bB792286e8D4f13E0e357b4Bf1D6a57";
     exports2.POOL_CONFIGURATOR = "0x69FEE8F261E004453BE0800BC9039717528645A6";
@@ -54658,6 +54680,7 @@ var require_AaveV3Metis = __commonJS({
     exports2.L2_ENCODER = "0x9f3A1B399A9074eBA63Dc4fc274bE2A2b2d80cB9";
     exports2.RATES_FACTORY = "0x87Aaba7cf8e1F319d0E3402d68017171201dEcd5";
     exports2.LISTING_ENGINE = "0x857720ad258db0ACb180e76A5526c72CFCe6F8A7";
+    exports2.CAPS_PLUS_RISK_STEWARD = "0x5f4d15d761528c57a5C30c43c1DAb26Fc5452731";
   }
 });
 
@@ -63821,6 +63844,7 @@ var marketsData = {
       collateralRepay: true,
       incentives: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Ethereum.POOL,
@@ -63847,6 +63871,7 @@ var marketsData = {
       collateralRepay: true,
       incentives: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Ethereum.POOL,
@@ -63889,6 +63914,7 @@ var marketsData = {
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2EthereumAMM.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2EthereumAMM.POOL,
@@ -63907,6 +63933,7 @@ var marketsData = {
       incentives: true,
       collateralRepay: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Polygon.POOL,
@@ -63932,6 +63959,7 @@ var marketsData = {
       incentives: true,
       collateralRepay: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Avalanche.POOL,
@@ -63974,6 +64002,7 @@ var marketsData = {
     enabledFeatures: {
       faucet: true
     },
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli', needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Goerli.POOL,
@@ -63993,6 +64022,7 @@ var marketsData = {
       liquiditySwap: true,
       collateralRepay: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Arbitrum.POOL,
@@ -64018,6 +64048,7 @@ var marketsData = {
       faucet: true,
       incentives: true
     },
+    //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
@@ -64038,6 +64069,7 @@ var marketsData = {
       incentives: true,
       collateralRepay: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Avalanche.POOL,
@@ -64062,6 +64094,7 @@ var marketsData = {
       faucet: true,
       incentives: true
     },
+    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fuji',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fuji.POOL,
@@ -64080,6 +64113,7 @@ var marketsData = {
       faucet: true,
       incentives: true
     },
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism-goerli',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
@@ -64119,6 +64153,7 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Fantom.POOL,
@@ -64143,6 +64178,7 @@ var marketsData = {
       faucet: true,
       incentives: true
     },
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom-testnet',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
@@ -64160,6 +64196,7 @@ var marketsData = {
     enabledFeatures: {
       incentives: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-harmony",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Harmony.POOL,
@@ -64179,6 +64216,7 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Optimism.POOL,
@@ -64201,6 +64239,7 @@ var marketsData = {
       incentives: true,
       collateralRepay: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Polygon.POOL,
@@ -64224,6 +64263,7 @@ var marketsData = {
       incentives: true,
       faucet: true
     },
+    //  subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-mumbai',  needs re-deployment
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Mumbai.POOL,
@@ -64241,6 +64281,7 @@ var marketsData = {
     enabledFeatures: {
       faucet: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-goerli",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Goerli.POOL,
@@ -64258,6 +64299,7 @@ var marketsData = {
       incentives: true,
       faucet: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Mumbai.POOL,
@@ -64275,6 +64317,7 @@ var marketsData = {
       faucet: true,
       incentives: true
     },
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV2Fuji.POOL,
@@ -64292,6 +64335,7 @@ var marketsData = {
     enabledFeatures: {
       incentives: true
     },
+    subgraphUrl: "https://andromeda.thegraph.metis.io/subgraphs/name/aave/protocol-v3-metis",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Metis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: markets.AaveV3Metis.POOL,
