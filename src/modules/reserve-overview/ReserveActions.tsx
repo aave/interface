@@ -125,10 +125,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         symbol={selectedAsset}
         marketTitle={market.marketTitle}
       />
-      {reserve.isFrozen ? (
-        <Box sx={{ mt: 3 }}>
-          <FrozenWarning />
-        </Box>
+      {reserve.isFrozen || reserve.isPaused ? (
+        <Box sx={{ mt: 3 }}>{reserve.isPaused ? <PauseWarning /> : <FrozenWarning />}</Box>
       ) : (
         <>
           <Divider sx={{ my: 6 }} />
@@ -154,6 +152,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         </>
       )}
     </PaperWrapper>
+  );
+};
+
+const PauseWarning = () => {
+  return (
+    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
+      <Trans>Because this asset is paused, no actions can be taken until further notice</Trans>
+    </Warning>
   );
 };
 
