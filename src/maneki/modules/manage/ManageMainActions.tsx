@@ -104,19 +104,19 @@ export const ManageMainActions = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getUnlockedPaw(currentAccount)); // unlockedpaw
-    promises.push(contract.getVestingPaw(currentAccount)); // vestedpaw
-    promises.push(contract.getEarlyExitPenalty(currentAccount)); // exit penalty
-    promises.push(contract.getExpiredLockedPaw(currentAccount)); // expired locked paw
-    promises.push(contract.getTotalPawLocked(currentAccount)); // total locked paw
-    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); // total claimable value
-    promises.push(contract.getVestingScheduleArray(currentAccount)); // vests
-    promises.push(contract.getLockScheduleArray(currentAccount)); // locks
-    promises.push(contract.getClaimableRewards(currentAccount)); // claimables
-    promises.push(contract.getTotalPawLockedValue(currentAccount)); // locked value
-    promises.push(contract.getTotalPawVestingValue(currentAccount)); // vesting value
-    promises.push(pawPriceOracleContract.latestAnswer()); // PAW price in USD
-    promises.push(priceOracleContract.getAssetsPrices(Object.values(addressReserveMatching)));
+    promises.push(contract.getUnlockedPaw(currentAccount)); //0 unlockedpaw
+    promises.push(contract.getVestingPaw(currentAccount)); //1 vestedpaw
+    promises.push(contract.getEarlyExitPenalty(currentAccount)); //2 exit penalty
+    promises.push(contract.getExpiredLockedPaw(currentAccount)); //3 expired locked paw
+    promises.push(contract.getTotalPawLocked(currentAccount)); //4 total locked paw
+    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); //5 total claimable value
+    promises.push(contract.getVestingScheduleArray(currentAccount)); //6 vests
+    promises.push(contract.getLockScheduleArray(currentAccount)); //7 locks
+    promises.push(contract.getClaimableRewards(currentAccount)); //8 claimables
+    promises.push(contract.getTotalPawLockedValue(currentAccount)); //9 locked value
+    promises.push(contract.getTotalPawVestingValue(currentAccount)); //10 vesting value
+    promises.push(pawPriceOracleContract.latestAnswer()); //11 PAW price in USD
+    promises.push(priceOracleContract.getAssetsPrices(Object.values(addressReserveMatching))); // 12
     // call promise all and get data
     Promise.all(promises)
       .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[] | BigNumber[])[]) => {

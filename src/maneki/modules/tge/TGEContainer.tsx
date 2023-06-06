@@ -3,8 +3,9 @@ import { Trans } from '@lingui/macro';
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import ManekiLoadingPaper from '../../components/ManekiLoadingPaper';
-import TGEBottomSect from './TGEBottomSect';
-import TGEMainSect from './TGEMainSect';
+import TGEMainAction from './TGEMainAction';
+import TGEMarketStat from './TGEMarketStat';
+import TGEPhaseInfo from './TGEPhaseInfo';
 
 export const TGEContainer = () => {
   const { currentAccount, loading: web3Loading, chainId } = useWeb3Context();
@@ -25,10 +26,11 @@ export const TGEContainer = () => {
   return (
     <>
       {/* Main Section */}
-      <TGEMainSect />
+      <TGEMainAction />
 
+      <TGEMarketStat />
       {/* Bottom Section */}
-      <TGEBottomSect />
+      <TGEPhaseInfo />
     </>
   );
 };

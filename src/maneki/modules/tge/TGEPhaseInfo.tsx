@@ -1,3 +1,4 @@
+import { Paper, Typography } from '@mui/material';
 import { BigNumber, Contract } from 'ethers';
 import * as React from 'react';
 
@@ -6,18 +7,9 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useTGEContext } from '../../hooks/tge-data-provider/TGEDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from '../manage/DataABI';
 
-const TGEBottomSect = () => {
+const TGEPhaseInfo = () => {
   const { provider } = useWeb3Context();
-  const {
-    setFinalPAWPrice,
-    setMarketCap,
-    setInitialSupply,
-    setTotalSupply,
-    finalPAWPrice,
-    marketCap,
-    initialSupply,
-    totalSupply,
-  } = useTGEContext();
+  const { setFinalPAWPrice, setMarketCap, setInitialSupply, setTotalSupply } = useTGEContext();
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -54,14 +46,29 @@ const TGEBottomSect = () => {
   }
 
   return (
-    <div>
-      <div>TGE PIKA PRICE {finalPAWPrice._hex}</div>
-      <div>market cap {marketCap._hex}</div>
-      <div>
-        total supply {totalSupply._hex} initial supply {initialSupply._hex}
-      </div>
-    </div>
+    <>
+      <Paper>
+        <Typography variant="h2">Whitelist Phase</Typography>
+        <Typography>
+          For the first 24 hours, 6 million PAW tokens (6% of the supply) are available for
+          whitelist participates at the fixed price of 0.0002 ETH(~$0.36) and the FDV of ~$36m with
+          a market cap of ~$6.8m. Whitelist addresses are selected from historic vault users,
+          traders and contributors. The allocation of each whitelist address depends on the historic
+          activities. First 30 mins of the whitelist phase has a max deposit limit of 1 ETH for each
+          address. Participation is on a first come first served basis and will end early if all the
+          allocation is filled. Please note that being whitelisted does not guarantee a spot if all
+          the allocation is filled early.
+        </Typography>
+      </Paper>
+      <Paper>
+        <Typography variant="h2">Important Risks</Typography>
+        <Typography>
+          U.S. residents or citizens are not permitted to participant in the Token Generation Event
+          (TGE). By taking part in the event you certify you are neither a U.S. citizen or resident.
+        </Typography>
+      </Paper>
+    </>
   );
 };
 
-export default TGEBottomSect;
+export default TGEPhaseInfo;

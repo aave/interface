@@ -1,4 +1,4 @@
-import { SxProps, TextField } from '@mui/material';
+import { InputBaseComponentProps, SxProps, TextField } from '@mui/material';
 import { BigNumber } from 'ethers';
 
 import { countDecimals, toWeiString } from '../utils/stringConverter';
@@ -9,6 +9,8 @@ interface CustomNumberInputType {
   tokenBalance: string;
   sx?: SxProps;
   inputLabel?: string;
+  inputProps?: InputBaseComponentProps | undefined;
+  disabled?: boolean;
 }
 
 function CustomNumberInput({
@@ -17,6 +19,8 @@ function CustomNumberInput({
   tokenBalance,
   sx,
   inputLabel,
+  inputProps,
+  disabled,
 }: CustomNumberInputType) {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const regex = /^(\d+\.?|\.?)\d*$/g;
@@ -39,8 +43,10 @@ function CustomNumberInput({
       onChange={handleChange}
       variant="outlined"
       label={inputLabel ? inputLabel : ''}
-      size="small"
+      size={'small'}
+      inputProps={inputProps ? inputProps : undefined}
       autoComplete="off"
+      disabled={disabled}
       sx={{ ...sx }}
     />
   );
