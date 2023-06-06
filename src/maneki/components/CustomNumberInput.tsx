@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 
 import { countDecimals, toWeiString } from '../utils/stringConverter';
 
-interface CustomNumberFormatType {
+interface CustomNumberInputType {
   amountTo: string;
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
   balancePAW: string;
@@ -11,13 +11,13 @@ interface CustomNumberFormatType {
   inputLabel?: string;
 }
 
-function CustomNumberFormat({
+function CustomNumberInput({
   amountTo,
   setAmountTo,
   balancePAW,
   sx,
   inputLabel,
-}: CustomNumberFormatType) {
+}: CustomNumberInputType) {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const regex = /^(\d+\.?|\.?)\d*$/g;
     const countDec = countDecimals(event.target.value);
@@ -44,4 +44,4 @@ function CustomNumberFormat({
   );
 }
 
-export default CustomNumberFormat;
+export default CustomNumberInput;

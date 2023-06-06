@@ -1,61 +1,9 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Paper,
-  SxProps,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { BigNumber } from 'ethers';
+import { Box, Button, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-
-import { countDecimals, toWeiString } from '../../../utils/stringConverter';
-
-interface CustomNumberFormatType {
-  amountTo: string;
-  setAmountTo: React.Dispatch<React.SetStateAction<string>>;
-  balancePAW: string;
-  sx?: SxProps;
-  inputLabel?: string;
-}
-
-function CustomNumberFormat({
-  amountTo,
-  setAmountTo,
-  balancePAW,
-  sx,
-  inputLabel,
-}: CustomNumberFormatType) {
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const regex = /^(\d+\.?|\.?)\d*$/g;
-    const countDec = countDecimals(event.target.value);
-    if (regex.test(event.target.value)) {
-      if (
-        BigNumber.from(toWeiString(event.target.value)).gt(BigNumber.from(toWeiString(balancePAW)))
-      ) {
-        setAmountTo(balancePAW);
-      } else if (countDec > 18) setAmountTo(amountTo);
-      else setAmountTo(event.target.value);
-    }
-  }
-  return (
-    <TextField
-      value={amountTo}
-      placeholder="0.00"
-      onChange={handleChange}
-      variant="outlined"
-      label={inputLabel ? inputLabel : ''}
-      size="small"
-      autoComplete="off"
-      sx={{ ...sx }}
-    />
-  );
-}
+import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
 
 interface ManageQuickContentWrapperProps {
   svgIcon?: ReactNode;
@@ -137,7 +85,7 @@ export default function ManageQuickContentWrapper({
           gap: downToSM ? '8px' : 'auto',
         }}
       >
-        <CustomNumberFormat
+        <CustomNumberInput
           amountTo={amountTo}
           setAmountTo={setAmountTo}
           balancePAW={balancePAW}
