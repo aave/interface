@@ -158,7 +158,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 const PauseWarning = () => {
   return (
     <Warning sx={{ mb: 0 }} severity="error" icon={true}>
-      <Trans>Since this asset is paused, no actions can be taken until further notice</Trans>
+      <Trans>Because this asset is paused, no actions can be taken until further notice</Trans>
     </Warning>
   );
 };
