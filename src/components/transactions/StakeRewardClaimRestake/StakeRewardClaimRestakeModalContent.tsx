@@ -96,11 +96,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   }
   if (txState.success)
     return (
-      <TxSuccessView
-        action={<Trans>Restaked</Trans>}
-        amount={maxAmountToClaim}
-        symbol={rewardsSymbol}
-      />
+      <TxSuccessView action={<Trans>Restaked</Trans>} amount={amount} symbol={rewardsSymbol} />
     );
 
   return (

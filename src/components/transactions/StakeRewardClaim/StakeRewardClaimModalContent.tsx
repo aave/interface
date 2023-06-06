@@ -90,13 +90,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
     return <TxErrorView txError={txError} />;
   }
   if (txState.success)
-    return (
-      <TxSuccessView
-        action={<Trans>Claimed</Trans>}
-        amount={maxAmountToClaim}
-        symbol={rewardsSymbol}
-      />
-    );
+    return <TxSuccessView action={<Trans>Claimed</Trans>} amount={amount} symbol={rewardsSymbol} />;
 
   return (
     <>
