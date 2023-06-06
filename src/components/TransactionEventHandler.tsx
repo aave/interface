@@ -12,8 +12,16 @@ export const TransactionEventHandler = () => {
 
   const actionToEvent = (action: string, tx: TransactionDetails) => {
     switch (action) {
+      case 'supply': {
+        return trackEvent(SUPPLY_MODAL.SUPPLY_TOKEN, {
+          amount: tx.amount,
+          asset: tx.asset,
+          market: tx.market,
+        });
+      }
+
       case 'supplyWithPermit': {
-        trackEvent(SUPPLY_MODAL.SUPPLY_WITH_PERMIT, {
+        return trackEvent(SUPPLY_MODAL.SUPPLY_WITH_PERMIT, {
           amount: tx.amount,
           asset: tx.asset,
           market: tx.market,
@@ -21,7 +29,7 @@ export const TransactionEventHandler = () => {
       }
 
       case 'borrow': {
-        trackEvent(BORROW_MODAL.BORROW_TOKEN, {
+        return trackEvent(BORROW_MODAL.BORROW_TOKEN, {
           amount: tx.amount,
           asset: tx.asset,
           market: tx.market,
@@ -29,7 +37,7 @@ export const TransactionEventHandler = () => {
       }
 
       case 'repay': {
-        trackEvent(REPAY_MODAL.REPAY_TOKEN, {
+        return trackEvent(REPAY_MODAL.REPAY_TOKEN, {
           amount: tx.amount,
           asset: tx.asset,
           market: tx.market,

@@ -50,6 +50,7 @@ export const useTransactionHandler = ({
   skip,
   protocolAction,
   deps = [],
+  eventTxInfo,
 }: //eventTxInfo,
 UseTransactionHandlerProps) => {
   const {
@@ -109,14 +110,22 @@ UseTransactionHandlerProps) => {
   }) => {
     try {
       const txnResult = await tx();
+
       try {
         addTransaction(currentChainId, txnResult.hash, {
           action: protocolAction || ProtocolAction.default,
           txState: 'loading',
+          ...eventTxInfo,
         });
 
         await txnResult.wait(1);
+
         mounted.current && successCallback && successCallback(txnResult);
+
+        updateTransaction(currentChainId, txnResult.hash, {
+          txState: 'success',
+          ...eventTxInfo,
+        });
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
