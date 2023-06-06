@@ -84,6 +84,23 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             </Warning>
           )
         )}
+
+        {reserve.isPaused ? (
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+            <Trans>
+              MAI has been paused due to a community decision. Supply, borrows and repays are
+              impacted.{' '}
+              <Link
+                href={
+                  'https://governance.aave.com/t/arfc-add-mai-to-arbitrum-aave-v3-market/12759/8'
+                }
+                sx={{ textDecoration: 'underline' }}
+              >
+                <Trans>More details</Trans>
+              </Link>
+            </Trans>
+          </Warning>
+        ) : null}
       </Box>
 
       <PanelRow>
