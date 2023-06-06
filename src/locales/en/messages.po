@@ -1214,6 +1214,10 @@ msgstr "Loading data..."
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
+msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
@@ -1801,6 +1805,10 @@ msgstr "Signing"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
 msgstr "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Since this asset is paused, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+msgstr "Since this asset is paused, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -2835,6 +2843,10 @@ msgstr "{0} Balance"
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
+
+#: src/modules/dashboard/DashboardTopPanel.tsx
+msgid "{0} has been paused. Supply, borrows and repays are impacted. Learn more"
+msgstr "{0} has been paused. Supply, borrows and repays are impacted. Learn more"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
