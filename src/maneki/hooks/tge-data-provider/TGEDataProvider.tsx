@@ -3,6 +3,8 @@ import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 interface TGEData {
+  userBalanceBNB: BigNumber;
+  setUserBalanceBNB: (BNB: BigNumber) => void;
   contributedBNB: BigNumber;
   setContributedBNB: (BNB: BigNumber) => void;
   BNBToContribute: string;
@@ -11,18 +13,12 @@ interface TGEData {
   setPAWToReceive: (PAW: BigNumber) => void;
   PAWToReceiveEstimate: BigNumber;
   setPAWToReceiveEstimate: (PAW: BigNumber) => void;
-  whitelistPhaseStart: string | null;
-  setWhitelistPhaseStart: (date: string) => void;
-  publicPhaseStart: string | null;
-  setPublicPhaseStart: (date: string) => void;
-  claimPhaseStart: string | null;
-  setClaimPhaseStart: (date: string) => void;
+  saleStartDate: string | null;
+  setSaleStartDate: (date: string) => void;
+  saleEndDate: string | null;
+  setSaleEndDate: (date: string) => void;
   totalRaisedBNB: BigNumber;
   setTotalRaisedBNB: (BNB: BigNumber) => void;
-  whitelistRaisedBNB: BigNumber;
-  setWhitelistRaisedBNB: (BNB: BigNumber) => void;
-  whitelistRaisedBNBAddr: string;
-  setWhitelistRaisedBNBAddr: (addr: string) => void;
   finalPAWPrice: BigNumber;
   setFinalPAWPrice: (BNB: BigNumber) => void;
   marketCap: BigNumber;
@@ -34,18 +30,16 @@ interface TGEData {
 }
 
 export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
+  const [userBalanceBNB, setUserBalanceBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [contributedBNB, setContributedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [BNBToContribute, setBNBToContribute] = React.useState<string>('');
   const [PAWToReceive, setPAWToReceive] = React.useState<BigNumber>(BigNumber.from(-1));
   const [PAWToReceiveEstimate, setPAWToReceiveEstimate] = React.useState<BigNumber>(
     BigNumber.from(-1)
   );
-  const [whitelistPhaseStart, setWhitelistPhaseStart] = React.useState<string>('');
-  const [publicPhaseStart, setPublicPhaseStart] = React.useState<string>('');
-  const [claimPhaseStart, setClaimPhaseStart] = React.useState<string>('');
-  const [whitelistRaisedBNBAddr, setWhitelistRaisedBNBAddr] = React.useState<string>('');
-  const [whitelistRaisedBNB, setTotalRaisedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
-  const [totalRaisedBNB, setWhitelistRaisedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [saleStartDate, setSaleStartDate] = React.useState<string>('');
+  const [saleEndDate, setSaleEndDate] = React.useState<string>('');
+  const [totalRaisedBNB, setTotalRaisedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [finalPAWPrice, setFinalPAWPrice] = React.useState<BigNumber>(BigNumber.from(-1));
   const [marketCap, setMarketCap] = React.useState<BigNumber>(BigNumber.from(-1));
   const [initialSupply, setInitialSupply] = React.useState<BigNumber>(BigNumber.from(-1));
@@ -54,6 +48,8 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
   return (
     <TGEContext.Provider
       value={{
+        userBalanceBNB,
+        setUserBalanceBNB,
         contributedBNB,
         setContributedBNB,
         BNBToContribute,
@@ -62,18 +58,12 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
         setPAWToReceive,
         PAWToReceiveEstimate,
         setPAWToReceiveEstimate,
-        whitelistPhaseStart,
-        setWhitelistPhaseStart,
-        publicPhaseStart,
-        setPublicPhaseStart,
-        claimPhaseStart,
-        setClaimPhaseStart,
-        whitelistRaisedBNBAddr,
-        setWhitelistRaisedBNB,
-        whitelistRaisedBNB,
+        saleStartDate,
+        setSaleStartDate,
+        saleEndDate,
+        setSaleEndDate,
         setTotalRaisedBNB,
         totalRaisedBNB,
-        setWhitelistRaisedBNBAddr,
         finalPAWPrice,
         setFinalPAWPrice,
         marketCap,

@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import { Paper } from '@mui/material';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -25,13 +24,11 @@ export const TGEContainer = () => {
 
   return (
     <>
-      <Paper style={{ padding: 16 }}>
-        {/* Main Section */}
-        <TGEMainSect />
+      {/* Main Section */}
+      <TGEMainSect />
 
-        {/* Bottom Section */}
-        <TGEBottomSect />
-      </Paper>
+      {/* Bottom Section */}
+      <TGEBottomSect />
     </>
   );
 };
