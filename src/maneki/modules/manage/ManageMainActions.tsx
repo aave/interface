@@ -28,7 +28,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
-// import MULTI_FEE_ABI from './MultiFeeABI';
 import {
   Claimables,
   ClaimablesTuple,
@@ -59,7 +58,6 @@ export const ManageMainActions = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
 
-  // const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
   const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -167,9 +165,26 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>
-                  {downToSM && 'Amount: '} {utils.formatUnits(unlockedPAW, 18)} PAW
-                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '6px',
+                  }}
+                >
+                  {downToSM && (
+                    <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
+                      Amount:
+                    </Typography>
+                  )}
+                  <FormattedNumber
+                    value={utils.formatUnits(unlockedPAW, 18)}
+                    symbol="PAW"
+                    sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
+                  />
+                </Box>
+
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
@@ -199,17 +214,25 @@ export const ManageMainActions = () => {
               </>
             }
             rightComponent={
-              <Typography
+              <Box
                 sx={{
-                  width: '50%',
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '6px',
                 }}
               >
-                {downToSM && 'Amount: '}
-                {utils.formatUnits(vestedPAW, 18)}{' '}
-              </Typography>
+                {downToSM && (
+                  <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
+                    Amount:
+                  </Typography>
+                )}
+                <FormattedNumber
+                  value={utils.formatUnits(vestedPAW, 18)}
+                  symbol="PAW"
+                  sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
+                />
+              </Box>
             }
           />
           <ManageMainPrimaryWrapper
@@ -219,12 +242,16 @@ export const ManageMainActions = () => {
                 <Typography variant="h4" fontWeight={700}>
                   <Trans>Claim all of the above</Trans>
                 </Typography>
-                <Typography sx={{ width: '90%' }}>
-                  <Trans>Early Exit Penalty: </Trans>
-                  <Typography component="span" color={'error.light'}>
-                    {utils.formatUnits(exitPenalty, 18)} PAW
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px' }}>
+                  <Typography>
+                    <Trans>Early Exit Penalty: </Trans>
                   </Typography>
-                </Typography>
+                  <FormattedNumber
+                    color={'error.light'}
+                    value={utils.formatUnits(exitPenalty, 18)}
+                  />
+                  <Typography color={'error.light'}>PAW</Typography>
+                </Box>
               </>
             }
             rightComponent={
@@ -256,9 +283,25 @@ export const ManageMainActions = () => {
             }
             rightComponent={
               <>
-                <Typography>
-                  {downToSM && 'Amount: '} {utils.formatUnits(expiredLockedPAW, 18)} PAW
-                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '6px',
+                  }}
+                >
+                  {downToSM && (
+                    <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
+                      Amount:
+                    </Typography>
+                  )}
+                  <FormattedNumber
+                    value={utils.formatUnits(expiredLockedPAW, 18)}
+                    symbol="PAW"
+                    sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
+                  />
+                </Box>
                 <Button
                   onClick={handleClaimExpired}
                   variant="contained"
@@ -290,7 +333,9 @@ export const ManageMainActions = () => {
               <TableBody>
                 {vests.map((vest, i) => (
                   <TableRow key={i}>
-                    <TableCell>{utils.formatUnits(vest.amount, 18)}</TableCell>
+                    <TableCell sx={{ pl: '30px' }}>
+                      <FormattedNumber value={utils.formatUnits(vest.amount, 18)} />
+                    </TableCell>
                     <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
                   </TableRow>
                 ))}
@@ -298,7 +343,8 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           <Typography>
-            <Trans>Total vested</Trans>: {(totalVestsValue.toNumber() / 100_000_000).toFixed(2)} USD
+            <Trans>Total vested</Trans>: {Number(utils.formatUnits(totalVestsValue, 8)).toFixed(2)}{' '}
+            USD{' '}
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -320,23 +366,28 @@ export const ManageMainActions = () => {
               <TableBody>
                 {locks.map((lock, i) => (
                   <TableRow key={i}>
-                    <TableCell>{utils.formatUnits(lock.amount, 18)}</TableCell>
-                    <TableCell>
-                      {/** Convert Unix Timestamp to DateTime */}
-                      {convertUnixToDate(lock.expiry.toNumber() * 1000)}
+                    <TableCell sx={{ pl: '30px' }}>
+                      <FormattedNumber value={utils.formatUnits(lock.amount, 18)} />
                     </TableCell>
+                    <TableCell>{convertUnixToDate(lock.expiry.toNumber() * 1000)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
           {/** Value in Uint256 */}
-          <Typography>
-            <Trans>Total locked</Trans>: {utils.formatUnits(totalLockedPAW.toString(), 18)} PAW
-          </Typography>
+          <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Typography>
+              <Trans>Total locked</Trans>:
+            </Typography>
+            <FormattedNumber
+              value={utils.formatUnits(totalLockedPAW.toString(), 18)}
+              symbol="PAW"
+            />
+          </Box>
           {/** Value in USD */}
           <Typography>
-            <Trans>Value</Trans>: {(totalLocksValue.toNumber() / 100_000_000).toFixed(2)} USD
+            <Trans>Value</Trans>: {Number(utils.formatUnits(totalLocksValue, 8)).toFixed(2)} USD
           </Typography>
         </ManageMainPaper>
         <ManageMainPaper>
@@ -396,7 +447,7 @@ export const ManageMainActions = () => {
           >
             <Typography>
               <Trans>Total Value</Trans>:{' '}
-              {(totalClaimableValue.toNumber() / 100_000_000).toFixed(2)} USD
+              {Number(utils.formatUnits(totalClaimableValue, 8)).toFixed(2)} USD
             </Typography>
             <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
               <Trans>Claim All</Trans>

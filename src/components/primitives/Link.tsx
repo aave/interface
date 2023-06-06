@@ -122,6 +122,7 @@ export const ROUTES = {
   airdrop: '/airdrop',
   migrationTool: '/v3-migration',
   managePaw: '/managePaw',
+  tge: '/tge',
   prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
   dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>

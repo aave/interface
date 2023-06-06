@@ -186,6 +186,18 @@ msgstr "Cantidad"
 msgid "Amount must be greater than 0"
 msgstr "La cantidad debe ser mayor que 0"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered please report it to our Maneki Team."
+msgstr ""
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
+msgstr ""
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "Se ha producido un error al recuperar los metadatos de la propuesta de IPFS."
@@ -371,7 +383,6 @@ msgstr "Tomar prestado"
 msgid "Borrow APY rate"
 msgstr "Tasa de interés de préstamo APY"
 
-#: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "APY préstamo, estable"
@@ -507,6 +518,7 @@ msgid "Choose one of the on-ramp services"
 msgstr "Elige uno de los servicios on-ramp"
 
 #: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
+#: src/maneki/modules/airdrop/AirdropTable.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
@@ -526,6 +538,10 @@ msgstr "Reclamar AAVE"
 msgid "Claim All"
 msgstr "Reclamar todo"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim All Vests"
+msgstr ""
+
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAllVest.tsx
@@ -533,6 +549,10 @@ msgstr "Reclamar todo"
 #: src/maneki/transactions/Manage/ManageClaimUnlock.tsx
 msgid "Claim Failed"
 msgstr "Reclamación fallida"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Claim Successful"
+msgstr ""
 
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 msgid "Claim airdrop"
@@ -569,6 +589,8 @@ msgstr "Tarifas reclamables"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
+#: src/maneki/modules/airdrop/AirdropTable.tsx
 msgid "Claimed"
 msgstr "Reclamado"
 
@@ -595,6 +617,14 @@ msgstr "Reclamación de desbloqueo de PAW"
 #: src/maneki/transactions/Airdrop/AirdropActions.tsx
 msgid "Claiming {symbol}"
 msgstr "Reclamando {symbol}"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh and copy</0> error message."
+msgstr ""
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Click on button to <0>refresh</0> and view your new vests balance."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -1219,6 +1249,10 @@ msgstr "Valor de liquidación"
 msgid "Loading"
 msgstr "Cargando"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Loading Error"
+msgstr ""
+
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
 msgstr "Cargando datos..."
@@ -1230,7 +1264,7 @@ msgstr "Cerrar con llave"
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Lock PAW and earn platform fees and penalty fees in unlocked PAW."
-msgstr "Bloquee PAW y gane tarifas de plataforma y tarifas de penalización en PAW desbloqueado".
+msgstr "Bloquee PAW y gane tarifas de plataforma y tarifas de penalización en PAW desbloqueado\"."
 
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
 msgid "Lock {symbol}"
@@ -1238,7 +1272,7 @@ msgstr "Bloquear {símbolo}"
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw."
-msgstr "La PAW bloqueada está sujeta a un bloqueo de tres meses y continuará ganando tarifas después de que caduquen los bloqueos si no se retira".
+msgstr "La PAW bloqueada está sujeta a un bloqueo de tres meses y continuará ganando tarifas después de que caduquen los bloqueos si no se retira\"."
 
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
 msgid "Locking Failed"
@@ -1412,6 +1446,11 @@ msgstr "Sin poder de voto"
 msgid "None"
 msgstr "Ninguno"
 
+#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
+#: src/maneki/modules/airdrop/AirdropTable.tsx
+msgid "Not Eligible"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
 msgstr "Dirección no válida"
@@ -1463,6 +1502,11 @@ msgstr "Vale, cerrar"
 msgid "Ok, I got it"
 msgstr "Vale, lo tengo"
 
+#: src/maneki/modules/airdrop/AirdropContainer.tsx
+#: src/maneki/modules/airdrop/AirdropContainer.tsx
+msgid "Ongoing"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1485,7 +1529,7 @@ msgstr "Chalecos PAW"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW locks that have exceeded the 3 month lock period and are now withdrawable."
-msgstr "Bloques PAW que han excedido el período de bloqueo de 3 meses y ahora se pueden retirar".
+msgstr "Bloques PAW que han excedido el período de bloqueo de 3 meses y ahora se pueden retirar\"."
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW that can be claimed with a <0>50% penalty</0>"
@@ -1517,13 +1561,17 @@ msgid "Please connect a wallet to view your personal information here."
 msgstr "Por favor conecta una billetera para ver tu información personal aquí."
 
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
-#: src/maneki/modules/manage/ManageContainer.tsx
 msgid "Please connect your wallet to claim your airdrop."
-msgstr "Conecte su billetera para reclamar su lanzamiento aéreo".
+msgstr "Conecte su billetera para reclamar su lanzamiento aéreo\"."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
 msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
+
+#: src/maneki/modules/manage/ManageContainer.tsx
+#: src/maneki/modules/tge/TGEContainer.tsx
+msgid "Please connect your wallet to manage your PAW."
+msgstr ""
 
 #: pages/v3-migration.page.tsx
 msgid "Please connect your wallet to see migration tool."
@@ -1536,7 +1584,7 @@ msgstr "Por favor, conecta tu cartera para ver tus suministros, préstamos y pos
 
 #: src/maneki/modules/stake/StakeContainer.tsx
 msgid "Please connect your wallet."
-msgstr "Por favor conecta tu billetera".
+msgstr "Por favor conecta tu billetera\"."
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
@@ -1824,6 +1872,10 @@ msgstr "El deslizamiento es la diferencia entre las cantidades calculadas y las 
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Algunos activos migrados no se utilizarán como garantía debido al isolation mode habilitado en el mercado V3 de {marketName}. Visita el <0>Panel de control de {marketName} V3</0> para administrar el isolation mode."
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Something Went Wrong"
+msgstr ""
+
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
@@ -1881,7 +1933,7 @@ msgstr "Stakear"
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Stake PAW and earn platform fees with no lockup period."
-msgstr "Apuesta PAW y gana tarifas de plataforma sin período de bloqueo".
+msgstr "Apuesta PAW y gana tarifas de plataforma sin período de bloqueo\"."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -2050,6 +2102,11 @@ msgstr "Cambiando E-Mode"
 msgid "Switching rate"
 msgstr "Tasa de cambio"
 
+#: src/maneki/modules/tge/TGETopPanel.tsx
+#: src/ui-config/menu-items/index.tsx
+msgid "TGE"
+msgstr ""
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Activos de prueba"
@@ -2176,11 +2233,11 @@ msgstr "Esta dirección está bloqueada en app.aave.com porque está asociada co
 
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 msgid "This airdrop is distributed to Social Media members."
-msgstr "Este airdrop se distribuye a los miembros de las redes sociales".
+msgstr "Este airdrop se distribuye a los miembros de las redes sociales\"."
 
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 msgid "This airdrop is distributed to Venus members."
-msgstr "Este lanzamiento aéreo se distribuye a los miembros de Venus".
+msgstr "Este lanzamiento aéreo se distribuye a los miembros de Venus\"."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
@@ -2221,7 +2278,7 @@ msgstr "Esta integración fue<0>propuesta y aprobada</0>por la comunidad."
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 msgid "This is a one-time airdrop."
-msgstr "Este es un lanzamiento aéreo de una sola vez".
+msgstr "Este es un lanzamiento aéreo de una sola vez\"."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -2284,6 +2341,10 @@ msgstr "Top 10 direcciones"
 msgid "Total Value"
 msgstr "Valor total"
 
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Total Vests"
+msgstr ""
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total disponible"
@@ -2337,6 +2398,10 @@ msgstr "Haz seguimiento de tu cartera"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
 msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "Transaction Error"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2590,17 +2655,9 @@ msgstr "YAE"
 msgid "Yes"
 msgstr "Sí"
 
-#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
-msgid "You already claimed {title}"
-msgstr "Ya reclamaste {title}"
-
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "Estás entrando en el Isolation mode"
-
-#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
-msgid "You are not eligle to claim from {title}"
-msgstr "No es elegible para reclamar de {title}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
@@ -2653,6 +2710,10 @@ msgstr "No tienes suficientes fondos en tu cartera para pagar la cantidad total.
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "Aún no has tomado prestado usando este activo"
+
+#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2829,10 +2890,6 @@ msgstr "{0} el servicio on-ramp es proporcionado por proveedores externos y al s
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0}{name}"
 msgstr "{0}{name}"
-
-#: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
-msgid "{airdropStatus}"
-msgstr ""
 
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 msgid "{currentMethod}"
