@@ -371,6 +371,10 @@ msgstr "Be careful - You are very close to liquidation. Consider depositing more
 msgid "Be mindful of the network congestion and gas prices."
 msgstr "Be mindful of the network congestion and gas prices."
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Because this asset is paused, no actions can be taken until further notice"
+msgstr "Because this asset is paused, no actions can be taken until further notice"
+
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
 msgstr "Before supplying"
@@ -954,8 +958,8 @@ msgid "French"
 msgstr "French"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen assets"
-msgstr "Frozen assets"
+msgid "Frozen or paused assets"
+msgstr "Frozen or paused assets"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1213,6 +1217,10 @@ msgstr "Loading data..."
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
+msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
@@ -2134,8 +2142,8 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-msgstr "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."

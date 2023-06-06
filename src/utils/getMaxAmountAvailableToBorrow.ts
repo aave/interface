@@ -109,10 +109,11 @@ export function assetCanBeBorrowedByUser(
     borrowableInIsolation,
     eModeCategoryId,
     isFrozen,
+    isPaused,
   }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
-  if (!borrowingEnabled || !isActive || isFrozen) return false;
+  if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;
   if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
   return true;

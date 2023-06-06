@@ -65,7 +65,7 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves
-    .filter((reserve: ComputedReserveData) => !reserve.isFrozen)
+    .filter((reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused))
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
