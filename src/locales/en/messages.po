@@ -1807,8 +1807,8 @@ msgid "Since this asset is frozen, the only available actions are withdraw and r
 msgstr "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Since this asset is paused, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
-msgstr "Since this asset is paused, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+msgid "Since this asset is paused, no actions can be taken until further notice"
+msgstr "Since this asset is paused, no actions can be taken until further notice"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
