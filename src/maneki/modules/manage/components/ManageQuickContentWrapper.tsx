@@ -88,7 +88,7 @@ export default function ManageQuickContentWrapper({
         <CustomNumberInput
           amountTo={amountTo}
           setAmountTo={setAmountTo}
-          balancePAW={balancePAW}
+          tokenBalance={balancePAW}
           inputLabel={inputLabel}
           sx={{
             '& .MuiOutlinedInput-root.Mui-focused': {

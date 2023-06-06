@@ -6,7 +6,7 @@ import { countDecimals, toWeiString } from '../utils/stringConverter';
 interface CustomNumberInputType {
   amountTo: string;
   setAmountTo: React.Dispatch<React.SetStateAction<string>>;
-  balancePAW: string;
+  tokenBalance: string;
   sx?: SxProps;
   inputLabel?: string;
 }
@@ -14,7 +14,7 @@ interface CustomNumberInputType {
 function CustomNumberInput({
   amountTo,
   setAmountTo,
-  balancePAW,
+  tokenBalance,
   sx,
   inputLabel,
 }: CustomNumberInputType) {
@@ -23,9 +23,11 @@ function CustomNumberInput({
     const countDec = countDecimals(event.target.value);
     if (regex.test(event.target.value)) {
       if (
-        BigNumber.from(toWeiString(event.target.value)).gt(BigNumber.from(toWeiString(balancePAW)))
+        BigNumber.from(toWeiString(event.target.value)).gt(
+          BigNumber.from(toWeiString(tokenBalance))
+        )
       ) {
-        setAmountTo(balancePAW);
+        setAmountTo(tokenBalance);
       } else if (countDec > 18) setAmountTo(amountTo);
       else setAmountTo(event.target.value);
     }
