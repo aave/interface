@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { utils } from 'ethers';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
-import { ManekiModalWrapper } from 'src/maneki/utils/ManekiModalWrapper';
+import { ManekiModalWrapper } from 'src/maneki/components/ManekiModalWrapper';
 
 import { ManageClaimAll } from './ManageClaimAll';
 import { ManageClaimAllVest } from './ManageClaimAllVest';

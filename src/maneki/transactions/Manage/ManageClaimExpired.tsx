@@ -4,9 +4,9 @@ import { Contract } from 'ethers';
 import { useEffect } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ManekiModalChildProps } from 'src/maneki/components/ManekiModalWrapper';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import MULTI_FEE_ABI from 'src/maneki/modules/manage/MultiFeeABI';
-import { ManekiModalChildProps } from 'src/maneki/utils/ManekiModalWrapper';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import LoveManeki from '/public/loveManeki.svg';

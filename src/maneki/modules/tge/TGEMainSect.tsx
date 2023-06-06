@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@mui/material';
 import { BigNumber, Contract } from 'ethers';
 import * as React from 'react';
 import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
-import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
+import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';

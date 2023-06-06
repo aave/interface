@@ -20,8 +20,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import MANEKI_PAW_PRICE_ORACLE_ABI from 'src/maneki/abi/pawPriceOracleABI';
 import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
+import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
-import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';

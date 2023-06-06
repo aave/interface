@@ -1,7 +1,7 @@
 import { SxProps, TextField } from '@mui/material';
 import { BigNumber } from 'ethers';
 
-import { countDecimals, toWeiString } from '../modules/manage/utils/stringConverter';
+import { countDecimals, toWeiString } from '../utils/stringConverter';
 
 interface CustomNumberFormatType {
   amountTo: string;

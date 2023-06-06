@@ -14,7 +14,7 @@ import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-import { countDecimals, toWeiString } from '../utils/stringConverter';
+import { countDecimals, toWeiString } from '../../../utils/stringConverter';
 
 interface CustomNumberFormatType {
   amountTo: string;

@@ -6,15 +6,15 @@ import { Box } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
-import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
+import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
+import { toWeiString } from '../../utils/stringConverter';
 import ManageQuickContentWrapper from './components/ManageQuickContentWrapper';
 import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
-import { toWeiString } from './utils/stringConverter';
 
 export const ManageQuickActions = () => {
   const { balancePAW, setBalancePAW, quickActionsLoading, setQuickActionsLoading } =

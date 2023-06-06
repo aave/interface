@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
-import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
+import ManekiLoadingPaper from '../../components/ManekiLoadingPaper';
 import TGEBottomSect from './TGEBottomSect';
 import TGEMainSect from './TGEMainSect';
 

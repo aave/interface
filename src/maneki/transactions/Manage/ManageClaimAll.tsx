@@ -6,6 +6,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import MANEKI_PAW_PRICE_ORACLE_ABI from 'src/maneki/abi/pawPriceOracleABI';
 import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
+import { ManekiModalChildProps } from 'src/maneki/components/ManekiModalWrapper';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import MANEKI_DATA_PROVIDER_ABI from 'src/maneki/modules/manage/DataABI';
 import MULTI_FEE_ABI from 'src/maneki/modules/manage/MultiFeeABI';
@@ -19,7 +20,6 @@ import {
   addressReserveMatching,
   addressSymbolMatching,
 } from 'src/maneki/modules/manage/utils/tokenMatching';
-import { ManekiModalChildProps } from 'src/maneki/utils/ManekiModalWrapper';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import LoveManeki from '/public/loveManeki.svg';
