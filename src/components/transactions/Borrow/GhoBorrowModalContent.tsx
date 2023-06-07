@@ -36,9 +36,9 @@ import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
-import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
+import { GhoBorrowSuccessView } from './GhoBorrowSuccessView';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -236,7 +236,7 @@ export const GhoBorrowModalContent = ({
 
   if (borrowTxState.success)
     return (
-      <TxSuccessView
+      <GhoBorrowSuccessView
         action={<Trans>Borrowed</Trans>}
         amount={amount}
         symbol={iconSymbol}
