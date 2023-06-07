@@ -1,5 +1,6 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { alpha, experimental_sx, styled } from '@mui/material';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
+import { alpha, experimental_sx, styled, SvgIcon, useTheme } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalState;
@@ -9,22 +10,28 @@ interface StateBadgeProps {
   pendingL2Execution?: boolean;
 }
 
+const getBadgeColor = ({ state, crossChainBridge, pendingL2Execution, theme }: StateBadgeProps) => {
+  const COLOR_MAP = {
+    [ProposalState.Active]:
+      crossChainBridge === 'L2' && state !== 'Active'
+        ? theme.palette.info.main
+        : theme.palette.secondary.main,
+    [ProposalState.Queued]: theme.palette.info.main,
+    [ProposalState.Pending]: '#2EBAC6',
+    [ProposalState.Succeeded]: theme.palette.info.main,
+    [ProposalState.Executed]: pendingL2Execution ? '#2EBAC6' : theme.palette.success.main,
+    [ProposalState.Canceled]: theme.palette.primary.light,
+    [ProposalState.Expired]: theme.palette.primary.light,
+    [ProposalState.Failed]: theme.palette.primary.light,
+  };
+  const color = COLOR_MAP[state] || '#000';
+
+  return color;
+};
+
 const Badge = styled('span')<StateBadgeProps>(
   ({ theme, state, crossChainBridge, pendingL2Execution, ...rest }) => {
-    const COLOR_MAP = {
-      [ProposalState.Active]:
-        crossChainBridge === 'L2' && state !== 'Active'
-          ? theme.palette.info.main
-          : theme.palette.secondary.main,
-      [ProposalState.Queued]: theme.palette.info.main,
-      [ProposalState.Pending]: '#2EBAC6',
-      [ProposalState.Succeeded]: theme.palette.info.main,
-      [ProposalState.Executed]: pendingL2Execution ? '#2EBAC6' : theme.palette.success.main,
-      [ProposalState.Canceled]: theme.palette.primary.light,
-      [ProposalState.Expired]: theme.palette.primary.light,
-      [ProposalState.Failed]: theme.palette.primary.light,
-    };
-    const color = COLOR_MAP[state] || '#000';
+    const color = getBadgeColor({ state, crossChainBridge, pendingL2Execution });
     return experimental_sx({
       ...rest,
       ...theme.typography.subheader2,
@@ -57,7 +64,7 @@ export function StateBadge({
   ...rest
 }: StateBadgeProps) {
   // if (loading) return <Skeleton width={70} />;
-  console.log('STATE', state, pendingL2Execution);
+  const theme = useTheme();
 
   const stateBadgeMap = {
     Pending: pendingL2Execution ? 'Pending' : 'New',
@@ -65,10 +72,31 @@ export function StateBadge({
     Active: 'Voting active',
     Failed: 'Failed',
     Succeeded: 'Passed',
-    Queued: 'Passed',
+    Queued: 'Queued',
     Expired: 'Expired',
     Executed: pendingL2Execution && crossChainBridge === 'L2' ? 'Pending' : 'Executed',
   };
+
+  const color = getBadgeColor({ crossChainBridge, state, pendingL2Execution, theme });
+
+  if (crossChainBridge === 'L2') {
+    if (!pendingL2Execution) {
+      return (
+        <SvgIcon fontSize="medium" sx={{ '& path': { strokeWidth: '1' }, color, display: 'flex' }}>
+          <CheckCircleIcon height={16} />
+        </SvgIcon>
+      );
+      // return <CheckCircleIcon height={16} color={color} />;
+
+      // return <CheckBadge checked={true} sx={{ mr: 1 }} />;
+    }
+
+    return (
+      <SvgIcon fontSize="small" sx={{ '& path': { strokeWidth: '1' }, color, mr: 1 }}>
+        <ExclamationCircleIcon height={16} />
+      </SvgIcon>
+    );
+  }
 
   return (
     <Badge

@@ -293,9 +293,7 @@ export default function ProposalPage({
                       <Box
                         sx={{
                           display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          alignItems: 'center',
+                          flexDirection: 'column',
                         }}
                       >
                         <Box display="flex" sx={{ mr: '24px', mb: { xs: 2, md: 2, lg: 0 } }}>
@@ -320,7 +318,7 @@ export default function ProposalPage({
                         </Box>
 
                         {displayL2StateBadge && (
-                          <Box display={'flex'} alignItems={'center'}>
+                          <Box mt={2} display={'flex'}>
                             <StateBadge
                               sx={{ marginRight: 2 }}
                               crossChainBridge={executorChain}
@@ -437,13 +435,53 @@ export default function ProposalPage({
                   <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
                   <VotersListContainer proposal={proposal} />
                   <Row
-                    caption={<Trans>State</Trans>}
+                    caption={
+                      <>
+                        <Box>
+                          <Trans>State</Trans>
+                        </Box>
+                        <Box>
+                          <FormattedProposalTime
+                            state={proposal.state}
+                            startTimestamp={proposal.startTimestamp}
+                            executionTime={proposal.executionTime}
+                            expirationTimestamp={proposal.expirationTimestamp}
+                            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                            l2Execution={false}
+                          />
+                        </Box>
+                        {displayL2StateBadge ? (
+                          <Box
+                            display="flex"
+                            justifyContent={'space-between'}
+                            alignItems="flex-start"
+                          >
+                            <FormattedProposalTime
+                              state={proposal.state}
+                              startTimestamp={proposal.startTimestamp}
+                              executionTime={proposal.executionTime}
+                              expirationTimestamp={proposal.expirationTimestamp}
+                              executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                              l2Execution={displayL2StateBadge}
+                            />
+                            <StateBadge
+                              sx={{ marginRight: 2 }}
+                              crossChainBridge={executorChain}
+                              state={proposal.state}
+                              loading={mightBeStale}
+                              pendingL2Execution={pendingL2Execution}
+                            />
+                          </Box>
+                        ) : null}
+                      </>
+                    }
                     sx={{
-                      height: displayL2StateBadge ? 96 : 48,
-                      alignItems: displayL2StateBadge ? 'start' : 'center',
+                      // height: displayL2StateBadge ? 96 : 48,
+                      alignItems: 'flex-start',
                     }}
                     captionVariant="description"
                   >
+                    <Box />
                     <Box
                       sx={{
                         display: 'flex',
@@ -456,45 +494,37 @@ export default function ProposalPage({
                         crossChainBridge={'L1'}
                         loading={loading}
                       />
-                      <Box sx={{ mt: 0.5, mb: 2 }}>
-                        <FormattedProposalTime
-                          state={proposal.state}
-                          startTimestamp={proposal.startTimestamp}
-                          executionTime={proposal.executionTime}
-                          expirationTimestamp={proposal.expirationTimestamp}
-                          executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                          l2Execution={false}
-                        />
-                      </Box>
-                      {displayL2StateBadge && (
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-end',
-                          }}
-                        >
-                          <StateBadge
-                            sx={{ marginRight: 2 }}
-                            crossChainBridge={executorChain}
-                            state={proposal.state}
-                            loading={mightBeStale}
-                            pendingL2Execution={pendingL2Execution}
-                          />
-                          <Box sx={{ mt: 0.5 }}>
-                            <FormattedProposalTime
-                              state={proposal.state}
-                              startTimestamp={proposal.startTimestamp}
-                              executionTime={proposal.executionTime}
-                              expirationTimestamp={proposal.expirationTimestamp}
-                              executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                              l2Execution={displayL2StateBadge}
-                            />
-                          </Box>
-                        </Box>
-                      )}
                     </Box>
                   </Row>
+
+                  {/* {displayL2StateBadge ? (
+                    <Row
+                      caption={
+                        <Trans>
+                          {' '}
+                          <FormattedProposalTime
+                            state={proposal.state}
+                            startTimestamp={proposal.startTimestamp}
+                            executionTime={proposal.executionTime}
+                            expirationTimestamp={proposal.expirationTimestamp}
+                            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                            l2Execution={displayL2StateBadge}
+                          />
+                        </Trans>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <StateBadge
+                        sx={{ marginRight: 2 }}
+                        crossChainBridge={executorChain}
+                        state={proposal.state}
+                        loading={mightBeStale}
+                        pendingL2Execution={pendingL2Execution}
+                      />
+                    </Row>
+                  ) : null} */}
+
                   <Row
                     caption={<Trans>Quorum</Trans>}
                     sx={{ height: 48 }}

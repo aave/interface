@@ -33,8 +33,6 @@ export function FormattedProposalTime({
   const crossChainExecutionTime = l2Execution ? executionTimeWithL2 : executionTime;
   const canBeExecuted = timestamp > crossChainExecutionTime;
 
-  console.log('PROPOSAL STATE', state);
-
   if ([ProposalState.Pending].includes(state)) {
     return (
       <Typography component="span" variant="caption">

@@ -24,6 +24,51 @@ export function ProposalListItem({
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
 
+  const delayedBridgeExecutors = [
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
+  ];
+  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
+
+  let proposalCrosschainBridge = false;
+
+  if (proposal && proposal.targets && proposal.targets.length > 0) {
+    const hasDelayedExecutor = proposal.targets.filter((address) =>
+      lowercaseExecutors.includes(address.toLowerCase())
+    );
+    if (hasDelayedExecutor.length > 0) {
+      proposalCrosschainBridge = true;
+    }
+  }
+
+  // Currently all cross-executors share this delay
+  // TO-DO: invetigate if this can be changed, if so, query on-chain
+  // const twoDayDelay = 172800 + 14400;
+  const twoDayDelay = 172800; // 2 days 4 hours (small buffer)
+
+  let executedL2;
+  if (proposal) {
+    executedL2 =
+      proposal.executionTime === 0
+        ? false
+        : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
+  }
+
+  const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
+
+  const pendingL2Execution = proposalCrosschainBridge && !executedL2;
+
+  const displayL2StateBadge =
+    !!proposal &&
+    executorChain === 'L2' &&
+    proposal.state !== 'Failed' &&
+    proposal.state !== 'Canceled' &&
+    proposal.state !== 'Pending' &&
+    proposal.state !== 'Active' &&
+    (executedL2 || pendingL2Execution);
+
   return (
     <Box
       sx={{
@@ -92,6 +137,27 @@ export function ProposalListItem({
               />
             </Box>
           ) : null}
+
+          {displayL2StateBadge && (
+            <Box display={'flex'}>
+              <StateBadge
+                sx={{ marginRight: 2 }}
+                crossChainBridge={executorChain}
+                state={proposal.state}
+                loading={mightBeStale}
+                pendingL2Execution={pendingL2Execution}
+              />
+
+              <FormattedProposalTime
+                state={proposal.state}
+                startTimestamp={proposal.startTimestamp}
+                executionTime={proposal.executionTime}
+                expirationTimestamp={proposal.expirationTimestamp}
+                executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                l2Execution={displayL2StateBadge}
+              />
+            </Box>
+          )}
         </Box>
       </Box>
       <Box />

@@ -45,7 +45,7 @@ const stateBadgeMap: StateBadgeMap = {
   Active: 'Voting active',
   Failed: 'Failed',
   Succeeded: 'Passed',
-  Queued: 'Passed',
+  Queued: 'Queued',
   Expired: 'Expired',
   Executed: 'Executed',
 };
@@ -67,16 +67,11 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
         <MenuItem value="all">
           <Trans>All proposals</Trans>
         </MenuItem>
-        {Object.keys(ProposalState)
-          .filter((key) => {
-            // Note we remove so it is not shown twice, but it is handled in the filter in ProposalList.tsx
-            return key !== 'Succeeded';
-          })
-          .map((key) => (
-            <MenuItem key={key} value={key}>
-              {stateBadgeMap[key as StateBadgeMapKey]}
-            </MenuItem>
-          ))}
+        {Object.keys(ProposalState).map((key) => (
+          <MenuItem key={key} value={key}>
+            {stateBadgeMap[key as StateBadgeMapKey]}
+          </MenuItem>
+        ))}
       </Select>
       <SearchInput
         wrapperSx={{

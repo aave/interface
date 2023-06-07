@@ -97,13 +97,14 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     // filters by proposal state and pins large executors at the top
 
     const filtered = proposals
-      .filter(
-        (item) =>
-          proposalFilter === 'all' ||
-          item.proposal.state === proposalFilter ||
-          // Note: We show states Queued and Succeeded as passed but can only show one in the dropdown filter
-          (proposalFilter === 'Queued' && item.proposal.state === 'Succeeded')
-      )
+      .filter((item) => proposalFilter === 'all' || item.proposal.state === proposalFilter)
+      // .filter(
+      //   (item) =>
+      //     proposalFilter === 'all' ||
+      //     item.proposal.state === proposalFilter ||
+      //     // Note: We show states Queued and Succeeded as passed but can only show one in the dropdown filter
+      //     (proposalFilter === 'Queued' && item.proposal.state === 'Succeeded')
+      // )
 
       .reduce(
         (
