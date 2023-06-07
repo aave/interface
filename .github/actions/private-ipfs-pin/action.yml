@@ -56,5 +56,5 @@ runs:
           ipfs-cluster-ctl pin rm '/ipns/${{ inputs.DOMAIN }}' || true
         kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs-cluster -- \
           ipfs-cluster-ctl pin add --wait --wait-timeout=180s \
-          --replication-min=1 --name='app-aave-${{ github.sha }}' --expire-in=144h \
+          --replication-min=1 --name='app-aave-${{ github.sha }}' \
           "${IPFS_HASH}"
