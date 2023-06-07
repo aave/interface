@@ -132,7 +132,9 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
               <Link
                 href={explorerLink}
-                onClick={() => trackEvent(GENERAL.ETHERSCAN_LINK, { funnel: 'TxHistoy' })}
+                onClick={() =>
+                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+                }
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
