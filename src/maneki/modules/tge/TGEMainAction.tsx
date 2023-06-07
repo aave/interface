@@ -1,8 +1,6 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
-import { BigNumber, Contract, utils } from 'ethers';
-import Image from 'next/image';
-import * as React from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Divider, Paper, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber, Contract } from 'ethers';
+import { useEffect, useState } from 'react';
 import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
@@ -10,30 +8,28 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useTGEContext } from '../../hooks/tge-data-provider/TGEDataProvider';
 import TGEMainContribution from './components/TGEMainContribution';
+import TGEMainParticipation from './components/TGEMainParticipation';
 
 const TGEMainAction = () => {
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { provider, currentAccount } = useWeb3Context();
   const {
-    finalPAWPrice,
     setFinalPAWPrice,
-    saleStartDate,
     setSaleStartDate,
-    saleEndDate,
     setSaleEndDate,
-    totalRaisedBNB,
     setTotalRaisedBNB,
-    contributedBNB,
     setContributedBNB,
     // BNBToContribute,
     // setBNBToContribute,
-    userBalanceBNB,
     setUserBalanceBNB,
   } = useTGEContext();
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
 
-  React.useEffect(() => {
+  useEffect(() => {
     // create contracts
     const contract = new Contract(
       EARLY_TOKEN_GENERATION_ADDR,
@@ -54,8 +50,8 @@ const TGEMainAction = () => {
       .then((data: (BigNumber | string)[]) => {
         // dev change data setting logic here
 
-        setSaleStartDate(data[0].toString() as string); // sale start date (UNIX)
-        setSaleEndDate(data[1].toString() as string); // sale end date (UNIX)
+        setSaleStartDate((data[0] as BigNumber).toNumber() * 1000); // sale start date (UNIX)
+        setSaleEndDate((data[1] as BigNumber).toNumber() * 1000); // sale end date (UNIX)
         setContributedBNB(data[2] as BigNumber); // contributed bnb (18 Decimals)
         setTotalRaisedBNB(data[3] as BigNumber); // total raised bnb (18 Decimals)
         setFinalPAWPrice(data[4] as BigNumber); // tge paw price (18 Decimals)
@@ -71,47 +67,28 @@ const TGEMainAction = () => {
   }
 
   return (
-    <Paper>
-      <TGEMainContribution
-        userBalanceBNB={userBalanceBNB}
-        finalPAWPrice={finalPAWPrice}
-        contributedBNB={contributedBNB}
+    <Paper
+      sx={{
+        display: 'flex',
+        flexDirection: downToSM ? 'column' : 'row',
+        justifyContent: 'space-around',
+        gap: downToSM ? '24px' : '0px',
+        alignItems: downToSM ? 'center' : 'normal',
+        boxShadow: '0px 10px 30px 10px rgba(0, 0, 0, 0.1)',
+        borderRadius: '12px',
+        p: downToSM ? '24px 0px' : '46px',
+      }}
+    >
+      <TGEMainContribution />
+      <Divider
+        sx={(theme) => ({
+          border: `1px solid ${theme.palette.divider}`,
+          m: downToSM ? 'auto' : '24px 0px',
+          width: downToSM ? '85%' : '',
+        })}
       />
-      <hr />
-      <Box>
-        <Typography variant="h2">TGE has {'status'}</Typography>
-        <Box>
-          <Typography>Event is {'Inactive'}</Typography>
-          <Box>
-            <Typography>Public Participation {'status'}</Typography>
-            <Typography>{`Start Date: ${saleStartDate}`}</Typography>
-            <Typography>{`End Date: ${saleEndDate}`}</Typography>
-            {/*Time Function */}
-            <Box>
-              <Typography>Time function goes here</Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Box>
-          <Box>
-            <Box>
-              <Typography>Total Raised</Typography>
-              <FormattedNumber value={utils.formatUnits(totalRaisedBNB, 18)} />
-            </Box>
-            <Image
-              alt={`token image for PAW`}
-              src={`/icons/tokens/paw.svg`}
-              width={64}
-              height={64}
-            />
-          </Box>
-          <hr />
-          <Box>
-            <Button>Etherscan -{'>'}</Button>
-            <Typography>{EARLY_TOKEN_GENERATION_ADDR}</Typography>
-          </Box>
-        </Box>
-      </Box>
+
+      <TGEMainParticipation EARLY_TOKEN_GENERATION_ADDR={EARLY_TOKEN_GENERATION_ADDR} />
     </Paper>
   );
 };

@@ -13,10 +13,10 @@ interface TGEData {
   setPAWToReceive: (PAW: BigNumber) => void;
   PAWToReceiveEstimate: BigNumber;
   setPAWToReceiveEstimate: (PAW: BigNumber) => void;
-  saleStartDate: string | null;
-  setSaleStartDate: (date: string) => void;
-  saleEndDate: string | null;
-  setSaleEndDate: (date: string) => void;
+  saleStartDate: number;
+  setSaleStartDate: (date: number) => void;
+  saleEndDate: number;
+  setSaleEndDate: (date: number) => void;
   totalRaisedBNB: BigNumber;
   setTotalRaisedBNB: (BNB: BigNumber) => void;
   finalPAWPrice: BigNumber;
@@ -37,8 +37,8 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
   const [PAWToReceiveEstimate, setPAWToReceiveEstimate] = React.useState<BigNumber>(
     BigNumber.from(-1)
   );
-  const [saleStartDate, setSaleStartDate] = React.useState<string>('');
-  const [saleEndDate, setSaleEndDate] = React.useState<string>('');
+  const [saleStartDate, setSaleStartDate] = React.useState<number>(0);
+  const [saleEndDate, setSaleEndDate] = React.useState<number>(0);
   const [totalRaisedBNB, setTotalRaisedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [finalPAWPrice, setFinalPAWPrice] = React.useState<BigNumber>(BigNumber.from(-1));
   const [marketCap, setMarketCap] = React.useState<BigNumber>(BigNumber.from(-1));

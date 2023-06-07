@@ -1,26 +1,20 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
-import { BigNumber, Contract, utils } from 'ethers';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
 import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
+import { useTGEContext } from 'src/maneki/hooks/tge-data-provider/TGEDataProvider';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
-interface TGEMainContributionType {
-  userBalanceBNB: BigNumber;
-  finalPAWPrice: BigNumber;
-  contributedBNB: BigNumber;
-}
+const TGEMainContribution = () => {
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-const TGEMainContribution = ({
-  userBalanceBNB,
-  finalPAWPrice,
-  contributedBNB,
-}: TGEMainContributionType) => {
   const { provider, currentAccount } = useWeb3Context();
-
+  const { userBalanceBNB, finalPAWPrice, contributedBNB } = useTGEContext();
   const [contributionBNB, setContributionBNB] = React.useState<string>('');
 
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -42,13 +36,27 @@ const TGEMainContribution = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', p: '24px 24px', gap: '24px' }}>
-      <Typography variant="h2">
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        p: '24px 12px',
+        gap: downToSM ? '24px' : '32px',
+      }}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          fontWeight: '600',
+          fontSize: downToSM ? '26px' : '32px',
+          lineHeight: '48px',
+        }}
+      >
         <Trans>Contribute PAW</Trans>
       </Typography>
       <Box>
         <Typography>
-          <Trans>You have contributed</Trans>
+          <Trans>Contribution Amount</Trans>
         </Typography>
         <Box
           sx={{
@@ -131,12 +139,16 @@ const TGEMainContribution = ({
       <Button
         variant="contained"
         onClick={handleContribute}
-        sx={{ padding: '20px', color: 'background.default' }}
+        sx={{ padding: '12px', color: 'background.default' }}
       >
         Contribute
       </Button>
       <Typography
-        sx={{ fontSize: '10px', alignSelf: 'end', mt: '-12px' }}
+        sx={{
+          fontSize: downToSM ? '10px' : '12px',
+          alignSelf: 'end',
+          mt: downToSM ? '-8px' : '-18px',
+        }}
       >{`YOU HAVE CONTRIBUTED ${contributedBNB} BNB`}</Typography>
     </Box>
   );

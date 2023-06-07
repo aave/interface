@@ -688,6 +688,10 @@ msgstr "Connect wallet"
 msgid "Contribute PAW"
 msgstr "Contribute PAW"
 
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Contribution Amount"
+msgstr "Contribution Amount"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown period"
@@ -2709,10 +2713,6 @@ msgstr "You do not have supplies in this currency"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
-
-#: src/maneki/modules/tge/components/TGEMainContribution.tsx
-msgid "You have contributed"
-msgstr "You have contributed"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
