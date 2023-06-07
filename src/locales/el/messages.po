@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-02 18:04\n"
+"PO-Revision-Date: 2023-06-06 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -374,6 +374,10 @@ msgstr "Προσοχή - Είστε πολύ κοντά στην ρευστοπ�
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Be mindful of the network congestion and gas prices."
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Because this asset is paused, no actions can be taken until further notice"
 msgstr ""
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
@@ -959,7 +963,7 @@ msgid "French"
 msgstr "Γαλλικά"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen assets"
+msgid "Frozen or paused assets"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
@@ -1218,6 +1222,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Η επικύρωση του Ltv απέτυχε"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
+msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
@@ -2140,7 +2148,7 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr "Υπήρξε κάποιο σφάλμα. Προσπαθήστε να αλλάξετε τις παραμέτρους ή <0><1>αντιγράψτε το σφάλμα</1></0>"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
