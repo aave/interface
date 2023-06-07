@@ -44,12 +44,10 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       }}
     >
       <Box
-        onClick={onClick}
         sx={(theme) => ({
           borderRadius: {
             md: 4,
           },
-          cursor: 'pointer',
           display: 'flex',
           backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#C9B3F94D',
           position: 'relative',
@@ -133,16 +131,13 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
           }}
         >
           <Box
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
+            onClick={onClick}
             sx={{
               pr: {
                 xs: '140px',
                 xsm: 0,
               },
-              cursor: 'initial',
+              cursor: 'pointer',
               zIndex: 100,
               minWidth: {
                 md: 232,
@@ -190,12 +185,9 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 xs: 4,
                 lg: 15,
               },
-              cursor: 'initial',
+              cursor: 'pointer',
             }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
+            onClick={onClick}
           >
             <Box
               sx={{
