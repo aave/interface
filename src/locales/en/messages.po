@@ -181,6 +181,10 @@ msgstr "Amount"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Amount to Claim"
+msgstr "Amount to Claim"
+
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "An Issue was encountered please report it to our Maneki Team."
 msgstr "An Issue was encountered please report it to our Maneki Team."
@@ -679,6 +683,10 @@ msgstr "Collector Info"
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Connect wallet"
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Contribute PAW"
+msgstr "Contribute PAW"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -2701,6 +2709,10 @@ msgstr "You do not have supplies in this currency"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "You have contributed"
+msgstr "You have contributed"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"

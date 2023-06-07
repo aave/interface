@@ -48,6 +48,7 @@ export const ManageTopPanel = () => {
     // add contract call into promise arr
     promises.push(contract.getUnlockedPaw(currentAccount)); // staked paw
     promises.push(contract.getTotalPawLocked(currentAccount)); // locked paw
+    //getUserVesting
     promises.push(contract.getUserLockedAndStakedPawInUsd(currentAccount)); // staked + locked value
     promises.push(contract.getUserDailyPlatformFeeDistributionInUsd(currentAccount)); // daily platform fees
     promises.push(contract.getUserDailyPenaltyFeeDistributionInUsd(currentAccount)); // daily penalty fees

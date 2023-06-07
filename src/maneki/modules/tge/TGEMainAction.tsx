@@ -4,16 +4,18 @@ import Image from 'next/image';
 import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
-import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useTGEContext } from '../../hooks/tge-data-provider/TGEDataProvider';
+import TGEMainContribution from './components/TGEMainContribution';
 
 const TGEMainAction = () => {
   const { provider, currentAccount } = useWeb3Context();
   const {
+    finalPAWPrice,
+    setFinalPAWPrice,
     saleStartDate,
     setSaleStartDate,
     saleEndDate,
@@ -28,25 +30,8 @@ const TGEMainAction = () => {
     setUserBalanceBNB,
   } = useTGEContext();
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [contributionBNB, setContributionBNB] = React.useState<string>('');
-  const [contributionPAW, setContributionPAW] = React.useState<string>('');
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
-
-  const handleContribute = async () => {
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(EARLY_TOKEN_GENERATION_ADDR, EARLY_TOKEN_GENERATION_ABI, signer);
-    // need to use await and await primises.wait(1);
-    try {
-      const promise = await contract.deposit(currentAccount, '', {
-        value: utils.parseEther(contributionBNB),
-      });
-      await promise.wait(1);
-      alert('Contribution Success');
-    } catch (error) {
-      alert(error.message);
-    }
-  };
 
   React.useEffect(() => {
     // create contracts
@@ -73,6 +58,7 @@ const TGEMainAction = () => {
         setSaleEndDate(data[1].toString() as string); // sale end date (UNIX)
         setContributedBNB(data[2] as BigNumber); // contributed bnb (18 Decimals)
         setTotalRaisedBNB(data[3] as BigNumber); // total raised bnb (18 Decimals)
+        setFinalPAWPrice(data[4] as BigNumber); // tge paw price (18 Decimals)
         setUserBalanceBNB(data[5] as BigNumber); // get user BNB balance (18 Decimals)
         setLoading(false);
       })
@@ -86,62 +72,11 @@ const TGEMainAction = () => {
 
   return (
     <Paper>
-      <Box>
-        <Typography variant="h2">Contribute PAW</Typography>
-        <Box>
-          <Typography>You have contributed</Typography>
-          <Box>
-            <Image
-              alt={`token image for BNB`}
-              src={`/icons/tokens/bnb.svg`}
-              width={24}
-              height={24}
-            />
-            <CustomNumberInput
-              amountTo={contributionBNB}
-              setAmountTo={setContributionBNB}
-              tokenBalance={utils.formatUnits(userBalanceBNB, 18)}
-              sx={{
-                '& .MuiOutlinedInput-root.Mui-focused': {
-                  '& > fieldset': {
-                    borderColor: 'orange',
-                  },
-                },
-              }}
-            />
-            <Typography>BNB</Typography>
-          </Box>
-        </Box>
-        <Box>
-          <Typography>Amount to Claim</Typography>
-          <Box>
-            <Image
-              alt={`token image for PAW`}
-              src={`/icons/tokens/paw.svg`}
-              width={24}
-              height={24}
-            />
-            <CustomNumberInput
-              amountTo={contributionPAW}
-              setAmountTo={setContributionPAW}
-              tokenBalance={'99999999999'}
-              sx={{
-                '& .MuiOutlinedInput-root.Mui-focused': {
-                  '& > fieldset': {
-                    borderColor: 'orange',
-                  },
-                },
-              }}
-              disabled
-            />
-            <Typography>PAW</Typography>
-          </Box>
-        </Box>
-        <Button variant="contained" onClick={handleContribute}>
-          Contribute
-        </Button>
-        <Typography>{`YOU HAVE CONTRIBUTED ${contributedBNB} BNB`}</Typography>
-      </Box>
+      <TGEMainContribution
+        userBalanceBNB={userBalanceBNB}
+        finalPAWPrice={finalPAWPrice}
+        contributedBNB={contributedBNB}
+      />
       <hr />
       <Box>
         <Typography variant="h2">TGE has {'status'}</Typography>
