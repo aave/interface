@@ -5,7 +5,7 @@ import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useRootStore } from 'src/store/root';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
 import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
@@ -53,7 +53,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
-              onClick={() => trackEvent(STAKE.STAKING_RISKS_LINK, {})}
+              onClick={() =>
+                trackEvent(GENERAL.EXTERNAL_LINK, {
+                  Link: 'Staking Risks',
+                })
+              }
             >
               <Trans>Learn more about risks involved</Trans>
             </Link>

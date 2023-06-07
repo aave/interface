@@ -6,7 +6,7 @@ import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 
@@ -27,7 +27,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
       href={href}
       target="_blank"
       rel="noopener"
-      onClick={() => trackEvent(GOVERNANCE_PAGE.AIP_EXTERNAL_LINKS, { Link: text })}
+      onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {text}
@@ -68,7 +68,7 @@ export const GovernanceTopPanel = () => {
               proposals or delagate to an address of choice. To learn more check out the Governance
             </Trans>{' '}
             <Link
-              onClick={() => trackEvent(GOVERNANCE_PAGE.AIP_EXTERNAL_LINKS, { Link: 'FAQ Docs' })}
+              onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://docs.aave.com/faq/governance"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >

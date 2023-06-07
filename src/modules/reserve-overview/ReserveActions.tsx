@@ -32,7 +32,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { YOUR_INFO_RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
 
 import { CapType } from '../../components/caps/helper';
@@ -269,8 +269,9 @@ const SupplyAction = ({
         text={<Trans>Available to supply</Trans>}
         capType={CapType.supplyCap}
         event={{
-          eventName: YOUR_INFO_RESERVE_DETAILS.SUPPLY_INFO_ICON,
+          eventName: GENERAL.TOOL_TIP,
           eventParams: {
+            tooltip: 'Available to supply: your info',
             asset: reserve.underlyingAsset,
             assetName: reserve.name,
           },
@@ -322,8 +323,9 @@ const BorrowAction = ({
         text={<Trans>Available to borrow</Trans>}
         capType={CapType.borrowCap}
         event={{
-          eventName: YOUR_INFO_RESERVE_DETAILS.BORROW_INFO_ICON,
+          eventName: GENERAL.TOOL_TIP,
           eventParams: {
+            tooltip: 'Available to borrow: your info',
             asset: reserve.underlyingAsset,
             assetName: reserve.name,
           },

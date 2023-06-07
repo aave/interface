@@ -18,7 +18,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
 import { useRootStore } from 'src/store/root';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -152,8 +152,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <MaxLTVTooltip
                       event={{
-                        eventName: RESERVE_DETAILS.EMODE_MAX_LTV_INFO_ICON,
+                        eventName: GENERAL.TOOL_TIP,
                         eventParams: {
+                          tooltip: 'E-Mode Max LTV',
                           asset: reserve.underlyingAsset,
                           assetName: reserve.name,
                         },
@@ -174,8 +175,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <LiquidationThresholdTooltip
                       event={{
-                        eventName: RESERVE_DETAILS.EMODE_LIQUIDATION_THRESHOLD_INFO_ICON,
+                        eventName: GENERAL.TOOL_TIP,
                         eventParams: {
+                          tooltip: 'E-Mode Liquidation threshold',
                           asset: reserve.underlyingAsset,
                           assetName: reserve.name,
                         },
@@ -196,8 +198,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <LiquidationPenaltyTooltip
                       event={{
-                        eventName: RESERVE_DETAILS.EMODE_LIQUIDATION_PENALTY_INFO_ICON,
+                        eventName: GENERAL.TOOL_TIP,
                         eventParams: {
+                          tooltip: 'E-Mode Liquidation penalty',
                           asset: reserve.underlyingAsset,
                           assetName: reserve.name,
                         },
@@ -239,7 +242,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     variant="caption"
                     color="text.secondary"
                     onClick={() => {
-                      trackEvent(RESERVE_DETAILS.GO_FAQ);
+                      trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'E-mode FAQ' });
                     }}
                   >
                     FAQ
@@ -251,7 +254,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     variant="caption"
                     color="text.secondary"
                     onClick={() => {
-                      trackEvent(RESERVE_DETAILS.GO_TECH_PAPER);
+                      trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'V3 Tech Paper' });
                     }}
                   >
                     Aave V3 Technical Paper
@@ -289,8 +292,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 </PanelItem>
                 <Button
                   onClick={() => {
-                    trackEvent(RESERVE_DETAILS.VIEW_INTEREST_STRATEGY, {
+                    trackEvent(GENERAL.EXTERNAL_LINK, {
                       asset: reserve.underlyingAsset,
+                      Link: 'Interest Rate Strategy',
                       assetName: reserve.name,
                     });
                   }}

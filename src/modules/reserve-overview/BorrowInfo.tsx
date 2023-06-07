@@ -12,7 +12,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
@@ -80,8 +80,9 @@ export const BorrowInfo = ({
                   <Trans>Total borrowed</Trans>
                   <TextWithTooltip
                     event={{
-                      eventName: RESERVE_DETAILS.TOTAL_BORROW_INFO_ICON,
+                      eventName: GENERAL.TOOL_TIP,
                       eventParams: {
+                        tooltip: 'Total borrowed',
                         asset: reserve.underlyingAsset,
                         assetName: reserve.name,
                       },
@@ -146,8 +147,9 @@ export const BorrowInfo = ({
           title={
             <VariableAPYTooltip
               event={{
-                eventName: RESERVE_DETAILS.BORROW_APY_V_INFO,
+                eventName: GENERAL.TOOL_TIP,
                 eventParams: {
+                  tooltip: 'APY, variable',
                   asset: reserve.underlyingAsset,
                   assetName: reserve.name,
                 },
@@ -170,8 +172,9 @@ export const BorrowInfo = ({
             title={
               <StableAPYTooltip
                 event={{
-                  eventName: RESERVE_DETAILS.BORROW_APY_S_INFO,
+                  eventName: GENERAL.TOOL_TIP,
                   eventParams: {
+                    tooltip: 'APY, stable',
                     asset: reserve.underlyingAsset,
                     assetName: reserve.name,
                   },

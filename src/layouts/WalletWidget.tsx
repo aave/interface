@@ -28,7 +28,7 @@ import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { AUTH, GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link, ROUTES } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
@@ -100,7 +100,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleViewOnExplorer = (): void => {
-    trackEvent(AUTH.VIEW_EXPLORER);
+    trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'Etherscan for Wallet' });
     handleClose();
   };
 

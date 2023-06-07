@@ -12,7 +12,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -46,8 +46,8 @@ const head = [
     title: (
       <AvailableTooltip
         event={{
-          eventName: DASHBOARD.TOOLTIP_BORROW_CAP,
-          eventParams: {},
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'Available to borrow' },
         }}
         capType={CapType.borrowCap}
         text={<Trans>Available</Trans>}
@@ -62,8 +62,8 @@ const head = [
     title: (
       <VariableAPYTooltip
         event={{
-          eventName: DASHBOARD.TOOLTIP_APY_VAR,
-          eventParams: {},
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'Variable Borrow APY' },
         }}
         text={<Trans>APY, variable</Trans>}
         key="variableBorrowAPY"
@@ -76,8 +76,8 @@ const head = [
     title: (
       <StableAPYTooltip
         event={{
-          eventName: DASHBOARD.TOOLTIP_APY_STB,
-          eventParams: {},
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'Stable Borrow APY' },
         }}
         text={<Trans>APY, stable</Trans>}
         key="stableBorrowAPY"

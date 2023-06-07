@@ -17,7 +17,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
-import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';
@@ -84,8 +84,9 @@ export const SupplyInfo = ({
                   <Trans>Total supplied</Trans>
                   <TextWithTooltip
                     event={{
-                      eventName: RESERVE_DETAILS.TOTAL_SUPPLY_INFO_ICON,
+                      eventName: GENERAL.TOOL_TIP,
                       eventParams: {
+                        tooltip: 'Total Supply',
                         asset: reserve.underlyingAsset,
                         assetName: reserve.name,
                       },
@@ -224,8 +225,9 @@ export const SupplyInfo = ({
             title={
               <MaxLTVTooltip
                 event={{
-                  eventName: RESERVE_DETAILS.MAX_LTV_INFO_ICON,
+                  eventName: GENERAL.TOOL_TIP,
                   eventParams: {
+                    tooltip: 'MAX LTV',
                     asset: reserve.underlyingAsset,
                     assetName: reserve.name,
                   },
@@ -247,8 +249,9 @@ export const SupplyInfo = ({
             title={
               <LiquidationThresholdTooltip
                 event={{
-                  eventName: RESERVE_DETAILS.LIQUIDATION_THRESHOLD_INFO_ICON,
+                  eventName: GENERAL.TOOL_TIP,
                   eventParams: {
+                    tooltip: 'Liquidation threshold',
                     asset: reserve.underlyingAsset,
                     assetName: reserve.name,
                   },
@@ -270,8 +273,9 @@ export const SupplyInfo = ({
             title={
               <LiquidationPenaltyTooltip
                 event={{
-                  eventName: RESERVE_DETAILS.LIQUIDATION_PENALTY_INFO_ICON,
+                  eventName: GENERAL.TOOL_TIP,
                   eventParams: {
+                    tooltip: 'Liquidation penalty',
                     asset: reserve.underlyingAsset,
                     assetName: reserve.name,
                   },

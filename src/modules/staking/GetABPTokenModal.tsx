@@ -4,7 +4,7 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 type GetABPTokenModalProps = {
   open: boolean;
@@ -40,7 +40,11 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
           href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
           target="_blank"
           rel="noopener"
-          onClick={() => trackEvent(STAKE.GET_ABP_TOKEN)}
+          onClick={() =>
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              Link: 'Get APBT Tokens',
+            })
+          }
         >
           <Box sx={{ display: 'flex', flexGrow: 1 }}>
             <TokenIcon symbol="BAL" sx={{ mr: 2 }} />

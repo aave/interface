@@ -20,7 +20,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { BORROW_MODAL } from 'src/utils/mixPanelEvents';
+import { BORROW_MODAL, GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
@@ -333,7 +333,10 @@ export const BorrowModalContent = ({
           and risk of liquidation. Follow the{' '}
           <a
             onClick={() => {
-              trackEvent(BORROW_MODAL.GOV_LINK, { asset: underlyingAsset });
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                asset: underlyingAsset,
+                Link: 'Governance Link',
+              });
             }}
             href="https://governance.aave.com/"
           >

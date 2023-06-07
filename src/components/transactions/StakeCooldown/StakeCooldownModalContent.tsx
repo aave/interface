@@ -15,7 +15,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL, STAKE } from 'src/utils/mixPanelEvents';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
@@ -123,7 +123,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
           unstake window.
         </Trans>{' '}
         <Link
-          onClick={() => trackEvent(STAKE.COOLDOWN_LEARN_MORE, { assetName: 'ABPT' })}
+          onClick={() =>
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              assetName: 'ABPT',
+              link: 'Cooldown Learn More',
+            })
+          }
           variant="description"
           href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}

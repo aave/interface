@@ -13,7 +13,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { DELEGATION } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -168,8 +168,9 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           textColor="text.secondary"
           wrapperProps={{ mt: 6, mb: 2 }}
           event={{
-            eventName: DELEGATION.BALANCE_TO_DELEGATE_INFO_ICON,
+            eventName: GENERAL.TOOL_TIP,
             eventParams: {
+              tooltip: 'Balance to delegate',
               funnel: 'Governance Delegation',
             },
           }}

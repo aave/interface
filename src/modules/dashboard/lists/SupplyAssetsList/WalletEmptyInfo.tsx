@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../../../../components/primitives/Link';
 
@@ -28,7 +28,7 @@ export function WalletEmptyInfo({ bridge, name, chainId, icon, sx }: WalletEmpty
           {
             <Link
               onClick={() => {
-                trackEvent(DASHBOARD.BRIDGE_LINK_DASHBOARD, { bridge: bridge.name });
+                trackEvent(GENERAL.EXTERNAL_LINK, { bridge: bridge.name, Link: 'Bridge Link' });
               }}
               href={bridge.url}
             >

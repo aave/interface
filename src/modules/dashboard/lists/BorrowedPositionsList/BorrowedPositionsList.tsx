@@ -9,7 +9,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -46,7 +46,17 @@ const head = [
     sortKey: 'borrowAPY',
   },
   {
-    title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    title: (
+      <APYTypeTooltip
+        event={{
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'APY Type Borrow' },
+        }}
+        text={<Trans>APY type</Trans>}
+        key="APY type"
+        variant="subheader2"
+      />
+    ),
     sortKey: 'typeAPY',
   },
 ];
@@ -166,8 +176,8 @@ export const BorrowedPositionsList = () => {
                 tooltip={
                   <TotalBorrowAPYTooltip
                     event={{
-                      eventName: DASHBOARD.TOOLTIP_BORROWED_POSITIONS_APY,
-                      eventParams: {},
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Borrowed APY' },
                     }}
                   />
                 }
@@ -179,8 +189,8 @@ export const BorrowedPositionsList = () => {
                 tooltip={
                   <BorrowPowerTooltip
                     event={{
-                      eventName: DASHBOARD.TOOLTIP_BORROWED_POWER_USED,
-                      eventParams: {},
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Borrow power used' },
                     }}
                   />
                 }
