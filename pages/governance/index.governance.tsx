@@ -25,7 +25,7 @@ export const getStaticProps = async () => {
         title: ipfs.title,
         id: ipfs.id,
         originalHash: ipfs.originalHash,
-        shortDescription: ipfs.shortDescription,
+        shortDescription: ipfs.shortDescription || '',
       },
       proposal,
       prerendered: true,
