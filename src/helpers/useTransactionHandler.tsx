@@ -51,7 +51,8 @@ export const useTransactionHandler = ({
   protocolAction,
   deps = [],
   eventTxInfo,
-}: UseTransactionHandlerProps) => {
+}: //eventTxInfo,
+UseTransactionHandlerProps) => {
   const {
     approvalTxState,
     setApprovalTxState,
@@ -109,17 +110,23 @@ export const useTransactionHandler = ({
   }) => {
     try {
       const txnResult = await tx();
+
       try {
         addTransaction(currentChainId, txnResult.hash, {
           action: protocolAction || ProtocolAction.default,
           txState: 'loading',
+          ...eventTxInfo,
         });
 
         await txnResult.wait(1);
+
         mounted.current && successCallback && successCallback(txnResult);
 
-        updateTransaction(currentChainId, txnResult.hash, { txState: 'success', ...eventTxInfo });
-        // refetchWalletBalances();
+        updateTransaction(currentChainId, txnResult.hash, {
+          txState: 'success',
+          ...eventTxInfo,
+        });
+
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });

@@ -31,8 +31,8 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.17.5",
-    "@aave/math-utils": "1.17.5",
+    "@aave/contract-helpers": "1.17.6",
+    "@aave/math-utils": "1.17.6",
     "@bgd-labs/aave-address-book": "^1.24.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
@@ -78,6 +78,7 @@
     "next": "12.1.1",
     "paraswap-core": "^1.0.2",
     "react": "latest",
+    "react-cookie-consent": "^8.0.1",
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
     "react-markdown": "^8.0.3",

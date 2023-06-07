@@ -1,12 +1,7 @@
 import assets from '../../fixtures/assets.json';
 import { skipState } from '../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
-import {
-  activateCooldown,
-  claimReward,
-  stake,
-  reCallCooldown,
-} from '../../support/steps/stake.steps';
+import { activateCooldown, stake, reCallCooldown } from '../../support/steps/stake.steps';
 
 const testCases = [
   {
@@ -49,13 +44,14 @@ testCases.forEach(
         skipTestState,
         true
       );
-      claimReward(
-        {
-          asset: testCase.asset,
-        },
-        skipTestState,
-        false
-      );
+      // skip while tenderly issue
+      // claimReward(
+      //   {
+      //     asset: testCase.asset,
+      //   },
+      //   skipTestState,
+      //   false
+      // );
       activateCooldown(
         {
           asset: testCase.asset,

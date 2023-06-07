@@ -14,6 +14,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
 
+import { useProtocolDataContext } from '../../../hooks/useProtocolDataContext';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
@@ -81,6 +82,9 @@ export const SupplyActions = React.memo(
     const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+
+    const { addTransaction, updateTransaction, currentChainId } = useRootStore();
+    const { currentMarket } = useProtocolDataContext();
 
     // callback to fetch approved amount and determine execution path on dependency updates
     const fetchApprovedAmount = useCallback(
@@ -187,6 +191,7 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
+
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
         if (usePermit && signatureParams) {
@@ -196,13 +201,30 @@ export const SupplyActions = React.memo(
             reserve: poolAddress,
             deadline: signatureParams.deadline,
           });
+
           signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
           const response = await sendTx(signedSupplyWithPermitTxData);
+          addTransaction(currentChainId, response.hash, {
+            action: ProtocolAction.supplyWithPermit,
+            txState: 'loading',
+            asset: poolAddress,
+            amount: amountToSupply,
+            market: currentMarket,
+          });
+
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
             loading: false,
             success: true,
+          });
+
+          updateTransaction(currentChainId, response.hash, {
+            action: ProtocolAction.supplyWithPermit,
+            txState: 'success',
+            asset: poolAddress,
+            amount: amountToSupply,
+            market: currentMarket,
           });
         } else {
           let supplyTxData = supply({
@@ -211,11 +233,26 @@ export const SupplyActions = React.memo(
           });
           supplyTxData = await estimateGasLimit(supplyTxData);
           const response = await sendTx(supplyTxData);
+          addTransaction(currentChainId, response.hash, {
+            action: ProtocolAction.supply,
+            txState: 'loading',
+            asset: poolAddress,
+            amount: amountToSupply,
+            market: currentMarket,
+          });
           await response.wait(1);
           setMainTxState({
             txHash: response.hash,
             loading: false,
             success: true,
+          });
+
+          updateTransaction(currentChainId, response.hash, {
+            action: ProtocolAction.supply,
+            txState: 'success',
+            asset: poolAddress,
+            amount: amountToSupply,
+            market: currentMarket,
           });
         }
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
