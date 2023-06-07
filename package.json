@@ -78,6 +78,7 @@
     "next": "12.1.1",
     "paraswap-core": "^1.0.2",
     "react": "latest",
+    "react-cookie-consent": "^8.0.1",
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
     "react-markdown": "^8.0.3",

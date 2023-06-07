@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
-import mixpanel from 'mixpanel-browser';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -30,12 +29,12 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { MIXPANEL_API_HOST } from '../src/store/analyticsSlice';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -60,16 +59,14 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
-  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL || '';
+  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
 
+  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   React.useEffect(() => {
     if (MIXPANEL_TOKEN) {
-      mixpanel.init(MIXPANEL_TOKEN, {
-        ip: false,
-        api_host: MIXPANEL_API_HOST,
-      });
+      initializeMixpanel();
     } else {
-      console.warn('Mixpanel token not provided. Mixpanel will not be initialized.');
+      console.log('no analytics tracking');
     }
   }, []);
 
