@@ -6,10 +6,15 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import {
+  formatProposal,
+  hasExecutedL2,
+  proposalHasCrossChainBridge,
+  shouldDisplayL2Badge,
+} from 'src/modules/governance/utils/formatProposal';
 
 import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
-import { formatProposal } from './utils/formatProposal';
 import { isProposalStateImmutable } from './utils/immutableStates';
 import { VoteBar } from './VoteBar';
 
@@ -24,50 +29,13 @@ export function ProposalListItem({
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
 
-  const delayedBridgeExecutors = [
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
-  ];
-  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
-
-  let proposalCrosschainBridge = false;
-
-  if (proposal && proposal.targets && proposal.targets.length > 0) {
-    const hasDelayedExecutor = proposal.targets.filter((address) =>
-      lowercaseExecutors.includes(address.toLowerCase())
-    );
-    if (hasDelayedExecutor.length > 0) {
-      proposalCrosschainBridge = true;
-    }
-  }
-
-  // Currently all cross-executors share this delay
-  // TO-DO: invetigate if this can be changed, if so, query on-chain
-  // const twoDayDelay = 172800 + 14400;
-  const twoDayDelay = 172800; // 2 days 4 hours (small buffer)
-
-  let executedL2;
-  if (proposal) {
-    executedL2 =
-      proposal.executionTime === 0
-        ? false
-        : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
-  }
-
+  const executedL2 = proposal ? hasExecutedL2(proposal) : false;
+  const proposalCrosschainBridge = proposal ? proposalHasCrossChainBridge(proposal) : false;
   const executorChain = proposalCrosschainBridge ? 'L2' : 'L1';
-
   const pendingL2Execution = proposalCrosschainBridge && !executedL2;
-
-  const displayL2StateBadge =
-    !!proposal &&
-    executorChain === 'L2' &&
-    proposal.state !== 'Failed' &&
-    proposal.state !== 'Canceled' &&
-    proposal.state !== 'Pending' &&
-    proposal.state !== 'Active' &&
-    (executedL2 || pendingL2Execution);
+  const displayL2StateBadge = proposal
+    ? shouldDisplayL2Badge(proposal, executorChain, executedL2, pendingL2Execution)
+    : false;
 
   return (
     <Box

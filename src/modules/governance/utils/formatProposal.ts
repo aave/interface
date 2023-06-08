@@ -1,6 +1,8 @@
 import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
+import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import BigNumber from 'bignumber.js';
+import { CustomProposalType } from 'src/static-build/proposal';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export type FormattedProposal = {
@@ -96,3 +98,50 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
     startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
   return { ...proposal, startTimestamp, creationTimestamp, expirationTimestamp };
 }
+
+export const proposalHasCrossChainBridge = (proposal: CustomProposalType) => {
+  const delayedBridgeExecutors = [
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
+    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
+  ];
+  const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
+  let proposalCrosschainBridge = false;
+
+  if (proposal && proposal.targets && proposal.targets.length > 0) {
+    const hasDelayedExecutor = proposal.targets.filter((address) =>
+      lowercaseExecutors.includes(address.toLowerCase())
+    );
+    if (hasDelayedExecutor.length > 0) {
+      proposalCrosschainBridge = true;
+    }
+  }
+
+  return proposalCrosschainBridge;
+};
+
+export const shouldDisplayL2Badge = (
+  proposal: CustomProposalType,
+  executorChain: string,
+  executedL2: boolean,
+  pendingL2Execution: boolean
+) => {
+  return (
+    !!proposal &&
+    executorChain === 'L2' &&
+    proposal.state !== 'Failed' &&
+    proposal.state !== 'Canceled' &&
+    proposal.state !== 'Pending' &&
+    proposal.state !== 'Active' &&
+    (executedL2 || pendingL2Execution)
+  );
+};
+
+export const hasExecutedL2 = (proposal: CustomProposalType) => {
+  const twoDayDelay = 172800; // 2 days 4 hours (small buffer)
+
+  return proposal.executionTime === 0
+    ? false
+    : Math.floor(Date.now() / 1000) > proposal.executionTime + twoDayDelay;
+};
