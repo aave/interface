@@ -318,10 +318,6 @@ msgstr "Available liquidity"
 msgid "Available on"
 msgstr "Available on"
 
-#: src/modules/dashboard/DashboardTopPanel.tsx
-msgid "Available rewards"
-msgstr "Available rewards"
-
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -518,7 +514,6 @@ msgstr "Choose one of the on-ramp services"
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
-#: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
 msgstr "Claim"
 
