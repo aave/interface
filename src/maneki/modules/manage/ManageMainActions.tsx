@@ -181,7 +181,11 @@ export const ManageMainActions = () => {
                 <Button
                   variant="contained"
                   onClick={handleClaimUnlock}
-                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
+                  sx={{
+                    padding: '8px 24px',
+                    width: downToSM ? '100%' : 'auto',
+                    color: 'background.default',
+                  }}
                   disabled={unlockedPAW.isZero() ? true : false}
                 >
                   <Trans>Claim</Trans>
@@ -253,7 +257,11 @@ export const ManageMainActions = () => {
                 <Button
                   onClick={handleClaimAllVest}
                   variant="contained"
-                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
+                  sx={{
+                    padding: '8px 24px',
+                    width: downToSM ? '100%' : 'auto',
+                    color: 'background.default',
+                  }}
                   disabled={totalVestsValue.isZero() ? true : false}
                 >
                   <Trans>Claim</Trans>
@@ -298,7 +306,11 @@ export const ManageMainActions = () => {
                 <Button
                   onClick={handleClaimExpired}
                   variant="contained"
-                  sx={{ padding: '8px 24px', width: downToSM ? '100%' : 'auto' }}
+                  sx={{
+                    padding: '8px 24px',
+                    width: downToSM ? '100%' : 'auto',
+                    color: 'background.default',
+                  }}
                   disabled={expiredLockedPAW.isZero() ? true : false}
                 >
                   <Trans>Claim</Trans>
@@ -439,7 +451,11 @@ export const ManageMainActions = () => {
               <Trans>Total Value</Trans>:{' '}
               {Number(utils.formatUnits(totalClaimableValue, 8)).toFixed(2)} USD
             </Typography>
-            <Button onClick={handleClaimAll} variant="contained" sx={{ padding: '8px 24px' }}>
+            <Button
+              onClick={handleClaimAll}
+              variant="contained"
+              sx={{ padding: '8px 24px', color: 'background.default' }}
+            >
               <Trans>Claim All</Trans>
             </Button>
           </Box>

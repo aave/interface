@@ -35,7 +35,7 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
       provider
     );
     const promises = [];
-    promises.push(contract.getClaimableRewards(currentAccount));
+    promises.push(contract.getUserClaimableRewardsParsedFormat(currentAccount));
     setMainTxState({ loading: true });
     Promise.all(promises)
       .then((data) => {
@@ -62,7 +62,7 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
       const signer = provider?.getSigner(currentAccount as string);
       const contract = new Contract(MULTI_FEE_ADDR, MULTI_FEE_ABI, signer);
       try {
-        const promises = await contract.getReward(claimables.map((e) => e.tokenSymbol));
+        const promises = await contract.getReward(claimables.map((e) => e.mTokenAddr));
         await promises.wait(1);
         setMainTxState({
           loading: false,

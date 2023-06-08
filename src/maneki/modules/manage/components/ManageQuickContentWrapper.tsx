@@ -101,7 +101,7 @@ export default function ManageQuickContentWrapper({
         <Button
           onClick={handleClick}
           variant="contained"
-          sx={{ padding: downToSM ? '8px 24px' : '0px 24px' }}
+          sx={{ padding: downToSM ? '8px 24px' : '0px 24px', color: 'background.default' }}
         >
           {buttonText}
         </Button>
