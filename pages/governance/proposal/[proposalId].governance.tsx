@@ -284,7 +284,7 @@ export default function ProposalPage({
                         </Box>
 
                         {displayL2StateBadge && (
-                          <Box mt={2} display={'flex'}>
+                          <Box mt={2}>
                             <StateBadge
                               sx={{ marginRight: 2 }}
                               crossChainBridge={executorChain}

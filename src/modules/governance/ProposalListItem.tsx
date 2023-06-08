@@ -107,7 +107,7 @@ export function ProposalListItem({
           ) : null}
 
           {displayL2StateBadge && (
-            <Box display={'flex'}>
+            <Box display={'flex'} ml={'-3px'}>
               <StateBadge
                 sx={{ marginRight: 2 }}
                 crossChainBridge={executorChain}
