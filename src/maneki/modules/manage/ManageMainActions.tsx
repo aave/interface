@@ -69,8 +69,8 @@ export const ManageMainActions = () => {
 
   // handle claim all vest action
   const handleClaimAllVest = () => {
-    if (totalVestsValue.isZero()) return;
-    openManage(totalVestsValue.toString(), ModalType.ManageClaimAllVest);
+    if (vestedPAW.isZero()) return;
+    openManage(vestedPAW.sub(exitPenalty).toString(), ModalType.ManageClaimAllVest);
   };
 
   // claim expired
