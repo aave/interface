@@ -11,8 +11,8 @@ import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+// import StyledToggleButton from 'src/components/StyledToggleButton';
+// import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -48,11 +48,11 @@ interface BorrowModeSwitchProps {
 }
 
 const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
+  // setInterestRateMode,
+  // interestRateMode,
   variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
+}: // stableRate,
+BorrowModeSwitchProps) => {
   return (
     <Row
       caption={
@@ -69,7 +69,8 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <StyledToggleButtonGroup
+      <FormattedNumber value={variableRate} percent variant="secondary14" />
+      {/* <StyledToggleButtonGroup
         color="primary"
         value={interestRateMode}
         exclusive
@@ -94,7 +95,7 @@ const BorrowModeSwitch = ({
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
         </StyledToggleButton>
-      </StyledToggleButtonGroup>
+      </StyledToggleButtonGroup> */}
     </Row>
   );
 };

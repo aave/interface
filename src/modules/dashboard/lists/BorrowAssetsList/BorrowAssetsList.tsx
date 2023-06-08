@@ -3,7 +3,7 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+// import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -63,16 +63,16 @@ const head = [
     ),
     sortKey: 'variableBorrowAPY',
   },
-  {
-    title: (
-      <StableAPYTooltip
-        text={<Trans>APY, stable</Trans>}
-        key="stableBorrowAPY"
-        variant="subheader2"
-      />
-    ),
-    sortKey: 'stableBorrowAPY',
-  },
+  // {
+  //   title: (
+  //     <StableAPYTooltip
+  //       text={<Trans>APY, stable</Trans>}
+  //       key="stableBorrowAPY"
+  //       variant="subheader2"
+  //     />
+  //   ),
+  //   sortKey: 'stableBorrowAPY',
+  // },
 ];
 
 export const BorrowAssetsList = () => {

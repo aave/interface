@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+// import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -23,8 +23,8 @@ export const BorrowAssetsListMobileItem = ({
   borrowCap,
   totalBorrows,
   variableBorrowRate,
-  stableBorrowRate,
-  sIncentivesData,
+  // stableBorrowRate,
+  // sIncentivesData,
   vIncentivesData,
   underlyingAsset,
   isFreezed,
@@ -76,7 +76,7 @@ export const BorrowAssetsListMobileItem = ({
         />
       </Row>
 
-      <Row
+      {/* <Row
         caption={
           <StableAPYTooltip
             text={<Trans>APY, stable</Trans>}
@@ -94,7 +94,7 @@ export const BorrowAssetsListMobileItem = ({
           symbol={symbol}
           variant="secondary14"
         />
-      </Row>
+      </Row> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
