@@ -1,5 +1,5 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { alpha, experimental_sx, styled, SvgIcon, Theme, useTheme } from '@mui/material';
 
 interface StateBadgeProps {
@@ -86,19 +86,18 @@ export function StateBadge({
   if (crossChainBridge === 'L2') {
     if (!pendingL2Execution) {
       return (
-        <SvgIcon fontSize="medium" sx={{ '& path': { strokeWidth: '1' }, color, display: 'flex' }}>
+        <SvgIcon fontSize="medium" sx={{ color, display: 'flex' }}>
           <CheckCircleIcon height={16} />
         </SvgIcon>
       );
     }
 
     return (
-      <SvgIcon fontSize="small" sx={{ '& path': { strokeWidth: '1' }, color, mr: 1 }}>
+      <SvgIcon fontSize="medium" sx={{ color, mr: 1 }}>
         <ExclamationCircleIcon height={16} />
       </SvgIcon>
     );
   }
-
   return (
     <Badge
       state={state}

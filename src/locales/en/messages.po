@@ -694,6 +694,10 @@ msgstr "Covered debt"
 msgid "Created"
 msgstr "Created"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Cross chain executed"
+msgstr "Cross chain executed"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
 msgstr "Current LTV"
@@ -897,10 +901,6 @@ msgstr "Error connecting. Try refreshing the page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "Executed cross chain"
-msgstr "Executed cross chain"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Executed on"

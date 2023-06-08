@@ -36,7 +36,11 @@ export function FormattedProposalTime({
   if ([ProposalState.Pending].includes(state)) {
     return (
       <Typography component="span" variant="caption">
-        <Typography variant="caption" color="text.secondary" sx={{ display: { md: 'inline' } }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: { xs: 'inline', md: 'inline' } }}
+        >
           {/* {state}&nbsp; */}
           <Trans>Voting starts</Trans>
           &nbsp;
@@ -79,7 +83,6 @@ export function FormattedProposalTime({
   }
 
   if ([ProposalState.Queued].includes(state)) {
-    console.log('FSDSDS');
     return (
       <Typography component="span" variant="caption">
         <Typography
@@ -114,7 +117,7 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'inline', md: 'inline' } }}
         >
-          {state}&nbsp;
+          Eth. Mainnet {state.toLocaleLowerCase()}&nbsp;
           <Trans>on</Trans>
           &nbsp;
         </Typography>
@@ -137,7 +140,7 @@ export function FormattedProposalTime({
       >
         {canBeExecuted ? (
           l2Execution ? (
-            <Trans>Executed cross chain</Trans>
+            <Trans>Cross chain executed</Trans>
           ) : (
             <Trans>Can be executed cross chain</Trans>
           )
