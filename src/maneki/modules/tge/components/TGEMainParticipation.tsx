@@ -14,14 +14,7 @@ interface TGEMainParticipationType {
 const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipationType) => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const { saleStartDate, saleEndDate, totalRaisedBNB } = useTGEContext();
-  const status =
-    Date.now() < saleStartDate
-      ? 'Coming Soon'
-      : saleStartDate < saleEndDate && Date.now() < saleEndDate
-      ? 'Active'
-      : 'Inactive';
+  const { saleStartDate, saleEndDate, totalRaisedBNB, TGEStatus } = useTGEContext();
 
   return (
     <Box
@@ -40,7 +33,8 @@ const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipat
           lineHeight: '48px',
         }}
       >
-        TGE {status === 'Active' ? 'is Ongoing' : status === 'Inactive' ? 'has Ended' : status}
+        TGE{' '}
+        {TGEStatus === 'Active' ? 'is Ongoing' : TGEStatus === 'Ended' ? 'has Ended' : TGEStatus}
       </Typography>
       <Box
         sx={{
@@ -59,16 +53,16 @@ const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipat
             sx={{
               fontWeight: '600',
               fontSize: '24px',
-              lineHeight: '48px',
+              lineHeight: '36px',
               color: '#FFA725',
             }}
           >
-            {status}
+            {TGEStatus}
           </Typography>
         </Box>
         <TGECountdownTimer
           targetDate={Date.now() < saleStartDate ? saleStartDate : saleEndDate}
-          status={status === 'Active' ? 'Ongoing' : status === 'Inactive' ? 'Ended' : status}
+          status={TGEStatus === 'Active' ? 'Ongoing' : TGEStatus}
         />
       </Box>
       <Box

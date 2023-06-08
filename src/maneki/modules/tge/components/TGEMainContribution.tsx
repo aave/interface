@@ -14,7 +14,7 @@ const TGEMainContribution = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { provider, currentAccount } = useWeb3Context();
-  const { userBalanceBNB, finalPAWPrice, contributedBNB } = useTGEContext();
+  const { userBalanceBNB, finalPAWPrice, contributedBNB, TGEStatus } = useTGEContext();
   const [contributionBNB, setContributionBNB] = React.useState<string>('');
 
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -74,6 +74,7 @@ const TGEMainContribution = () => {
         >
           <Image alt={`token image for BNB`} src={`/icons/tokens/bnb.svg`} width={24} height={24} />
           <CustomNumberInput
+            disabled={TGEStatus !== 'Active' ? true : false}
             amountTo={contributionBNB}
             setAmountTo={setContributionBNB}
             tokenBalance={utils.formatUnits(userBalanceBNB, 18)}
@@ -140,6 +141,7 @@ const TGEMainContribution = () => {
         variant="contained"
         onClick={handleContribute}
         sx={{ padding: '12px', color: 'background.default' }}
+        disabled={TGEStatus !== 'Active' ? true : false}
       >
         Contribute
       </Button>

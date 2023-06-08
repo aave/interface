@@ -6,9 +6,17 @@ import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
-import { useTGEContext } from '../../hooks/tge-data-provider/TGEDataProvider';
+import { TGEStatusType, useTGEContext } from '../../hooks/tge-data-provider/TGEDataProvider';
 import TGEMainContribution from './components/TGEMainContribution';
 import TGEMainParticipation from './components/TGEMainParticipation';
+
+const TGEStatusGenerator = (saleStartDate: number, saleEndDate: number): TGEStatusType => {
+  const currentTime = Date.now();
+  if (currentTime < saleStartDate) return 'Coming Soon';
+  else if (saleStartDate < saleEndDate && currentTime < saleEndDate) return 'Active';
+  else if (currentTime > saleEndDate) return 'Ended';
+  else return 'Inactive';
+};
 
 const TGEMainAction = () => {
   const theme = useTheme();
@@ -24,6 +32,7 @@ const TGEMainAction = () => {
     // BNBToContribute,
     // setBNBToContribute,
     setUserBalanceBNB,
+    setTGEStatus,
   } = useTGEContext();
   const [loading, setLoading] = useState<boolean>(true);
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
@@ -56,6 +65,13 @@ const TGEMainAction = () => {
         setTotalRaisedBNB(data[3] as BigNumber); // total raised bnb (18 Decimals)
         setFinalPAWPrice(data[4] as BigNumber); // tge paw price (18 Decimals)
         setUserBalanceBNB(data[5] as BigNumber); // get user BNB balance (18 Decimals)
+        setTGEStatus(
+          TGEStatusGenerator(
+            // set TGEStatus
+            (data[0] as BigNumber).toNumber() * 1000,
+            (data[1] as BigNumber).toNumber() * 1000
+          )
+        );
         setLoading(false);
       })
       .catch((e) => console.error(e));

@@ -2,6 +2,8 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 
+export type TGEStatusType = 'Coming Soon' | 'Active' | 'Ended' | 'Inactive';
+
 interface TGEData {
   userBalanceBNB: BigNumber;
   setUserBalanceBNB: (BNB: BigNumber) => void;
@@ -11,8 +13,6 @@ interface TGEData {
   setBNBToContribute: (BNB: string) => void;
   PAWToReceive: BigNumber;
   setPAWToReceive: (PAW: BigNumber) => void;
-  PAWToReceiveEstimate: BigNumber;
-  setPAWToReceiveEstimate: (PAW: BigNumber) => void;
   saleStartDate: number;
   setSaleStartDate: (date: number) => void;
   saleEndDate: number;
@@ -27,6 +27,8 @@ interface TGEData {
   setInitialSupply: (supply: BigNumber) => void;
   totalSupply: BigNumber;
   setTotalSupply: (supply: BigNumber) => void;
+  TGEStatus: TGEStatusType;
+  setTGEStatus: (status: TGEStatusType) => void;
 }
 
 export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -34,9 +36,6 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
   const [contributedBNB, setContributedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [BNBToContribute, setBNBToContribute] = React.useState<string>('');
   const [PAWToReceive, setPAWToReceive] = React.useState<BigNumber>(BigNumber.from(-1));
-  const [PAWToReceiveEstimate, setPAWToReceiveEstimate] = React.useState<BigNumber>(
-    BigNumber.from(-1)
-  );
   const [saleStartDate, setSaleStartDate] = React.useState<number>(0);
   const [saleEndDate, setSaleEndDate] = React.useState<number>(0);
   const [totalRaisedBNB, setTotalRaisedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
@@ -44,6 +43,7 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
   const [marketCap, setMarketCap] = React.useState<BigNumber>(BigNumber.from(-1));
   const [initialSupply, setInitialSupply] = React.useState<BigNumber>(BigNumber.from(-1));
   const [totalSupply, setTotalSupply] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [TGEStatus, setTGEStatus] = React.useState<TGEStatusType>('Inactive');
 
   return (
     <TGEContext.Provider
@@ -56,8 +56,6 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
         setBNBToContribute,
         PAWToReceive,
         setPAWToReceive,
-        PAWToReceiveEstimate,
-        setPAWToReceiveEstimate,
         saleStartDate,
         setSaleStartDate,
         saleEndDate,
@@ -72,6 +70,8 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
         setInitialSupply,
         totalSupply,
         setTotalSupply,
+        TGEStatus,
+        setTGEStatus,
       }}
     >
       {children}
