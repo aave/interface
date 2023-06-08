@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-24 18:04\n"
+"PO-Revision-Date: 2023-06-06 12:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,16 +18,22 @@ msgstr ""
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".CSV"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".JSON"
+msgstr ""
+
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr ""
-
-#: src/layouts/MainLayout.tsx
-msgid "<0>Important: </0>An Aave Governance Proposal regarding changes to E-Mode parameters is now live and may impact the health factor of certain positions."
 msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
@@ -49,6 +55,8 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr ""
@@ -162,6 +170,11 @@ msgstr ""
 #: src/modules/governance/ProposalListHeader.tsx
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
+msgstr ""
+
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "All transactions"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -363,6 +376,10 @@ msgstr ""
 msgid "Be mindful of the network congestion and gas prices."
 msgstr ""
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Because this asset is paused, no actions can be taken until further notice"
+msgstr ""
+
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
 msgstr ""
@@ -377,6 +394,8 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr ""
@@ -393,6 +412,10 @@ msgstr ""
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
+msgstr ""
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Borrow amount to reach {0}% utilization"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -418,6 +441,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Borrow rate change"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
@@ -503,6 +530,7 @@ msgid "Can be executed"
 msgstr ""
 
 #: src/components/TitleWithSearchBar.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
 msgstr ""
 
@@ -567,6 +595,7 @@ msgstr ""
 msgid "Collateral balance after repay"
 msgstr ""
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Collateral change"
@@ -580,6 +609,7 @@ msgstr ""
 msgid "Collateral to repay with"
 msgstr ""
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -600,6 +630,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr ""
 
@@ -637,6 +668,16 @@ msgstr ""
 msgid "Cooling down..."
 msgstr ""
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copied"
+msgstr ""
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copy"
+msgstr ""
+
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr ""
@@ -647,6 +688,10 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Covered debt"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -764,7 +809,7 @@ msgid "Discord channel"
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
-msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
+msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -865,6 +910,10 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Export data to"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr ""
@@ -914,7 +963,7 @@ msgid "French"
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen assets"
+msgid "Frozen or paused assets"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
@@ -1117,6 +1166,18 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Liqudation"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidated collateral"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidation"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr ""
@@ -1160,6 +1221,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
@@ -1301,6 +1366,11 @@ msgstr ""
 msgid "No search results{0}"
 msgstr ""
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "No transactions yet."
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr ""
@@ -1339,6 +1409,11 @@ msgstr ""
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Nothing found"
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1413,6 +1488,10 @@ msgstr ""
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr ""
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Please connect your wallet to view transaction history."
+msgstr ""
+
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr ""
@@ -1438,8 +1517,12 @@ msgstr ""
 msgid "Preview tx and migrate"
 msgstr ""
 
+#: src/modules/history/PriceUnavailable.tsx
+msgid "Price data is not currently available for this reserve on the protocol subgraph"
+msgstr ""
+
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
-msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr ""
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
@@ -1491,6 +1574,10 @@ msgstr ""
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
+msgstr ""
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Rate change"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -1559,6 +1646,8 @@ msgstr ""
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Repay"
 msgstr ""
 
@@ -1577,6 +1666,10 @@ msgstr ""
 msgid "Repaying {symbol}"
 msgstr ""
 
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Repayment amount to reach {0}% utilization"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
 msgstr ""
@@ -1591,6 +1684,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
+msgstr ""
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Reset"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
@@ -1749,6 +1846,7 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr ""
 
@@ -1841,6 +1939,8 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr ""
@@ -1867,7 +1967,7 @@ msgid "Supply balance"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapModalDetails.tsx
-msgid "Supply balance after swap"
+msgid "Supply balance after switch"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -1895,19 +1995,7 @@ msgstr ""
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-msgid "Swap"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swap to"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Swapped"
-msgstr ""
-
-#: src/components/transactions/Swap/SwapActions.tsx
-msgid "Swapping"
+msgid "Switch"
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
@@ -1928,6 +2016,18 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switch to"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Switched"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapActions.tsx
+msgid "Switching"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
@@ -2047,7 +2147,7 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -2217,8 +2317,27 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
+#: src/layouts/WalletWidget.tsx
+#: src/modules/history/HistoryTopPanel.tsx
+msgid "Transaction history"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history is not currently available for this market"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
+msgstr ""
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Transactions"
+msgstr ""
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Tx hash"
 msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
@@ -2262,10 +2381,6 @@ msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
-msgstr ""
-
-#: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT."
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -2326,6 +2441,7 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
 msgstr ""
 
@@ -2359,6 +2475,11 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
+msgstr ""
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View on block explorer"
 msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
@@ -2420,6 +2541,11 @@ msgstr ""
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr ""
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+msgstr ""
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr ""
@@ -2443,6 +2569,8 @@ msgstr ""
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Withdraw"
 msgstr ""
 
@@ -2622,12 +2750,25 @@ msgstr ""
 msgid "copy the error"
 msgstr ""
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "disabled"
+msgstr ""
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
 msgstr ""
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "enabled"
+msgstr ""
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
+msgstr ""
+
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "for"
 msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx

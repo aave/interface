@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -36,13 +35,9 @@ export const SuppliedPositionsListItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const POLYGON_DISABLED_ASSETS = ['WETH', 'WMATIC', 'WBTC', 'USDT', 'MATIC'];
-  const isPolygonV2 = currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3;
-  const isAffectedReserve = isPolygonV2 && POLYGON_DISABLED_ASSETS.includes(reserve.symbol);
-
-  const disableSwap = !isActive || reserve.symbol == 'stETH' || isAffectedReserve;
-  const disableWithdraw = !isActive || isPolygonV2 || isAffectedReserve;
-  const disableSupply = !isActive || isFrozen || isPolygonV2 || isAffectedReserve;
+  const disableSwap = !isActive || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive;
+  const disableSupply = !isActive || isFrozen;
 
   return (
     <ListItemWrapper
@@ -97,7 +92,7 @@ export const SuppliedPositionsListItem = ({
             onClick={() => openSwap(underlyingAsset)}
             data-cy={`swapButton`}
           >
-            <Trans>Swap</Trans>
+            <Trans>Switch</Trans>
           </Button>
         ) : (
           <Button

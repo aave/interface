@@ -1,4 +1,4 @@
-import { DuplicateIcon } from '@heroicons/react/outline';
+import { ClockIcon, DuplicateIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -18,6 +18,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
@@ -27,7 +28,7 @@ import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { Link } from '../components/primitives/Link';
+import { Link, ROUTES } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
@@ -42,6 +43,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
+  const router = useRouter();
   const { setWalletModalOpen } = useWalletModalContext();
 
   const { breakpoints, palette } = useTheme();
@@ -193,7 +195,34 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
       <Box
         component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
+        sx={{ color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' } }}
+        onClick={() => {
+          setOpen(false);
+          router.push(ROUTES.history);
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            color: {
+              xs: '#F1F1F3',
+              md: 'primary.light',
+              minWidth: 'unset',
+              marginRight: 12,
+            },
+          }}
+        >
+          <SvgIcon fontSize="small">
+            <ClockIcon />
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText>
+          <Trans>Transaction history</Trans>
+        </ListItemText>
+      </Box>
+
+      <Box
+        component={component}
+        sx={{ color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' } }}
         onClick={handleCopy}
       >
         <ListItemIcon

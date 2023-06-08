@@ -301,7 +301,7 @@ export const createV3MigrationSlice: StateCreator<
     getApprovePermitsForSelectedAssets: () => {
       const timestamp = dayjs().unix();
 
-      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp);
+      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp, true);
 
       const supplyPermitPayloads = selectUserSupplyIncreasedReservesForMigrationPermits(
         get(),
@@ -352,7 +352,7 @@ export const createV3MigrationSlice: StateCreator<
       const repayAssets = selectMigrationRepayAssets(get(), timestamp);
       const user = get().account;
 
-      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp);
+      const borrowPermitPayloads = selectMigrationBorrowPermitPayloads(get(), timestamp, true);
       const creditDelegationApprovals: MigrationDelegationApproval[] = borrowPermitPayloads.map(
         ({ underlyingAsset, amount }) => ({ debtTokenAddress: underlyingAsset, amount })
       );
