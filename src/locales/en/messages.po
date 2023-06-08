@@ -1276,7 +1276,6 @@ msgstr "Loading Error"
 msgid "Loading data..."
 msgstr "Loading data..."
 
-#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 msgid "Lock"
 msgstr "Lock"
@@ -1288,6 +1287,10 @@ msgstr "Lock PAW and earn platform fees and penalty fees in unlocked PAW."
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
 msgid "Lock {symbol}"
 msgstr "Lock {symbol}"
+
+#: src/maneki/modules/manage/ManageTopPanel.tsx
+msgid "Locked"
+msgstr "Locked"
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw."
@@ -1946,7 +1949,6 @@ msgid "Stablecoin"
 msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
-#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1967,6 +1969,7 @@ msgid "Stake {symbol}"
 msgstr "Stake {symbol}"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Staked"
@@ -2554,6 +2557,10 @@ msgstr "Version 2"
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
 msgstr "Version 3"
+
+#: src/maneki/modules/manage/ManageTopPanel.tsx
+msgid "Vested"
+msgstr "Vested"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Vested PAW"

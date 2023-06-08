@@ -19,7 +19,7 @@ import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import MANEKI_PAW_PRICE_ORACLE_ABI from 'src/maneki/abi/pawPriceOracleABI';
-import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
+import MANEKI_STAKING_DATA_PROVIDER_ABI from 'src/maneki/abi/stakingDataProbiderABI';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 
@@ -27,18 +27,15 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import ManageMainPaper from './components/ManageMainPaper';
 import ManageMainPrimaryWrapper from './components/ManageMainPrimaryWrapper';
-import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import {
-  Claimables,
   ClaimablesTuple,
+  ClaimablesType,
   convertClaimables,
   convertUnixToDate,
   convertVestEntry,
-  PriceOracleType,
   VestEntry,
   VestEntryTuple,
 } from './utils/manageActionHelper';
-import { addressReserveMatching, addressSymbolMatching } from './utils/tokenMatching';
 
 export const ManageMainActions = () => {
   const [unlockedPAW, setUnlockedPAW] = React.useState(BigNumber.from(-1)); // Convert from BigNumber to 18 decimals
@@ -51,9 +48,10 @@ export const ManageMainActions = () => {
   const [totalVestsValue, setTotalVestsValue] = React.useState(BigNumber.from(-1));
   const [locks, setLocks] = React.useState<VestEntry[]>([]);
   const [totalLocksValue, setTotalLocksValue] = React.useState(BigNumber.from(-1));
-  const [claimables, setClaimables] = React.useState<Claimables[]>([]);
+  const [claimables, setClaimables] = React.useState<ClaimablesType[]>([]);
   const { mainActionsLoading, setMainActionsLoading } = useManageContext();
   const { provider, currentAccount } = useWeb3Context();
+
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
@@ -62,7 +60,7 @@ export const ManageMainActions = () => {
     .STAKING_DATA_PROVIDER as string;
   const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses
     .PAW_PRICE_ORACLE as string;
-  const MANEKI_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses.PRICE_ORACLE as string;
+  // const MANEKI_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses.PRICE_ORACLE as string;
   // handle unlock action
   const handleClaimUnlock = () => {
     if (unlockedPAW.isZero()) return;
@@ -90,39 +88,36 @@ export const ManageMainActions = () => {
     if (!currentAccount) setMainActionsLoading(true);
     if (!provider) return;
     // create contract
-    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const contract = new Contract(
+      MANEKI_DATA_PROVIDER_ADDR,
+      MANEKI_STAKING_DATA_PROVIDER_ABI,
+      provider
+    );
     const pawPriceOracleContract = new Contract(
       MANEKI_PAW_PRICE_ORACLE_ADDR,
       MANEKI_PAW_PRICE_ORACLE_ABI,
       provider
     );
-    const priceOracleContract = new Contract(
-      MANEKI_PRICE_ORACLE_ADDR,
-      MANEKI_PRICE_ORACLE_ABI,
-      provider
-    );
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getUnlockedPaw(currentAccount)); //0 unlockedpaw
-    promises.push(contract.getVestingPaw(currentAccount)); //1 vestedpaw
-    promises.push(contract.getEarlyExitPenalty(currentAccount)); //2 exit penalty
-    promises.push(contract.getExpiredLockedPaw(currentAccount)); //3 expired locked paw
-    promises.push(contract.getTotalPawLocked(currentAccount)); //4 total locked paw
-    promises.push(contract.getClaimableRewardsUsdBalance(currentAccount)); //5 total claimable value
-    promises.push(contract.getVestingScheduleArray(currentAccount)); //6 vests
-    promises.push(contract.getLockScheduleArray(currentAccount)); //7 locks
-    promises.push(contract.getClaimableRewards(currentAccount)); //8 claimables
-    promises.push(contract.getTotalPawLockedValue(currentAccount)); //9 locked value
-    promises.push(contract.getTotalPawVestingValue(currentAccount)); //10 vesting value
+    promises.push(contract.getUserUnlocked(currentAccount)); //0 unlockedpaw
+    promises.push(contract.getUserVesting(currentAccount)); //1 vestedpaw
+    promises.push(contract.getUserEarlyExitPenalty(currentAccount)); //2 exit penalty
+    promises.push(contract.getUserExpiredLocked(currentAccount)); //3 expired locked paw
+    promises.push(contract.getUserLocked(currentAccount)); //4 total locked paw
+    promises.push(contract.getUserTotalClaimableRewardsInUsd(currentAccount)); //5 total claimable value
+    promises.push(contract.getUserVestingScheduleArray(currentAccount)); //6 vests
+    promises.push(contract.getUserLockScheduleArray(currentAccount)); //7 locks
+    promises.push(contract.getUserClaimableRewardsParsedFormat(currentAccount)); //8 claimables
+    promises.push(contract.getUserLockedInUsd(currentAccount)); //9 locked value
+    promises.push(contract.getUserVestingInUsd(currentAccount)); //10 vesting value
     promises.push(pawPriceOracleContract.latestAnswer()); //11 PAW price in USD
-    promises.push(priceOracleContract.getAssetsPrices(Object.values(addressReserveMatching))); // 12
+    // promises.push(priceOracleContract.getAssetsPrices(Object.values(addressReserveMatching))); // 12
     // call promise all and get data
     Promise.all(promises)
       .then((data: (BigNumber | VestEntryTuple[] | ClaimablesTuple[] | BigNumber[])[]) => {
         // dev change data setting logic here
-        const priceOracleObj: PriceOracleType | undefined = {};
-        const keys = Object.keys(addressSymbolMatching);
         setUnlockedPAW(data[0] as BigNumber); // 18 Decimal percision
         setVestedPAW(data[1] as BigNumber); // 18 Decimal percision
         setExitPenalty(data[2] as BigNumber); // 18 Decimal percision
@@ -131,17 +126,15 @@ export const ManageMainActions = () => {
         setTotalClaimableValue(data[5] as BigNumber); // 8 Decimal percision
         setVests(convertVestEntry(data[6] as VestEntryTuple[]));
         setLocks(convertVestEntry(data[7] as VestEntryTuple[]));
+        setClaimables(convertClaimables(data[8] as ClaimablesTuple[]));
         setTotalLocksValue(data[9] as BigNumber); // 8 Decimal percision
         setTotalVestsValue(data[10] as BigNumber); // 8 Decimal percision
-        priceOracleObj[keys[0]] = data[11] as BigNumber; // 8 Decimal percision
-        (data[12] as BigNumber[]).map((d, i) => {
-          // 8 Decimal percision
-          priceOracleObj[keys[i + 1]] = d;
-        });
-        setClaimables(convertClaimables(data[8] as ClaimablesTuple[], priceOracleObj));
         setMainActionsLoading(false);
       })
-      .catch((e) => console.error(e));
+      .catch((error) => {
+        console.error(error);
+        console.log('Error Fetching Data in ManageMainAction.');
+      });
     //eslint-disable-next-line
   }, [currentAccount, provider, mainActionsLoading]);
 
@@ -412,23 +405,20 @@ export const ManageMainActions = () => {
                   <TableRow key={i}>
                     <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                       <Image
-                        alt={`token image for ${addressSymbolMatching[claimable.token]}`}
-                        src={`/icons/tokens/${addressSymbolMatching[claimable.token]}.svg`}
+                        alt={`token image for ${claimable.tokenSymbol}`}
+                        src={`/icons/tokens/${claimable.tokenSymbol}.svg`}
                         width={24}
                         height={24}
                       />
-                      <Typography>{`m${addressSymbolMatching[
-                        claimable.token
-                      ].toUpperCase()}`}</Typography>
+                      <Typography>{`m${claimable.tokenSymbol.toUpperCase()}`}</Typography>
                     </TableCell>
                     <TableCell>
                       <FormattedNumber value={utils.formatUnits(claimable.amount, 18)} />
                     </TableCell>
                     <TableCell>
                       <FormattedNumber
-                        value={utils.formatUnits(claimable.value, 10)}
+                        value={utils.formatUnits(claimable.value, 8)}
                         symbol="USD"
-                        visibleDecimals={3}
                         symbolsColor={theme.palette.text.secondary}
                       />
                     </TableCell>

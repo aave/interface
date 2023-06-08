@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
+import MANEKI_STAKING_DATA_PROVIDER_ABI from 'src/maneki/abi/stakingDataProbiderABI';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -13,7 +14,6 @@ import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 import { toWeiString } from '../../utils/stringConverter';
 import ManageQuickContentWrapper from './components/ManageQuickContentWrapper';
-import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 import PAW_TOKEN_ABI from './PAWTokenABI';
 
 export const ManageQuickActions = () => {
@@ -45,14 +45,18 @@ export const ManageQuickActions = () => {
   React.useEffect(() => {
     if (!currentAccount) setQuickActionsLoading(true);
     // create contracts
-    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const contract = new Contract(
+      MANEKI_DATA_PROVIDER_ADDR,
+      MANEKI_STAKING_DATA_PROVIDER_ABI,
+      provider
+    );
     const pawContract = new Contract(PAW_TOKEN_ADDR, PAW_TOKEN_ABI, provider);
     const promises = [];
 
     // add contract call into promise arr
     promises.push(pawContract.balanceOf(currentAccount)); // balance
-    promises.push(contract.getStakingAPR()); // staking apr
-    promises.push(contract.getLockingAPR()); // locking apr
+    promises.push(contract.getStakingApr()); // staking apr
+    promises.push(contract.getLockingApr()); // locking apr
 
     // call promise all and get data
     Promise.all(promises)
@@ -64,7 +68,10 @@ export const ManageQuickActions = () => {
         setLockingAPR(data[2]);
         setQuickActionsLoading(false);
       })
-      .catch((e) => console.error(e));
+      .catch((error) => {
+        console.error(error);
+        console.log('Error Fetching Data in ManageQuickAction.');
+      });
     //eslint-disable-next-line
   }, [currentAccount, quickActionsLoading]);
 
@@ -75,7 +82,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<AddModeratorOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Stake PAW'}
-        aprValue={utils.formatUnits(stakingAPR, 8)}
+        aprValue={utils.formatUnits(stakingAPR, 2)}
         descriptions={[
           <Trans key={1}>Stake PAW and earn platform fees with no lockup period.</Trans>,
         ]}
@@ -89,7 +96,7 @@ export const ManageQuickActions = () => {
       <ManageQuickContentWrapper
         svgIcon={<EnhancedEncryptionOutlinedIcon sx={{ transform: 'scale(1.3)' }} />}
         title={'Lock PAW'}
-        aprValue={utils.formatUnits(lockingAPR, 8)}
+        aprValue={utils.formatUnits(lockingAPR, 2)}
         descriptions={[
           <Trans key={1}>Lock PAW and earn platform fees and penalty fees in unlocked PAW.</Trans>,
           <Trans key={2}>
