@@ -100,19 +100,19 @@ export const ManageTopPanel = () => {
               <Typography>
                 <Trans>Staked</Trans>:
               </Typography>
-              <FormattedNumber value={utils.formatUnits(stakedPAW, 18)} symbol="PAW" />
+              <FormattedNumber value={utils.formatUnits(stakedPAW, 18)} />
             </Box>
             <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
                 <Trans>Locked</Trans>:
               </Typography>
-              <FormattedNumber value={utils.formatUnits(lockedPAW, 18)} symbol="PAW" />
+              <FormattedNumber value={utils.formatUnits(lockedPAW, 18)} />
             </Box>
             <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
                 <Trans>Vested</Trans>:
               </Typography>
-              <FormattedNumber value={utils.formatUnits(vestedPAW, 18)} symbol="PAW" />
+              <FormattedNumber value={utils.formatUnits(vestedPAW, 18)} />
             </Box>
           </>
         ) : (
