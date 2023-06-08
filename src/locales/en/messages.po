@@ -1136,6 +1136,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
 
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "Initial Supply / Total Supply"
+msgstr "Initial Supply / Total Supply"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
@@ -1309,6 +1313,10 @@ msgstr "Maneki Airdrops"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
 msgstr "Market"
+
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "Market Cap"
+msgstr "Market Cap"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -2113,6 +2121,10 @@ msgstr "Switching rate"
 #: src/ui-config/menu-items/index.tsx
 msgid "TGE"
 msgstr "TGE"
+
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "TGE PAW Price"
+msgstr "TGE PAW Price"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
