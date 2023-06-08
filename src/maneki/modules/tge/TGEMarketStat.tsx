@@ -73,16 +73,16 @@ interface TGEInfoPanelItemProps {
 const TGEInfoPanelItem = ({ icon, title, content }: TGEInfoPanelItemProps) => {
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         padding: '20px',
         gap: '8px',
         width: { xs: '100%', xsm: '296px' },
-        backgroundColor: 'background.default',
+        backgroundColor: theme.palette.mode === 'dark' ? 'background.paper' : 'background.default',
         borderRadius: '8px',
-      }}
+      })}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
         {icon}
