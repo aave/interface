@@ -1,6 +1,6 @@
 import { ProposalState } from '@aave/contract-helpers';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
-import { alpha, experimental_sx, styled, SvgIcon, useTheme } from '@mui/material';
+import { alpha, experimental_sx, styled, SvgIcon, Theme, useTheme } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalState;
@@ -10,7 +10,11 @@ interface StateBadgeProps {
   pendingL2Execution?: boolean;
 }
 
-const getBadgeColor = ({ state, crossChainBridge, pendingL2Execution, theme }: StateBadgeProps) => {
+interface ColorBadgeProps extends StateBadgeProps {
+  theme: Theme;
+}
+
+const getBadgeColor = ({ state, crossChainBridge, pendingL2Execution, theme }: ColorBadgeProps) => {
   const COLOR_MAP = {
     [ProposalState.Active]:
       crossChainBridge === 'L2' && state !== 'Active'
@@ -31,7 +35,7 @@ const getBadgeColor = ({ state, crossChainBridge, pendingL2Execution, theme }: S
 
 const Badge = styled('span')<StateBadgeProps>(
   ({ theme, state, crossChainBridge, pendingL2Execution, ...rest }) => {
-    const color = getBadgeColor({ state, crossChainBridge, pendingL2Execution });
+    const color = getBadgeColor({ state, crossChainBridge, pendingL2Execution, theme });
     return experimental_sx({
       ...rest,
       ...theme.typography.subheader2,
@@ -86,9 +90,6 @@ export function StateBadge({
           <CheckCircleIcon height={16} />
         </SvgIcon>
       );
-      // return <CheckCircleIcon height={16} color={color} />;
-
-      // return <CheckBadge checked={true} sx={{ mr: 1 }} />;
     }
 
     return (
