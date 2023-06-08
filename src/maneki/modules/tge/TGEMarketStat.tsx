@@ -38,11 +38,11 @@ const TGEMarketStat = () => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: { xs: 'column', xsm: 'row' },
-        gap: { xs: 3, xsm: 8 },
+        gap: { xs: 1, xsm: 8 },
         flexWrap: 'wrap',
         width: '100%',
         filter: 'drop-shadow(0px 4px 44px rgba(0, 0, 0, 0.1))',
-        mt: '45px',
+        m: { xs: '36px 0px', xsm: '62px 0px' },
       }}
     >
       <TGEInfoPanelItem

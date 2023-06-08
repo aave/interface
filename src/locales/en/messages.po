@@ -1021,6 +1021,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
 
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "For the first 24 hours, 6 million PAW tokens (6% of the supply) are available for whitelist participates at the fixed price of 0.0002 ETH(~$0.36) and the FDV of ~$36m with a market cap of ~$6.8m. Whitelist addresses are selected from historic vault users, traders and contributors. The allocation of each whitelist address depends on the historic activities. First 30 mins of the whitelist phase has a max deposit limit of 1 ETH for each address. Participation is on a first come first served basis and will end early if all the allocation is filled. Please note that being whitelisted does not guarantee a spot if all the allocation is filled early."
+msgstr "For the first 24 hours, 6 million PAW tokens (6% of the supply) are available for whitelist participates at the fixed price of 0.0002 ETH(~$0.36) and the FDV of ~$36m with a market cap of ~$6.8m. Whitelist addresses are selected from historic vault users, traders and contributors. The allocation of each whitelist address depends on the historic activities. First 30 mins of the whitelist phase has a max deposit limit of 1 ETH for each address. Participation is on a first come first served basis and will end early if all the allocation is filled. Please note that being whitelisted does not guarantee a spot if all the allocation is filled early."
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
@@ -1123,6 +1127,10 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
+
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "Important Risks"
+msgstr "Important Risks"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
@@ -2434,6 +2442,10 @@ msgstr "Transaction overview"
 msgid "Type of delegation"
 msgstr "Type of delegation"
 
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "U.S. residents or citizens are not permitted to participant in the Token Generation Event (TGE). By taking part in the event you certify you are neither a U.S. citizen or resident."
+msgstr "U.S. residents or citizens are not permitted to participant in the Token Generation Event (TGE). By taking part in the event you certify you are neither a U.S. citizen or resident."
+
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKE {symbol}"
@@ -2635,6 +2647,10 @@ msgstr "Weekly revenue"
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
+
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "Whitelist Phase"
+msgstr "Whitelist Phase"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
