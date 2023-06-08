@@ -86,14 +86,14 @@ export function StateBadge({
   if (crossChainBridge === 'L2') {
     if (!pendingL2Execution) {
       return (
-        <SvgIcon fontSize="medium" sx={{ '& path': { strokeWidth: '1' }, color }}>
+        <SvgIcon fontSize="medium" sx={{ '& path': { strokeWidth: '1' }, color, display: 'flex' }}>
           <CheckCircleIcon height={16} />
         </SvgIcon>
       );
     }
 
     return (
-      <SvgIcon fontSize="medium" sx={{ '& path': { strokeWidth: '1' }, color, mr: 1 }}>
+      <SvgIcon fontSize="small" sx={{ '& path': { strokeWidth: '1' }, color, mr: 1 }}>
         <ExclamationCircleIcon height={16} />
       </SvgIcon>
     );
