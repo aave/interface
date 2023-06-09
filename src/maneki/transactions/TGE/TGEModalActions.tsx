@@ -27,7 +27,7 @@ export const TGEModalActions = ({
 }: TGEModalActionsProps) => {
   const { provider, currentAccount } = useWeb3Context();
   const { setMainTxState, setTxError } = useModalContext();
-  const { setLoading } = useTGEContext();
+  const { setTGELoading } = useTGEContext();
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
   const theme = useTheme();
@@ -48,7 +48,7 @@ export const TGEModalActions = ({
           loading: false,
           success: true,
         });
-        setLoading(true);
+        setTGELoading(true);
       } catch (error) {
         setMainTxState({
           loading: false,

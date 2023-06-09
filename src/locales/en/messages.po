@@ -163,12 +163,15 @@ msgstr "Already on cooldown"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 #: src/maneki/transactions/Manage/ManageModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Amount (PAW)"
+msgstr "Amount (PAW)"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
@@ -2543,6 +2546,10 @@ msgstr "VOTE NAY"
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
 msgstr "VOTE YAE"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Value (USD)"
+msgstr "Value (USD)"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"

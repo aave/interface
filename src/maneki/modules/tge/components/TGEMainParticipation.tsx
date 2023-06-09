@@ -4,18 +4,16 @@ import { utils } from 'ethers';
 import Image from 'next/image';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useTGEContext } from 'src/maneki/hooks/tge-data-provider/TGEDataProvider';
+import { marketsData } from 'src/ui-config/marketsConfig';
 
 import TGECountdownTimer from './TGECountdownTimer';
 
-interface TGEMainParticipationType {
-  EARLY_TOKEN_GENERATION_ADDR: string;
-}
-
-const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipationType) => {
+const TGEMainParticipation = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { saleStartDate, saleEndDate, totalRaisedBNB, TGEStatus } = useTGEContext();
-
+  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
+    .EARLY_TOKEN_GENERATION as string;
   return (
     <Box
       sx={{
@@ -139,7 +137,7 @@ const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipat
               color: 'text.custom1',
             }}
           >
-            {EARLY_TOKEN_GENERATION_ADDR.slice(0, 6)}...{EARLY_TOKEN_GENERATION_ADDR.slice(-4)}
+            {EARLY_TOKEN_GENERATION_ADDR.slice(0, 5)}...{EARLY_TOKEN_GENERATION_ADDR.slice(-4)}
           </Typography>
         </Link>
       </Box>

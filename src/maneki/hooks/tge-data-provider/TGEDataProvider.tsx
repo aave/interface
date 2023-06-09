@@ -29,8 +29,8 @@ interface TGEData {
   setTotalSupply: (supply: BigNumber) => void;
   TGEStatus: TGEStatusType;
   setTGEStatus: (status: TGEStatusType) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
+  TGELoading: boolean;
+  setTGELoading: (loading: boolean) => void;
 }
 
 export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -46,7 +46,7 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
   const [initialSupply, setInitialSupply] = React.useState<BigNumber>(BigNumber.from(-1));
   const [totalSupply, setTotalSupply] = React.useState<BigNumber>(BigNumber.from(-1));
   const [TGEStatus, setTGEStatus] = React.useState<TGEStatusType>('Inactive');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [TGELoading, setTGELoading] = React.useState<boolean>(true);
 
   return (
     <TGEContext.Provider
@@ -75,8 +75,8 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
         setTotalSupply,
         TGEStatus,
         setTGEStatus,
-        loading,
-        setLoading,
+        TGELoading,
+        setTGELoading,
       }}
     >
       {children}
