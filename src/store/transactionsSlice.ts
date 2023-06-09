@@ -1,34 +1,32 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { produce } from 'immer';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
 export type Transactions = {
   [chainId: number]: {
-    [hash: string]: TransactionDetails;
+    [hash: string]: TransactionEvent;
   };
 };
 
 export type TransactionDetails = {
   action: ProtocolAction;
   txState: TransactionState;
-  // TODO: more info?
   asset?: string;
   amount?: string;
   assetName?: string;
-  market?: string;
 };
 
-type TransactionState = 'loading' | 'success' | 'failed';
+export type TransactionEvent = TransactionDetails & {
+  market: string;
+};
+
+type TransactionState = 'success' | 'failed';
 
 export interface TransactionsSlice {
   transactions: Transactions;
-  addTransaction: (chainId: number, txHash: string, transaction: TransactionDetails) => void;
-  updateTransaction: (
-    chainId: number,
-    txHash: string,
-    transaction: Partial<TransactionDetails>
-  ) => void;
+  addTransaction: (txHash: string, transaction: TransactionDetails) => void;
 }
 
 export const createTransactionsSlice: StateCreator<
@@ -36,43 +34,23 @@ export const createTransactionsSlice: StateCreator<
   [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   TransactionsSlice
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-> = (set, _get) => {
+> = (set, get) => {
   return {
     transactions: [],
-    addTransaction: (chainId: number, txHash: string, transaction: TransactionDetails) => {
-      set((state) => ({
-        ...state,
-        transactions: {
-          ...state.transactions,
-          [chainId]: {
-            ...state.transactions[chainId],
-            [txHash]: transaction,
-          },
-        },
-      }));
-    },
-    updateTransaction: (
-      chainId: number,
-      txHash: string,
-      transaction: Partial<TransactionDetails>
-    ) => {
-      set((state) => {
-        const currentTransaction = state.transactions[chainId][txHash];
-        return {
-          ...state,
-          transactions: {
-            ...state.transactions,
-            [chainId]: {
-              ...state.transactions[chainId],
-              [txHash]: {
-                ...currentTransaction,
-                ...transaction,
-              },
+    addTransaction: (txHash: string, transaction: TransactionDetails) => {
+      const chainId = get().currentChainId;
+      const market = get().currentMarket;
+      set((state) =>
+        produce(state, (draft) => {
+          draft.transactions[chainId] = {
+            ...draft.transactions[chainId],
+            [txHash]: {
+              ...transaction,
+              market,
             },
-          },
-        };
-      });
+          };
+        })
+      );
     },
   };
 };

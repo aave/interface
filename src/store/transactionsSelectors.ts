@@ -1,5 +1,5 @@
 import { RootStore } from './root';
-import { TransactionDetails, Transactions } from './transactionsSlice';
+import { TransactionEvent, Transactions } from './transactionsSlice';
 
 export const selectSuccessfulTransactions = (state: RootStore) => {
   const successfulTransactions: Transactions = {};
@@ -10,7 +10,7 @@ export const selectSuccessfulTransactions = (state: RootStore) => {
       (txHash) => state.transactions[chainIdNumber][txHash].txState === 'success'
     );
     successfulTransactions[chainIdNumber] = successfulTxHashes.reduce<{
-      [hash: string]: TransactionDetails;
+      [hash: string]: TransactionEvent;
     }>((acc, txHash) => {
       acc[txHash] = state.transactions[chainIdNumber][txHash];
       return acc;

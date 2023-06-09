@@ -1,7 +1,7 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { selectSuccessfulTransactions } from 'src/store/transactionsSelectors';
-import { TransactionDetails } from 'src/store/transactionsSlice';
 import { BORROW_MODAL, REPAY_MODAL, SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
 
 export const TransactionEventHandler = () => {
@@ -10,42 +10,18 @@ export const TransactionEventHandler = () => {
   const { trackEvent } = useRootStore();
   const successfulTransactions = useRootStore(selectSuccessfulTransactions);
 
-  const actionToEvent = (action: string, tx: TransactionDetails) => {
+  const actionToEvent = (action: ProtocolAction) => {
     switch (action) {
-      case 'supply': {
-        return trackEvent(SUPPLY_MODAL.SUPPLY_TOKEN, {
-          amount: tx.amount,
-          asset: tx.asset,
-          market: tx.market,
-        });
-      }
-
-      case 'supplyWithPermit': {
-        return trackEvent(SUPPLY_MODAL.SUPPLY_WITH_PERMIT, {
-          amount: tx.amount,
-          asset: tx.asset,
-          market: tx.market,
-        });
-      }
-
-      case 'borrow': {
-        return trackEvent(BORROW_MODAL.BORROW_TOKEN, {
-          amount: tx.amount,
-          asset: tx.asset,
-          market: tx.market,
-        });
-      }
-
-      case 'repay': {
-        return trackEvent(REPAY_MODAL.REPAY_TOKEN, {
-          amount: tx.amount,
-          asset: tx.asset,
-          market: tx.market,
-        });
-      }
-      // todo rest
+      case ProtocolAction.supply:
+        return SUPPLY_MODAL.SUPPLY_TOKEN;
+      case ProtocolAction.supplyWithPermit:
+        return SUPPLY_MODAL.SUPPLY_WITH_PERMIT;
+      case ProtocolAction.borrow:
+        return BORROW_MODAL.BORROW_TOKEN;
+      case ProtocolAction.repay:
+        return REPAY_MODAL.REPAY_TOKEN;
       default:
-        null;
+        return '';
     }
   };
 
@@ -56,8 +32,12 @@ export const TransactionEventHandler = () => {
         if (!postedTransactions[chainIdNumber]?.includes(txHash)) {
           const tx = successfulTransactions[chainIdNumber][txHash];
 
-          actionToEvent(tx.action, tx);
-          // trackEvent(tx.action || ''); // TODO: what else do we want to track for each transaction?
+          const event = actionToEvent(tx.action);
+          trackEvent(event, {
+            amount: tx.amount,
+            asset: tx.asset,
+            market: tx.market,
+          });
 
           // update local state
           if (postedTransactions[chainIdNumber]) {

@@ -11,6 +11,7 @@ import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/Backgroun
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
@@ -28,12 +29,7 @@ interface UseTransactionHandlerProps {
   skip?: boolean;
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
-  eventTxInfo?: {
-    amount?: string;
-    asset?: string;
-    market?: string;
-    assetName?: string;
-  };
+  eventTxInfo?: Pick<TransactionDetails, 'asset' | 'assetName' | 'amount'>;
 }
 
 export type Approval = {
@@ -71,8 +67,6 @@ UseTransactionHandlerProps) => {
     generatePermitPayloadForMigrationBorrowAsset,
     generatePermitPayloadForMigrationSupplyAsset,
     addTransaction,
-    updateTransaction,
-    currentChainId,
   } = useRootStore();
 
   const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
@@ -112,18 +106,13 @@ UseTransactionHandlerProps) => {
       const txnResult = await tx();
 
       try {
-        addTransaction(currentChainId, txnResult.hash, {
-          action: protocolAction || ProtocolAction.default,
-          txState: 'loading',
-          ...eventTxInfo,
-        });
-
         await txnResult.wait(1);
 
         mounted.current && successCallback && successCallback(txnResult);
 
-        updateTransaction(currentChainId, txnResult.hash, {
+        addTransaction(txnResult.hash, {
           txState: 'success',
+          action: protocolAction || ProtocolAction.default,
           ...eventTxInfo,
         });
 
@@ -143,7 +132,11 @@ UseTransactionHandlerProps) => {
           mounted.current && errorCallback && errorCallback(e, txnResult.hash);
           return;
         } finally {
-          updateTransaction(currentChainId, txnResult.hash, { txState: 'failed' });
+          addTransaction(txnResult.hash, {
+            txState: 'failed',
+            action: protocolAction || ProtocolAction.default,
+            ...eventTxInfo,
+          });
         }
       }
 

@@ -19,7 +19,6 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
 
-import { useProtocolDataContext } from '../../../hooks/useProtocolDataContext';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
@@ -67,13 +66,12 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { currentMarket } = useProtocolDataContext();
 
     const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
-    const { addTransaction, updateTransaction, currentChainId } = useRootStore();
+    const { addTransaction } = useRootStore();
 
     const approval = async () => {
       try {
@@ -121,14 +119,6 @@ export const BorrowActions = React.memo(
         });
         borrowTxData = await estimateGasLimit(borrowTxData);
         const response = await sendTx(borrowTxData);
-        addTransaction(currentChainId, response.hash, {
-          action: ProtocolAction.borrow,
-          txState: 'loading',
-          asset: poolAddress,
-          amount: amountToBorrow,
-          assetName: poolReserve.name,
-          market: currentMarket,
-        });
 
         await response.wait(1);
         setMainTxState({
@@ -137,13 +127,12 @@ export const BorrowActions = React.memo(
           success: true,
         });
 
-        updateTransaction(currentChainId, response.hash, {
+        addTransaction(response.hash, {
           action: ProtocolAction.borrow,
           txState: 'success',
           asset: poolAddress,
           amount: amountToBorrow,
           assetName: poolReserve.name,
-          market: currentMarket,
         });
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
