@@ -1,5 +1,5 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Box, Button, Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { utils } from 'ethers';
 import Image from 'next/image';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -104,28 +104,44 @@ const TGEMainParticipation = ({ EARLY_TOKEN_GENERATION_ADDR }: TGEMainParticipat
           <Image alt={`token image for PAW`} src={`/icons/tokens/bnb.svg`} width={42} height={42} />
         </Box>
         <Divider />
-        <Box>
-          <Button
+        <Link
+          href={`https://testnet.bscscan.com/address/${EARLY_TOKEN_GENERATION_ADDR}`}
+          target="_blank"
+          underline="none"
+          sx={{ width: '35%' }}
+        >
+          <Box
             sx={{
-              fontWeight: 700,
-              fontSize: '16px',
-              lineHeight: '18px',
-              p: '0',
-              color: '#FFA725',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '2px',
             }}
           >
-            Etherscan <ArrowForwardIcon />
-          </Button>
+            <Typography
+              sx={{
+                fontWeight: 700,
+                fontSize: '16px',
+                lineHeight: '18px',
+                color: '#FFA725',
+                justifySelf: 'start',
+              }}
+            >
+              Etherscan
+            </Typography>
+            <ArrowForwardIcon />
+          </Box>
           <Typography
             sx={{
               fontWeight: 400,
               fontSize: '10px',
               lineHeight: '21px',
+              color: 'text.custom1',
             }}
           >
             {EARLY_TOKEN_GENERATION_ADDR.slice(0, 6)}...{EARLY_TOKEN_GENERATION_ADDR.slice(-4)}
           </Typography>
-        </Box>
+        </Link>
       </Box>
     </Box>
   );
