@@ -2378,8 +2378,17 @@ msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Locked"
+msgstr "Total Locked"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Value"
 msgstr "Total Value"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Vested"
+msgstr "Total Vested"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Total Vests"
@@ -2404,10 +2413,6 @@ msgstr "Total borrows"
 msgid "Total emission per day"
 msgstr "Total emission per day"
 
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total locked"
-msgstr "Total locked"
-
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
 msgstr "Total market size"
@@ -2418,10 +2423,6 @@ msgstr "Total market size"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
-
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total vested"
-msgstr "Total vested"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
@@ -2542,10 +2543,6 @@ msgstr "VOTE NAY"
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
 msgstr "VOTE YAE"
-
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Value"
-msgstr "Value"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"

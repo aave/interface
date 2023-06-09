@@ -347,10 +347,11 @@ export const ManageMainActions = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Typography>
-            <Trans>Total vested</Trans>: {Number(utils.formatUnits(totalVestsValue, 8)).toFixed(2)}{' '}
-            USD{' '}
-          </Typography>
+          <TotalValueDisplay
+            title={<Trans>Total Vested</Trans>}
+            value={utils.formatUnits(totalVestsValue, 8)}
+            symbol=" USD"
+          />
         </ManageMainPaper>
         <ManageMainPaper>
           <Typography variant={'h3'}>
@@ -381,19 +382,17 @@ export const ManageMainActions = () => {
             </Table>
           </TableContainer>
           {/** Value in Uint256 */}
-          <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Typography>
-              <Trans>Total locked</Trans>:
-            </Typography>
-            <FormattedNumber
-              value={utils.formatUnits(totalLockedPAW.toString(), 18)}
-              symbol="PAW"
-            />
-          </Box>
+          <TotalValueDisplay
+            title={<Trans>Total Locked</Trans>}
+            value={utils.formatUnits(totalLockedPAW, 18)}
+            symbol="PAW"
+          />
           {/** Value in USD */}
-          <Typography>
-            <Trans>Value</Trans>: {Number(utils.formatUnits(totalLocksValue, 8)).toFixed(2)} USD
-          </Typography>
+          <TotalValueDisplay
+            title={<Trans>Total Value</Trans>}
+            value={utils.formatUnits(totalLocksValue, 8)}
+            symbol=" USD"
+          />
         </ManageMainPaper>
         <ManageMainPaper>
           <Typography variant={'h3'}>
@@ -447,10 +446,11 @@ export const ManageMainActions = () => {
               gap: downToSM ? '8px' : 'auto',
             }}
           >
-            <Typography>
-              <Trans>Total Value</Trans>:{' '}
-              {Number(utils.formatUnits(totalClaimableValue, 8)).toFixed(2)} USD
-            </Typography>
+            <TotalValueDisplay
+              title={<Trans>Total Value</Trans>}
+              value={utils.formatUnits(totalClaimableValue, 8)}
+              symbol=" USD"
+            />
             <Button
               onClick={handleClaimAll}
               variant="contained"
@@ -464,3 +464,19 @@ export const ManageMainActions = () => {
     </>
   );
 };
+
+interface TotalValueDisplayProps {
+  title: React.ReactNode;
+  value: string | number;
+  symbol: string;
+}
+
+function TotalValueDisplay({ title, value, symbol }: TotalValueDisplayProps) {
+  const theme = useTheme();
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <Typography>{title}:</Typography>
+      <FormattedNumber value={value} symbol={symbol} symbolsColor={theme.palette.text.secondary} />
+    </Box>
+  );
+}
