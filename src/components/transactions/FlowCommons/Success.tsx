@@ -86,12 +86,17 @@ export const TxSuccessView = ({
           }}
         >
           {action && amount && symbol && (
-            <Typography>
-              <Trans>
-                You {action}{' '}
-                <FormattedNumber value={Number(amount)} compact variant="secondary14" /> {symbol}
-              </Trans>
-            </Typography>
+            <>
+              <Typography>
+                <Trans>You {action} </Trans>
+              </Typography>
+              <FormattedNumber
+                value={Number(amount)}
+                compact
+                variant="secondary14"
+                symbol={symbol}
+              />
+            </>
           )}
 
           {!action && !amount && symbol && (

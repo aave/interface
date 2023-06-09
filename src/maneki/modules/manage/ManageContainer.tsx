@@ -2,7 +2,7 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import * as React from 'react';
-import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
+import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';

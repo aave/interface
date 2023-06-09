@@ -1,5 +1,5 @@
-import { ChainId } from '@aave/contract-helpers';
-import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
+// import { ChainId } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils'; // normalize, UserIncentiveData,
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -9,13 +9,13 @@ import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
-import { useModalContext } from 'src/hooks/useModal';
+// import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 
-import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
+// import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
@@ -36,10 +36,10 @@ import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresM
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { market } = getMarketInfoById(currentMarket);
-  const { user, reserves, loading } = useAppDataContext();
+  const { user, loading } = useAppDataContext(); // reserves,
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
-  const { openClaimRewards } = useModalContext();
+  // const { openClaimRewards } = useModalContext();
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
@@ -47,42 +47,42 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd } = Object.keys(user.calculatedUserIncentives).reduce(
-    (acc, rewardTokenAddress) => {
-      const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
-      const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
+  // const { claimableRewardsUsd } = Object.keys(user.calculatedUserIncentives).reduce(
+  //   (acc, rewardTokenAddress) => {
+  //     const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
+  //     const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
 
-      let tokenPrice = 0;
-      // getting price from reserves for the native rewards for v2 markets
-      if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
-        if (currentMarketData.chainId === ChainId.mainnet) {
-          const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
-          tokenPrice = aave ? Number(aave.priceInUSD) : 0;
-        } else {
-          reserves.forEach((reserve) => {
-            if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-              tokenPrice = Number(reserve.priceInUSD);
-            }
-          });
-        }
-      } else {
-        tokenPrice = Number(incentive.rewardPriceFeed);
-      }
+  //     let tokenPrice = 0;
+  //     // getting price from reserves for the native rewards for v2 markets
+  //     if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
+  //       if (currentMarketData.chainId === ChainId.mainnet) {
+  //         const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
+  //         tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+  //       } else {
+  //         reserves.forEach((reserve) => {
+  //           if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+  //             tokenPrice = Number(reserve.priceInUSD);
+  //           }
+  //         });
+  //       }
+  //     } else {
+  //       tokenPrice = Number(incentive.rewardPriceFeed);
+  //     }
 
-      const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
+  //     const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      if (rewardBalanceUsd > 0) {
-        if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
-          acc.assets.push(incentive.rewardTokenSymbol);
-        }
+  //     if (rewardBalanceUsd > 0) {
+  //       if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+  //         acc.assets.push(incentive.rewardTokenSymbol);
+  //       }
 
-        acc.claimableRewardsUsd += Number(rewardBalanceUsd);
-      }
+  //       acc.claimableRewardsUsd += Number(rewardBalanceUsd);
+  //     }
 
-      return acc;
-    },
-    { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
-  );
+  //     return acc;
+  //   },
+  //   { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
+  // );
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
@@ -213,7 +213,7 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        {currentAccount && claimableRewardsUsd > 0 && (
+        {/* {currentAccount && claimableRewardsUsd > 0 && (
           <TopInfoPanelItem
             title={<Trans>Available rewards</Trans>}
             icon={<ClaimGiftIcon />}
@@ -250,7 +250,7 @@ export const DashboardTopPanel = () => {
               </Button>
             </Box>
           </TopInfoPanelItem>
-        )}
+        )} */}
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal

@@ -7,7 +7,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useManageContext } from 'src/maneki/hooks/manage-data-provider/ManageDataProvider';
 import MULTI_FEE_ABI from 'src/maneki/modules/manage/MultiFeeABI';
 import PAW_TOKEN_ABI from 'src/maneki/modules/manage/PAWTokenABI';
-import { toWeiString } from 'src/maneki/modules/manage/utils/stringConverter';
+import { toWeiString } from 'src/maneki/utils/stringConverter';
 import { TxAction } from 'src/ui-config/errorMapping';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
