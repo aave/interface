@@ -21,8 +21,8 @@ export const BorrowAssetsListItem = ({
   borrowCap,
   totalBorrows,
   variableBorrowRate,
-  stableBorrowRate,
-  sIncentivesData,
+  // stableBorrowRate,
+  // sIncentivesData,
   vIncentivesData,
   underlyingAsset,
   isFreezed,
@@ -61,11 +61,11 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      <ListAPRColumn
+      {/* <ListAPRColumn
         value={Number(stableBorrowRate)}
         incentives={sIncentivesData}
         symbol={symbol}
-      />
+      /> */}
 
       <ListButtonsColumn>
         <Button

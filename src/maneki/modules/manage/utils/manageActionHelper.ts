@@ -1,28 +1,24 @@
 import { BigNumber } from 'ethers';
 
-// Claimables
-
-export interface Claimables {
-  token: string;
+export interface ClaimablesType {
+  mTokenAddr: string;
+  tokenAddr: string;
+  tokenSymbol: string;
   amount: BigNumber;
   value: BigNumber;
 }
+export type ClaimablesTuple = [string, string, string, BigNumber, BigNumber];
 
-export interface PriceOracleType {
-  [key: string]: BigNumber;
-}
-
-export type ClaimablesTuple = [string, BigNumber];
-
-export function convertClaimables(
-  claimables: ClaimablesTuple[],
-  priceOracles: PriceOracleType
-): Claimables[] {
-  const claimablesObject: Claimables[] = claimables.map(([token, amount]) => ({
-    token,
-    amount,
-    value: amount.div(priceOracles[token]),
-  }));
+export function convertClaimables(claimables: ClaimablesTuple[]): ClaimablesType[] {
+  const claimablesObject: ClaimablesType[] = claimables.map(
+    ([mTokenAddr, tokenAddr, tokenSymbol, amount, value]) => ({
+      tokenSymbol: tokenSymbol.toLowerCase(),
+      mTokenAddr,
+      tokenAddr,
+      amount,
+      value,
+    })
+  );
   return claimablesObject;
 }
 
@@ -62,3 +58,32 @@ export function convertUnixToDate(unixTimestamp: number) {
 
   return `${formattedDate}  T${timezone}`;
 }
+
+/* #### DUMPSTER #### */
+
+/** Claimables Trash
+export interface Claimables {
+  token: string;
+  amount: BigNumber;
+  value: BigNumber;
+}
+
+export interface PriceOracleType {
+  [key: string]: BigNumber;
+}
+
+export type ClaimablesTuple = [string, BigNumber];
+
+export function convertClaimables(
+  claimables: ClaimablesTuple[],
+  priceOracles: PriceOracleType
+): Claimables[] {
+  const claimablesObject: Claimables[] = claimables.map(([token, amount]) => ({
+    token,
+    amount,
+    value: amount.div(priceOracles[token]),
+  }));
+  return claimablesObject;
+}
+
+*/

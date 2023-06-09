@@ -10,7 +10,7 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
+// import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -44,9 +44,9 @@ const head = [
     title: <Trans key="APY">APY</Trans>,
     sortKey: 'borrowAPY',
   },
-  {
-    title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-  },
+  // {
+  //   title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+  // },
 ];
 
 export const BorrowedPositionsList = () => {

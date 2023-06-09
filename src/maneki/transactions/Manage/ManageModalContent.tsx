@@ -3,7 +3,7 @@ import {
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { ManekiModalChildProps } from 'src/maneki/utils/ManekiModalWrapper';
+import { ManekiModalChildProps } from 'src/maneki/components/ManekiModalWrapper';
 
 import { ManageLockActions } from './ManageLockActions';
 import { ManageStakeActions } from './ManageStakeActions';

@@ -2,7 +2,7 @@
 import { Paper } from '@mui/material';
 import { Contract } from 'ethers';
 import * as React from 'react';
-import ManekiLoadingPaper from 'src/maneki/utils/ManekiLoadingPaper';
+import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';

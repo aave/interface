@@ -1,11 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Paper } from '@mui/material';
 
 import { ConnectWalletPaper } from '../../../components/ConnectWalletPaper';
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
-import ManekiLoadingPaper from '../../utils/ManekiLoadingPaper';
-import TGEBottomSect from './TGEBottomSect';
-import TGEMainSect from './TGEMainSect';
+import ManekiLoadingPaper from '../../components/ManekiLoadingPaper';
+import TGEMainAction from './TGEMainAction';
+import TGEMarketStat from './TGEMarketStat';
+import TGEPhaseInfo from './TGEPhaseInfo';
 
 export const TGEContainer = () => {
   const { currentAccount, loading: web3Loading, chainId } = useWeb3Context();
@@ -25,13 +25,12 @@ export const TGEContainer = () => {
 
   return (
     <>
-      <Paper style={{ padding: 16 }}>
-        {/* Main Section */}
-        <TGEMainSect />
+      {/* Main Section */}
+      <TGEMainAction />
 
-        {/* Bottom Section */}
-        <TGEBottomSect />
-      </Paper>
+      <TGEMarketStat />
+      {/* Bottom Section */}
+      <TGEPhaseInfo />
     </>
   );
 };

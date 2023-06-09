@@ -6,10 +6,10 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
+// import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
-import { ListItemAPYButton } from '../ListItemAPYButton';
+// import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 
@@ -21,7 +21,7 @@ export const BorrowedPositionsListMobileItem = ({
   stableBorrowAPY,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { openBorrow, openRepay } = useModalContext(); // openRateSwitch
   const { borrowCap } = useAssetCaps();
   const {
     symbol,
@@ -30,7 +30,7 @@ export const BorrowedPositionsListMobileItem = ({
     isActive,
     isFrozen,
     borrowingEnabled,
-    stableBorrowRateEnabled,
+    // stableBorrowRateEnabled,
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
@@ -66,7 +66,7 @@ export const BorrowedPositionsListMobileItem = ({
         />
       </Row>
 
-      <Row
+      {/* <Row
         caption={
           <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
         }
@@ -83,7 +83,7 @@ export const BorrowedPositionsListMobileItem = ({
           underlyingAsset={underlyingAsset}
           currentMarket={currentMarket}
         />
-      </Row>
+      </Row> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

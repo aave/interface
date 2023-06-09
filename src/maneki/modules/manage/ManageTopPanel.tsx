@@ -3,6 +3,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
 import * as React from 'react';
 import { NoData } from 'src/components/primitives/NoData';
+import MANEKI_STAKING_DATA_PROVIDER_ABI from 'src/maneki/abi/stakingDataProbiderABI';
 
 import PieIcon from '../../../../public/icons/markets/pie-icon.svg';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
@@ -11,14 +12,15 @@ import { TopInfoPanelItem } from '../../../components/TopInfoPanel/TopInfoPanelI
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
-import MANEKI_DATA_PROVIDER_ABI from './DataABI';
 
 export const ManageTopPanel = () => {
   const {
     stakedPAW,
     lockedPAW,
+    vestedPAW,
     setStakedPAW,
     setLockedPAW,
+    setVestedPAW,
     lockedStakedValue,
     setLockedStakedValue,
     topPanelLoading,
@@ -41,29 +43,36 @@ export const ManageTopPanel = () => {
     if (!currentAccount) setTopPanelLoading(true);
     if (!provider) return;
     // create contract
-    const contract = new Contract(MANEKI_DATA_PROVIDER_ADDR, MANEKI_DATA_PROVIDER_ABI, provider);
+    const contract = new Contract(
+      MANEKI_DATA_PROVIDER_ADDR,
+      MANEKI_STAKING_DATA_PROVIDER_ABI,
+      provider
+    );
 
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(contract.getUnlockedPaw(currentAccount)); // staked paw
-    promises.push(contract.getTotalPawLocked(currentAccount)); // locked paw
-    promises.push(contract.getUserLockedAndStakedPawInUsd(currentAccount)); // staked + locked value
+    promises.push(contract.getUserUnlocked(currentAccount)); // staked paw
+    promises.push(contract.getUserLocked(currentAccount)); // locked paw
+    promises.push(contract.getUserVesting(currentAccount)); // vested paw
+    promises.push(contract.getUserLockedStakedAndVestingInUsd(currentAccount)); // staked + locked + staked value
     promises.push(contract.getUserDailyPlatformFeeDistributionInUsd(currentAccount)); // daily platform fees
     promises.push(contract.getUserDailyPenaltyFeeDistributionInUsd(currentAccount)); // daily penalty fees
 
-    // call promise all and get data
     Promise.all(promises)
       .then((data: BigNumber[]) => {
-        // dev change data setting logic here
         setStakedPAW(data[0]); // 18 Decimal Percision
         setLockedPAW(data[1]); // 18 Decimal Percision
-        setLockedStakedValue(data[2]); // 8 Decimal Percision
-        setDailyPlatformFees(data[3]); // 8 Decimal Percision
-        setDailyPenaltyFees(data[4]); // 8 Decimal Percision
+        setVestedPAW(data[2]); // 18 Decimal Percision
+        setLockedStakedValue(data[3]); // 8 Decimal Percision
+        setDailyPlatformFees(data[4]); // 8 Decimal Percision
+        setDailyPenaltyFees(data[5]); // 8 Decimal Percision
         setTopPanelLoading(false);
       })
-      .catch((e) => console.error(e));
+      .catch((error) => {
+        console.error(error);
+        console.log('Error fetching data in ManageTopPanel.');
+      });
     //eslint-disable-next-line
   }, [currentAccount, provider, topPanelLoading]);
 
@@ -89,15 +98,21 @@ export const ManageTopPanel = () => {
             />
             <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
-                <Trans>Stake</Trans>:
+                <Trans>Staked</Trans>:
               </Typography>
-              <FormattedNumber value={utils.formatUnits(stakedPAW, 18)} symbol="PAW" />
+              <FormattedNumber value={utils.formatUnits(stakedPAW, 18)} />
             </Box>
             <Box sx={{ display: 'flex', gap: '6px' }}>
               <Typography>
-                <Trans>Lock</Trans>:
+                <Trans>Locked</Trans>:
               </Typography>
-              <FormattedNumber value={utils.formatUnits(lockedPAW, 18)} symbol="PAW" />
+              <FormattedNumber value={utils.formatUnits(lockedPAW, 18)} />
+            </Box>
+            <Box sx={{ display: 'flex', gap: '6px' }}>
+              <Typography>
+                <Trans>Vested</Trans>:
+              </Typography>
+              <FormattedNumber value={utils.formatUnits(vestedPAW, 18)} />
             </Box>
           </>
         ) : (

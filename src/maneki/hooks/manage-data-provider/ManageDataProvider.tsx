@@ -7,6 +7,8 @@ interface ManageData {
   setStakedPAW: (stakedPAW: BigNumber) => void;
   lockedPAW: BigNumber;
   setLockedPAW: (PAW: BigNumber) => void;
+  vestedPAW: BigNumber;
+  setVestedPAW: (PAW: BigNumber) => void;
   lockedStakedValue: BigNumber;
   setLockedStakedValue: (PAW: BigNumber) => void;
   balancePAW: BigNumber;
@@ -26,6 +28,7 @@ interface ManageData {
 export const ManageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [stakedPAW, setStakedPAW] = React.useState<BigNumber>(BigNumber.from(-1));
   const [lockedPAW, setLockedPAW] = React.useState<BigNumber>(BigNumber.from(-1));
+  const [vestedPAW, setVestedPAW] = React.useState<BigNumber>(BigNumber.from(-1));
   const [lockedStakedValue, setLockedStakedValue] = React.useState<BigNumber>(BigNumber.from(-1));
   const [balancePAW, setBalancePAW] = React.useState<BigNumber>(BigNumber.from(-1));
   const [share, setShare] = React.useState<number>(-1);
@@ -41,6 +44,8 @@ export const ManageDataProvider: React.FC<{ children: ReactElement }> = ({ child
         setStakedPAW,
         lockedPAW,
         setLockedPAW,
+        vestedPAW,
+        setVestedPAW,
         lockedStakedValue,
         setLockedStakedValue,
         balancePAW,
