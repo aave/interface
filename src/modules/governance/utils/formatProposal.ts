@@ -1,8 +1,8 @@
 import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
-import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import BigNumber from 'bignumber.js';
 import { CustomProposalType } from 'src/static-build/proposal';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export type FormattedProposal = {
@@ -101,10 +101,10 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
 
 export const proposalHasCrossChainBridge = (proposal: CustomProposalType) => {
   const delayedBridgeExecutors = [
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_ARBITRUM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_OPTIMISM,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_POLYGON,
-    AaveGovernanceV2.CROSSCHAIN_FORWARDER_METIS,
+    governanceConfig.addresses.AAVE_GOVERNANCE_V2_CROSSCHAIN_FORWARDER_ARBITRUM,
+    governanceConfig.addresses.AAVE_GOVERNANCE_V2_CROSSCHAIN_FORWARDER_OPTIMISM,
+    governanceConfig.addresses.AAVE_GOVERNANCE_V2_CROSSCHAIN_FORWARDER_POLYGON,
+    governanceConfig.addresses.AAVE_GOVERNANCE_V2_CROSSCHAIN_FORWARDER_METIS,
   ];
   const lowercaseExecutors = delayedBridgeExecutors.map((str) => str.toLowerCase());
   let proposalCrosschainBridge = false;
