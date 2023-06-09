@@ -58,7 +58,6 @@ const TGEMainAction = () => {
     Promise.all(promises)
       .then((data: (BigNumber | string)[]) => {
         // dev change data setting logic here
-
         setSaleStartDate((data[0] as BigNumber).toNumber() * 1000); // sale start date (UNIX)
         setSaleEndDate((data[1] as BigNumber).toNumber() * 1000); // sale end date (UNIX)
         setContributedBNB(data[2] as BigNumber); // contributed bnb (18 Decimals)
@@ -67,7 +66,6 @@ const TGEMainAction = () => {
         setUserBalanceBNB(data[5] as BigNumber); // get user BNB balance (18 Decimals)
         setTGEStatus(
           TGEStatusGenerator(
-            // set TGEStatus
             (data[0] as BigNumber).toNumber() * 1000,
             (data[1] as BigNumber).toNumber() * 1000
           )

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Button, Snackbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Contract, utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
@@ -16,22 +16,29 @@ const TGEMainContribution = () => {
   const { provider, currentAccount } = useWeb3Context();
   const { userBalanceBNB, finalPAWPrice, contributedBNB, TGEStatus } = useTGEContext();
   const [contributionBNB, setContributionBNB] = React.useState<string>('');
-
+  const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
+  const [snackbarMessage, seSnackbarMessage] = React.useState<string>('');
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
 
   const handleContribute = async () => {
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(EARLY_TOKEN_GENERATION_ADDR, EARLY_TOKEN_GENERATION_ABI, signer);
-    // need to use await and await primises.wait(1);
     try {
       const promise = await contract.deposit(currentAccount, '', {
         value: utils.parseEther(contributionBNB),
       });
       await promise.wait(1);
-      alert('Contribution Success');
+      seSnackbarMessage('Contribution Success!');
+      setSnackbarOpen(true);
     } catch (error) {
-      alert(error.message);
+      if (error.data.message === 'execution reverted: Sale has ended') {
+        seSnackbarMessage('Sale has ended.');
+        setSnackbarOpen(true);
+      } else {
+        seSnackbarMessage('Whoops! Something went wrong. >.<!!');
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -113,7 +120,6 @@ const TGEMainContribution = () => {
           }}
         >
           <Image alt={`token image for PAW`} src={`/icons/tokens/paw.svg`} width={24} height={24} />
-          {console.log(utils.formatUnits(finalPAWPrice, 18), finalPAWPrice.toString())}
           <CustomNumberInput
             amountTo={(
               Number(contributionBNB) / Number(utils.formatUnits(finalPAWPrice, 18))
@@ -152,6 +158,21 @@ const TGEMainContribution = () => {
           mt: downToSM ? '-8px' : '-18px',
         }}
       >{`YOU HAVE CONTRIBUTED ${contributedBNB} BNB`}</Typography>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={
+            snackbarMessage === 'Contribution Success!'
+              ? 'success'
+              : snackbarMessage === 'Sale has ended.'
+              ? 'warning'
+              : 'error'
+          }
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
