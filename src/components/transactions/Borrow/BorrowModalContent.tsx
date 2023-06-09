@@ -18,7 +18,9 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { BORROW_MODAL, GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
@@ -112,6 +114,7 @@ export const BorrowModalContent = ({
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
@@ -252,6 +255,13 @@ export const BorrowModalContent = ({
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow}
         balanceText={<Trans>Available</Trans>}
+        event={{
+          eventName: BORROW_MODAL.MAX_BORROW,
+          eventParams: {
+            asset: poolReserve.underlyingAsset,
+            assetName: poolReserve.name,
+          },
+        }}
       />
 
       {blockingError !== undefined && (
@@ -300,7 +310,13 @@ export const BorrowModalContent = ({
           >
             <Checkbox
               checked={riskCheckboxAccepted}
-              onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
+              onChange={() => {
+                trackEvent(BORROW_MODAL.ACCEPT_RISK, {
+                  riskCheckboxAccepted: riskCheckboxAccepted,
+                });
+
+                setRiskCheckboxAccepted(!riskCheckboxAccepted);
+              }}
               size="small"
               data-cy={'risk-checkbox'}
             />
@@ -315,7 +331,18 @@ export const BorrowModalContent = ({
         <Trans>
           <b>Attention:</b> Parameter changes via governance can alter your account health factor
           and risk of liquidation. Follow the{' '}
-          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+          <a
+            onClick={() => {
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                asset: underlyingAsset,
+                Link: 'Governance Link',
+              });
+            }}
+            href="https://governance.aave.com/"
+          >
+            Aave governance forum
+          </a>{' '}
+          for updates.
         </Trans>
       </Warning>
 

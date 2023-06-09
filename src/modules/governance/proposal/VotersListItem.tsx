@@ -3,6 +3,8 @@ import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 import type { GovernanceVoter } from './VotersListContainer';
@@ -15,6 +17,7 @@ type VotersListItemProps = {
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
   const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
   const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
   // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
@@ -62,7 +65,12 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Avatar src={twitterAvatar ?? blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
-          <Link href={`https://etherscan.io/address/${address}`}>
+          <Link
+            href={`https://etherscan.io/address/${address}`}
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
+            }
+          >
             <Typography
               variant="subheader1"
               color="primary"

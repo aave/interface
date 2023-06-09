@@ -11,7 +11,7 @@ on:
 
 jobs:
   prepare_jobs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: |
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
@@ -45,7 +45,7 @@ jobs:
             });
 
   next_js_analyze:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['prepare_jobs']
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
@@ -59,7 +59,7 @@ jobs:
           PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
 
   cypress_smoke_v2:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['prepare_jobs']
     strategy:
       fail-fast: false
@@ -81,7 +81,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.ts
 
   cypress_smoke_v3:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['prepare_jobs']
     strategy:
       fail-fast: false
@@ -103,7 +103,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
 
   deploy_fork:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - prepare_jobs
       - cypress_smoke_v2
@@ -146,7 +146,7 @@ jobs:
             });
 
   cypress_full_v2:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['deploy_fork']
     strategy:
       fail-fast: false
@@ -168,7 +168,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
 
   cypress_full_v3:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['deploy_fork']
     strategy:
       fail-fast: false
@@ -190,7 +190,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
 
   cypress_additional_v2:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['deploy_fork']
     strategy:
       fail-fast: false
@@ -211,7 +211,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.ts
 
   cypress_additional_v3:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['deploy_fork']
     strategy:
       fail-fast: false
@@ -233,7 +233,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.ts
 
   cypress_app_functionality:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: ['deploy_fork']
     strategy:
       fail-fast: false
@@ -254,7 +254,7 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
 
   notify_failure:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: failure()
     needs:
       - prepare_jobs
@@ -284,7 +284,7 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify_success:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: success()
     needs:
       - prepare_jobs

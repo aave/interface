@@ -1,0 +1,77 @@
+import mixpanel from 'mixpanel-browser';
+import { StateCreator } from 'zustand';
+
+import { RootStore } from './root';
+
+const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL || '';
+
+export type TrackEventProperties = {
+  [key: string]: string | number | boolean | Date | undefined;
+};
+
+export type AnalyticsSlice = {
+  trackEvent: (eventName: string, properties?: TrackEventProperties) => void;
+  isTrackingEnabled: boolean;
+  initializeMixpanel: () => void;
+  acceptCookies: () => void;
+  rejectCookies: () => void;
+  cookieConfigOpen: boolean;
+  setCookieConfigOpen: (eventName: boolean) => void;
+};
+
+export const MIXPANEL_API_HOST = '/collect';
+
+export const createAnalyticsSlice: StateCreator<
+  RootStore,
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
+  [],
+  AnalyticsSlice
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+> = (set, get) => {
+  return {
+    trackEvent: (eventName: string, properties?: TrackEventProperties) => {
+      const trackingEnable = get().isTrackingEnabled;
+
+      if (!trackingEnable) return null;
+
+      const eventProperties = {
+        ...properties,
+        walletAddress: get().account,
+      };
+
+      mixpanel.track(eventName, eventProperties);
+    },
+
+    isTrackingEnabled: false,
+    cookieConfigOpen: false,
+    initializeMixpanel: () => {
+      const userAcceptedAnalytics = localStorage.getItem('userAcceptedAnalytics') === 'true';
+
+      if (!MIXPANEL_TOKEN) return;
+      if (userAcceptedAnalytics) {
+        mixpanel.init(MIXPANEL_TOKEN, { api_host: MIXPANEL_API_HOST, ip: false });
+        mixpanel.opt_in_tracking();
+        set({ isTrackingEnabled: true });
+      } else {
+        mixpanel.init(MIXPANEL_TOKEN);
+        mixpanel.opt_out_tracking();
+        set({ isTrackingEnabled: false });
+      }
+    },
+    acceptCookies: () => {
+      localStorage.setItem('userAcceptedAnalytics', 'true');
+      set({ isTrackingEnabled: true });
+
+      get().initializeMixpanel();
+    },
+    rejectCookies: () => {
+      localStorage.setItem('userAcceptedAnalytics', 'false');
+      // mixpanel.opt_out_tracking();
+      set({ isTrackingEnabled: false });
+    },
+    setCookieConfigOpen: (value: boolean) => {
+      set({ cookieConfigOpen: value });
+    },
+  };
+};

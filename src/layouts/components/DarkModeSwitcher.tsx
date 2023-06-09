@@ -9,6 +9,8 @@ import {
   useTheme,
 } from '@mui/material';
 import React from 'react';
+import { useRootStore } from 'src/store/root';
+import { SETTINGS } from 'src/utils/mixPanelEvents';
 
 import { ColorModeContext } from '../AppGlobalStyles';
 
@@ -19,6 +21,7 @@ interface DarkModeSwitcherProps {
 export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps) => {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Box
@@ -37,6 +40,7 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
         value="darkmode"
         control={
           <Switch
+            onClick={() => trackEvent(SETTINGS.DARK_MODE, { mode: theme.palette.mode })}
             disableRipple
             checked={theme.palette.mode === 'dark'}
             sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}

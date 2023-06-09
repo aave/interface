@@ -199,13 +199,13 @@ msgstr "Amount in cooldown"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Amount to unstake"
-msgstr "Amount to unstake"
-
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
+
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Analytics and performance cookies"
+msgstr "Analytics and performance cookies"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
@@ -642,7 +642,10 @@ msgstr "Collector Info"
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
+msgstr "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
@@ -795,13 +798,13 @@ msgstr "Disabling this asset as collateral affects your borrowing power and Heal
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/layouts/AppFooter.tsx
+msgid "Docs"
+msgstr "Docs"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -913,6 +916,10 @@ msgstr "Export data to"
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/layouts/AppFooter.tsx
+msgid "FAQS"
+msgstr "FAQS"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
@@ -969,10 +976,6 @@ msgstr "Funds in the Safety Module"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Github"
-msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1036,10 +1039,6 @@ msgstr "I acknowledge the risks involved."
 msgid "I fully understand the risks of migrating."
 msgstr "I fully understand the risks of migrating."
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
-msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
-
 #: pages/500.page.tsx
 msgid "If the error continues to happen,<0/> you may report it to this"
 msgstr "If the error continues to happen,<0/> you may report it to this"
@@ -1047,10 +1046,6 @@ msgstr "If the error continues to happen,<0/> you may report it to this"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
-
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
-msgstr "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
@@ -1132,7 +1127,6 @@ msgstr "Language"
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -1225,6 +1219,11 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/components/cookies/CookieConfigModal.tsx
+#: src/layouts/AppFooter.tsx
+msgid "Manage cookies"
+msgstr "Manage cookies"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1411,10 +1410,6 @@ msgstr "Nothing borrowed yet"
 msgid "Nothing found"
 msgstr "Nothing found"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Nothing staked"
-msgstr "Nothing staked"
-
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
@@ -1491,6 +1486,10 @@ msgstr "Please connect your wallet to view transaction history."
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Please note that rejecting certain cookies may affect your experience of our site and the available features. See our <0> Cookie Policy</0>."
+msgstr "Please note that rejecting certain cookies may affect your experience of our site and the available features. See our <0> Cookie Policy</0>."
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
@@ -1523,6 +1522,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
+
+#: src/layouts/AppFooter.tsx
+msgid "Privacy"
+msgstr "Privacy"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
@@ -1665,6 +1668,10 @@ msgstr "Repaying {symbol}"
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Repayment amount to reach {0}% utilization"
 
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Required for the correct operation of the website. Cannot be disabled."
+msgstr "Required for the correct operation of the website. Cannot be disabled."
+
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
 msgstr "Reserve Size"
@@ -1725,6 +1732,10 @@ msgstr "SEE CHARTS"
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
 
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Save my preferences"
+msgstr "Save my preferences"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
 msgstr "Seatbelt report"
@@ -1768,6 +1779,10 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
+
+#: src/layouts/AppFooter.tsx
+msgid "Send feedback"
+msgstr "Send feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -1884,10 +1899,6 @@ msgstr "Stake AAVE"
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Stake cooldown activated"
-msgstr "Stake cooldown activated"
-
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
@@ -1919,6 +1930,10 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
+
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "Strictly necessary cookies"
+msgstr "Strictly necessary cookies"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2033,6 +2048,10 @@ msgstr "Switching E-Mode"
 msgid "Switching rate"
 msgstr "Switching rate"
 
+#: src/layouts/AppFooter.tsx
+msgid "Terms"
+msgstr "Terms"
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Test Assets"
@@ -2093,10 +2112,6 @@ msgstr "The collateral chosen cannot be liquidated"
 msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 msgstr "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
-msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
-
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "The effects on the health factor would cause liquidation. Try lowering the amount."
@@ -2144,6 +2159,10 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "These cookies collect information about how you use the website, such as the pages you visit and the links you click on. They help improve website usability."
+msgstr "These cookies collect information about how you use the website, such as the pages you visit and the links you click on. They help improve website usability."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2370,10 +2389,6 @@ msgstr "Underlying token"
 msgid "Unstake now"
 msgstr "Unstake now"
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "Unstake window"
-msgstr "Unstake window"
-
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
@@ -2598,6 +2613,10 @@ msgstr "You are entering Isolation mode"
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 
+#: src/components/cookies/CookieConfigModal.tsx
+msgid "You can change your preferences anytime via the link at the bottom of the page."
+msgstr "You can change your preferences anytime via the link at the bottom of the page."
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
 msgstr "You can not change Interest Type to stable as your borrowings are higher than your collateral"
@@ -2653,10 +2672,6 @@ msgstr "You have not borrow yet using this currency"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
-
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-msgid "You unstake here"
-msgstr "You unstake here"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You voted {0}"
@@ -2828,8 +2843,6 @@ msgstr "withdrew"
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"

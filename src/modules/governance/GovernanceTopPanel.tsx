@@ -5,6 +5,8 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 
@@ -14,6 +16,8 @@ interface ExternalLinkProps {
 }
 
 function ExternalLink({ text, href }: ExternalLinkProps) {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Button
       variant="surface"
@@ -23,6 +27,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
       href={href}
       target="_blank"
       rel="noopener"
+      onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {text}
@@ -38,6 +43,8 @@ export const GovernanceTopPanel = () => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <TopInfoPanel
       titleComponent={
@@ -61,6 +68,7 @@ export const GovernanceTopPanel = () => {
               proposals or delagate to an address of choice. To learn more check out the Governance
             </Trans>{' '}
             <Link
+              onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://docs.aave.com/faq/governance"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >

@@ -31,6 +31,7 @@ interface TxActionsWrapperProps extends BoxProps {
     handleClick: () => Promise<void>;
   };
   tryPermit?: boolean;
+  event?: string;
 }
 
 export const TxActionsWrapper = ({
@@ -51,11 +52,11 @@ export const TxActionsWrapper = ({
   fetchingData = false,
   errorParams,
   tryPermit,
+  event,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError } = useModalContext();
   const { readOnlyModeAddress } = useWeb3Context();
-
   const hasApprovalError =
     requiresApproval && txError?.txAction === TxAction.APPROVAL && txError?.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;

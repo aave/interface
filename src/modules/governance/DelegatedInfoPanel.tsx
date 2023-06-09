@@ -11,6 +11,7 @@ import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 type DelegatedPowerProps = {
   user: string;
@@ -111,6 +112,7 @@ export const DelegatedInfoPanel = () => {
   } = useGovernanceTokens();
   const { data: powers } = usePowers();
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   if (!powers || !address) return null;
 
@@ -146,6 +148,7 @@ export const DelegatedInfoPanel = () => {
             variant="description"
             color="text.secondary"
             sx={{ textDecoration: 'underline', ml: 1 }}
+            onClick={() => trackEvent(GOVERNANCE_PAGE.LEARN_MORE_DELEGATION)}
           >
             <Trans>Learn more.</Trans>
           </Link>

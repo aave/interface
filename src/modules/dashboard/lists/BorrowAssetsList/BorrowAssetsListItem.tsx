@@ -2,7 +2,9 @@ import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -32,6 +34,8 @@ export const BorrowAssetsListItem = ({
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -56,7 +60,6 @@ export const BorrowAssetsListItem = ({
           />
         }
       />
-
       <ListAPRColumn
         value={Number(variableBorrowRate)}
         incentives={vIncentivesData}
@@ -67,12 +70,13 @@ export const BorrowAssetsListItem = ({
         incentives={sIncentivesData}
         symbol={symbol}
       />
-
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}
           variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
+          onClick={() => {
+            openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
+          }}
         >
           <Trans>Borrow</Trans>
         </Button>
@@ -80,6 +84,13 @@ export const BorrowAssetsListItem = ({
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          onClick={() => {
+            trackEvent(DASHBOARD.DETAILS_BUTTON_DASHBOARD, {
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+            });
+          }}
         >
           <Trans>Details</Trans>
         </Button>

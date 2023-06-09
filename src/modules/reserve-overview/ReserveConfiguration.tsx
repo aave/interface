@@ -17,6 +17,8 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
+import { useRootStore } from 'src/store/root';
+import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -40,6 +42,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -163,7 +166,20 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 }}
               >
                 <ReserveOverviewBox
-                  title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+                  title={
+                    <MaxLTVTooltip
+                      event={{
+                        eventName: GENERAL.TOOL_TIP,
+                        eventParams: {
+                          tooltip: 'E-Mode Max LTV',
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
+                      variant="description"
+                      text={<Trans>Max LTV</Trans>}
+                    />
+                  }
                 >
                   <FormattedNumber
                     value={reserve.formattedEModeLtv}
@@ -175,6 +191,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ReserveOverviewBox
                   title={
                     <LiquidationThresholdTooltip
+                      event={{
+                        eventName: GENERAL.TOOL_TIP,
+                        eventParams: {
+                          tooltip: 'E-Mode Liquidation threshold',
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
                       variant="description"
                       text={<Trans>Liquidation threshold</Trans>}
                     />
@@ -190,6 +214,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ReserveOverviewBox
                   title={
                     <LiquidationPenaltyTooltip
+                      event={{
+                        eventName: GENERAL.TOOL_TIP,
+                        eventParams: {
+                          tooltip: 'E-Mode Liquidation penalty',
+                          asset: reserve.underlyingAsset,
+                          assetName: reserve.name,
+                        },
+                      }}
                       variant="description"
                       text={<Trans>Liquidation penalty</Trans>}
                     />
@@ -214,6 +246,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(RESERVE_DETAILS.GO_DASHBOARD_EMODE);
+                    }}
                   >
                     Dashboard
                   </Link>
@@ -223,6 +258,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'E-mode FAQ' });
+                    }}
                   >
                     FAQ
                   </Link>{' '}
@@ -232,6 +270,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"
+                    onClick={() => {
+                      trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'V3 Tech Paper' });
+                    }}
                   >
                     Aave V3 Technical Paper
                   </Link>
@@ -267,6 +308,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   />
                 </PanelItem>
                 <Button
+                  onClick={() => {
+                    trackEvent(GENERAL.EXTERNAL_LINK, {
+                      asset: reserve.underlyingAsset,
+                      Link: 'Interest Rate Strategy',
+                      assetName: reserve.name,
+                    });
+                  }}
                   href={currentNetworkConfig.explorerLinkBuilder({
                     address: reserve.interestRateStrategyAddress,
                   })}

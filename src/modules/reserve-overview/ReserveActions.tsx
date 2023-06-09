@@ -32,6 +32,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
 
 import { CapType } from '../../components/caps/helper';
@@ -52,6 +53,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
+
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
@@ -100,9 +102,9 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   const onSupplyClicked = () => {
     if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase());
+      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve', true);
     } else {
-      openSupply(reserve.underlyingAsset);
+      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
     }
   };
 
@@ -132,6 +134,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
             <SupplyAction
+              reserve={reserve}
               value={maxAmountToSupply.toString()}
               usdValue={maxAmountToSupplyUsd}
               symbol={selectedAsset}
@@ -140,11 +143,14 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
             />
             {reserve.borrowingEnabled && (
               <BorrowAction
+                reserve={reserve}
                 value={maxAmountToBorrow.toString()}
                 usdValue={maxAmountToBorrowUsd}
                 symbol={selectedAsset}
                 disable={disableBorrowButton}
-                onActionClicked={() => openBorrow(reserve.underlyingAsset)}
+                onActionClicked={() => {
+                  openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
+                }}
               />
             )}
             {alerts}
@@ -251,15 +257,31 @@ interface ActionProps {
   symbol: string;
   disable: boolean;
   onActionClicked: () => void;
+  reserve: ComputedReserveData;
 }
 
-const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
+const SupplyAction = ({
+  reserve,
+  value,
+  usdValue,
+  symbol,
+  disable,
+  onActionClicked,
+}: ActionProps) => {
   return (
     <Stack>
       <AvailableTooltip
         variant="description"
         text={<Trans>Available to supply</Trans>}
         capType={CapType.supplyCap}
+        event={{
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: {
+            tooltip: 'Available to supply: your info',
+            asset: reserve.underlyingAsset,
+            assetName: reserve.name,
+          },
+        }}
       />
       <Stack
         sx={{ height: '44px' }}
@@ -292,13 +314,28 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
   );
 };
 
-const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: ActionProps) => {
+const BorrowAction = ({
+  reserve,
+  value,
+  usdValue,
+  symbol,
+  disable,
+  onActionClicked,
+}: ActionProps) => {
   return (
     <Stack>
       <AvailableTooltip
         variant="description"
         text={<Trans>Available to borrow</Trans>}
         capType={CapType.borrowCap}
+        event={{
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: {
+            tooltip: 'Available to borrow: your info',
+            asset: reserve.underlyingAsset,
+            assetName: reserve.name,
+          },
+        }}
       />
       <Stack
         sx={{ height: '44px' }}
@@ -324,7 +361,7 @@ const BorrowAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
           variant="contained"
           data-cy="borrowButton"
         >
-          <Trans>Borrow</Trans>
+          <Trans>Borrow </Trans>
         </Button>
       </Stack>
     </Stack>

@@ -3,20 +3,24 @@ import { Trans } from '@lingui/macro';
 import { Button, SvgIcon } from '@mui/material';
 import { useState } from 'react';
 import { useCryptoBuyAvailable } from 'src/hooks/useCryptoBuyAvailable';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BuyWithFiatModal } from './BuyWithFiatModal';
 
 type BuyWithFiatProps = {
   cryptoSymbol: string;
   networkMarketName: string;
+  funnel?: string;
 };
 
-export const BuyWithFiat = ({ cryptoSymbol, networkMarketName }: BuyWithFiatProps) => {
+export const BuyWithFiat = ({ cryptoSymbol, networkMarketName, funnel }: BuyWithFiatProps) => {
   const { isAvailable } = useCryptoBuyAvailable(cryptoSymbol, networkMarketName);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
-
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    trackEvent(GENERAL.OPEN_BUY_WITH_FIAT, { assetName: cryptoSymbol, funnel: funnel });
     setAnchorEl(event.currentTarget);
   };
 

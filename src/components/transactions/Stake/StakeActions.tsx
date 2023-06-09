@@ -12,6 +12,7 @@ export interface StakeActionProps extends BoxProps {
   symbol: string;
   blocked: boolean;
   selectedToken: string;
+  event: string;
 }
 
 export const StakeActions = ({
@@ -21,6 +22,7 @@ export const StakeActions = ({
   symbol,
   blocked,
   selectedToken,
+  event,
   ...props
 }: StakeActionProps) => {
   const stake = useRootStore((state) => state.stake);
@@ -53,6 +55,7 @@ export const StakeActions = ({
       actionText={<Trans>Stake</Trans>}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
+      // event={STAKE.STAKE_BUTTON_MODAL}
       {...props}
     />
   );
