@@ -66,7 +66,6 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-
     const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
@@ -119,7 +118,6 @@ export const BorrowActions = React.memo(
         });
         borrowTxData = await estimateGasLimit(borrowTxData);
         const response = await sendTx(borrowTxData);
-
         await response.wait(1);
         setMainTxState({
           txHash: response.hash,
