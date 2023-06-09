@@ -27,9 +27,6 @@ export function ProposalListItem({
     formatProposal(proposal);
   const { palette } = useTheme();
 
-  if (proposal.id === 239) {
-    console.log(proposal.executor);
-  }
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
 
   const executedL2 = proposal ? hasExecutedL2(proposal) : false;
