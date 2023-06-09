@@ -1,45 +1,22 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Snackbar, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Contract, utils } from 'ethers';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
+import { useModalContext } from 'src/hooks/useModal';
 import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
 import { useTGEContext } from 'src/maneki/hooks/tge-data-provider/TGEDataProvider';
-import { marketsData } from 'src/ui-config/marketsConfig';
 
 const TGEMainContribution = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { provider, currentAccount } = useWeb3Context();
   const { userBalanceBNB, finalPAWPrice, contributedBNB, TGEStatus } = useTGEContext();
   const [contributionBNB, setContributionBNB] = React.useState<string>('');
-  const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
-  const [snackbarMessage, seSnackbarMessage] = React.useState<string>('');
-  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
-    .EARLY_TOKEN_GENERATION as string;
+  const { openTGE } = useModalContext();
 
-  const handleContribute = async () => {
-    const signer = provider?.getSigner(currentAccount as string);
-    const contract = new Contract(EARLY_TOKEN_GENERATION_ADDR, EARLY_TOKEN_GENERATION_ABI, signer);
-    try {
-      const promise = await contract.deposit(currentAccount, '', {
-        value: utils.parseEther(contributionBNB),
-      });
-      await promise.wait(1);
-      seSnackbarMessage('Contribution Success!');
-      setSnackbarOpen(true);
-    } catch (error) {
-      if (error.data.message === 'execution reverted: Sale has ended') {
-        seSnackbarMessage('Sale has ended.');
-        setSnackbarOpen(true);
-      } else {
-        seSnackbarMessage('Whoops! Something went wrong. >.<!!');
-        setSnackbarOpen(true);
-      }
-    }
+  const handleContribute = () => {
+    openTGE(contributionBNB);
   };
 
   return (
@@ -149,7 +126,7 @@ const TGEMainContribution = () => {
         sx={{ padding: '12px', color: 'background.default' }}
         disabled={TGEStatus !== 'Active' ? true : false}
       >
-        Contribute
+        {TGEStatus === 'Active' ? 'Contribute' : 'Inactive'}
       </Button>
       <Typography
         sx={{
@@ -158,21 +135,6 @@ const TGEMainContribution = () => {
           mt: downToSM ? '-8px' : '-18px',
         }}
       >{`YOU HAVE CONTRIBUTED ${contributedBNB} BNB`}</Typography>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity={
-            snackbarMessage === 'Contribution Success!'
-              ? 'success'
-              : snackbarMessage === 'Sale has ended.'
-              ? 'warning'
-              : 'error'
-          }
-          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

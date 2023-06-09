@@ -672,6 +672,14 @@ msgstr "Collector Info"
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
+#: src/maneki/transactions/TGE/TGEModal.tsx
+msgid "Contribute"
+msgstr "Contribute"
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contribute Failed"
+msgstr "Contribute Failed"
+
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribute PAW"
 msgstr "Contribute PAW"
@@ -1564,6 +1572,10 @@ msgstr "Page not found"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Pending Transaction..."
+msgstr "Pending Transaction..."
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
