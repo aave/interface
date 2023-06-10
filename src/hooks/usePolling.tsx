@@ -17,6 +17,7 @@ export const usePolling = (
   useEffect(() => {
     // initial execution
     if (!skip) callback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps]);
 
   useEffect(() => {
