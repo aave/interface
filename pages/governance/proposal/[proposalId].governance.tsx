@@ -127,6 +127,7 @@ export default function ProposalPage({
   useEffect(() => {
     if (!proposal && initialProposal) setProposal(initialProposal);
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialProposal]);
 
   useEffect(() => {
