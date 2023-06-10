@@ -62,6 +62,7 @@ export function Base64Token({
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, aToken]);
   return (
     <div
