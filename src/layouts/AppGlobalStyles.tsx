@@ -41,6 +41,7 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
     } else if (prefersDarkMode) {
       setMode('dark');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const theme = useMemo(() => {
