@@ -107,6 +107,7 @@ export const ClaimRewardsModalContent = () => {
 
     setRewards(userIncentives);
     setClaimableUsd(totalClaimableUsd.toString());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // error handling
