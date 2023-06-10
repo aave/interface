@@ -305,6 +305,7 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skip, ...deps, walletApprovalMethodPreference]);
 
   return {
