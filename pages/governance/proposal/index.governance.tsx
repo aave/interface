@@ -38,6 +38,7 @@ export default function DynamicProposal() {
 
   useEffect(() => {
     id && initialize(governanceConfig.ipfsGateway);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return <ProposalPage ipfs={ipfs} proposal={proposal} metadataError={fetchMetadataError} />;
