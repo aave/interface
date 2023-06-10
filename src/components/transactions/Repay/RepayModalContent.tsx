@@ -171,6 +171,7 @@ export const RepayModalContent = ({
     }
     setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // debt remaining after repay
