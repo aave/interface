@@ -396,6 +396,7 @@ export const useTransactionHandler = ({
       setApprovalTxes(undefined);
       setActionTx(undefined);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
 
   return {
