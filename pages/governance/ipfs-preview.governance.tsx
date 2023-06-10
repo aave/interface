@@ -22,10 +22,11 @@ export default function IpfsPreview() {
     };
     setIpfs(newIpfs);
   }
-  // // fetch ipfs on initial load
+  // fetch ipfs on initial load
   useEffect(() => {
     if (!ipfsHash) return;
     fetchIpfs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfsHash]);
   return <ProposalPage ipfs={ipfs} proposal={undefined} />;
 }
