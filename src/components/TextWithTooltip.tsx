@@ -2,7 +2,7 @@ import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
-import { TrackEventProperties } from 'src/store/analyticsSlice';
+import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
 import { ContentWithTooltip } from './ContentWithTooltip';
@@ -17,10 +17,7 @@ export interface TextWithTooltipProps extends TypographyProps {
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
   wrapperProps?: BoxProps;
-  event?: {
-    eventName: string;
-    eventParams?: TrackEventProperties;
-  }; // TODO: This needs to be the event props across all tracking events
+  event?: TrackEventProps;
 }
 
 export const TextWithTooltip = ({

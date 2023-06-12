@@ -9,6 +9,11 @@ export type TrackEventProperties = {
   [key: string]: string | number | boolean | Date | undefined;
 };
 
+export type TrackEventProps = {
+  eventName: string;
+  eventParams?: TrackEventProperties;
+};
+
 export type AnalyticsSlice = {
   trackEvent: (eventName: string, properties?: TrackEventProperties) => void;
   isTrackingEnabled: boolean;

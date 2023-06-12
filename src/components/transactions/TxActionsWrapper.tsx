@@ -4,6 +4,7 @@ import { Box, BoxProps, Button, CircularProgress, SvgIcon, Typography } from '@m
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { TrackEventProps } from 'src/store/analyticsSlice';
 import { TxAction } from 'src/ui-config/errorMapping';
 
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
@@ -31,7 +32,7 @@ interface TxActionsWrapperProps extends BoxProps {
     handleClick: () => Promise<void>;
   };
   tryPermit?: boolean;
-  event?: string;
+  event?: TrackEventProps;
 }
 
 export const TxActionsWrapper = ({

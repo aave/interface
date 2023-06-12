@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
-import { TrackEventProperties } from 'src/store/analyticsSlice';
+import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
 import { CapType } from '../caps/helper';
@@ -79,10 +79,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   inputTitle?: ReactNode;
   balanceText?: ReactNode;
   loading?: boolean;
-  event?: {
-    eventName: string;
-    eventParams?: TrackEventProperties;
-  };
+  event?: TrackEventProps;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
