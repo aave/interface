@@ -139,7 +139,7 @@ export const TxActionsWrapper = ({
           disabled={approvalParams.disabled || blocked}
           onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
-          sx={{ minHeight: '44px' }}
+          sx={{ minHeight: '44px', color: 'background.default' }}
           data-cy="approvalButton"
         >
           {approvalParams.loading && (
@@ -154,7 +154,11 @@ export const TxActionsWrapper = ({
         disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
-        sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+        sx={{
+          minHeight: '44px',
+          color: 'background.default',
+          ...(approvalParams ? { mt: 2 } : {}),
+        }}
         data-cy="actionButton"
       >
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}

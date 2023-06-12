@@ -165,6 +165,7 @@ msgstr "Already on cooldown"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 #: src/maneki/transactions/Manage/ManageModalContent.tsx
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
 msgid "Amount"
 msgstr "Amount"
 
@@ -686,6 +687,14 @@ msgstr "Contribute Failed"
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribute PAW"
 msgstr "Contribute PAW"
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contributing {symbol}..."
+msgstr "Contributing {symbol}..."
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contribution"
+msgstr "Contribution"
 
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribution Amount"

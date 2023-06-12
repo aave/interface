@@ -149,6 +149,7 @@ const TGEMainContribution = () => {
         <FormattedNumber
           sx={{ fontWeight: 600, fontSize: '16px', ml: 1 }}
           value={utils.formatUnits(contributedBNB, 18)}
+          variant="secondary14"
           symbol="BNB"
         />
       </Box>
@@ -173,6 +174,7 @@ const TGEMainContribution = () => {
         <FormattedNumber
           sx={{ fontWeight: 600, fontSize: '16px', ml: 1 }}
           value={utils.formatUnits(PAWToReceive, 18)}
+          variant="secondary14"
           symbol="PAW"
         />
       </Box>

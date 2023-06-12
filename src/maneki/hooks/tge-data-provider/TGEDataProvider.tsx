@@ -9,8 +9,6 @@ interface TGEData {
   setUserBalanceBNB: (BNB: BigNumber) => void;
   contributedBNB: BigNumber;
   setContributedBNB: (BNB: BigNumber) => void;
-  BNBToContribute: string;
-  setBNBToContribute: (BNB: string) => void;
   PAWToReceive: BigNumber;
   setPAWToReceive: (PAW: BigNumber) => void;
   saleStartDate: number;
@@ -36,7 +34,6 @@ interface TGEData {
 export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [userBalanceBNB, setUserBalanceBNB] = React.useState<BigNumber>(BigNumber.from(-1));
   const [contributedBNB, setContributedBNB] = React.useState<BigNumber>(BigNumber.from(-1));
-  const [BNBToContribute, setBNBToContribute] = React.useState<string>('');
   const [PAWToReceive, setPAWToReceive] = React.useState<BigNumber>(BigNumber.from(-1));
   const [saleStartDate, setSaleStartDate] = React.useState<number>(0);
   const [saleEndDate, setSaleEndDate] = React.useState<number>(0);
@@ -55,8 +52,6 @@ export const TGEDataProvider: React.FC<{ children: ReactElement }> = ({ children
         setUserBalanceBNB,
         contributedBNB,
         setContributedBNB,
-        BNBToContribute,
-        setBNBToContribute,
         PAWToReceive,
         setPAWToReceive,
         saleStartDate,
