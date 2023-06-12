@@ -40,10 +40,9 @@ export const MarketAssetsListContainer = () => {
           })
         : {}),
     }));
-
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
-    marketFrozen && ['Harmony', 'Fantom'].includes(currentNetworkConfig.name);
+    marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
@@ -63,7 +62,7 @@ export const MarketAssetsListContainer = () => {
     >
       {showFrozenMarketWarning && (
         <Box mx={6}>
-          <MarketWarning marketName={currentNetworkConfig.name} forum />
+          <MarketWarning marketName={currentMarketData.marketTitle} forum />
         </Box>
       )}
 
