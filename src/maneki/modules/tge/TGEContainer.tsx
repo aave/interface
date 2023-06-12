@@ -25,6 +25,7 @@ export const TGEContainer = () => {
     setTotalRaisedBNB,
     setContributedBNB,
     setUserBalanceBNB,
+    setPAWToReceive,
     setTGEStatus,
     setTGELoading,
   } = useTGEContext();
@@ -44,7 +45,8 @@ export const TGEContainer = () => {
     promises.push(contract.deposits(currentAccount)); //2 contributed bnb (18 Decimals)
     promises.push(contract.weiDeposited()); //3 total raised bnb (18 Decimals)
     promises.push(contract.salesPrice()); //4 final PAW Price (18 Decimals)
-    promises.push(provider?.getBalance(currentAccount)); //5 get user BNB balance
+    promises.push(contract.claimableManekiTokens(currentAccount)); //5 paw to recieve
+    promises.push(provider?.getBalance(currentAccount)); //6 get user BNB balance
     // call promise all and get data
     Promise.all(promises)
       .then((data: (BigNumber | string)[]) => {
@@ -53,9 +55,9 @@ export const TGEContainer = () => {
         setSaleEndDate((data[1] as BigNumber).toNumber() * 1000); // sale end date (UNIX)
         setContributedBNB(data[2] as BigNumber); // contributed bnb (18 Decimals)
         setTotalRaisedBNB(data[3] as BigNumber); // total raised bnb (18 Decimals)
-        console.log('data[4]', data[4]);
         setFinalPAWPrice(data[4] as BigNumber); // tge paw price (18 Decimals)
-        setUserBalanceBNB(data[5] as BigNumber); // get user BNB balance (18 Decimals)
+        setPAWToReceive(data[5] as BigNumber); // paw to receive (18 Decimals)
+        setUserBalanceBNB(data[6] as BigNumber); // get user BNB balance (18 Decimals)
         setTGEStatus(
           TGEStatusGenerator(
             (data[0] as BigNumber).toNumber() * 1000,

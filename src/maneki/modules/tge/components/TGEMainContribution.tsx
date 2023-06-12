@@ -3,6 +3,7 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { utils } from 'ethers';
 import Image from 'next/image';
 import * as React from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
 import { useTGEContext } from 'src/maneki/hooks/tge-data-provider/TGEDataProvider';
@@ -11,7 +12,8 @@ const TGEMainContribution = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { userBalanceBNB, finalPAWPrice, contributedBNB, TGEStatus } = useTGEContext();
+  const { userBalanceBNB, finalPAWPrice, contributedBNB, TGEStatus, PAWToReceive } =
+    useTGEContext();
   const [contributionBNB, setContributionBNB] = React.useState<string>('');
   const { openTGE } = useModalContext();
 
@@ -128,13 +130,52 @@ const TGEMainContribution = () => {
       >
         {TGEStatus === 'Active' ? 'Contribute' : 'Inactive'}
       </Button>
-      <Typography
+      <Box
         sx={{
-          fontSize: downToSM ? '10px' : '12px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyItems: 'end',
           alignSelf: 'end',
           mt: downToSM ? '-8px' : '-18px',
         }}
-      >{`YOU HAVE CONTRIBUTED ${contributedBNB} BNB`}</Typography>
+      >
+        <Typography
+          sx={{
+            fontSize: downToSM ? '10px' : '12px',
+          }}
+        >{`YOU HAVE CONTRIBUTED`}</Typography>
+
+        <FormattedNumber
+          sx={{ fontWeight: 600, fontSize: '16px', ml: 1 }}
+          value={utils.formatUnits(contributedBNB, 18)}
+          symbol="BNB"
+        />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyItems: 'end',
+          alignSelf: 'end',
+          mt: downToSM ? '-18px' : '-24px',
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: downToSM ? '10px' : '12px',
+          }}
+        >
+          YOU ARE ENTITLED TO
+        </Typography>
+
+        <FormattedNumber
+          sx={{ fontWeight: 600, fontSize: '16px', ml: 1 }}
+          value={utils.formatUnits(PAWToReceive, 18)}
+          symbol="PAW"
+        />
+      </Box>
     </Box>
   );
 };
