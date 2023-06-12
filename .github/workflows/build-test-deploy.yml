@@ -65,7 +65,6 @@ jobs:
       matrix:
         market:
           - ethereum
-          - amm
           - polygon
           - avalanche
     steps:
@@ -159,7 +158,6 @@ jobs:
       matrix:
         market:
           - ethereum
-          - amm
           - polygon
           - avalanche
     steps:

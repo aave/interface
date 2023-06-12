@@ -106,10 +106,10 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: markets.AaveV3Ethereum.COLLECTOR,
     },
-    // halIntegration: {
-    //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-    //   marketName: 'aavev3',
-    // },
+    halIntegration: {
+      URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+      marketName: 'aavev3',
+    },
   },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
