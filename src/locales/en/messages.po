@@ -199,6 +199,10 @@ msgstr "Amount in cooldown"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Amount to unstake"
+msgstr "Amount to unstake"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
@@ -646,6 +650,7 @@ msgstr "Connect wallet"
 msgid "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
 msgstr "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
@@ -1039,6 +1044,10 @@ msgstr "I acknowledge the risks involved."
 msgid "I fully understand the risks of migrating."
 msgstr "I fully understand the risks of migrating."
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
+msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
+
 #: pages/500.page.tsx
 msgid "If the error continues to happen,<0/> you may report it to this"
 msgstr "If the error continues to happen,<0/> you may report it to this"
@@ -1046,6 +1055,10 @@ msgstr "If the error continues to happen,<0/> you may report it to this"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
+msgstr "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
@@ -1127,6 +1140,7 @@ msgstr "Language"
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -1409,6 +1423,10 @@ msgstr "Nothing borrowed yet"
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Nothing found"
 msgstr "Nothing found"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Nothing staked"
+msgstr "Nothing staked"
 
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1899,6 +1917,10 @@ msgstr "Stake AAVE"
 msgid "Stake ABPT"
 msgstr "Stake ABPT"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Stake cooldown activated"
+msgstr "Stake cooldown activated"
+
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
@@ -2111,6 +2133,10 @@ msgstr "The collateral chosen cannot be liquidated"
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
 msgstr "The cooldown period is the time required prior to unstaking your tokens (20 days). You can only withdraw your assets from the Security Module after the cooldown period and within the unstake window.<0>Learn more</0>"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
+msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
@@ -2388,6 +2414,10 @@ msgstr "Underlying token"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Unstake window"
+msgstr "Unstake window"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
@@ -2673,6 +2703,10 @@ msgstr "You have not borrow yet using this currency"
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "You unstake here"
+msgstr "You unstake here"
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You voted {0}"
 msgstr "You voted {0}"
@@ -2843,6 +2877,8 @@ msgstr "withdrew"
 #: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"

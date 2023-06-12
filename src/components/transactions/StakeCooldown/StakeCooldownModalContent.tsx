@@ -12,6 +12,7 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL, STAKE } from 'src/utils/mixPanelEvents';
@@ -42,9 +43,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
-
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
 
   const { data: stakeUserResult } = useUserStakeUiData();
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
