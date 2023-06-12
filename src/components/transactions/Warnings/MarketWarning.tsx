@@ -4,6 +4,7 @@ import { Link, Typography } from '@mui/material';
 import { Warning } from '../../primitives/Warning';
 
 const WarningMessage = ({ market }: { market: string }) => {
+  console.log(market);
   if (market === 'Harmony') {
     return (
       <Trans>
@@ -13,6 +14,8 @@ const WarningMessage = ({ market }: { market: string }) => {
     );
   } else if (market === 'Fantom') {
     return <Trans>Per the community, the Fantom market has been frozen.</Trans>;
+  } else if (market === 'Ethereum AMM') {
+    return <Trans>Per the community, the V2 AMM market has been deprecated.</Trans>;
   } else {
     return null;
   }
@@ -31,6 +34,8 @@ const getLink = (market: string, forum: boolean | undefined): string => {
     } else {
       return 'https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647';
     }
+  } else if (market === 'Ethereum AMM') {
+    return 'https://app.aave.com/governance/proposal/?proposalId=239';
   } else {
     return '';
   }
