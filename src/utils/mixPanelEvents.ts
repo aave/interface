@@ -104,6 +104,13 @@ export const BORROW_MODAL = {
   ACCEPT_RISK: 'Accept risk check box borrow modal', // done
 };
 
+export const WITHDRAW_MODAL = {
+  SWITCH_NETWORK: 'Switch network Withdraw modal', // done
+  MAX_WITHDRAW: 'Max Withdraw input Withdraw modal', // done
+  WITHDRAW_TOKEN: ' token', // done
+  ACCEPT_RISK: 'Accept risk check box Withdraw modal', // done
+};
+
 // TODO proper events here
 export const REPAY_MODAL = {
   // SWITCH_NETWORK: 'Switch network borrow modal',
