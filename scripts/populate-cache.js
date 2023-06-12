@@ -63871,11 +63871,11 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: markets.AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: markets.AaveV3Ethereum.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "aavev3"
     }
-    // halIntegration: {
-    //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-    //   marketName: 'aavev3',
-    // },
   },
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",
