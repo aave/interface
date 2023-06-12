@@ -4,7 +4,6 @@ import { Link, Typography } from '@mui/material';
 import { Warning } from '../../primitives/Warning';
 
 const WarningMessage = ({ market }: { market: string }) => {
-  console.log(market);
   if (market === 'Harmony') {
     return (
       <Trans>
