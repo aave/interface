@@ -165,7 +165,8 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name}{' '}
+                  {/** Todo remove on main */}
+                  {/* {getMarketHelpData(market.marketTitle).name}{' '} */}
                   {network.name === 'Ethereum Sepolia' || 'Ethereum Görli'
                     ? getMarketHelpData(market.marketTitle).testChainName
                     : ''}{' '}

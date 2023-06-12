@@ -159,6 +159,10 @@ msgstr "Add stkAAVE to see borrow APY with the discount"
 msgid "Add to wallet"
 msgstr "Add to wallet"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Add token to wallet"
+msgstr "Add token to wallet"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
@@ -177,6 +181,7 @@ msgstr "Addresses ({0})"
 msgid "All Assets"
 msgstr "All Assets"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "All done!"
 msgstr "All done!"
@@ -829,6 +834,10 @@ msgstr "Discount parameters are decided by the Aave community and may be changed
 msgid "Discountable amount"
 msgstr "Discountable amount"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Done"
+msgstr "Done"
+
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
 msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral swap where stETH is the source token."
@@ -1003,6 +1012,10 @@ msgstr "Funds in the Safety Module"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "GHO is here! Tell the world!"
+msgstr "GHO is here! Tell the world!"
 
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
@@ -1716,6 +1729,7 @@ msgstr "Review changes to continue"
 msgid "Review tx"
 msgstr "Review tx"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
 msgstr "Review tx details"
@@ -1804,6 +1818,10 @@ msgstr "Share on Lens"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
 msgstr "Share on twitter"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Share with frens on"
+msgstr "Share with frens on"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
@@ -2690,6 +2708,7 @@ msgstr "You voted {0}"
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
 msgstr "You will exit isolation mode and other tokens can now be used as collateral"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action} <0/> {symbol}"
 msgstr "You {action} <0/> {symbol}"

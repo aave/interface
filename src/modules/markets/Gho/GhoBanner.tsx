@@ -37,7 +37,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
         px: {
           md: 6,
         },
-        overflowY: 'hidden',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
