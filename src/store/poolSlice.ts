@@ -187,19 +187,22 @@ export const createPoolSlice: StateCreator<
             .then((reservesResponse) =>
               set((state) =>
                 produce(state, (draft) => {
-                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-                      reserves: reservesResponse.reservesData,
-                      baseCurrencyData: reservesResponse.baseCurrencyData,
-                    });
+                  const draftChainId = draft.data.get(currentChainId);
+
+                  if (!draftChainId) {
+                    draft.data.set(currentChainId, new Map());
                   } else {
-                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
-                      reservesResponse.reservesData;
-                    draft.data
-                      .get(currentChainId)!
-                      .get(lendingPoolAddressProvider)!.baseCurrencyData =
-                      reservesResponse.baseCurrencyData;
+                    const draftAddressProvider = draftChainId.get(lendingPoolAddressProvider);
+
+                    if (!draftAddressProvider) {
+                      draftChainId.set(lendingPoolAddressProvider, {
+                        reserves: reservesResponse.reservesData,
+                        baseCurrencyData: reservesResponse.baseCurrencyData,
+                      });
+                    } else {
+                      draftAddressProvider.reserves = reservesResponse.reservesData;
+                      draftAddressProvider.baseCurrencyData = reservesResponse.baseCurrencyData;
+                    }
                   }
                 })
               )
@@ -213,16 +216,20 @@ export const createPoolSlice: StateCreator<
             .then((reserveIncentivesResponse) =>
               set((state) =>
                 produce(state, (draft) => {
-                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-                      reserveIncentives: reserveIncentivesResponse,
-                    });
+                  const draftChainId = draft.data.get(currentChainId);
+
+                  if (!draftChainId) {
+                    draft.data.set(currentChainId, new Map());
                   } else {
-                    draft.data
-                      .get(currentChainId)!
-                      .get(lendingPoolAddressProvider)!.reserveIncentives =
-                      reserveIncentivesResponse;
+                    const draftAddressProvider = draftChainId.get(lendingPoolAddressProvider);
+
+                    if (!draftAddressProvider) {
+                      draftChainId.set(lendingPoolAddressProvider, {
+                        reserveIncentives: reserveIncentivesResponse,
+                      });
+                    } else {
+                      draftAddressProvider.reserveIncentives = reserveIncentivesResponse;
+                    }
                   }
                 })
               )
@@ -238,21 +245,23 @@ export const createPoolSlice: StateCreator<
               .then((userReservesResponse) =>
                 set((state) =>
                   produce(state, (draft) => {
-                    if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-                    if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-                      draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-                        userReserves: userReservesResponse.userReserves,
-                        userEmodeCategoryId: userReservesResponse.userEmodeCategoryId,
-                      });
+                    const draftChainId = draft.data.get(currentChainId);
+
+                    if (!draftChainId) {
+                      draft.data.set(currentChainId, new Map());
                     } else {
-                      draft.data
-                        .get(currentChainId)!
-                        .get(lendingPoolAddressProvider)!.userReserves =
-                        userReservesResponse.userReserves;
-                      draft.data
-                        .get(currentChainId)!
-                        .get(lendingPoolAddressProvider)!.userEmodeCategoryId =
-                        userReservesResponse.userEmodeCategoryId;
+                      const draftAddressProvider = draftChainId.get(lendingPoolAddressProvider);
+
+                      if (!draftAddressProvider) {
+                        draftChainId.set(lendingPoolAddressProvider, {
+                          userReserves: userReservesResponse.userReserves,
+                          userEmodeCategoryId: userReservesResponse.userEmodeCategoryId,
+                        });
+                      } else {
+                        draftAddressProvider.userReserves = userReservesResponse.userReserves;
+                        draftAddressProvider.userEmodeCategoryId =
+                          userReservesResponse.userEmodeCategoryId;
+                      }
                     }
                   })
                 )
