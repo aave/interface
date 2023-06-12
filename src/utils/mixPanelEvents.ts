@@ -17,6 +17,7 @@ export const GENERAL = {
   BUY_WITH_FIAT: 'Navigate to fiat onramp', //done
   TOOL_TIP: 'Tool Tip', //done
   EXTERNAL_LINK: 'External Link Navigaton',
+  SET_SLIPPAGE: 'Set slippage',
 };
 
 export const DASHBOARD = {
@@ -111,6 +112,7 @@ export const REPAY_MODAL = {
   // UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal',
   // ACCEPT_RISK: 'Accept risk check box borrow modal',
   REPAY_TOKEN: 'Repays borrowed position',
+  SWITCH_REPAY_TYPE: 'Change repay type',
 };
 
 export const STAKE = {
