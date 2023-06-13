@@ -431,6 +431,7 @@ function __classPrivateFieldSet(receiver, state, value, kind, f) {
 var extendStatics, __assign, __createBinding, __setModuleDefault;
 var init_tslib_es6 = __esm({
   "node_modules/tslib/tslib.es6.js"() {
+    "use strict";
     extendStatics = function(d, b) {
       extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
         d2.__proto__ = b2;
@@ -475,6 +476,7 @@ var init_tslib_es6 = __esm({
 // node_modules/bn.js/lib/bn.js
 var require_bn = __commonJS({
   "node_modules/bn.js/lib/bn.js"(exports2, module2) {
+    "use strict";
     (function(module3, exports3) {
       "use strict";
       function assert(val, msg) {
@@ -6063,6 +6065,7 @@ var require_abstract_coder = __commonJS({
 // node_modules/js-sha3/src/sha3.js
 var require_sha3 = __commonJS({
   "node_modules/js-sha3/src/sha3.js"(exports2, module2) {
+    "use strict";
     (function() {
       "use strict";
       var INPUT_ERROR = "input is invalid type";
@@ -10104,6 +10107,7 @@ var require_package = __commonJS({
 // node_modules/minimalistic-assert/index.js
 var require_minimalistic_assert = __commonJS({
   "node_modules/minimalistic-assert/index.js"(exports2, module2) {
+    "use strict";
     module2.exports = assert;
     function assert(val, msg) {
       if (!val)
@@ -10281,6 +10285,7 @@ var require_utils2 = __commonJS({
 // node_modules/brorand/index.js
 var require_brorand = __commonJS({
   "node_modules/brorand/index.js"(exports2, module2) {
+    "use strict";
     var r;
     module2.exports = function rand(len) {
       if (!r)
@@ -10660,6 +10665,7 @@ var require_base = __commonJS({
 // node_modules/inherits/inherits_browser.js
 var require_inherits_browser = __commonJS({
   "node_modules/inherits/inherits_browser.js"(exports2, module2) {
+    "use strict";
     if (typeof Object.create === "function") {
       module2.exports = function inherits(ctor, superCtor) {
         if (superCtor) {
@@ -10692,6 +10698,7 @@ var require_inherits_browser = __commonJS({
 // node_modules/inherits/inherits.js
 var require_inherits = __commonJS({
   "node_modules/inherits/inherits.js"(exports2, module2) {
+    "use strict";
     try {
       util = require("util");
       if (typeof util.inherits !== "function")
@@ -13453,6 +13460,7 @@ var require_hmac = __commonJS({
 // node_modules/hash.js/lib/hash.js
 var require_hash = __commonJS({
   "node_modules/hash.js/lib/hash.js"(exports2) {
+    "use strict";
     var hash = exports2;
     hash.utils = require_utils3();
     hash.common = require_common();
@@ -13471,6 +13479,7 @@ var require_hash = __commonJS({
 // node_modules/elliptic/lib/elliptic/precomputed/secp256k1.js
 var require_secp256k1 = __commonJS({
   "node_modules/elliptic/lib/elliptic/precomputed/secp256k1.js"(exports2, module2) {
+    "use strict";
     module2.exports = {
       doubles: {
         step: 4,
@@ -26875,6 +26884,7 @@ var require_constants = __commonJS({
 // node_modules/node-gyp-build/index.js
 var require_node_gyp_build = __commonJS({
   "node_modules/node-gyp-build/index.js"(exports2, module2) {
+    "use strict";
     var fs3 = require("fs");
     var path2 = require("path");
     var os = require("os");
@@ -33792,6 +33802,7 @@ var require_gasStation = __commonJS({
 // node_modules/bignumber.js/bignumber.js
 var require_bignumber2 = __commonJS({
   "node_modules/bignumber.js/bignumber.js"(exports2, module2) {
+    "use strict";
     (function(globalObject) {
       "use strict";
       var BigNumber2, isNumeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, mathceil = Math.ceil, mathfloor = Math.floor, bignumberError = "[BigNumber Error] ", tooManyDigits = bignumberError + "Number primitive has more than 15 significant digits: ", BASE = 1e14, LOG_BASE = 14, MAX_SAFE_INTEGER = 9007199254740991, POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], SQRT_BASE = 1e7, MAX = 1e9;
@@ -35509,6 +35520,7 @@ var require_BaseService = __commonJS({
 // node_modules/reflect-metadata/Reflect.js
 var require_Reflect = __commonJS({
   "node_modules/reflect-metadata/Reflect.js"() {
+    "use strict";
     var Reflect2;
     (function(Reflect3) {
       (function(factory) {
@@ -50794,6 +50806,7 @@ var require_v3_migration_contract = __commonJS({
 // node_modules/unfetch/dist/unfetch.js
 var require_unfetch = __commonJS({
   "node_modules/unfetch/dist/unfetch.js"(exports2, module2) {
+    "use strict";
     module2.exports = function(e, n) {
       return n = n || {}, new Promise(function(t, r) {
         var s = new XMLHttpRequest(), o = [], u = [], i = {}, a = function() {
@@ -53791,6 +53804,7 @@ var require_lib33 = __commonJS({
 // node_modules/isomorphic-unfetch/index.js
 var require_isomorphic_unfetch = __commonJS({
   "node_modules/isomorphic-unfetch/index.js"(exports2, module2) {
+    "use strict";
     function r(m) {
       return m && m.default || m;
     }
@@ -54755,6 +54769,7 @@ var require_AaveAddressBook = __commonJS({
 // node_modules/lodash/lodash.js
 var require_lodash = __commonJS({
   "node_modules/lodash/lodash.js"(exports2, module2) {
+    "use strict";
     (function() {
       var undefined2;
       var VERSION = "4.17.21";
@@ -60235,6 +60250,7 @@ var require_lodash = __commonJS({
 // node_modules/kind-of/index.js
 var require_kind_of = __commonJS({
   "node_modules/kind-of/index.js"(exports2, module2) {
+    "use strict";
     var toString = Object.prototype.toString;
     module2.exports = function kindOf(val) {
       if (val === void 0)
@@ -63855,11 +63871,11 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: markets.AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: markets.AaveV3Ethereum.COLLECTOR
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "aavev3"
     }
-    // halIntegration: {
-    //   URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
-    //   marketName: 'aavev3',
-    // },
   },
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",

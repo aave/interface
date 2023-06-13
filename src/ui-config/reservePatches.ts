@@ -94,17 +94,15 @@ export interface IconSymbolInterface {
 interface IconMapInterface {
   iconSymbol: string;
   name?: string;
+  symbol?: string;
 }
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
-    '0x50379f632ca68d36e50cfbc8f78fe16bd1499d1e': {
-      iconSymbol: 'GUNI_DAI_USDC',
-      name: 'G-UNI DAI/USDC',
-    },
-    '0xd2eec91055f07fe24c9ccb25828ecfefd4be0c41': {
-      iconSymbol: 'GUNI_USDC_USDT',
-      name: 'G-UNI USDC/USDT',
+    '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+      iconSymbol: 'USDC',
     },
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
@@ -128,8 +126,8 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
   const lowerUnderlyingAsset = underlyingAsset.toLowerCase();
   if (underlyingAssetMap.hasOwnProperty(lowerUnderlyingAsset)) {
     return {
-      ...underlyingAssetMap[lowerUnderlyingAsset],
       symbol,
+      ...underlyingAssetMap[lowerUnderlyingAsset],
     };
   }
 
