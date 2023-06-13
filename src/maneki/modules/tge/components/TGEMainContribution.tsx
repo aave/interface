@@ -144,7 +144,9 @@ const TGEMainContribution = () => {
           sx={{
             fontSize: downToSM ? '10px' : '12px',
           }}
-        >{`YOU HAVE CONTRIBUTED`}</Typography>
+        >
+          <Trans>YOU HAVE CONTRIBUTED</Trans>
+        </Typography>
 
         <FormattedNumber
           sx={{ fontWeight: 600, fontSize: '16px', ml: 1 }}
@@ -168,7 +170,7 @@ const TGEMainContribution = () => {
             fontSize: downToSM ? '10px' : '12px',
           }}
         >
-          YOU ARE ENTITLED TO
+          <Trans>YOU ARE ENTITLED TO</Trans>
         </Typography>
 
         <FormattedNumber

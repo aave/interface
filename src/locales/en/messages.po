@@ -2715,6 +2715,14 @@ msgstr "Wrong Network"
 msgid "YAE"
 msgstr "YAE"
 
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "YOU ARE ENTITLED TO"
+msgstr "YOU ARE ENTITLED TO"
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "YOU HAVE CONTRIBUTED"
+msgstr "YOU HAVE CONTRIBUTED"
+
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Yes"
 msgstr "Yes"
