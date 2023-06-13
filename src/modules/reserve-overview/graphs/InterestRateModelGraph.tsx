@@ -1,6 +1,6 @@
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -29,6 +29,8 @@ type InterestRateModelType = {
   utilizationRate: string;
   baseVariableBorrowRate: string;
   baseStableBorrowRate: string;
+  totalLiquidityUSD: string;
+  totalDebtUSD: string;
 };
 
 type Rate = {
@@ -232,6 +234,8 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       },
     ];
 
+    const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+
     return (
       <>
         <svg width={width} height={height}>
@@ -428,6 +432,56 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   {tooltipData.utilization}%
                 </Typography>
               </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: isMobile ? '180px' : '100%',
+                  mb: 2,
+                }}
+              >
+                {(tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                  parseFloat(reserve.totalDebtUSD) >
+                0 ? (
+                  <>
+                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                      <Trans>Borrow amount to reach {tooltipData.utilization}% utilization</Trans>
+                    </Typography>
+                    <Typography variant="main12" color="primary">
+                      $
+                      {new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(
+                        (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                          parseFloat(reserve.totalDebtUSD)
+                      )}
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                      <Trans>
+                        Repayment amount to reach {tooltipData.utilization}% utilization
+                      </Trans>
+                    </Typography>
+                    <Typography variant="main12" color="primary">
+                      $
+                      {new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(
+                        Math.abs(
+                          (tooltipData.utilization / 100) * parseFloat(reserve.totalLiquidityUSD) -
+                            parseFloat(reserve.totalDebtUSD)
+                        )
+                      )}
+                    </Typography>
+                  </>
+                )}
+              </Box>
+
               {fields.map((field) => (
                 <Box key={field.name} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>

@@ -46,11 +46,13 @@ export function getMaxAmountAvailableToBorrow(
     0
   );
 
+  const availableForUserMarketReferenceCurrency = valueToBigNumber(
+    user?.availableBorrowsMarketReferenceCurrency || 0
+  ).div(poolReserve.formattedPriceInMarketReferenceCurrency);
+
   let maxUserAmountToBorrow = BigNumber.min(
-    valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0).div(
-      poolReserve.formattedPriceInMarketReferenceCurrency
-    ),
-    availableLiquidity.toString()
+    availableForUserMarketReferenceCurrency,
+    availableLiquidity
   );
 
   if (rateMode === InterestRate.Stable) {
@@ -62,6 +64,10 @@ export function getMaxAmountAvailableToBorrow(
   }
 
   const shouldAddMargin =
+    /**
+     * When the user is trying to do a max borrow
+     */
+    maxUserAmountToBorrow.gte(availableForUserMarketReferenceCurrency) ||
     /**
      * When a user has borrows we assume the debt is increasing faster then the supply.
      * That's a simplification that might not be true, but doesn't matter in most cases.
@@ -103,10 +109,11 @@ export function assetCanBeBorrowedByUser(
     borrowableInIsolation,
     eModeCategoryId,
     isFrozen,
+    isPaused,
   }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
-  if (!borrowingEnabled || !isActive || isFrozen) return false;
+  if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;
   if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
   return true;

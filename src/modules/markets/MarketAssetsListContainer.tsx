@@ -40,12 +40,11 @@ export const MarketAssetsListContainer = () => {
           })
         : {}),
     }));
-
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
-    marketFrozen && ['Harmony', 'Fantom'].includes(currentNetworkConfig.name);
-  const unfrozenReserves = filteredData.filter((r) => !r.isFrozen);
-  const frozenReserves = filteredData.filter((r) => r.isFrozen);
+    marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+  const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
+  const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
   return (
     <ListWrapper
@@ -63,24 +62,24 @@ export const MarketAssetsListContainer = () => {
     >
       {showFrozenMarketWarning && (
         <Box mx={6}>
-          <MarketWarning marketName={currentNetworkConfig.name} forum />
+          <MarketWarning marketName={currentMarketData.marketTitle} forum />
         </Box>
       )}
 
       {/* Unfrozen assets list */}
       <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
 
-      {/* Frozen assets list */}
-      {frozenReserves.length > 0 && (
+      {/* Frozen or paused assets list */}
+      {frozenOrPausedReserves.length > 0 && (
         <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
           <Typography variant="h4" mb={4}>
-            <Trans>Frozen assets</Trans>
+            <Trans>Frozen or paused assets</Trans>
           </Typography>
           <Warning severity="info">
             <Trans>
-              These assets are temporarily frozen by Aave community decisions, meaning that further
-              supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt
-              repayments are allowed. Follow the{' '}
+              These assets are temporarily frozen or paused by Aave community decisions, meaning
+              that further supply / borrow, or rate swap of these assets are unavailable.
+              Withdrawals and debt repayments are allowed. Follow the{' '}
               <Link href="https://governance.aave.com" underline="always">
                 Aave governance forum
               </Link>{' '}
@@ -89,7 +88,7 @@ export const MarketAssetsListContainer = () => {
           </Warning>
         </Box>
       )}
-      <MarketAssetsList reserves={frozenReserves} loading={loading} />
+      <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
 
       {/* Show no search results message if nothing hits in either list */}
       {!loading && filteredData.length === 0 && (

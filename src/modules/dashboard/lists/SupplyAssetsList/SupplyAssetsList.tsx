@@ -43,7 +43,7 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarketData } = useProtocolDataContext();
   const {
     user,
     reserves,
@@ -65,7 +65,7 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves
-    .filter((reserve: ComputedReserveData) => !reserve.isFrozen)
+    .filter((reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused))
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
@@ -233,6 +233,8 @@ export const SupplyAssetsList = () => {
               <MarketWarning marketName="Harmony" />
             ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
               <MarketWarning marketName="Fantom" />
+            ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
+              <MarketWarning marketName="Ethereum AMM" />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-31 18:04\n"
+"PO-Revision-Date: 2023-06-12 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,6 +17,16 @@ msgstr ""
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".CSV"
+msgstr ".CSV"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid ".JSON"
+msgstr ".JSON"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -45,6 +55,8 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
@@ -159,6 +171,11 @@ msgstr "¡Todo listo!"
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "All proposals"
 msgstr "Todas las propuestas"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "All transactions"
+msgstr "Todas las transacciones"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
@@ -359,6 +376,10 @@ msgstr "Ten cuidado - Estás muy cerca de la liquidación. Considera depositar m
 msgid "Be mindful of the network congestion and gas prices."
 msgstr "Ten en cuenta la congestión de la red y los precios del gas."
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Because this asset is paused, no actions can be taken until further notice"
+msgstr "Debido a que este activo está en pausa, no se pueden realizar acciones hasta nuevo aviso"
+
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
 msgstr "Antes de suministrar"
@@ -373,6 +394,8 @@ msgstr "Dirección bloqueada"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Tomar prestado"
@@ -390,6 +413,10 @@ msgstr "APY préstamo, estable"
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "APY préstamo, variable"
+
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Borrow amount to reach {0}% utilization"
+msgstr "Cantidad a tomar prestado para alcanzar el {0}% de utilización"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
@@ -416,9 +443,13 @@ msgstr "El límite del préstamo se ha sobrepasado"
 msgid "Borrow power used"
 msgstr "Capacidad de préstamo utilizada"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Borrow rate change"
+msgstr "Cambio de tasa de préstamo"
+
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
-msgstr "Prestado {symbol}"
+msgstr "Tomar prestado {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
@@ -499,6 +530,7 @@ msgid "Can be executed"
 msgstr "Puede ser ejecutado"
 
 #: src/components/TitleWithSearchBar.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -563,6 +595,7 @@ msgstr "Garantía"
 msgid "Collateral balance after repay"
 msgstr "Balance de la garantía tras pagar"
 
+#: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Collateral change"
@@ -576,6 +609,7 @@ msgstr "La garantía es (en su mayoría) el mismo activo que se está tomando pr
 msgid "Collateral to repay with"
 msgstr "Garantía a pagar con"
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -596,6 +630,7 @@ msgstr "El uso como garantía está limitado debido al isolation mode. <0>Aprend
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Colateralización"
 
@@ -633,6 +668,16 @@ msgstr "Cooldown para undstakear"
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copied"
+msgstr "Copiado"
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Copy"
+msgstr "Copiar"
+
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copiar dirección"
@@ -644,6 +689,10 @@ msgstr "Copiar mensaje de error"
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copiar el texto del error"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Covered debt"
+msgstr "Deuda cubierta"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -861,6 +910,10 @@ msgstr "Cantidad esperada a pagar"
 msgid "Expires"
 msgstr "Caduca"
 
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Export data to"
+msgstr "Exportar datos a"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
@@ -910,8 +963,8 @@ msgid "French"
 msgstr "Francés"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen assets"
-msgstr "Activos congelados"
+msgid "Frozen or paused assets"
+msgstr "Activos congelados o pausados"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -1113,6 +1166,18 @@ msgstr "Aprende más."
 msgid "Links"
 msgstr "Enlaces"
 
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Liqudation"
+msgstr "Liquidación"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidated collateral"
+msgstr "Garantía liquidada"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Liquidation"
+msgstr "Liquidación"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Umbral <0/> de liquidación"
@@ -1157,6 +1222,10 @@ msgstr "Cargando datos..."
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "La validación del LTV ha fallado"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
+msgstr "MAI ha sido pausado debido a una decisión de la comunidad. Los suministros, préstamos y pagos se han visto afectados. <0>Más información</0>"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
@@ -1297,6 +1366,11 @@ msgstr "No hay recompensas para reclamar"
 msgid "No search results{0}"
 msgstr "Sin resultados de búsqueda{0}"
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "No transactions yet."
+msgstr "Aún no hay transacciones."
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr "Sin poder de voto"
@@ -1336,6 +1410,11 @@ msgstr "No alcanzado"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nada tomado prestado aún"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Nothing found"
+msgstr "Sin resultados"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -1387,6 +1466,10 @@ msgstr "Pendiente..."
 msgid "Per the community, the Fantom market has been frozen."
 msgstr "De acuerdo con la comunidad, el mercado de Fantom ha sido congelado."
 
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Per the community, the V2 AMM market has been deprecated."
+msgstr "De acuerdo con la comunidad, el mercado V2 AMM se ha quedado obsoleto."
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Por favor ten siempre en cuenta tu <0>factor de salud (HF)</0> cuando migres parcialmente una posición y que tus tasas serán actualizadas a tasas de la V3."
@@ -1408,6 +1491,10 @@ msgstr "Por favor conecta tu cartera para ver la herramienta de migración."
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Por favor, conecta tu cartera para ver tus suministros, préstamos y posiciones abiertas."
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Please connect your wallet to view transaction history."
+msgstr "Por favor conecta tu cartera para ver el historial de transacciones."
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Please enter a valid wallet address."
@@ -1433,6 +1520,10 @@ msgstr "Powered by"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Preview tx and migrate"
 msgstr "Previsualizar la tx y migrar"
+
+#: src/modules/history/PriceUnavailable.tsx
+msgid "Price data is not currently available for this reserve on the protocol subgraph"
+msgstr "Los datos de los precios no están disponibles actualmente para esta reserva en el subgraph del protocolo"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -1488,6 +1579,10 @@ msgstr "El límite de suministro del protocolo está al 100% para este activo. N
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
 msgstr "Quorum"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Rate change"
+msgstr "Cambio de tasa"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
@@ -1555,6 +1650,8 @@ msgstr "Pagado"
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Repay"
 msgstr "Pagar"
 
@@ -1573,6 +1670,10 @@ msgstr "Pagar {symbol}"
 msgid "Repaying {symbol}"
 msgstr "Pagando {symbol}"
 
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+msgid "Repayment amount to reach {0}% utilization"
+msgstr "Cantidad a pagar para alcanzar el {0}% de utilización"
+
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
 msgstr "Tamaño de la reserva"
@@ -1588,6 +1689,10 @@ msgstr "El factor de reserva es un porcentaje de interés que va a un {0} que es
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Configuración y estado de la reserva"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "Reset"
+msgstr "Restablecer"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -1745,6 +1850,7 @@ msgstr "Español"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
 msgstr "Estable"
 
@@ -1837,6 +1943,8 @@ msgstr "Cantidad de activos suministrados"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Suministrar"
@@ -2043,8 +2151,8 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar el error</1></0>"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-msgstr "Estos activos están congelados temporalmente por decisión de la comunidad de Aave, lo que significa que suministrar / tomar prestado o intercambiar tasas de estos activos adicional no está disponible. Se permiten la retirada y pagos de deuda. Sigue el <0>foro de gobierno de Aave</0> para más actualizaciones."
+msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr "Estos activos están temporalmente congelados o pausados por decisiones de la comunidad de Aave, lo que significa que no se puede suministrar / tomar prestado o intercambiar tasas de estos activos. Se permiten retiros y pagos de deuda. Sigue el <0>foro de gobierno de Aave</0> para más actualizaciones."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2213,9 +2321,28 @@ msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
 msgid "Transaction failed"
 msgstr "Error en la transacción"
 
+#: src/layouts/WalletWidget.tsx
+#: src/modules/history/HistoryTopPanel.tsx
+msgid "Transaction history"
+msgstr "Historial de transacciones"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history is not currently available for this market"
+msgstr "El historial de transacciones no está disponible actualmente para este mercado"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Resumen de la transacción"
+
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "Transactions"
+msgstr "Transacciones"
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "Tx hash"
+msgstr "Tx hash"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2318,6 +2445,7 @@ msgstr "VOTAR SI"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
+#: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
 msgstr "Variable"
 
@@ -2352,6 +2480,11 @@ msgstr "Ver detalles"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "Ver en el explorador"
+
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View on block explorer"
+msgstr "Ver en el explorador de bloques"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -2412,6 +2545,11 @@ msgstr "Cartera no detectada. Conecta o instala la cartera y vuelve a intentarlo
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Las carteras son proporcionadas por proveedores externos y al seleccionarla, aceptas los términos de dichos proveedores. Tu acceso a la cartera podría depender de que el proveedor externo esté operativo."
 
+#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryWrapperMobile.tsx
+msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+msgstr "No pudimos encontrar ninguna transacción relacionada con tu búsqueda. Vuelve a intentarlo con un nombre de activo diferente o restablece los filtros."
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr "No podemos detectar una cartera. Conecta una cartera para stakear y ver tu balance."
@@ -2435,6 +2573,8 @@ msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Pr
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Withdraw"
 msgstr "Retirar"
 
@@ -2614,13 +2754,26 @@ msgstr "actividades bloqueadas"
 msgid "copy the error"
 msgstr "copiar el error"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "disabled"
+msgstr "deshabilitado"
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
 msgstr "documentación"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "enabled"
+msgstr "habilitado"
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "finaliza"
+
+#: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "for"
+msgstr "para"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
