@@ -49,7 +49,8 @@ export const createAnalyticsSlice: StateCreator<
     },
 
     isTrackingEnabled: false,
-    cookieConfigOpen: false,
+    cookieConfigOpen: true,
+
     initializeMixpanel: () => {
       const userAcceptedAnalytics = localStorage.getItem('userAcceptedAnalytics') === 'true';
 
@@ -66,16 +67,18 @@ export const createAnalyticsSlice: StateCreator<
     },
     acceptCookies: () => {
       localStorage.setItem('userAcceptedAnalytics', 'true');
-      set({ isTrackingEnabled: true });
+      set({ isTrackingEnabled: true, cookieConfigOpen: false });
 
       get().initializeMixpanel();
     },
     rejectCookies: () => {
       localStorage.setItem('userAcceptedAnalytics', 'false');
       // mixpanel.opt_out_tracking();
-      set({ isTrackingEnabled: false });
+      set({ isTrackingEnabled: false, cookieConfigOpen: false });
     },
     setCookieConfigOpen: (value: boolean) => {
+      localStorage.removeItem('userAcceptedAnalytics');
+
       set({ cookieConfigOpen: value });
     },
   };

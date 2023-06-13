@@ -73,8 +73,8 @@ export function AppFooter() {
     },
     {
       href: '',
-      label: <Trans>Manage cookies</Trans>,
-      key: 'Manage cookies',
+      label: <Trans>Manage analytics</Trans>,
+      key: 'Manage analytics',
       onClick: (event: React.MouseEvent) => {
         event.preventDefault();
         setCookieConfigOpen(true);

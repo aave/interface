@@ -1234,8 +1234,11 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
-#: src/components/cookies/CookieConfigModal.tsx
 #: src/layouts/AppFooter.tsx
+msgid "Manage analytics"
+msgstr "Manage analytics"
+
+#: src/components/cookies/CookieConfigModal.tsx
 msgid "Manage cookies"
 msgstr "Manage cookies"
 

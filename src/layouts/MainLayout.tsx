@@ -12,8 +12,9 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}
       </Box>
-      <CookieConsent />
+
       <AppFooter />
+      <CookieConsent />
     </>
   );
 }
