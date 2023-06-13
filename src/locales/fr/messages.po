@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-06 12:05\n"
+"PO-Revision-Date: 2023-06-12 12:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1464,6 +1464,10 @@ msgstr "En attente..."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the Fantom market has been frozen."
+msgstr ""
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Per the community, the V2 AMM market has been deprecated."
 msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
