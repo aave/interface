@@ -63,15 +63,19 @@ UseTransactionHandlerProps) => {
   const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const {
+
+  const [
+    signPoolERC20Approval,
+    walletApprovalMethodPreference,
     generatePermitPayloadForMigrationBorrowAsset,
     generatePermitPayloadForMigrationSupplyAsset,
     addTransaction,
-  } = useRootStore();
-
-  const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
+  ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
+    state.generatePermitPayloadForMigrationBorrowAsset,
+    state.generatePermitPayloadForMigrationSupplyAsset,
+    state.addTransaction,
   ]);
 
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
