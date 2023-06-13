@@ -13,13 +13,13 @@ import {
   InterestRate,
   LendingPool,
   LendingPoolBundle,
+  MAX_UINT_AMOUNT,
   PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   PoolBundle,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
-  SUPER_BIG_ALLOWANCE_NUMBER,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -272,7 +272,7 @@ export const createPoolSlice: StateCreator<
     generateApproval: (args: ApproveType) => {
       const provider = get().jsonRpcProvider();
       const tokenERC20Service = new ERC20Service(provider);
-      return tokenERC20Service.approveTxData({ ...args, amount: SUPER_BIG_ALLOWANCE_NUMBER });
+      return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
     },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle();
