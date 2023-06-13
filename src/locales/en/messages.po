@@ -182,15 +182,15 @@ msgstr "Amount must be greater than 0"
 msgid "Amount to Claim"
 msgstr "Amount to Claim"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered please report it to our Maneki Team."
 msgstr "An Issue was encountered please report it to our Maneki Team."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
 msgstr "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
 msgstr "An Issue was encountered while attempting to <0>load</0> total vests PAW."
 
@@ -529,7 +529,7 @@ msgstr "Claim AAVE"
 msgid "Claim All"
 msgstr "Claim All"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Claim All Vests"
 msgstr "Claim All Vests"
 
@@ -541,7 +541,7 @@ msgstr "Claim All Vests"
 msgid "Claim Failed"
 msgstr "Claim Failed"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Claim Successful"
 msgstr "Claim Successful"
 
@@ -609,11 +609,11 @@ msgstr "Claiming Unlock PAW"
 msgid "Claiming {symbol}"
 msgstr "Claiming {symbol}"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Click on button to <0>refresh and copy</0> error message."
 msgstr "Click on button to <0>refresh and copy</0> error message."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Click on button to <0>refresh</0> and view your new vests balance."
 msgstr "Click on button to <0>refresh</0> and view your new vests balance."
 
@@ -1280,7 +1280,7 @@ msgstr "Liquidation value"
 msgid "Loading"
 msgstr "Loading"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Loading Error"
 msgstr "Loading Error"
 
@@ -1918,7 +1918,7 @@ msgstr "Slippage is the difference between the quoted and received amounts from 
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Something Went Wrong"
 msgstr "Something Went Wrong"
 
@@ -2138,6 +2138,14 @@ msgstr "Switch Network"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Switch to BSC"
+msgstr "Switch to BSC"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Switch to Binance Smartchain"
+msgstr "Switch to Binance Smartchain"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
@@ -2452,7 +2460,7 @@ msgstr "Track wallet"
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Transaction Error"
 msgstr "Transaction Error"
 
@@ -2708,6 +2716,7 @@ msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
 
 #: src/components/transactions/TxActionsWrapper.tsx
+#: src/maneki/components/SwitchNetworkHeader.tsx
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
@@ -2726,6 +2735,10 @@ msgstr "YOU HAVE CONTRIBUTED"
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Yes"
 msgstr "Yes"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "You are current connected to the wrong network"
+msgstr "You are current connected to the wrong network"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2783,7 +2796,7 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
 msgstr "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
 

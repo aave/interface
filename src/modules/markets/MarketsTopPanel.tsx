@@ -15,7 +15,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, chainId } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -85,7 +85,7 @@ export const MarketsTopPanel = () => {
           isTopPanel
         />
       </TopInfoPanelItem>
-      {currentAccount && <ClaimAllVestTopPanel />}
+      {currentAccount && chainId === 97 && <ClaimAllVestTopPanel />}
     </TopInfoPanel>
   );
 };
