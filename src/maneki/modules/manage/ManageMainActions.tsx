@@ -456,11 +456,13 @@ function ManageMainTable({
       <TableContainer>
         <Table>
           <TableHead>
-            {tableHeaderRow.map((head, i) => (
-              <TableCell key={i} sx={{ width: i === 0 ? '40%' : 'auto' }}>
-                {head}
-              </TableCell>
-            ))}
+            <TableRow>
+              {tableHeaderRow.map((head, i) => (
+                <TableCell key={i} sx={{ width: i === 0 ? '40%' : 'auto' }}>
+                  {head}
+                </TableCell>
+              ))}
+            </TableRow>
           </TableHead>
           <TableBody>{children}</TableBody>
         </Table>
