@@ -207,10 +207,6 @@ msgstr "Amount to unstake"
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
 
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Analytics and performance cookies"
-msgstr "Analytics and performance cookies"
-
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
@@ -645,10 +641,6 @@ msgstr "Collector Info"
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Connect wallet"
-
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
-msgstr "Cookies are small data files stored by your browser when you visit a site. We use them too, and while the cookies required for this website to work correctly are always on, you can manage the rest."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1234,10 +1226,9 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
-#: src/components/cookies/CookieConfigModal.tsx
 #: src/layouts/AppFooter.tsx
-msgid "Manage cookies"
-msgstr "Manage cookies"
+msgid "Manage analytics"
+msgstr "Manage analytics"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1504,10 +1495,6 @@ msgstr "Please connect your wallet to view transaction history."
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Please note that rejecting certain cookies may affect your experience of our site and the available features. See our <0> Cookie Policy</0>."
-msgstr "Please note that rejecting certain cookies may affect your experience of our site and the available features. See our <0> Cookie Policy</0>."
-
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
@@ -1686,10 +1673,6 @@ msgstr "Repaying {symbol}"
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Repayment amount to reach {0}% utilization"
 
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Required for the correct operation of the website. Cannot be disabled."
-msgstr "Required for the correct operation of the website. Cannot be disabled."
-
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
 msgstr "Reserve Size"
@@ -1749,10 +1732,6 @@ msgstr "SEE CHARTS"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
-
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Save my preferences"
-msgstr "Save my preferences"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
@@ -1952,10 +1931,6 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
-
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "Strictly necessary cookies"
-msgstr "Strictly necessary cookies"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2185,10 +2160,6 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "These cookies collect information about how you use the website, such as the pages you visit and the links you click on. They help improve website usability."
-msgstr "These cookies collect information about how you use the website, such as the pages you visit and the links you click on. They help improve website usability."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2642,10 +2613,6 @@ msgstr "You are entering Isolation mode"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
-
-#: src/components/cookies/CookieConfigModal.tsx
-msgid "You can change your preferences anytime via the link at the bottom of the page."
-msgstr "You can change your preferences anytime via the link at the bottom of the page."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"

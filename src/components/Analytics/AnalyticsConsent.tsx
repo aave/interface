@@ -1,15 +1,14 @@
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import CookieConsentBanner from 'react-cookie-consent';
+import AnalyticsConsentBanner from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 
-import CookieConfigModal from './CookieConfigModal';
-
-export default function CookieBanner() {
-  const [optInAnalytics, setCookieConfigOpen] = useRootStore((store) => [
-    store.acceptCookies,
-    store.setCookieConfigOpen,
+export default function AnalyticsBanner() {
+  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen] = useRootStore((store) => [
+    store.acceptAnalytics,
+    store.rejectAnalytics,
+    store.analyticsConfigOpen,
   ]);
 
   const [bannerVisible, setBannerVisible] = useState(false);
@@ -25,20 +24,22 @@ export default function CookieBanner() {
 
   const theme = useTheme();
 
-  const handleOpen = () => {
-    setCookieConfigOpen(true);
-  };
-
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
 
+  const hasUserMadeChoice =
+    typeof window !== 'undefined' && localStorage.getItem('userAcceptedAnalytics') !== null;
+
+  // Note: If they have already chosen don't show again unless configured from footer
+  if (hasUserMadeChoice) return null;
+
   return (
     <>
-      <CookieConfigModal />
-      <CookieConsentBanner
-        buttonText={<Typography>🍪 Allow all cookies </Typography>}
-        declineButtonText={<Typography>Manage cookies </Typography>}
+      <AnalyticsConsentBanner
+        buttonText={<Typography>Allow analytics </Typography>}
+        declineButtonText={<Typography>Opt-out</Typography>}
         disableStyles={true}
+        visible={analyticsConfigOpen ? 'show' : 'hidden'}
         flipButtons
         style={{
           background: theme.palette.background.paper,
@@ -104,7 +105,7 @@ export default function CookieBanner() {
         }}
         enableDeclineButton
         onDecline={() => {
-          handleOpen();
+          optOutAnalytics();
         }}
         onAccept={() => {
           optInAnalytics();
@@ -112,20 +113,15 @@ export default function CookieBanner() {
         cookieName="userAcceptedAnalytics"
       >
         <Box>
-          <Box pb={2}>
-            We use cookies to give you a better, more personal experience using App.aave.com.
-          </Box>
-          <Box>
-            Cookies help us analyse our site traffic, understand how you interact with our services
-            and improve them. See our{' '}
-            <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
-              {' '}
-              Cookie Policy
-            </Link>
-            .
-          </Box>
+          We may employ on-the-spot tracking techniques during your browsing session to collect data
+          on your interactions, preferences, and behaviour. This data helps us personalise your
+          experience and improve our services. See our
+          <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
+            {' '}
+            Privacy Policy.
+          </Link>
         </Box>
-      </CookieConsentBanner>
+      </AnalyticsConsentBanner>
     </>
   );
 }

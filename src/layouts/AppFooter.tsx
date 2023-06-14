@@ -44,7 +44,7 @@ const FOOTER_ICONS = [
 ];
 
 export function AppFooter() {
-  const [setCookieConfigOpen] = useRootStore((store) => [store.setCookieConfigOpen]);
+  const [setAnalyticsConfigOpen] = useRootStore((store) => [store.setAnalyticsConfigOpen]);
   const FOOTER_LINKS = [
     {
       href: 'https://aave.com/term-of-use/',
@@ -73,11 +73,11 @@ export function AppFooter() {
     },
     {
       href: '',
-      label: <Trans>Manage cookies</Trans>,
-      key: 'Manage cookies',
+      label: <Trans>Manage analytics</Trans>,
+      key: 'Manage analytics',
       onClick: (event: React.MouseEvent) => {
         event.preventDefault();
-        setCookieConfigOpen(true);
+        setAnalyticsConfigOpen(true);
       },
     },
   ];
