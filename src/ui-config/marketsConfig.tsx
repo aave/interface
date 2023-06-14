@@ -173,6 +173,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2EthereumAMM.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: markets.AaveV2EthereumAMM.COLLECTOR,
+      V3_MIGRATOR: markets.AaveV2EthereumAMM.MIGRATION_HELPER,
     },
   },
   [CustomMarket.proto_polygon]: {
