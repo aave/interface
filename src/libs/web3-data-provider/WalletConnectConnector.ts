@@ -1,5 +1,7 @@
-import { EthereumProvider as WalletConnectProvider } from '@walletconnect/ethereum-provider';
-import { EthereumProviderOptions } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
+import {
+  EthereumProvider,
+  EthereumProviderOptions,
+} from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import { getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
@@ -18,7 +20,7 @@ export class UserRejectedRequestError extends Error {
 export class WalletConnectConnector extends AbstractConnector {
   private readonly config: EthereumProviderOptions;
 
-  public walletConnectProvider?: Awaited<ReturnType<typeof WalletConnectProvider.init>>;
+  public walletConnectProvider?: EthereumProvider;
 
   constructor() {
     super();
@@ -55,7 +57,12 @@ export class WalletConnectConnector extends AbstractConnector {
   };
 
   public async activate(): Promise<ConnectorUpdate> {
-    this.walletConnectProvider = await WalletConnectProvider.init(this.config);
+    if (!this.walletConnectProvider) {
+      const walletConnectProviderFactory = await import('@walletconnect/ethereum-provider').then(
+        (m) => m?.default ?? m
+      );
+      this.walletConnectProvider = await walletConnectProviderFactory.init(this.config);
+    }
 
     this.walletConnectProvider.on('chainChanged', this.handleChainChanged);
     this.walletConnectProvider.on('accountsChanged', this.handleAccountsChanged);
