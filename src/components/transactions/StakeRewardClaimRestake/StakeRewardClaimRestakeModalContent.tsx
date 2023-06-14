@@ -96,7 +96,11 @@ export const StakeRewardClaimRestakeModalContent = ({
   }
   if (txState.success)
     return (
-      <TxSuccessView action={<Trans>Restaked</Trans>} amount={amount} symbol={rewardsSymbol} />
+      <TxSuccessView
+        action={<Trans>Restaked</Trans>}
+        amount={amountRef.current}
+        symbol={rewardsSymbol}
+      />
     );
 
   return (
@@ -141,7 +145,7 @@ export const StakeRewardClaimRestakeModalContent = ({
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={rewardsSymbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || Number(amount) === 0}
         selectedToken={stakeAssetName}
       />
     </>

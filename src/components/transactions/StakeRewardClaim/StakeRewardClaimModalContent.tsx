@@ -90,7 +90,13 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
     return <TxErrorView txError={txError} />;
   }
   if (txState.success)
-    return <TxSuccessView action={<Trans>Claimed</Trans>} amount={amount} symbol={rewardsSymbol} />;
+    return (
+      <TxSuccessView
+        action={<Trans>Claimed</Trans>}
+        amount={amountRef.current}
+        symbol={rewardsSymbol}
+      />
+    );
 
   return (
     <>
@@ -127,7 +133,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={rewardsSymbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || Number(amount) === 0}
         selectedToken={stakeAssetName}
       />
     </>

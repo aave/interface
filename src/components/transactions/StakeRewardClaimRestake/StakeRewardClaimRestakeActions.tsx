@@ -34,7 +34,7 @@ export const StakeRewardClaimRestakeActions = ({
       });
     },
     skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,
-    deps: [],
+    deps: [amountToClaim],
   });
 
   return (
@@ -44,7 +44,7 @@ export const StakeRewardClaimRestakeActions = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={<Trans>Restake {symbol}</Trans>}
-      actionInProgressText={<Trans>RESTAKING {symbol}</Trans>}
+      actionInProgressText={<Trans>Restaking {symbol}</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
       sx={sx}
