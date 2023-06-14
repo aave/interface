@@ -9,7 +9,7 @@ on:
 jobs:
   upload-to-crowdin:
     name: Upload sources to Crowdin
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
