@@ -7,7 +7,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 
 import { WalletConnectConnector } from './WalletConnectConnector';
@@ -76,8 +76,6 @@ export const getWallet = (
   wallet: WalletType,
   chainId: ChainId = ChainId.mainnet
 ): AbstractConnector => {
-  const supportedChainIds = getSupportedChainIds();
-
   switch (wallet) {
     case WalletType.READ_ONLY_MODE:
       return new ReadOnlyModeConnector();
@@ -93,14 +91,7 @@ export const getWallet = (
         url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector({
-        rpcMap: supportedChainIds.reduce((acc, network) => {
-          const config = getNetworkConfig(network);
-          acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
-          return acc;
-        }, {} as { [networkId: number]: string }),
-        projectId: '686adbae41fe74595dc2bc1df829fcfe',
-      });
+      return new WalletConnectConnector();
     case WalletType.GNOSIS:
       if (window) {
         return new SafeAppConnector();

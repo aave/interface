@@ -1,16 +1,11 @@
-import type { EthereumProvider as WalletConnectProvider } from '@walletconnect/ethereum-provider';
+import { EthereumProvider as WalletConnectProvider } from '@walletconnect/ethereum-provider';
+import { EthereumProviderOptions } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { ConnectorUpdate } from '@web3-react/types';
+import { getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
 export const URI_AVAILABLE = 'URI_AVAILABLE';
-
-type WalletConnectProviderOptions = Parameters<typeof WalletConnectProvider.init>[0];
-
-export interface WalletConnectConnectorArguments
-  extends Omit<WalletConnectProviderOptions, 'chains' | 'rpcMap'> {
-  rpcMap: { [chainId: string]: string };
-}
 
 export class UserRejectedRequestError extends Error {
   public constructor() {
@@ -20,21 +15,21 @@ export class UserRejectedRequestError extends Error {
   }
 }
 
-function getSupportedChains({ rpcMap }: WalletConnectConnectorArguments): number[] {
-  return Object.keys(rpcMap).map((k) => Number(k));
-}
-
 export class WalletConnectConnector extends AbstractConnector {
-  private readonly config: WalletConnectProviderOptions;
+  private readonly config: EthereumProviderOptions;
 
   public walletConnectProvider?: Awaited<ReturnType<typeof WalletConnectProvider.init>>;
 
-  constructor(config: WalletConnectConnectorArguments) {
-    const supportedChainIds = getSupportedChains(config);
-    super({ supportedChainIds });
+  constructor() {
+    super();
+
+    const [mainnet, ...optionalChains] = getSupportedChainIds();
+
     this.config = {
-      chains: supportedChainIds,
-      ...config,
+      chains: [mainnet],
+      optionalChains,
+      projectId: '686adbae41fe74595dc2bc1df829fcfe',
+      showQrModal: true,
     };
 
     this.handleChainChanged = this.handleChainChanged.bind(this);
@@ -60,12 +55,7 @@ export class WalletConnectConnector extends AbstractConnector {
   };
 
   public async activate(): Promise<ConnectorUpdate> {
-    if (!this.walletConnectProvider) {
-      const walletConnectProviderFactory = await import('@walletconnect/ethereum-provider').then(
-        (m) => m?.default ?? m
-      );
-      this.walletConnectProvider = await walletConnectProviderFactory.init(this.config);
-    }
+    this.walletConnectProvider = await WalletConnectProvider.init(this.config);
 
     this.walletConnectProvider.on('chainChanged', this.handleChainChanged);
     this.walletConnectProvider.on('accountsChanged', this.handleAccountsChanged);
@@ -82,6 +72,7 @@ export class WalletConnectConnector extends AbstractConnector {
       throw error;
     }
   }
+
   public async getProvider(): Promise<typeof this.walletConnectProvider> {
     return this.walletConnectProvider;
   }

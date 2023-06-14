@@ -131,7 +131,12 @@ export const WalletSelector = () => {
       const data = await response.json();
       setUnsTlds(data['tlds']);
     };
-    unsTlds();
+
+    try {
+      unsTlds();
+    } catch (e) {
+      console.log('Error fetching UNS TLDs: ', e);
+    }
   }, []);
 
   const handleBlocking = () => {
