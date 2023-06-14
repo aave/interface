@@ -13,17 +13,11 @@ const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatu
     if (skip.get()) {
       this.skip();
     }
-    cy.window().then((win) => {
-      win.localStorage.setItem('userAcceptedAnalytics', 'false');
-    });
   });
   afterEach(function onAfterEach() {
     if ((this.currentTest as Mocha.Test).state === 'failed' && updateSkipStatus) {
       skip.set(true);
     }
-    cy.window().then((win) => {
-      win.localStorage.setItem('userAcceptedAnalytics', 'false');
-    });
   });
 };
 

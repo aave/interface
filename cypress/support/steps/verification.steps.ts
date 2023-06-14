@@ -10,9 +10,6 @@ const skipSetup = (skip: any) => {
     if (skip.get()) {
       this.skip();
     }
-    cy.window().then((win) => {
-      win.localStorage.setItem('userAcceptedAnalytics', 'false');
-    });
   });
 };
 

@@ -57,14 +57,9 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('selectedAccount', walletAddress.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
         win.localStorage.setItem('testnetsEnabled', enableTestnet.toString());
-        win.localStorage.setItem('userAcceptedAnalytics', 'false');
       },
     });
-  });
-  beforeEach('Set local storage', () => {
-    cy.window().then((win) => {
-      win.localStorage.setItem('userAcceptedAnalytics', 'false');
-    });
+    cy.get('[aria-label="Decline cookies"]').click();
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
