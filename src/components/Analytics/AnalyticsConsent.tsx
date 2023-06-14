@@ -60,7 +60,7 @@ export default function AnalyticsBanner() {
           fontSize: '14px',
           lineHeight: '20.02px',
           padding: '16px 16px',
-          zIndex: 9999999,
+          zIndex: 1,
           borderRadius: '12px',
           border: '0.5px solid rgba(235, 235, 239, 0.42)',
           boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
