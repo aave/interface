@@ -61,6 +61,11 @@ export const configEnvWithTenderly = ({
       },
     });
   });
+  beforeEach('Set local storage', () => {
+    cy.window().then((win) => {
+      win.localStorage.setItem('userAcceptedAnalytics', 'false');
+    });
+  });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
       cy.log('deleting fork');
