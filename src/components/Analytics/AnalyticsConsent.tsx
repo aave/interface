@@ -1,14 +1,14 @@
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import CookieConsentBanner from 'react-cookie-consent';
+import AnalyticsConsentBanner from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 
-export default function CookieBanner() {
-  const [optInAnalytics, optOutAnalytics, cookieConfigOpen] = useRootStore((store) => [
-    store.acceptCookies,
-    store.rejectCookies,
-    store.cookieConfigOpen,
+export default function AnalyticsBanner() {
+  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen] = useRootStore((store) => [
+    store.acceptAnalytics,
+    store.rejectAnalytics,
+    store.analyticsConfigOpen,
   ]);
 
   const [bannerVisible, setBannerVisible] = useState(false);
@@ -35,12 +35,11 @@ export default function CookieBanner() {
 
   return (
     <>
-      {/* <CookieConfigModal /> */}
-      <CookieConsentBanner
+      <AnalyticsConsentBanner
         buttonText={<Typography>Allow analytics </Typography>}
         declineButtonText={<Typography>Opt-out</Typography>}
         disableStyles={true}
-        visible={cookieConfigOpen ? 'show' : 'hidden'}
+        visible={analyticsConfigOpen ? 'show' : 'hidden'}
         flipButtons
         style={{
           background: theme.palette.background.paper,
@@ -114,21 +113,15 @@ export default function CookieBanner() {
         cookieName="userAcceptedAnalytics"
       >
         <Box>
-          {/* <Box pb={2}>
-            We use analytics to give you a better, more personal experience using App.aave.com.
-          </Box> */}
-          <Box>
-            We may employ on-the-spot tracking techniques during your browsing session to collect
-            data on your interactions, preferences, and behaviour. This data helps us personalise
-            your experience and improve our services. See our
-            <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
-              {' '}
-              Privacy Policy.
-            </Link>
-            .
-          </Box>
+          We may employ on-the-spot tracking techniques during your browsing session to collect data
+          on your interactions, preferences, and behaviour. This data helps us personalise your
+          experience and improve our services. See our
+          <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
+            {' '}
+            Privacy Policy.
+          </Link>
         </Box>
-      </CookieConsentBanner>
+      </AnalyticsConsentBanner>
     </>
   );
 }
