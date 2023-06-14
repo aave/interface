@@ -89,7 +89,7 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -212,6 +212,9 @@ export const BorrowAssetsList = () => {
 
           {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
             <MarketWarning marketName="Fantom" />
+          )}
+          {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
+            <MarketWarning marketName="Ethereum AMM" />
           )}
 
           {+collateralUsagePercent >= 0.98 && (
