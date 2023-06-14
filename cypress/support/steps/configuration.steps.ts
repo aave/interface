@@ -59,7 +59,6 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('testnetsEnabled', enableTestnet.toString());
       },
     });
-    cy.get('[aria-label="Decline cookies"]').click();
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
