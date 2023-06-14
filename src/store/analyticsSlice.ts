@@ -66,16 +66,18 @@ export const createAnalyticsSlice: StateCreator<
       if (userAcceptedAnalytics) {
         if (!isInitialized) {
           mixpanel.init(MIXPANEL_TOKEN, { api_host: MIXPANEL_API_HOST, ip: false });
+          set({ mixpanelInitialized: true });
         }
 
         mixpanel.opt_in_tracking();
-        set({ isTrackingEnabled: true, mixpanelInitialized: true });
+        set({ isTrackingEnabled: true });
       } else {
         if (!isInitialized) {
           mixpanel.init(MIXPANEL_TOKEN, { api_host: MIXPANEL_API_HOST, ip: false });
+          set({ mixpanelInitialized: true });
         }
         mixpanel.opt_out_tracking();
-        set({ isTrackingEnabled: false, mixpanelInitialized: true });
+        set({ isTrackingEnabled: false });
       }
     },
     acceptAnalytics: () => {
