@@ -48,7 +48,7 @@ const SwitchNetworkHeader = () => {
   return (
     <Box
       sx={{
-        bgcolor: '#BC0000',
+        bgcolor: '#F26464',
         p: '12px 20px',
         display: 'flex',
         justifyContent: downToMD ? 'space-between' : 'center',
@@ -61,7 +61,7 @@ const SwitchNetworkHeader = () => {
         sx={{
           fontSize: '16px',
           fontWeight: '600',
-          lineHeight: '24px',
+          lineHeight: '21px',
           color: 'background.default',
         }}
       >
@@ -75,10 +75,11 @@ const SwitchNetworkHeader = () => {
         onClick={handleSwitchNetwork}
         sx={{
           fontSize: '16px',
-          lineHeight: '24px',
+          fontWeight: '900',
+          lineHeight: '21px',
           color: 'background.default',
+          textDecoration: 'underline',
         }}
-        variant="contained"
       >
         {downToMD ? <Trans>Switch to BSC</Trans> : <Trans>Switch to Binance Smartchain</Trans>}
       </Button>
