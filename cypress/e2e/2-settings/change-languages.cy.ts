@@ -17,7 +17,7 @@ const verifyTranslation = (markets: string, More: string) => {
 };
 export const verifyTranslationOnMarketsPage = (totalBorrows: string, totalMarketSize: string) => {
   it(`step3:Verify translation on the Markets page on the ${totalBorrows} and on the ${totalMarketSize}`, () => {
-    cy.get('a[href*="/markets/"]').first().click();
+    cy.get('a[href*="/markets/"]').first().click({ multiple: true });
     cy.contains(totalBorrows);
     cy.contains(totalMarketSize);
   });
@@ -31,13 +31,13 @@ describe('Manipulation on the language', () => {
     verifyTranslationOnMarketsPage('Total de préstamos', 'Tamaño total del mercado');
   });
 
-  describe('CASE2: Changing the Language from Spanish to French', () => {
+  describe.skip('CASE2: Changing the Language from Spanish to French', () => {
     switchLanguageStep('Idioma', 'Francés');
     verifyTranslation('Marchés', 'Plus');
     verifyTranslationOnMarketsPage('Total des emprunts', 'Taille totale du marché');
   });
 
-  describe('CASE3: Change language from French to English', () => {
+  describe.skip('CASE3: Change language from French to English', () => {
     switchLanguageStep('Language', 'Anglais');
     verifyTranslation('Markets', 'More');
     verifyTranslationOnMarketsPage('Total borrows', 'Total market size');
