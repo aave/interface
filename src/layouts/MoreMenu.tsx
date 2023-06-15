@@ -22,6 +22,7 @@ export function MoreMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const visibleMoreNavigation = moreNavigation.filter((item) => !item.isVisible);
 
   return (
     <>
@@ -57,7 +58,7 @@ export function MoreMenu() {
         onClose={handleClose}
         keepMounted={true}
       >
-        {moreNavigation.map((item, index) => (
+        {visibleMoreNavigation.map((item, index) => (
           <MenuItem
             component={Link}
             href={item.makeLink ? item.makeLink(walletAddress) : item.link}

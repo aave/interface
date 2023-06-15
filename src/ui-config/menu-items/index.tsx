@@ -80,6 +80,7 @@ const moreMenuItems: MoreMenuItem[] = [
   },
   {
     link: 'https://global.transak.com',
+    isVisible: () => false,
     makeLink: (walletAddress) =>
       `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
     title: t`Buy Crypto With Fiat`,

@@ -34,6 +34,8 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 
   if (isAaveSelfDelegated && isStkAaveSelfDelegated) return null;
 
+  if (aavePower === '0' && stkAavePower === '0') return null;
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 6, mb: 2 }}>
       <Typography typography="caption" sx={{ mb: 5 }} color="text.secondary">
@@ -63,7 +65,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
           </Row>
         ) : (
           <>
-            {!isAaveSelfDelegated && (
+            {!isAaveSelfDelegated && aavePower !== '0' && (
               <Row
                 align="flex-start"
                 caption={
@@ -80,7 +82,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 </Box>
               </Row>
             )}
-            {!isStkAaveSelfDelegated && (
+            {!isStkAaveSelfDelegated && stkAavePower !== '0' && (
               <Row
                 align="flex-start"
                 caption={
@@ -113,14 +115,10 @@ export const DelegatedInfoPanel = () => {
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
 
   if (!powers || !address) return null;
-
-  const disableButton =
-    Number(aave) <= 0 &&
-    Number(stkAave) <= 0 &&
-    powers.aavePropositionDelegatee === '' &&
-    powers.aaveVotingDelegatee === '' &&
-    powers.stkAavePropositionDelegatee === '' &&
-    powers.stkAaveVotingDelegatee === '';
+  const disableButton = Number(aave) <= 0 && Number(stkAave) <= 0;
+  //   powers.aavePropositionDelegatee === '' &&
+  //   powers.aaveVotingDelegatee === '';
+  // powers.stkAavePropositionDelegatee === '' && powers.stkAaveVotingDelegatee === '';
 
   const showRevokeButton =
     powers.aavePropositionDelegatee !== '' ||
