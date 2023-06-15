@@ -48,25 +48,26 @@ const SwitchNetworkHeader = () => {
   return (
     <Box
       sx={{
-        bgcolor: '#BC0000',
+        bgcolor: '#F26464',
         p: '12px 20px',
         display: 'flex',
-        justifyContent: downToMD ? 'space-between' : 'center',
+        flexDirection: downToMD ? 'column' : 'row',
+        justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        gap: '12px',
+        gap: downToMD ? '0px' : '12px',
       }}
     >
       <Typography
         sx={{
           fontSize: '16px',
           fontWeight: '600',
-          lineHeight: '24px',
+          lineHeight: '21px',
           color: 'background.default',
         }}
       >
         {downToMD ? (
-          <Trans>Wrong Network</Trans>
+          <Trans>Connected to Wrong Network</Trans>
         ) : (
           <Trans>You are current connected to the wrong network</Trans>
         )}
@@ -75,10 +76,11 @@ const SwitchNetworkHeader = () => {
         onClick={handleSwitchNetwork}
         sx={{
           fontSize: '16px',
-          lineHeight: '24px',
+          fontWeight: '900',
+          lineHeight: '21px',
           color: 'background.default',
+          textDecoration: 'underline',
         }}
-        variant="contained"
       >
         {downToMD ? <Trans>Switch to BSC</Trans> : <Trans>Switch to Binance Smartchain</Trans>}
       </Button>

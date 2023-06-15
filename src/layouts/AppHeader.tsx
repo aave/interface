@@ -46,7 +46,7 @@ export function AppHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
 
-  const { chainId } = useWeb3Context();
+  const { chainId, currentAccount } = useWeb3Context();
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {
@@ -101,7 +101,7 @@ export function AppHeader() {
             zIndex: theme.zIndex.appBar,
           })}
         >
-          {chainId !== 97 && <SwitchNetworkHeader />}
+          {currentAccount && chainId !== 97 && <SwitchNetworkHeader />}
           <Box
             component="header"
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
