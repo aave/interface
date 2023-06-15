@@ -1,12 +1,18 @@
 import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
-import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  console.log('FORK_ENABLED', FORK_ENABLED);
+  const { currentMarket } = useProtocolDataContext();
+
+  console.log('currentMarket', currentMarket);
+
   return (
     <>
       <AppHeader />
@@ -15,7 +21,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       </Box>
 
       <AppFooter />
-      {PROD_ENV && <AnalyticsConsent />}
+      {FORK_ENABLED ? null : <AnalyticsConsent />}
     </>
   );
 }
