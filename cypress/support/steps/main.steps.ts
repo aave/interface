@@ -60,7 +60,7 @@ export const supply = (
       cy.doSwitchToDashboardSupplyView();
       cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
-        .click();
+        .click({ force: true });
       cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
