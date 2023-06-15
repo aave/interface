@@ -16,6 +16,7 @@ type UserDisplayProps = {
   titleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
   subtitleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
   withLink?: boolean;
+  funnel?: string;
 };
 
 export const UserDisplay: React.FC<UserDisplayProps> = ({
@@ -24,6 +25,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   titleProps,
   subtitleProps,
   withLink,
+  funnel,
 }) => {
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
     (state) => ({
@@ -56,6 +58,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
               domainName={defaultDomain.name}
               variant="h4"
               link={withLink ? `https://etherscan.io/address/${account}` : undefined}
+              funnel={funnel}
               {...titleProps}
             />
             <UserNameText
@@ -72,6 +75,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
             loading={loading}
             variant="h4"
             link={withLink ? `https://etherscan.io/address/${account}` : undefined}
+            funnel={funnel}
             {...titleProps}
           />
         )}
@@ -104,6 +108,7 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
         link={`https://etherscan.io/address/${address}`}
         iconSize={14}
         {...titleProps}
+        funnel={'Delegation power panel: Governance'}
       />
     </Box>
   );

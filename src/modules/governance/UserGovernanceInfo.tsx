@@ -22,7 +22,7 @@ export const UserGovernanceInfo = () => {
       <Typography sx={{ mb: 6 }} color="text.secondary">
         <Trans>Please connect a wallet to view your personal information here.</Trans>
       </Typography>
-      <ConnectWalletButton />
+      <ConnectWalletButton funnel="Governance Page" />
     </Paper>
   );
 };
