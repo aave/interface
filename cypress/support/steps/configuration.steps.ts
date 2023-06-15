@@ -60,7 +60,6 @@ export const configEnvWithTenderly = ({
         // win.localStorage.setItem('userAcceptedAnalytics', 'true');
       },
     });
-    cy.get('[aria-label="Decline cookies"]').click();
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
