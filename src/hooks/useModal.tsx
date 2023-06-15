@@ -241,7 +241,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ stakeAssetName, icon });
         },
         openStakeRewardsRestakeClaim: (stakeAssetName, icon) => {
-          trackEvent(STAKE.OPEN_CLAIM_STAKE_REWARDS, { assetName: stakeAssetName });
+          trackEvent(STAKE.OPEN_CLAIM_STAKE_RESTAKE_REWARDS, { assetName: stakeAssetName });
           setType(ModalType.StakeRewardsClaimRestake);
           setArgs({ stakeAssetName, icon });
         },
