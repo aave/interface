@@ -1,6 +1,8 @@
 import { useLingui } from '@lingui/react';
 import { Button, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import { useRootStore } from 'src/store/root';
+import { NAV_BAR } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../../components/primitives/Link';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
@@ -17,7 +19,15 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
 
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
-
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const handleClick = (title: string, isMd: boolean) => {
+    if (isMd && setOpen) {
+      trackEvent(NAV_BAR.MAIN_MENU, { nav_link: title });
+      setOpen(false);
+    } else {
+      trackEvent(NAV_BAR.MAIN_MENU, { nav_link: title });
+    }
+  };
   return (
     <List
       sx={{
@@ -46,13 +56,14 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 variant="h2"
                 color="#F1F1F3"
                 sx={{ width: '100%', p: 4 }}
-                onClick={() => (setOpen ? setOpen(false) : undefined)}
+                onClick={() => handleClick(item.title, true)}
               >
                 {i18n._(item.title)}
               </Typography>
             ) : (
               <Button
                 component={Link}
+                onClick={() => handleClick(item.title, false)}
                 href={item.link}
                 sx={(theme) => ({
                   color: '#F1F1F3',

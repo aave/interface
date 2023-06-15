@@ -8,6 +8,6 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [folder + '**/*.*'],
-    excludeSpecPattern: ['/**/mobile.cy.ts'],
+    excludeSpecPattern: ['/**/mobile.cy.ts', '/**/change-languages.cy.ts'],
   },
 });

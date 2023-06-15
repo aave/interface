@@ -11,6 +11,7 @@ import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/Backgroun
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
@@ -26,7 +27,9 @@ interface UseTransactionHandlerProps {
   tryPermit?: boolean;
   permitAction?: ProtocolAction;
   skip?: boolean;
+  protocolAction?: ProtocolAction;
   deps?: DependencyList;
+  eventTxInfo?: Pick<TransactionDetails, 'asset' | 'assetName' | 'amount'>;
 }
 
 export type Approval = {
@@ -41,8 +44,11 @@ export const useTransactionHandler = ({
   tryPermit = false,
   permitAction,
   skip,
+  protocolAction,
   deps = [],
-}: UseTransactionHandlerProps) => {
+  eventTxInfo,
+}: //eventTxInfo,
+UseTransactionHandlerProps) => {
   const {
     approvalTxState,
     setApprovalTxState,
@@ -57,15 +63,19 @@ export const useTransactionHandler = ({
   const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const generatePermitPayloadForMigrationSupplyAsset = useRootStore(
-    (state) => state.generatePermitPayloadForMigrationSupplyAsset
-  );
-  const generatePermitPayloadForMigrationBorrowAsset = useRootStore(
-    (state) => state.generatePermitPayloadForMigrationBorrowAsset
-  );
-  const [signPoolERC20Approval, walletApprovalMethodPreference] = useRootStore((state) => [
+
+  const [
+    signPoolERC20Approval,
+    walletApprovalMethodPreference,
+    generatePermitPayloadForMigrationBorrowAsset,
+    generatePermitPayloadForMigrationSupplyAsset,
+    addTransaction,
+  ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
+    state.generatePermitPayloadForMigrationBorrowAsset,
+    state.generatePermitPayloadForMigrationSupplyAsset,
+    state.addTransaction,
   ]);
 
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
@@ -98,9 +108,17 @@ export const useTransactionHandler = ({
   }) => {
     try {
       const txnResult = await tx();
+
       try {
         await txnResult.wait(1);
+
         mounted.current && successCallback && successCallback(txnResult);
+
+        addTransaction(txnResult.hash, {
+          txState: 'success',
+          action: protocolAction || ProtocolAction.default,
+          ...eventTxInfo,
+        });
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
@@ -117,6 +135,12 @@ export const useTransactionHandler = ({
         } catch (e) {
           mounted.current && errorCallback && errorCallback(e, txnResult.hash);
           return;
+        } finally {
+          addTransaction(txnResult.hash, {
+            txState: 'failed',
+            action: protocolAction || ProtocolAction.default,
+            ...eventTxInfo,
+          });
         }
       }
 

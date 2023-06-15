@@ -8,6 +8,8 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { WITHDRAW_MODAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -44,6 +46,7 @@ export const WithdrawModalContent = ({
   const [withdrawMax, setWithdrawMax] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   // calculations
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
@@ -80,6 +83,7 @@ export const WithdrawModalContent = ({
     amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
     if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
+      trackEvent(WITHDRAW_MODAL.MAX_WITHDRAW);
       setWithdrawMax('-1');
     } else {
       setWithdrawMax(maxAmountToWithdraw.toString(10));
@@ -266,7 +270,12 @@ export const WithdrawModalContent = ({
           >
             <Checkbox
               checked={riskCheckboxAccepted}
-              onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
+              onChange={() => {
+                setRiskCheckboxAccepted(!riskCheckboxAccepted),
+                  trackEvent(WITHDRAW_MODAL.ACCEPT_RISK, {
+                    riskCheckboxAccepted: riskCheckboxAccepted,
+                  });
+              }}
               size="small"
               data-cy={`risk-checkbox`}
             />

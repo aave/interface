@@ -4,7 +4,9 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { onRampServices } from 'src/ui-config/onRampServicesConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 type BuyWithFiatModalProps = {
   cryptoSymbol: string;
@@ -14,6 +16,7 @@ type BuyWithFiatModalProps = {
 
 export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModalProps) => {
   const { currentAccount: walletAddress } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const {
     currentNetworkConfig: { name: network },
   } = useProtocolDataContext();
@@ -50,6 +53,13 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
             href={makeLink({ cryptoSymbol, network, walletAddress })}
             target="_blank"
             rel="noopener"
+            onClick={() =>
+              trackEvent(GENERAL.BUY_WITH_FIAT, {
+                token: cryptoSymbol,
+                network: network,
+                onrampname: onRampServices[0].name,
+              })
+            }
           >
             <Box sx={{ display: 'flex', flexGrow: 1 }}>
               <SvgIcon sx={{ mr: 2 }}>{icon}</SvgIcon>

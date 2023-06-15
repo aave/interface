@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Paper, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { useRootStore } from 'src/store/root';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
@@ -30,6 +32,27 @@ export const ListWrapper = ({
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
   );
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const handleTrackingEvents = () => {
+    if (!isCollapse) {
+      switch (localStorageName as string | boolean) {
+        case 'borrowAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.HIDE_BORROW_TILE, {});
+          break;
+        case 'borrowedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.HIDE_YOUR_BORROW_TILE, {});
+          break;
+        case 'supplyAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.HIDE_SUPPLY_TILE, {});
+          break;
+        case 'suppliedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.HIDE_YOUR_SUPPLY_TILE, {});
+        default:
+          return null;
+      }
+    }
+  };
 
   const collapsed = isCollapse && !noData;
 
@@ -89,11 +112,13 @@ export const ListWrapper = ({
                 },
               },
             }}
-            onClick={() =>
+            onClick={() => {
+              handleTrackingEvents();
+
               !!localStorageName && !noData
                 ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                : undefined
-            }
+                : undefined;
+            }}
           >
             <Typography variant="buttonM" color="text.secondary">
               {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}

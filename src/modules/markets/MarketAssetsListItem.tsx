@@ -6,6 +6,7 @@ import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -15,16 +16,25 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { MARKETS } from '../../utils/mixPanelEvents';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <ListItem
       px={6}
       minHeight={76}
-      onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket))}
+      onClick={() => {
+        trackEvent(MARKETS.DETAILS_ROW_CLICK, {
+          assetName: reserve.name,
+          asset: reserve.underlyingAsset,
+          market: currentMarket,
+        });
+        router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket));
+      }}
       sx={{ cursor: 'pointer' }}
       button
       data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
@@ -107,6 +117,13 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+          onClick={() =>
+            trackEvent(MARKETS.DETAILS_BUTTON, {
+              assetName: reserve.name,
+              asset: reserve.underlyingAsset,
+              market: currentMarket,
+            })
+          }
         >
           <Trans>Details</Trans>
         </Button>

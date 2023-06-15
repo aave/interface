@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
 import React, { useState } from 'react';
+import { useRootStore } from 'src/store/root';
+import { SETTINGS } from 'src/utils/mixPanelEvents';
 
 interface TestNetModeSwitcherProps {
   component?: typeof MenuItem | typeof ListItem;
@@ -10,6 +12,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
   const testnetsEnabledId = 'testnetsEnabled';
   const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
   const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const toggleTestnetsEnabled = () => {
     const newState = !testnetsEnabled;
@@ -38,6 +41,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
         control={
           <Switch
             disableRipple
+            onClick={() => trackEvent(SETTINGS.TESTNET_MODE)}
             checked={testnetsEnabled}
             sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
           />

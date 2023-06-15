@@ -3,8 +3,10 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { AIP } from 'src/utils/mixPanelEvents';
 
 import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -41,6 +43,7 @@ export const GovVoteModalContent = ({
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { palette } = useTheme();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -85,6 +88,7 @@ export const GovVoteModalContent = ({
               component="a"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent(AIP.SHARE_VOTE_ON_LENS)}
               href={`https://lenster.xyz/?url=${
                 window.location.href
               }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}

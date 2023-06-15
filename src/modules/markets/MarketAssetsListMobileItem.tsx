@@ -5,6 +5,8 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -15,6 +17,8 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <ListMobileItemWrapper
       symbol={reserve.symbol}
@@ -130,6 +134,13 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         component={Link}
         href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
         fullWidth
+        onClick={() => {
+          trackEvent(MARKETS.DETAILS_BUTTON, {
+            asset: reserve.underlyingAsset,
+            market: currentMarket,
+            assetName: reserve.name,
+          });
+        }}
       >
         <Trans>View details</Trans>
       </Button>

@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import Paraswap from '/public/icons/other/paraswap.svg';
 
@@ -24,6 +26,8 @@ interface ListSlippageButtonProps {
 export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippageButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -90,6 +94,7 @@ export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippa
               value={slippageValue}
               onClick={() => {
                 setSlippage(slippageValue);
+                trackEvent(GENERAL.SET_SLIPPAGE, { amount: slippageValue });
                 handleClose();
               }}
             >

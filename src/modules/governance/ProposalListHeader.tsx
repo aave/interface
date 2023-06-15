@@ -9,6 +9,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useRootStore } from 'src/store/root';
+import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
@@ -97,12 +99,13 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
   handleSearchQueryChange,
 }) => {
   const handleChange = (event: SelectChangeEvent) => {
+    trackEvent(GOVERNANCE_PAGE.FILTER, { filter: event.target.value });
     handleProposalFilterChange(event.target.value as string);
   };
-
   const { breakpoints } = useTheme();
 
   const md = useMediaQuery(breakpoints.up('md'));
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Box

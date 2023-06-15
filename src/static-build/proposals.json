@@ -9570,7 +9570,7 @@
       "executionTime": 0,
       "forVotes": "236058095466285732829883",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
       "state": "Active",

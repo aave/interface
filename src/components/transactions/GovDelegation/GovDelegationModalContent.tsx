@@ -13,6 +13,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -166,6 +167,13 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           variant="description"
           textColor="text.secondary"
           wrapperProps={{ mt: 6, mb: 2 }}
+          event={{
+            eventName: GENERAL.TOOL_TIP,
+            eventParams: {
+              tooltip: 'Balance to delegate',
+              funnel: 'Governance Delegation',
+            },
+          }}
         >
           <Trans>
             Choose how much voting/proposition power to give to someone else by delegating some of

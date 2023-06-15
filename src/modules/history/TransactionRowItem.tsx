@@ -9,6 +9,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+import { GENERAL, TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
@@ -28,7 +29,10 @@ interface TransactionHistoryItemProps {
 
 function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
-  const [currentNetworkConfig] = useRootStore((state) => [state.currentNetworkConfig]);
+  const { currentNetworkConfig, trackEvent } = useRootStore((state) => ({
+    currentNetworkConfig: state.currentNetworkConfig,
+    trackEvent: state.trackEvent,
+  }));
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
@@ -36,6 +40,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const handleCopy = async (text: string) => {
     navigator.clipboard.writeText(text);
     setCopyStatus(true);
+    trackEvent(TRANSACTION_HISTORY.COPY_TX_ADDRESS);
   };
 
   useEffect(() => {
@@ -127,6 +132,9 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
               <Link
                 href={explorerLink}
+                onClick={() =>
+                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+                }
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

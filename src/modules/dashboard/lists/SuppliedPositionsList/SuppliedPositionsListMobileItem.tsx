@@ -81,7 +81,15 @@ export const SuppliedPositionsListMobileItem = ({
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
-          onToggleSwitch={() => openCollateralChange(underlyingAsset)}
+          onToggleSwitch={() =>
+            openCollateralChange(
+              underlyingAsset,
+              currentMarket,
+              reserve.name,
+              'dashboard',
+              usageAsCollateralEnabledOnUser
+            )
+          }
         />
       </Row>
 
@@ -89,13 +97,12 @@ export const SuppliedPositionsListMobileItem = ({
         <Button
           disabled={disableWithdraw}
           variant="contained"
-          onClick={() => openWithdraw(underlyingAsset)}
+          onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >
           <Trans>Withdraw</Trans>
         </Button>
-
         {isSwapButton ? (
           <Button
             disabled={disableSwap}
@@ -109,7 +116,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSupply}
             variant="outlined"
-            onClick={() => openSupply(underlyingAsset)}
+            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
             fullWidth
           >
             <Trans>Supply</Trans>

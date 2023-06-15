@@ -12,6 +12,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
@@ -77,7 +78,16 @@ export const BorrowInfo = ({
               title={
                 <Box display="flex" alignItems="center">
                   <Trans>Total borrowed</Trans>
-                  <TextWithTooltip>
+                  <TextWithTooltip
+                    event={{
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: {
+                        tooltip: 'Total borrowed',
+                        asset: reserve.underlyingAsset,
+                        assetName: reserve.name,
+                      },
+                    }}
+                  >
                     <>
                       <Trans>
                         Borrowing of this asset is limited to a certain amount to minimize liquidity
@@ -136,6 +146,14 @@ export const BorrowInfo = ({
         <PanelItem
           title={
             <VariableAPYTooltip
+              event={{
+                eventName: GENERAL.TOOL_TIP,
+                eventParams: {
+                  tooltip: 'APY, variable',
+                  asset: reserve.underlyingAsset,
+                  assetName: reserve.name,
+                },
+              }}
               text={<Trans>APY, variable</Trans>}
               key="APY_res_variable_type"
               variant="description"
@@ -153,6 +171,14 @@ export const BorrowInfo = ({
           <PanelItem
             title={
               <StableAPYTooltip
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: {
+                    tooltip: 'APY, stable',
+                    asset: reserve.underlyingAsset,
+                    assetName: reserve.name,
+                  },
+                }}
                 text={<Trans>APY, stable</Trans>}
                 key="APY_res_stable_type"
                 variant="description"
@@ -194,6 +220,8 @@ export const BorrowInfo = ({
           collectorContract={currentMarketData.addresses.COLLECTOR}
           explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
           reserveFactor={reserve.reserveFactor}
+          reserveName={reserve.name}
+          reserveAsset={reserve.underlyingAsset}
         />
       )}
     </Box>

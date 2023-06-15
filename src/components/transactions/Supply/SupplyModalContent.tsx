@@ -16,6 +16,7 @@ import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
@@ -219,6 +220,13 @@ export const SupplyModalContent = React.memo(
           disabled={supplyTxState.loading}
           maxValue={maxAmountToSupply}
           balanceText={<Trans>Wallet balance</Trans>}
+          event={{
+            eventName: SUPPLY_MODAL.MAX_SUPPLY,
+            eventParams: {
+              asset: poolReserve.underlyingAsset,
+              assetName: poolReserve.name,
+            },
+          }}
         />
 
         <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>

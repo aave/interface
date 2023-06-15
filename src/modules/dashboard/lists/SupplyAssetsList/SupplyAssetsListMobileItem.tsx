@@ -94,7 +94,7 @@ export const SupplyAssetsListMobileItem = ({
         <Button
           disabled={disableSupply}
           variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
+          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

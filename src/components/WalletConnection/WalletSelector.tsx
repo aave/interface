@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
+import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
@@ -17,9 +19,9 @@ export type WalletRowProps = {
   walletName: string;
   walletType: WalletType;
 };
-
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet } = useWeb3Context();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
@@ -73,6 +75,10 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
     }
   };
 
+  const connectWalletClick = () => {
+    trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
+    connectWallet(walletType);
+  };
   return (
     <Button
       variant="outlined"
@@ -84,7 +90,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         mb: '8px',
       }}
       size="large"
-      onClick={() => connectWallet(walletType)}
+      onClick={connectWalletClick}
       endIcon={getWalletIcon(walletType)}
     >
       {walletName}
@@ -107,6 +113,7 @@ export const WalletSelector = () => {
   const sm = useMediaQuery(breakpoints.down('sm'));
   const mainnetProvider = getENSProvider();
   const [unsTlds, setUnsTlds] = useState<string[]>([]);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -245,6 +252,7 @@ export const WalletSelector = () => {
           }}
           size="large"
           fullWidth
+          onClick={() => trackEvent(AUTH.MOCK_WALLET)}
           disabled={
             !utils.isAddress(inputMockWalletAddress) &&
             inputMockWalletAddress.slice(-4) !== '.eth' &&

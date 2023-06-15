@@ -5,6 +5,8 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { useRootStore } from 'src/store/root';
+import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
@@ -20,6 +22,7 @@ export function ProposalListItem({
   const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
     formatProposal(proposal);
   const { palette } = useTheme();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
   return (
@@ -32,6 +35,7 @@ export function ProposalListItem({
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
+      onClick={() => trackEvent(GOVERNANCE_PAGE.VIEW_AIP, { AIP: proposal.id })}
       href={
         prerendered
           ? ROUTES.prerenderedProposal(proposal.id)

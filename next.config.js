@@ -31,4 +31,12 @@ module.exports = withBundleAnalyzer({
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,
+  async rewrites() {
+    return [
+      {
+        source: '/collect/:match*',
+        destination: 'https://api.mixpanel.com/:match*',
+      },
+    ];
+  },
 });

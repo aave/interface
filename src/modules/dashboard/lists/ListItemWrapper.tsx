@@ -4,8 +4,10 @@ import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisable
 import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
@@ -51,11 +53,19 @@ export const ListItemWrapper = ({
   const showstETHTooltip = symbol == 'stETH';
   const showBUSDOffBoardingTooltip = symbol == 'BUSD';
   const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
+          onClick={() =>
+            trackEvent(DASHBOARD.DETAILS_ROW_DASHBOARD, {
+              market: currentMarket,
+              assetName: name,
+              asset: detailsAddress,
+            })
+          }
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           noWrap
           sx={{ display: 'inline-flex', alignItems: 'center' }}

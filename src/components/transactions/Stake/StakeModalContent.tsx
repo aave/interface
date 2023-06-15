@@ -9,6 +9,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { STAKE } from 'src/utils/mixPanelEvents';
 
 import { CooldownWarning } from '../../Warnings/CooldownWarning';
 import { AssetInput } from '../AssetInput';
@@ -101,7 +102,11 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     <>
       <TxModalTitle title="Stake" symbol={icon} />
       {isWrongNetwork && !readOnlyModeAddress && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+        <ChangeNetworkWarning
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+          funnel={'Stake Modal'}
+        />
       )}
 
       <CooldownWarning />
@@ -143,6 +148,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         symbol={icon}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
+        event={STAKE.STAKE_TOKEN}
       />
     </>
   );

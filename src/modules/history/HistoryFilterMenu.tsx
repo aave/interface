@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
+import { useRootStore } from 'src/store/root';
+import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
 import { FilterOptions } from './types';
 
@@ -51,7 +53,9 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
-
+  const { trackEvent } = useRootStore((state) => ({
+    trackEvent: state.trackEvent,
+  }));
   useEffect(() => {
     onFilterChange(localFilter);
   }, [localFilter, onFilterChange]);
@@ -72,11 +76,11 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 
   const handleFilterClick = (filter: FilterOptions | undefined) => {
     let newFilter: FilterOptions[] = [];
-
     if (filter !== undefined) {
       if (currentFilter.includes(filter)) {
         newFilter = currentFilter.filter((item) => item !== filter);
       } else {
+        trackEvent(TRANSACTION_HISTORY.FILTER, { value: filter });
         newFilter = [...currentFilter, filter];
         // Checks if all filter options are selected,  enum length is divided by 2 based on how Typescript creates object from enum
         if (newFilter.length === Object.keys(FilterOptions).length / 2) {
@@ -115,6 +119,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   };
 
   const handleClearFilter = (event: React.MouseEvent) => {
+    trackEvent(TRANSACTION_HISTORY.FILTER, { value: 'cleared' });
     event.stopPropagation();
     setLocalFilter([]);
   };

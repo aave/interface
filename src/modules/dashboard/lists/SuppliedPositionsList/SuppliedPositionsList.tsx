@@ -8,6 +8,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
@@ -43,6 +44,10 @@ const head = [
   {
     title: (
       <CollateralSwitchTooltip
+        event={{
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'Collateral Switch' },
+        }}
         text={<Trans>Collateral</Trans>}
         key="Collateral"
         variant="subheader2"
@@ -135,12 +140,26 @@ export const SuppliedPositionsList = () => {
                 title={<Trans>APY</Trans>}
                 value={user?.earnedAPY || 0}
                 percent
-                tooltip={<TotalSupplyAPYTooltip />}
+                tooltip={
+                  <TotalSupplyAPYTooltip
+                    event={{
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Supplied APY' },
+                    }}
+                  />
+                }
               />
               <ListTopInfoItem
                 title={<Trans>Collateral</Trans>}
                 value={user?.totalCollateralUSD || 0}
-                tooltip={<CollateralTooltip />}
+                tooltip={
+                  <CollateralTooltip
+                    event={{
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Supplied Collateral' },
+                    }}
+                  />
+                }
               />
             </>
           )}

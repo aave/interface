@@ -7,6 +7,8 @@ import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 interface AddTokenDropdownProps {
   poolReserve: ComputedReserveData;
@@ -30,6 +32,8 @@ export const AddTokenDropdown = ({
   const [underlyingBase64, setUnderlyingBase64] = useState('');
   const [aTokenBase64, setATokenBase64] = useState('');
   const open = Boolean(anchorEl);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -80,6 +84,12 @@ export const AddTokenDropdown = ({
       <Box onClick={handleClick}>
         <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
           <Box
+            onClick={() => {
+              trackEvent(RESERVE_DETAILS.ADD_TOKEN_TO_WALLET_DROPDOWN, {
+                asset: poolReserve.underlyingAsset,
+                assetName: poolReserve.name,
+              });
+            }}
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -120,6 +130,11 @@ export const AddTokenDropdown = ({
                 setChangingNetwork(true);
               });
             } else {
+              trackEvent(RESERVE_DETAILS.ADD_UNDERLYING_TO_WALLET, {
+                asset: poolReserve.underlyingAsset,
+                assetName: poolReserve.name,
+              });
+
               addERC20Token({
                 address: poolReserve.underlyingAsset,
                 decimals: poolReserve.decimals,
@@ -149,6 +164,11 @@ export const AddTokenDropdown = ({
                 setChangingNetwork(true);
               });
             } else {
+              trackEvent(RESERVE_DETAILS.ADD_ATOKEN_TO_WALLET, {
+                asset: poolReserve.underlyingAsset,
+                assetName: poolReserve.name,
+              });
+
               addERC20Token({
                 address: poolReserve.aTokenAddress,
                 decimals: poolReserve.decimals,

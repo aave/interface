@@ -25,6 +25,7 @@ export const BorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
+
   const {
     isActive,
     isFrozen,
@@ -33,6 +34,7 @@ export const BorrowedPositionsListItem = ({
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
+    name,
   } = reserve;
 
   const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
@@ -82,14 +84,25 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode, isFrozen)}
+          onClick={() => {
+            openRepay(
+              reserve.underlyingAsset,
+              borrowRateMode,
+              isFrozen,
+              currentMarket,
+              name,
+              'dashboard'
+            );
+          }}
         >
           <Trans>Repay</Trans>
         </Button>
         <Button
           disabled={disableBorrow}
           variant="outlined"
-          onClick={() => openBorrow(reserve.underlyingAsset)}
+          onClick={() => {
+            openBorrow(reserve.underlyingAsset, currentMarket, name, 'dashboard');
+          }}
         >
           <Trans>Borrow</Trans>
         </Button>

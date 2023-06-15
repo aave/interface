@@ -16,6 +16,8 @@ import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
 import LoveGhost from '/public/loveGhost.svg';
 
@@ -33,7 +35,9 @@ export const HistoryWrapper = () => {
   const [searchResetKey, setSearchResetKey] = useState(0);
 
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
-
+  const { trackEvent } = useRootStore((state) => ({
+    trackEvent: state.trackEvent,
+  }));
   const {
     data: transactions,
     isLoading,
@@ -44,6 +48,7 @@ export const HistoryWrapper = () => {
   } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
+    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'JSON' });
     setLoadingDownload(true);
     const data = await fetchForDownload({ searchQuery, filterQuery });
     const formattedData = formatTransactionData({ data, csv: false });
@@ -53,6 +58,8 @@ export const HistoryWrapper = () => {
   };
 
   const handleCsvDownload = async () => {
+    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'CSV' });
+
     setLoadingDownload(true);
     const data: TransactionHistoryItemUnion[] = await fetchForDownload({
       searchQuery,
