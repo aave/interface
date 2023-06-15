@@ -17,7 +17,7 @@ const verifyTranslation = (markets: string, More: string) => {
 };
 export const verifyTranslationOnMarketsPage = (totalBorrows: string, totalMarketSize: string) => {
   it(`step3:Verify translation on the Markets page on the ${totalBorrows} and on the ${totalMarketSize}`, () => {
-    cy.get('a[href*="/markets/"]').click();
+    cy.get('a[href*="/markets/"]').first().click();
     cy.contains(totalBorrows);
     cy.contains(totalMarketSize);
   });
