@@ -25,8 +25,6 @@ export type AnalyticsSlice = {
   mixpanelInitialized: boolean;
 };
 
-export const MIXPANEL_API_HOST = '/collect';
-
 export const createAnalyticsSlice: StateCreator<
   RootStore,
   [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
@@ -65,7 +63,7 @@ export const createAnalyticsSlice: StateCreator<
 
       if (userAcceptedAnalytics) {
         if (!isInitialized) {
-          mixpanel.init(MIXPANEL_TOKEN, { api_host: MIXPANEL_API_HOST, ip: false });
+          mixpanel.init(MIXPANEL_TOKEN, { ip: false });
           set({ mixpanelInitialized: true });
         }
 
@@ -73,7 +71,7 @@ export const createAnalyticsSlice: StateCreator<
         set({ isTrackingEnabled: true });
       } else {
         if (!isInitialized) {
-          mixpanel.init(MIXPANEL_TOKEN, { api_host: MIXPANEL_API_HOST, ip: false });
+          mixpanel.init(MIXPANEL_TOKEN, { ip: false });
           set({ mixpanelInitialized: true });
         }
         mixpanel.opt_out_tracking();
