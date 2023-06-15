@@ -7,8 +7,6 @@ import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 
 export function MainLayout({ children }: { children: ReactNode }) {
-  console.log('FORK_ENABLED', FORK_ENABLED);
-
   return (
     <>
       <AppHeader />
