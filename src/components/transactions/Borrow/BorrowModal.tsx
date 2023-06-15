@@ -2,6 +2,8 @@ import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { BORROW_MODAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -12,17 +14,31 @@ export const BorrowModal = () => {
     underlyingAsset: string;
   }>;
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
+    trackEvent(BORROW_MODAL.UNWRAP_UNDERLYING, {
+      asset: args.underlyingAsset,
+      assetWrapped: borrowUnWrapped,
+    });
+    setBorrowUnWrapped(borrowUnWrapped);
+  };
 
   return (
     <BasicModal open={type === ModalType.Borrow} setOpen={close}>
       <ModalWrapper
+        action="borrow"
         title={<Trans>Borrow</Trans>}
         underlyingAsset={args.underlyingAsset}
         keepWrappedSymbol={!borrowUnWrapped}
         requiredPermission={PERMISSION.BORROWER}
       >
         {(params) => (
-          <BorrowModalContent {...params} unwrap={borrowUnWrapped} setUnwrap={setBorrowUnWrapped} />
+          <BorrowModalContent
+            {...params}
+            unwrap={borrowUnWrapped}
+            setUnwrap={handleBorrowUnwrapped}
+          />
         )}
       </ModalWrapper>
     </BasicModal>

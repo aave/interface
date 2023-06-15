@@ -25,7 +25,6 @@ const InfoIcon = () => (
     <InformationCircleIcon />
   </SvgIcon>
 );
-
 export const IsolatedEnabledBadge = ({
   typographyProps,
 }: {

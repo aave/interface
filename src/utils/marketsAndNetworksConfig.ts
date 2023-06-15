@@ -26,7 +26,7 @@ export const ENABLE_TESTNET =
   PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
-const FORK_ENABLED =
+export const FORK_ENABLED =
   !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkEnabled') === 'true';
 // specifies which network was forked

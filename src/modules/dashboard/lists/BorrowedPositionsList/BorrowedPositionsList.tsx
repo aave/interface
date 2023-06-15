@@ -9,6 +9,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -45,7 +46,17 @@ const head = [
     sortKey: 'borrowAPY',
   },
   {
-    title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    title: (
+      <APYTypeTooltip
+        event={{
+          eventName: GENERAL.TOOL_TIP,
+          eventParams: { tooltip: 'APY Type Borrow' },
+        }}
+        text={<Trans>APY type</Trans>}
+        key="APY type"
+        variant="subheader2"
+      />
+    ),
     sortKey: 'typeAPY',
   },
 ];
@@ -162,13 +173,27 @@ export const BorrowedPositionsList = () => {
                 title={<Trans>APY</Trans>}
                 value={user?.debtAPY || 0}
                 percent
-                tooltip={<TotalBorrowAPYTooltip />}
+                tooltip={
+                  <TotalBorrowAPYTooltip
+                    event={{
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Total Borrowed APY' },
+                    }}
+                  />
+                }
               />
               <ListTopInfoItem
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
                 percent
-                tooltip={<BorrowPowerTooltip />}
+                tooltip={
+                  <BorrowPowerTooltip
+                    event={{
+                      eventName: GENERAL.TOOL_TIP,
+                      eventParams: { tooltip: 'Borrow power used' },
+                    }}
+                  />
+                }
               />
             </>
           )}

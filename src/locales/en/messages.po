@@ -795,13 +795,13 @@ msgstr "Disabling this asset as collateral affects your borrowing power and Heal
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/layouts/AppFooter.tsx
+msgid "Docs"
+msgstr "Docs"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -913,6 +913,10 @@ msgstr "Export data to"
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/layouts/AppFooter.tsx
+msgid "FAQS"
+msgstr "FAQS"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
@@ -969,10 +973,6 @@ msgstr "Funds in the Safety Module"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Github"
-msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1225,6 +1225,10 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/layouts/AppFooter.tsx
+msgid "Manage analytics"
+msgstr "Manage analytics"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1528,6 +1532,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
 
+#: src/layouts/AppFooter.tsx
+msgid "Privacy"
+msgstr "Privacy"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -1772,6 +1780,10 @@ msgstr "Selected borrow assets"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
+
+#: src/layouts/AppFooter.tsx
+msgid "Send feedback"
+msgstr "Send feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2036,6 +2048,10 @@ msgstr "Switching E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
+
+#: src/layouts/AppFooter.tsx
+msgid "Terms"
+msgstr "Terms"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
