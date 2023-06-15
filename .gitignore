@@ -30,6 +30,7 @@ yarn-error.log*
 .env.local
 .env.development.local
 .env.test.local
+.env.dev.development
 .env.production.local
 
 # vercel
@@ -45,3 +46,4 @@ package-lock.json
 # IDE specific
 .idea
 .vscode
+.env.development

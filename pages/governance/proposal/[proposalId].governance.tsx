@@ -47,7 +47,9 @@ import { isProposalStateImmutable } from 'src/modules/governance/utils/immutable
 import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { LensIcon } from '../../../src/components/icons/LensIcon';
@@ -113,6 +115,7 @@ export default function ProposalPage({
   const { breakpoints, palette } = useTheme();
   const lgUp = useMediaQuery(breakpoints.up('lg'));
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   async function updateProposal() {
     if (!proposal) return;
@@ -219,6 +222,9 @@ export default function ProposalPage({
                         sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, { AIP: proposal.id, Link: 'Raw Ipfs' })
+                        }
                         href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
                         startIcon={
                           <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
@@ -233,6 +239,12 @@ export default function ProposalPage({
                         sx={{ minWidth: lgUp ? '160px' : '' }}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, {
+                            AIP: proposal.id,
+                            Link: 'Share on twitter',
+                          })
+                        }
                         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                           ipfs.title
                         )}&url=${url}`}
@@ -245,6 +257,12 @@ export default function ProposalPage({
                         component="a"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, {
+                            AIP: proposal.id,
+                            Link: 'Share on lens',
+                          })
+                        }
                         href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
                         startIcon={
                           <LensIcon
@@ -590,6 +608,12 @@ export default function ProposalPage({
                         component={Link}
                         target="_blank"
                         rel="noopener"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, {
+                            AIP: proposal.id,
+                            Link: 'Forum Discussion',
+                          })
+                        }
                         href={ipfs.discussions}
                         variant="outlined"
                         endIcon={
@@ -606,6 +630,12 @@ export default function ProposalPage({
                         component={Link}
                         target="_blank"
                         rel="noopener"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, {
+                            AIP: proposal.id,
+                            Link: 'Seatbelt Report',
+                          })
+                        }
                         href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
                           proposal.id
                         ).padStart(3, '0')}.md`}

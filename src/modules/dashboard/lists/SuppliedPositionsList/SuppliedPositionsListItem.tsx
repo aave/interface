@@ -3,7 +3,9 @@ import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -27,6 +29,7 @@ export const SuppliedPositionsListItem = ({
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
@@ -71,7 +74,15 @@ export const SuppliedPositionsListItem = ({
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
-          onToggleSwitch={() => openCollateralChange(underlyingAsset)}
+          onToggleSwitch={() => {
+            openCollateralChange(
+              underlyingAsset,
+              currentMarket,
+              reserve.name,
+              'dashboard',
+              usageAsCollateralEnabledOnUser
+            );
+          }}
           data-cy={`collateralStatus`}
         />
       </ListColumn>
@@ -80,7 +91,9 @@ export const SuppliedPositionsListItem = ({
         <Button
           disabled={disableWithdraw}
           variant="contained"
-          onClick={() => openWithdraw(underlyingAsset)}
+          onClick={() => {
+            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+          }}
         >
           <Trans>Withdraw</Trans>
         </Button>
@@ -89,7 +102,16 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={disableSwap}
             variant="outlined"
-            onClick={() => openSwap(underlyingAsset)}
+            onClick={() => {
+              // track
+
+              trackEvent(DASHBOARD.SWAP_DASHBOARD, {
+                market: currentMarket,
+                assetName: reserve.name,
+                asset: underlyingAsset,
+              });
+              openSwap(underlyingAsset);
+            }}
             data-cy={`swapButton`}
           >
             <Trans>Switch</Trans>
@@ -98,7 +120,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={disableSupply}
             variant="outlined"
-            onClick={() => openSupply(underlyingAsset)}
+            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           >
             <Trans>Supply</Trans>
           </Button>

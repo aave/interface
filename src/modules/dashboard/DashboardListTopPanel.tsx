@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import { FaucetButton } from 'src/components/FaucetButton';
+import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { BridgeButton } from '../../components/BridgeButton';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
@@ -19,6 +21,8 @@ export const DashboardListTopPanel = ({
   localStorageName,
   bridge,
 }: DashboardListTopPanelProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Box
       sx={{
@@ -35,7 +39,11 @@ export const DashboardListTopPanel = ({
         sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0 } }}
         control={<Checkbox sx={{ p: '6px' }} />}
         checked={value}
-        onChange={() => toggleLocalStorageClick(value, onClick, localStorageName)}
+        onChange={() => {
+          trackEvent(DASHBOARD.SHOW_ASSETS_0_BALANCE, {});
+
+          toggleLocalStorageClick(value, onClick, localStorageName);
+        }}
         label={<Trans>Show assets with 0 balance</Trans>}
       />
 

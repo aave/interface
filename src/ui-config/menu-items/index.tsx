@@ -4,9 +4,6 @@ import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
-import DiscordIcon from '/public/icons/discord.svg';
-import GithubIcon from '/public/icons/github.svg';
-
 import { MarketDataType } from '../marketsConfig';
 
 interface Navigation {
@@ -67,16 +64,6 @@ const moreMenuItems: MoreMenuItem[] = [
     link: 'https://docs.aave.com/portal/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
-  },
-  {
-    link: 'https://discord.gg/7kHKnkDEUf',
-    title: t`Discord`,
-    icon: <DiscordIcon />,
-  },
-  {
-    link: 'https://github.com/aave/interface',
-    title: t`Github`,
-    icon: <GithubIcon />,
   },
   {
     link: 'https://global.transak.com',

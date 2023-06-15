@@ -1,5 +1,7 @@
 import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { ReserveRateTimeRange, reserveRateTimeRangeOptions } from 'src/hooks/useReservesHistory';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 export interface GraphTimeRangeSelectorProps {
   disabled?: boolean;
@@ -20,7 +22,7 @@ export const GraphTimeRangeSelector = ({
       handleTimeRangeChanged(newInterval);
     }
   };
-
+  const trackEvent = useRootStore((store) => store.trackEvent);
   return (
     <ToggleButtonGroup
       disabled={disabled}
@@ -38,6 +40,9 @@ export const GraphTimeRangeSelector = ({
       {reserveRateTimeRangeOptions.map((interval) => {
         return (
           <ToggleButton
+            onClick={() =>
+              trackEvent(RESERVE_DETAILS.GRAPH_TIME_PERIOD, { Period_Selected: interval })
+            }
             key={interval}
             value={interval}
             sx={(theme) => ({

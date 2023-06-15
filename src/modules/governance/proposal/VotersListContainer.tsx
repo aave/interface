@@ -4,6 +4,8 @@ import fetch from 'isomorphic-unfetch';
 import { useEffect, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { CustomProposalType } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
+import { AIP } from 'src/utils/mixPanelEvents';
 
 import { formatProposal } from '../utils/formatProposal';
 import { VotersList } from './VotersList';
@@ -45,6 +47,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
 
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-votes`;
   const queryParams = `?proposal=${proposalId}`;
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const getVoterInfo = async () => {
     if (error) setError(false);
@@ -76,6 +79,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   }, [forVotes, againstVotes]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const handleOpenAllVotes = () => {
+    trackEvent(AIP.VIEW_ALL_VOTES);
     setVotersModalOpen(true);
   };
 

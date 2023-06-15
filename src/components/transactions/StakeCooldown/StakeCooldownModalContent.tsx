@@ -12,8 +12,10 @@ import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { GENERAL, STAKE } from 'src/utils/mixPanelEvents';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
@@ -40,6 +42,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const { data: stakeUserResult } = useUserStakeUiData();
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
@@ -102,6 +105,10 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     return `${formattedTime(time)} ${timeText(time)}`;
   };
 
+  const handleOnCoolDownCheckBox = () => {
+    trackEvent(STAKE.ACCEPT_COOLDOWN_CHECKBOX, { asset: stakeAssetName });
+    setCooldownCheck(!cooldownCheck);
+  };
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
@@ -116,6 +123,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
           unstake window.
         </Trans>{' '}
         <Link
+          onClick={() =>
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              assetName: 'ABPT',
+              link: 'Cooldown Learn More',
+            })
+          }
           variant="description"
           href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}
@@ -256,7 +269,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         control={
           <Checkbox
             checked={cooldownCheck}
-            onClick={() => setCooldownCheck(!cooldownCheck)}
+            onClick={handleOnCoolDownCheckBox}
             inputProps={{ 'aria-label': 'controlled' }}
             data-cy={`cooldownAcceptCheckbox`}
           />

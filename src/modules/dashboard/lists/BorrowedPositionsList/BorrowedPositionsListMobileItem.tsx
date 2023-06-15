@@ -100,7 +100,9 @@ export const BorrowedPositionsListMobileItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
+          onClick={() =>
+            openRepay(underlyingAsset, borrowRateMode, isFrozen, currentMarket, name, 'dashboard')
+          }
           sx={{ mr: 1.5 }}
           fullWidth
         >
@@ -109,7 +111,7 @@ export const BorrowedPositionsListMobileItem = ({
         <Button
           disabled={disableBorrow}
           variant="outlined"
-          onClick={() => openBorrow(underlyingAsset)}
+          onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           fullWidth
         >
           <Trans>Borrow</Trans>

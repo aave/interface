@@ -1,5 +1,6 @@
 import { ApproveType, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
+import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
@@ -53,6 +54,7 @@ export const SupplyActions = React.memo(
       generateApproval,
       walletApprovalMethodPreference,
       estimateGasLimit,
+      addTransaction,
     ] = useRootStore((state) => [
       state.tryPermit,
       state.supply,
@@ -62,6 +64,7 @@ export const SupplyActions = React.memo(
       state.generateApproval,
       state.walletApprovalMethodPreference,
       state.estimateGasLimit,
+      state.addTransaction,
     ]);
     const {
       approvalTxState,
@@ -187,37 +190,50 @@ export const SupplyActions = React.memo(
     const action = async () => {
       try {
         setMainTxState({ ...mainTxState, loading: true });
+
+        let response: TransactionResponse;
+        let action = ProtocolAction.default;
+
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
         if (usePermit && signatureParams) {
+          action = ProtocolAction.supplyWithPermit;
           let signedSupplyWithPermitTxData = supplyWithPermit({
             signature: signatureParams.signature,
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
             deadline: signatureParams.deadline,
           });
+
           signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
-          const response = await sendTx(signedSupplyWithPermitTxData);
+          response = await sendTx(signedSupplyWithPermitTxData);
+
           await response.wait(1);
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
         } else {
+          action = ProtocolAction.supply;
           let supplyTxData = supply({
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
           });
           supplyTxData = await estimateGasLimit(supplyTxData);
-          const response = await sendTx(supplyTxData);
+          response = await sendTx(supplyTxData);
+
           await response.wait(1);
-          setMainTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
         }
+
+        setMainTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
+        });
+
+        addTransaction(response.hash, {
+          action,
+          txState: 'success',
+          asset: poolAddress,
+          amount: amountToSupply,
+        });
+
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();

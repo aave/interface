@@ -70,6 +70,7 @@ export const BorrowActions = React.memo(
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
+    const { addTransaction } = useRootStore();
 
     const approval = async () => {
       try {
@@ -123,6 +124,15 @@ export const BorrowActions = React.memo(
           loading: false,
           success: true,
         });
+
+        addTransaction(response.hash, {
+          action: ProtocolAction.borrow,
+          txState: 'success',
+          asset: poolAddress,
+          amount: amountToBorrow,
+          assetName: poolReserve.name,
+        });
+
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
