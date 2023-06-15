@@ -676,6 +676,10 @@ msgstr "Collector Info"
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Connected to Wrong Network"
+msgstr "Connected to Wrong Network"
+
 #: src/maneki/transactions/TGE/TGEModal.tsx
 msgid "Contribute"
 msgstr "Contribute"
@@ -2716,7 +2720,6 @@ msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
 
 #: src/components/transactions/TxActionsWrapper.tsx
-#: src/maneki/components/SwitchNetworkHeader.tsx
 msgid "Wrong Network"
 msgstr "Wrong Network"
 

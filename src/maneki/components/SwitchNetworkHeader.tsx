@@ -51,10 +51,11 @@ const SwitchNetworkHeader = () => {
         bgcolor: '#F26464',
         p: '12px 20px',
         display: 'flex',
-        justifyContent: downToMD ? 'space-between' : 'center',
+        flexDirection: downToMD ? 'column' : 'row',
+        justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        gap: '12px',
+        gap: downToMD ? '0px' : '12px',
       }}
     >
       <Typography
@@ -66,7 +67,7 @@ const SwitchNetworkHeader = () => {
         }}
       >
         {downToMD ? (
-          <Trans>Wrong Network</Trans>
+          <Trans>Connected to Wrong Network</Trans>
         ) : (
           <Trans>You are current connected to the wrong network</Trans>
         )}
