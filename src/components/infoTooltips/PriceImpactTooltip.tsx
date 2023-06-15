@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton } from '@mui/material';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
@@ -14,6 +15,10 @@ export const PriceImpactTooltip = ({ loading, priceImpact, ...rest }: PriceImpac
     <TextWithTooltip
       variant="secondary12"
       color="text.secondary"
+      event={{
+        eventName: GENERAL.TOOL_TIP,
+        eventParams: { tooltip: 'Price Impact' },
+      }}
       text={
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Trans>

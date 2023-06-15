@@ -38,6 +38,12 @@ export const RepayActions = ({
     useTransactionHandler({
       tryPermit: usingPermit,
       permitAction: ProtocolAction.repayWithPermit,
+      protocolAction: ProtocolAction.repay,
+      eventTxInfo: {
+        amount: amountToRepay,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+      },
       handleGetTxns: async () => {
         return repay({
           amountToRepay,

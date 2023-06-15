@@ -1,5 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { useRootStore } from 'src/store/root';
+
+import { MARKETS } from '../../utils/mixPanelEvents';
 
 interface ListHeaderTitleProps {
   sortName?: string;
@@ -20,7 +23,37 @@ export const ListHeaderTitle = ({
   onClick,
   children,
 }: ListHeaderTitleProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const handleTracking = (sortName: string) => {
+    switch (sortName) {
+      case 'asset':
+        trackEvent(MARKETS.SORT_ASSET_MARKET);
+        break;
+      case 'totalLiquidityUSD':
+        trackEvent(MARKETS.SORT_SUPPLY_MARKET);
+        break;
+      case 'supplyAPY':
+        trackEvent(MARKETS.SORT_SUPPY_APY_MARKET);
+        break;
+      case 'totalDebtUSD':
+        trackEvent(MARKETS.SORT_BORROW_MARKET);
+
+        break;
+      case 'variableBorrowAPY':
+        trackEvent(MARKETS.SORT_BORROW_APY_V_MARKET);
+
+        break;
+      case 'stableBorrowAPY':
+        trackEvent(MARKETS.SORT_BORROW_APY_S_MARKET);
+        break;
+      default:
+        return null;
+    }
+  };
+
   const handleSorting = (name: string) => {
+    handleTracking(name);
     setSortDesc && setSortDesc(false);
     setSortName && setSortName(name);
     if (sortName === name) {

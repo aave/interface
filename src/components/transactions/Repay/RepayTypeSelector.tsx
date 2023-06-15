@@ -3,6 +3,8 @@ import { Box, Typography } from '@mui/material';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { REPAY_MODAL } from 'src/utils/mixPanelEvents';
 
 export enum RepayType {
   BALANCE,
@@ -16,6 +18,8 @@ export function RepayTypeSelector({
   setRepayType: (type: RepayType) => void;
 }) {
   const { currentMarketData } = useProtocolDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (
     <Box sx={{ mb: 6 }}>
@@ -32,6 +36,7 @@ export function RepayTypeSelector({
         <StyledTxModalToggleButton
           value={RepayType.BALANCE}
           disabled={repayType === RepayType.BALANCE}
+          onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Wallet Balance' })}
         >
           <Typography variant="buttonM">
             <Trans>Wallet balance</Trans>
@@ -41,6 +46,7 @@ export function RepayTypeSelector({
         <StyledTxModalToggleButton
           value={RepayType.COLLATERAL}
           disabled={repayType === RepayType.COLLATERAL}
+          onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Collateral' })}
         >
           <Typography variant="buttonM">
             <Trans>Collateral</Trans>

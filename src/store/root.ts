@@ -5,12 +5,14 @@ import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig'
 import create from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
+import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
+import { createTransactionsSlice, TransactionsSlice } from './transactionsSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { getQueryParameter } from './utils/queryParams';
 import { createV3MigrationSlice, V3MigrationSlice } from './v3MigrationSlice';
@@ -27,6 +29,8 @@ export type RootStore = StakeSlice &
   GovernanceSlice &
   V3MigrationSlice &
   WalletDomainsSlice &
+  AnalyticsSlice &
+  TransactionsSlice &
   LayoutSlice;
 
 export const useRootStore = create<RootStore>()(
@@ -41,6 +45,8 @@ export const useRootStore = create<RootStore>()(
         ...createGovernanceSlice(...args),
         ...createV3MigrationSlice(...args),
         ...createWalletDomainsSlice(...args),
+        ...createAnalyticsSlice(...args),
+        ...createTransactionsSlice(...args),
         ...createLayoutSlice(...args),
       };
     })

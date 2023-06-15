@@ -14,6 +14,7 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { BORROW_MODAL, SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
@@ -27,6 +28,7 @@ export interface ModalWrapperProps {
   tokenBalance: string;
   nativeBalance: string;
   isWrongNetwork: boolean;
+  action?: string;
 }
 
 export const ModalWrapper: React.FC<{
@@ -38,6 +40,7 @@ export const ModalWrapper: React.FC<{
   hideTitleSymbol?: boolean;
   requiredPermission?: PERMISSION;
   children: (props: ModalWrapperProps) => React.ReactNode;
+  action?: string;
 }> = ({
   hideTitleSymbol,
   underlyingAsset,
@@ -46,6 +49,7 @@ export const ModalWrapper: React.FC<{
   title,
   requiredPermission,
   keepWrappedSymbol,
+  action,
 }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
@@ -86,6 +90,23 @@ export const ModalWrapper: React.FC<{
       ? currentNetworkConfig.baseAssetSymbol
       : poolReserve.symbol;
 
+  const handleEventName = () => {
+    switch (action) {
+      case 'borrow': {
+        return BORROW_MODAL.SWITCH_NETWORK;
+      }
+      case 'supply': {
+        return SUPPLY_MODAL.SWITCH_NETWORK;
+      }
+      // ..TODO rest? repay / swap etc?
+      // case 'repay': {
+      //   return
+      // }
+      default:
+        return '';
+    }
+  };
+
   return (
     <AssetCapsProvider asset={poolReserve}>
       {!mainTxState.success && (
@@ -95,6 +116,12 @@ export const ModalWrapper: React.FC<{
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}
+          event={{
+            eventName: handleEventName(),
+            eventParams: {
+              asset: underlyingAsset,
+            },
+          }}
         />
       )}
       {children({
