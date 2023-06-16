@@ -22,9 +22,7 @@ export const selectCurrentChainIdMarkets = (state: RootStore) => {
 };
 
 export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
-  const currentChainIdMarkets = selectCurrentChainIdMarkets(state);
-  const marketData = currentChainIdMarkets.filter((marketData) => !marketData.v3);
-  return marketData[0];
+  return state.currentMarketData;
 };
 
 export const selectCurrentChainIdV3MarketData = (state: RootStore) => {

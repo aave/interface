@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-12 18:04\n"
+"PO-Revision-Date: 2023-06-15 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -800,13 +800,13 @@ msgstr "Deshabilitar este activo como garantía afecta tu poder de préstamo y F
 msgid "Disconnect Wallet"
 msgstr "Desconectar cartera"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Canal de Discord"
+
+#: src/layouts/AppFooter.tsx
+msgid "Docs"
+msgstr "Docs"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -918,6 +918,10 @@ msgstr "Exportar datos a"
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
 
+#: src/layouts/AppFooter.tsx
+msgid "FAQS"
+msgstr "FAQS"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Error al cargar los votantes de la propuesta. Por favor actualiza la página."
@@ -974,10 +978,6 @@ msgstr "Fondos en el módulo de seguridad"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Obtener Token ABP"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Github"
-msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1230,6 +1230,10 @@ msgstr "MAI ha sido pausado debido a una decisión de la comunidad. Los suminist
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/layouts/AppFooter.tsx
+msgid "Manage analytics"
+msgstr "Administrar analíticas"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1533,6 +1537,10 @@ msgstr "El impacto del precio es la diferencia entre el valor total de los token
 msgid "Price impact {0}%"
 msgstr "Impacto en el precio {0}%"
 
+#: src/layouts/AppFooter.tsx
+msgid "Privacy"
+msgstr "Privacidad"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Detalles de la propuesta"
@@ -1777,6 +1785,10 @@ msgstr "Activos de préstamo seleccionados"
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
 msgstr "Activos de suministro seleccionados"
+
+#: src/layouts/AppFooter.tsx
+msgid "Send feedback"
+msgstr "Enviar feedback"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
@@ -2041,6 +2053,10 @@ msgstr "Cambiando E-Mode"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Tasa de cambio"
+
+#: src/layouts/AppFooter.tsx
+msgid "Terms"
+msgstr "Términos"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
