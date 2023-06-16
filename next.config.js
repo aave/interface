@@ -3,7 +3,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const pageExtensions = ['page.tsx', 'ts'];
+const pageExtensions = ['page.tsx'];
 if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
 if (process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
 
@@ -24,7 +24,7 @@ module.exports = withBundleAnalyzer({
         },
       ],
     });
-    config.experiments = { topLevelAwait: true, layers: true };
+    config.experiments = { topLevelAwait: true };
     return config;
   },
   reactStrictMode: true,
