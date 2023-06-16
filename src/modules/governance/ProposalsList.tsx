@@ -1,4 +1,3 @@
-import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { LinearProgress, Paper } from '@mui/material';
 import Fuse from 'fuse.js';
 import { GovernancePageProps } from 'pages/governance/index.governance';
@@ -112,7 +111,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           current: GovernancePageProps['proposals'][0]
         ) =>
           current.proposal.state === 'Active' &&
-          current.proposal.executor === AaveGovernanceV2.LONG_EXECUTOR
+          current.proposal.executor === governanceConfig.addresses.AAVE_GOVERNANCE_V2_EXECUTOR_LONG
             ? [current, ...accumulator]
             : [...accumulator, current],
         []

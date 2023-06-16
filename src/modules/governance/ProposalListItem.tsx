@@ -1,5 +1,4 @@
 // import { ProposalState } from '@aave/contract-helpers';
-import { AaveGovernanceV2 } from '@bgd-labs/aave-address-book';
 import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -12,6 +11,7 @@ import {
   proposalHasCrossChainBridge,
   shouldDisplayL2Badge,
 } from 'src/modules/governance/utils/formatProposal';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
@@ -94,7 +94,7 @@ export function ProposalListItem({
               l2Execution={false}
             />
           </Box>
-          {proposal.executor === AaveGovernanceV2.LONG_EXECUTOR ? (
+          {proposal.executor === governanceConfig.addresses.AAVE_GOVERNANCE_V2_EXECUTOR_LONG ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
                 Long Executor
