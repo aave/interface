@@ -59,7 +59,6 @@ runs:
       run: yarn ${{ inputs.YARN_COMMAND }}
       env:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
-        NEXT_PUBLIC_ENABLE_2FA: 'false'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'
         NEXT_PUBLIC_ENABLE_STAKING: 'true'
         NEXT_PUBLIC_API_BASEURL: 'https://aave-api-v2.aave.com'
