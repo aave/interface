@@ -33751,6 +33751,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["migrateV3"] = "migrateV3";
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
+      ProtocolAction2["stake"] = "stake";
+      ProtocolAction2["stakeWithPermit"] = "stakeWithPermit";
       ProtocolAction2["vote"] = "vote";
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
@@ -35364,6 +35366,14 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.repayWithPermit]: {
         limit: "350000",
         recommended: "350000"
+      },
+      [types_1.ProtocolAction.stake]: {
+        limit: "350000",
+        recommended: "350000"
+      },
+      [types_1.ProtocolAction.stakeWithPermit]: {
+        limit: "400000",
+        recommended: "400000"
       },
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
@@ -43872,6 +43882,113 @@ var require_v3_faucet_contract = __commonJS({
   }
 });
 
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
+var require_IERC202612_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IERC202612__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "_nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IERC202612__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IERC202612__factory = IERC202612__factory;
+    IERC202612__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
+var require_erc20_2612 = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ERC20_2612Service = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IERC202612__factory_1 = require_IERC202612_factory();
+    var ERC20_2612Service = class extends BaseService_1.default {
+      constructor(provider) {
+        super(provider, IERC202612__factory_1.IERC202612__factory);
+        this.getNonce = this.getNonce.bind(this);
+      }
+      getNonce(_0) {
+        return __async(this, arguments, function* ({ token, owner }) {
+          const tokenContract = this.getContractInstance(token);
+          let nonce;
+          try {
+            nonce = yield tokenContract.nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+          }
+          try {
+            nonce = yield tokenContract._nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+            console.log(`Token ${token} does not implement nonces or _nonces method`);
+          }
+          return null;
+        });
+      }
+    };
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], ERC20_2612Service.prototype, "getNonce", null);
+    exports2.ERC20_2612Service = ERC20_2612Service;
+  }
+});
+
 // node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js
 var require_IAaveStakingHelper_factory = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js"(exports2) {
@@ -44041,6 +44158,7 @@ var require_staking_contract = __commonJS({
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
+    var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
     var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
     var IStakedToken__factory_1 = require_IStakedToken_factory();
@@ -44049,13 +44167,14 @@ var require_staking_contract = __commonJS({
         var _a7;
         super(provider, IStakedToken__factory_1.IStakedToken__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
         this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
         if (this.stakingHelperContractAddress !== "") {
           this.stakingHelperContract = IAaveStakingHelper__factory_1.IAaveStakingHelper__factory.connect(this.stakingHelperContractAddress, provider);
         }
       }
-      signStaking(user, amount, nonce) {
+      signStaking(user, amount) {
         return __async(this, null, function* () {
           const { getTokenData } = this.erc20Service;
           const stakingContract = this.getContractInstance(this.stakingContractAddress);
@@ -44063,6 +44182,13 @@ var require_staking_contract = __commonJS({
           const { name: name2, decimals } = yield getTokenData(stakedToken);
           const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
           const { chainId } = yield this.provider.getNetwork();
+          const nonce = yield this.erc20_2612Service.getNonce({
+            token: stakedToken,
+            owner: user
+          });
+          if (nonce === null) {
+            return "";
+          }
           const typeData = {
             types: {
               EIP712Domain: [
@@ -44236,9 +44362,8 @@ var require_staking_contract = __commonJS({
       methodValidators_1.SignStakingValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
-      tslib_1.__param(2, (0, paramValidators_1.is0OrPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [String, String, String]),
+      tslib_1.__metadata("design:paramtypes", [String, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "signStaking", null);
     tslib_1.__decorate([
@@ -46393,113 +46518,6 @@ var require_governance_power_delegation_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], GovernancePowerDelegationTokenService.prototype, "getNonce", null);
     exports2.GovernancePowerDelegationTokenService = GovernancePowerDelegationTokenService;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
-var require_IERC202612_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IERC202612__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "_nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ];
-    var IERC202612__factory = class {
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IERC202612__factory = IERC202612__factory;
-    IERC202612__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
-var require_erc20_2612 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.ERC20_2612Service = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
-    var methodValidators_1 = require_methodValidators();
-    var paramValidators_1 = require_paramValidators();
-    var IERC202612__factory_1 = require_IERC202612_factory();
-    var ERC20_2612Service = class extends BaseService_1.default {
-      constructor(provider) {
-        super(provider, IERC202612__factory_1.IERC202612__factory);
-        this.getNonce = this.getNonce.bind(this);
-      }
-      getNonce(_0) {
-        return __async(this, arguments, function* ({ token, owner }) {
-          const tokenContract = this.getContractInstance(token);
-          let nonce;
-          try {
-            nonce = yield tokenContract.nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-          }
-          try {
-            nonce = yield tokenContract._nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-            console.log(`Token ${token} does not implement nonces or _nonces method`);
-          }
-          return null;
-        });
-      }
-    };
-    tslib_1.__decorate([
-      methodValidators_1.ERC20Validator,
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], ERC20_2612Service.prototype, "getNonce", null);
-    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -49229,6 +49247,12 @@ var require_v3_pool_contract = __commonJS({
           encoderAddress: this.l2EncoderAddress
         });
       }
+      getReserveData(reserve) {
+        return __async(this, null, function* () {
+          const lendingPoolContract = this.getContractInstance(this.poolAddress);
+          return lendingPoolContract.getReserveData(reserve);
+        });
+      }
       deposit(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
@@ -50005,6 +50029,13 @@ var require_v3_pool_contract = __commonJS({
     };
     tslib_1.__decorate([
       methodValidators_1.LPValidatorV3,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], Pool.prototype, "getReserveData", null);
+    tslib_1.__decorate([
+      methodValidators_1.LPValidatorV3,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
       tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
@@ -50362,6 +50393,201 @@ var require_v3_pool_contract_bundle = __commonJS({
       }
     };
     exports2.PoolBundle = PoolBundle;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js
+var require_IUiGhoDataProvider_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IUiGhoDataProvider__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [],
+        name: "getGhoReserveData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "ghoBaseVariableBorrowRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountedPerToken",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDebtTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDiscountTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "ghoReserveLastUpdateTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint128",
+                name: "ghoCurrentBorrowIndex",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketLevel",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketMaxCapacity",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoReserveData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getGhoUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "userGhoDiscountPercent",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userDiscountTokenBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userPreviousGhoBorrowIndex",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userGhoScaledBorrowBalance",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoUserData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IUiGhoDataProvider__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IUiGhoDataProvider__factory = IUiGhoDataProvider__factory;
+    IUiGhoDataProvider__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js
+var require_GhoService = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var utils_1 = require_utils5();
+    var IUiGhoDataProvider__factory_1 = require_IUiGhoDataProvider_factory();
+    var GhoService = class {
+      constructor({ provider, uiGhoDataProviderAddress }) {
+        if (!(0, utils_1.isAddress)(uiGhoDataProviderAddress)) {
+          throw new Error("UiGhoDataProvider contract address is not valid");
+        }
+        this.ghoDataProviderService = IUiGhoDataProvider__factory_1.IUiGhoDataProvider__factory.connect(uiGhoDataProviderAddress, provider);
+      }
+      /**
+       * Fetches Gho reserve, discount, facilitator data
+       * @returns - instance of GhoReserveData with reserve, discount, facilitator data
+       */
+      getGhoReserveData() {
+        return __async(this, null, function* () {
+          const ghoReserveData = yield this.ghoDataProviderService.getGhoReserveData();
+          return {
+            ghoBaseVariableBorrowRate: ghoReserveData.ghoBaseVariableBorrowRate.toString(),
+            ghoDiscountedPerToken: ghoReserveData.ghoDiscountedPerToken.toString(),
+            ghoDiscountRate: ghoReserveData.ghoDiscountRate.toString(),
+            aaveFacilitatorBucketMaxCapacity: ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString(),
+            aaveFacilitatorBucketLevel: ghoReserveData.aaveFacilitatorBucketLevel.toString(),
+            ghoMinDebtTokenBalanceForDiscount: ghoReserveData.ghoMinDebtTokenBalanceForDiscount.toString(),
+            ghoMinDiscountTokenBalanceForDiscount: ghoReserveData.ghoMinDiscountTokenBalanceForDiscount.toString(),
+            ghoCurrentBorrowIndex: ghoReserveData.ghoCurrentBorrowIndex.toString(),
+            ghoReserveLastUpdateTimestamp: ghoReserveData.ghoReserveLastUpdateTimestamp.toString()
+          };
+        });
+      }
+      /**
+       * Fetches Gho user data for UI display
+       * @param userAddress - Address of user to fetch ghoDiscountRate, ghoDiscountTokenBalance, and gho balance indeces
+       * @returns - instance of GhoUserData
+       */
+      getGhoUserData(userAddress) {
+        return __async(this, null, function* () {
+          if (!(0, utils_1.isAddress)(userAddress)) {
+            throw new Error("user address is not valid");
+          }
+          const ghoUserData = yield this.ghoDataProviderService.getGhoUserData(userAddress);
+          return {
+            userGhoDiscountPercent: ghoUserData.userGhoDiscountPercent.toString(),
+            userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance.toString(),
+            userGhoScaledBorrowBalance: ghoUserData.userGhoScaledBorrowBalance.toString(),
+            userPreviousGhoBorrowIndex: ghoUserData.userPreviousGhoBorrowIndex.toString()
+          };
+        });
+      }
+    };
+    exports2.GhoService = GhoService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/index.js
+var require_gho = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var GhoService_1 = require_GhoService();
+    Object.defineProperty(exports2, "GhoService", { enumerable: true, get: function() {
+      return GhoService_1.GhoService;
+    } });
   }
 });
 
@@ -53903,8 +54129,10 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_v3_migration_contract(), exports2);
     tslib_1.__exportStar(require_erc20_2612(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_types2(), exports2);
     tslib_1.__exportStar(require_ipfs(), exports2);
     tslib_1.__exportStar(require_utils6(), exports2);
@@ -64266,12 +64494,14 @@ var marketsData = {
     }
   },
   // v3
-  ["proto_sepolia_v3" /* proto_sepolia_v3 */]: {
-    marketTitle: "Ethereum Sepolia",
+  ["proto_sepolia_gho_v3" /* proto_sepolia_gho_v3 */]: {
+    marketTitle: "Ethereum Sepolia GHO",
     v3: true,
     chainId: import_contract_helpers2.ChainId.sepolia,
     enabledFeatures: {
-      faucet: true
+      faucet: true,
+      staking: true
+      // incentives: false,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia_exports.POOL_ADDRESSES_PROVIDER,
@@ -64283,8 +64513,8 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia_exports.UI_INCENTIVE_DATA_PROVIDER
     }
   },
-  ["proto_goerli_v3" /* proto_goerli_v3 */]: {
-    marketTitle: "Ethereum G\xF6rli",
+  ["proto_goerli_gho_v3" /* proto_goerli_gho_v3 */]: {
+    marketTitle: "Ethereum G\xF6rli GHO",
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
@@ -64334,7 +64564,9 @@ var marketsData = {
     chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
     enabledFeatures: {
       faucet: true,
-      incentives: true
+      // governance: true,
+      staking: true
+      // incentives: true,
     },
     //subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-goerli',  needs re-deployment
     addresses: {
@@ -64639,6 +64871,305 @@ var marketsData = {
       marketName: "polygon"
     }
   }
+  // [CustomMarket.proto_goerli_v3]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   v3: true,
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Goerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Goerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Goerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Goerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Goerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_arbitrum_v3]: {
+  //   marketTitle: 'Arbitrum',
+  //   v3: true,
+  //   chainId: ChainId.arbitrum_one,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     liquiditySwap: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Arbitrum.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Arbitrum.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Arbitrum.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Arbitrum.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3Arbitrum.L2_ENCODER,
+  //     COLLECTOR: markets.AaveV3Arbitrum.COLLECTOR,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'arbitrum',
+  //   },
+  // },
+  // [CustomMarket.proto_arbitrum_goerli_v3]: {
+  //   marketTitle: 'Arbitrum Görli',
+  //   v3: true,
+  //   chainId: ChainId.arbitrum_goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3ArbitrumGoerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3ArbitrumGoerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3ArbitrumGoerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3ArbitrumGoerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3ArbitrumGoerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3ArbitrumGoerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3ArbitrumGoerli.L2_ENCODER,
+  //   },
+  // },
+  // [CustomMarket.proto_avalanche_v3]: {
+  //   marketTitle: 'Avalanche',
+  //   v3: true,
+  //   chainId: ChainId.avalanche,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Avalanche.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Avalanche.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Avalanche.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Avalanche.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Avalanche.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Avalanche.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Avalanche.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'avalanche',
+  //   },
+  // },
+  // [CustomMarket.proto_fuji_v3]: {
+  //   marketTitle: 'Avalanche Fuji',
+  //   v3: true,
+  //   chainId: ChainId.fuji,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fuji.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Fuji.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Fuji.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Fuji.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Fuji.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Fuji.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fuji.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_optimism_goerli_v3]: {
+  //   marketTitle: 'Optimism Görli',
+  //   v3: true,
+  //   chainId: ChainId.optimism_goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3OptimismGoerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3OptimismGoerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV3OptimismGoerli.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3OptimismGoerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3OptimismGoerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3OptimismGoerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3OptimismGoerli.L2_ENCODER,
+  //   },
+  // },
+  // [CustomMarket.proto_fantom_v3]: {
+  //   marketTitle: 'Fantom',
+  //   v3: true,
+  //   chainId: ChainId.fantom,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     collateralRepay: true,
+  //     liquiditySwap: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Fantom.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Fantom.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Fantom.WETH_GATEWAY,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Fantom.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Fantom.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Fantom.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Fantom.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Fantom.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Fantom.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'fantom',
+  //   },
+  // },
+  // [CustomMarket.proto_fantom_testnet_v3]: {
+  //   marketTitle: 'Fantom Testnet',
+  //   v3: true,
+  //   chainId: ChainId.fantom_testnet,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3FantomTestnet.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3FantomTestnet.POOL,
+  //     WETH_GATEWAY: markets.AaveV3FantomTestnet.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3FantomTestnet.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3FantomTestnet.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3FantomTestnet.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_harmony_v3]: {
+  //   marketTitle: 'Harmony',
+  //   v3: true,
+  //   chainId: ChainId.harmony,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Harmony.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Harmony.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Harmony.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Harmony.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Harmony.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Harmony.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Harmony.COLLECTOR,
+  //   },
+  // },
+  // [CustomMarket.proto_optimism_v3]: {
+  //   marketTitle: 'Optimism',
+  //   v3: true,
+  //   chainId: ChainId.optimism,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     collateralRepay: true,
+  //     liquiditySwap: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Optimism.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Optimism.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Optimism.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Optimism.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Optimism.UI_INCENTIVE_DATA_PROVIDER,
+  //     L2_ENCODER: markets.AaveV3Optimism.L2_ENCODER,
+  //     COLLECTOR: markets.AaveV3Optimism.COLLECTOR,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
+  //   },
+  // },
+  // [CustomMarket.proto_polygon_v3]: {
+  //   marketTitle: 'Polygon',
+  //   chainId: ChainId.polygon,
+  //   v3: true,
+  //   enabledFeatures: {
+  //     liquiditySwap: true,
+  //     incentives: true,
+  //     collateralRepay: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Polygon.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Polygon.WETH_GATEWAY,
+  //     REPAY_WITH_COLLATERAL_ADAPTER: markets.AaveV3Polygon.REPAY_WITH_COLLATERAL_ADAPTER,
+  //     SWAP_COLLATERAL_ADAPTER: markets.AaveV3Polygon.SWAP_COLLATERAL_ADAPTER,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Polygon.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Polygon.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
+  //     COLLECTOR: markets.AaveV3Polygon.COLLECTOR,
+  //   },
+  //   halIntegration: {
+  //     URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
+  //     marketName: 'polygon',
+  //   },
+  // },
+  // [CustomMarket.proto_mumbai_v3]: {
+  //   marketTitle: 'Polygon Mumbai',
+  //   chainId: ChainId.mumbai,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV3Mumbai.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV3Mumbai.POOL,
+  //     WETH_GATEWAY: markets.AaveV3Mumbai.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV3Mumbai.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV3Mumbai.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV3Mumbai.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV3Mumbai.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  //   v3: true,
+  // },
+  // [CustomMarket.proto_goerli]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Goerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Goerli.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Goerli.WETH_GATEWAY,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Goerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Goerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Goerli.UI_INCENTIVE_DATA_PROVIDER,
+  //     FAUCET: markets.AaveV2Goerli.FAUCET,
+  //   },
+  // },
+  // [CustomMarket.proto_mumbai]: {
+  //   marketTitle: 'Polygon Mumbai',
+  //   chainId: ChainId.mumbai,
+  //   enabledFeatures: {
+  //     incentives: true,
+  //     faucet: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Mumbai.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Mumbai.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Mumbai.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV2Mumbai.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Mumbai.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Mumbai.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Mumbai.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
+  // [CustomMarket.proto_fuji]: {
+  //   marketTitle: 'Avalanche Fuji',
+  //   chainId: ChainId.fuji,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //     incentives: true,
+  //   },
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: markets.AaveV2Fuji.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: markets.AaveV2Fuji.POOL,
+  //     WETH_GATEWAY: markets.AaveV2Fuji.WETH_GATEWAY,
+  //     FAUCET: markets.AaveV2Fuji.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: markets.AaveV2Fuji.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: markets.AaveV2Fuji.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: markets.AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
 };
 
 // src/ui-config/networksConfig.ts
@@ -64646,12 +65177,8 @@ var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
   [import_contract_helpers3.ChainId.sepolia]: {
     name: "Ethereum Sepolia",
-    publicJsonRPCUrl: [
-      "https://rpc.sepolia.org",
-      "https://rpc2.sepolia.org",
-      "https://rpc.sepolia.online",
-      "https://www.sepoliarpc.space"
-    ],
+    privateJsonRPCUrl: "https://eth-sepolia.g.alchemy.com/v2/DcgsmYhsMAhCarVoqRmSLnMUH2i__wlM",
+    publicJsonRPCUrl: [],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: "0x0",
@@ -64665,11 +65192,8 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.goerli]: {
     name: "Ethereum G\xF6rli",
-    publicJsonRPCUrl: [
-      "https://eth-goerli.public.blastapi.io",
-      "https://rpc.ankr.com/eth_goerli",
-      "https://goerli.prylabs.net"
-    ],
+    privateJsonRPCUrl: "https://eth-goerli.g.alchemy.com/v2/Svm_hYMBAm9sUyqpEVxtCi6WhefbBvdl",
+    publicJsonRPCUrl: ["https://eth-goerli.public.blastapi.io", "https://rpc.ankr.com/eth_goerli"],
     publicJsonRPCWSUrl: "wss://eth-goerli.public.blastapi.io",
     // protocolDataUrl: '',
     baseUniswapAdapter: "0x0",
@@ -65203,7 +65727,6 @@ var ustDisableProposal = "https://app.aave.com/governance/proposal/75";
 var kncDisableProposal = "https://app.aave.com/governance/proposal/69";
 var v2MainnetDisableProposal = "https://app.aave.com/governance/proposal/111";
 var v2MainnetDisableProposal2 = "https://app.aave.com/governance/proposal/125";
-var v2PolygonDisableProposal = "https://app.aave.com/governance/proposal/124";
 var frozenProposalMap = {
   ["UST" + "proto_mainnet" /* proto_mainnet */]: ustDisableProposal,
   ["KNC" + "proto_mainnet" /* proto_mainnet */]: kncDisableProposal,
@@ -65246,13 +65769,14 @@ var frozenProposalMap = {
   ["ENS" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
   ["LINK" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
   ["UNI" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
-  ["SNX" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2,
-  ["BAL" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["CRV" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["DPI" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["GHST" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["LINK" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal,
-  ["XSUSHI" + "proto_polygon" /* proto_polygon */]: v2PolygonDisableProposal
+  ["SNX" + "proto_mainnet" /* proto_mainnet */]: v2MainnetDisableProposal2
+  // TODO: Add for production
+  // ['BAL' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['CRV' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['LINK' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  // ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
 };
 
 // src/modules/governance/utils/governanceProvider.tsx

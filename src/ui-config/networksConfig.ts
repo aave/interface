@@ -53,12 +53,8 @@ export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
-    publicJsonRPCUrl: [
-      'https://rpc.sepolia.org',
-      'https://rpc2.sepolia.org',
-      'https://rpc.sepolia.online',
-      'https://www.sepoliarpc.space',
-    ],
+    privateJsonRPCUrl: 'https://eth-sepolia.g.alchemy.com/v2/DcgsmYhsMAhCarVoqRmSLnMUH2i__wlM',
+    publicJsonRPCUrl: [],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
@@ -72,11 +68,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
-    publicJsonRPCUrl: [
-      'https://eth-goerli.public.blastapi.io',
-      'https://rpc.ankr.com/eth_goerli',
-      'https://goerli.prylabs.net',
-    ],
+    privateJsonRPCUrl: 'https://eth-goerli.g.alchemy.com/v2/Svm_hYMBAm9sUyqpEVxtCi6WhefbBvdl',
+    publicJsonRPCUrl: ['https://eth-goerli.public.blastapi.io', 'https://rpc.ankr.com/eth_goerli'],
     publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',

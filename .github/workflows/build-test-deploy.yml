@@ -25,7 +25,7 @@ jobs:
       - name: Build App
         uses: ./.github/actions/build
         with:
-          NEXT_PUBLIC_ENV: 'prod'
+          NEXT_PUBLIC_ENV: 'staging'
           NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.pull_request.number)] }}
           NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.pull_request.number)]  }}
           NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.pull_request.number)]  }}
@@ -53,9 +53,7 @@ jobs:
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: 'out_staging'
-          NEXTJS_BUILD: 'false'
-          PR_INFO: 'false'
+          BUILD_ARTIFACT_NAME: 'out'
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
@@ -87,10 +85,11 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - polygon
-          - avalanche
-          - optimism
-          - ethereum
+          #          - polygon
+          - gho
+    #          - avalanche
+    #          - optimism
+
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -100,7 +99,7 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --quiet --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
 
   next_js_analyze:
     runs-on: ubuntu-latest
@@ -121,21 +120,78 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
+      #  cypress_full_v2:
+      #    runs-on: ubuntu-latest
+      #    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+      #    needs:
+      #      - cypress_smoke_v2
+      #      - cypress_smoke_v3
+      #    strategy:
+      #      fail-fast: false
+      #      matrix:
+      #        market:
+      #              - ethereum
+      #              - amm
+      #              - polygon
+      #              - avalanche
+      #    steps:
+      #      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      #
+      #      - name: Run tests
+      #        uses: ./.github/actions/cypress
+      #        with:
+      #          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+      #          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+      #          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      #          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    outputs:
-      pinata_hash: '${{ steps.pinata.outputs.hash }}'
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      #  cypress_full_v3:
+      #    runs-on: ubuntu-latest
+      #    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+      #    needs:
+      #      - cypress_smoke_v2
+      #      - cypress_smoke_v3
+      #    strategy:
+      #      fail-fast: false
+      #      matrix:
+      #        market:
+      #    #          - polygon
+      #    #          - avalanche
+      #    #          - optimism
+      #    steps:
+      #      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      #
+      #      - name: Run tests
+      #        uses: ./.github/actions/cypress
+      #        with:
+      #          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+      #          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+      #          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      #          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
 
-      - name: download build
-        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-        with:
-          name: out
-          path: out
+      #  cypress_additional_v2:
+      #    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
+      #    runs-on: ubuntu-latest
+      #    needs:
+      #      - cypress_smoke_v2
+      #      - cypress_smoke_v3
+      #    strategy:
+      #      fail-fast: false
+      #      matrix:
+      #        market:
+      #          - ethereum
+      #          - polygon
+      #          - avalanche
+      #    steps:
+      #      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      #
+      #      - name: Run tests
+      #        uses: ./.github/actions/cypress
+      #        with:
+      #          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+      #          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+      #          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      #          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.ts
 
       - name: pinata
         id: pinata

@@ -1,9 +1,12 @@
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
-import { TypographyProps } from '@mui/material/Typography';
-import { TypographyPropsVariantOverrides } from '@mui/material/Typography/Typography';
-import { OverridableStringUnion } from '@mui/types';
+import type {
+  TypographyProps,
+  TypographyPropsVariantOverrides,
+} from '@mui/material/Typography/Typography';
+import type { OverridableStringUnion } from '@mui/types';
+import type { ElementType } from 'react';
 
 interface CompactNumberProps {
   value: string | number;
@@ -50,7 +53,7 @@ function CompactNumber({
   );
 }
 
-export interface FormattedNumberProps extends TypographyProps {
+export type FormattedNumberProps = TypographyProps<ElementType, { component?: ElementType }> & {
   value: string | number;
   symbol?: string;
   visibleDecimals?: number;
@@ -60,7 +63,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
   compactThreshold?: number;
-}
+};
 
 export function FormattedNumber({
   value,

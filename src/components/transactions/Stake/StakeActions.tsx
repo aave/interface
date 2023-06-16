@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -25,15 +26,23 @@ export const StakeActions = ({
   event,
   ...props
 }: StakeActionProps) => {
-  const stake = useRootStore((state) => state.stake);
+  const { stake, stakeWithPermit } = useRootStore();
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit: false,
+      tryPermit: selectedToken === 'aave',
+      permitAction: ProtocolAction.stakeWithPermit,
       handleGetTxns: async () => {
         return stake({
           token: selectedToken,
           amount: amountToStake.toString(),
+        });
+      },
+      handleGetPermitTxns: async (signature) => {
+        return stakeWithPermit({
+          token: selectedToken,
+          amount: amountToStake.toString(),
+          signature: signature[0],
         });
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
@@ -49,10 +58,13 @@ export const StakeActions = ({
       isWrongNetwork={isWrongNetwork}
       amount={amountToStake}
       handleAction={action}
-      handleApproval={() => approval([{ amount: amountToStake, underlyingAsset: selectedToken }])}
+      handleApproval={() =>
+        approval([{ amount: amountToStake, underlyingAsset: selectedToken, permitType: 'STAKE' }])
+      }
       symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
+      tryPermit={selectedToken === 'aave'}
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
       // event={STAKE.STAKE_BUTTON_MODAL}

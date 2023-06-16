@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { utils } from 'ethers';
 import { useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import useGetGasPrices from 'src/hooks/useGetGasPrices';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { selectCurrentReserves } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
@@ -11,16 +13,24 @@ import { DetailsNumberLine } from '../FlowCommons/TxModalDetails';
 import Turnstile from './Turnstile';
 import { getNormalizedMintAmount } from './utils';
 
+const MAX_GAS_PRICE = 75;
+
 export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { account, currentMarket, currentMarketData } = useRootStore();
   const reserves = useRootStore((state) => selectCurrentReserves(state));
+  const gasPriceData = useGetGasPrices();
 
   const [captchaToken, setCaptchaToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [captchaLoading, setCaptchaLoading] = useState<boolean>(true);
+  const [faucetSuccessMsg, setFaucetSuccessMsg] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  const gasPriceInGwei = Number(
+    utils.formatUnits(gasPriceData.data?.normal.legacyGasPrice || '0', 'gwei')
+  );
 
   const faucetUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/faucet`;
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
@@ -60,7 +70,19 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
       if (!response.ok) {
         throw new Error(data.msg);
       }
-      setTxHash(data.msg);
+      // TODO: only for gho testnet
+      // setTxHash(data.msg);
+      if (gasPriceInGwei > MAX_GAS_PRICE) {
+        setFaucetSuccessMsg(
+          'Your transaction was successfully queued. Due to high gas prices, the faucet transactions are processing slower than usual.'
+        );
+      } else {
+        setFaucetSuccessMsg(
+          `Your transaction was successfully queued. Estimated time until transaction is submitted: ${(
+            data.estimatedTimeMs / 1000
+          ).toFixed(0)} seconds`
+        );
+      }
     } catch (e: unknown) {
       if (e instanceof Error && e.message) {
         setError(e.message);
@@ -106,13 +128,24 @@ export const CaptchaFaucetModalContent = ({ underlyingAsset }: { underlyingAsset
           value={normalizedAmount}
         />
       </Box>
+      {faucetSuccessMsg !== '' && !error && (
+        <Typography variant="helperText" color="success.main">
+          {faucetSuccessMsg}
+        </Typography>
+      )}
       <Typography variant="helperText" color="error.main">
         {error}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
         <Button
           variant="contained"
-          disabled={loading || !captchaToken || readOnlyModeAddress !== undefined}
+          disabled={
+            faucetSuccessMsg !== '' ||
+            error !== '' ||
+            loading ||
+            !captchaToken ||
+            readOnlyModeAddress !== undefined
+          }
           onClick={faucet}
           size="large"
           sx={{ minHeight: '44px' }}

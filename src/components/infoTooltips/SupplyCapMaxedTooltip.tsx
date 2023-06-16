@@ -15,7 +15,7 @@ export const SupplyCapMaxedTooltip = ({ supplyCap, ...rest }: SupplyCapMaxedTool
 
   return (
     <Box sx={{ ml: 2 }}>
-      <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>
+      <TextWithTooltip {...rest} icon={<ExclamationIcon />} iconColor="warning.main" iconSize={18}>
         <>
           <Trans>Protocol supply cap at 100% for this asset. Further supply unavailable.</Trans>{' '}
           <Link

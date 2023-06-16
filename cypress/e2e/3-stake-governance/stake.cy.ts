@@ -31,7 +31,7 @@ testCases.forEach(
     describe(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName} V2 MARKET`, () => {
       const skipTestState = skipState(false);
       configEnvWithTenderlyMainnetFork({
-        tokens: [{ address: testCase.asset.address }],
+        tokens: [{ tokenAddress: testCase.asset.address }],
       });
       stake(
         {
