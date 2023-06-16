@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-12 12:06\n"
+"PO-Revision-Date: 2023-06-15 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -800,12 +800,12 @@ msgstr "La désactivation de cet actif en tant que garantie affecte votre pouvoi
 msgid "Disconnect Wallet"
 msgstr "Déconnecter le portefeuille"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: pages/500.page.tsx
 msgid "Discord channel"
+msgstr ""
+
+#: src/layouts/AppFooter.tsx
+msgid "Docs"
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
@@ -918,6 +918,10 @@ msgstr ""
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/layouts/AppFooter.tsx
+msgid "FAQS"
+msgstr ""
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr ""
@@ -974,10 +978,6 @@ msgstr "Fonds dans le Safety Module"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr ""
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Github"
-msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -1230,6 +1230,10 @@ msgstr ""
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
+
+#: src/layouts/AppFooter.tsx
+msgid "Manage analytics"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1533,6 +1537,10 @@ msgstr ""
 msgid "Price impact {0}%"
 msgstr ""
 
+#: src/layouts/AppFooter.tsx
+msgid "Privacy"
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Détails de la proposition"
@@ -1776,6 +1784,10 @@ msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected supply assets"
+msgstr ""
+
+#: src/layouts/AppFooter.tsx
+msgid "Send feedback"
 msgstr ""
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
@@ -2041,6 +2053,10 @@ msgstr ""
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Taux de commutation"
+
+#: src/layouts/AppFooter.tsx
+msgid "Terms"
+msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
