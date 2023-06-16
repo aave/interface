@@ -84,7 +84,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoUserDataFetched,
     userBorrowApyAfterNewBorrow,
     ghoLoadingData,
-    onBorrowClick: () => openBorrow(underlyingAsset),
+    onBorrowClick: () => openBorrow(underlyingAsset, currentMarket, name, 'dashboard'),
   };
   if (downToXSM) {
     return <GhoBorrowAssetsListItemMobile {...props} />;

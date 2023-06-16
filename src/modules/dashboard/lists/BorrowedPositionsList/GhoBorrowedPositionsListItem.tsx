@@ -62,8 +62,17 @@ export const GhoBorrowedPositionsListItem = ({
     currentMarket,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
     borrowDisabled: !isActive || !borrowingEnabled || isFrozen,
-    onRepayClick: () => openRepay(reserve.underlyingAsset, borrowRateMode, isFrozen),
-    onBorrowClick: () => openBorrow(reserve.underlyingAsset),
+    onRepayClick: () =>
+      openRepay(
+        reserve.underlyingAsset,
+        borrowRateMode,
+        isFrozen,
+        currentMarket,
+        reserve.name,
+        'dashboard'
+      ),
+    onBorrowClick: () =>
+      openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard'),
   };
 
   if (downToXSM) {

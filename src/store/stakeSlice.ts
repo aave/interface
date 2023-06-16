@@ -1,4 +1,5 @@
 import { EthereumTransactionTypeExtended, StakingService } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import {
   goerliStakeConfig,
   prodStakeConfig,
@@ -11,6 +12,12 @@ import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
 export interface StakeSlice {
+  signStakingApproval: (args: { token: string; amount: string }) => Promise<string>;
+  stakeWithPermit: (args: {
+    token: string;
+    amount: string;
+    signature: SignatureLike;
+  }) => Promise<EthereumTransactionTypeExtended[]>;
   stake: (args: {
     token: string;
     amount: string;
@@ -54,6 +61,24 @@ export const createStakeSlice: StateCreator<
     return isStakeFork ? get().jsonRpcProvider() : getProvider(getCurrentStakeConfig().chainId);
   }
   return {
+    signStakingApproval({ token, amount }) {
+      const provider = getCorrectProvider();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: getCurrentStakeConfig().tokens[token].STAKING_HELPER,
+      });
+      const currentUser = get().account;
+      return service.signStaking(currentUser, amount);
+    },
+    stakeWithPermit({ token, amount, signature }) {
+      const provider = getCorrectProvider();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
+        STAKING_HELPER_ADDRESS: getCurrentStakeConfig().tokens[token].STAKING_HELPER,
+      });
+      const currentUser = get().account;
+      return service.stakeWithPermit(currentUser, amount, signature);
+    },
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {

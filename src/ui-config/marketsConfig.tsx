@@ -83,6 +83,7 @@ export enum CustomMarket {
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   proto_scroll_alpha_v3 = 'proto_scroll_alpha_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
+  proto_goerli_gho_v3 = 'proto_goerli_gho_v3',
   proto_sepolia_gho_v3 = 'proto_sepolia_gho_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',

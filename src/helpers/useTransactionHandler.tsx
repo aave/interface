@@ -60,8 +60,7 @@ UseTransactionHandlerProps) => {
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData, refetchStakeData } =
-    useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
 
@@ -129,7 +128,6 @@ UseTransactionHandlerProps) => {
         refetchPoolData && refetchPoolData();
         refetchGhoData && refetchGhoData();
         refetchIncentiveData && refetchIncentiveData();
-        refetchStakeData && refetchStakeData();
       } catch (e) {
         // TODO: what to do with this error?
         try {

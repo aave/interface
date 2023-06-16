@@ -195,13 +195,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 }}
               />
             )}
-            <BorrowAction
-              value={maxAmountToBorrow.toString()}
-              usdValue={maxAmountToBorrowUsd}
-              symbol={selectedAsset}
-              disable={disableBorrowButton}
-              onActionClicked={() => openBorrow(reserve.underlyingAsset)}
-            />
             {alerts}
           </Stack>
         </>
