@@ -37,7 +37,6 @@ runs:
         branch: main
         name: bundle
         path: .next/analyze/base/bundle/
-        workflow_conclusion: ''
 
     - name: Compare with base branch bundle
       if: github.event_name != 'push'

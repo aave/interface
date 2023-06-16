@@ -25,7 +25,7 @@ jobs:
       - name: Build App
         uses: ./.github/actions/build
         with:
-          NEXT_PUBLIC_ENV: 'staging'
+          NEXT_PUBLIC_ENV: 'prod'
           NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.pull_request.number)] }}
           NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.pull_request.number)]  }}
           NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.pull_request.number)]  }}
@@ -53,7 +53,9 @@ jobs:
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: 'out'
+          BUILD_ARTIFACT_NAME: 'out_staging'
+          NEXTJS_BUILD: 'false'
+          PR_INFO: 'false'
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
@@ -85,11 +87,11 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          #          - polygon
+          - polygon
+          - avalanche
+          - optimism
+          - ethereum
           - gho
-    #          - avalanche
-    #          - optimism
-
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
