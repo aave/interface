@@ -28150,7 +28150,7 @@ var require_sender = __commonJS({
     var { isValidStatusCode } = require_validation();
     var { mask: applyMask, toBuffer } = require_buffer_util();
     var mask = Buffer.alloc(4);
-    var Sender = class {
+    var Sender = class _Sender {
       /**
        * Creates a Sender instance.
        *
@@ -28263,7 +28263,7 @@ var require_sender = __commonJS({
        */
       doClose(data, mask2, cb) {
         this.sendFrame(
-          Sender.frame(data, {
+          _Sender.frame(data, {
             fin: true,
             rsv1: false,
             opcode: 8,
@@ -28303,7 +28303,7 @@ var require_sender = __commonJS({
        */
       doPing(data, mask2, readOnly, cb) {
         this.sendFrame(
-          Sender.frame(data, {
+          _Sender.frame(data, {
             fin: true,
             rsv1: false,
             opcode: 9,
@@ -28343,7 +28343,7 @@ var require_sender = __commonJS({
        */
       doPong(data, mask2, readOnly, cb) {
         this.sendFrame(
-          Sender.frame(data, {
+          _Sender.frame(data, {
             fin: true,
             rsv1: false,
             opcode: 10,
@@ -28401,7 +28401,7 @@ var require_sender = __commonJS({
           }
         } else {
           this.sendFrame(
-            Sender.frame(buf, {
+            _Sender.frame(buf, {
               fin: options2.fin,
               rsv1: false,
               opcode,
@@ -28433,7 +28433,7 @@ var require_sender = __commonJS({
        */
       dispatch(data, compress, options2, cb) {
         if (!compress) {
-          this.sendFrame(Sender.frame(data, options2), cb);
+          this.sendFrame(_Sender.frame(data, options2), cb);
           return;
         }
         const perMessageDeflate = this._extensions[PerMessageDeflate.extensionName];
@@ -28456,7 +28456,7 @@ var require_sender = __commonJS({
           this._bufferedBytes -= data.length;
           this._deflating = false;
           options2.readOnly = false;
-          this.sendFrame(Sender.frame(buf, options2), cb);
+          this.sendFrame(_Sender.frame(buf, options2), cb);
           this.dequeue();
         });
       }
@@ -28978,7 +28978,7 @@ var require_websocket = __commonJS({
     var readyStates = ["CONNECTING", "OPEN", "CLOSING", "CLOSED"];
     var protocolVersions = [8, 13];
     var closeTimeout = 30 * 1e3;
-    var WebSocket = class extends EventEmitter {
+    var WebSocket = class _WebSocket extends EventEmitter {
       /**
        * Create a new `WebSocket`.
        *
@@ -28996,7 +28996,7 @@ var require_websocket = __commonJS({
         this._closeTimer = null;
         this._extensions = {};
         this._protocol = "";
-        this._readyState = WebSocket.CONNECTING;
+        this._readyState = _WebSocket.CONNECTING;
         this._receiver = null;
         this._sender = null;
         this._socket = null;
@@ -29098,7 +29098,7 @@ var require_websocket = __commonJS({
         socket.on("data", socketOnData);
         socket.on("end", socketOnEnd);
         socket.on("error", socketOnError);
-        this._readyState = WebSocket.OPEN;
+        this._readyState = _WebSocket.OPEN;
         this.emit("open");
       }
       /**
@@ -29108,7 +29108,7 @@ var require_websocket = __commonJS({
        */
       emitClose() {
         if (!this._socket) {
-          this._readyState = WebSocket.CLOSED;
+          this._readyState = _WebSocket.CLOSED;
           this.emit("close", this._closeCode, this._closeMessage);
           return;
         }
@@ -29116,7 +29116,7 @@ var require_websocket = __commonJS({
           this._extensions[PerMessageDeflate.extensionName].cleanup();
         }
         this._receiver.removeAllListeners();
-        this._readyState = WebSocket.CLOSED;
+        this._readyState = _WebSocket.CLOSED;
         this.emit("close", this._closeCode, this._closeMessage);
       }
       /**
@@ -29139,18 +29139,18 @@ var require_websocket = __commonJS({
        * @public
        */
       close(code, data) {
-        if (this.readyState === WebSocket.CLOSED)
+        if (this.readyState === _WebSocket.CLOSED)
           return;
-        if (this.readyState === WebSocket.CONNECTING) {
+        if (this.readyState === _WebSocket.CONNECTING) {
           const msg = "WebSocket was closed before the connection was established";
           return abortHandshake(this, this._req, msg);
         }
-        if (this.readyState === WebSocket.CLOSING) {
+        if (this.readyState === _WebSocket.CLOSING) {
           if (this._closeFrameSent && this._closeFrameReceived)
             this._socket.end();
           return;
         }
-        this._readyState = WebSocket.CLOSING;
+        this._readyState = _WebSocket.CLOSING;
         this._sender.close(code, data, !this._isServer, (err) => {
           if (err)
             return;
@@ -29172,7 +29172,7 @@ var require_websocket = __commonJS({
        * @public
        */
       ping(data, mask, cb) {
-        if (this.readyState === WebSocket.CONNECTING) {
+        if (this.readyState === _WebSocket.CONNECTING) {
           throw new Error("WebSocket is not open: readyState 0 (CONNECTING)");
         }
         if (typeof data === "function") {
@@ -29184,7 +29184,7 @@ var require_websocket = __commonJS({
         }
         if (typeof data === "number")
           data = data.toString();
-        if (this.readyState !== WebSocket.OPEN) {
+        if (this.readyState !== _WebSocket.OPEN) {
           sendAfterClose(this, data, cb);
           return;
         }
@@ -29201,7 +29201,7 @@ var require_websocket = __commonJS({
        * @public
        */
       pong(data, mask, cb) {
-        if (this.readyState === WebSocket.CONNECTING) {
+        if (this.readyState === _WebSocket.CONNECTING) {
           throw new Error("WebSocket is not open: readyState 0 (CONNECTING)");
         }
         if (typeof data === "function") {
@@ -29213,7 +29213,7 @@ var require_websocket = __commonJS({
         }
         if (typeof data === "number")
           data = data.toString();
-        if (this.readyState !== WebSocket.OPEN) {
+        if (this.readyState !== _WebSocket.OPEN) {
           sendAfterClose(this, data, cb);
           return;
         }
@@ -29237,7 +29237,7 @@ var require_websocket = __commonJS({
        * @public
        */
       send(data, options2, cb) {
-        if (this.readyState === WebSocket.CONNECTING) {
+        if (this.readyState === _WebSocket.CONNECTING) {
           throw new Error("WebSocket is not open: readyState 0 (CONNECTING)");
         }
         if (typeof options2 === "function") {
@@ -29246,7 +29246,7 @@ var require_websocket = __commonJS({
         }
         if (typeof data === "number")
           data = data.toString();
-        if (this.readyState !== WebSocket.OPEN) {
+        if (this.readyState !== _WebSocket.OPEN) {
           sendAfterClose(this, data, cb);
           return;
         }
@@ -29267,14 +29267,14 @@ var require_websocket = __commonJS({
        * @public
        */
       terminate() {
-        if (this.readyState === WebSocket.CLOSED)
+        if (this.readyState === _WebSocket.CLOSED)
           return;
-        if (this.readyState === WebSocket.CONNECTING) {
+        if (this.readyState === _WebSocket.CONNECTING) {
           const msg = "WebSocket was closed before the connection was established";
           return abortHandshake(this, this._req, msg);
         }
         if (this._socket) {
-          this._readyState = WebSocket.CLOSING;
+          this._readyState = _WebSocket.CLOSING;
           this._socket.destroy();
         }
       }
@@ -52630,7 +52630,7 @@ var require_lib33 = __commonJS({
     var Readable = Stream.Readable;
     var BUFFER = Symbol("buffer");
     var TYPE = Symbol("type");
-    var Blob2 = class {
+    var Blob2 = class _Blob {
       constructor() {
         this[TYPE] = "";
         const blobParts = arguments[0];
@@ -52649,7 +52649,7 @@ var require_lib33 = __commonJS({
               buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
             } else if (element instanceof ArrayBuffer) {
               buffer = Buffer.from(element);
-            } else if (element instanceof Blob2) {
+            } else if (element instanceof _Blob) {
               buffer = element[BUFFER];
             } else {
               buffer = Buffer.from(typeof element === "string" ? element : String(element));
@@ -52711,7 +52711,7 @@ var require_lib33 = __commonJS({
         const span = Math.max(relativeEnd - relativeStart, 0);
         const buffer = this[BUFFER];
         const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
-        const blob = new Blob2([], { type: arguments[2] });
+        const blob = new _Blob([], { type: arguments[2] });
         blob[BUFFER] = slicedBuffer;
         return blob;
       }
@@ -53088,7 +53088,7 @@ var require_lib33 = __commonJS({
       return void 0;
     }
     var MAP = Symbol("map");
-    var Headers = class {
+    var Headers = class _Headers {
       /**
        * Headers class
        *
@@ -53098,7 +53098,7 @@ var require_lib33 = __commonJS({
       constructor() {
         let init = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : void 0;
         this[MAP] = /* @__PURE__ */ Object.create(null);
-        if (init instanceof Headers) {
+        if (init instanceof _Headers) {
           const rawHeaders = init.raw();
           const headerNames = Object.keys(rawHeaders);
           for (const headerName of headerNames) {
@@ -53367,7 +53367,7 @@ var require_lib33 = __commonJS({
     }
     var INTERNALS$1 = Symbol("Response internals");
     var STATUS_CODES = http.STATUS_CODES;
-    var Response = class {
+    var Response = class _Response {
       constructor() {
         let body = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
         let opts = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
@@ -53415,7 +53415,7 @@ var require_lib33 = __commonJS({
        * @return  Response
        */
       clone() {
-        return new Response(clone(this), {
+        return new _Response(clone(this), {
           url: this.url,
           status: this.status,
           statusText: this.statusText,
@@ -53459,7 +53459,7 @@ var require_lib33 = __commonJS({
       const proto = signal && typeof signal === "object" && Object.getPrototypeOf(signal);
       return !!(proto && proto.constructor.name === "AbortSignal");
     }
-    var Request = class {
+    var Request = class _Request {
       constructor(input) {
         let init = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
         let parsedURL;
@@ -53529,7 +53529,7 @@ var require_lib33 = __commonJS({
        * @return  Request
        */
       clone() {
-        return new Request(this);
+        return new _Request(this);
       }
     };
     Body.mixIn(Request.prototype);
