@@ -151,7 +151,12 @@ export const MigrationBottomPanel = ({
         />
 
         <HFChange
-          caption={<Trans>Health Factor ({market.marketTitle} v3)</Trans>}
+          caption={
+            <Trans>
+              Health Factor (
+              {market.marketTitle === 'Ethereum AMM' ? 'Ethereum' : market.marketTitle} v3)
+            </Trans>
+          }
           hfCurrent={hfV3Current}
           hfAfter={hfV3AfterChange}
           loading={loading}
