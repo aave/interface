@@ -42,6 +42,8 @@ export const createAnalyticsSlice: StateCreator<
       const eventProperties = {
         ...properties,
         walletAddress: get().account,
+        market: get().currentMarket,
+        walletType: get().walletType,
       };
 
       try {

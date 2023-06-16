@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useRootStore } from 'src/store/root';
+import { PAGEVIEW } from 'src/utils/mixPanelEvents';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -15,12 +17,13 @@ import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 export default function Home() {
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
+  const { trackEvent } = useRootStore();
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
-
+  trackEvent(PAGEVIEW);
   useEffect(() => {
     if (!mode) setMode('supply');
     // eslint-disable-next-line react-hooks/exhaustive-deps

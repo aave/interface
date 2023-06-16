@@ -34,7 +34,8 @@ export const TransactionEventHandler = () => {
 
           const event = actionToEvent(tx.action);
           trackEvent(event, {
-            amount: tx.amount,
+            tokenAmount: tx.amount,
+            assetName: tx.assetName,
             asset: tx.asset,
             market: tx.market,
             txHash: txHash,
