@@ -58,7 +58,11 @@ export const MigrationTopPanel = () => {
                   logo={network.networkLogoPath}
                   testChainName={marketNaming.testChainName}
                 />
-                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
+                <Trans>
+                  Migrate to{' '}
+                  {market.marketTitle === 'Ethereum AMM' ? 'Ethereum' : market.marketTitle} v3
+                  Market
+                </Trans>
               </Box>
             }
           />
