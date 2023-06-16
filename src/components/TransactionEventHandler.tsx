@@ -37,6 +37,7 @@ export const TransactionEventHandler = () => {
             amount: tx.amount,
             asset: tx.asset,
             market: tx.market,
+            txHash: txHash,
           });
 
           // update local state
