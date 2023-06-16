@@ -1,5 +1,3 @@
-/* 
-Disabled for GHO testnet
 import { ReactNode } from 'react';
 import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -12,7 +10,6 @@ export const AddressBlocked = ({ children }: { children: ReactNode }) => {
   const { currentAccount, disconnectWallet, readOnlyMode, loading } = useWeb3Context();
   const screenAddress = readOnlyMode || loading || ENABLE_TESTNET ? '' : currentAccount;
   const { isAllowed } = useAddressAllowed(screenAddress);
-  
 
   if (!isAllowed) {
     return (
@@ -22,12 +19,5 @@ export const AddressBlocked = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  return <>{children}</>;
-};
- */
-
-import { ReactNode } from 'react';
-
-export const AddressBlocked = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };

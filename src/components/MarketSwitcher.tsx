@@ -1,4 +1,3 @@
-// TODO only for testnet removing market selections, ADD BACK for MAIN
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -150,13 +149,9 @@ export const MarketSwitcher = () => {
           <SvgIcon fontSize="medium" {...props}>
             <ChevronDownIcon />
           </SvgIcon>
-        ), // Todo remove on main
-        // <SvgIcon fontSize="medium" {...props}>
-        //   <ChevronDownIcon />
-        // </SvgIcon>
+        ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
-
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -173,12 +168,7 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   }}
                 >
-                  {/** Todo remove on main */}
-                  {/* {getMarketHelpData(market.marketTitle).name}{' '} */}
-                  {network.name === 'Ethereum Sepolia' || 'Ethereum Görli'
-                    ? getMarketHelpData(market.marketTitle).testChainName
-                    : ''}{' '}
-                  {market.isFork ? 'Fork' : ''}
+                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
                 {market.v3 && (
@@ -213,7 +203,6 @@ export const MarketSwitcher = () => {
           PaperProps: {
             style: {
               minWidth: 240,
-              // display: 'none', // Todo remove on main
             },
             variant: 'outlined',
             elevation: 0,
@@ -281,7 +270,7 @@ export const MarketSwitcher = () => {
                 <Trans>Version 3</Trans>
               </Typography>
             </StyledToggleButton>
-            {/* <StyledToggleButton
+            <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -309,7 +298,7 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </StyledToggleButton> */}
+            </StyledToggleButton>
           </StyledToggleButtonGroup>
         </Box>
       )}
