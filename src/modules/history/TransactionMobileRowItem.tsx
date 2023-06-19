@@ -85,7 +85,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               <Button
                 sx={{
                   display: 'flex',
-                  ml: 1,
+                  ml: 3,
                   mr: 1,
                   width: '69px',
                   height: '20px',
