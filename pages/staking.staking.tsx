@@ -40,7 +40,6 @@ export default function Staking() {
   const [mode, setMode] = useState<'aave' | 'bpt' | ''>('');
 
   const { name: network } = getNetworkConfig(chainId);
-  const isFiatOnRampEnabled = process.env.NEXT_FIAT_ON_RAMP_ENABLED;
 
   useEffect(() => {
     if (!mode) setMode('aave');
@@ -122,11 +121,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
-                  headerAction={
-                    isFiatOnRampEnabled ? (
-                      <BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />
-                    ) : null
-                  }
+                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>
               <Grid

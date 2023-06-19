@@ -422,7 +422,6 @@ interface WalletBalanceProps {
 }
 const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
   const theme = useTheme();
-  const isFiatOnRampEnabled = process.env.NEXT_FIAT_ON_RAMP_ENABLED;
 
   return (
     <Stack direction="row" gap={3}>
@@ -445,11 +444,9 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>
-          {isFiatOnRampEnabled && (
-            <Box sx={{ ml: 2 }}>
-              <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
-            </Box>
-          )}
+          <Box sx={{ ml: 2 }}>
+            <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
+          </Box>
         </ValueWithSymbol>
       </Box>
     </Stack>
