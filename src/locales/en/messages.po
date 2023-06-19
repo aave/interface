@@ -2465,6 +2465,10 @@ msgstr "Version 2"
 msgid "Version 3"
 msgstr "Version 3"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr "View"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -2480,10 +2484,6 @@ msgstr "View details"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "View on Explorer"
-
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View tx"
-msgstr "View tx"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"

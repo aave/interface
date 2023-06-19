@@ -88,7 +88,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
                   trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
                 }
               >
-                <Trans>View tx</Trans>{' '}
+                <Trans>View</Trans>{' '}
                 <SvgIcon
                   sx={{
                     marginLeft: '5px',
