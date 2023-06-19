@@ -1,15 +1,11 @@
-import { CheckIcon, DuplicateIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
-import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { GENERAL, TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
@@ -36,12 +32,6 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const theme = useTheme();
 
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-
-  const handleCopy = async (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopyStatus(true);
-    trackEvent(TRANSACTION_HISTORY.COPY_TX_ADDRESS);
-  };
 
   useEffect(() => {
     if (copyStatus) {
@@ -89,70 +79,27 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         </Box>
         <ListColumn align="right">
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            <DarkTooltip
-              title={copyStatus ? <Trans>Copied</Trans> : <Trans>Copy</Trans>}
-              placement="top"
-            >
-              <Box
-                onClick={() => handleCopy(explorerLink)}
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  height: '22px',
-                }}
-              >
-                {!downToMD && (
-                  <React.Fragment>
-                    <Typography variant="caption" color="text.secondary" mr={1}>
-                      <Trans>Tx hash</Trans>
-                    </Typography>
-                    <CompactableTypography
-                      compactMode={CompactMode.MD}
-                      variant="caption"
-                      color="text.primary"
-                    >
-                      {transaction.txHash}
-                    </CompactableTypography>
-                  </React.Fragment>
-                )}
-                <SvgIcon
-                  sx={{
-                    m: 1,
-                    fontSize: '14px',
-                    color: copyStatus ? 'green' : 'text.secondary',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
-                </SvgIcon>
-              </Box>
-            </DarkTooltip>
-            <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
-              <Link
+            {!downToMD && (
+              <Button
+                variant="outlined"
                 href={explorerLink}
+                target="_blank"
                 onClick={() =>
                   trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
                 }
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  height: '22px',
-                }}
               >
+                <Trans>View tx</Trans>{' '}
                 <SvgIcon
                   sx={{
-                    fontSize: '14px',
+                    marginLeft: '5px',
+                    fontSize: '20px',
                     color: 'text.secondary',
                   }}
                 >
                   <ArrowOutward />
                 </SvgIcon>
-              </Link>
-            </DarkTooltip>
+              </Button>
+            )}
           </Box>
         </ListColumn>
       </ListItem>
