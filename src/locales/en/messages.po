@@ -163,12 +163,16 @@ msgstr "Already on cooldown"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 #: src/maneki/transactions/Manage/ManageModalContent.tsx
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
 msgid "Amount"
 msgstr "Amount"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Amount (PAW)"
+msgstr "Amount (PAW)"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
@@ -178,15 +182,15 @@ msgstr "Amount must be greater than 0"
 msgid "Amount to Claim"
 msgstr "Amount to Claim"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered please report it to our Maneki Team."
 msgstr "An Issue was encountered please report it to our Maneki Team."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
 msgstr "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
 msgstr "An Issue was encountered while attempting to <0>load</0> total vests PAW."
 
@@ -525,7 +529,7 @@ msgstr "Claim AAVE"
 msgid "Claim All"
 msgstr "Claim All"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Claim All Vests"
 msgstr "Claim All Vests"
 
@@ -537,7 +541,7 @@ msgstr "Claim All Vests"
 msgid "Claim Failed"
 msgstr "Claim Failed"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Claim Successful"
 msgstr "Claim Successful"
 
@@ -605,11 +609,11 @@ msgstr "Claiming Unlock PAW"
 msgid "Claiming {symbol}"
 msgstr "Claiming {symbol}"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Click on button to <0>refresh and copy</0> error message."
 msgstr "Click on button to <0>refresh and copy</0> error message."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Click on button to <0>refresh</0> and view your new vests balance."
 msgstr "Click on button to <0>refresh</0> and view your new vests balance."
 
@@ -672,9 +676,29 @@ msgstr "Collector Info"
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Connected to Wrong Network"
+msgstr "Connected to Wrong Network"
+
+#: src/maneki/transactions/TGE/TGEModal.tsx
+msgid "Contribute"
+msgstr "Contribute"
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contribute Failed"
+msgstr "Contribute Failed"
+
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribute PAW"
 msgstr "Contribute PAW"
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contributing {symbol}..."
+msgstr "Contributing {symbol}..."
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contribution"
+msgstr "Contribution"
 
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribution Amount"
@@ -1260,7 +1284,7 @@ msgstr "Liquidation value"
 msgid "Loading"
 msgstr "Loading"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Loading Error"
 msgstr "Loading Error"
 
@@ -1564,6 +1588,10 @@ msgstr "Page not found"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Pending Transaction..."
+msgstr "Pending Transaction..."
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1894,7 +1922,7 @@ msgstr "Slippage is the difference between the quoted and received amounts from 
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Something Went Wrong"
 msgstr "Something Went Wrong"
 
@@ -2114,6 +2142,14 @@ msgstr "Switch Network"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Switch to BSC"
+msgstr "Switch to BSC"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "Switch to Binance Smartchain"
+msgstr "Switch to Binance Smartchain"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
@@ -2366,8 +2402,17 @@ msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Locked"
+msgstr "Total Locked"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Value"
 msgstr "Total Value"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Vested"
+msgstr "Total Vested"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Total Vests"
@@ -2392,10 +2437,6 @@ msgstr "Total borrows"
 msgid "Total emission per day"
 msgstr "Total emission per day"
 
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total locked"
-msgstr "Total locked"
-
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
 msgstr "Total market size"
@@ -2406,10 +2447,6 @@ msgstr "Total market size"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
-
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total vested"
-msgstr "Total vested"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
@@ -2427,7 +2464,7 @@ msgstr "Track wallet"
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "Transaction Error"
 msgstr "Transaction Error"
 
@@ -2532,8 +2569,8 @@ msgid "VOTE YAE"
 msgstr "VOTE YAE"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Value"
-msgstr "Value"
+msgid "Value (USD)"
+msgstr "Value (USD)"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"
@@ -2690,9 +2727,21 @@ msgstr "Wrong Network"
 msgid "YAE"
 msgstr "YAE"
 
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "YOU ARE ENTITLED TO"
+msgstr "YOU ARE ENTITLED TO"
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "YOU HAVE CONTRIBUTED"
+msgstr "YOU HAVE CONTRIBUTED"
+
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Yes"
 msgstr "Yes"
+
+#: src/maneki/components/SwitchNetworkHeader.tsx
+msgid "You are current connected to the wrong network"
+msgstr "You are current connected to the wrong network"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2750,7 +2799,7 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
-#: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/MarketVestButton.tsx
 msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
 msgstr "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
 

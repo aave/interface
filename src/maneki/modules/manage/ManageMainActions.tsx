@@ -141,76 +141,22 @@ export const ManageMainActions = () => {
   if (mainActionsLoading) return <ManekiLoadingPaper description="Loading..." withCircle />;
 
   return (
-    <>
-      <Box sx={{ minWidth: '70%' }}>
-        <ManageMainPaper>
-          <ManageMainPrimaryWrapper
-            borderBottom
-            leftComponent={
-              <>
-                <Typography variant="h4" fontWeight={700}>
-                  <Trans>Unlock PAW </Trans>
-                </Typography>
-                <Typography sx={{ width: '90%' }}>
-                  <Trans>Staked PAW and expired PAW vests</Trans>
-                </Typography>
-              </>
-            }
-            rightComponent={
-              <>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '6px',
-                  }}
-                >
-                  {downToSM && (
-                    <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
-                      Amount:
-                    </Typography>
-                  )}
-                  <FormattedNumber
-                    value={utils.formatUnits(unlockedPAW, 18)}
-                    symbol="PAW"
-                    sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
-                  />
-                </Box>
-
-                <Button
-                  variant="contained"
-                  onClick={handleClaimUnlock}
-                  sx={{
-                    padding: '8px 24px',
-                    width: downToSM ? '100%' : 'auto',
-                    color: 'background.default',
-                  }}
-                  disabled={unlockedPAW.isZero() ? true : false}
-                >
-                  <Trans>Claim</Trans>
-                </Button>
-              </>
-            }
-          />
-          <ManageMainPrimaryWrapper
-            borderBottom
-            leftComponent={
-              <>
-                <Typography variant="h4" fontWeight={700}>
-                  <Trans>Vested PAW</Trans>
-                </Typography>
-                <Typography sx={{ width: '90%' }}>
-                  <Trans>
-                    PAW that can be claimed with a{' '}
-                    <Typography component={'span'} color="error.light">
-                      50% penalty
-                    </Typography>
-                  </Trans>
-                </Typography>
-              </>
-            }
-            rightComponent={
+    <Box sx={{ minWidth: '70%' }}>
+      <ManageMainPaper>
+        <ManageMainPrimaryWrapper
+          borderBottom
+          leftComponent={
+            <>
+              <Typography variant="h4" fontWeight={700}>
+                <Trans>Unlock PAW </Trans>
+              </Typography>
+              <Typography sx={{ width: '90%' }}>
+                <Trans>Staked PAW and expired PAW vests</Trans>
+              </Typography>
+            </>
+          }
+          rightComponent={
+            <>
               <Box
                 sx={{
                   display: 'flex',
@@ -225,220 +171,205 @@ export const ManageMainActions = () => {
                   </Typography>
                 )}
                 <FormattedNumber
-                  value={utils.formatUnits(vestedPAW, 18)}
+                  value={utils.formatUnits(unlockedPAW, 18)}
                   symbol="PAW"
                   sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
                 />
               </Box>
-            }
-          />
-          <ManageMainPrimaryWrapper
-            borderBottom
-            leftComponent={
-              <>
-                <Typography variant="h4" fontWeight={700}>
-                  <Trans>Claim all of the above</Trans>
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px' }}>
-                  <Typography>
-                    <Trans>Early Exit Penalty: </Trans>
+
+              <Button
+                variant="contained"
+                onClick={handleClaimUnlock}
+                sx={{
+                  padding: '8px 24px',
+                  width: downToSM ? '100%' : 'auto',
+                  color: 'background.default',
+                }}
+                disabled={unlockedPAW.isZero() ? true : false}
+              >
+                <Trans>Claim</Trans>
+              </Button>
+            </>
+          }
+        />
+        <ManageMainPrimaryWrapper
+          borderBottom
+          leftComponent={
+            <>
+              <Typography variant="h4" fontWeight={700}>
+                <Trans>Vested PAW</Trans>
+              </Typography>
+              <Typography sx={{ width: '90%' }}>
+                <Trans>
+                  PAW that can be claimed with a{' '}
+                  <Typography component={'span'} color="error.light">
+                    50% penalty
                   </Typography>
-                  <FormattedNumber
-                    color={'error.light'}
-                    value={utils.formatUnits(exitPenalty, 18)}
-                  />
-                  <Typography color={'error.light'}>PAW</Typography>
-                </Box>
-              </>
-            }
-            rightComponent={
-              <>
-                <Typography>{''}</Typography>
-                <Button
-                  onClick={handleClaimAllVest}
-                  variant="contained"
-                  sx={{
-                    padding: '8px 24px',
-                    width: downToSM ? '100%' : 'auto',
-                    color: 'background.default',
-                  }}
-                  disabled={totalVestsValue.isZero() ? true : false}
-                >
-                  <Trans>Claim</Trans>
-                </Button>
-              </>
-            }
-          />
-          <ManageMainPrimaryWrapper
-            leftComponent={
-              <>
-                <Typography variant="h4" fontWeight={700}>
-                  <Trans>Expired Locked PAW</Trans>
+                </Trans>
+              </Typography>
+            </>
+          }
+          rightComponent={
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '6px',
+              }}
+            >
+              {downToSM && (
+                <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
+                  Amount:
                 </Typography>
-                <Typography sx={{ width: '90%' }}>
-                  <Trans>
-                    PAW locks that have exceeded the 3 month lock period and are now withdrawable.
-                  </Trans>
+              )}
+              <FormattedNumber
+                value={utils.formatUnits(vestedPAW, 18)}
+                symbol="PAW"
+                sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
+              />
+            </Box>
+          }
+        />
+        <ManageMainPrimaryWrapper
+          borderBottom
+          leftComponent={
+            <>
+              <Typography variant="h4" fontWeight={700}>
+                <Trans>Claim all of the above</Trans>
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px' }}>
+                <Typography>
+                  <Trans>Early Exit Penalty: </Trans>
                 </Typography>
-              </>
-            }
-            rightComponent={
-              <>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '6px',
-                  }}
-                >
-                  {downToSM && (
-                    <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
-                      Amount:
-                    </Typography>
-                  )}
-                  <FormattedNumber
-                    value={utils.formatUnits(expiredLockedPAW, 18)}
-                    symbol="PAW"
-                    sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
-                  />
-                </Box>
-                <Button
-                  onClick={handleClaimExpired}
-                  variant="contained"
-                  sx={{
-                    padding: '8px 24px',
-                    width: downToSM ? '100%' : 'auto',
-                    color: 'background.default',
-                  }}
-                  disabled={expiredLockedPAW.isZero() ? true : false}
-                >
-                  <Trans>Claim</Trans>
-                </Button>
-              </>
-            }
+                <FormattedNumber color={'error.light'} value={utils.formatUnits(exitPenalty, 18)} />
+                <Typography color={'error.light'}>PAW</Typography>
+              </Box>
+            </>
+          }
+          rightComponent={
+            <>
+              <Typography>{''}</Typography>
+              <Button
+                onClick={handleClaimAllVest}
+                variant="contained"
+                sx={{
+                  padding: '8px 24px',
+                  width: downToSM ? '100%' : 'auto',
+                  color: 'background.default',
+                }}
+                disabled={totalVestsValue.isZero() ? true : false}
+              >
+                <Trans>Claim</Trans>
+              </Button>
+            </>
+          }
+        />
+        <ManageMainPrimaryWrapper
+          leftComponent={
+            <>
+              <Typography variant="h4" fontWeight={700}>
+                <Trans>Expired Locked PAW</Trans>
+              </Typography>
+              <Typography sx={{ width: '90%' }}>
+                <Trans>
+                  PAW locks that have exceeded the 3 month lock period and are now withdrawable.
+                </Trans>
+              </Typography>
+            </>
+          }
+          rightComponent={
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '6px',
+                }}
+              >
+                {downToSM && (
+                  <Typography sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}>
+                    Amount:
+                  </Typography>
+                )}
+                <FormattedNumber
+                  value={utils.formatUnits(expiredLockedPAW, 18)}
+                  symbol="PAW"
+                  sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
+                />
+              </Box>
+              <Button
+                onClick={handleClaimExpired}
+                variant="contained"
+                sx={{
+                  padding: '8px 24px',
+                  width: downToSM ? '100%' : 'auto',
+                  color: 'background.default',
+                }}
+                disabled={expiredLockedPAW.isZero() ? true : false}
+              >
+                <Trans>Claim</Trans>
+              </Button>
+            </>
+          }
+        />
+      </ManageMainPaper>
+      <ManageMainTable
+        title={<Trans>PAW Vests</Trans>}
+        tableHeaderRow={[<Trans key={0}>Amount (PAW)</Trans>, <Trans key={1}>Expiry</Trans>]}
+        bottomComponent={
+          <TotalValueDisplay
+            title={<Trans>Total Vested</Trans>}
+            value={utils.formatUnits(totalVestsValue, 8)}
+            symbol=" USD"
           />
-        </ManageMainPaper>
-        <ManageMainPaper>
-          <Typography variant={'h3'}>
-            <Trans>PAW Vests</Trans>
-          </Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ width: '40%' }}>
-                    <Trans>Amount</Trans> (PAW)
-                  </TableCell>
-                  <TableCell>
-                    <Trans>Expiry</Trans>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {vests.map((vest, i) => (
-                  <TableRow key={i}>
-                    <TableCell sx={{ pl: '30px' }}>
-                      <FormattedNumber value={utils.formatUnits(vest.amount, 18)} />
-                    </TableCell>
-                    <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Typography>
-            <Trans>Total vested</Trans>: {Number(utils.formatUnits(totalVestsValue, 8)).toFixed(2)}{' '}
-            USD{' '}
-          </Typography>
-        </ManageMainPaper>
-        <ManageMainPaper>
-          <Typography variant={'h3'}>
-            <Trans>PAW Locks</Trans>
-          </Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ width: '40%' }}>
-                    <Trans>Amount</Trans> (PAW)
-                  </TableCell>
-                  <TableCell>
-                    <Trans>Expiry</Trans>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {locks.map((lock, i) => (
-                  <TableRow key={i}>
-                    <TableCell sx={{ pl: '30px' }}>
-                      <FormattedNumber value={utils.formatUnits(lock.amount, 18)} />
-                    </TableCell>
-                    <TableCell>{convertUnixToDate(lock.expiry.toNumber() * 1000)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/** Value in Uint256 */}
-          <Box sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Typography>
-              <Trans>Total locked</Trans>:
-            </Typography>
-            <FormattedNumber
-              value={utils.formatUnits(totalLockedPAW.toString(), 18)}
+        }
+      >
+        {vests.map((vest, i) => (
+          <TableRow key={i}>
+            <TableCell sx={{ pl: '30px' }}>
+              <FormattedNumber value={utils.formatUnits(vest.amount, 18)} />
+            </TableCell>
+            <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
+          </TableRow>
+        ))}
+      </ManageMainTable>
+      <ManageMainTable
+        title={<Trans>PAW Locks</Trans>}
+        tableHeaderRow={[<Trans key={0}>Amount (PAW)</Trans>, <Trans key={1}>Expiry</Trans>]}
+        bottomComponent={
+          <>
+            <TotalValueDisplay
+              title={<Trans>Total Locked</Trans>}
+              value={utils.formatUnits(totalLockedPAW, 18)}
               symbol="PAW"
             />
-          </Box>
-          {/** Value in USD */}
-          <Typography>
-            <Trans>Value</Trans>: {Number(utils.formatUnits(totalLocksValue, 8)).toFixed(2)} USD
-          </Typography>
-        </ManageMainPaper>
-        <ManageMainPaper>
-          <Typography variant={'h3'}>
-            <Trans>Claimable fees</Trans>
-          </Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ width: '40%' }}>
-                    <Trans>Tokens</Trans>
-                  </TableCell>
-                  <TableCell>
-                    <Trans>Amount</Trans>
-                  </TableCell>
-                  <TableCell>Value (USD)</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {claimables.map((claimable, i) => (
-                  <TableRow key={i}>
-                    <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                      <Image
-                        alt={`token image for ${claimable.tokenSymbol}`}
-                        src={`/icons/tokens/${claimable.tokenSymbol}.svg`}
-                        width={24}
-                        height={24}
-                      />
-                      <Typography>{`m${claimable.tokenSymbol.toUpperCase()}`}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <FormattedNumber value={utils.formatUnits(claimable.amount, 18)} />
-                    </TableCell>
-                    <TableCell>
-                      <FormattedNumber
-                        value={utils.formatUnits(claimable.value, 8)}
-                        symbol="USD"
-                        symbolsColor={theme.palette.text.secondary}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+            <TotalValueDisplay
+              title={<Trans>Total Value</Trans>}
+              value={utils.formatUnits(totalLocksValue, 8)}
+              symbol=" USD"
+            />
+          </>
+        }
+      >
+        {locks.map((lock, i) => (
+          <TableRow key={i}>
+            <TableCell sx={{ pl: '30px' }}>
+              <FormattedNumber value={utils.formatUnits(lock.amount, 18)} />
+            </TableCell>
+            <TableCell>{convertUnixToDate(lock.expiry.toNumber() * 1000)}</TableCell>
+          </TableRow>
+        ))}
+      </ManageMainTable>
+      <ManageMainTable
+        title={<Trans>Claimable fees</Trans>}
+        tableHeaderRow={[
+          <Trans key={0}>Tokens</Trans>,
+          <Trans key={1}>Amount</Trans>,
+          <Trans key={2}>Value (USD)</Trans>,
+        ]}
+        bottomComponent={
           <Box
             sx={{
               display: 'flex',
@@ -447,10 +378,11 @@ export const ManageMainActions = () => {
               gap: downToSM ? '8px' : 'auto',
             }}
           >
-            <Typography>
-              <Trans>Total Value</Trans>:{' '}
-              {Number(utils.formatUnits(totalClaimableValue, 8)).toFixed(2)} USD
-            </Typography>
+            <TotalValueDisplay
+              title={<Trans>Total Value</Trans>}
+              value={utils.formatUnits(totalClaimableValue, 8)}
+              symbol=" USD"
+            />
             <Button
               onClick={handleClaimAll}
               variant="contained"
@@ -459,8 +391,83 @@ export const ManageMainActions = () => {
               <Trans>Claim All</Trans>
             </Button>
           </Box>
-        </ManageMainPaper>
-      </Box>
-    </>
+        }
+      >
+        {claimables.map((claimable, i) => (
+          <TableRow key={i}>
+            <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <Image
+                alt={`token image for ${claimable.tokenSymbol}`}
+                src={`/icons/tokens/${claimable.tokenSymbol}.svg`}
+                width={24}
+                height={24}
+              />
+              <Typography>{`m${claimable.tokenSymbol.toUpperCase()}`}</Typography>
+            </TableCell>
+            <TableCell>
+              <FormattedNumber value={utils.formatUnits(claimable.amount, 18)} />
+            </TableCell>
+            <TableCell>
+              <FormattedNumber
+                value={utils.formatUnits(claimable.value, 8)}
+                symbol="USD"
+                symbolsColor={theme.palette.text.secondary}
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+      </ManageMainTable>
+    </Box>
   );
 };
+
+interface TotalValueDisplayProps {
+  title: React.ReactNode;
+  value: string | number;
+  symbol: string;
+}
+
+function TotalValueDisplay({ title, value, symbol }: TotalValueDisplayProps) {
+  const theme = useTheme();
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <Typography>{title}:</Typography>
+      <FormattedNumber value={value} symbol={symbol} symbolsColor={theme.palette.text.secondary} />
+    </Box>
+  );
+}
+
+interface ManageMainTableProps {
+  title: React.ReactNode;
+  tableHeaderRow: React.ReactNode[];
+  bottomComponent: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function ManageMainTable({
+  title,
+  tableHeaderRow,
+  bottomComponent,
+  children,
+}: ManageMainTableProps) {
+  return (
+    <ManageMainPaper>
+      <Typography variant={'h3'}>{title}</Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {tableHeaderRow.map((head, i) => (
+                <TableCell key={i} sx={{ width: i === 0 ? '40%' : 'auto' }}>
+                  {head}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>{children}</TableBody>
+        </Table>
+      </TableContainer>
+      {bottomComponent}
+    </ManageMainPaper>
+  );
+}
