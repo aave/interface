@@ -42,13 +42,11 @@ export const createAnalyticsSlice: StateCreator<
       const eventProperties = {
         ...properties,
         walletAddress: get().account,
-        market: get().currentMarket,
         walletType: get().walletType,
       };
 
       try {
-        const result = get();
-        if (result && result.currentMarket && result.currentMarket != 'proto_scroll_alpha_v3')
+        if (get().currentMarket != 'proto_scroll_alpha_v3')
           mixpanel.track(eventName, eventProperties);
       } catch (err) {
         console.log('something went wrong tracking event', err);
