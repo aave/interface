@@ -2,7 +2,14 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { selectSuccessfulTransactions } from 'src/store/transactionsSelectors';
-import { BORROW_MODAL, REPAY_MODAL, SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
+import {
+  AIP,
+  BORROW_MODAL,
+  GENERAL,
+  REPAY_MODAL,
+  STAKE,
+  SUPPLY_MODAL,
+} from 'src/utils/mixPanelEvents';
 
 export const TransactionEventHandler = () => {
   const [postedTransactions, setPostedTransactions] = useState<{ [chainId: string]: string[] }>({});
@@ -20,6 +27,18 @@ export const TransactionEventHandler = () => {
         return BORROW_MODAL.BORROW_TOKEN;
       case ProtocolAction.repay:
         return REPAY_MODAL.REPAY_TOKEN;
+      case ProtocolAction.stake:
+        return STAKE.STAKE_TOKEN;
+      case ProtocolAction.approval:
+        return GENERAL.TOKEN_APPROVAL;
+      case ProtocolAction.repayCollateral:
+        return BORROW_MODAL.REPAY_WITH_COLLATERAL;
+      case ProtocolAction.swapCollateral:
+        return SUPPLY_MODAL.SWAP_COLLATERAL;
+      case ProtocolAction.claimRewards:
+        return STAKE.CLAIM_STAKE_REWARDS;
+      case ProtocolAction.vote:
+        return AIP.VOTE;
       default:
         return '';
     }

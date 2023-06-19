@@ -47,7 +47,9 @@ export const createAnalyticsSlice: StateCreator<
       };
 
       try {
-        mixpanel.track(eventName, eventProperties);
+        const result = get();
+        if (result && result.currentMarket && result.currentMarket != 'proto_scroll_alpha_v3')
+          mixpanel.track(eventName, eventProperties);
       } catch (err) {
         console.log('something went wrong tracking event', err);
       }

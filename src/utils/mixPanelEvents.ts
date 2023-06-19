@@ -18,6 +18,7 @@ export const GENERAL = {
   TOOL_TIP: 'Tool Tip', //done
   EXTERNAL_LINK: 'External Link Navigaton',
   SET_SLIPPAGE: 'Set slippage',
+  TOKEN_APPROVAL: 'Token Approval',
 };
 
 export const DASHBOARD = {
@@ -94,6 +95,7 @@ export const SUPPLY_MODAL = {
   APPROVE_TOKEN: 'Approve token',
   SUPPLY_TOKEN: 'Supply token',
   SUPPLY_WITH_PERMIT: 'Supply token with permit', // done
+  SWAP_COLLATERAL: 'Swap Collateral', // done
 };
 
 export const BORROW_MODAL = {
@@ -102,6 +104,7 @@ export const BORROW_MODAL = {
   BORROW_TOKEN: 'Borrow token', // done
   UNWRAP_UNDERLYING: 'Unwrap toggle borrow modal', //done
   ACCEPT_RISK: 'Accept risk check box borrow modal', // done
+  REPAY_WITH_COLLATERAL: 'Repay with collateral',
 };
 
 export const WITHDRAW_MODAL = {
