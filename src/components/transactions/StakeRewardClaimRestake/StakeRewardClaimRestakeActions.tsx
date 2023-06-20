@@ -5,7 +5,7 @@ import { useRootStore } from 'src/store/root';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface StakeRewardClaimActionProps extends BoxProps {
+export interface StakeRewardClaimRestakeActionProps extends BoxProps {
   amountToClaim: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
@@ -14,7 +14,7 @@ export interface StakeRewardClaimActionProps extends BoxProps {
   selectedToken: string;
 }
 
-export const StakeRewardClaimActions = ({
+export const StakeRewardClaimRestakeActions = ({
   amountToClaim,
   isWrongNetwork,
   sx,
@@ -22,13 +22,13 @@ export const StakeRewardClaimActions = ({
   blocked,
   selectedToken,
   ...props
-}: StakeRewardClaimActionProps) => {
-  const claimStakeRewards = useRootStore((state) => state.claimStakeRewards);
+}: StakeRewardClaimRestakeActionProps) => {
+  const claimRewardsAndStake = useRootStore((state) => state.claimRewardsAndStake);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return claimStakeRewards({
+      return claimRewardsAndStake({
         token: selectedToken,
         amount: amountToClaim,
       });
@@ -43,8 +43,8 @@ export const StakeRewardClaimActions = ({
       blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
-      actionText={<Trans>Claim {symbol}</Trans>}
-      actionInProgressText={<Trans>Claiming {symbol}</Trans>}
+      actionText={<Trans>Restake {symbol}</Trans>}
+      actionInProgressText={<Trans>Restaking {symbol}</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
       sx={sx}

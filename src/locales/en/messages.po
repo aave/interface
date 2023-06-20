@@ -187,9 +187,13 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Amount claimable"
+msgstr "Amount claimable"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Amount in cooldown"
@@ -506,14 +510,6 @@ msgstr "Buy Crypto with Fiat"
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIM {symbol}"
-msgstr "CLAIM {symbol}"
-
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIMING {symbol}"
-msgstr "CLAIMING {symbol}"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -542,12 +538,9 @@ msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Claim"
 msgstr "Claim"
-
-#: src/modules/staking/StakingPanel.tsx
-msgid "Claim AAVE"
-msgstr "Claim AAVE"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -562,6 +555,10 @@ msgstr "Claim all rewards"
 msgid "Claim {0}"
 msgstr "Claim {0}"
 
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claim {symbol}"
+msgstr "Claim {symbol}"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
 msgstr "Claimable AAVE"
@@ -574,6 +571,10 @@ msgstr "Claimed"
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
 msgstr "Claiming"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claiming {symbol}"
+msgstr "Claiming {symbol}"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -1347,6 +1348,7 @@ msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
@@ -1687,6 +1689,22 @@ msgstr "Reserve status & configuration"
 msgid "Reset"
 msgstr "Reset"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Restake"
+msgstr "Restake"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restake {symbol}"
+msgstr "Restake {symbol}"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Restaked"
+msgstr "Restaked"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restaking {symbol}"
+msgstr "Restaking {symbol}"
+
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
@@ -1905,6 +1923,7 @@ msgid "Staking"
 msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2344,10 +2363,6 @@ msgstr "Transactions"
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKE {symbol}"
 
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKING {symbol}"
-msgstr "UNSTAKING {symbol}"
-
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -2382,6 +2397,10 @@ msgstr "Unstake window"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstaking {symbol}"
+msgstr "Unstaking {symbol}"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."

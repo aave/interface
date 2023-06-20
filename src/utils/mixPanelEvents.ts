@@ -131,6 +131,7 @@ export const STAKE = {
   ACCEPT_COOLDOWN_CHECKBOX: 'Accept cooldown risks cooldwon modal', //done
   ACTIVATE_COOLDOWN: 'Activate cooldown button cooldown modal',
   OPEN_CLAIM_STAKE_REWARDS: 'Open claim stake rewards modal staking page', //done
+  OPEN_CLAIM_STAKE_RESTAKE_REWARDS: 'Open claim & restake rewards modal staking page', //done
   CLAIM_STAKE_REWARDS: 'Claim staking rewards button',
   OPEN_GET_ABP_TOKEN: 'Open get abpt token', //done
   CONNECT_WALLET_STAKING: 'Connect wallet staking page', //--done
