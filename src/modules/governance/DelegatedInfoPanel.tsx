@@ -115,10 +115,13 @@ export const DelegatedInfoPanel = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   if (!powers || !address) return null;
-  const disableButton = Number(aave) <= 0 && Number(stkAave) <= 0;
-  //   powers.aavePropositionDelegatee === '' &&
-  //   powers.aaveVotingDelegatee === '';
-  // powers.stkAavePropositionDelegatee === '' && powers.stkAaveVotingDelegatee === '';
+  const disableButton =
+    Number(aave) <= 0 &&
+    Number(stkAave) <= 0 &&
+    powers.aavePropositionDelegatee === '' &&
+    powers.aaveVotingDelegatee === '' &&
+    powers.stkAavePropositionDelegatee === '' &&
+    powers.stkAaveVotingDelegatee === '';
 
   const showRevokeButton =
     powers.aavePropositionDelegatee !== '' ||
