@@ -80,7 +80,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
-
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
   if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
