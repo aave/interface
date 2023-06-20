@@ -27,7 +27,6 @@ export const BuyWithFiat = ({ cryptoSymbol, networkMarketName, funnel }: BuyWith
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return isAvailable ? (
     <>
       <Button
