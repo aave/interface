@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
+import { ethers } from 'ethers';
 
 import {
   DetailsNumberLine,
@@ -20,7 +21,9 @@ export const AirdropModalContent = () => {
           description={<Trans>Amount</Trans>}
           iconSymbol={'PAW'}
           symbol={'PAW'}
-          value={trueValue / 1000000000000000000}
+          value={ethers.BigNumber.from(trueValue.substring(0, trueValue.length - 1))
+            .div(ethers.BigNumber.from('1000000000000000000'))
+            .toString()}
         />
       </TxModalDetails>
       <AirdropActions

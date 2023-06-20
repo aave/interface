@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { ethers } from 'ethers';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useAirdropContext } from 'src/maneki/hooks/airdrop-data-provider/AirdropDataProvider';
@@ -62,7 +63,13 @@ export default function AirdropContentWrapper({
             }}
           >
             <FormattedNumber
-              value={entry ? entry.amount / 1_000_000_000_000_000_000 : 0}
+              value={
+                entry
+                  ? ethers.BigNumber.from(entry.amount.substring(0, entry.amount.length - 1))
+                      .div(ethers.BigNumber.from('1000000000000000000'))
+                      .toString()
+                  : 0
+              }
               variant="secondary14"
             />
             <Typography sx={{ fontWeight: '500' }}>PAW</Typography>
