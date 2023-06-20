@@ -9,6 +9,7 @@ import {
   REPAY_MODAL,
   STAKE,
   SUPPLY_MODAL,
+  WITHDRAW_MODAL,
 } from 'src/utils/mixPanelEvents';
 
 export const TransactionEventHandler = () => {
@@ -19,6 +20,8 @@ export const TransactionEventHandler = () => {
 
   const actionToEvent = (action: ProtocolAction) => {
     switch (action) {
+      case ProtocolAction.withdraw:
+        return WITHDRAW_MODAL.WITHDRAW_TOKEN;
       case ProtocolAction.supply:
         return SUPPLY_MODAL.SUPPLY_TOKEN;
       case ProtocolAction.supplyWithPermit:

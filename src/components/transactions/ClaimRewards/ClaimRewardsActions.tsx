@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -19,6 +20,7 @@ export const ClaimRewardsActions = ({
   const claimRewards = useRootStore((state) => state.claimRewards);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
+    protocolAction: ProtocolAction.claimRewards,
     tryPermit: false,
     handleGetTxns: async () => {
       return claimRewards({ isWrongNetwork, blocked, selectedReward });
