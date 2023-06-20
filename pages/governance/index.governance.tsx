@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
@@ -10,6 +10,7 @@ import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
 
@@ -52,7 +53,13 @@ export default function Governance(props: GovernancePageProps) {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   const [mode, setMode] = useState(Tabs.PROPOSALS);
+  const { trackEvent } = useRootStore();
 
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Governance',
+    });
+  }, []);
   return (
     <>
       <GovernanceTopPanel />

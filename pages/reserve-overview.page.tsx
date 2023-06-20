@@ -13,6 +13,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
+import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 
@@ -24,8 +25,12 @@ export default function ReserveOverview() {
   const lg = useMediaQuery(breakpoints.up('lg'));
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
+  const { trackEvent } = useRootStore();
 
   useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Reserve Overview',
+    });
     if (!mode) setMode('overview');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);

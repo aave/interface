@@ -1,9 +1,11 @@
 import { DuplicateIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { useRootStore } from 'src/store/root';
 
 export default function Aave500Page() {
   const theme = useTheme();
@@ -11,7 +13,13 @@ export default function Aave500Page() {
   const handleCopyError = () => {
     console.log('copying error to clipboard');
   };
+  const { trackEvent } = useRootStore();
 
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': '500 Error',
+    });
+  }, []);
   return (
     <>
       <TopInfoPanel />

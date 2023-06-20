@@ -19,6 +19,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
@@ -40,8 +41,12 @@ export default function Staking() {
   const [mode, setMode] = useState<'aave' | 'bpt' | ''>('');
 
   const { name: network } = getNetworkConfig(chainId);
+  const { trackEvent } = useRootStore();
 
   useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Staking',
+    });
     if (!mode) setMode('aave');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);

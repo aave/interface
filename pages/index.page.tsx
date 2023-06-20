@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useRootStore } from 'src/store/root';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -18,9 +19,13 @@ export default function Home() {
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
+  const { trackEvent } = useRootStore();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
   useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Dashboard',
+    });
     if (!mode) setMode('supply');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);

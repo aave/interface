@@ -1,13 +1,21 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { useRootStore } from 'src/store/root';
 
 export default function Aave404Page() {
   const theme = useTheme();
+  const { trackEvent } = useRootStore();
 
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': '404 Error',
+    });
+  }, []);
   return (
     <>
       <TopInfoPanel />
