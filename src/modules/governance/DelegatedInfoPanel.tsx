@@ -64,7 +64,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
           </Row>
         ) : (
           <>
-            {!isAaveSelfDelegated && aavePower !== '0' && (
+            {!isAaveSelfDelegated && (
               <Row
                 align="flex-start"
                 caption={
@@ -81,7 +81,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 </Box>
               </Row>
             )}
-            {!isStkAaveSelfDelegated && stkAavePower !== '0' && (
+            {!isStkAaveSelfDelegated && (
               <Row
                 align="flex-start"
                 caption={
@@ -115,6 +115,7 @@ export const DelegatedInfoPanel = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   if (!powers || !address) return null;
+
   const disableButton =
     Number(aave) <= 0 &&
     Number(stkAave) <= 0 &&
