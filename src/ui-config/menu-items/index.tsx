@@ -62,22 +62,16 @@ const moreMenuItems: MoreMenuItem[] = [
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
-  {
+];
+
+const fiatEnabled = process.env.NEXT_PUBLIC_FIAT_ON_RAMP;
+if (fiatEnabled === 'true') {
+  moreMenuItems.push({
     link: 'https://global.transak.com',
     makeLink: (walletAddress) =>
       `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
     title: t`Buy Crypto With Fiat`,
     icon: <CreditCardIcon />,
-  },
-];
-
-export const moreMenuExtraItems: MoreMenuItem[] = [];
-export const moreMenuMobileOnlyItems: MoreMenuItem[] = [];
-
-export const moreNavigation: MoreMenuItem[] = [...moreMenuItems, ...moreMenuExtraItems];
-
-export const mobileNavigation: Navigation[] = [
-  ...navigation,
-  ...moreMenuItems,
-  ...moreMenuMobileOnlyItems,
-];
+  });
+}
+export const moreNavigation: MoreMenuItem[] = [...moreMenuItems];

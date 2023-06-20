@@ -28,6 +28,10 @@ export interface StakeSlice {
     token: string;
     amount: string;
   }) => Promise<EthereumTransactionTypeExtended[]>;
+  claimRewardsAndStake: (args: {
+    token: string;
+    amount: string;
+  }) => Promise<EthereumTransactionTypeExtended[]>;
   getStakeConfig: () => StakeConfig;
 
   redeem: (token: string) => (amount: string) => Promise<EthereumTransactionTypeExtended[]>;
@@ -102,6 +106,14 @@ export const createStakeSlice: StateCreator<
         TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
       });
       return service.claimRewards(currentAccount, amount);
+    },
+    claimRewardsAndStake({ token, amount }) {
+      const currentAccount = get().account;
+      const provider = getCorrectProvider();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: getCurrentStakeConfig().tokens[token].TOKEN_STAKING,
+      });
+      return service.claimRewardsAndStake(currentAccount, amount);
     },
     redeem(tokenName) {
       const provider = getCorrectProvider();

@@ -70,3 +70,4 @@ runs:
         NEXT_PUBLIC_FORK_CHAIN_ID: '${{ inputs.NEXT_PUBLIC_FORK_CHAIN_ID }}'
         NEXT_PUBLIC_FORK_URL_RPC: '${{ inputs.NEXT_PUBLIC_FORK_URL_RPC }}'
         NEXT_PUBLIC_MIXPANEL: '${{ inputs.NEXT_PUBLIC_MIXPANEL }}'
+        NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
