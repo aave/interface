@@ -663,16 +663,6 @@ msgstr "Cooldown to unstake"
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copied"
-msgstr "Copied"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copy"
-msgstr "Copy"
-
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copy address"
@@ -2350,11 +2340,6 @@ msgstr "Transaction overview"
 msgid "Transactions"
 msgstr "Transactions"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Tx hash"
-msgstr "Tx hash"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKE {symbol}"
@@ -2444,6 +2429,10 @@ msgstr "User is trying to borrow multiple assets including a siloed one"
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+msgid "VIEW TX"
+msgstr "VIEW TX"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
@@ -2476,6 +2465,10 @@ msgstr "Version 2"
 msgid "Version 3"
 msgstr "Version 3"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr "View"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -2491,11 +2484,6 @@ msgstr "View details"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "View on Explorer"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View on block explorer"
-msgstr "View on block explorer"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
