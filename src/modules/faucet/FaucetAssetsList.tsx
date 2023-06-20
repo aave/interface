@@ -31,7 +31,9 @@ export default function FaucetAssetsList() {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
-    .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
+    .filter(
+      (reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen && reserve.symbol !== 'GHO'
+    )
     .map((reserve) => {
       const walletBalance = valueToBigNumber(
         walletBalances[reserve.underlyingAsset]?.amount || '0'
@@ -95,7 +97,11 @@ export default function FaucetAssetsList() {
         )
       ) : (
         listData.map((reserve) => (
-          <ListItem px={downToXSM ? 4 : 6} key={reserve.symbol}>
+          <ListItem
+            px={downToXSM ? 4 : 6}
+            key={reserve.symbol}
+            data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
+          >
             <ListColumn isRow maxWidth={280}>
               <Link
                 href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}

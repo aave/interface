@@ -4,6 +4,7 @@ import {
   synthetixProxyByChainId,
 } from '@aave/contract-helpers';
 import {
+  BigNumberValue,
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
   valueToBigNumber,
@@ -16,6 +17,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -44,7 +46,7 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
@@ -154,8 +156,8 @@ export const RepayModalContent = ({
       iconSymbol: poolReserve.iconSymbol,
       balance: maxReserveTokenForRepay.toString(10),
     });
-    // push reserve atoken
-    if (currentMarketData.v3) {
+    // push reserve aToken
+    if (currentMarketData.v3 && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket })) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,
@@ -186,20 +188,26 @@ export const RepayModalContent = ({
 
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
-  const newHF = amount
-    ? calculateHealthFactorFromBalancesBigUnits({
-        collateralBalanceMarketReferenceCurrency:
-          repayWithATokens && usageAsCollateralEnabledOnUser
-            ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
-                valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-              )
-            : user?.totalCollateralUSD || '0',
-        borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
-          valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-        ),
-        currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
-      }).toString(10)
-    : user?.healthFactor;
+  let newHF = user?.healthFactor;
+  if (amount) {
+    let collateralBalanceMarketReferenceCurrency: BigNumberValue = user?.totalCollateralUSD || '0';
+    if (repayWithATokens && usageAsCollateralEnabledOnUser) {
+      collateralBalanceMarketReferenceCurrency = valueToBigNumber(
+        user?.totalCollateralUSD || '0'
+      ).minus(valueToBigNumber(reserve.priceInUSD).multipliedBy(amount));
+    }
+
+    const remainingBorrowBalance = valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
+      valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+    );
+    const borrowBalanceMarketReferenceCurrency = BigNumber.max(remainingBorrowBalance, 0);
+
+    newHF = calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency,
+      borrowBalanceMarketReferenceCurrency,
+      currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
+    }).toString(10);
+  }
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);

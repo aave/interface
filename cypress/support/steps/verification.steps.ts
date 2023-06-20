@@ -1,4 +1,5 @@
 import constants from '../../fixtures/constans.json';
+import { DashboardHelpers } from '../helpers/dashboard.helper';
 
 type SkipType = {
   set: (val: boolean) => void;
@@ -38,12 +39,14 @@ export const dashboardAssetValuesVerification = (
     isCollateral?: boolean;
     amount?: number;
     collateralType?: string;
+    isGho?: boolean;
   }[],
   skip: SkipType
 ) => {
   return describe(`Verification dashboard values`, () => {
     skipSetup(skip);
     estimatedCases.forEach((estimatedCase) => {
+      estimatedCase.isGho = estimatedCase.isGho ?? false;
       describe(`Verification ${estimatedCase.assetName} ${estimatedCase.type}, have right values`, () => {
         const _assetName: string = estimatedCase.assetName;
         switch (estimatedCase.type) {
@@ -68,11 +71,18 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
+              if (estimatedCase.isGho) {
+                DashboardHelpers.waitLoadingGHODashboardRange();
+              }
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               cy.getDashBoardBorrowedRow(_assetName, estimatedCase.apyType).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
-                expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
+                if (estimatedCase.isGho) {
+                  expect($row.find(`[data-cy="apyButton_fixed"]`)).to.exist;
+                } else {
+                  expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
+                }
                 if (estimatedCase.amount) {
                   cy.get('[data-cy=nativeAmount]').contains(estimatedCase.amount.toString());
                 }

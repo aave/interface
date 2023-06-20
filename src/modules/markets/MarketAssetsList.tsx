@@ -13,11 +13,6 @@ import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
 import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLoader';
 
-type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
-  loading: boolean;
-};
-
 const listHeaders = [
   {
     title: <Trans>Asset</Trans>,
@@ -56,6 +51,11 @@ const listHeaders = [
     sortKey: 'stableBorrowAPY',
   },
 ];
+
+type MarketAssetsListProps = {
+  reserves: ComputedReserveData[];
+  loading: boolean;
+};
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
@@ -98,6 +98,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       </>
     );
   }
+
   // Hide list when no results, via search term or if a market has all/no frozen/unfrozen assets
   if (reserves.length === 0) return null;
 
@@ -125,6 +126,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
           <ListColumn maxWidth={95} minWidth={95} />
         </ListHeaderWrapper>
       )}
+
       {reserves.map((reserve) =>
         isTableChangedToCards ? (
           <MarketAssetsListMobileItem {...reserve} key={reserve.id} />

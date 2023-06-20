@@ -14,9 +14,14 @@ import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
 interface TokenLinkDropdownProps {
   poolReserve: ComputedReserveData;
   downToSM: boolean;
+  hideAToken?: boolean;
 }
 
-export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownProps) => {
+export const TokenLinkDropdown = ({
+  poolReserve,
+  downToSM,
+  hideAToken,
+}: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
@@ -37,6 +42,9 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
     setAnchorEl(null);
   };
 
+  if (!poolReserve) {
+    return null;
+  }
   const showDebtTokenHeader = poolReserve.borrowingEnabled || poolReserve.stableBorrowRateEnabled;
 
   return (
@@ -97,34 +105,30 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
           </Typography>
         </MenuItem>
 
-        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="text.secondary">
-            <Trans>Aave aToken</Trans>
-          </Typography>
-        </Box>
+        {!hideAToken && (
+          <>
+            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
+              <Typography variant="secondary12" color="text.secondary">
+                <Trans>Aave aToken</Trans>
+              </Typography>
+            </Box>
 
-        <MenuItem
-          component="a"
-          onClick={() => {
-            trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_ATOKEN, {
-              assetName: poolReserve.name,
-              asset: poolReserve.underlyingAsset,
-              aToken: poolReserve.aTokenAddress,
-              market: currentMarket,
-              variableDebtToken: poolReserve.variableDebtTokenAddress,
-            });
-          }}
-          href={currentNetworkConfig.explorerLinkBuilder({
-            address: poolReserve?.aTokenAddress,
-          })}
-          target="_blank"
-          divider={showDebtTokenHeader}
-        >
-          <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {'a' + poolReserve.symbol}
-          </Typography>
-        </MenuItem>
+            <MenuItem
+              component="a"
+              href={currentNetworkConfig.explorerLinkBuilder({
+                address: poolReserve?.aTokenAddress,
+              })}
+              target="_blank"
+              divider={showDebtTokenHeader}
+            >
+              <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
+              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+                {'a' + poolReserve.symbol}
+              </Typography>
+            </MenuItem>
+          </>
+        )}
+
         {showDebtTokenHeader && (
           <Box sx={{ px: 4, pt: 3, pb: 2 }}>
             <Typography variant="secondary12" color="text.secondary">
