@@ -76,7 +76,7 @@ export const SupplyActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
+    const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
     const permitAvailable = tryPermit(poolAddress);
     const { signTxData, sendTx } = useWeb3Context();
 
@@ -237,6 +237,7 @@ export const SupplyActions = React.memo(
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
+        refetchGhoData && refetchGhoData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

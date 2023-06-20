@@ -112,7 +112,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         )}
       </ListColumn>
 
-      <ListColumn maxWidth={95} minWidth={95} align="right">
+      <ListColumn minWidth={95} maxWidth={95} align="right">
         <Button
           variant="outlined"
           component={Link}
