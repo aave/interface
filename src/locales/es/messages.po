@@ -59,18 +59,11 @@ msgstr "APY"
 msgid "APY change"
 msgstr "Cambio de APY"
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-msgid "APY type"
-msgstr "Tipo APY"
-
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "APY type change"
 msgstr "Cambio tipo de APY"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
@@ -175,16 +168,23 @@ msgstr "Ya en cooldown"
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
-#: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 #: src/maneki/transactions/Manage/ManageModalContent.tsx
 msgid "Amount"
 msgstr "Cantidad"
 
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Amount (PAW)"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "La cantidad debe ser mayor que 0"
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Amount to Claim"
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "An Issue was encountered please report it to our Maneki Team."
@@ -325,10 +325,6 @@ msgstr "Liquidez disponible"
 #: src/components/ChainAvailabilityText.tsx
 msgid "Available on"
 msgstr "Disponible en"
-
-#: src/modules/dashboard/DashboardTopPanel.tsx
-msgid "Available rewards"
-msgstr "Recompensas disponibles"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -526,7 +522,6 @@ msgstr "Elige uno de los servicios on-ramp"
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
-#: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
 msgstr "Reclamar"
 
@@ -684,6 +679,22 @@ msgstr "Collector Info"
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Conectar cartera"
+
+#: src/maneki/transactions/TGE/TGEModal.tsx
+msgid "Contribute"
+msgstr ""
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Contribute Failed"
+msgstr ""
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Contribute PAW"
+msgstr ""
+
+#: src/maneki/modules/tge/components/TGEMainContribution.tsx
+msgid "Contribution Amount"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1014,6 +1025,10 @@ msgstr "El préstamo flash está deshabilitado para este activo, por lo tanto, e
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "Para el pago de un tipo específico de deuda, el usuario necesita tener una deuda de ese tipo"
 
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "For the first 24 hours, 6 million PAW tokens (6% of the supply) are available for whitelist participates at the fixed price of 0.0002 ETH(~$0.36) and the FDV of ~$36m with a market cap of ~$6.8m. Whitelist addresses are selected from historic vault users, traders and contributors. The allocation of each whitelist address depends on the historic activities. First 30 mins of the whitelist phase has a max deposit limit of 1 ETH for each address. Participation is on a first come first served basis and will end early if all the allocation is filled. Please note that being whitelisted does not guarantee a spot if all the allocation is filled early."
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
 msgstr "Hilo de discusión del foro"
@@ -1061,6 +1076,10 @@ msgstr "Gobierno"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Griego"
+
+#: src/maneki/modules/tge/TGETopPanel.tsx
+msgid "Guide"
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Health Factor ({0} v2)"
@@ -1117,6 +1136,10 @@ msgstr "Si NO unstakeas entre {0} de la ventana de unstakeo, necesitarás activa
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr "Si tu relación préstamo-valor supera el umbral de liquidación, tu garantía puede ser liquidada."
 
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "Important Risks"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "En E-Mode algunos activos no se pueden pedir prestados. Sal del E-Mode para obtener acceso a todos los activos"
@@ -1128,6 +1151,10 @@ msgstr "En el Isolation mode, no puedes suministrar otros activos como garantía
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Parámetros inconsistentes del préstamo flash"
+
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "Initial Supply / Total Supply"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1257,7 +1284,6 @@ msgstr ""
 msgid "Loading data..."
 msgstr "Cargando datos..."
 
-#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 msgid "Lock"
 msgstr "Cerrar con llave"
@@ -1269,6 +1295,10 @@ msgstr "Bloquee PAW y gane tarifas de plataforma y tarifas de penalización en P
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
 msgid "Lock {symbol}"
 msgstr "Bloquear {símbolo}"
+
+#: src/maneki/modules/manage/ManageTopPanel.tsx
+msgid "Locked"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw."
@@ -1302,6 +1332,10 @@ msgstr "Lanzamientos aéreos de Maneki"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
 msgstr "Mercado"
+
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "Market Cap"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1523,6 +1557,10 @@ msgstr "Resumen"
 msgid "PAW Locks"
 msgstr "Cerraduras PAW"
 
+#: src/maneki/modules/tge/TGETopPanel.tsx
+msgid "PAW Token Generation Event"
+msgstr ""
+
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Vests"
 msgstr "Chalecos PAW"
@@ -1542,6 +1580,10 @@ msgstr "Página no encontrada"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participar en esta reserva de {symbol} da recompensas anuales."
+
+#: src/maneki/transactions/TGE/TGEModalActions.tsx
+msgid "Pending Transaction..."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1893,7 +1935,6 @@ msgstr "Lo sentimos, no hemos podido encontrar la página que estabas buscando."
 msgid "Spanish"
 msgstr "Español"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable"
 msgstr "Estable"
@@ -1923,7 +1964,6 @@ msgid "Stablecoin"
 msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
-#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 #: src/maneki/transactions/Manage/ManageModal.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1944,6 +1984,7 @@ msgid "Stake {symbol}"
 msgstr "Apuesta {symbol}"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Stakeado"
@@ -2102,9 +2143,12 @@ msgstr "Cambiando E-Mode"
 msgid "Switching rate"
 msgstr "Tasa de cambio"
 
-#: src/maneki/modules/tge/TGETopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "TGE"
+msgstr ""
+
+#: src/maneki/modules/tge/TGEMarketStat.tsx
+msgid "TGE PAW Price"
 msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2329,6 +2373,10 @@ msgstr "Para pagar en nombre de un usuario, se necesita una cantidad explícita 
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "Para solicitar acceso a este mercado, porfavor visita: <0>Nombre del proveedor de acceso</0>"
 
+#: src/maneki/modules/tge/TGETopPanel.tsx
+msgid "Tokenomics"
+msgstr ""
+
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Tokens"
 msgstr "fichas"
@@ -2338,8 +2386,17 @@ msgid "Top 10 addresses"
 msgstr "Top 10 direcciones"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Locked"
+msgstr ""
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+#: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Value"
 msgstr "Valor total"
+
+#: src/maneki/modules/manage/ManageMainActions.tsx
+msgid "Total Vested"
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Total Vests"
@@ -2364,10 +2421,6 @@ msgstr "Total de préstamos"
 msgid "Total emission per day"
 msgstr "Emisiones totales por día"
 
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total locked"
-msgstr "Total bloqueado"
-
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
 msgstr "Tamaño total del mercado"
@@ -2378,10 +2431,6 @@ msgstr "Tamaño total del mercado"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total suministrado"
-
-#: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Total vested"
-msgstr "Total adquirido"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
@@ -2414,6 +2463,10 @@ msgstr "Resumen de la transacción"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Type of delegation"
 msgstr "Tipo de delegación"
+
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "U.S. residents or citizens are not permitted to participant in the Token Generation Event (TGE). By taking part in the event you certify you are neither a U.S. citizen or resident."
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2500,10 +2553,9 @@ msgid "VOTE YAE"
 msgstr "VOTAR SI"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Value"
-msgstr "Valor"
+msgid "Value (USD)"
+msgstr ""
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"
 msgstr "Variable"
@@ -2523,6 +2575,10 @@ msgstr "Versión 2"
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
 msgstr "Versión 3"
+
+#: src/maneki/modules/manage/ManageTopPanel.tsx
+msgid "Vested"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Vested PAW"
@@ -2616,6 +2672,10 @@ msgstr "Ingresos semanales"
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "Cuando ocurre una liquidación, los liquidadores pagan hasta el 50% de la cantidad pendiente del préstamo en nombre del prestatario. A cambio, pueden comprar la garantía con descuento y quedarse con la diferencia (sanción de liquidación) como bonificación."
+
+#: src/maneki/modules/tge/TGEPhaseInfo.tsx
+msgid "Whitelist Phase"
+msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -2732,8 +2792,8 @@ msgid "You will exit isolation mode and other tokens can now be used as collater
 msgstr "Saldrás del modo aislamiento y otros tokens pueden ser usados ahora como garantía"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "You {action} <0/> {symbol}"
-msgstr "Tu {action} <0/> {symbol}"
+msgid "You {action}"
+msgstr ""
 
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 msgid "Your Staked PAW"

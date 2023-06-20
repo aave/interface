@@ -122,7 +122,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
       approvalTxState={approvalTxState}
       mainTxState={mainTxState}
       handleAction={handleAction}
-      preparingTransactions={false}
+      preparingTransactions={true}
     />
   );
 };

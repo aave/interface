@@ -14,6 +14,8 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import SwitchNetworkHeader from 'src/maneki/components/SwitchNetworkHeader';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -43,6 +45,8 @@ export function AppHeader() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
+
+  const { chainId, currentAccount } = useWeb3Context();
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {
@@ -83,92 +87,108 @@ export function AppHeader() {
   );
 
   return (
-    <HideOnScroll>
-      <Box
-        component="header"
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        sx={(theme) => ({
-          height: '80px',
-          position: 'sticky',
-          top: 0,
-          transition: theme.transitions.create('top'),
-          zIndex: theme.zIndex.appBar,
-          bgcolor: mobileMenuOpen ? theme.palette.background.paper : 'transparent',
-          padding: md ? '8px 12px' : '20px 100px',
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'row',
-        })}
-      >
+    <>
+      <HideOnScroll>
         <Box
-          component={Link}
-          href="/"
-          aria-label="Go to homepage"
-          sx={{
-            lineHeight: 0,
-            mr: 3,
-            transition: '0.3s ease all',
-            '&:hover': { opacity: 0.7 },
-          }}
-          onClick={() => setMobileMenuOpen(false)}
+          component="header"
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          sx={(theme) => ({
+            height: '80px',
+            position: 'sticky',
+            top: 0,
+            transition: theme.transitions.create('top'),
+            zIndex: theme.zIndex.appBar,
+          })}
         >
-          <Image
-            src="/maneki-logo-2.png"
-            alt="Svg of maneki logo"
-            width={mobileMenuOpen ? '77.76px' : '129.6px'}
-            height={mobileMenuOpen ? '35.52px' : '59.2px'}
-          />
-        </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
-          {ENABLE_TESTNET && (
-            <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-              <Button
-                variant="surface"
-                size="small"
-                color="primary"
-                sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
-                }}
-              >
-                TESTNET
-                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                  <InformationCircleIcon />
-                </SvgIcon>
-              </Button>
-            </ContentWithTooltip>
-          )}
-        </Box>
+          {currentAccount && chainId !== 97 && <SwitchNetworkHeader />}
+          <Box
+            component="header"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            sx={(theme) => ({
+              height: '80px',
+              position: 'sticky',
+              top: 0,
+              transition: theme.transitions.create('top'),
+              zIndex: theme.zIndex.appBar,
+              bgcolor: mobileMenuOpen ? theme.palette.background.paper : 'transparent',
+              padding: md ? '8px 12px' : '20px 100px',
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+            })}
+          >
+            <Box
+              component={Link}
+              href="/"
+              aria-label="Go to homepage"
+              sx={{
+                lineHeight: 0,
+                mr: 3,
+                transition: '0.3s ease all',
+                '&:hover': { opacity: 0.7 },
+              }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Image
+                src="/maneki-logo-2.png"
+                alt="Svg of maneki logo"
+                width={mobileMenuOpen ? '77.76px' : '129.6px'}
+                height={mobileMenuOpen ? '35.52px' : '59.2px'}
+              />
+            </Box>
+            <Box sx={{ mr: sm ? 1 : 3 }}>
+              {ENABLE_TESTNET && (
+                <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
+                  <Button
+                    variant="surface"
+                    size="small"
+                    color="primary"
+                    sx={{
+                      backgroundColor: '#B6509E',
+                      '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                    }}
+                  >
+                    TESTNET
+                    <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                      <InformationCircleIcon />
+                    </SvgIcon>
+                  </Button>
+                </ContentWithTooltip>
+              )}
+            </Box>
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-          <NavItems />
-        </Box>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <NavItems />
+            </Box>
 
-        <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} />
 
-        {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={setWalletWidgetOpen}
-            headerHeight={headerHeight}
-          />
-        )}
+            {!mobileMenuOpen && (
+              <WalletWidget
+                open={walletWidgetOpen}
+                setOpen={setWalletWidgetOpen}
+                headerHeight={headerHeight}
+              />
+            )}
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-          <SettingsMenu />
-        </Box>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <SettingsMenu />
+            </Box>
 
-        {!walletWidgetOpen && (
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <MobileMenu
-              open={mobileMenuOpen}
-              setOpen={setMobileMenuOpen}
-              headerHeight={headerHeight}
-            />
+            {!walletWidgetOpen && (
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <MobileMenu
+                  open={mobileMenuOpen}
+                  setOpen={setMobileMenuOpen}
+                  headerHeight={headerHeight}
+                />
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
-    </HideOnScroll>
+        </Box>
+      </HideOnScroll>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { MainLayout } from 'src/layouts/MainLayout';
+import TGEModal from 'src/maneki/transactions/TGE/TGEModal';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 import { TGEDataProvider } from '../src/maneki/hooks/tge-data-provider/TGEDataProvider';
@@ -14,6 +15,7 @@ export default function TGE() {
           <ContentContainer>
             <TGEContainer />
           </ContentContainer>
+          <TGEModal />
         </>
       </TGEDataProvider>
     </>

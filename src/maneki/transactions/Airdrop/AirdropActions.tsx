@@ -55,7 +55,7 @@ export const AirdropActions = ({
       // console.log({
       //   claimIdx : airdropCtx.claimIndex,
       //   index : airdropCtx.index,
-      //   entryAmount : airdropCtx.entryAmount.toString(),
+      //   entryAmount : airdropCtx.entryAmount.substring(0, airdropCtx.entryAmount.length - 1),
       //   receiver : airdropCtx.receiver,
       //   proofs : airdropCtx.proofs
       //  })
@@ -65,7 +65,7 @@ export const AirdropActions = ({
         transanctionUnsigned = await merkleDistContract.claim(
           airdropCtx.claimIndex,
           airdropCtx.index,
-          airdropCtx.entryAmount.toString(),
+          airdropCtx.entryAmount.substring(0, airdropCtx.entryAmount.length - 1),
           airdropCtx.receiver,
           airdropCtx.proofs
         );
@@ -74,7 +74,7 @@ export const AirdropActions = ({
         transanctionUnsigned = await merkleDistContract.claim(
           airdropCtx.claimIndexSocmed,
           airdropCtx.indexSocmed,
-          airdropCtx.entryAmountSocmed.toString(),
+          airdropCtx.entryAmount.substring(0, airdropCtx.entryAmount.length - 1),
           airdropCtx.receiverSocmed,
           airdropCtx.proofsSocmed
         );

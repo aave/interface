@@ -7,8 +7,8 @@ interface AirdropData {
   setMerkleRoot: (root: string) => void;
   proofs: string[];
   setProofs: (proofs: string[]) => void;
-  entryAmount: number;
-  setEntryAmout: (entryAmount: number) => void;
+  entryAmount: string;
+  setEntryAmout: (entryAmount: string) => void;
   index: number;
   setIndex: (index: number) => void;
   claimIndex: number;
@@ -23,8 +23,8 @@ interface AirdropData {
   setMerkleRootSocmed: (root: string) => void;
   proofsSocmed: string[];
   setProofsSocmed: (proofs: string[]) => void;
-  entryAmountSocmed: number;
-  setEntryAmoutSocmed: (entryAmount: number) => void;
+  entryAmountSocmed: string;
+  setEntryAmoutSocmed: (entryAmount: string) => void;
   indexSocmed: number;
   setIndexSocmed: (index: number) => void;
   claimIndexSocmed: number;
@@ -41,7 +41,7 @@ interface AirdropData {
 export const AirdropDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [merkleRoot, setMerkleRoot] = React.useState<string>('');
   const [proofs, setProofs] = React.useState<string[]>([]);
-  const [entryAmount, setEntryAmout] = React.useState<number>(-1);
+  const [entryAmount, setEntryAmout] = React.useState<string>('');
   const [index, setIndex] = React.useState<number>(-1);
   const [claimIndex, setClaimIndex] = React.useState<number>(0);
   const [receiver, setReceiver] = React.useState<string>('');
@@ -49,7 +49,7 @@ export const AirdropDataProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [merkleRootSocmed, setMerkleRootSocmed] = React.useState<string>('');
   const [proofsSocmed, setProofsSocmed] = React.useState<string[]>([]);
-  const [entryAmountSocmed, setEntryAmoutSocmed] = React.useState<number>(-1);
+  const [entryAmountSocmed, setEntryAmoutSocmed] = React.useState<string>('');
   const [indexSocmed, setIndexSocmed] = React.useState<number>(-1);
   const [claimIndexSocmed, setClaimIndexSocmed] = React.useState<number>(0);
   const [receiverSocmed, setReceiverSocmed] = React.useState<string>('');
