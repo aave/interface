@@ -218,7 +218,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   symbol="USD"
                   compact
                   variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                  value={ghoReserveData.aaveFacilitatorBucketLevel}
                 />
                 <Typography
                   sx={{
