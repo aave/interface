@@ -33756,6 +33756,7 @@ var require_types2 = __commonJS({
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
       ProtocolAction2["stake"] = "stake";
       ProtocolAction2["claimRewards"] = "claimRewards";
+      ProtocolAction2["claimRewardsAndStake"] = "claimRewardsAndStake";
       ProtocolAction2["setUsageAsCollateral"] = "setUsageAsCollateral";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
@@ -43923,20 +43924,248 @@ var require_IAaveStakingHelper_factory = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedToken__factory.js
-var require_IStakedToken_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedToken__factory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedAaveV3__factory.js
+var require_IStakedAaveV3_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedAaveV3__factory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IStakedToken__factory = void 0;
+    exports2.IStakedAaveV3__factory = void 0;
     var ethers_1 = require_lib31();
-    var IStakedToken__factory = class {
+    var IStakedAaveV3__factory = class {
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
     };
-    exports2.IStakedToken__factory = IStakedToken__factory;
+    exports2.IStakedAaveV3__factory = IStakedAaveV3__factory;
     var _abi = [
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "Cooldown",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "cooldownSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "CooldownSecondsChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint216",
+            name: "exchangeRate",
+            type: "uint216"
+          }
+        ],
+        name: "ExchangeRateChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "FundsReturned",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "newDebtToken",
+            type: "address"
+          }
+        ],
+        name: "GHODebtTokenChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "newPercentage",
+            type: "uint256"
+          }
+        ],
+        name: "MaxSlashablePercentageChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "Redeem",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "RewardsAccrued",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "RewardsClaimed",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "destination",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "Slashed",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "windowSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "SlashingExitWindowDurationChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [],
+        name: "SlashingSettled",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "Staked",
+        type: "event"
+      },
       {
         inputs: [],
         name: "REWARD_TOKEN",
@@ -43964,6 +44193,19 @@ var require_IStakedToken_factory = __commonJS({
         type: "function"
       },
       {
+        inputs: [],
+        name: "COOLDOWN_SECONDS",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
         inputs: [
           {
             internalType: "address",
@@ -43982,10 +44224,339 @@ var require_IStakedToken_factory = __commonJS({
         type: "function"
       },
       {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "claimAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "redeemAmount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndRedeem",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "claimAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "redeemAmount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndRedeemOnBehalf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndStake",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndStakeOnBehalf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsOnBehalf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
         inputs: [],
         name: "cooldown",
         outputs: [],
         stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          }
+        ],
+        name: "cooldownOnBehalfOf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getCooldownSeconds",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getExchangeRate",
+        outputs: [
+          {
+            internalType: "uint216",
+            name: "",
+            type: "uint216"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint32",
+            name: "index",
+            type: "uint32"
+          }
+        ],
+        name: "getExchangeRateSnapshot",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint40",
+                name: "blockNumber",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "value",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedAaveV3.ExchangeRateSnapshot",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getExchangeRateSnapshotsCount",
+        outputs: [
+          {
+            internalType: "uint32",
+            name: "",
+            type: "uint32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getMaxSlashablePercentage",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "staker",
+            type: "address"
+          }
+        ],
+        name: "getTotalRewardsBalance",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "spender",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "v",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "permit",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "previewRedeem",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          }
+        ],
+        name: "previewStake",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
         type: "function"
       },
       {
@@ -44010,7 +44581,113 @@ var require_IStakedToken_factory = __commonJS({
         inputs: [
           {
             internalType: "address",
-            name: "onBehalfOf",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "redeemOnBehalf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "returnFunds",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "cooldownSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "setCooldownSeconds",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IGhoVariableDebtTokenTransferHook",
+            name: "newGHODebtToken",
+            type: "address"
+          }
+        ],
+        name: "setGHODebtToken",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "percentage",
+            type: "uint256"
+          }
+        ],
+        name: "setMaxSlashablePercentage",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "settleSlashing",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "destination",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "slash",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
             type: "address"
           },
           {
@@ -44020,6 +44697,44 @@ var require_IStakedToken_factory = __commonJS({
           }
         ],
         name: "stake",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "v",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "stakeWithPermit",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function"
@@ -44043,11 +44758,11 @@ var require_staking_contract = __commonJS({
     var paramValidators_1 = require_paramValidators();
     var erc20_contract_1 = require_erc20_contract();
     var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
-    var IStakedToken__factory_1 = require_IStakedToken_factory();
+    var IStakedAaveV3__factory_1 = require_IStakedAaveV3_factory();
     var StakingService = class extends BaseService_1.default {
       constructor(provider, stakingServiceConfig) {
         var _a7;
-        super(provider, IStakedToken__factory_1.IStakedToken__factory);
+        super(provider, IStakedAaveV3__factory_1.IStakedAaveV3__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
         this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
@@ -44231,6 +44946,35 @@ var require_staking_contract = __commonJS({
           ];
         });
       }
+      claimRewardsAndStake(user, amount) {
+        return __async(this, null, function* () {
+          let convertedAmount;
+          const stakingContract = this.getContractInstance(this.stakingContractAddress);
+          if (amount === "-1") {
+            convertedAmount = ethers_1.constants.MaxUint256.toString();
+          } else {
+            const { decimalsOf } = this.erc20Service;
+            const stakedToken = yield stakingContract.STAKED_TOKEN();
+            const stakedTokenDecimals = yield decimalsOf(stakedToken);
+            convertedAmount = (0, utils_1.valueToWei)(amount, stakedTokenDecimals);
+          }
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return stakingContract.populateTransaction.claimRewardsAndStake(user, convertedAmount);
+            }),
+            from: user,
+            gasSurplus: 20,
+            action: types_1.ProtocolAction.claimRewardsAndStake
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.STAKE_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.claimRewardsAndStake)
+            }
+          ];
+        });
+      }
     };
     tslib_1.__decorate([
       methodValidators_1.SignStakingValidator,
@@ -44281,6 +45025,14 @@ var require_staking_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", [String, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "claimRewards", null);
+    tslib_1.__decorate([
+      methodValidators_1.StakingValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+      tslib_1.__param(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String, String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], StakingService.prototype, "claimRewardsAndStake", null);
     exports2.StakingService = StakingService;
   }
 });
