@@ -66,6 +66,7 @@ function SecondsToString({ seconds }: { seconds: number }) {
 export interface StakingPanelProps {
   onStakeAction?: () => void;
   onStakeRewardClaimAction?: () => void;
+  onStakeRewardClaimRestakeAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
   stakeData?: GeneralStakeUIDataHumanized['aave'];
@@ -82,6 +83,7 @@ export interface StakingPanelProps {
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
   onStakeRewardClaimAction,
+  onStakeRewardClaimRestakeAction,
   onCooldownAction,
   onUnstakeAction,
   stakeTitle,
@@ -486,15 +488,38 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             />
           }
         >
-          <Button
-            variant="contained"
-            onClick={onStakeRewardClaimAction}
-            fullWidth
-            disabled={stakeUserData?.userIncentivesToClaim === '0'}
-            data-cy={`claimBtn_${stakedToken}`}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { sm: 'row', xs: 'column' },
+              justifyContent: 'space-between',
+            }}
           >
-            <Trans>Claim AAVE</Trans>
-          </Button>
+            <Button
+              variant="contained"
+              onClick={onStakeRewardClaimAction}
+              disabled={stakeUserData?.userIncentivesToClaim === '0'}
+              data-cy={`claimBtn_${stakedToken}`}
+              sx={{
+                flex: 1,
+                mb: { xs: 2, sm: 0 },
+                mr: { xs: 0, sm: 1 },
+              }}
+            >
+              <Trans>Claim</Trans>
+            </Button>
+            {stakedToken === 'AAVE' && (
+              <Button
+                variant="contained"
+                onClick={onStakeRewardClaimRestakeAction}
+                disabled={stakeUserData?.userIncentivesToClaim === '0'}
+                data-cy={`claimBtn_${stakedToken}`}
+                style={{ flex: 1 }} // marginLeft adds space between buttons
+              >
+                <Trans>Restake</Trans>
+              </Button>
+            )}
+          </Box>
         </StakeActionBox>
       </Stack>
 
