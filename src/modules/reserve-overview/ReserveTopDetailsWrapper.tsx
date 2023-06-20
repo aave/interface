@@ -74,7 +74,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const isGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
 
-  console.log('loading', loading);
   return (
     <TopInfoPanel
       titleComponent={
