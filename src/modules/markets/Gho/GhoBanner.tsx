@@ -271,7 +271,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
           variant="contained"
           component={Link}
           size={isCustomBreakpoint ? 'medium' : 'large'}
-          href={reserve && ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
           sx={{
             marginLeft: {
               xs: 'none',
