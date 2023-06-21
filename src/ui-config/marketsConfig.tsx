@@ -47,6 +47,7 @@ export type MarketDataType = {
   permissionComponent?: ReactNode;
   disableCharts?: boolean;
   subgraphUrl?: string;
+  ghoSubgraphUrl?: string;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -123,6 +124,7 @@ export const marketsData: {
       incentives: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
+    ghoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli-gho',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Ethereum.POOL,

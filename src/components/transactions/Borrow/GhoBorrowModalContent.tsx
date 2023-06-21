@@ -23,6 +23,7 @@ import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useGhoBorrowHistory } from 'src/hooks/useGhoBorrowHistory';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
@@ -117,12 +118,13 @@ export const GhoBorrowModalContent = ({
     useAppDataContext();
   const ghoUserQualifiesForDiscount = useRootStore((state) => state.ghoUserQualifiesForDiscount);
   const { borrowCap } = useAssetCaps();
-
   const { currentMarket: customMarket } = useProtocolDataContext();
-
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
+
+  const { data: numberOfBorrows } = useGhoBorrowHistory();
+  console.log('numberOfBorrows', numberOfBorrows);
 
   // Check if user has any open borrow positions on GHO
   // Check if user can borrow at a discount
