@@ -135,7 +135,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
         fullWidth
         onClick={() => {
-          trackEvent(MARKETS.DETAILS_BUTTON, {
+          trackEvent(MARKETS.DETAILS_NAVIGATION, {
+            type: 'button',
             asset: reserve.underlyingAsset,
             market: currentMarket,
             assetName: reserve.name,

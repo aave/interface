@@ -15,7 +15,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL, STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
@@ -106,7 +106,10 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   };
 
   const handleOnCoolDownCheckBox = () => {
-    trackEvent(STAKE.ACCEPT_COOLDOWN_CHECKBOX, { asset: stakeAssetName });
+    trackEvent(GENERAL.ACCEPT_RISK, {
+      asset: stakeAssetName,
+      modal: 'Cooldown',
+    });
     setCooldownCheck(!cooldownCheck);
   };
   return (

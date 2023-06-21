@@ -28,24 +28,24 @@ export const ListHeaderTitle = ({
   const handleTracking = (sortName: string) => {
     switch (sortName) {
       case 'asset':
-        trackEvent(MARKETS.SORT_ASSET_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'asset', page: 'market' });
         break;
       case 'totalLiquidityUSD':
-        trackEvent(MARKETS.SORT_SUPPLY_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'totalLiquidityUSD', page: 'market' });
         break;
       case 'supplyAPY':
-        trackEvent(MARKETS.SORT_SUPPY_APY_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'supplyAPY', page: 'market' });
         break;
       case 'totalDebtUSD':
-        trackEvent(MARKETS.SORT_BORROW_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'totalDebtUSD', page: 'market' });
 
         break;
       case 'variableBorrowAPY':
-        trackEvent(MARKETS.SORT_BORROW_APY_V_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'variableBorrowAPY', page: 'market' });
 
         break;
       case 'stableBorrowAPY':
-        trackEvent(MARKETS.SORT_BORROW_APY_S_MARKET);
+        trackEvent(MARKETS.SORT, { sort_by: 'stableBorrowAPY', page: 'market' });
         break;
       default:
         return null;

@@ -50,7 +50,6 @@ export const createAnalyticsSlice: StateCreator<
       try {
         if (!EXCLUDED_NETWORKS.includes(get().currentMarket)) {
           mixpanel.track(eventName, eventProperties);
-          console.log('i can log');
         }
       } catch (err) {
         console.log('something went wrong tracking event', err);

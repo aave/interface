@@ -4,13 +4,7 @@ import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalCont
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
-import {
-  AIP,
-  DASHBOARD,
-  GOVERNANCE_PAGE,
-  STAKE,
-  YOUR_INFO_RESERVE_DETAILS,
-} from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export enum ModalType {
   Supply,
@@ -141,14 +135,16 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ underlyingAsset });
 
           if (isReserve) {
-            trackEvent(YOUR_INFO_RESERVE_DETAILS.SUPPLY_RESERVE, {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Supply',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
               funnel,
             });
           } else {
-            trackEvent(DASHBOARD.SUPPLY_DASHBOARD, {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Supply',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
@@ -160,7 +156,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Withdraw);
           setArgs({ underlyingAsset });
 
-          trackEvent(DASHBOARD.WITHDRAWL_DASHBOARD, {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Withdraw',
             market: currentMarket,
             assetName: name,
             asset: underlyingAsset,
@@ -171,14 +168,16 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
           if (isReserve) {
-            trackEvent(YOUR_INFO_RESERVE_DETAILS.BORROW_RESERVE, {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Borrow',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
               funnel,
             });
           } else {
-            trackEvent(DASHBOARD.BORROW_DASHBOARD, {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Borrow',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
@@ -190,7 +189,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Repay);
           setArgs({ underlyingAsset, currentRateMode, isFrozen });
 
-          trackEvent(DASHBOARD.REPAY_DASHBOARD, {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Repay',
             asset: underlyingAsset,
             assetName: name,
             market: currentMarket,
@@ -206,7 +206,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         ) => {
           setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
-          trackEvent(DASHBOARD.COLLATERAL_TOGGLE_DASHBOARD, {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Toggle Collateral',
             market: currentMarket,
             assetName: name,
             asset: underlyingAsset,
@@ -215,55 +216,60 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           });
         },
         openRateSwitch: (underlyingAsset, currentRateMode) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Rate Switch' });
           setType(ModalType.RateSwitch);
           setArgs({ underlyingAsset, currentRateMode });
         },
         openStake: (stakeAssetName, icon) => {
-          trackEvent(STAKE.OPEN_STAKE_MODAL, { assetName: stakeAssetName });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake', assetName: stakeAssetName });
           setType(ModalType.Stake);
           setArgs({ stakeAssetName, icon });
         },
         openUnstake: (stakeAssetName, icon) => {
-          trackEvent(STAKE.OPEN_UNSTAKE_MODAL, { assetName: stakeAssetName });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Untake', assetName: stakeAssetName });
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
         openStakeCooldown: (stakeAssetName) => {
-          trackEvent(STAKE.OPEN_COOLDOWN_MODAL, { assetName: stakeAssetName });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Cooldown', assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
           setArgs({ stakeAssetName });
         },
         openStakeRewardsClaim: (stakeAssetName) => {
-          trackEvent(STAKE.OPEN_CLAIM_STAKE_REWARDS, { assetName: stakeAssetName });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim & Restake', assetName: stakeAssetName });
           setType(ModalType.StakeRewardClaim);
           setArgs({ stakeAssetName });
         },
         openClaimRewards: () => {
-          trackEvent(STAKE.OPEN_CLAIM_STAKE_REWARDS);
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
           setType(ModalType.ClaimRewards);
         },
         openEmode: (mode) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'eMode' });
           setType(ModalType.Emode);
           setArgs({ emode: mode });
         },
         openFaucet: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Faucet' });
           setType(ModalType.Faucet);
           setArgs({ underlyingAsset });
         },
         openSwap: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
           setType(ModalType.Swap);
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
-          trackEvent(GOVERNANCE_PAGE.SET_UP_DELEGATION_BUTTON);
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Governance Delegation' });
           setType(ModalType.GovDelegation);
         },
         openRevokeGovDelegation: () => {
-          trackEvent(GOVERNANCE_PAGE.REVOKE_POWER_BUTTON);
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Revoke Governance Delegation' });
           setType(ModalType.RevokeGovDelegation);
         },
         openGovVote: (proposalId, support, power) => {
-          trackEvent(AIP.VOTE_BUTTON_MODAL, {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Vote',
             proposalId: proposalId,
             voteSide: support,
           });
@@ -271,6 +277,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ proposalId, support, power });
         },
         openV3Migration: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
         close: () => {

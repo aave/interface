@@ -76,7 +76,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
 
         <MenuItem
           onClick={() => {
-            trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_UNDERLYING, {
+            trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
+              type: 'Underlying Token',
               assetName: poolReserve.name,
               asset: poolReserve.underlyingAsset,
               aToken: poolReserve.aTokenAddress,
@@ -106,7 +107,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         <MenuItem
           component="a"
           onClick={() => {
-            trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_ATOKEN, {
+            trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
+              type: 'aToken',
               assetName: poolReserve.name,
               asset: poolReserve.underlyingAsset,
               aToken: poolReserve.aTokenAddress,
@@ -140,7 +142,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             })}
             target="_blank"
             onClick={() => {
-              trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_DEBT_TOKEN, {
+              trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
+                type: 'Variable Debt',
                 assetName: poolReserve.name,
                 asset: poolReserve.underlyingAsset,
                 aToken: poolReserve.aTokenAddress,
@@ -163,7 +166,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             })}
             target="_blank"
             onClick={() => {
-              trackEvent(RESERVE_DETAILS.RESERVE_TOKENS_STABLE_DEBT_TOKEN, {
+              trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
+                type: 'Stable Debt',
                 assetName: poolReserve.name,
                 asset: poolReserve.underlyingAsset,
                 aToken: poolReserve.aTokenAddress,

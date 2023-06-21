@@ -85,7 +85,8 @@ export const BorrowAssetsListItem = ({
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           onClick={() => {
-            trackEvent(DASHBOARD.DETAILS_BUTTON_DASHBOARD, {
+            trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
+              type: 'Button',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
