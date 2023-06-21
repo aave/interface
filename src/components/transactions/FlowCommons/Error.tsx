@@ -57,7 +57,7 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           variant="outlined"
           onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
-          sx={{ mt: 6, color: 'background.default' }}
+          sx={{ mt: 6 }}
         >
           <Trans>Copy error text</Trans>
 
