@@ -12,7 +12,11 @@ type GhoUtilMintingAvailableParams = {
   currentMarket: string;
 };
 
-export const GHO_SUPPORTED_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
+export const GHO_SUPPORTED_MARKETS = [
+  'proto_mainnet_v3',
+  'fork_proto_mainnet_v3',
+  'proto_mainnet_gho_v3',
+];
 
 /**
  * Determines if the provided asset is GHO and is available to borrow on a given market. It takes in symbol as a param due that this can be run within a loop over all assets to determine whether to display GHO-related components in the UI.

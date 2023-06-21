@@ -10,8 +10,9 @@ export const GhoDiscountProgram = () => {
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const currentMarket = useRootStore((store) => store.currentMarket);
 
-  const ghoTokenAddress = marketsData[CustomMarket.proto_mainnet_v3].addresses
-    .GHO_TOKEN_ADDRESS as string;
+  const ghoTokenAddress = marketsData[
+    CustomMarket.proto_mainnet_v3
+  ].addresses.GHO_TOKEN_ADDRESS?.toLowerCase() as string;
 
   return (
     <Box

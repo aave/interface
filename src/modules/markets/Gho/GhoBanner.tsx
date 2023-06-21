@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -21,7 +21,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const { ghoReserveData } = useAppDataContext();
+  const { ghoReserveData, ghoLoadingData } = useAppDataContext();
 
   const onClick = () => {
     if (reserve) {
@@ -214,12 +214,16 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                <FormattedNumber
-                  symbol="USD"
-                  compact
-                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={ghoReserveData.aaveFacilitatorBucketLevel}
-                />
+                {ghoLoadingData ? (
+                  <Skeleton width={70} height={25} />
+                ) : (
+                  <FormattedNumber
+                    symbol="USD"
+                    compact
+                    variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                    value={ghoReserveData.aaveFacilitatorBucketLevel}
+                  />
+                )}
                 <Typography
                   sx={{
                     ['@media screen and (min-width: 1125px)']: {
@@ -271,7 +275,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
           variant="contained"
           component={Link}
           size={isCustomBreakpoint ? 'medium' : 'large'}
-          href={reserve && ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
           sx={{
             marginLeft: {
               xs: 'none',
