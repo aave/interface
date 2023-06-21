@@ -188,7 +188,7 @@ export const MarketSwitcher = () => {
                       color: '#A5A8B6',
                       px: 2,
                       borderRadius: '12px',
-                      backgroundColor: '#292E41',
+                      backgroundColor: '#383D51',
                     }}
                   >
                     <Typography variant="subheader2">V2</Typography>
