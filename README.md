@@ -45,7 +45,7 @@ Each commit gets deployed to IPFS automatically
 
 There's a github action commenting the appropriate IPFS hash embedded in the Cloudflare IPFS gateway after each commit
 
-For ease of use:
+For ease of use
 
 - the DNS of [https://staging.aave.com](https://staging.aave.com) will always point to the latest main IPFS hash with all networks enabled
 - the DNS of [https://app.aave.com](https://app.aave.com) will always point to the latest main IPFS hash with disabled test networks
