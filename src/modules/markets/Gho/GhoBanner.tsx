@@ -3,7 +3,7 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useRouter } from 'next/router';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ROUTES } from 'src/components/primitives/Link';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
   ComputedReserveData,
@@ -218,7 +218,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   symbol="USD"
                   compact
                   variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                  value={ghoReserveData.aaveFacilitatorBucketLevel}
                 />
                 <Typography
                   sx={{
@@ -269,6 +269,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
         </Box>
         <Button
           variant="contained"
+          component={Link}
           size={isCustomBreakpoint ? 'medium' : 'large'}
           href={reserve && ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
           sx={{

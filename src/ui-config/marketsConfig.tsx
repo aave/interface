@@ -61,6 +61,8 @@ export type MarketDataType = {
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
     V3_MIGRATOR?: string;
+    GHO_TOKEN_ADDRESS?: string;
+    GHO_UI_DATA_PROVIDER?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -131,6 +133,8 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
+      GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09', // on fork
+      GHO_UI_DATA_PROVIDER: '0xAd4B89AAd7556D89A8318D58E9EBF49f9a34cFfE', // on fork
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

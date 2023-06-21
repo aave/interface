@@ -60,7 +60,7 @@ export const MarketAssetsListContainer = () => {
 
   // Determine if to show GHO market list item
   const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
-    if (!GHO_SUPPORTED_MARKETS.concat('proto_sepolia_gho_v3').includes(marketTitle)) {
+    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
       // TODO add to utilities
       return false;
     }
