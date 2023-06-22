@@ -29,7 +29,7 @@ interface UseTransactionHandlerProps {
   skip?: boolean;
   protocolAction?: ProtocolAction;
   deps?: DependencyList;
-  eventTxInfo?: Pick<TransactionDetails, 'asset' | 'assetName' | 'amount'>;
+  eventTxInfo?: TransactionDetails;
 }
 
 export type Approval = {
@@ -47,8 +47,7 @@ export const useTransactionHandler = ({
   protocolAction,
   deps = [],
   eventTxInfo,
-}: //eventTxInfo,
-UseTransactionHandlerProps) => {
+}: UseTransactionHandlerProps) => {
   const {
     approvalTxState,
     setApprovalTxState,

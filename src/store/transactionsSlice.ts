@@ -11,11 +11,14 @@ export type Transactions = {
 };
 
 export type TransactionDetails = {
-  action: ProtocolAction;
-  txState: TransactionState;
+  action?: ProtocolAction;
+  txState?: TransactionState;
   asset?: string;
   amount?: string;
   assetName?: string;
+  votingPower?: string;
+  proposalId?: number;
+  support?: boolean;
 };
 
 export type TransactionEvent = TransactionDetails & {
