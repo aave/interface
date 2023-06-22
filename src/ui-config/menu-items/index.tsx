@@ -28,7 +28,10 @@ export const navigation: Navigation[] = [
     link: ROUTES.staking,
     title: t`Stake`,
     dataCy: 'menuStake',
-    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true',
+    isVisible: () =>
+      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+      process.env.NEXT_PUBLIC_ENV === 'prod' &&
+      !ENABLE_TESTNET,
   },
   {
     link: ROUTES.governance,
