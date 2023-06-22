@@ -16,9 +16,10 @@ export type TransactionDetails = {
   asset?: string;
   amount?: string;
   assetName?: string;
-  votingPower?: string;
   proposalId?: number;
   support?: boolean;
+  collateralUsage?: boolean;
+  newRateMode?: string;
 };
 
 export type TransactionEvent = TransactionDetails & {
