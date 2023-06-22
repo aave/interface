@@ -7,13 +7,13 @@ import { HistoryWrapper } from 'src/modules/history/HistoryWrapper';
 import { useRootStore } from 'src/store/root';
 
 export default function History() {
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'History',
     });
-  }, []);
+  }, [trackEvent]);
   return (
     <>
       <HistoryTopPanel />

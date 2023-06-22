@@ -6,13 +6,13 @@ import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import { useRootStore } from 'src/store/root';
 
 export default function Markets() {
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Markets',
     });
-  }, []);
+  }, [trackEvent]);
   return (
     <>
       <MarketsTopPanel />

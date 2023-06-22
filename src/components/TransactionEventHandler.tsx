@@ -6,10 +6,10 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 export const TransactionEventHandler = () => {
   const [postedTransactions, setPostedTransactions] = useState<{ [chainId: string]: string[] }>({});
 
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const successfulTransactions = useRootStore(selectSuccessfulTransactions);
 
-  //tx's currently tracked: supply, borrow, withdraw, repay, repay with coll, swap coll
+  //tx's currently tracked: supply, borrow, withdraw, repay, repay with coll, collateral switch
 
   useEffect(() => {
     Object.keys(successfulTransactions).forEach((chainId) => {

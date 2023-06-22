@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
@@ -21,19 +21,15 @@ export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
 
-  const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
-  const { trackEvent } = useRootStore();
+  const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Reserve Overview',
     });
-    if (!mode) setMode('overview');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+  }, [trackEvent]);
 
   const reserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset

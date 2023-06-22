@@ -53,13 +53,13 @@ export default function Governance(props: GovernancePageProps) {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   const [mode, setMode] = useState(Tabs.PROPOSALS);
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Governance',
     });
-  }, []);
+  }, [trackEvent]);
   return (
     <>
       <GovernanceTopPanel />

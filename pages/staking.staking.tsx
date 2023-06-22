@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
@@ -42,21 +42,16 @@ export default function Staking() {
     openStakeRewardsRestakeClaim,
   } = useModalContext();
 
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
-
-  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('');
+  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Staking',
     });
-    if (!mode) setMode('aave');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+  }, [trackEvent]);
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(

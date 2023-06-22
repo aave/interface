@@ -13,13 +13,13 @@ export default function Aave500Page() {
   const handleCopyError = () => {
     console.log('copying error to clipboard');
   };
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': '500 Error',
     });
-  }, []);
+  }, [trackEvent]);
   return (
     <>
       <TopInfoPanel />

@@ -9,13 +9,13 @@ import { useRootStore } from 'src/store/root';
 
 export default function Aave404Page() {
   const theme = useTheme();
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': '404 Error',
     });
-  }, []);
+  }, [trackEvent]);
   return (
     <>
       <TopInfoPanel />
