@@ -117,6 +117,9 @@ export class WalletConnectConnector extends AbstractConnector {
       this.walletConnectProvider.removeListener('accountsChanged', this.handleAccountsChanged);
       this.walletConnectProvider.removeListener('display_uri', this.handleDisplayURI);
       this.walletConnectProvider.disconnect();
+
+      this.walletConnectProvider = undefined;
+      localStorage.removeItem('walletProvider');
     }
   }
 
