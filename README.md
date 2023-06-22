@@ -35,7 +35,7 @@ yarn dev
 
 For instructions on local development, deployment, configurations & feature proposals, see [Contributing](./CONTRIBUTING.md)
 
-Also, contributors with at least one pull request that has been merged into the main branch are eligible for a unique GitPOAP. Visit [gitpoap.io](https://www.gitpoap.io/gp/638) to claim it. 
+Also, contributors with at least one pull request that has been merged into the main branch are eligible for a unique GitPOAP. Visit [gitpoap.io](https://www.gitpoap.io/gp/638) to claim it.
 
 <img src="https://www.gitpoap.io/_next/image?url=https%3A%2F%2Fassets.poap.xyz%2Fgitpoap3a-2022-aave-protocol-interface-contributor-2022-logo-1668012040505.png&w=2048&q=75" width="164">
 
@@ -67,7 +67,7 @@ Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
 
 ## License
 
-[BSD-3-Clause](./LICENSE.md)
+[All Rights Reserved © AaveCo](./LICENSE.md)
 
 ## Credits
 

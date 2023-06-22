@@ -35,7 +35,7 @@ interface UseTransactionHandlerProps {
 export type Approval = {
   amount: string;
   underlyingAsset: string;
-  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3';
+  permitType?: 'POOL' | 'SUPPLY_MIGRATOR_V3' | 'BORROW_MIGRATOR_V3' | 'STAKE';
 };
 
 export const useTransactionHandler = ({
@@ -60,7 +60,7 @@ UseTransactionHandlerProps) => {
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
 
@@ -70,12 +70,14 @@ UseTransactionHandlerProps) => {
     generatePermitPayloadForMigrationBorrowAsset,
     generatePermitPayloadForMigrationSupplyAsset,
     addTransaction,
+    signStakingApproval,
   ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
     state.generatePermitPayloadForMigrationBorrowAsset,
     state.generatePermitPayloadForMigrationSupplyAsset,
     state.addTransaction,
+    state.signStakingApproval,
   ]);
 
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
@@ -124,6 +126,7 @@ UseTransactionHandlerProps) => {
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
         refetchPoolData && refetchPoolData();
+        refetchGhoData && refetchGhoData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?
@@ -167,13 +170,20 @@ UseTransactionHandlerProps) => {
                   deadline,
                 })
               );
-            } else if (approval.permitType == 'SUPPLY_MIGRATOR_V3') {
+            } else if (approval.permitType === 'SUPPLY_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
                 generatePermitPayloadForMigrationSupplyAsset({ ...approval, deadline })
               );
-            } else if (approval.permitType == 'BORROW_MIGRATOR_V3') {
+            } else if (approval.permitType === 'BORROW_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
                 generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
+              );
+            } else if (approval.permitType === 'STAKE') {
+              unsignedPromisePayloads.push(
+                signStakingApproval({
+                  token: approval.underlyingAsset,
+                  amount: approval.amount,
+                })
               );
             }
           }

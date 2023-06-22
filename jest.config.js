@@ -16,6 +16,10 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   // test any .test file in any `__tests__` directory, ignore cypress .spec files
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+test.[jt]s?(x)'],
+  moduleNameMapper: {
+    'd3-time-format': '<rootDir>/node_modules/d3-time-format/dist/d3-time-format.min.js',
+    'd3-time': '<rootDir>/node_modules/d3-time/dist/d3-time.min.js',
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -31,8 +31,8 @@ describe.skip(`DELEGATION SPEC`, () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({
     tokens: [
-      { address: initAssets.aave.asset.address },
-      { address: initAssets.stkAave.asset.address },
+      { tokenAddress: initAssets.aave.asset.address },
+      { tokenAddress: initAssets.stkAave.asset.address },
     ],
   });
   describe(`Open page`, () => {

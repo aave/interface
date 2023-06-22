@@ -1,9 +1,10 @@
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ReactNode } from 'react';
 
 type NoSearchResultsProps = {
   searchTerm?: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
 };
 
 export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, subtitle }) => {
@@ -45,7 +46,7 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, su
           variant="description"
           color="text.secondary"
         >
-          <Trans>{subtitle}</Trans>
+          {subtitle}
         </Typography>
       )}
     </Box>

@@ -61,6 +61,8 @@ export type MarketDataType = {
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
     V3_MIGRATOR?: string;
+    GHO_TOKEN_ADDRESS?: string;
+    GHO_UI_DATA_PROVIDER?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -92,6 +94,7 @@ export enum CustomMarket {
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   proto_metis_v3 = 'proto_metis_v3',
+  proto_mainnet_gho_v3 = 'proto_mainnet_gho_v3', // TODO-GHO: remove for mainnet
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -129,6 +132,8 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
+      GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09', // on fork
+      GHO_UI_DATA_PROVIDER: '0xAd4B89AAd7556D89A8318D58E9EBF49f9a34cFfE', // on fork
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -161,6 +166,29 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
       marketName: 'aavev2',
+    },
+  },
+  // TODO-GHO: remove for mainnet
+  [CustomMarket.proto_mainnet_gho_v3]: {
+    marketTitle: 'Ethereum Mainnet Fork Gho Deployment',
+    v3: true,
+    chainId: ChainId.mainnet,
+    enabledFeatures: {
+      staking: true,
+      // incentives: false,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Ethereum.POOL,
+      WETH_GATEWAY: AaveV3Ethereum.WETH_GATEWAY,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Ethereum.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Ethereum.SWAP_COLLATERAL_ADAPTER,
+      WALLET_BALANCE_PROVIDER: AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Ethereum.COLLECTOR,
+      GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09',
+      GHO_UI_DATA_PROVIDER: '0xecebedbf26013fb55a5b0a275191a90984e5ae5e',
     },
   },
   // [CustomMarket.permissioned_market]: {

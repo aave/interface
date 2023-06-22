@@ -29,7 +29,7 @@ interface CustomProps {
   value: string;
 }
 
-const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
+export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 

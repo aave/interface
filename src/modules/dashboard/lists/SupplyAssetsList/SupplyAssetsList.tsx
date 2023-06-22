@@ -11,6 +11,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -43,7 +44,8 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig, currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarketData, currentMarket } =
+    useProtocolDataContext();
   const {
     user,
     reserves,
@@ -65,7 +67,11 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves
-    .filter((reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused))
+    .filter(
+      (reserve: ComputedReserveData) =>
+        !(reserve.isFrozen || reserve.isPaused) &&
+        !isGhoAndSupported({ symbol: reserve.symbol, currentMarket })
+    )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
