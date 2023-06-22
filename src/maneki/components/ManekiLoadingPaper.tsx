@@ -1,6 +1,5 @@
 import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
-
-import LoveManeki from '/public/loveManeki.svg';
+import Image from 'next/image';
 
 interface ManekiLoadingPaperProps extends PaperProps {
   description?: string;
@@ -28,13 +27,8 @@ export default function ManekiLoadingPaper({
         ...sx,
       }}
     >
-      <LoveManeki
-        style={{
-          width: '100px',
-          height: 'auto',
-          fill: theme.palette.text.secondary,
-        }}
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
+
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         {description}
       </Typography>

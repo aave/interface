@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { Contract, utils } from 'ethers';
+import Image from 'next/image';
 import { useEffect } from 'react';
 import {
   DetailsNumberLine,
@@ -13,8 +14,6 @@ import EARLY_TOKEN_GENERATION_ABI from 'src/maneki/abi/earlyTokenGenerationABI';
 import { useTGEContext } from 'src/maneki/hooks/tge-data-provider/TGEDataProvider';
 import { TxAction } from 'src/ui-config/errorMapping';
 import { marketsData } from 'src/ui-config/marketsConfig';
-
-import LoveManeki from '/public/loveManeki.svg';
 
 interface TGEModalActionsProps {
   action?: string;
@@ -34,7 +33,7 @@ export const TGEModalActions = ({
   const { setTGELoading } = useTGEContext();
   const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
-  const theme = useTheme();
+
   const handleContribution = async () => {
     setMainTxState({ loading: true });
     const signer = provider?.getSigner(currentAccount as string);
@@ -108,13 +107,7 @@ export const TGEModalActions = ({
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <LoveManeki
-        style={{
-          width: '100px',
-          height: 'auto',
-          fill: theme.palette.text.secondary,
-        }}
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         <Trans>Pending Transaction...</Trans>
       </Typography>

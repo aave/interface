@@ -1,9 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
 import { ReactNode } from 'react';
-
-//@Modified
-import LoveManeki from '/public/loveManeki.svg';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
@@ -34,15 +32,15 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <LoveManeki
+      <Image
+        src="/maneki-3d.png"
+        width="200px"
+        height="200px"
+        alt="maneki cat 3d logo"
         style={{
           marginBottom: '16px',
-          width: '100px',
-          height: 'auto',
-          fill: theme.palette.text.secondary,
         }}
       />
-      {/* <Image src="/maneki-logo-3.png" width="282px" height="192px" alt="maneki logo" /> */}
       <>
         {loading ? (
           <CircularProgress />
