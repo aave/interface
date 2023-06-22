@@ -232,6 +232,7 @@ export const SupplyActions = React.memo(
           txState: 'success',
           asset: poolAddress,
           amount: amountToSupply,
+          assetName: symbol,
         });
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });

@@ -1,29 +1,15 @@
-import { ProtocolAction } from '@aave/contract-helpers';
 import { useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { selectSuccessfulTransactions } from 'src/store/transactionsSelectors';
-import { BORROW_MODAL, REPAY_MODAL, SUPPLY_MODAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export const TransactionEventHandler = () => {
   const [postedTransactions, setPostedTransactions] = useState<{ [chainId: string]: string[] }>({});
 
-  const { trackEvent } = useRootStore();
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const successfulTransactions = useRootStore(selectSuccessfulTransactions);
 
-  const actionToEvent = (action: ProtocolAction) => {
-    switch (action) {
-      case ProtocolAction.supply:
-        return SUPPLY_MODAL.SUPPLY_TOKEN;
-      case ProtocolAction.supplyWithPermit:
-        return SUPPLY_MODAL.SUPPLY_WITH_PERMIT;
-      case ProtocolAction.borrow:
-        return BORROW_MODAL.BORROW_TOKEN;
-      case ProtocolAction.repay:
-        return REPAY_MODAL.REPAY_TOKEN;
-      default:
-        return '';
-    }
-  };
+  //tx's currently tracked: supply, borrow, withdraw, repay, repay with coll, collateral switch
 
   useEffect(() => {
     Object.keys(successfulTransactions).forEach((chainId) => {
@@ -32,9 +18,11 @@ export const TransactionEventHandler = () => {
         if (!postedTransactions[chainIdNumber]?.includes(txHash)) {
           const tx = successfulTransactions[chainIdNumber][txHash];
 
-          const event = actionToEvent(tx.action);
-          trackEvent(event, {
-            amount: tx.amount,
+          // const event = actionToEvent(tx.action);
+          trackEvent(GENERAL.TRANSACTION, {
+            transactionType: tx.action,
+            tokenAmount: tx.amount,
+            assetName: tx.assetName,
             asset: tx.asset,
             market: tx.market,
             txHash: txHash,

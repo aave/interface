@@ -9,7 +9,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { WITHDRAW_MODAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -83,7 +83,7 @@ export const WithdrawModalContent = ({
     amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
     if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
-      trackEvent(WITHDRAW_MODAL.MAX_WITHDRAW);
+      trackEvent(GENERAL.MAX_INPUT_SELECTION, { type: 'withdraw' });
       setWithdrawMax('-1');
     } else {
       setWithdrawMax(maxAmountToWithdraw.toString(10));
@@ -272,7 +272,8 @@ export const WithdrawModalContent = ({
               checked={riskCheckboxAccepted}
               onChange={() => {
                 setRiskCheckboxAccepted(!riskCheckboxAccepted),
-                  trackEvent(WITHDRAW_MODAL.ACCEPT_RISK, {
+                  trackEvent(GENERAL.ACCEPT_RISK, {
+                    modal: 'Withdraw',
                     riskCheckboxAccepted: riskCheckboxAccepted,
                   });
               }}

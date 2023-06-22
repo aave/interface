@@ -53,9 +53,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
-  const { trackEvent } = useRootStore((state) => ({
-    trackEvent: state.trackEvent,
-  }));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   useEffect(() => {
     onFilterChange(localFilter);
   }, [localFilter, onFilterChange]);

@@ -15,7 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
-import { MARKETS } from '../../utils/mixPanelEvents';
+import { GENERAL } from '../../utils/mixPanelEvents';
 import { GhoBanner } from './Gho/GhoBanner';
 
 export const MarketAssetsListContainer = () => {
@@ -118,7 +118,8 @@ export const MarketAssetsListContainer = () => {
               Withdrawals and debt repayments are allowed. Follow the{' '}
               <Link
                 onClick={() => {
-                  trackEvent(MARKETS.VIEW_FROZEN_GOV_POST_MARKET, {
+                  trackEvent(GENERAL.EXTERNAL_LINK, {
+                    link: 'Frozen Market Markets Page',
                     frozenMarket: currentNetworkConfig.name,
                   });
                 }}

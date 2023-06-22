@@ -33,7 +33,6 @@ export const DashboardTopPanel = () => {
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
-
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
     isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0;

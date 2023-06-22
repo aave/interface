@@ -32,6 +32,7 @@ export const StakeActions = ({
     useTransactionHandler({
       tryPermit: selectedToken === 'aave',
       permitAction: ProtocolAction.stakeWithPermit,
+      protocolAction: ProtocolAction.stake,
       handleGetTxns: async () => {
         return stake({
           token: selectedToken,
@@ -44,6 +45,10 @@ export const StakeActions = ({
           amount: amountToStake.toString(),
           signature: signature[0],
         });
+      },
+      eventTxInfo: {
+        amount: amountToStake,
+        assetName: selectedToken,
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
       deps: [amountToStake, selectedToken],

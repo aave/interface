@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
@@ -20,6 +20,7 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
+import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
@@ -41,17 +42,16 @@ export default function Staking() {
     openStakeRewardsRestakeClaim,
   } = useModalContext();
 
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
-
-  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('');
+  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
-    if (!mode) setMode('aave');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+    trackEvent('Page Viewed', {
+      'Page Name': 'Staking',
+    });
+  }, [trackEvent]);
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(

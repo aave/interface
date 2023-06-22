@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
@@ -13,6 +13,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
 import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTopDetailsWrapper';
+import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 
@@ -20,15 +21,15 @@ export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
 
-  const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
+  const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
-    if (!mode) setMode('overview');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+    trackEvent('Page Viewed', {
+      'Page Name': 'Reserve Overview',
+    });
+  }, [trackEvent]);
 
   const reserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset

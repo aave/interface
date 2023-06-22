@@ -1,8 +1,9 @@
 import { Box, Container } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
+import { useRootStore } from 'src/store/root';
 
 interface MarketContainerProps {
   children: ReactNode;
@@ -37,6 +38,13 @@ export const MarketContainer = ({ children }: MarketContainerProps) => {
 };
 
 export default function Markets() {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Markets',
+    });
+  }, [trackEvent]);
   return (
     <>
       <MarketsTopPanel />
