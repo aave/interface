@@ -1,7 +1,6 @@
-import { Box, ContainerProps } from '@mui/material';
+import { Box, Container, ContainerProps } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { MainContainer } from '../MainContainer';
 import { PageTitle, PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
@@ -28,7 +27,7 @@ export const TopInfoPanel = ({
         color: '#F1F1F3',
       }}
     >
-      <MainContainer {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
+      <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
           {!titleComponent && (
             <PageTitle
@@ -53,7 +52,7 @@ export const TopInfoPanel = ({
             {children}
           </Box>
         </Box>
-      </MainContainer>
+      </Container>
     </Box>
   );
 };
