@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -24,6 +25,13 @@ export const CollateralChangeActions = ({
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
+    protocolAction: ProtocolAction.setUsageAsCollateral,
+    eventTxInfo: {
+      assetName: poolReserve.name,
+      asset: poolReserve.underlyingAsset,
+      collateralUsage: usageAsCollateral,
+    },
+
     handleGetTxns: async () => {
       return setUsageAsCollateral({
         reserve: poolReserve.underlyingAsset,
