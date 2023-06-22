@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta name="theme-color" content="#00244D" />
           {/* Temporary Favicon. href="/favicon.ico" */}
-          <link rel="shortcut icon" href="/coin-maneki.png" />
+          <link rel="shortcut icon" href="/icons/tokens/paw.svg" />
           <link rel="manifest" href="/manifest.json" />
           {
             // Inject MUI styles first to match with the prepend: true configuration.
