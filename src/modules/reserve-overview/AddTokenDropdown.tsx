@@ -159,7 +159,7 @@ export const AddTokenDropdown = ({
           </Typography>
         </MenuItem>
         {!hideAToken && (
-          <>
+          <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
               <Typography variant="secondary12" color="text.secondary">
                 <Trans>Aave aToken</Trans>
@@ -194,7 +194,7 @@ export const AddTokenDropdown = ({
                 {`a${poolReserve.symbol}`}
               </Typography>
             </MenuItem>
-          </>
+          </Box>
         )}
       </Menu>
     </>

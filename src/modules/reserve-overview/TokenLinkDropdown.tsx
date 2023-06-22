@@ -106,7 +106,7 @@ export const TokenLinkDropdown = ({
         </MenuItem>
 
         {!hideAToken && (
-          <>
+          <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
               <Typography variant="secondary12" color="text.secondary">
                 <Trans>Aave aToken</Trans>
@@ -126,7 +126,7 @@ export const TokenLinkDropdown = ({
                 {'a' + poolReserve.symbol}
               </Typography>
             </MenuItem>
-          </>
+          </Box>
         )}
 
         {showDebtTokenHeader && (
