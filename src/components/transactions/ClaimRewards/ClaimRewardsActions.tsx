@@ -21,6 +21,10 @@ export const ClaimRewardsActions = ({
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     protocolAction: ProtocolAction.claimRewards,
+    eventTxInfo: {
+      assetName: selectedReward.symbol,
+      amount: selectedReward.balance,
+    },
     tryPermit: false,
     handleGetTxns: async () => {
       return claimRewards({ isWrongNetwork, blocked, selectedReward });
