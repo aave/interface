@@ -25,6 +25,7 @@ export enum ModalType {
   GovVote,
   V3Migration,
   RevokeGovDelegation,
+  StakeRewardsClaimRestake,
 }
 
 export interface ModalArgsType {
@@ -86,7 +87,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string) => void;
+  openStakeRewardsClaim: (stakeAssetName: string, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: string, icon: string) => void;
   openClaimRewards: () => void;
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
@@ -235,10 +237,18 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.StakeCooldown);
           setArgs({ stakeAssetName });
         },
-        openStakeRewardsClaim: (stakeAssetName) => {
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim & Restake', assetName: stakeAssetName });
+        openStakeRewardsClaim: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake Rewards', assetName: stakeAssetName });
           setType(ModalType.StakeRewardClaim);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
+        },
+        openStakeRewardsRestakeClaim: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Restatke Stake Rewards',
+            assetName: stakeAssetName,
+          });
+          setType(ModalType.StakeRewardsClaimRestake);
+          setArgs({ stakeAssetName, icon });
         },
         openClaimRewards: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });

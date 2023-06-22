@@ -10,6 +10,7 @@ import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
+import { StakeRewardClaimRestakeModal } from 'src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModal';
 import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
@@ -33,7 +34,13 @@ export default function Staking() {
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
-  const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
+  const {
+    openStake,
+    openStakeCooldown,
+    openUnstake,
+    openStakeRewardsClaim,
+    openStakeRewardsRestakeClaim,
+  } = useModalContext();
 
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
@@ -125,7 +132,10 @@ export default function Staking() {
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('aave', 'AAVE')}
+                  onStakeRewardClaimRestakeAction={() =>
+                    openStakeRewardsRestakeClaim('aave', 'AAVE')
+                  }
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>
@@ -146,7 +156,7 @@ export default function Staking() {
                   onStakeAction={() => openStake('bpt', 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
               </Grid>
@@ -176,6 +186,7 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
       <StakeCooldownModal />
       <UnStakeModal />
       <StakeRewardClaimModal />
+      <StakeRewardClaimRestakeModal />
       {/** End of modals */}
     </MainLayout>
   );

@@ -1,8 +1,8 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
+import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -15,12 +15,12 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { StakeRewardClaimActions } from './StakeRewardClaimActions';
+import { StakeRewardClaimRestakeActions } from './StakeRewardClaimRestakeActions';
 
-export type StakeRewardClaimProps = {
+export type StakeRewardClaimRestakeProps = {
   stakeAssetName: string;
   icon: string;
 };
@@ -31,12 +31,13 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewardClaimProps) => {
+export const StakeRewardClaimRestakeModalContent = ({
+  stakeAssetName,
+  icon,
+}: StakeRewardClaimRestakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
 
   const { data: stakeUserResult } = useUserStakeUiData();
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
@@ -44,6 +45,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const maxAmountToClaim = normalize(
     stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
@@ -51,11 +54,13 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   );
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToClaim : _amount;
+
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToClaim : value;
     setAmount(value);
   };
+
   // staking token usd value
   const amountInUsd =
     Number(maxAmountToClaim) *
@@ -92,7 +97,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   if (txState.success)
     return (
       <TxSuccessView
-        action={<Trans>Claimed</Trans>}
+        action={<Trans>Restaked</Trans>}
         amount={amountRef.current}
         symbol={rewardsSymbol}
       />
@@ -100,15 +105,11 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
 
   return (
     <>
-      <TxModalTitle title="Claim" symbol={rewardsSymbol} />
+      <TxModalTitle title="Restake AAVE rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
-          {handleBlocked()}
-        </Typography>
-      )}
+      <CooldownWarning />
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -124,11 +125,22 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
         maxValue={maxAmountToClaim.toString()}
         balanceText={<Trans>Amount claimable</Trans>}
       />
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
+      )}
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Staking APR</Trans>}
+          value={Number(stakeData?.stakeApy || '0') / 10000}
+          percent
+        />
+      </TxModalDetails>
       {txError && <GasEstimationError txError={txError} />}
 
-      <StakeRewardClaimActions
+      <StakeRewardClaimRestakeActions
         sx={{ mt: '48px' }}
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}
