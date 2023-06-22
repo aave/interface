@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-15 18:05\n"
+"PO-Revision-Date: 2023-06-21 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -192,9 +192,13 @@ msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estable
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Cantidad"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Amount claimable"
+msgstr "Cantidad reclamable"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Amount in cooldown"
@@ -511,14 +515,6 @@ msgstr "Comprar Crypto con Fiat"
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Comprar {cryptoSymbol} con Fiat"
 
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIM {symbol}"
-msgstr "RECLAMAR {symbol}"
-
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIMING {symbol}"
-msgstr "RECLAMANDO {symbol}"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -547,12 +543,9 @@ msgid "Choose one of the on-ramp services"
 msgstr "Elige uno de los servicios on-ramp"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Claim"
 msgstr "Reclamar"
-
-#: src/modules/staking/StakingPanel.tsx
-msgid "Claim AAVE"
-msgstr "Reclamar AAVE"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -567,6 +560,10 @@ msgstr "Reclamar todas las recompensas"
 msgid "Claim {0}"
 msgstr "Reclamar {0}"
 
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claim {symbol}"
+msgstr "Reclamar {symbol}"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
 msgstr "AAVE Reclamable"
@@ -579,6 +576,10 @@ msgstr "Reclamado"
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
 msgstr "Reclamando"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claiming {symbol}"
+msgstr "Reclamando {symbol}"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -667,16 +668,6 @@ msgstr "Cooldown para undstakear"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
 msgstr "Cooling down..."
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copied"
-msgstr "Copiado"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copy"
-msgstr "Copiar"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
@@ -1362,6 +1353,7 @@ msgid "No assets selected to migrate."
 msgstr "No hay activos seleccionados para migrar."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No hay recompensas para reclamar"
 
@@ -1702,6 +1694,22 @@ msgstr "Configuración y estado de la reserva"
 msgid "Reset"
 msgstr "Restablecer"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Restake"
+msgstr "Restakear"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restake {symbol}"
+msgstr "Restakear {symbol}"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Restaked"
+msgstr "Restakeado"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restaking {symbol}"
+msgstr "Restakeando {symbol}"
+
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Revisa los detalles del approve"
@@ -1920,6 +1928,7 @@ msgid "Staking"
 msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2355,18 +2364,9 @@ msgstr "Resumen de la transacción"
 msgid "Transactions"
 msgstr "Transacciones"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Tx hash"
-msgstr "Tx hash"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKEAR {symbol}"
-
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKING {symbol}"
-msgstr "UNSTAKING {symbol}"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -2402,6 +2402,10 @@ msgstr "Ventana de unstakeo"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstakeado"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstaking {symbol}"
+msgstr "Unstakeando {symbol}"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
@@ -2449,6 +2453,10 @@ msgstr "El usuario está intentando tomar prestado múltiples activos incluido u
 msgid "Utilization Rate"
 msgstr "Tasa de uso"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+msgid "VIEW TX"
+msgstr "VER TX"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
@@ -2481,6 +2489,10 @@ msgstr "Versión 2"
 msgid "Version 3"
 msgstr "Versión 3"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr "Ver"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "Ver todos los votos"
@@ -2496,11 +2508,6 @@ msgstr "Ver detalles"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "Ver en el explorador"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View on block explorer"
-msgstr "Ver en el explorador de bloques"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
