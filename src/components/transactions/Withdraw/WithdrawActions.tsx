@@ -38,6 +38,11 @@ export const WithdrawActions = ({
         }),
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
+      eventTxInfo: {
+        amount: amountToWithdraw,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+      },
       protocolAction: ProtocolAction.withdraw,
     });
 
