@@ -38,6 +38,10 @@ export const StakeActions = ({
           amount: amountToStake.toString(),
         });
       },
+      eventTxInfo: {
+        amount: amountToStake,
+        assetName: selectedToken,
+      },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
       deps: [amountToStake, selectedToken],
     });
