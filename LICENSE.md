@@ -1,6 +1,6 @@
-# The 3-Clause BSD License
+# License
 
-Copyright 2022 Avara Labs Cayman Holdings SEZC
+Copyright 2023 Aave Co
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
