@@ -112,6 +112,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     });
     setCooldownCheck(!cooldownCheck);
   };
+  const amountToCooldown = formatEther(userStakeData?.stakeTokenRedeemableAmount || 0);
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
@@ -156,11 +157,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={stakeAssetName} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber
-            value={formatEther(userStakeData?.stakeTokenRedeemableAmount || 0)}
-            variant="secondary14"
-            color="text.primary"
-          />
+          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
         </Box>
       </Box>
 
@@ -292,6 +289,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
+        amountToCooldown={amountToCooldown}
       />
     </>
   );
