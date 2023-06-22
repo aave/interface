@@ -29,7 +29,8 @@ export const CollateralChangeActions = ({
     eventTxInfo: {
       assetName: poolReserve.name,
       asset: poolReserve.underlyingAsset,
-      collateralUsage: usageAsCollateral,
+      previousState: (!usageAsCollateral).toString(),
+      newState: usageAsCollateral.toString(),
     },
 
     handleGetTxns: async () => {

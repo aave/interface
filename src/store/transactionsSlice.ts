@@ -18,8 +18,8 @@ export type TransactionDetails = {
   assetName?: string;
   proposalId?: number;
   support?: boolean;
-  collateralUsage?: boolean;
-  newRateMode?: string;
+  previousState?: string;
+  newState?: string;
 };
 
 export type TransactionEvent = TransactionDetails & {
