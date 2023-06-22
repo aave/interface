@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-20 18:04\n"
+"PO-Revision-Date: 2023-06-21 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -198,7 +198,7 @@ msgstr "Cantidad"
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Amount claimable"
-msgstr ""
+msgstr "Cantidad reclamable"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Amount in cooldown"
@@ -562,7 +562,7 @@ msgstr "Reclamar {0}"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "Claim {symbol}"
-msgstr ""
+msgstr "Reclamar {symbol}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
@@ -579,7 +579,7 @@ msgstr "Reclamando"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "Claiming {symbol}"
-msgstr ""
+msgstr "Reclamando {symbol}"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -1696,19 +1696,19 @@ msgstr "Restablecer"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Restake"
-msgstr ""
+msgstr "Restakear"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restake {symbol}"
-msgstr ""
+msgstr "Restakear {symbol}"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"
-msgstr ""
+msgstr "Restakeado"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
-msgstr ""
+msgstr "Restakeando {symbol}"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -2405,7 +2405,7 @@ msgstr "Unstakeado"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "Unstaking {symbol}"
-msgstr ""
+msgstr "Unstakeando {symbol}"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
