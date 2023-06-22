@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -30,6 +31,11 @@ export const GovVoteActions = ({
         support: support || false,
       });
     },
+    eventTxInfo: {
+      proposalId,
+      support,
+    },
+    protocolAction: ProtocolAction.vote,
     skip: blocked,
     deps: [],
   });
