@@ -188,7 +188,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09',
-      GHO_UI_DATA_PROVIDER: '0x80a726Ab67e80d18A975507C49B711055f56a08B',
+      GHO_UI_DATA_PROVIDER: '0xecebedbf26013fb55a5b0a275191a90984e5ae5e',
     },
   },
   // [CustomMarket.permissioned_market]: {
