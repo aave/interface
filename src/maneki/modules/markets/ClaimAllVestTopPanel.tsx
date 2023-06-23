@@ -41,7 +41,6 @@ const ClaimAllVestTopPanel = () => {
   const [refresh, setRefresh] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!provider || !currentAccount || !refresh) return;
     const getTokensAddress = async () => {
       const lendingProtocolContract = new Contract(
         LENDING_PROTOCOL_DATA_PROVIDER_ADDR,
