@@ -132,10 +132,10 @@ export function AppHeader() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Image
-                src="/maneki-logo-2.png"
+                src="/maneki-3d.png"
                 alt="Svg of maneki logo"
-                width={mobileMenuOpen ? '77.76px' : '129.6px'}
-                height={mobileMenuOpen ? '35.52px' : '59.2px'}
+                width={mobileMenuOpen ? '42px' : '70px'}
+                height={mobileMenuOpen ? '42px' : '70px'}
               />
             </Box>
             <Box sx={{ mr: sm ? 1 : 3 }}>
