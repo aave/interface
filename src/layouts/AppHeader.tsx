@@ -15,7 +15,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import SwitchNetworkHeader from 'src/maneki/components/SwitchNetworkHeader';
+import { SwitchNetworkHeader } from 'src/maneki/components/SwitchNetworkHeader';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';

@@ -1,13 +1,17 @@
 import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 
+import { SwitchNetworkButton } from './SwitchNetworkHeader';
+
 interface ManekiLoadingPaperProps extends PaperProps {
   description?: string;
   withCircle?: boolean;
+  switchNetwork?: boolean;
 }
 export default function ManekiLoadingPaper({
   description,
   withCircle,
+  switchNetwork,
   sx,
   ...rest
 }: ManekiLoadingPaperProps) {
@@ -33,6 +37,7 @@ export default function ManekiLoadingPaper({
         {description}
       </Typography>
       {withCircle ? <CircularProgress /> : <></>}
+      {switchNetwork ? <SwitchNetworkButton /> : <></>}
     </Paper>
   );
 }

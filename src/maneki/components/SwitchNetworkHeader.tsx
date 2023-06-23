@@ -88,4 +88,12 @@ const SwitchNetworkHeader = () => {
   );
 };
 
-export default SwitchNetworkHeader;
+const SwitchNetworkButton = () => {
+  return (
+    <Button onClick={handleSwitchNetwork} variant="wallet">
+      <Trans>Switch to BNB Testnet</Trans>
+    </Button>
+  );
+};
+
+export { SwitchNetworkButton, SwitchNetworkHeader };

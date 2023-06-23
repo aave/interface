@@ -2144,6 +2144,7 @@ msgid "Switch rate"
 msgstr "Switch rate"
 
 #: src/maneki/components/SwitchNetworkHeader.tsx
+#: src/maneki/components/SwitchNetworkHeader.tsx
 msgid "Switch to BNB Testnet"
 msgstr "Switch to BNB Testnet"
 
