@@ -82,7 +82,7 @@ const SwitchNetworkHeader = () => {
           textDecoration: 'underline',
         }}
       >
-        {downToMD ? <Trans>Switch to BSC</Trans> : <Trans>Switch to Binance Smartchain</Trans>}
+        {downToMD ? <Trans>Switch to tBNB</Trans> : <Trans>Switch to BNB Testnet</Trans>}
       </Button>
     </Box>
   );

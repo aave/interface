@@ -2144,12 +2144,12 @@ msgid "Switch rate"
 msgstr "Switch rate"
 
 #: src/maneki/components/SwitchNetworkHeader.tsx
-msgid "Switch to BSC"
-msgstr "Switch to BSC"
+msgid "Switch to BNB Testnet"
+msgstr "Switch to BNB Testnet"
 
 #: src/maneki/components/SwitchNetworkHeader.tsx
-msgid "Switch to Binance Smartchain"
-msgstr "Switch to Binance Smartchain"
+msgid "Switch to tBNB"
+msgstr "Switch to tBNB"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
