@@ -10,9 +10,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -60,7 +58,6 @@ export const SupplyAssetsList = () => {
   const [sortDesc, setSortDesc] = useState(false);
 
   const { bridge, isTestnet, baseAssetSymbol, name: networkName } = currentNetworkConfig;
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const localStorageName = 'showSupplyZeroAssets';
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
@@ -198,7 +195,7 @@ export const SupplyAssetsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
-              onClick={() => trackEvent(MARKETS.SORT, { sort_by: col.sortKey, page: 'dashboard' })}
+              source="Supplies Dashbaord"
             >
               {col.title}
             </ListHeaderTitle>
