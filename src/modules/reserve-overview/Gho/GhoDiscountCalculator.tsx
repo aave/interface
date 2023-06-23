@@ -396,7 +396,7 @@ const GhoDiscountParametersComponent: React.FC<{
           <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />
           <FormattedNumber
             value={ghoReserveData.ghoMinDiscountTokenBalanceForDiscount}
-            visibleDecimals={2}
+            visibleDecimals={3}
             variant="secondary14"
             color="text.primary"
           />
