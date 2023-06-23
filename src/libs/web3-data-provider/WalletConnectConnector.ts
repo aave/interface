@@ -38,7 +38,7 @@ export class WalletConnectConnector extends AbstractConnector {
       chains: [mainnet],
       optionalChains,
       rpcMap,
-      projectId: '686adbae41fe74595dc2bc1df829fcfe',
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
     };
 
