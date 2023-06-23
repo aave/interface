@@ -100,12 +100,13 @@ export const useTransactionHandler = ({
     tx,
     errorCallback,
     successCallback,
+    approval,
   }: {
     tx: () => Promise<TransactionResponse>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     errorCallback?: (error: any, hash?: string) => void;
     successCallback?: (param: TransactionResponse) => void;
-    action: TxAction;
+    approval?: boolean;
   }) => {
     try {
       const txnResult = await tx();
@@ -117,7 +118,7 @@ export const useTransactionHandler = ({
 
         addTransaction(txnResult.hash, {
           txState: 'success',
-          action: protocolAction || ProtocolAction.default,
+          action: approval ? ProtocolAction.approval : protocolAction ?? ProtocolAction.default,
           ...eventTxInfo,
         });
 
@@ -205,7 +206,6 @@ export const useTransactionHandler = ({
             if (!mounted.current) return;
             const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
             setTxError(parsedError);
-
             setApprovalTxState({
               txHash: undefined,
               loading: false,
@@ -244,8 +244,7 @@ export const useTransactionHandler = ({
                       });
                       reject();
                     },
-                    // TODO: add error callback
-                    action: TxAction.APPROVAL,
+                    approval: true,
                   });
                 })
             )
@@ -295,7 +294,6 @@ export const useTransactionHandler = ({
               loading: false,
             });
           },
-          action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
         console.log(error, 'error');
@@ -330,7 +328,6 @@ export const useTransactionHandler = ({
               loading: false,
             });
           },
-          action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
