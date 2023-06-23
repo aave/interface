@@ -1,4 +1,9 @@
-import { ApproveType, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import {
+  ApproveType,
+  gasLimitRecommendations,
+  MAX_UINT_AMOUNT,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
@@ -173,6 +178,13 @@ export const SupplyActions = React.memo(
               txHash: response.hash,
               loading: false,
               success: true,
+            });
+            addTransaction(response.hash, {
+              action: ProtocolAction.approval,
+              txState: 'success',
+              asset: poolAddress,
+              amount: MAX_UINT_AMOUNT,
+              assetName: symbol,
             });
             fetchApprovedAmount(true);
           }
