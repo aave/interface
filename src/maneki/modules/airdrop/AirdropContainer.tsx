@@ -18,7 +18,7 @@ import MERKLE_DIST_ABI from './MerkleDistAbi';
 
 interface entryType {
   address: string;
-  amount: number;
+  amount: string;
   claimIdx: number;
   index: number;
 }
@@ -47,10 +47,15 @@ const padWidth = (str: string, width: number): string => {
   return res;
 };
 
-const leafHash = (address: string, amount: number, index: number): string => {
+const leafHash = (address: string, amount: string, index: number): string => {
+  // remove trailing n from amount
+
   const packed = ethers.utils.solidityPack;
   return ethers.utils.keccak256(
-    packed(['uint256', 'address', 'uint256'], [index, address, amount.toString()])
+    packed(
+      ['uint256', 'address', 'uint256'],
+      [index, address, amount.substring(0, amount.length - 1)]
+    )
   );
 };
 
@@ -180,14 +185,18 @@ export const AirdropContainer = () => {
 
     // DEV : remove prompts
     if (!entryFound) {
-      const addr = prompt('DEV -- please enter eligible address') as string;
-      const newEntry = dataArr.find((e) => e.address == addr);
+      const addr = currentAccount;
+      const newEntry = dataArr.find((e) => e.address.toLowerCase() == addr.toLowerCase());
       entryFound = newEntry;
-      entryFoundIdx = dataArr.findIndex((e) => e.address == entryFound?.address);
+      entryFoundIdx = dataArr.findIndex(
+        (e) => e.address.toLowerCase() == entryFound?.address.toLowerCase()
+      );
 
-      const newentrySocmed = dataArr2.find((e) => e.address == addr);
+      const newentrySocmed = dataArr2.find((e) => e.address.toLowerCase() == addr.toLowerCase());
       entryFoundSocmed = newentrySocmed;
-      entryFoundIdxSocmed = dataArr2.findIndex((e) => e.address == entryFoundSocmed?.address);
+      entryFoundIdxSocmed = dataArr2.findIndex(
+        (e) => e.address.toLowerCase() == entryFoundSocmed?.address.toLowerCase()
+      );
 
       setEntry(newEntry || null);
       setEntrySocmed(newentrySocmed || null);

@@ -16,6 +16,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { ethers } from 'ethers';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useAirdropContext } from 'src/maneki/hooks/airdrop-data-provider/AirdropDataProvider';
@@ -99,7 +100,16 @@ export default function AirdropTable({ airdropList }: { airdropList: airdropList
                   <TableCell>{airdrop.status}</TableCell>
                   <TableCell>
                     <FormattedNumber
-                      value={airdrop.entry ? airdrop.entry?.amount / 1_000_000_000_000_000_000 : 0}
+                      // value={airdrop.entry ? airdrop.entry?.amount / 1_000_000_000_000_000_000 : 0}
+                      value={
+                        airdrop.entry
+                          ? ethers.BigNumber.from(
+                              airdrop.entry.amount.substring(0, airdrop.entry.amount.length - 1)
+                            )
+                              .div(ethers.BigNumber.from('1000000000000000000'))
+                              .toString()
+                          : 0
+                      }
                       variant="secondary14"
                     />
                   </TableCell>

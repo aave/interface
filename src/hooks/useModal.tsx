@@ -29,6 +29,7 @@ export enum ModalType {
   ManageClaimAllVest,
   ManageClaimExpired,
   ManageClaimAll,
+  TGEContribute,
 }
 
 export interface ModalArgsType {
@@ -71,6 +72,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openAirDrop: () => void;
   openManage: (manageAmount: string, modalType: ModalType) => void;
+  openTGE: (manageAmount: string) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -175,6 +177,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openManage: (manageAmount, modalType) => {
           setType(modalType);
+          setArgs({ manageAmount });
+        },
+        openTGE: (manageAmount) => {
+          setType(ModalType.TGEContribute);
           setArgs({ manageAmount });
         },
         close: () => {

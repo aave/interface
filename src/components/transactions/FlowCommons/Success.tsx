@@ -192,7 +192,7 @@ export const TxSuccessView = ({
           onClick={close}
           variant="contained"
           size="large"
-          sx={{ minHeight: '44px' }}
+          sx={{ minHeight: '44px', color: 'background.default' }}
           data-cy="closeButton"
         >
           <Trans>Ok, Close</Trans>
