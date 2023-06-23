@@ -15,7 +15,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import SwitchNetworkHeader from 'src/maneki/components/SwitchNetworkHeader';
+import { SwitchNetworkHeader } from 'src/maneki/components/SwitchNetworkHeader';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
@@ -132,10 +132,10 @@ export function AppHeader() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Image
-                src="/maneki-logo-2.png"
+                src="/maneki-word.png"
                 alt="Svg of maneki logo"
-                width={mobileMenuOpen ? '77.76px' : '129.6px'}
-                height={mobileMenuOpen ? '35.52px' : '59.2px'}
+                width={mobileMenuOpen ? `97.2px` : '162px'}
+                height={mobileMenuOpen ? `54.6px` : '91px'}
               />
             </Box>
             <Box sx={{ mr: sm ? 1 : 3 }}>

@@ -80,7 +80,7 @@ export const TGEContainer = () => {
   }
 
   if (chainId != 97) {
-    return <ManekiLoadingPaper description="Please connect to bsc testnet" />;
+    return <ManekiLoadingPaper description="Please connect to BNB Testnet" switchNetwork />;
   }
 
   if (TGELoading) {
