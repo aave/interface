@@ -1,6 +1,7 @@
 import { DocumentDownloadIcon, SearchIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -29,6 +30,7 @@ export const HistoryWrapperMobile = () => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
   const [searchResetKey, setSearchResetKey] = useState(0);
+  const [downloadError, setDownloadError] = useState('');
 
   const handleDownloadMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -76,43 +78,58 @@ export const HistoryWrapperMobile = () => {
 
   const handleJsonDownload = async () => {
     setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData({ data, csv: false });
-    const jsonData = JSON.stringify(formattedData, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
+    setDownloadError('');
+    try {
+      const data = await fetchForDownload({ searchQuery, filterQuery });
+      const formattedData = formatTransactionData({ data, csv: false });
+      const jsonData = JSON.stringify(formattedData, null, 2);
+      downloadData('transactions.json', jsonData, 'application/json');
+      setLoadingDownload(false);
+    } catch (error) {
+      setLoadingDownload(false);
+      console.log('Show an error notification', error);
+      setDownloadError(error?.statusText || 'Download Error');
+    }
   };
 
   const handleCsvDownload = async () => {
     setLoadingDownload(true);
-    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
-      searchQuery,
-      filterQuery,
-    });
-    const formattedData = formatTransactionData({ data, csv: true });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItemUnion];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
+    setDownloadError('');
+    try {
+      setLoadingDownload(true);
+      const data: TransactionHistoryItemUnion[] = await fetchForDownload({
+        searchQuery,
+        filterQuery,
       });
-      csvContent += row.join(',') + '\n';
-    });
+      const formattedData = formatTransactionData({ data, csv: true });
 
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
+      // Getting all the unique headers
+      const headersSet = new Set<string>();
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        Object.keys(transaction).forEach((key) => headersSet.add(key));
+      });
+
+      const headers: string[] = Array.from(headersSet);
+      let csvContent = headers.join(',') + '\n';
+
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        const row: string[] = headers.map((header) => {
+          const value = transaction[header as keyof TransactionHistoryItemUnion];
+          if (typeof value === 'object') {
+            return JSON.stringify(value) ?? '';
+          }
+          return String(value) ?? '';
+        });
+        csvContent += row.join(',') + '\n';
+      });
+
+      downloadData('transactions.csv', csvContent, 'text/csv');
+      setLoadingDownload(false);
+    } catch (error) {
+      setLoadingDownload(false);
+      console.log('Show an error notification', error);
+      setDownloadError(error?.statusText || 'Download Error');
+    }
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -162,6 +179,7 @@ export const HistoryWrapperMobile = () => {
           {!showSearchBar && (
             <Box sx={{ display: 'flex', gap: '22px' }}>
               {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
+              {downloadError && <Alert severity="error"> {downloadError} </Alert>}
               <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
                 <SvgIcon>
                   <DocumentDownloadIcon width={20} height={20} />

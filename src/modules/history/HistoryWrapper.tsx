@@ -1,6 +1,7 @@
 import { DocumentDownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -33,6 +34,7 @@ export const HistoryWrapper = () => {
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
+  const [downloadError, setDownloadError] = useState('');
 
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const { trackEvent } = useRootStore((state) => ({
@@ -48,47 +50,59 @@ export const HistoryWrapper = () => {
   } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
-    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'JSON' });
     setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData({ data, csv: false });
-    const jsonData = JSON.stringify(formattedData, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
+    setDownloadError('');
+    try {
+      const data = await fetchForDownload({ searchQuery, filterQuery });
+      const formattedData = formatTransactionData({ data, csv: false });
+      const jsonData = JSON.stringify(formattedData, null, 2);
+      trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'JSON' });
+      downloadData('transactions.json', jsonData, 'application/json');
+      setLoadingDownload(false);
+    } catch (error) {
+      setLoadingDownload(false);
+      console.log('Show an error notification', error);
+      setDownloadError(error?.statusText || 'Download Error');
+    }
   };
 
   const handleCsvDownload = async () => {
-    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'CSV' });
-
     setLoadingDownload(true);
-    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
-      searchQuery,
-      filterQuery,
-    });
-    const formattedData = formatTransactionData({ data, csv: true });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItemUnion];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
+    setDownloadError('');
+    try {
+      const data: TransactionHistoryItemUnion[] = await fetchForDownload({
+        searchQuery,
+        filterQuery,
       });
-      csvContent += row.join(',') + '\n';
-    });
+      const formattedData = formatTransactionData({ data, csv: true });
+      // Getting all the unique headers
+      const headersSet = new Set<string>();
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        Object.keys(transaction).forEach((key) => headersSet.add(key));
+      });
 
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
+      const headers: string[] = Array.from(headersSet);
+      let csvContent = headers.join(',') + '\n';
+
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        const row: string[] = headers.map((header) => {
+          const value = transaction[header as keyof TransactionHistoryItemUnion];
+          if (typeof value === 'object') {
+            return JSON.stringify(value) ?? '';
+          }
+          return String(value) ?? '';
+        });
+        csvContent += row.join(',') + '\n';
+      });
+
+      trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'CSV' });
+      downloadData('transactions.csv', csvContent, 'text/csv');
+      setLoadingDownload(false);
+    } catch (error) {
+      setLoadingDownload(false);
+      console.log('Show an error notification', error);
+      setDownloadError(error?.statusText || 'Download Error');
+    }
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -175,6 +189,7 @@ export const HistoryWrapper = () => {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
           {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
+          {downloadError && <Alert severity="error"> {downloadError} </Alert>}
           <Box
             sx={{
               cursor: 'pointer',
