@@ -132,7 +132,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             </Typography>
           </Box>
         )}
-        {poolReserve.borrowingEnabled && (
+        {Number(poolReserve.totalVariableDebt) > 0 && (
           <MenuItem
             component="a"
             href={currentNetworkConfig.explorerLinkBuilder({
@@ -155,7 +155,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             </Typography>
           </MenuItem>
         )}
-        {poolReserve.stableBorrowRateEnabled && (
+        {Number(poolReserve.totalStableDebt) > 0 && (
           <MenuItem
             component="a"
             href={currentNetworkConfig.explorerLinkBuilder({
