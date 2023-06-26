@@ -5,7 +5,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -105,7 +105,8 @@ export const SuppliedPositionsListItem = ({
             onClick={() => {
               // track
 
-              trackEvent(DASHBOARD.SWAP_DASHBOARD, {
+              trackEvent(GENERAL.OPEN_MODAL, {
+                modal: 'Swap Collateral',
                 market: currentMarket,
                 assetName: reserve.name,
                 asset: underlyingAsset,

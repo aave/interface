@@ -49,12 +49,14 @@ export const BorrowActions = React.memo(
       currentMarketData,
       generateApproveDelegation,
       estimateGasLimit,
+      addTransaction,
     ] = useRootStore((state) => [
       state.borrow,
       state.getCreditDelegationApprovedAmount,
       state.currentMarketData,
       state.generateApproveDelegation,
       state.estimateGasLimit,
+      state.addTransaction,
     ]);
     const {
       approvalTxState,
@@ -70,7 +72,6 @@ export const BorrowActions = React.memo(
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
-    const { addTransaction } = useRootStore();
 
     const approval = async () => {
       try {

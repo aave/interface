@@ -60,7 +60,8 @@ export const ListItemWrapper = ({
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           onClick={() =>
-            trackEvent(DASHBOARD.DETAILS_ROW_DASHBOARD, {
+            trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
+              type: 'Row click',
               market: currentMarket,
               assetName: name,
               asset: detailsAddress,

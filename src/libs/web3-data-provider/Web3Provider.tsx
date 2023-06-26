@@ -74,7 +74,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const setAccount = useRootStore((store) => store.setAccount);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
-
+  const setWalletType = useRootStore((store) => store.setWalletType);
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
   //   console.log('chainChanged', chainId);
@@ -113,7 +113,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       // close will remove wallet from DOM if provided by wallet
       await connector.close();
     }
-
+    setWalletType(undefined);
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
@@ -140,16 +140,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         if (connector instanceof WalletConnectConnector) {
           connector.walletConnectProvider = undefined;
         }
-
         await activate(connector, undefined, true);
         setConnector(connector);
         setSwitchNetworkError(undefined);
+        setWalletType(wallet);
         localStorage.setItem('walletProvider', wallet.toString());
         setDeactivated(false);
         setLoading(false);
       } catch (e) {
         console.log('error on activation', e);
         setError(e);
+        setWalletType(undefined);
         // disconnectWallet();
         setLoading(false);
       }

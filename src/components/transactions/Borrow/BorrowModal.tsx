@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { BORROW_MODAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -17,7 +17,8 @@ export const BorrowModal = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleBorrowUnwrapped = (borrowUnWrapped: boolean) => {
-    trackEvent(BORROW_MODAL.UNWRAP_UNDERLYING, {
+    trackEvent(GENERAL.OPEN_MODAL, {
+      modal: 'Unwrap Asset',
       asset: args.underlyingAsset,
       assetWrapped: borrowUnWrapped,
     });

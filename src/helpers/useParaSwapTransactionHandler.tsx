@@ -1,4 +1,4 @@
-import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { queryClient } from 'pages/_app.page';
@@ -39,6 +39,7 @@ interface UseParaSwapTransactionHandlerProps {
   skip?: boolean;
   spender: string;
   deps?: DependencyList;
+  protocolAction?: ProtocolAction;
 }
 
 interface ApprovalProps {
@@ -52,6 +53,7 @@ export const useParaSwapTransactionHandler = ({
   gasLimitRecommendation,
   skip,
   spender,
+  protocolAction,
   deps = [],
 }: UseParaSwapTransactionHandlerProps) => {
   const {
@@ -66,7 +68,8 @@ export const useParaSwapTransactionHandler = ({
   } = useModalContext();
   const { sendTx, getTxError, signTxData } = useWeb3Context();
   const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
-  const { walletApprovalMethodPreference, generateSignatureRequest } = useRootStore();
+  const { walletApprovalMethodPreference, generateSignatureRequest, addTransaction } =
+    useRootStore();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -108,6 +111,10 @@ export const useParaSwapTransactionHandler = ({
       try {
         await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
+        addTransaction(txnResult.hash, {
+          txState: 'success',
+          action: protocolAction || ProtocolAction.default,
+        });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
@@ -121,6 +128,11 @@ export const useParaSwapTransactionHandler = ({
         } catch (e) {
           mounted.current && errorCallback && errorCallback(e, txnResult.hash);
           return;
+        } finally {
+          addTransaction(txnResult.hash, {
+            txState: 'failed',
+            action: protocolAction || ProtocolAction.default,
+          });
         }
       }
 

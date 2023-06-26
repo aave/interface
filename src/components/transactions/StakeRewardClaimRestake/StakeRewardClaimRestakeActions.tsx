@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -32,6 +33,11 @@ export const StakeRewardClaimRestakeActions = ({
         token: selectedToken,
         amount: amountToClaim,
       });
+    },
+    protocolAction: ProtocolAction.claimRewardsAndStake,
+    eventTxInfo: {
+      amount: amountToClaim,
+      assetName: selectedToken,
     },
     skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,
     deps: [amountToClaim],

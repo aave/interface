@@ -117,6 +117,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
                 setSortName={setSortName}
                 setSortDesc={setSortDesc}
                 sortKey={col.sortKey}
+                source="Markets Page"
               >
                 {col.title}
               </ListHeaderTitle>

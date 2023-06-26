@@ -137,6 +137,7 @@ export const BorrowedPositionsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
+              source="Borrowed Positions Dashboard"
             >
               {col.title}
             </ListHeaderTitle>

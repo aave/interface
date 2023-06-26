@@ -35,9 +35,8 @@ export const HistoryWrapper = () => {
   const [searchResetKey, setSearchResetKey] = useState(0);
 
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
-  const { trackEvent } = useRootStore((state) => ({
-    trackEvent: state.trackEvent,
-  }));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const {
     data: transactions,
     isLoading,

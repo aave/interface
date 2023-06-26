@@ -130,7 +130,8 @@ export const AddTokenDropdown = ({
                 setChangingNetwork(true);
               });
             } else {
-              trackEvent(RESERVE_DETAILS.ADD_UNDERLYING_TO_WALLET, {
+              trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
+                type: 'Underlying token',
                 asset: poolReserve.underlyingAsset,
                 assetName: poolReserve.name,
               });
@@ -164,7 +165,8 @@ export const AddTokenDropdown = ({
                 setChangingNetwork(true);
               });
             } else {
-              trackEvent(RESERVE_DETAILS.ADD_ATOKEN_TO_WALLET, {
+              trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
+                type: 'aToken',
                 asset: poolReserve.underlyingAsset,
                 assetName: poolReserve.name,
               });

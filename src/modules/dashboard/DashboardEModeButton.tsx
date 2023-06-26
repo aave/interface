@@ -7,7 +7,7 @@ import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalCont
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { DASHBOARD } from 'src/utils/mixPanelEvents';
+import { DASHBOARD, GENERAL } from 'src/utils/mixPanelEvents';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -211,7 +211,10 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
               fullWidth
               variant={'gradient'}
               onClick={() => {
-                trackEvent(DASHBOARD.E_MODE_ACTION_ENABLE_DASHBOARD, { userEmodeCategoryId });
+                trackEvent(GENERAL.OPEN_MODAL, {
+                  type: 'Enable E-Mode',
+                  data: userEmodeCategoryId,
+                });
 
                 openEmode(EmodeModalType.ENABLE);
                 handleClose();
@@ -228,7 +231,10 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                   sx={{ mb: '6px' }}
                   variant={'outlined'}
                   onClick={() => {
-                    trackEvent(DASHBOARD.E_MODE_ACTION_SWITCH_DASHBOARD, { userEmodeCategoryId });
+                    trackEvent(GENERAL.OPEN_MODAL, {
+                      modal: 'Switch E-Mode',
+                      data: userEmodeCategoryId,
+                    });
 
                     openEmode(EmodeModalType.SWITCH);
                     handleClose();
@@ -242,7 +248,10 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                 fullWidth
                 variant={'outlined'}
                 onClick={() => {
-                  trackEvent(DASHBOARD.E_MODE_ACTION_DISABLE_DASHBOARD, { userEmodeCategoryId });
+                  trackEvent(DASHBOARD.E_MODE, {
+                    type: 'Disable E-Mode',
+                    data: userEmodeCategoryId,
+                  });
 
                   openEmode(EmodeModalType.DISABLE);
                   handleClose();

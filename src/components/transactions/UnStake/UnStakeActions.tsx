@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -32,6 +33,11 @@ export const UnStakeActions = ({
     },
     skip: !amountToUnStake || parseFloat(amountToUnStake) === 0 || blocked,
     deps: [amountToUnStake],
+    protocolAction: ProtocolAction.unstake,
+    eventTxInfo: {
+      amount: amountToUnStake,
+      assetName: selectedToken,
+    },
   });
 
   return (

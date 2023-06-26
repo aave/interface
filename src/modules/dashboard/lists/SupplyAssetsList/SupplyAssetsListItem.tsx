@@ -99,7 +99,8 @@ export const SupplyAssetsListItem = ({
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           onClick={() => {
-            trackEvent(DASHBOARD.DETAILS_BUTTON_DASHBOARD, {
+            trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
+              type: 'Button',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,

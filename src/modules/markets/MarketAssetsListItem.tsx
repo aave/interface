@@ -28,7 +28,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       px={6}
       minHeight={76}
       onClick={() => {
-        trackEvent(MARKETS.DETAILS_ROW_CLICK, {
+        trackEvent(MARKETS.DETAILS_NAVIGATION, {
+          type: 'Row',
           assetName: reserve.name,
           asset: reserve.underlyingAsset,
           market: currentMarket,
@@ -118,7 +119,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           component={Link}
           href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
           onClick={() =>
-            trackEvent(MARKETS.DETAILS_BUTTON, {
+            trackEvent(MARKETS.DETAILS_NAVIGATION, {
+              type: 'Button',
               assetName: reserve.name,
               asset: reserve.underlyingAsset,
               market: currentMarket,

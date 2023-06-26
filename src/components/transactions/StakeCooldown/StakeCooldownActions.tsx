@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -10,6 +11,7 @@ export interface StakeCooldownActionsProps extends BoxProps {
   customGasPrice?: string;
   blocked: boolean;
   selectedToken: string;
+  amountToCooldown: string;
 }
 
 export const StakeCooldownActions = ({
@@ -17,6 +19,7 @@ export const StakeCooldownActions = ({
   sx,
   blocked,
   selectedToken,
+  amountToCooldown,
   ...props
 }: StakeCooldownActionsProps) => {
   const cooldown = useRootStore((state) => state.cooldown);
@@ -28,6 +31,11 @@ export const StakeCooldownActions = ({
     },
     skip: blocked,
     deps: [],
+    protocolAction: ProtocolAction.stakeCooldown,
+    eventTxInfo: {
+      amount: amountToCooldown,
+      assetName: selectedToken,
+    },
   });
 
   return (
