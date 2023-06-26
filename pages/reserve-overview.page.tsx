@@ -19,24 +19,30 @@ import { ContentContainer } from '../src/components/ContentContainer';
 export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
-  const underlyingAsset = router.query.underlyingAsset as string;
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
+  const [reserve, setReserve] = useState<ComputedReserveData>();
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
+
+  const underlyingAsset = router.query.underlyingAsset as string;
 
   useEffect(() => {
     if (!mode) setMode('overview');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
 
-  const reserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+    if (router.isReady && reserves.length) {
+      const reserveFound = reserves.find((reserve) => reserve.underlyingAsset === underlyingAsset);
+
+      if (reserveFound) setReserve(reserveFound);
+      else router.replace('/404');
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lg, router.isReady, reserves.length]);
 
   const isOverview = mode === 'overview';
 
-  return (
+  return reserve ? (
     <AssetCapsProvider asset={reserve}>
       <ReserveTopDetails underlyingAsset={underlyingAsset} />
 
@@ -92,7 +98,7 @@ export default function ReserveOverview() {
         </Box>
       </ContentContainer>
     </AssetCapsProvider>
-  );
+  ) : null;
 }
 
 ReserveOverview.getLayout = function getLayout(page: React.ReactElement) {
