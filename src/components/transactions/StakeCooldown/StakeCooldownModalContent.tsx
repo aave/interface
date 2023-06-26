@@ -15,7 +15,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL, STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
@@ -106,9 +106,13 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   };
 
   const handleOnCoolDownCheckBox = () => {
-    trackEvent(STAKE.ACCEPT_COOLDOWN_CHECKBOX, { asset: stakeAssetName });
+    trackEvent(GENERAL.ACCEPT_RISK, {
+      asset: stakeAssetName,
+      modal: 'Cooldown',
+    });
     setCooldownCheck(!cooldownCheck);
   };
+  const amountToCooldown = formatEther(userStakeData?.stakeTokenRedeemableAmount || 0);
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
@@ -153,11 +157,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={stakeAssetName} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber
-            value={formatEther(userStakeData?.stakeTokenRedeemableAmount || 0)}
-            variant="secondary14"
-            color="text.primary"
-          />
+          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
         </Box>
       </Box>
 
@@ -289,6 +289,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
+        amountToCooldown={amountToCooldown}
       />
     </>
   );

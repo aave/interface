@@ -106,6 +106,7 @@ export const SuppliedPositionsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
+              source="Supplied Positions Dashboard"
             >
               {col.title}
             </ListHeaderTitle>

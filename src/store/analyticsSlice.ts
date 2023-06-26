@@ -35,6 +35,7 @@ export const createAnalyticsSlice: StateCreator<
 > = (set, get) => {
   return {
     trackEvent: (eventName: string, properties?: TrackEventProperties) => {
+      const EXCLUDED_NETWORKS = ['fork_proto_mainnet', 'fork_proto_mainnet_v3'];
       const trackingEnable = get().isTrackingEnabled;
 
       if (!trackingEnable) return null;
@@ -42,10 +43,14 @@ export const createAnalyticsSlice: StateCreator<
       const eventProperties = {
         ...properties,
         walletAddress: get().account,
+        market: get().currentMarket,
+        walletType: get().walletType,
       };
 
       try {
-        mixpanel.track(eventName, eventProperties);
+        if (!EXCLUDED_NETWORKS.includes(get().currentMarket)) {
+          mixpanel.track(eventName, eventProperties);
+        }
       } catch (err) {
         console.log('something went wrong tracking event', err);
       }

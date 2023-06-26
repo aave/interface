@@ -58,6 +58,7 @@ export const CollateralRepayActions = ({
 
   const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
+      protocolAction: ProtocolAction.repayCollateral,
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return paraswapRepayWithCollateral({

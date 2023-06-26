@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -29,12 +30,17 @@ export const StakeActions = ({
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
+      protocolAction: ProtocolAction.stake,
       tryPermit: false,
       handleGetTxns: async () => {
         return stake({
           token: selectedToken,
           amount: amountToStake.toString(),
         });
+      },
+      eventTxInfo: {
+        amount: amountToStake,
+        assetName: selectedToken,
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
       deps: [amountToStake, selectedToken],

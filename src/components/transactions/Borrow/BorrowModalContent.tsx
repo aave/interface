@@ -20,7 +20,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { BORROW_MODAL, GENERAL } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
@@ -256,7 +256,7 @@ export const BorrowModalContent = ({
         maxValue={maxAmountToBorrow}
         balanceText={<Trans>Available</Trans>}
         event={{
-          eventName: BORROW_MODAL.MAX_BORROW,
+          eventName: GENERAL.MAX_INPUT_SELECTION,
           eventParams: {
             asset: poolReserve.underlyingAsset,
             assetName: poolReserve.name,
@@ -311,7 +311,8 @@ export const BorrowModalContent = ({
             <Checkbox
               checked={riskCheckboxAccepted}
               onChange={() => {
-                trackEvent(BORROW_MODAL.ACCEPT_RISK, {
+                trackEvent(GENERAL.ACCEPT_RISK, {
+                  modal: 'Borrow',
                   riskCheckboxAccepted: riskCheckboxAccepted,
                 });
 

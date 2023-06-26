@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useRootStore } from 'src/store/root';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -13,18 +14,16 @@ import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardConte
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
-
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
-
+  const [mode, setMode] = useState<'supply' | 'borrow' | ''>('supply');
   useEffect(() => {
-    if (!mode) setMode('supply');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+    trackEvent('Page Viewed', {
+      'Page Name': 'Dashboard',
+    });
+  }, [trackEvent]);
 
   return (
     <>

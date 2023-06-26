@@ -11,7 +11,7 @@ import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 type DelegatedPowerProps = {
   user: string;
@@ -148,7 +148,7 @@ export const DelegatedInfoPanel = () => {
             variant="description"
             color="text.secondary"
             sx={{ textDecoration: 'underline', ml: 1 }}
-            onClick={() => trackEvent(GOVERNANCE_PAGE.LEARN_MORE_DELEGATION)}
+            onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { link: 'Learn More Delegation' })}
           >
             <Trans>Learn more.</Trans>
           </Link>

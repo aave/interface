@@ -8,7 +8,7 @@ import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import * as React from 'react';
+import { ReactNode, useEffect } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
@@ -58,17 +58,17 @@ interface MyAppProps extends AppProps {
 }
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
+  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
 
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
-  React.useEffect(() => {
+  useEffect(() => {
     if (MIXPANEL_TOKEN) {
       initializeMixpanel();
     } else {
       console.log('no analytics tracking');
     }
-  }, []);
+  }, [MIXPANEL_TOKEN, initializeMixpanel]);
 
   return (
     <CacheProvider value={emotionCache}>
