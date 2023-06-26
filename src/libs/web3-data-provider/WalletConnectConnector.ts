@@ -60,7 +60,6 @@ export class WalletConnectConnector extends AbstractConnector {
   }
 
   private handleDisplayURI = (uri: string): void => {
-    console.log(uri);
     this.emit(URI_AVAILABLE, uri);
   };
 
