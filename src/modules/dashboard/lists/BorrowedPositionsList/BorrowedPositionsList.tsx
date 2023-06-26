@@ -71,6 +71,7 @@ export const BorrowedPositionsList = () => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
+  const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
   let borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -148,6 +149,7 @@ export const BorrowedPositionsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
+              source="Borrowed Positions Dashboard"
             >
               {col.title}
             </ListHeaderTitle>
@@ -163,6 +165,7 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
+      tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Your borrows</Trans>
@@ -186,6 +189,7 @@ export const BorrowedPositionsList = () => {
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip
+                    setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: { tooltip: 'Total Borrowed APY' },
@@ -199,6 +203,7 @@ export const BorrowedPositionsList = () => {
                 percent
                 tooltip={
                   <BorrowPowerTooltip
+                    setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: { tooltip: 'Borrow power used' },

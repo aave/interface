@@ -179,6 +179,7 @@ export const BorrowAssetsList = () => {
               setSortName={setSortName}
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
+              source={'Borrow Dashboard'}
             >
               {col.title}
             </ListHeaderTitle>
