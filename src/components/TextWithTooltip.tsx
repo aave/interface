@@ -18,6 +18,8 @@ export interface TextWithTooltipProps extends TypographyProps {
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
   wrapperProps?: BoxProps;
   event?: TrackEventProps;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
 export const TextWithTooltip = ({
@@ -30,10 +32,18 @@ export const TextWithTooltip = ({
   textColor,
   wrapperProps: { sx: boxSx, ...boxRest } = {},
   event,
+  open: openProp = false,
+  setOpen: setOpenProp,
   ...rest
 }: TextWithTooltipProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(openProp);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const toggleOpen = () => {
+    if (setOpenProp) setOpenProp(!open);
+    setOpen(!open);
+  };
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
       {text && (
@@ -42,7 +52,7 @@ export const TextWithTooltip = ({
         </Typography>
       )}
 
-      <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={setOpen}>
+      <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={toggleOpen}>
         <IconButton
           sx={{
             display: 'flex',

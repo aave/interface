@@ -68,6 +68,7 @@ export const BorrowedPositionsList = () => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -153,6 +154,7 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
+      tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Your borrows</Trans>
@@ -176,6 +178,7 @@ export const BorrowedPositionsList = () => {
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip
+                    setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: { tooltip: 'Total Borrowed APY' },
@@ -189,6 +192,7 @@ export const BorrowedPositionsList = () => {
                 percent
                 tooltip={
                   <BorrowPowerTooltip
+                    setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: { tooltip: 'Borrow power used' },
