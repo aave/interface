@@ -177,7 +177,7 @@ export const MarketSwitcher = () => {
                       color: '#fff',
                       px: 2,
                       borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.newGradient,
+                      background: (theme) => theme.palette.gradients.aaveGradient,
                     }}
                   >
                     <Typography variant="subheader2">V3</Typography>
