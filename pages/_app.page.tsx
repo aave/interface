@@ -1,4 +1,5 @@
 import '/public/fonts/inter/inter.css';
+import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
