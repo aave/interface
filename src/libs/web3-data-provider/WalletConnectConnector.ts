@@ -80,7 +80,7 @@ export class WalletConnectConnector extends AbstractConnector {
       const defaultAccount = accounts[0];
       return { provider: this.walletConnectProvider, account: defaultAccount };
     } catch (error) {
-      if (error.message === 'User closed modal') {
+      if (error.message === 'Connection request reset. Please try again.') {
         throw new UserRejectedRequestError();
       }
       throw error;
