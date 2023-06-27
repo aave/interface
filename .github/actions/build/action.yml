@@ -29,6 +29,10 @@ inputs:
     description: loads mixpanel config
     required: false
     default: ''
+  NEXT_PUBLIC_FIAT_ON_RAMP:
+    description: enables fiat on ramp
+    required: false
+    default: 'false'
   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
     description: wallet connect project id
     required: false
