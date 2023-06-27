@@ -106,13 +106,10 @@ __export(tslib_es6_exports, {
   __read: () => __read,
   __rest: () => __rest,
   __spread: () => __spread,
-  __spreadArray: () => __spreadArray,
   __spreadArrays: () => __spreadArrays,
   __values: () => __values
 });
 function __extends(d, b) {
-  if (typeof b !== "function" && b !== null)
-    throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
   extendStatics(d, b);
   function __() {
     this.constructor = d;
@@ -253,10 +250,15 @@ function __generator(thisArg, body) {
     return { value: op[0] ? op[1] : void 0, done: true };
   }
 }
-function __exportStar(m, o) {
+function __createBinding(o, m, k, k2) {
+  if (k2 === void 0)
+    k2 = k;
+  o[k2] = m[k];
+}
+function __exportStar(m, exports2) {
   for (var p in m)
-    if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p))
-      __createBinding(o, m, p);
+    if (p !== "default" && !exports2.hasOwnProperty(p))
+      exports2[p] = m[p];
 }
 function __values(o) {
   var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
@@ -305,17 +307,6 @@ function __spreadArrays() {
     for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
       r[k] = a[j];
   return r;
-}
-function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2)
-    for (var i = 0, l = from.length, ar; i < l; i++) {
-      if (ar || !(i in from)) {
-        if (!ar)
-          ar = Array.prototype.slice.call(from, 0, i);
-        ar[i] = from[i];
-      }
-    }
-  return to.concat(ar || Array.prototype.slice.call(from));
 }
 function __await(v) {
   return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -403,32 +394,29 @@ function __importStar(mod) {
   var result = {};
   if (mod != null) {
     for (var k in mod)
-      if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-        __createBinding(result, mod, k);
+      if (Object.hasOwnProperty.call(mod, k))
+        result[k] = mod[k];
   }
-  __setModuleDefault(result, mod);
+  result.default = mod;
   return result;
 }
 function __importDefault(mod) {
   return mod && mod.__esModule ? mod : { default: mod };
 }
-function __classPrivateFieldGet(receiver, state, kind, f) {
-  if (kind === "a" && !f)
-    throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError("Cannot read private member from an object whose class did not declare it");
-  return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+function __classPrivateFieldGet(receiver, privateMap) {
+  if (!privateMap.has(receiver)) {
+    throw new TypeError("attempted to get private field on non-instance");
+  }
+  return privateMap.get(receiver);
 }
-function __classPrivateFieldSet(receiver, state, value, kind, f) {
-  if (kind === "m")
-    throw new TypeError("Private method is not writable");
-  if (kind === "a" && !f)
-    throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError("Cannot write private member to an object whose class did not declare it");
-  return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+function __classPrivateFieldSet(receiver, privateMap, value) {
+  if (!privateMap.has(receiver)) {
+    throw new TypeError("attempted to set private field on non-instance");
+  }
+  privateMap.set(receiver, value);
+  return value;
 }
-var extendStatics, __assign, __createBinding, __setModuleDefault;
+var extendStatics, __assign;
 var init_tslib_es6 = __esm({
   "node_modules/tslib/tslib.es6.js"() {
     "use strict";
@@ -437,7 +425,7 @@ var init_tslib_es6 = __esm({
         d2.__proto__ = b2;
       } || function(d2, b2) {
         for (var p in b2)
-          if (Object.prototype.hasOwnProperty.call(b2, p))
+          if (b2.hasOwnProperty(p))
             d2[p] = b2[p];
       };
       return extendStatics(d, b);
@@ -453,22 +441,6 @@ var init_tslib_es6 = __esm({
         return t;
       };
       return __assign.apply(this, arguments);
-    };
-    __createBinding = Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
-    } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      o[k2] = m[k];
-    };
-    __setModuleDefault = Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
-      o["default"] = v;
     };
   }
 });
@@ -15404,7 +15376,7 @@ var require_lib17 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -15418,7 +15390,7 @@ var require_lib17 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -20820,7 +20792,7 @@ var require_utils5 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -20834,7 +20806,7 @@ var require_utils5 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -21294,7 +21266,7 @@ var require_lib28 = __commonJS({
         return { value: op[0] ? op[1] : void 0, done: true };
       }
     };
-    var __spreadArray2 = exports2 && exports2.__spreadArray || function(to, from, pack) {
+    var __spreadArray = exports2 && exports2.__spreadArray || function(to, from, pack) {
       if (pack || arguments.length === 2)
         for (var i = 0, l = from.length, ar; i < l; i++) {
           if (ar || !(i in from)) {
@@ -22139,7 +22111,7 @@ var require_lib28 = __commonJS({
               if (event.decodeError == null) {
                 try {
                   var args = runningEvent.getEmit(event);
-                  _this.emit.apply(_this, __spreadArray2([runningEvent.filter], args, false));
+                  _this.emit.apply(_this, __spreadArray([runningEvent.filter], args, false));
                 } catch (error) {
                   event.decodeError = error.error;
                 }
@@ -26865,9 +26837,9 @@ var require_json_rpc_provider = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js
+// node_modules/ws/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js"(exports2, module2) {
+  "node_modules/ws/lib/constants.js"(exports2, module2) {
     "use strict";
     module2.exports = {
       BINARY_TYPES: ["nodebuffer", "arraybuffer", "fragments"],
@@ -27101,9 +27073,9 @@ var require_bufferutil = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js
+// node_modules/ws/lib/buffer-util.js
 var require_buffer_util = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js"(exports2, module2) {
+  "node_modules/ws/lib/buffer-util.js"(exports2, module2) {
     "use strict";
     var { EMPTY_BUFFER } = require_constants();
     function concat(list, totalLength) {
@@ -27186,9 +27158,9 @@ var require_buffer_util = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js
+// node_modules/ws/lib/limiter.js
 var require_limiter = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js"(exports2, module2) {
+  "node_modules/ws/lib/limiter.js"(exports2, module2) {
     "use strict";
     var kDone = Symbol("kDone");
     var kRun = Symbol("kRun");
@@ -27237,9 +27209,9 @@ var require_limiter = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js
+// node_modules/ws/lib/permessage-deflate.js
 var require_permessage_deflate = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
+  "node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
     "use strict";
     var zlib = require("zlib");
     var bufferUtil = require_buffer_util();
@@ -27662,9 +27634,9 @@ var require_utf_8_validate = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js
+// node_modules/ws/lib/validation.js
 var require_validation = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js"(exports2, module2) {
+  "node_modules/ws/lib/validation.js"(exports2, module2) {
     "use strict";
     function isValidStatusCode(code) {
       return code >= 1e3 && code <= 1014 && code !== 1004 && code !== 1005 && code !== 1006 || code >= 3e3 && code <= 4999;
@@ -27718,9 +27690,9 @@ var require_validation = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js
+// node_modules/ws/lib/receiver.js
 var require_receiver = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js"(exports2, module2) {
+  "node_modules/ws/lib/receiver.js"(exports2, module2) {
     "use strict";
     var { Writable } = require("stream");
     var PerMessageDeflate = require_permessage_deflate();
@@ -28140,9 +28112,9 @@ var require_receiver = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js
+// node_modules/ws/lib/sender.js
 var require_sender = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js"(exports2, module2) {
+  "node_modules/ws/lib/sender.js"(exports2, module2) {
     "use strict";
     var { randomFillSync } = require("crypto");
     var PerMessageDeflate = require_permessage_deflate();
@@ -28504,9 +28476,9 @@ var require_sender = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js
+// node_modules/ws/lib/event-target.js
 var require_event_target = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js"(exports2, module2) {
+  "node_modules/ws/lib/event-target.js"(exports2, module2) {
     "use strict";
     var Event = class {
       /**
@@ -28642,9 +28614,9 @@ var require_event_target = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js
+// node_modules/ws/lib/extension.js
 var require_extension = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js"(exports2, module2) {
+  "node_modules/ws/lib/extension.js"(exports2, module2) {
     "use strict";
     var tokenChars = [
       0,
@@ -28950,9 +28922,9 @@ var require_extension = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js
+// node_modules/ws/lib/websocket.js
 var require_websocket = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var https = require("https");
@@ -29609,9 +29581,9 @@ var require_websocket = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js
+// node_modules/ws/lib/stream.js
 var require_stream = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js"(exports2, module2) {
+  "node_modules/ws/lib/stream.js"(exports2, module2) {
     "use strict";
     var { Duplex } = require("stream");
     function emitClose(stream) {
@@ -29728,9 +29700,9 @@ var require_stream = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js
+// node_modules/ws/lib/websocket-server.js
 var require_websocket_server = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket-server.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var { createHash } = require("crypto");
@@ -30025,9 +29997,9 @@ var require_websocket_server = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/index.js
+// node_modules/ws/index.js
 var require_ws = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/index.js"(exports2, module2) {
+  "node_modules/ws/index.js"(exports2, module2) {
     "use strict";
     var WebSocket = require_websocket();
     WebSocket.createWebSocketStream = require_stream();
@@ -33308,7 +33280,7 @@ var require_ethers = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -33322,7 +33294,7 @@ var require_ethers = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -33400,7 +33372,7 @@ var require_lib31 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -33414,7 +33386,7 @@ var require_lib31 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
