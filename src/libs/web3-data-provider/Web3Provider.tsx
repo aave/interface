@@ -8,6 +8,7 @@ import {
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
 import { TorusConnector } from '@web3-react/torus-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, PopulatedTransaction, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
@@ -17,7 +18,6 @@ import { hexToAscii } from 'src/utils/utils';
 import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { WalletConnectConnector } from './WalletConnectConnector';
 import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
