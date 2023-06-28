@@ -28,7 +28,8 @@ testCases.forEach(
     checkAmountFinal: string;
     tabValue: string;
   }) => {
-    describe(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName} V2 MARKET`, () => {
+    //skip while multiply fork eth markets present
+    describe.skip(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName} V2 MARKET`, () => {
       const skipTestState = skipState(false);
       configEnvWithTenderlyMainnetFork({
         tokens: [{ tokenAddress: testCase.asset.address }],
