@@ -4,7 +4,10 @@ import { Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -22,9 +25,10 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: DashboardReserve) => {
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
-  const { currentMarket } = useProtocolDataContext();
+  const { openBorrow, openRepay, openRateSwitch, openDebtSwitch } = useModalContext();
+  const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const {
     isActive,
@@ -38,6 +42,9 @@ export const BorrowedPositionsListItem = ({
   } = reserve;
 
   const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
+
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const disableSwitch = !isActive || isFrozen || reserve.symbol == 'stETH';
 
   return (
     <ListItemWrapper
@@ -97,15 +104,32 @@ export const BorrowedPositionsListItem = ({
         >
           <Trans>Repay</Trans>
         </Button>
-        <Button
-          disabled={disableBorrow}
-          variant="outlined"
-          onClick={() => {
-            openBorrow(reserve.underlyingAsset, currentMarket, name, 'dashboard');
-          }}
-        >
-          <Trans>Borrow</Trans>
-        </Button>
+        {showSwitchButton ? (
+          <Button
+            disabled={disableSwitch}
+            variant="outlined"
+            onClick={() => {
+              trackEvent(GENERAL.OPEN_MODAL, {
+                modal: 'Debt Switch',
+                market: currentMarket,
+                assetName: reserve.name,
+                asset: reserve.underlyingAsset,
+              });
+              openDebtSwitch(reserve.underlyingAsset);
+            }}
+            data-cy={`swapButton`}
+          >
+            <Trans>Switch</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={disableBorrow}
+            variant="outlined"
+            onClick={() => openBorrow(reserve.underlyingAsset, currentMarket, name, 'dashboard')}
+          >
+            <Trans>Borrow</Trans>
+          </Button>
+        )}
       </ListButtonsColumn>
     </ListItemWrapper>
   );

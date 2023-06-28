@@ -42,6 +42,7 @@ export type MarketDataType = {
     collateralRepay?: boolean;
     incentives?: boolean;
     permissions?: boolean;
+    debtSwitch?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -117,6 +118,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -144,6 +146,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
