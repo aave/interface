@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
@@ -9,6 +10,7 @@ import { DebtSwitchModalContent } from './DebtSwitchModalContent';
 export const DebtSwitchModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
+    currentRateMode: InterestRate;
   }>;
   return (
     <BasicModal open={type === ModalType.DebtSwitch} setOpen={close}>
@@ -17,7 +19,7 @@ export const DebtSwitchModal = () => {
         underlyingAsset={args.underlyingAsset}
         hideTitleSymbol
       >
-        {(params) => <DebtSwitchModalContent {...params} />}
+        {(params) => <DebtSwitchModalContent {...params} currentRateMode={args.currentRateMode} />}
       </ModalWrapper>
     </BasicModal>
   );

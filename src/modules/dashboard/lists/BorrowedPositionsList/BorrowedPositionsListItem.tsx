@@ -115,7 +115,7 @@ export const BorrowedPositionsListItem = ({
                 assetName: reserve.name,
                 asset: reserve.underlyingAsset,
               });
-              openDebtSwitch(reserve.underlyingAsset);
+              openDebtSwitch(reserve.underlyingAsset, borrowRateMode);
             }}
             data-cy={`swapButton`}
           >

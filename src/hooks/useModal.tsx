@@ -94,7 +94,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
-  openDebtSwitch: (underlyingAsset: string) => void;
+  openDebtSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
@@ -271,10 +271,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Swap);
           setArgs({ underlyingAsset });
         },
-        openDebtSwitch: (underlyingAsset) => {
+        openDebtSwitch: (underlyingAsset, currentRateMode) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Debt Switch' });
           setType(ModalType.DebtSwitch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, currentRateMode });
         },
         openGovDelegation: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Governance Delegation' });

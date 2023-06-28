@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -25,6 +26,7 @@ export type DebtSwitchModalDetailsProps = {
   toAmount: string;
   fromAmount: string;
   loading: boolean;
+  sourceRateMode: InterestRate;
 };
 
 export const DebtSwitchModalDetails = ({
@@ -36,6 +38,7 @@ export const DebtSwitchModalDetails = ({
   toAmount,
   fromAmount,
   loading,
+  sourceRateMode,
 }: DebtSwitchModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
     valueToBigNumber(fromAmount)
@@ -69,7 +72,11 @@ export const DebtSwitchModalDetails = ({
       )}
       <DetailsNumberLine
         description={<Trans>Borrow apy</Trans>}
-        value={swapSource.reserve.variableBorrowAPY}
+        value={
+          sourceRateMode === InterestRate.Variable
+            ? swapSource.reserve.variableBorrowAPY
+            : swapSource.stableBorrowAPY
+        }
         futureValue={swapTarget.reserve.variableBorrowAPY}
         percent
         loading={loading}

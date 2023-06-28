@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
@@ -38,7 +39,8 @@ export const DebtSwitchModalContent = ({
   poolReserve,
   userReserve,
   isWrongNetwork,
-}: ModalWrapperProps) => {
+  currentRateMode,
+}: ModalWrapperProps & { currentRateMode: InterestRate }) => {
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
@@ -250,7 +252,16 @@ export const DebtSwitchModalContent = ({
         ]}
         maxValue={maxAmountToSwap}
         inputTitle={<Trans>Borrowed asset amount</Trans>}
-        balanceText={<Trans>Borrow balance</Trans>}
+        balanceText={
+          <React.Fragment>
+            {currentRateMode === InterestRate.Variable ? (
+              <Trans>Variable</Trans>
+            ) : (
+              <Trans>Stable</Trans>
+            )}{' '}
+            <Trans>Borrow balance</Trans>
+          </React.Fragment>
+        }
         isMaxSelected={isMaxSelected}
       />
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
@@ -303,6 +314,7 @@ export const DebtSwitchModalContent = ({
           toAmount={outputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
+          sourceRateMode={currentRateMode}
         />
       </TxModalDetails>
 
