@@ -240,7 +240,6 @@ export const WalletSelector = () => {
           })}
           placeholder="Enter ethereum address or username"
           fullWidth
-          autoFocus
           value={inputMockWalletAddress}
           onChange={(e) => setInputMockWalletAddress(e.target.value)}
           inputProps={{
