@@ -3523,6 +3523,24 @@
       "ipfsHash": "QmUT9QhvqAbuyuqnWxzGSTds95FuWbPreXKbDeXKe9D48u",
       "originalHash": "0x5ad00ebf0e170757dbb0559d21dab778084108f6388d548471a424137c238c36",
       "id": 256
+    },
+    {
+      "title": "Optimism - Create ETH eMode Category",
+      "discussions": "https://governance.aave.com/t/arfc-optimism-create-eth-e-mode/13144",
+      "author": "Llama, TokenLogic",
+      "ipfsHash": "QmcjjxrNoPKzusn3VvrgCEzACcQNTQxG2SiLeYKx4jHJ4p",
+      "description": "\n# Summary\n\nThis AIP if implemented will create an ETH nominated eMode category on the Aave v3 Optimism deployment.\n\n# Motivation\n\nCreation of an eMode on Aave v3 Optimism will enable users to enter yield maximising strategies with greater capital efficiency.\n\nWith the introduction of an ETH eMode, Aave Protocol is expected to experience greater borrowing demand for wETH, leading to enhanced revenue generation.\n\nThe introduction of the ETH eMode is expected to lead to structured yield maximising products/strategies being built on Aave Protocol.\n\nwstETH and wETH will be included as initial assets within the ETH correlated eMode.\n\n# Specification\n\nThe following risk parameters have been approved by Chaos Labs.\n\nTicker: wstETH\n\nContract: [`optimism:0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb`](https://optimistic.etherscan.io/token/0x1f32b1c2345538c0c6f582fcb022739c4a194ebb)\n\nTicker: wETH\n\nContract: [`optimism:0x4200000000000000000000000000000000000006`](https://optimistic.etherscan.io/address/0x4200000000000000000000000000000000000006)\n\n| Parameter             | Value              |\n| --------------------- | ------------------ |\n| Category              | 1 (ETH Correlated) |\n| Assets                | wstETH, wETH       |\n| Loan to Value         | 90.00%             |\n| Liquidation Threshold | 93.00%             |\n| Liquidation Bonus     | 1.00%              |\n\n# Implementation\n\nA list of relevant links for this proposal:\n\n- [Test Cases](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPEmode_20220622/AaveV3OPEmode_20220622_PayloadTest.t.sol)\n- [Payload Implementation](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPEmode_20220622/AaveV3OPEmode_20220622_Payload.sol)\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "originalHash": "0xd5edeaa37f402f3fca8190927699519ef5a8b81285aca97a276f871d8d2ae201",
+      "id": 257
+    },
+    {
+      "title": "Optimism - Create ETH eMode Category",
+      "discussions": "https://governance.aave.com/t/arfc-optimism-create-eth-e-mode/13144",
+      "author": "Llama, TokenLogic",
+      "ipfsHash": "QmcjjxrNoPKzusn3VvrgCEzACcQNTQxG2SiLeYKx4jHJ4p",
+      "description": "\n# Summary\n\nThis AIP if implemented will create an ETH nominated eMode category on the Aave v3 Optimism deployment.\n\n# Motivation\n\nCreation of an eMode on Aave v3 Optimism will enable users to enter yield maximising strategies with greater capital efficiency.\n\nWith the introduction of an ETH eMode, Aave Protocol is expected to experience greater borrowing demand for wETH, leading to enhanced revenue generation.\n\nThe introduction of the ETH eMode is expected to lead to structured yield maximising products/strategies being built on Aave Protocol.\n\nwstETH and wETH will be included as initial assets within the ETH correlated eMode.\n\n# Specification\n\nThe following risk parameters have been approved by Chaos Labs.\n\nTicker: wstETH\n\nContract: [`optimism:0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb`](https://optimistic.etherscan.io/token/0x1f32b1c2345538c0c6f582fcb022739c4a194ebb)\n\nTicker: wETH\n\nContract: [`optimism:0x4200000000000000000000000000000000000006`](https://optimistic.etherscan.io/address/0x4200000000000000000000000000000000000006)\n\n| Parameter             | Value              |\n| --------------------- | ------------------ |\n| Category              | 1 (ETH Correlated) |\n| Assets                | wstETH, wETH       |\n| Loan to Value         | 90.00%             |\n| Liquidation Threshold | 93.00%             |\n| Liquidation Bonus     | 1.00%              |\n\n# Implementation\n\nA list of relevant links for this proposal:\n\n- [Test Cases](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPEmode_20220622/AaveV3OPEmode_20220622_PayloadTest.t.sol)\n- [Payload Implementation](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV3OPEmode_20220622/AaveV3OPEmode_20220622_Payload.sol)\n\nThe proposal Payload was reviewed by [Bored Ghost Developing](https://bgdlabs.com/).\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "originalHash": "0xd5edeaa37f402f3fca8190927699519ef5a8b81285aca97a276f871d8d2ae201",
+      "id": 258
     }
   ]
 }
