@@ -91,7 +91,6 @@ var require_tslib = __commonJS({
     var __read;
     var __spread;
     var __spreadArrays;
-    var __spreadArray;
     var __await;
     var __asyncGenerator;
     var __asyncDelegator;
@@ -130,12 +129,10 @@ var require_tslib = __commonJS({
         d.__proto__ = b;
       } || function(d, b) {
         for (var p in b)
-          if (Object.prototype.hasOwnProperty.call(b, p))
+          if (b.hasOwnProperty(p))
             d[p] = b[p];
       };
       __extends = function(d, b) {
-        if (typeof b !== "function" && b !== null)
-          throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() {
           this.constructor = d;
@@ -285,21 +282,15 @@ var require_tslib = __commonJS({
           return { value: op[0] ? op[1] : void 0, done: true };
         }
       };
-      __exportStar = function(m, o) {
-        for (var p in m)
-          if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p))
-            __createBinding(o, m, p);
-      };
-      __createBinding = Object.create ? function(o, m, k, k2) {
-        if (k2 === void 0)
-          k2 = k;
-        Object.defineProperty(o, k2, { enumerable: true, get: function() {
-          return m[k];
-        } });
-      } : function(o, m, k, k2) {
+      __createBinding = function(o, m, k, k2) {
         if (k2 === void 0)
           k2 = k;
         o[k2] = m[k];
+      };
+      __exportStar = function(m, exports3) {
+        for (var p in m)
+          if (p !== "default" && !exports3.hasOwnProperty(p))
+            exports3[p] = m[p];
       };
       __values = function(o) {
         var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
@@ -348,17 +339,6 @@ var require_tslib = __commonJS({
           for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
             r[k] = a[j];
         return r;
-      };
-      __spreadArray = function(to, from, pack) {
-        if (pack || arguments.length === 2)
-          for (var i = 0, l = from.length, ar; i < l; i++) {
-            if (ar || !(i in from)) {
-              if (!ar)
-                ar = Array.prototype.slice.call(from, 0, i);
-              ar[i] = from[i];
-            }
-          }
-        return to.concat(ar || Array.prototype.slice.call(from));
       };
       __await = function(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -440,41 +420,33 @@ var require_tslib = __commonJS({
         }
         return cooked;
       };
-      var __setModuleDefault = Object.create ? function(o, v) {
-        Object.defineProperty(o, "default", { enumerable: true, value: v });
-      } : function(o, v) {
-        o["default"] = v;
-      };
       __importStar = function(mod) {
         if (mod && mod.__esModule)
           return mod;
         var result = {};
         if (mod != null) {
           for (var k in mod)
-            if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-              __createBinding(result, mod, k);
+            if (Object.hasOwnProperty.call(mod, k))
+              result[k] = mod[k];
         }
-        __setModuleDefault(result, mod);
+        result["default"] = mod;
         return result;
       };
       __importDefault = function(mod) {
         return mod && mod.__esModule ? mod : { "default": mod };
       };
-      __classPrivateFieldGet4 = function(receiver, state, kind, f) {
-        if (kind === "a" && !f)
-          throw new TypeError("Private accessor was defined without a getter");
-        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-          throw new TypeError("Cannot read private member from an object whose class did not declare it");
-        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+      __classPrivateFieldGet4 = function(receiver, privateMap) {
+        if (!privateMap.has(receiver)) {
+          throw new TypeError("attempted to get private field on non-instance");
+        }
+        return privateMap.get(receiver);
       };
-      __classPrivateFieldSet4 = function(receiver, state, value, kind, f) {
-        if (kind === "m")
-          throw new TypeError("Private method is not writable");
-        if (kind === "a" && !f)
-          throw new TypeError("Private accessor was defined without a setter");
-        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-          throw new TypeError("Cannot write private member to an object whose class did not declare it");
-        return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+      __classPrivateFieldSet4 = function(receiver, privateMap, value) {
+        if (!privateMap.has(receiver)) {
+          throw new TypeError("attempted to set private field on non-instance");
+        }
+        privateMap.set(receiver, value);
+        return value;
       };
       exporter("__extends", __extends);
       exporter("__assign", __assign);
@@ -490,7 +462,6 @@ var require_tslib = __commonJS({
       exporter("__read", __read);
       exporter("__spread", __spread);
       exporter("__spreadArrays", __spreadArrays);
-      exporter("__spreadArray", __spreadArray);
       exporter("__await", __await);
       exporter("__asyncGenerator", __asyncGenerator);
       exporter("__asyncDelegator", __asyncDelegator);
@@ -26557,9 +26528,9 @@ var require_json_rpc_provider = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js
+// node_modules/ws/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js"(exports2, module2) {
+  "node_modules/ws/lib/constants.js"(exports2, module2) {
     "use strict";
     module2.exports = {
       BINARY_TYPES: ["nodebuffer", "arraybuffer", "fragments"],
@@ -26791,9 +26762,9 @@ var require_bufferutil = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js
+// node_modules/ws/lib/buffer-util.js
 var require_buffer_util = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js"(exports2, module2) {
+  "node_modules/ws/lib/buffer-util.js"(exports2, module2) {
     "use strict";
     var { EMPTY_BUFFER } = require_constants();
     function concat(list, totalLength) {
@@ -26876,9 +26847,9 @@ var require_buffer_util = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js
+// node_modules/ws/lib/limiter.js
 var require_limiter = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js"(exports2, module2) {
+  "node_modules/ws/lib/limiter.js"(exports2, module2) {
     "use strict";
     var kDone = Symbol("kDone");
     var kRun = Symbol("kRun");
@@ -26910,9 +26881,9 @@ var require_limiter = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js
+// node_modules/ws/lib/permessage-deflate.js
 var require_permessage_deflate = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
+  "node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
     "use strict";
     var zlib = require("zlib");
     var bufferUtil = require_buffer_util();
@@ -27235,9 +27206,9 @@ var require_utf_8_validate = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js
+// node_modules/ws/lib/validation.js
 var require_validation = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js"(exports2, module2) {
+  "node_modules/ws/lib/validation.js"(exports2, module2) {
     "use strict";
     function isValidStatusCode(code) {
       return code >= 1e3 && code <= 1014 && code !== 1004 && code !== 1005 && code !== 1006 || code >= 3e3 && code <= 4999;
@@ -27289,9 +27260,9 @@ var require_validation = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js
+// node_modules/ws/lib/receiver.js
 var require_receiver = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js"(exports2, module2) {
+  "node_modules/ws/lib/receiver.js"(exports2, module2) {
     "use strict";
     var { Writable } = require("stream");
     var PerMessageDeflate = require_permessage_deflate();
@@ -27625,9 +27596,9 @@ var require_receiver = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js
+// node_modules/ws/lib/sender.js
 var require_sender = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js"(exports2, module2) {
+  "node_modules/ws/lib/sender.js"(exports2, module2) {
     "use strict";
     var { randomFillSync } = require("crypto");
     var PerMessageDeflate = require_permessage_deflate();
@@ -27862,9 +27833,9 @@ var require_sender = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js
+// node_modules/ws/lib/event-target.js
 var require_event_target = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js"(exports2, module2) {
+  "node_modules/ws/lib/event-target.js"(exports2, module2) {
     "use strict";
     var Event = class {
       constructor(type, target) {
@@ -27944,9 +27915,9 @@ var require_event_target = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js
+// node_modules/ws/lib/extension.js
 var require_extension = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js"(exports2, module2) {
+  "node_modules/ws/lib/extension.js"(exports2, module2) {
     "use strict";
     var tokenChars = [
       0,
@@ -28244,9 +28215,9 @@ var require_extension = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js
+// node_modules/ws/lib/websocket.js
 var require_websocket = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var https = require("https");
@@ -28794,9 +28765,9 @@ var require_websocket = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js
+// node_modules/ws/lib/stream.js
 var require_stream = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js"(exports2, module2) {
+  "node_modules/ws/lib/stream.js"(exports2, module2) {
     "use strict";
     var { Duplex } = require("stream");
     function emitClose(stream) {
@@ -28913,9 +28884,9 @@ var require_stream = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js
+// node_modules/ws/lib/websocket-server.js
 var require_websocket_server = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket-server.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var { createHash } = require("crypto");
@@ -29145,9 +29116,9 @@ var require_websocket_server = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/index.js
+// node_modules/ws/index.js
 var require_ws = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/index.js"(exports2, module2) {
+  "node_modules/ws/index.js"(exports2, module2) {
     "use strict";
     var WebSocket = require_websocket();
     WebSocket.createWebSocketStream = require_stream();
@@ -63784,7 +63755,9 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Ethereum_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR
+      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR,
+      GHO_TOKEN_ADDRESS: "0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09",
+      GHO_UI_DATA_PROVIDER: "0xAd4B89AAd7556D89A8318D58E9EBF49f9a34cFfE"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -63817,6 +63790,27 @@ var marketsData = {
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
       marketName: "aavev2"
+    }
+  },
+  ["proto_mainnet_gho_v3" /* proto_mainnet_gho_v3 */]: {
+    marketTitle: "Ethereum Mainnet Fork Gho Deployment",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.mainnet,
+    enabledFeatures: {
+      staking: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Ethereum_exports.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Ethereum_exports.POOL,
+      WETH_GATEWAY: AaveV3Ethereum_exports.WETH_GATEWAY,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Ethereum_exports.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Ethereum_exports.SWAP_COLLATERAL_ADAPTER,
+      WALLET_BALANCE_PROVIDER: AaveV3Ethereum_exports.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Ethereum_exports.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR,
+      GHO_TOKEN_ADDRESS: "0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09",
+      GHO_UI_DATA_PROVIDER: "0xecebedbf26013fb55a5b0a275191a90984e5ae5e"
     }
   },
   ["amm_mainnet" /* amm_mainnet */]: {
@@ -64072,51 +64066,6 @@ var marketsData = {
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
       marketName: "fantom"
-    }
-  },
-  ["proto_goerli_gho_v3" /* proto_goerli_gho_v3 */]: {
-    marketTitle: "Ethereum G\xF6rli GHO",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.arbitrum_one,
-    enabledFeatures: {
-      incentives: true,
-      liquiditySwap: true,
-      collateralRepay: true
-    },
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Arbitrum_exports.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Arbitrum_exports.POOL,
-      WETH_GATEWAY: AaveV3Arbitrum_exports.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: AaveV3Arbitrum_exports.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Arbitrum_exports.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Arbitrum_exports.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: AaveV3Arbitrum_exports.L2_ENCODER,
-      COLLECTOR: AaveV3Arbitrum_exports.COLLECTOR,
-      SWAP_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.REPAY_WITH_COLLATERAL_ADAPTER
-    },
-    halIntegration: {
-      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
-      marketName: "arbitrum"
-    }
-  },
-  ["proto_sepolia_gho_v3" /* proto_sepolia_gho_v3 */]: {
-    marketTitle: "Ethereum Sepolia GHO",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.sepolia,
-    enabledFeatures: {
-      faucet: true,
-      staking: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Sepolia_exports.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Sepolia_exports.POOL,
-      WETH_GATEWAY: AaveV3Sepolia_exports.WETH_GATEWAY,
-      FAUCET: AaveV3Sepolia_exports.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3Sepolia_exports.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Sepolia_exports.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia_exports.UI_INCENTIVE_DATA_PROVIDER
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {

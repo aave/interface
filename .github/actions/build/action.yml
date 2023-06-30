@@ -29,6 +29,14 @@ inputs:
     description: loads mixpanel config
     required: false
     default: ''
+  NEXT_PUBLIC_FIAT_ON_RAMP:
+    description: enables fiat on ramp
+    required: false
+    default: 'false'
+  NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
+    description: wallet connect project id
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -71,3 +79,4 @@ runs:
         NEXT_PUBLIC_FORK_URL_RPC: '${{ inputs.NEXT_PUBLIC_FORK_URL_RPC }}'
         NEXT_PUBLIC_MIXPANEL: '${{ inputs.NEXT_PUBLIC_MIXPANEL }}'
         NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
+        NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: '${{ inputs.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}'
