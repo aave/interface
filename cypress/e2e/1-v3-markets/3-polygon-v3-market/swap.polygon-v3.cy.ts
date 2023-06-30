@@ -16,7 +16,7 @@ const testData = {
       fromAsset: assets.polygonV3Market.MATIC,
       toAsset: assets.polygonV3Market.DAI,
       isCollateralFromAsset: true,
-      amount: 200,
+      amount: 20,
       hasApproval: false,
     },
   ],
@@ -32,7 +32,7 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.polygonV3Market.MATIC.shortName,
-        amount: 700,
+        amount: 880,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
