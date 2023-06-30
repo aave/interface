@@ -41,7 +41,7 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value
@@ -191,8 +191,10 @@ export function CollateralRepayModalContent({
   }
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
-  const isUSDTEthMainnet =
-    currentChainId === 1 && (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT');
+  const isUSDTEthMainnetV3 =
+    currentChainId === 1 &&
+    !!currentMarketData.v3 &&
+    (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   let blockingError: ErrorType | undefined = undefined;
 
@@ -280,7 +282,7 @@ export function CollateralRepayModalContent({
         </Typography>
       )}
 
-      {isUSDTEthMainnet && (
+      {isUSDTEthMainnetV3 && (
         <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
           <USDTParaswapWarning />
         </Warning>
@@ -330,7 +332,7 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        blocked={blockingError !== undefined || error !== '' || isUSDTEthMainnet}
+        blocked={blockingError !== undefined || error !== '' || isUSDTEthMainnetV3}
         loading={routeLoading}
         buildTxFn={buildTxFn}
       />

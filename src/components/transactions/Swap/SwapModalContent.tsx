@@ -41,7 +41,7 @@ export const SwapModalContent = ({
   isWrongNetwork,
 }: ModalWrapperProps) => {
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
@@ -110,8 +110,10 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
-  const isUSDTEthMainnet =
-    currentChainId === 1 && (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT');
+  const isUSDTEthMainnetV3 =
+    currentChainId === 1 &&
+    !!currentMarketData.v3 &&
+    (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
@@ -292,7 +294,7 @@ export const SwapModalContent = ({
         </Warning>
       )}
 
-      {isUSDTEthMainnet && (
+      {isUSDTEthMainnetV3 && (
         <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
           <USDTParaswapWarning />
         </Warning>
@@ -329,7 +331,7 @@ export const SwapModalContent = ({
         blocked={
           blockingError !== undefined ||
           error !== '' ||
-          isUSDTEthMainnet ||
+          isUSDTEthMainnetV3 ||
           swapTarget.reserve.symbol === 'stETH'
         }
         useFlashLoan={shouldUseFlashloan}
