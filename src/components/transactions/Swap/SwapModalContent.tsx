@@ -110,6 +110,9 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
+  const isUSDTEthMainnet =
+    currentChainId === 1 && (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT');
+
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   const remainingSupplyCap = remainingCap(
@@ -289,12 +292,11 @@ export const SwapModalContent = ({
         </Warning>
       )}
 
-      {currentNetworkConfig.underlyingChainId === 1 &&
-        (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT') && (
-          <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-            <USDTParaswapWarning />
-          </Warning>
-        )}
+      {isUSDTEthMainnet && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <USDTParaswapWarning />
+        </Warning>
+      )}
 
       <TxModalDetails
         gasLimit={gasLimit}
@@ -324,7 +326,12 @@ export const SwapModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
-        blocked={blockingError !== undefined || error !== ''}
+        blocked={
+          blockingError !== undefined ||
+          error !== '' ||
+          isUSDTEthMainnet ||
+          swapTarget.reserve.symbol === 'stETH'
+        }
         useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}
         buildTxFn={buildTxFn}

@@ -191,6 +191,8 @@ export function CollateralRepayModalContent({
   }
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const isUSDTEthMainnet =
+    currentChainId === 1 && (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   let blockingError: ErrorType | undefined = undefined;
 
@@ -278,12 +280,11 @@ export function CollateralRepayModalContent({
         </Typography>
       )}
 
-      {currentNetworkConfig.underlyingChainId === 1 &&
-        (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT') && (
-          <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-            <USDTParaswapWarning />
-          </Warning>
-        )}
+      {isUSDTEthMainnet && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <USDTParaswapWarning />
+        </Warning>
+      )}
 
       <TxModalDetails
         gasLimit={gasLimit}
@@ -329,7 +330,7 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        blocked={blockingError !== undefined || error !== ''}
+        blocked={blockingError !== undefined || error !== '' || isUSDTEthMainnet}
         loading={routeLoading}
         buildTxFn={buildTxFn}
       />
