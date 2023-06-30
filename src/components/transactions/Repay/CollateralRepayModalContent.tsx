@@ -6,6 +6,8 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { Warning } from 'src/components/primitives/Warning';
+import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -275,6 +277,13 @@ export function CollateralRepayModalContent({
           <BlockingError />
         </Typography>
       )}
+
+      {currentNetworkConfig.underlyingChainId === 1 &&
+        (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT') && (
+          <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+            <USDTParaswapWarning />
+          </Warning>
+        )}
 
       <TxModalDetails
         gasLimit={gasLimit}

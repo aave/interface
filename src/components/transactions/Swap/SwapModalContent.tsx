@@ -8,6 +8,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
+import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
@@ -287,6 +288,13 @@ export const SwapModalContent = ({
           <StETHCollateralWarning />
         </Warning>
       )}
+
+      {currentNetworkConfig.underlyingChainId === 1 &&
+        (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT') && (
+          <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+            <USDTParaswapWarning />
+          </Warning>
+        )}
 
       <TxModalDetails
         gasLimit={gasLimit}
