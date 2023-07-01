@@ -54,6 +54,7 @@ export type MarketDataType = {
     WETH_GATEWAY?: string;
     SWAP_COLLATERAL_ADAPTER?: string;
     REPAY_WITH_COLLATERAL_ADAPTER?: string;
+    DEBT_SWITCH_ADAPTER?: string;
     FAUCET?: string;
     PERMISSION_MANAGER?: string;
     WALLET_BALANCE_PROVIDER: string;
@@ -131,6 +132,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: '0x0000000000000000000000000000000000000000',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -160,6 +162,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: '0x0000000000000000000000000000000000000000',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',

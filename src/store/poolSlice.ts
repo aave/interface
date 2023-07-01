@@ -88,6 +88,7 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  debtSwitch: (args: { poolReserve: string }) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -331,6 +332,30 @@ export const createPoolSlice: StateCreator<
           user: currentAccount,
         });
       }
+    },
+    debtSwitch: async ({
+      poolReserve,
+      //targetReserve,
+      //isMaxSelected,
+      //amountToSwap,
+      //amountToReceive,
+      //useFlashLoan,
+      //augustus,
+      //swapCallData,
+      //signature,
+      //deadline,
+      //signedAmount,
+    }) => {
+      const pool = getCorrectPoolBundle();
+      const user = get().account;
+
+      // TO-DO: Add new utility
+      return pool.borrowTxBuilder.generateTxData({
+        user,
+        amount: '1',
+        interestRateMode: InterestRate.Variable,
+        reserve: poolReserve,
+      });
     },
     getCreditDelegationApprovedAmount: async (
       args: Omit<ApproveDelegationType, 'user' | 'amount'>

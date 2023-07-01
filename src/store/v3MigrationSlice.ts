@@ -72,6 +72,7 @@ export type V3MigrationSlice = {
   generatePermitPayloadForMigrationBorrowAsset: (
     approval: Approval & {
       deadline: string;
+      spender?: string;
     }
   ) => Promise<string>;
   getApprovePermitsForSelectedAssets: () => Approval[];
@@ -152,7 +153,12 @@ export const createV3MigrationSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    generatePermitPayloadForMigrationBorrowAsset: async ({ amount, deadline, underlyingAsset }) => {
+    generatePermitPayloadForMigrationBorrowAsset: async ({
+      amount,
+      deadline,
+      underlyingAsset,
+      spender,
+    }) => {
       const user = get().account;
       const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
 
@@ -189,7 +195,7 @@ export const createV3MigrationSlice: StateCreator<
           verifyingContract: underlyingAsset,
         },
         message: {
-          delegatee: get().getMigratorAddress(),
+          delegatee: spender ?? get().getMigratorAddress(),
           value: amount,
           nonce,
           deadline,
