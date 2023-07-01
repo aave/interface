@@ -1,17 +1,28 @@
 import {
-  API_ETH_MOCK_ADDRESS,
+  ApproveDelegationType,
   gasLimitRecommendations,
+  InterestRate,
+  MAX_UINT_AMOUNT,
   ProtocolAction,
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
+import { queryClient } from 'pages/_app.page';
+import { useCallback, useEffect, useState } from 'react';
+import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { ApprovalMethod } from 'src/store/walletSlice';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 interface DebtSwitchBaseProps extends BoxProps {
   amountToSwap: string;
@@ -28,11 +39,18 @@ interface DebtSwitchBaseProps extends BoxProps {
   signature?: SignatureLike;
   deadline?: string;
   signedAmount?: string;
+  currentRateMode: InterestRate;
 }
 
 export interface SwapActionProps extends DebtSwitchBaseProps {
   swapCallData: string;
   augustus: string;
+}
+
+interface SignedParams {
+  signature: SignatureLike;
+  deadline: string;
+  amount: string;
 }
 
 export const DebtSwitchActions = ({
@@ -42,58 +60,190 @@ export const DebtSwitchActions = ({
   sx,
   poolReserve,
   targetReserve,
-  isMaxSelected,
-  useFlashLoan,
+  //isMaxSelected,
+  //useFlashLoan,
   loading,
-  symbol,
+  //symbol,
   blocked,
-  buildTxFn,
-  ...props
+  //buildTxFn,
+  currentRateMode,
 }: DebtSwitchBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const { swapCollateral, currentMarketData } = useRootStore();
+  const [
+    getCreditDelegationApprovedAmount,
+    currentMarketData,
+    generateApproveDelegation,
+    estimateGasLimit,
+    //addTransaction,
+    debtSwitch,
+    walletApprovalMethodPreference,
+    generatePermitPayloadForMigrationBorrowAsset,
+  ] = useRootStore((state) => [
+    state.getCreditDelegationApprovedAmount,
+    state.currentMarketData,
+    state.generateApproveDelegation,
+    state.estimateGasLimit,
+    //state.addTransaction,
+    state.debtSwitch,
+    state.walletApprovalMethodPreference,
+    state.generatePermitPayloadForMigrationBorrowAsset,
+  ]);
+  const {
+    approvalTxState,
+    mainTxState,
+    loadingTxns,
+    setMainTxState,
+    setTxError,
+    setGasLimit,
+    setLoadingTxns,
+    setApprovalTxState,
+  } = useModalContext();
+  const { sendTx, signTxData } = useWeb3Context();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
+  const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
+  const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
+  const [useSignature, setUseSignature] = useState(false);
+  const [, setSignatureParams] = useState<SignedParams | undefined>();
 
-  const { approval, action, approvalTxState, mainTxState, loadingTxns, requiresApproval } =
-    useParaSwapTransactionHandler({
-      protocolAction: ProtocolAction.swapCollateral,
-      handleGetTxns: async (signature, deadline) => {
-        const route = await buildTxFn();
-        return swapCollateral({
-          amountToSwap: route.inputAmount,
-          amountToReceive: route.outputAmount,
-          poolReserve,
-          targetReserve,
-          isWrongNetwork,
-          symbol,
-          blocked,
-          isMaxSelected,
-          useFlashLoan,
-          swapCallData: route.swapCallData,
-          augustus: route.augustus,
-          signature,
-          deadline,
-          signedAmount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
+  useEffect(() => {
+    const preferSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+    setUseSignature(preferSignature);
+  }, [walletApprovalMethodPreference]);
+
+  const approval = async () => {
+    try {
+      if (requiresApproval && approvedAmount) {
+        if (useSignature) {
+          // TO-DO: Move from generatePermitPayloadForMigrationBorrowAsset to poolSLice
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          const signatureRequest = await generatePermitPayloadForMigrationBorrowAsset({
+            underlyingAsset: targetReserve.underlyingAsset,
+            deadline,
+            amount: MAX_UINT_AMOUNT,
+          });
+          const response = await signTxData(signatureRequest);
+          setSignatureParams({ signature: response, deadline, amount: MAX_UINT_AMOUNT });
+          setApprovalTxState({
+            txHash: MOCK_SIGNED_HASH,
+            loading: false,
+            success: true,
+          });
+        } else {
+          let approveDelegationTxData = generateApproveDelegation({
+            debtTokenAddress:
+              currentRateMode === InterestRate.Variable
+                ? targetReserve.variableDebtTokenAddress
+                : targetReserve.stableDebtTokenAddress,
+            delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
+            amount: MAX_UINT_AMOUNT,
+          });
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
+          const response = await sendTx(approveDelegationTxData);
+          await response.wait(1);
+          setApprovalTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
+          });
+        }
+        fetchApprovedAmount(true);
+      }
+    } catch (error) {
+      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setApprovalTxState({
+        txHash: undefined,
+        loading: false,
+      });
+    }
+  };
+
+  const action = async () => {
+    try {
+      setMainTxState({ ...mainTxState, loading: true });
+      let borrowTxData = debtSwitch({
+        poolReserve: poolReserve.underlyingAsset,
+      });
+      borrowTxData = await estimateGasLimit(borrowTxData);
+      const response = await sendTx(borrowTxData);
+      await response.wait(1);
+      setMainTxState({
+        txHash: response.hash,
+        loading: false,
+        success: true,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      refetchPoolData && refetchPoolData();
+      refetchIncentiveData && refetchIncentiveData();
+    } catch (error) {
+      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setMainTxState({
+        txHash: undefined,
+        loading: false,
+      });
+    }
+  };
+
+  // callback to fetch approved credit delegation amount and determine execution path on dependency updates
+  const fetchApprovedAmount = useCallback(
+    async (forceApprovalCheck?: boolean) => {
+      // Check approved amount on-chain on first load or if an action triggers a re-check such as an approveDelegation being confirmed
+      if (approvedAmount === undefined || forceApprovalCheck) {
+        setLoadingTxns(true);
+        const approvedAmount = await getCreditDelegationApprovedAmount({
+          debtTokenAddress:
+            currentRateMode === InterestRate.Variable
+              ? targetReserve.variableDebtTokenAddress
+              : targetReserve.stableDebtTokenAddress,
+          delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
         });
-      },
-      handleGetApprovalTxns: async () => {
-        return swapCollateral({
-          amountToSwap,
-          amountToReceive,
-          poolReserve,
-          targetReserve,
-          isWrongNetwork,
-          symbol,
-          blocked,
-          isMaxSelected,
-          useFlashLoan: false,
-          swapCallData: '0x',
-          augustus: API_ETH_MOCK_ADDRESS,
+        setApprovedAmount(approvedAmount);
+      } else {
+        setRequiresApproval(false);
+        setApprovalTxState({});
+      }
+
+      if (approvedAmount) {
+        const fetchedRequiresApproval = checkRequiresApproval({
+          approvedAmount: approvedAmount.amount,
+          amount: amountToReceive,
+          signedAmount: '0',
         });
-      },
-      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
-      skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
-      spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER ?? '',
-      deps: [targetReserve.symbol, amountToSwap],
-    });
+        setRequiresApproval(fetchedRequiresApproval);
+        if (fetchedRequiresApproval) setApprovalTxState({});
+      }
+
+      setLoadingTxns(false);
+    },
+    [
+      approvedAmount,
+      setLoadingTxns,
+      getCreditDelegationApprovedAmount,
+      currentRateMode,
+      targetReserve.variableDebtTokenAddress,
+      targetReserve.stableDebtTokenAddress,
+      currentMarketData.addresses.DEBT_SWITCH_ADAPTER,
+      setApprovalTxState,
+      amountToReceive,
+    ]
+  );
+
+  // Run on first load of reserve to determine execution path
+  useEffect(() => {
+    fetchApprovedAmount();
+  }, [fetchApprovedAmount, poolReserve.underlyingAsset]);
+
+  // Update gas estimation
+  useEffect(() => {
+    let borrowGasLimit = 0;
+    borrowGasLimit = Number(gasLimitRecommendations[ProtocolAction.borrow].recommended);
+    if (requiresApproval && !approvalTxState.success) {
+      borrowGasLimit += Number(APPROVE_DELEGATION_GAS_LIMIT);
+    }
+    setGasLimit(borrowGasLimit.toString());
+  }, [requiresApproval, approvalTxState, setGasLimit]);
 
   return (
     <TxActionsWrapper
@@ -104,12 +254,7 @@ export const DebtSwitchActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() =>
-        approval({
-          amount: calculateSignedAmount(amountToSwap, poolReserve.decimals),
-          underlyingAsset: poolReserve.aTokenAddress,
-        })
-      }
+      handleApproval={() => approval()}
       requiresApproval={requiresApproval}
       actionText={<Trans>Switch</Trans>}
       actionInProgressText={<Trans>Switching</Trans>}
@@ -122,7 +267,6 @@ export const DebtSwitchActions = ({
         handleClick: action,
       }}
       tryPermit
-      {...props}
     />
   );
 };

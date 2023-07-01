@@ -65,10 +65,10 @@ export const DebtSwitchModalContent = ({
   ) as ComputedUserReserveData;
 
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
-  const maxAmountToSwap = BigNumber.min(
-    userReserve.underlyingBalance,
-    new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
-  ).toString(10);
+  const maxAmountToSwap =
+    currentRateMode === InterestRate.Variable
+      ? userReserve.variableBorrows
+      : userReserve.stableBorrows;
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -332,6 +332,7 @@ export const DebtSwitchModalContent = ({
         useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}
         buildTxFn={buildTxFn}
+        currentRateMode={currentRateMode}
       />
     </>
   );
