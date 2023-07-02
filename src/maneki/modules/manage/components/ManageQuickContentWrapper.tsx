@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -75,7 +76,10 @@ export default function ManageQuickContentWrapper({
         <Typography fontSize={16} fontWeight={500}>
           <Trans>Wallet Balance</Trans> :
         </Typography>
-        <FormattedNumber value={balancePAW} sx={{ fontWeight: 500, fontSize: 16 }} symbol="PAW" />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Image alt={`token image for paw`} src={`/icons/tokens/paw.svg`} width={24} height={24} />
+          <FormattedNumber value={balancePAW} sx={{ fontWeight: 600, fontSize: 16 }} symbol="PAW" />
+        </Box>
       </Box>
       <Box
         sx={{

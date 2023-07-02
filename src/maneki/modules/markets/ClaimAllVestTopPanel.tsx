@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { BigNumber, Contract, utils } from 'ethers';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
@@ -104,12 +105,19 @@ const ClaimAllVestTopPanel = () => {
         {totalVests.lt(0) ? (
           <NoData />
         ) : (
-          <FormattedNumber
-            value={utils.formatUnits(totalVests, 18)}
-            visibleDecimals={7}
-            sx={{ fontWeight: '500', fontSize: '14px' }}
-            symbol="PAW"
-          />
+          <>
+            <Image
+              alt={`token image for paw`}
+              src={`/icons/tokens/paw.svg`}
+              width={24}
+              height={24}
+            />
+            <FormattedNumber
+              value={utils.formatUnits(totalVests, 18)}
+              sx={{ fontWeight: '500', fontSize: '14px' }}
+              symbol="PAW"
+            />
+          </>
         )}
       </Box>
       <MarketVestButton
