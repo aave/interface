@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { Contract } from 'ethers';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -15,8 +16,6 @@ import {
 } from 'src/maneki/modules/manage/utils/manageActionHelper';
 import { TxAction } from 'src/ui-config/errorMapping';
 
-import LoveManeki from '/public/loveManeki.svg';
-
 import { marketsData } from '../../../ui-config/marketsConfig';
 
 export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalChildProps) => {
@@ -27,7 +26,7 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
   const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
   const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
-  const theme = useTheme();
+
   useEffect(() => {
     const contract = new Contract(
       MANEKI_DATA_PROVIDER_ADDR,
@@ -101,13 +100,7 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <LoveManeki
-        style={{
-          width: '100px',
-          height: 'auto',
-          fill: theme.palette.text.secondary,
-        }}
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         <Trans>Claiming All Rewards</Trans>
       </Typography>

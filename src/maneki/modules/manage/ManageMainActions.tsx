@@ -170,11 +170,25 @@ export const ManageMainActions = () => {
                     Amount:
                   </Typography>
                 )}
-                <FormattedNumber
-                  value={utils.formatUnits(unlockedPAW, 18)}
-                  symbol="PAW"
-                  sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
-                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <Image
+                    alt={`token image for paw`}
+                    src={`/icons/tokens/paw.svg`}
+                    width={24}
+                    height={24}
+                  />
+                  <FormattedNumber
+                    value={utils.formatUnits(unlockedPAW, 18)}
+                    symbol="PAW"
+                    sx={{ fontSize: '16px', fontWeight: '600' }}
+                  />
+                </Box>
               </Box>
 
               <Button
@@ -223,11 +237,25 @@ export const ManageMainActions = () => {
                   Amount:
                 </Typography>
               )}
-              <FormattedNumber
-                value={utils.formatUnits(vestedPAW, 18)}
-                symbol="PAW"
-                sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
-              />
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Image
+                  alt={`token image for paw`}
+                  src={`/icons/tokens/paw.svg`}
+                  width={24}
+                  height={24}
+                />
+                <FormattedNumber
+                  value={utils.formatUnits(vestedPAW, 18)}
+                  symbol="PAW"
+                  sx={{ fontSize: '16px', fontWeight: '600' }}
+                />
+              </Box>
             </Box>
           }
         />
@@ -293,11 +321,25 @@ export const ManageMainActions = () => {
                     Amount:
                   </Typography>
                 )}
-                <FormattedNumber
-                  value={utils.formatUnits(expiredLockedPAW, 18)}
-                  symbol="PAW"
-                  sx={downToSM ? { fontSize: '16px', fontWeight: '500' } : {}}
-                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <Image
+                    alt={`token image for paw`}
+                    src={`/icons/tokens/paw.svg`}
+                    width={24}
+                    height={24}
+                  />
+                  <FormattedNumber
+                    value={utils.formatUnits(expiredLockedPAW, 18)}
+                    symbol="PAW"
+                    sx={{ fontSize: '16px', fontWeight: '600' }}
+                  />
+                </Box>
               </Box>
               <Button
                 onClick={handleClaimExpired}
