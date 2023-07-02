@@ -2510,8 +2510,8 @@ msgid "Underlying asset does not exist in {marketName} v3 Market, hence this pos
 msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this position cannot be migrated."
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
-msgid "Unlock PAW"
-msgstr "Unlock PAW"
+msgid "Unlocked PAW"
+msgstr "Unlocked PAW"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"

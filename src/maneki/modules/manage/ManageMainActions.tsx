@@ -148,7 +148,7 @@ export const ManageMainActions = () => {
           leftComponent={
             <>
               <Typography variant="h4" fontWeight={700}>
-                <Trans>Unlock PAW </Trans>
+                <Trans>Unlocked PAW </Trans>
               </Typography>
               <Typography sx={{ width: '90%' }}>
                 <Trans>Staked PAW and expired PAW vests</Trans>
@@ -370,8 +370,17 @@ export const ManageMainActions = () => {
       >
         {vests.map((vest, i) => (
           <TableRow key={i}>
-            <TableCell sx={{ pl: '30px' }}>
-              <FormattedNumber value={utils.formatUnits(vest.amount, 18)} />
+            <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <Image
+                alt={`token image for paw`}
+                src={`/icons/tokens/paw.svg`}
+                width={24}
+                height={24}
+              />
+              <FormattedNumber
+                value={utils.formatUnits(vest.amount, 18)}
+                sx={{ fontWeight: '600' }}
+              />
             </TableCell>
             <TableCell>{convertUnixToDate(vest.expiry.toNumber() * 1000)}</TableCell>
           </TableRow>
@@ -397,8 +406,17 @@ export const ManageMainActions = () => {
       >
         {locks.map((lock, i) => (
           <TableRow key={i}>
-            <TableCell sx={{ pl: '30px' }}>
-              <FormattedNumber value={utils.formatUnits(lock.amount, 18)} />
+            <TableCell sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <Image
+                alt={`token image for paw`}
+                src={`/icons/tokens/paw.svg`}
+                width={24}
+                height={24}
+              />
+              <FormattedNumber
+                value={utils.formatUnits(lock.amount, 18)}
+                sx={{ fontWeight: '600' }}
+              />
             </TableCell>
             <TableCell>{convertUnixToDate(lock.expiry.toNumber() * 1000)}</TableCell>
           </TableRow>
@@ -474,7 +492,12 @@ function TotalValueDisplay({ title, value, symbol }: TotalValueDisplayProps) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
       <Typography>{title}:</Typography>
-      <FormattedNumber value={value} symbol={symbol} symbolsColor={theme.palette.text.secondary} />
+      <FormattedNumber
+        value={value}
+        symbol={symbol}
+        symbolsColor={theme.palette.text.secondary}
+        sx={{ fontWeight: 600 }}
+      />
     </Box>
   );
 }
