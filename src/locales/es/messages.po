@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-21 18:04\n"
+"PO-Revision-Date: 2023-07-03 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -798,6 +798,10 @@ msgstr "Canal de Discord"
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
 msgstr "Docs"
+
+#: src/components/Warnings/USDTParaswapWarning.tsx
+msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
+msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
