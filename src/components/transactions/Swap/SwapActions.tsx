@@ -97,6 +97,7 @@ export const SwapActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
