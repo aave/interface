@@ -8,6 +8,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
+import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
@@ -40,7 +41,7 @@ export const SwapModalContent = ({
   isWrongNetwork,
 }: ModalWrapperProps) => {
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
@@ -108,6 +109,11 @@ export const SwapModalContent = ({
 
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
+
+  const isUSDTEthMainnetV3 =
+    currentChainId === 1 &&
+    !!currentMarketData.v3 &&
+    (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
@@ -288,6 +294,12 @@ export const SwapModalContent = ({
         </Warning>
       )}
 
+      {isUSDTEthMainnetV3 && (
+        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
+          <USDTParaswapWarning />
+        </Warning>
+      )}
+
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
@@ -316,7 +328,12 @@ export const SwapModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
-        blocked={blockingError !== undefined || error !== ''}
+        blocked={
+          blockingError !== undefined ||
+          error !== '' ||
+          isUSDTEthMainnetV3 ||
+          swapTarget.reserve.symbol === 'stETH'
+        }
         useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}
         buildTxFn={buildTxFn}
