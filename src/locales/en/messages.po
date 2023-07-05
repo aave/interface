@@ -62,6 +62,7 @@ msgstr "APY"
 msgid "APY change"
 msgstr "APY change"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
@@ -308,6 +309,7 @@ msgid "Assets to supply"
 msgstr "Assets to supply"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -408,6 +410,7 @@ msgstr "Borrow APY rate"
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -421,6 +424,11 @@ msgstr "Borrow amount to reach {0}% utilization"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Borrow apy"
+msgstr "Borrow apy"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance"
@@ -429,6 +437,10 @@ msgstr "Borrow balance"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Borrow balance after switch"
+msgstr "Borrow balance after switch"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -453,6 +465,10 @@ msgstr "Borrow {symbol}"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Borrowed asset amount"
+msgstr "Borrowed asset amount"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
@@ -1190,12 +1206,17 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Liquidation threshold TODO"
+msgstr "Liquidation threshold TODO"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
@@ -1204,6 +1225,10 @@ msgstr "Liquidation value"
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
 msgstr "Loading data..."
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Loan to value"
+msgstr "Loan to value"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1761,6 +1786,10 @@ msgstr "Select"
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Select an asset"
+msgstr "Select an asset"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Select language"
@@ -1864,6 +1893,7 @@ msgid "Spanish"
 msgstr "Spanish"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
@@ -1978,6 +2008,7 @@ msgid "Supply apy"
 msgstr "Supply apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1994,6 +2025,7 @@ msgstr "Supply balance after switch"
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
@@ -2010,9 +2042,12 @@ msgstr "Supplying your"
 msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Switch"
@@ -2034,18 +2069,25 @@ msgstr "Switch E-Mode category"
 msgid "Switch Network"
 msgstr "Switch Network"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModal.tsx
+msgid "Switch borrow position"
+msgstr "Switch borrow position"
+
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Switch to"
 msgstr "Switch to"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Switched"
 msgstr "Switched"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Switching"
 msgstr "Switching"
@@ -2126,6 +2168,7 @@ msgstr "The cooldown period is the time required prior to unstaking your tokens 
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "The effects on the health factor would cause liquidation. Try lowering the amount."
@@ -2463,6 +2506,7 @@ msgid "VOTE YAE"
 msgstr "VOTE YAE"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"

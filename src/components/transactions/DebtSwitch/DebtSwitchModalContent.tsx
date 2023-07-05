@@ -1,10 +1,12 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, ListItemText, ListSubheader, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -35,6 +37,10 @@ export type SupplyProps = {
   underlyingAsset: string;
 };
 
+interface SwapTargetAsset extends Asset {
+  variableApy: string;
+}
+
 export const DebtSwitchModalContent = ({
   poolReserve,
   userReserve,
@@ -47,11 +53,14 @@ export const DebtSwitchModalContent = ({
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
-    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen)
-    .map((reserve) => ({
+    .filter(
+      (r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen && r.borrowingEnabled
+    )
+    .map<SwapTargetAsset>((reserve) => ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
       iconSymbol: reserve.iconSymbol,
+      variableApy: reserve.variableBorrowAPY,
     }));
 
   // states
@@ -266,12 +275,12 @@ export const DebtSwitchModalContent = ({
       />
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
         <SvgIcon sx={{ fontSize: '18px !important' }}>
-          <SwitchVerticalIcon />
+          <ArrowDownIcon />
         </SvgIcon>
 
         <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
       </Box>
-      <AssetInput
+      <AssetInput<SwapTargetAsset>
         value={outputAmount}
         onSelect={setTargetReserve}
         usdValue={outputAmountUSD}
@@ -281,6 +290,8 @@ export const DebtSwitchModalContent = ({
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}
+        selectOptionHeader={<SelectOptionListHeader />}
+        selectOption={(asset) => <SwapTargetSelectOption asset={asset} />}
       />
       {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
@@ -333,6 +344,40 @@ export const DebtSwitchModalContent = ({
         loading={routeLoading}
         buildTxFn={buildTxFn}
         currentRateMode={currentRateMode}
+      />
+    </>
+  );
+};
+
+const SelectOptionListHeader = () => {
+  return (
+    <ListSubheader sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}>
+      <Stack direction="row" sx={{ py: 4 }} gap={14}>
+        <Typography variant="subheader2">
+          <Trans>Select an asset</Trans>
+        </Typography>
+        <Typography variant="subheader2">
+          <Trans>Borrow APY, variable</Trans>
+        </Typography>
+      </Stack>
+    </ListSubheader>
+  );
+};
+
+const SwapTargetSelectOption = ({ asset }: { asset: SwapTargetAsset }) => {
+  return (
+    <>
+      <TokenIcon
+        aToken={asset.aToken}
+        symbol={asset.iconSymbol || asset.symbol}
+        sx={{ fontSize: '22px', mr: 1 }}
+      />
+      <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+      <FormattedNumber
+        value={asset.variableApy}
+        percent
+        variant="secondary14"
+        color="text.secondary"
       />
     </>
   );

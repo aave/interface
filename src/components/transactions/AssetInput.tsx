@@ -80,6 +80,8 @@ export interface AssetInputProps<T extends Asset = Asset> {
   balanceText?: ReactNode;
   loading?: boolean;
   event?: TrackEventProps;
+  selectOptionHeader?: ReactNode;
+  selectOption?: (asset: T) => ReactNode;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -98,6 +100,8 @@ export const AssetInput = <T extends Asset = Asset>({
   balanceText,
   loading = false,
   event,
+  selectOptionHeader,
+  selectOption,
 }: AssetInputProps<T>) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSelect = (event: SelectChangeEvent) => {
@@ -239,19 +243,26 @@ export const AssetInput = <T extends Asset = Asset>({
                   );
                 }}
               >
+                {selectOptionHeader ? selectOptionHeader : undefined}
                 {assets.map((asset) => (
                   <MenuItem
                     key={asset.symbol}
                     value={asset.symbol}
                     data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                   >
-                    <TokenIcon
-                      aToken={asset.aToken}
-                      symbol={asset.iconSymbol || asset.symbol}
-                      sx={{ fontSize: '22px', mr: 1 }}
-                    />
-                    <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                    {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                    {selectOption ? (
+                      selectOption(asset)
+                    ) : (
+                      <>
+                        <TokenIcon
+                          aToken={asset.aToken}
+                          symbol={asset.iconSymbol || asset.symbol}
+                          sx={{ fontSize: '22px', mr: 1 }}
+                        />
+                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                      </>
+                    )}
                   </MenuItem>
                 ))}
               </Select>
