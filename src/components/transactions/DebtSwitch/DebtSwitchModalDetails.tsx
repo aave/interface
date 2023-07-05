@@ -1,14 +1,13 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
+import { ArrowSmRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon } from '@mui/material';
+import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
-  CollateralState,
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
@@ -71,7 +70,28 @@ export const DebtSwitchModalDetails = ({
         />
       )}
       <DetailsNumberLine
-        description={<Trans>Borrow apy</Trans>}
+        description={<Trans>Loan to value</Trans>}
+        value={swapSource.reserve.variableBorrowAPY}
+        futureValue={swapTarget.reserve.variableBorrowAPY}
+        percent
+        loading={loading}
+        valueSubHeader={
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>Liquidation threshold TODO</Trans>
+          </Typography>
+        }
+      />
+      <DetailsNumberLine
+        description={
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography>
+              <Trans>Borrow apy</Trans>
+            </Typography>
+            <Typography variant="helperText" color="text.secondary">
+              <Trans>APY type</Trans>
+            </Typography>
+          </Box>
+        }
         value={
           sourceRateMode === InterestRate.Variable
             ? swapSource.reserve.variableBorrowAPY
@@ -80,33 +100,20 @@ export const DebtSwitchModalDetails = ({
         futureValue={swapTarget.reserve.variableBorrowAPY}
         percent
         loading={loading}
+        valueSubHeader={
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Typography variant="helperText" color="text.secondary">
+              Stable
+            </Typography>
+            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+              <ArrowSmRightIcon />
+            </SvgIcon>
+            <Typography variant="helperText" color="text.secondary">
+              Variable
+            </Typography>
+          </Box>
+        }
       />
-      <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {loading ? (
-            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
-          ) : (
-            <>
-              <CollateralState collateralType={swapSource.collateralType} />
-
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
-
-                <CollateralState collateralType={swapTarget.collateralType} />
-              </Box>
-            </>
-          )}
-        </Box>
-      </Row>
       <DetailsIncentivesLine
         incentives={swapSource.reserve.aIncentivesData}
         symbol={swapSource.reserve.symbol}

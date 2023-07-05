@@ -75,6 +75,7 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
   numberPrefix?: ReactNode;
   iconSymbol?: string;
   loading?: boolean;
+  valueSubHeader?: ReactNode;
 }
 
 export const DetailsNumberLine = ({
@@ -84,26 +85,35 @@ export const DetailsNumberLine = ({
   numberPrefix,
   iconSymbol,
   loading = false,
+  valueSubHeader,
   ...rest
 }: DetailsNumberLineProps) => {
   return (
-    <Row caption={description} captionVariant="description" mb={4}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {loading ? (
-          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
-        ) : (
-          <>
-            {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
-            {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-            <FormattedNumber value={value} variant="secondary14" {...rest} />
-            {futureValue && (
-              <>
-                {ArrowRightIcon}
-                <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
-              </>
-            )}
-          </>
-        )}
+    <Row
+      caption={description}
+      captionVariant="description"
+      mb={4}
+      align={valueSubHeader ? 'flex-start' : 'center'}
+    >
+      <Box sx={{ alignItems: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {loading ? (
+            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+          ) : (
+            <>
+              {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
+              {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
+              <FormattedNumber value={value} variant="secondary14" {...rest} />
+              {futureValue && (
+                <>
+                  {ArrowRightIcon}
+                  <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+                </>
+              )}
+            </>
+          )}
+        </Box>
+        {valueSubHeader}
       </Box>
     </Row>
   );
