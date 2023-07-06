@@ -2686,6 +2686,10 @@ msgstr "You can not use this currency as collateral"
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "You can not withdraw this amount because it will cause collateral call"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "You can only switch to tokens with variable APY types. After this transaction, you may change the variable rate to a stable one if available."
+msgstr "You can only switch to tokens with variable APY types. After this transaction, you may change the variable rate to a stable one if available."
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
 msgstr "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."

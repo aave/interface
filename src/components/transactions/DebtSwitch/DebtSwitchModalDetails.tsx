@@ -1,11 +1,12 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
@@ -77,7 +78,21 @@ export const DebtSwitchModalDetails = ({
         loading={loading}
       />
       {showAPYTypeChange && (
-        <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={4}>
+        <Row
+          caption={
+            <Stack direction="row">
+              <Trans>APY type</Trans>
+              <TextWithTooltip>
+                <Trans>
+                  You can only switch to tokens with variable APY types. After this transaction, you
+                  may change the variable rate to a stable one if available.
+                </Trans>
+              </TextWithTooltip>
+            </Stack>
+          }
+          captionVariant="description"
+          mb={4}
+        >
           <Box
             sx={{
               display: 'flex',
