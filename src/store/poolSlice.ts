@@ -451,7 +451,7 @@ export const createPoolSlice: StateCreator<
         permitSignature,
       });
     },
-    debtSwitch: async ({
+    debtSwitch: ({
       debtAsset,
       debtRepayAmount,
       debtRateMode,
