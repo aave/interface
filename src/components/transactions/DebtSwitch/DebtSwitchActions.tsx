@@ -104,6 +104,11 @@ export const DebtSwitchActions = ({
   const [useSignature, setUseSignature] = useState(false);
   const [, setSignatureParams] = useState<SignedParams | undefined>();
 
+  const debtTokenAddress =
+    currentRateMode === InterestRate.Variable
+      ? targetReserve.variableDebtTokenAddress
+      : targetReserve.stableDebtTokenAddress;
+
   useEffect(() => {
     const preferSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
     setUseSignature(preferSignature);
@@ -129,10 +134,7 @@ export const DebtSwitchActions = ({
           });
         } else {
           let approveDelegationTxData = generateApproveDelegation({
-            debtTokenAddress:
-              currentRateMode === InterestRate.Variable
-                ? targetReserve.variableDebtTokenAddress
-                : targetReserve.stableDebtTokenAddress,
+            debtTokenAddress,
             delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
             amount: MAX_UINT_AMOUNT,
           });
@@ -151,21 +153,31 @@ export const DebtSwitchActions = ({
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
+      if (!approvalTxState.success) {
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
     }
   };
 
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      let borrowTxData = debtSwitch({
-        poolReserve: poolReserve.underlyingAsset,
+      let debtSwitchTxData = debtSwitch({
+        debtAsset: debtTokenAddress,
+        debtRateMode: currentRateMode === InterestRate.Variable ? 2 : 1,
+        debtRepayAmount: amountToSwap,
+        maxNewDebtAmount: amountToReceive,
+        newDebtAsset: targetReserve.variableDebtTokenAddress,
+        deadline: 0, // TODO
+        repayAll: true, // TODO
+        txCalldata: '', // TODO
+        //creditDelSignature TODO
       });
-      borrowTxData = await estimateGasLimit(borrowTxData);
-      const response = await sendTx(borrowTxData);
+      debtSwitchTxData = await estimateGasLimit(debtSwitchTxData);
+      const response = await sendTx(debtSwitchTxData);
       await response.wait(1);
       setMainTxState({
         txHash: response.hash,
