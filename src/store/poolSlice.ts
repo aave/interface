@@ -2,6 +2,7 @@ import {
   ApproveDelegationType,
   ApproveType,
   BaseDebtToken,
+  DebtSwitchAdapterService,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
@@ -61,6 +62,19 @@ export type PoolReserve = {
   userReserves?: UserReserveDataHumanized[];
 };
 
+//TODO: temp, move to DebtSwitchActions once types are finalized
+interface DebtSwitchActionsProps {
+  debtAsset: string;
+  debtRepayAmount: string;
+  debtRateMode: number;
+  newDebtAsset: string;
+  maxNewDebtAmount: string;
+  repayAll: boolean;
+  txCalldata: string;
+  deadline: number;
+  creditDelSignature?: SignatureLike;
+}
+
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
   data: Map<number, Map<string, PoolReserve>>;
@@ -83,12 +97,12 @@ export interface PoolSlice {
   paraswapRepayWithCollateral: (
     args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  debtSwitch: (args: DebtSwitchActionsProps) => PopulatedTransaction;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  debtSwitch: (args: { poolReserve: string }) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -333,30 +347,6 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    debtSwitch: async ({
-      poolReserve,
-      //targetReserve,
-      //isMaxSelected,
-      //amountToSwap,
-      //amountToReceive,
-      //useFlashLoan,
-      //augustus,
-      //swapCallData,
-      //signature,
-      //deadline,
-      //signedAmount,
-    }) => {
-      const pool = getCorrectPoolBundle();
-      const user = get().account;
-
-      // TO-DO: Add new utility
-      return pool.borrowTxBuilder.generateTxData({
-        user,
-        amount: '1',
-        interestRateMode: InterestRate.Variable,
-        reserve: poolReserve,
-      });
-    },
     getCreditDelegationApprovedAmount: async (
       args: Omit<ApproveDelegationType, 'user' | 'amount'>
     ) => {
@@ -459,6 +449,58 @@ export const createPoolSlice: StateCreator<
         swapAndRepayCallData: swapCallData,
         augustus,
         permitSignature,
+      });
+    },
+    debtSwitch: async ({
+      debtAsset,
+      debtRepayAmount,
+      debtRateMode,
+      newDebtAsset,
+      maxNewDebtAmount,
+      repayAll,
+      txCalldata,
+      deadline,
+      creditDelSignature,
+    }) => {
+      const user = get().account;
+      const provider = get().jsonRpcProvider();
+      const currentMarketData = get().currentMarketData;
+      const debtSwitchService = new DebtSwitchAdapterService(
+        provider,
+        currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? ''
+      );
+
+      let signatureDeconstruct: PermitSignature = {
+        amount: maxNewDebtAmount,
+        deadline: deadline.toString(),
+        v: 0,
+        r: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        s: '0x0000000000000000000000000000000000000000000000000000000000000000',
+      };
+
+      if (creditDelSignature) {
+        const sig: Signature = splitSignature(creditDelSignature);
+        signatureDeconstruct = {
+          ...signatureDeconstruct,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
+
+      return debtSwitchService.debtSwitch({
+        user,
+        debtAsset,
+        debtRepayAmount,
+        debtRateMode,
+        newDebtAsset,
+        maxNewDebtAmount,
+        repayAll,
+        txCalldata,
+        deadline,
+        sigV: signatureDeconstruct.v,
+        sigR: signatureDeconstruct.r,
+        sigS: signatureDeconstruct.s,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
