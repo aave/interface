@@ -132,8 +132,8 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
-      GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09', // on fork
-      GHO_UI_DATA_PROVIDER: '0xAd4B89AAd7556D89A8318D58E9EBF49f9a34cFfE', // on fork
+      GHO_TOKEN_ADDRESS: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f', // on fork
+      GHO_UI_DATA_PROVIDER: '0x379c1EDD1A41218bdbFf960a9d5AD2818Bf61aE8', // on fork
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -187,8 +187,8 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
-      GHO_TOKEN_ADDRESS: '0xabf1A66556dD506ea2573bbEa2D9D4baf3c31f09',
-      GHO_UI_DATA_PROVIDER: '0xecebedbf26013fb55a5b0a275191a90984e5ae5e',
+      GHO_TOKEN_ADDRESS: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+      GHO_UI_DATA_PROVIDER: '0x379c1EDD1A41218bdbFf960a9d5AD2818Bf61aE8',
     },
   },
   // [CustomMarket.permissioned_market]: {
