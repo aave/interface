@@ -16,6 +16,9 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { selectCurrentBaseCurrencyData } from 'src/store/poolSelectors';
+import { useRootStore } from 'src/store/root';
+import { getDebtSwitchInfo } from 'src/utils/getDebtSwitchInfo';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
@@ -49,6 +52,7 @@ export const DebtSwitchModalContent = ({
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
+  const baseCurrencyData = useRootStore((state) => selectCurrentBaseCurrencyData(state));
 
   const swapTargets = reserves
     .filter(
@@ -182,6 +186,17 @@ export const DebtSwitchModalContent = ({
     priceImpact = '0.00';
   }
 
+  const { availableLiquidityOfTargetReserve, futureLTV } = getDebtSwitchInfo(
+    poolReserve,
+    swapTarget.reserve,
+    amount,
+    outputAmount,
+    user,
+    baseCurrencyData.marketReferenceCurrencyDecimals
+  );
+
+  console.log('availableLiquidityOfTargetReserve', availableLiquidityOfTargetReserve);
+  console.log('futureLTV', futureLTV);
   // const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
   // const swapSourceCollateralType = getAssetCollateralType(
   //   userReserve,
