@@ -1210,17 +1210,12 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Liquidation threshold TODO"
-msgstr "Liquidation threshold TODO"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
@@ -1229,10 +1224,6 @@ msgstr "Liquidation value"
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
 msgstr "Loading data..."
-
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Loan to value"
-msgstr "Loan to value"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1898,6 +1889,7 @@ msgstr "Spanish"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
@@ -2511,6 +2503,7 @@ msgstr "VOTE YAE"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"

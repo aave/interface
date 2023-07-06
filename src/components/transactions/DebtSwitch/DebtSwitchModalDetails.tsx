@@ -1,6 +1,5 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowSmRightIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
@@ -12,24 +11,24 @@ import {
   DetailsIncentivesLine,
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { CollateralType } from 'src/helpers/types';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 export type DebtSwitchModalDetailsProps = {
-  showHealthFactor: boolean;
   healthFactor: string;
   healthFactorAfterSwap: string;
-  swapSource: ComputedUserReserveData & { collateralType: CollateralType };
-  swapTarget: ComputedUserReserveData & { collateralType: CollateralType };
+  swapSource: ComputedUserReserveData;
+  swapTarget: ComputedUserReserveData;
   toAmount: string;
   fromAmount: string;
   loading: boolean;
-  sourceRateMode: InterestRate;
+  sourceBalance: string;
+  sourceBorrowAPY: string;
+  targetBorrowAPY: string;
+  showAPYTypeChange: boolean;
 };
 
 export const DebtSwitchModalDetails = ({
-  showHealthFactor,
   healthFactor,
   healthFactorAfterSwap,
   swapSource,
@@ -37,11 +36,12 @@ export const DebtSwitchModalDetails = ({
   toAmount,
   fromAmount,
   loading,
-  sourceRateMode,
+  sourceBalance,
+  sourceBorrowAPY,
+  targetBorrowAPY,
+  showAPYTypeChange,
 }: DebtSwitchModalDetailsProps) => {
-  const sourceAmountAfterSwap = valueToBigNumber(swapSource.underlyingBalance).minus(
-    valueToBigNumber(fromAmount)
-  );
+  const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
   const targetAmountAfterSwap = valueToBigNumber(swapTarget.underlyingBalance).plus(
     valueToBigNumber(toAmount)
@@ -65,68 +65,53 @@ export const DebtSwitchModalDetails = ({
         <DetailsHFLine
           healthFactor={healthFactor}
           futureHealthFactor={healthFactorAfterSwap}
-          visibleHfChange={showHealthFactor}
+          visibleHfChange={true}
           loading={loading}
         />
       )}
       <DetailsNumberLine
-        description={<Trans>Loan to value</Trans>}
-        value={swapSource.reserve.variableBorrowAPY}
-        futureValue={swapTarget.reserve.variableBorrowAPY}
+        description={<Trans>Borrow apy</Trans>}
+        value={sourceBorrowAPY}
+        futureValue={targetBorrowAPY}
         percent
         loading={loading}
-        valueSubHeader={
-          <Typography variant="helperText" color="text.secondary">
-            <Trans>Liquidation threshold TODO</Trans>
-          </Typography>
-        }
       />
-      <DetailsNumberLine
-        description={
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography>
-              <Trans>Borrow apy</Trans>
-            </Typography>
-            <Typography variant="helperText" color="text.secondary">
-              <Trans>APY type</Trans>
-            </Typography>
+      {showAPYTypeChange && (
+        <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={4}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-end',
+            }}
+          >
+            {loading ? (
+              <Skeleton
+                variant="rectangular"
+                height={20}
+                width={100}
+                sx={{ borderRadius: '4px' }}
+              />
+            ) : (
+              <Typography variant="secondary14">
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Trans>Stable</Trans>
+                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                    <ArrowNarrowRightIcon />
+                  </SvgIcon>
+                  <Trans>Variable</Trans>
+                </Box>
+              </Typography>
+            )}
           </Box>
-        }
-        value={
-          sourceRateMode === InterestRate.Variable
-            ? swapSource.reserve.variableBorrowAPY
-            : swapSource.stableBorrowAPY
-        }
-        futureValue={swapTarget.reserve.variableBorrowAPY}
-        percent
-        loading={loading}
-        valueSubHeader={
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Typography variant="helperText" color="text.secondary">
-              Stable
-            </Typography>
-            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-              <ArrowSmRightIcon />
-            </SvgIcon>
-            <Typography variant="helperText" color="text.secondary">
-              Variable
-            </Typography>
-          </Box>
-        }
-      />
+        </Row>
+      )}
       <DetailsIncentivesLine
         incentives={swapSource.reserve.aIncentivesData}
         symbol={swapSource.reserve.symbol}
         futureIncentives={swapTarget.reserve.aIncentivesData}
         futureSymbol={swapTarget.reserve.symbol}
-        loading={loading}
-      />
-      <DetailsNumberLine
-        description={<Trans>Liquidation threshold</Trans>}
-        value={swapSource.reserve.formattedReserveLiquidationThreshold}
-        futureValue={swapTarget.reserve.formattedReserveLiquidationThreshold}
-        percent
-        visibleDecimals={0}
         loading={loading}
       />
 
