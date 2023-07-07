@@ -7,11 +7,9 @@ import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
-import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
+import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -19,9 +17,6 @@ import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { selectCurrentBaseCurrencyData } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
 import { getDebtSwitchInfo } from 'src/utils/getDebtSwitchInfo';
-import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
-import { calculateHFAfterSwap } from 'src/utils/hfUtils';
-import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
@@ -29,7 +24,7 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
+import { ErrorType, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { DebtSwitchActions } from './DebtSwitchActions';
 import { DebtSwitchModalDetails } from './DebtSwitchModalDetails';
@@ -48,10 +43,10 @@ export const DebtSwitchModalContent = ({
   isWrongNetwork,
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
+  const { reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
+  const { gasLimit, mainTxState, txError } = useModalContext();
   const baseCurrencyData = useRootStore((state) => selectCurrentBaseCurrencyData(state));
 
   const swapTargets = reserves
@@ -92,13 +87,13 @@ export const DebtSwitchModalContent = ({
     error,
     loading: routeLoading,
     buildTxFn,
-  } = useCollateralSwap({
+  } = useDebtSwitch({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userAddress: currentAccount,
-    swapIn: { ...poolReserve, amount: amountRef.current },
-    swapOut: { ...swapTarget.reserve, amount: '0' },
+    swapOut: { ...poolReserve, amount: amountRef.current },
+    swapIn: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected,
-    skip: supplyTxState.loading || false,
+    skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
@@ -110,45 +105,15 @@ export const DebtSwitchModalContent = ({
     setAmount(value);
   };
 
-  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterSwap({
-    fromAmount: amount,
-    fromAssetData: poolReserve,
-    fromAssetUserData: userReserve,
-    user,
-    toAmountAfterSlippage: outputAmount,
-    toAssetData: swapTarget.reserve,
-  });
-
-  // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
-  const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
-
-  // consider caps
-  // we cannot check this in advance as it's based on the swap result
-  const remainingSupplyCap = remainingCap(
-    swapTarget.reserve.supplyCap,
-    swapTarget.reserve.totalLiquidity
-  );
-  const remainingCapUsd = amountToUsd(
-    remainingSupplyCap,
-    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  );
-
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
 
   let blockingError: ErrorType | undefined = undefined;
   if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
-  } else if (!remainingSupplyCap.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
-    blockingError = ErrorType.SUPPLY_CAP_REACHED;
-  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
-    blockingError = ErrorType.HF_BELOW_ONE;
   }
 
   const BlockingError: React.FC = () => {
     switch (blockingError) {
-      case ErrorType.SUPPLY_CAP_REACHED:
-        return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
       case ErrorType.HF_BELOW_ONE:
         return (
           <Trans>
@@ -167,10 +132,10 @@ export const DebtSwitchModalContent = ({
     }
   };
 
-  if (supplyTxState.success)
+  if (mainTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Switched</Trans>}
+        action={<Trans>Switched borrow position</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}
       />
@@ -190,13 +155,13 @@ export const DebtSwitchModalContent = ({
     poolReserve,
     swapTarget.reserve,
     amount,
-    outputAmount,
+    inputAmount,
     user,
     baseCurrencyData.marketReferenceCurrencyDecimals
   );
 
-  console.log('availableLiquidityOfTargetReserve', availableLiquidityOfTargetReserve);
-  console.log('futureLTV', futureLTV);
+  //console.log('availableLiquidityOfTargetReserve', availableLiquidityOfTargetReserve);
+  //console.log('futureLTV', futureLTV);
   // const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
   // const swapSourceCollateralType = getAssetCollateralType(
   //   userReserve,
@@ -250,13 +215,10 @@ export const DebtSwitchModalContent = ({
 
   return (
     <>
-      {/* {showIsolationWarning && (
-            <Typography>You are about to enter into isolation. FAQ link</Typography>
-          )} */}
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={inputAmountUSD}
+        usdValue={outputAmountUSD}
         symbol={poolReserve.iconSymbol}
         assets={[
           {
@@ -288,9 +250,9 @@ export const DebtSwitchModalContent = ({
         <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
       </Box>
       <AssetInput<SwapTargetAsset>
-        value={outputAmount}
+        value={inputAmount}
         onSelect={setTargetReserve}
-        usdValue={outputAmountUSD}
+        usdValue={inputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         inputTitle={<Trans>Switch to</Trans>}
@@ -311,12 +273,6 @@ export const DebtSwitchModalContent = ({
         </Typography>
       )}
 
-      {swapTarget.reserve.symbol === 'stETH' && (
-        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-          <StETHCollateralWarning />
-        </Warning>
-      )}
-
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
@@ -324,11 +280,9 @@ export const DebtSwitchModalContent = ({
         }
       >
         <DebtSwitchModalDetails
-          healthFactor={user?.healthFactor}
-          healthFactorAfterSwap={hfAfterSwap.toString(10)}
           swapSource={userReserve}
           swapTarget={swapTarget}
-          toAmount={outputAmount}
+          toAmount={inputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
           sourceBalance={maxAmountToSwap}
@@ -347,13 +301,12 @@ export const DebtSwitchModalContent = ({
       <DebtSwitchActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
-        amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
+        amountToSwap={outputAmount}
+        amountToReceive={inputAmount}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined || error !== ''}
-        useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}
         buildTxFn={buildTxFn}
         currentRateMode={currentRateMode}

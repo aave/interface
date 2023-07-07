@@ -8,7 +8,7 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
-  DetailsHFLine,
+  // DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -16,8 +16,8 @@ import {
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 export type DebtSwitchModalDetailsProps = {
-  healthFactor: string;
-  healthFactorAfterSwap: string;
+  // healthFactor: string;
+  // healthFactorAfterSwap: string;
   swapSource: ComputedUserReserveData;
   swapTarget: ComputedUserReserveData;
   toAmount: string;
@@ -30,8 +30,8 @@ export type DebtSwitchModalDetailsProps = {
 };
 
 export const DebtSwitchModalDetails = ({
-  healthFactor,
-  healthFactorAfterSwap,
+  // healthFactor,
+  // healthFactorAfterSwap,
   swapSource,
   swapTarget,
   toAmount,
@@ -62,14 +62,14 @@ export const DebtSwitchModalDetails = ({
 
   return (
     <>
-      {healthFactorAfterSwap && (
+      {/* {healthFactorAfterSwap && (
         <DetailsHFLine
           healthFactor={healthFactor}
           futureHealthFactor={healthFactorAfterSwap}
           visibleHfChange={true}
           loading={loading}
         />
-      )}
+      )} */}
       <DetailsNumberLine
         description={<Trans>Borrow apy</Trans>}
         value={sourceBorrowAPY}

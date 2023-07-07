@@ -8,6 +8,7 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
@@ -34,7 +35,6 @@ interface DebtSwitchBaseProps extends BoxProps {
   symbol: string;
   blocked: boolean;
   isMaxSelected: boolean;
-  useFlashLoan: boolean;
   loading?: boolean;
   signature?: SignatureLike;
   deadline?: string;
@@ -60,12 +60,10 @@ export const DebtSwitchActions = ({
   sx,
   poolReserve,
   targetReserve,
-  //isMaxSelected,
-  //useFlashLoan,
+  isMaxSelected,
   loading,
-  //symbol,
   blocked,
-  //buildTxFn,
+  buildTxFn,
   currentRateMode,
 }: DebtSwitchBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const [
@@ -102,7 +100,7 @@ export const DebtSwitchActions = ({
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
-  const [, setSignatureParams] = useState<SignedParams | undefined>();
+  const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
   const debtTokenAddress =
     currentRateMode === InterestRate.Variable
@@ -161,20 +159,21 @@ export const DebtSwitchActions = ({
       }
     }
   };
-
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
+      const route = await buildTxFn();
       let debtSwitchTxData = debtSwitch({
         debtAsset: debtTokenAddress,
         debtRateMode: currentRateMode === InterestRate.Variable ? 2 : 1,
-        debtRepayAmount: amountToSwap,
-        maxNewDebtAmount: amountToReceive,
+        debtRepayAmount: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
+        maxNewDebtAmount: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
         newDebtAsset: targetReserve.variableDebtTokenAddress,
-        deadline: 0, // TODO
-        repayAll: true, // TODO
-        txCalldata: '', // TODO
-        //creditDelSignature TODO
+        deadline: signatureParams ? Number(signatureParams.deadline) : 0,
+        repayAll: isMaxSelected,
+        txCalldata: route.swapCallData,
+        creditDelSignature: signatureParams?.signature,
+        signedAmount: MAX_UINT_AMOUNT,
       });
       debtSwitchTxData = await estimateGasLimit(debtSwitchTxData);
       const response = await sendTx(debtSwitchTxData);
@@ -249,12 +248,12 @@ export const DebtSwitchActions = ({
 
   // Update gas estimation
   useEffect(() => {
-    let borrowGasLimit = 0;
-    borrowGasLimit = Number(gasLimitRecommendations[ProtocolAction.borrow].recommended);
+    let switchGasLimit = 0;
+    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.borrow].recommended);
     if (requiresApproval && !approvalTxState.success) {
-      borrowGasLimit += Number(APPROVE_DELEGATION_GAS_LIMIT);
+      switchGasLimit += Number(APPROVE_DELEGATION_GAS_LIMIT);
     }
-    setGasLimit(borrowGasLimit.toString());
+    setGasLimit(switchGasLimit.toString());
   }, [requiresApproval, approvalTxState, setGasLimit]);
 
   return (
