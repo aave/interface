@@ -161,8 +161,8 @@ export const DebtSwitchActions = ({
       let debtSwitchTxData = debtSwitch({
         debtAssetUnderlying: poolReserve.underlyingAsset,
         debtRateMode: currentRateMode === InterestRate.Variable ? 2 : 1,
-        debtRepayAmount: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        maxNewDebtAmount: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        maxNewDebtAmount: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
+        debtRepayAmount: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
         newAssetDebtToken: targetReserve.variableDebtTokenAddress,
         newAssetUnderlying: targetReserve.underlyingAsset,
         deadline: signatureParams ? Number(signatureParams.deadline) : 0,
