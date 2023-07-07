@@ -73,6 +73,7 @@ interface DebtSwitchActionsProps {
   txCalldata: string;
   deadline: number;
   creditDelSignature?: SignatureLike;
+  signedAmount: string;
 }
 
 // TODO: add chain/provider/account mapping
@@ -461,6 +462,7 @@ export const createPoolSlice: StateCreator<
       txCalldata,
       deadline,
       creditDelSignature,
+      signedAmount,
     }) => {
       const user = get().account;
       const provider = get().jsonRpcProvider();
@@ -469,7 +471,6 @@ export const createPoolSlice: StateCreator<
         provider,
         currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? ''
       );
-
       let signatureDeconstruct: PermitSignature = {
         amount: maxNewDebtAmount,
         deadline: deadline.toString(),
@@ -487,7 +488,6 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
-
       return debtSwitchService.debtSwitch({
         user,
         debtAsset,
@@ -501,6 +501,7 @@ export const createPoolSlice: StateCreator<
         sigV: signatureDeconstruct.v,
         sigR: signatureDeconstruct.r,
         sigS: signatureDeconstruct.s,
+        signedAmount,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
