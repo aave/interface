@@ -32,7 +32,7 @@ export type SupplyProps = {
   underlyingAsset: string;
 };
 
-interface SwapTargetAsset extends Asset {
+interface SwitchTargetAsset extends Asset {
   variableApy: string;
 }
 
@@ -52,14 +52,14 @@ export const DebtSwitchModalContent = ({
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError } = useModalContext();
 
-  const swapTargets = reserves
+  const switchTargets = reserves
     .filter(
       (r) =>
         r.underlyingAsset !== poolReserve.underlyingAsset &&
         r.availableLiquidity !== '0' &&
         assetCanBeBorrowedByUser(r, user)
     )
-    .map<SwapTargetAsset>((reserve) => ({
+    .map<SwitchTargetAsset>((reserve) => ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
       iconSymbol: reserve.iconSymbol,
@@ -69,21 +69,20 @@ export const DebtSwitchModalContent = ({
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>('');
-  const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
+  const [targetReserve, setTargetReserve] = useState<Asset>(switchTargets[0]);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
-  const swapTarget = user.userReservesData.find(
+  const switchTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
   ) as ComputedUserReserveData;
 
-  // a user can never swap more then 100% of available as the txn would fail on withdraw step
-  const maxAmountToSwap =
+  const maxAmountToSwitch =
     currentRateMode === InterestRate.Variable
       ? userReserve.variableBorrows
       : userReserve.stableBorrows;
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToSwap : _amount;
+  const amount = isMaxSelected ? maxAmountToSwitch : _amount;
 
   const {
     inputAmountUSD,
@@ -97,7 +96,7 @@ export const DebtSwitchModalContent = ({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userAddress: currentAccount,
     swapOut: { ...poolReserve, amount: amountRef.current },
-    swapIn: { ...swapTarget.reserve, amount: '0' },
+    swapIn: { ...switchTarget.reserve, amount: '0' },
     max: isMaxSelected,
     skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
@@ -107,18 +106,18 @@ export const DebtSwitchModalContent = ({
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSwap : value;
+    amountRef.current = maxSelected ? maxAmountToSwitch : value;
     setAmount(value);
   };
 
   const availableBorrowCap =
-    swapTarget.reserve.borrowCap === '0'
+    switchTarget.reserve.borrowCap === '0'
       ? valueToBigNumber(MaxUint256.toString())
-      : valueToBigNumber(Number(swapTarget.reserve.borrowCap)).minus(
-          valueToBigNumber(swapTarget.reserve.totalDebt)
+      : valueToBigNumber(Number(switchTarget.reserve.borrowCap)).minus(
+          valueToBigNumber(switchTarget.reserve.totalDebt)
         );
   const availableLiquidityOfTargetReserve = BigNumber.max(
-    BigNumber.min(swapTarget.reserve.formattedAvailableLiquidity, availableBorrowCap),
+    BigNumber.min(switchTarget.reserve.formattedAvailableLiquidity, availableBorrowCap),
     0
   );
 
@@ -169,13 +168,13 @@ export const DebtSwitchModalContent = ({
         symbol={poolReserve.iconSymbol}
         assets={[
           {
-            balance: maxAmountToSwap,
+            balance: maxAmountToSwitch,
             address: poolReserve.underlyingAsset,
             symbol: poolReserve.symbol,
             iconSymbol: poolReserve.iconSymbol,
           },
         ]}
-        maxValue={maxAmountToSwap}
+        maxValue={maxAmountToSwitch}
         inputTitle={<Trans>Borrowed asset amount</Trans>}
         balanceText={
           <React.Fragment>
@@ -196,18 +195,18 @@ export const DebtSwitchModalContent = ({
 
         <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
       </Box>
-      <AssetInput<SwapTargetAsset>
+      <AssetInput<SwitchTargetAsset>
         value={inputAmount}
         onSelect={setTargetReserve}
         usdValue={inputAmountUSD}
         symbol={targetReserve.symbol}
-        assets={swapTargets}
+        assets={switchTargets}
         inputTitle={<Trans>Switch to</Trans>}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}
         selectOptionHeader={<SelectOptionListHeader />}
-        selectOption={(asset) => <SwapTargetSelectOption asset={asset} />}
+        selectOption={(asset) => <SwitchTargetSelectOption asset={asset} />}
       />
       {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
@@ -227,18 +226,18 @@ export const DebtSwitchModalContent = ({
         }
       >
         <DebtSwitchModalDetails
-          swapSource={userReserve}
-          swapTarget={swapTarget}
+          switchSource={userReserve}
+          switchTarget={switchTarget}
           toAmount={inputAmount}
           fromAmount={amount === '' ? '0' : amount}
           loading={loadingSkeleton}
-          sourceBalance={maxAmountToSwap}
+          sourceBalance={maxAmountToSwitch}
           sourceBorrowAPY={
             currentRateMode === InterestRate.Variable
               ? poolReserve.variableBorrowAPY
               : poolReserve.stableBorrowAPY
           }
-          targetBorrowAPY={swapTarget.reserve.variableBorrowAPY}
+          targetBorrowAPY={switchTarget.reserve.variableBorrowAPY}
           showAPYTypeChange={currentRateMode === InterestRate.Stable}
         />
       </TxModalDetails>
@@ -251,7 +250,7 @@ export const DebtSwitchModalContent = ({
         amountToSwap={outputAmount}
         amountToReceive={inputAmount}
         isWrongNetwork={isWrongNetwork}
-        targetReserve={swapTarget.reserve}
+        targetReserve={switchTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
@@ -277,7 +276,7 @@ const SelectOptionListHeader = () => {
   );
 };
 
-const SwapTargetSelectOption = ({ asset }: { asset: SwapTargetAsset }) => {
+const SwitchTargetSelectOption = ({ asset }: { asset: SwitchTargetAsset }) => {
   return (
     <>
       <TokenIcon

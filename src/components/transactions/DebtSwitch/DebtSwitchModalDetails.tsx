@@ -18,8 +18,8 @@ import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useApp
 export type DebtSwitchModalDetailsProps = {
   // healthFactor: string;
   // healthFactorAfterSwap: string;
-  swapSource: ComputedUserReserveData;
-  swapTarget: ComputedUserReserveData;
+  switchSource: ComputedUserReserveData;
+  switchTarget: ComputedUserReserveData;
   toAmount: string;
   fromAmount: string;
   loading: boolean;
@@ -32,8 +32,8 @@ export type DebtSwitchModalDetailsProps = {
 export const DebtSwitchModalDetails = ({
   // healthFactor,
   // healthFactorAfterSwap,
-  swapSource,
-  swapTarget,
+  switchSource,
+  switchTarget,
   toAmount,
   fromAmount,
   loading,
@@ -44,7 +44,7 @@ export const DebtSwitchModalDetails = ({
 }: DebtSwitchModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
-  const targetAmountAfterSwap = valueToBigNumber(swapTarget.underlyingBalance).plus(
+  const targetAmountAfterSwap = valueToBigNumber(switchTarget.underlyingBalance).plus(
     valueToBigNumber(toAmount)
   );
 
@@ -123,10 +123,10 @@ export const DebtSwitchModalDetails = ({
         </Row>
       )}
       <DetailsIncentivesLine
-        incentives={swapSource.reserve.aIncentivesData}
-        symbol={swapSource.reserve.symbol}
-        futureIncentives={swapTarget.reserve.aIncentivesData}
-        futureSymbol={swapTarget.reserve.symbol}
+        incentives={switchSource.reserve.aIncentivesData}
+        symbol={switchSource.reserve.symbol}
+        futureIncentives={switchSource.reserve.aIncentivesData}
+        futureSymbol={switchSource.reserve.symbol}
         loading={loading}
       />
 
@@ -151,7 +151,7 @@ export const DebtSwitchModalDetails = ({
               <>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon
-                    symbol={swapSource.reserve.iconSymbol}
+                    symbol={switchSource.reserve.iconSymbol}
                     sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                   />
                   <FormattedNumber
@@ -162,7 +162,7 @@ export const DebtSwitchModalDetails = ({
                 </Box>
                 <FormattedNumber
                   value={sourceAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
+                    .multipliedBy(valueToBigNumber(switchSource.reserve.priceInUSD))
                     .toString()}
                   variant="helperText"
                   compact
@@ -189,7 +189,7 @@ export const DebtSwitchModalDetails = ({
               <>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon
-                    symbol={swapTarget.reserve.iconSymbol}
+                    symbol={switchTarget.reserve.iconSymbol}
                     sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                   />
                   <FormattedNumber
@@ -200,7 +200,7 @@ export const DebtSwitchModalDetails = ({
                 </Box>
                 <FormattedNumber
                   value={targetAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
+                    .multipliedBy(valueToBigNumber(switchTarget.reserve.priceInUSD))
                     .toString()}
                   variant="helperText"
                   compact
