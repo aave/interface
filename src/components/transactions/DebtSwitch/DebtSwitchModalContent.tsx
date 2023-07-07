@@ -54,7 +54,10 @@ export const DebtSwitchModalContent = ({
 
   const swapTargets = reserves
     .filter(
-      (r) => r.underlyingAsset !== poolReserve.underlyingAsset && assetCanBeBorrowedByUser(r, user)
+      (r) =>
+        r.underlyingAsset !== poolReserve.underlyingAsset &&
+        r.availableLiquidity !== '0' &&
+        assetCanBeBorrowedByUser(r, user)
     )
     .map<SwapTargetAsset>((reserve) => ({
       address: reserve.underlyingAsset,
