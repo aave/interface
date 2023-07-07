@@ -175,16 +175,6 @@ export const SwapModalContent = ({
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
     poolReserve.reserveLiquidationThreshold !== '0';
 
-  // calculate impact based on $ difference
-  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
-  let priceImpact =
-    inputAmountUSD && inputAmountUSD !== '0'
-      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
-      : '0';
-  if (priceImpact === '-0.00') {
-    priceImpact = '0.00';
-  }
-
   const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
   const swapSourceCollateralType = getAssetCollateralType(
     userReserve,
@@ -264,7 +254,11 @@ export const SwapModalContent = ({
           <SwitchVerticalIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
+        <PriceImpactTooltip
+          loading={loadingSkeleton}
+          outputAmountUSD={outputAmountUSD}
+          inputAmountUSD={inputAmountUSD}
+        />
       </Box>
       <AssetInput
         value={outputAmount}

@@ -177,18 +177,8 @@ export function CollateralRepayModalContent({
     collateralReserveData.priceInUSD
   );
 
-  // calculate impact based on $ difference
   const exactOutputAmount = swapVariant === 'exactIn' ? outputAmount : repayAmount;
   const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
-  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
-  let priceImpact =
-    inputAmountUSD && inputAmountUSD !== '0'
-      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
-      : '0';
-
-  if (priceImpact === '-0.00') {
-    priceImpact = '0.00';
-  }
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
   const isUSDTEthMainnetV3 =
@@ -256,7 +246,11 @@ export function CollateralRepayModalContent({
           <ArrowDownIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
+        <PriceImpactTooltip
+          loading={loadingSkeleton}
+          outputAmountUSD={outputAmountUSD}
+          inputAmountUSD={inputAmountUSD}
+        />
       </Box>
       <AssetInput
         value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}

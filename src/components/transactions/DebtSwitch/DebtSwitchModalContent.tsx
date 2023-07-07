@@ -149,16 +149,6 @@ export const DebtSwitchModalContent = ({
       />
     );
 
-  // calculate impact based on $ difference
-  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
-  let priceImpact =
-    inputAmountUSD && inputAmountUSD !== '0'
-      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
-      : '0';
-  if (priceImpact === '-0.00') {
-    priceImpact = '0.00';
-  }
-
   return (
     <>
       <AssetInput
@@ -193,7 +183,11 @@ export const DebtSwitchModalContent = ({
           <ArrowDownIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
+        <PriceImpactTooltip
+          loading={loadingSkeleton}
+          outputAmountUSD={outputAmountUSD}
+          inputAmountUSD={inputAmountUSD}
+        />
       </Box>
       <AssetInput<SwitchTargetAsset>
         value={inputAmount}
