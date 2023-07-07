@@ -309,7 +309,6 @@ msgid "Assets to supply"
 msgstr "Assets to supply"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -2021,7 +2020,6 @@ msgstr "Supply balance after switch"
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
@@ -2078,10 +2076,13 @@ msgstr "Switch rate"
 msgid "Switch to"
 msgstr "Switch to"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Switched"
 msgstr "Switched"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Switched borrow position"
+msgstr "Switched borrow position"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
@@ -2164,7 +2165,6 @@ msgstr "The cooldown period is the time required prior to unstaking your tokens 
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "The effects on the health factor would cause liquidation. Try lowering the amount."
@@ -2204,6 +2204,10 @@ msgstr "There are not enough funds in the{0}reserve to borrow"
 #: src/ui-config/errorMapping.tsx
 msgid "There is not enough collateral to cover a new borrow"
 msgstr "There is not enough collateral to cover a new borrow"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
+msgstr "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"

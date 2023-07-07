@@ -1,4 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
+import { MaxUint256 } from '@ethersproject/constants';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, ListItemText, ListSubheader, Stack, SvgIcon, Typography } from '@mui/material';
@@ -14,9 +16,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { selectCurrentBaseCurrencyData } from 'src/store/poolSelectors';
-import { useRootStore } from 'src/store/root';
-import { getDebtSwitchInfo } from 'src/utils/getDebtSwitchInfo';
 
 import {
   ComputedUserReserveData,
@@ -24,7 +23,6 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { DebtSwitchActions } from './DebtSwitchActions';
 import { DebtSwitchModalDetails } from './DebtSwitchModalDetails';
@@ -37,6 +35,11 @@ interface SwapTargetAsset extends Asset {
   variableApy: string;
 }
 
+// TODO: other errors?
+enum ErrorType {
+  INSUFFICIENT_LIQUIDITY,
+}
+
 export const DebtSwitchModalContent = ({
   poolReserve,
   userReserve,
@@ -47,7 +50,6 @@ export const DebtSwitchModalContent = ({
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError } = useModalContext();
-  const baseCurrencyData = useRootStore((state) => selectCurrentBaseCurrencyData(state));
 
   const swapTargets = reserves
     .filter(
@@ -105,26 +107,29 @@ export const DebtSwitchModalContent = ({
     setAmount(value);
   };
 
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+  const availableBorrowCap =
+    swapTarget.reserve.borrowCap === '0'
+      ? valueToBigNumber(MaxUint256.toString())
+      : valueToBigNumber(Number(swapTarget.reserve.borrowCap)).minus(
+          valueToBigNumber(swapTarget.reserve.totalDebt)
+        );
+  const availableLiquidityOfTargetReserve = BigNumber.max(
+    BigNumber.min(swapTarget.reserve.formattedAvailableLiquidity, availableBorrowCap),
+    0
+  );
 
   let blockingError: ErrorType | undefined = undefined;
-  if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
-    blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
+  if (outputAmount > availableLiquidityOfTargetReserve.toString()) {
+    blockingError = ErrorType.INSUFFICIENT_LIQUIDITY;
   }
 
   const BlockingError: React.FC = () => {
     switch (blockingError) {
-      case ErrorType.HF_BELOW_ONE:
+      case ErrorType.INSUFFICIENT_LIQUIDITY:
         return (
           <Trans>
-            The effects on the health factor would cause liquidation. Try lowering the amount.
-          </Trans>
-        );
-      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
-        return (
-          <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
+            There is not enough liquidity for the target asset to perform the switch. Try lowering
+            the amount.
           </Trans>
         );
       default:
@@ -150,68 +155,6 @@ export const DebtSwitchModalContent = ({
   if (priceImpact === '-0.00') {
     priceImpact = '0.00';
   }
-
-  const { availableLiquidityOfTargetReserve, futureLTV } = getDebtSwitchInfo(
-    poolReserve,
-    swapTarget.reserve,
-    amount,
-    inputAmount,
-    user,
-    baseCurrencyData.marketReferenceCurrencyDecimals
-  );
-
-  //console.log('availableLiquidityOfTargetReserve', availableLiquidityOfTargetReserve);
-  //console.log('futureLTV', futureLTV);
-  // const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
-  // const swapSourceCollateralType = getAssetCollateralType(
-  //   userReserve,
-  //   user.totalCollateralUSD,
-  //   user.isInIsolationMode,
-  //   sourceDebtCeiling
-  // );
-
-  // const { debtCeilingReached: targetDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
-  // let swapTargetCollateralType = getAssetCollateralType(
-  //   swapTarget,
-  //   user.totalCollateralUSD,
-  //   user.isInIsolationMode,
-  //   targetDebtCeiling
-  // );
-
-  // If the user is swapping all of their isolated asset to an asset that is not supplied,
-  // then the swap target will be enabled as collateral as part of the swap.
-  // if (
-  //   isMaxSelected &&
-  //   swapSourceCollateralType === CollateralType.ISOLATED_ENABLED &&
-  //   swapTarget.underlyingBalance === '0'
-  // ) {
-  //   if (swapTarget.reserve.isIsolated) {
-  //     swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
-  //   } else {
-  //     swapTargetCollateralType = CollateralType.ENABLED;
-  //   }
-  // }
-
-  // If the user is swapping all of their enabled asset to an isolated asset that is not supplied,
-  // and no other supplied assets are being used as collateral,
-  // then the swap target will be enabled as collateral and the user will be in isolation mode.
-  // if (
-  //   isMaxSelected &&
-  //   swapSourceCollateralType === CollateralType.ENABLED &&
-  //   swapTarget.underlyingBalance === '0' &&
-  //   swapTarget.reserve.isIsolated
-  // ) {
-  //   const reservesAsCollateral = user.userReservesData.filter(
-  //     (r) => r.usageAsCollateralEnabledOnUser
-  //   );
-
-  //   if (
-  //     reservesAsCollateral.length === 1 &&
-  //     reservesAsCollateral[0].underlyingAsset === userReserve.underlyingAsset
-  //   ) {
-  //     swapTargetCollateralType = CollateralType.ISOLATED_ENABLED;
-  //   }
-  // }
 
   return (
     <>
