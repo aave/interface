@@ -64,10 +64,11 @@ export type PoolReserve = {
 
 //TODO: temp, move to DebtSwitchActions once types are finalized
 interface DebtSwitchActionsProps {
-  debtAsset: string;
+  debtAssetUnderlying: string;
   debtRepayAmount: string;
   debtRateMode: number;
-  newDebtAsset: string;
+  newAssetUnderlying: string;
+  newAssetDebtToken: string;
   maxNewDebtAmount: string;
   repayAll: boolean;
   txCalldata: string;
@@ -453,10 +454,11 @@ export const createPoolSlice: StateCreator<
       });
     },
     debtSwitch: ({
-      debtAsset,
+      debtAssetUnderlying,
       debtRepayAmount,
       debtRateMode,
-      newDebtAsset,
+      newAssetUnderlying,
+      newAssetDebtToken,
       maxNewDebtAmount,
       repayAll,
       txCalldata,
@@ -490,10 +492,11 @@ export const createPoolSlice: StateCreator<
       }
       return debtSwitchService.debtSwitch({
         user,
-        debtAsset,
+        debtAssetUnderlying,
         debtRepayAmount,
         debtRateMode,
-        newDebtAsset,
+        newAssetUnderlying,
+        newAssetDebtToken,
         maxNewDebtAmount,
         repayAll,
         txCalldata,

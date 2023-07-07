@@ -102,11 +102,6 @@ export const DebtSwitchActions = ({
   const [useSignature, setUseSignature] = useState(false);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-  const debtTokenAddress =
-    currentRateMode === InterestRate.Variable
-      ? poolReserve.variableDebtTokenAddress
-      : poolReserve.stableDebtTokenAddress;
-
   useEffect(() => {
     const preferSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
     setUseSignature(preferSignature);
@@ -119,7 +114,7 @@ export const DebtSwitchActions = ({
           // TO-DO: Move from generatePermitPayloadForMigrationBorrowAsset to poolSLice
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generatePermitPayloadForMigrationBorrowAsset({
-            underlyingAsset: targetReserve.underlyingAsset,
+            underlyingAsset: targetReserve.variableDebtTokenAddress,
             deadline,
             amount: MAX_UINT_AMOUNT,
           });
@@ -132,7 +127,7 @@ export const DebtSwitchActions = ({
           });
         } else {
           let approveDelegationTxData = generateApproveDelegation({
-            debtTokenAddress,
+            debtTokenAddress: targetReserve.variableDebtTokenAddress,
             delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
             amount: MAX_UINT_AMOUNT,
           });
@@ -164,11 +159,12 @@ export const DebtSwitchActions = ({
       setMainTxState({ ...mainTxState, loading: true });
       const route = await buildTxFn();
       let debtSwitchTxData = debtSwitch({
-        debtAsset: debtTokenAddress,
+        debtAssetUnderlying: poolReserve.underlyingAsset,
         debtRateMode: currentRateMode === InterestRate.Variable ? 2 : 1,
         debtRepayAmount: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
         maxNewDebtAmount: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
-        newDebtAsset: targetReserve.variableDebtTokenAddress,
+        newAssetDebtToken: targetReserve.variableDebtTokenAddress,
+        newAssetUnderlying: targetReserve.underlyingAsset,
         deadline: signatureParams ? Number(signatureParams.deadline) : 0,
         repayAll: isMaxSelected,
         txCalldata: route.swapCallData,
@@ -204,10 +200,7 @@ export const DebtSwitchActions = ({
       if (approvedAmount === undefined || forceApprovalCheck) {
         setLoadingTxns(true);
         const approvedAmount = await getCreditDelegationApprovedAmount({
-          debtTokenAddress:
-            currentRateMode === InterestRate.Variable
-              ? targetReserve.variableDebtTokenAddress
-              : targetReserve.stableDebtTokenAddress,
+          debtTokenAddress: targetReserve.variableDebtTokenAddress,
           delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
         });
         setApprovedAmount(approvedAmount);
@@ -232,9 +225,7 @@ export const DebtSwitchActions = ({
       approvedAmount,
       setLoadingTxns,
       getCreditDelegationApprovedAmount,
-      currentRateMode,
       targetReserve.variableDebtTokenAddress,
-      targetReserve.stableDebtTokenAddress,
       currentMarketData.addresses.DEBT_SWITCH_ADAPTER,
       setApprovalTxState,
       amountToReceive,
