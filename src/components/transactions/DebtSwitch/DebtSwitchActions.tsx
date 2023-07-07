@@ -104,8 +104,8 @@ export const DebtSwitchActions = ({
 
   const debtTokenAddress =
     currentRateMode === InterestRate.Variable
-      ? targetReserve.variableDebtTokenAddress
-      : targetReserve.stableDebtTokenAddress;
+      ? poolReserve.variableDebtTokenAddress
+      : poolReserve.stableDebtTokenAddress;
 
   useEffect(() => {
     const preferSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
