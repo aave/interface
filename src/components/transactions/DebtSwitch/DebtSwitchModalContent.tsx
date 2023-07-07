@@ -122,7 +122,7 @@ export const DebtSwitchModalContent = ({
   );
 
   let blockingError: ErrorType | undefined = undefined;
-  if (outputAmount > availableLiquidityOfTargetReserve.toString()) {
+  if (BigNumber(outputAmount).gt(availableLiquidityOfTargetReserve)) {
     blockingError = ErrorType.INSUFFICIENT_LIQUIDITY;
   }
 
