@@ -16,6 +16,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import {
   ComputedUserReserveData,
@@ -53,7 +54,7 @@ export const DebtSwitchModalContent = ({
 
   const swapTargets = reserves
     .filter(
-      (r) => r.underlyingAsset !== poolReserve.underlyingAsset && !r.isFrozen && r.borrowingEnabled
+      (r) => r.underlyingAsset !== poolReserve.underlyingAsset && assetCanBeBorrowedByUser(r, user)
     )
     .map<SwapTargetAsset>((reserve) => ({
       address: reserve.underlyingAsset,
