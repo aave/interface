@@ -10213,22 +10213,22 @@
       ],
       "startBlock": 17621656,
       "endBlock": 17640856,
-      "executionTime": 0,
+      "executionTime": 1688806547,
       "forVotes": "623753914588425652007828",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1689238547,
       "proposalCreated": 17614456,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xaad64e6d09cc64d0f350138f8b0bdd707b659fc6eee1ff6a9ceacc29bc9fa099",
       "startTimestamp": 1688487083,
       "creationTimestamp": 1688399699,
-      "expirationTimestamp": 1688719787
+      "expirationTimestamp": 1688717483
     },
     {
       "id": 262,
@@ -10263,7 +10263,7 @@
       "ipfsHash": "0xae842be717dd02912c44fdf6a73a59543b0686dac039444aea85bcbf9f920a26",
       "startTimestamp": 1688488727,
       "creationTimestamp": 1688401331,
-      "expirationTimestamp": 1688721407
+      "expirationTimestamp": 1688721527
     },
     {
       "id": 263,
@@ -10298,7 +10298,7 @@
       "ipfsHash": "0xb07c4d2d2bdfae564b3c57dc209cf42e77d086e17f9cd362929b3080bf40c83c",
       "startTimestamp": 1688545595,
       "creationTimestamp": 1688458283,
-      "expirationTimestamp": 1688777771
+      "expirationTimestamp": 1688777891
     },
     {
       "id": 264,
@@ -10333,7 +10333,7 @@
       "ipfsHash": "0x559ffffaa13a603d3f92b129aa04ff5c2a6ecb32b6b20c3e23aed073ccbf3bde",
       "startTimestamp": 1688634971,
       "creationTimestamp": 1688547671,
-      "expirationTimestamp": 1688866199
+      "expirationTimestamp": 1688866319
     },
     {
       "id": 265,
@@ -10368,7 +10368,7 @@
       "ipfsHash": "0xadc8fa84ad5b2a4a732872d60b266be51541101797f024b1e9442b21d8093d47",
       "startTimestamp": 1688660339,
       "creationTimestamp": 1688572955,
-      "expirationTimestamp": 1688891219
+      "expirationTimestamp": 1688891339
     },
     {
       "id": 266,
@@ -10403,7 +10403,7 @@
       "ipfsHash": "0xa8ff0f61c45be32c48b093f1277da0531a6c24ca3b32f4d05cc6a5d80655a2d0",
       "startTimestamp": 1688660555,
       "creationTimestamp": 1688573171,
-      "expirationTimestamp": 1688891435
+      "expirationTimestamp": 1688891555
     },
     {
       "id": 267,
@@ -10438,7 +10438,7 @@
       "ipfsHash": "0xd1ad8ad41f5f2483c2f18e3c16a85bd87c9aa82f92ff584d27027dd6dec656b0",
       "startTimestamp": 1688681123,
       "creationTimestamp": 1688593775,
-      "expirationTimestamp": 1688911835
+      "expirationTimestamp": 1688911955
     }
   ]
 }
