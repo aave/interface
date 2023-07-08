@@ -3,11 +3,11 @@ import { OptimalRate } from 'paraswap-core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
+  convertParaswapErrorMessage,
   fetchExactInRate,
   fetchExactInTxParams,
   fetchExactOutRate,
   fetchExactOutTxParams,
-  MESSAGE_MAP,
   SwapData,
   SwapTransactionParams,
   SwapVariant,
@@ -84,10 +84,9 @@ export const useCollateralRepaySwap = ({
     return fetchExactInRate(swapInData, swapOutData, chainId, userAddress);
   }, [chainId, swapInData, swapOutData, userAddress]);
 
-  const exactOutRate = useCallback(
-    () => fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max),
-    [chainId, max, swapInData, swapOutData, userAddress]
-  );
+  const exactOutRate = useCallback(() => {
+    return fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max);
+  }, [chainId, max, swapInData, swapOutData, userAddress]);
 
   useEffect(() => {
     if (skip) return;
@@ -141,7 +140,7 @@ export const useCollateralRepaySwap = ({
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
-        const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
+        const message = convertParaswapErrorMessage(e.message);
         setError(message);
       } finally {
         setLoading(false);
