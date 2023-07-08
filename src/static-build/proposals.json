@@ -10319,7 +10319,7 @@
       "startBlock": 17633857,
       "endBlock": 17653057,
       "executionTime": 0,
-      "forVotes": "345590718165288699649748",
+      "forVotes": "345590761857780957146555",
       "againstVotes": "664215977993684010",
       "executed": false,
       "canceled": false,
@@ -10333,7 +10333,7 @@
       "ipfsHash": "0x559ffffaa13a603d3f92b129aa04ff5c2a6ecb32b6b20c3e23aed073ccbf3bde",
       "startTimestamp": 1688634971,
       "creationTimestamp": 1688547671,
-      "expirationTimestamp": 1688867051
+      "expirationTimestamp": 1688867159
     },
     {
       "id": 265,
@@ -10368,7 +10368,7 @@
       "ipfsHash": "0xadc8fa84ad5b2a4a732872d60b266be51541101797f024b1e9442b21d8093d47",
       "startTimestamp": 1688660339,
       "creationTimestamp": 1688572955,
-      "expirationTimestamp": 1688892071
+      "expirationTimestamp": 1688892179
     },
     {
       "id": 266,
@@ -10389,7 +10389,7 @@
       "startBlock": 17635960,
       "endBlock": 17655160,
       "executionTime": 0,
-      "forVotes": "423503328499300326201223",
+      "forVotes": "423504363756199736429240",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -10403,7 +10403,7 @@
       "ipfsHash": "0xa8ff0f61c45be32c48b093f1277da0531a6c24ca3b32f4d05cc6a5d80655a2d0",
       "startTimestamp": 1688660555,
       "creationTimestamp": 1688573171,
-      "expirationTimestamp": 1688892287
+      "expirationTimestamp": 1688892395
     },
     {
       "id": 267,
@@ -10424,7 +10424,7 @@
       "startBlock": 17637660,
       "endBlock": 17656860,
       "executionTime": 0,
-      "forVotes": "348963260704084448694542",
+      "forVotes": "348967493807178169289665",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -10438,7 +10438,7 @@
       "ipfsHash": "0xd1ad8ad41f5f2483c2f18e3c16a85bd87c9aa82f92ff584d27027dd6dec656b0",
       "startTimestamp": 1688681123,
       "creationTimestamp": 1688593775,
-      "expirationTimestamp": 1688912687
+      "expirationTimestamp": 1688912795
     }
   ]
 }
