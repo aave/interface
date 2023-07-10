@@ -14,7 +14,7 @@ import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
-import { MARKETS } from '../../utils/mixPanelEvents';
+import { GENERAL } from '../../utils/mixPanelEvents';
 
 export const MarketAssetsListContainer = () => {
   const { reserves, loading } = useAppDataContext();
@@ -86,7 +86,8 @@ export const MarketAssetsListContainer = () => {
               Withdrawals and debt repayments are allowed. Follow the{' '}
               <Link
                 onClick={() => {
-                  trackEvent(MARKETS.VIEW_FROZEN_GOV_POST_MARKET, {
+                  trackEvent(GENERAL.EXTERNAL_LINK, {
+                    link: 'Frozen Market Markets Page',
                     frozenMarket: currentNetworkConfig.name,
                   });
                 }}

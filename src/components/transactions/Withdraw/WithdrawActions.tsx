@@ -1,3 +1,4 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -37,6 +38,12 @@ export const WithdrawActions = ({
         }),
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
+      eventTxInfo: {
+        amount: amountToWithdraw,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+      },
+      protocolAction: ProtocolAction.withdraw,
     });
 
   return (

@@ -16,6 +16,7 @@ interface ListWrapperProps {
   withTopMargin?: boolean;
   noData?: boolean;
   wrapperSx?: BoxProps['sx'];
+  tooltipOpen?: boolean;
 }
 
 export const ListWrapper = ({
@@ -28,6 +29,7 @@ export const ListWrapper = ({
   withTopMargin,
   noData,
   wrapperSx,
+  tooltipOpen,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -38,16 +40,44 @@ export const ListWrapper = ({
     if (!isCollapse) {
       switch (localStorageName as string | boolean) {
         case 'borrowAssetsDashboardTableCollapse':
-          trackEvent(DASHBOARD.HIDE_BORROW_TILE, {});
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Hidden',
+            type: 'Available Borrow Assets',
+          });
           break;
         case 'borrowedAssetsDashboardTableCollapse':
-          trackEvent(DASHBOARD.HIDE_YOUR_BORROW_TILE, {});
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Hidden', type: 'Borrowed Assets' });
           break;
         case 'supplyAssetsDashboardTableCollapse':
-          trackEvent(DASHBOARD.HIDE_SUPPLY_TILE, {});
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Hidden',
+            type: 'Available Supply Assets',
+          });
           break;
         case 'suppliedAssetsDashboardTableCollapse':
-          trackEvent(DASHBOARD.HIDE_YOUR_SUPPLY_TILE, {});
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Hidden', type: 'Supplied Assets' });
+        default:
+          return null;
+      }
+    } else {
+      switch (localStorageName as string | boolean) {
+        case 'borrowAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Show',
+            type: 'Available Borrow Assets',
+          });
+          break;
+        case 'borrowedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Show', type: 'Borrowed Assets' });
+          break;
+        case 'supplyAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Show',
+            type: 'Available Supply Assets',
+          });
+          break;
+        case 'suppliedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Show', type: 'Supplied Assets' });
         default:
           return null;
       }
@@ -135,7 +165,7 @@ export const ListWrapper = ({
             alignItems: 'center',
             px: { xs: 4, xsm: 6 },
             pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-            overflowX: 'auto',
+            overflowX: tooltipOpen ? 'hidden' : 'auto',
           }}
         >
           {topInfo}

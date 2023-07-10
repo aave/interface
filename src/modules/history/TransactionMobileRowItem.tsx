@@ -1,13 +1,10 @@
-import { CheckIcon, DuplicateIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
-import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListItem } from 'src/components/lists/ListItem';
-import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
@@ -27,16 +24,11 @@ interface TransactionHistoryItemProps {
 
 function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) {
   const [copyStatus, setCopyStatus] = useState(false);
-  const [currentNetworkConfig] = useRootStore((state) => [state.currentNetworkConfig]);
+  const { currentNetworkConfig, trackEvent } = useRootStore((state) => ({
+    currentNetworkConfig: state.currentNetworkConfig,
+    trackEvent: state.trackEvent,
+  }));
   const theme = useTheme();
-
-  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleCopy = async (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopyStatus(true);
-  };
 
   useEffect(() => {
     if (copyStatus) {
@@ -83,73 +75,44 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
           >
             <Box sx={{ display: 'flex', gap: 2 }}>
               <ActionTitle action={transaction.action} />
-              <Typography variant="caption" color="text.muted">
-                {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
-              </Typography>
             </Box>
 
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <DarkTooltip
-                title={copyStatus ? <Trans>Copied</Trans> : <Trans>Copy</Trans>}
-                placement="top"
+              {' '}
+              <Typography variant="caption" color="text.muted">
+                {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
+              </Typography>
+              <Button
+                sx={{
+                  display: 'flex',
+                  ml: 3,
+                  mr: 1,
+                  width: '69px',
+                  height: '20px',
+                  fontSize: '0.6rem',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  pl: 1,
+                  pr: 1,
+                }}
+                variant="outlined"
+                href={explorerLink}
+                target="_blank"
+                onClick={() =>
+                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+                }
               >
-                <Box
-                  onClick={() => handleCopy(explorerLink)}
+                <Trans>VIEW TX</Trans>{' '}
+                <SvgIcon
                   sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    height: '22px',
+                    fontSize: '15px',
+                    pl: 1,
+                    pb: 0.5,
                   }}
                 >
-                  {!downToMD && (
-                    <React.Fragment>
-                      <Typography variant="caption" color="text.secondary" mr={1}>
-                        <Trans>Tx hash</Trans>
-                      </Typography>
-                      <CompactableTypography
-                        compactMode={CompactMode.MD}
-                        variant="caption"
-                        color="text.primary"
-                      >
-                        {transaction.txHash}
-                      </CompactableTypography>
-                    </React.Fragment>
-                  )}
-                  <SvgIcon
-                    sx={{
-                      m: 1,
-                      fontSize: '14px',
-                      color: copyStatus ? 'green' : downToSM ? 'text.muted' : 'text.secondary',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {copyStatus ? <CheckIcon /> : <DuplicateIcon />}
-                  </SvgIcon>
-                </Box>
-              </DarkTooltip>
-              <DarkTooltip placement="top" title={<Trans>View on block explorer</Trans>}>
-                <Link
-                  href={explorerLink}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    height: '22px',
-                  }}
-                >
-                  <SvgIcon
-                    sx={{
-                      fontSize: '14px',
-                      color: downToSM ? 'text.muted' : 'text.secondary',
-                    }}
-                  >
-                    <ArrowOutward />
-                  </SvgIcon>
-                </Link>
-              </DarkTooltip>
+                  <ArrowOutward />
+                </SvgIcon>
+              </Button>
             </Box>
           </Box>
           <Box sx={{ py: '28px' }}>

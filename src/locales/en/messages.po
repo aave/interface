@@ -13,12 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".CSV"
 msgstr ".CSV"
 
-#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".JSON"
 msgstr ".JSON"
@@ -187,9 +185,13 @@ msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Amount claimable"
+msgstr "Amount claimable"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Amount in cooldown"
@@ -506,14 +508,6 @@ msgstr "Buy Crypto with Fiat"
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIM {symbol}"
-msgstr "CLAIM {symbol}"
-
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIMING {symbol}"
-msgstr "CLAIMING {symbol}"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -542,12 +536,9 @@ msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Claim"
 msgstr "Claim"
-
-#: src/modules/staking/StakingPanel.tsx
-msgid "Claim AAVE"
-msgstr "Claim AAVE"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -562,6 +553,10 @@ msgstr "Claim all rewards"
 msgid "Claim {0}"
 msgstr "Claim {0}"
 
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claim {symbol}"
+msgstr "Claim {symbol}"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
 msgstr "Claimable AAVE"
@@ -574,6 +569,10 @@ msgstr "Claimed"
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
 msgstr "Claiming"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claiming {symbol}"
+msgstr "Claiming {symbol}"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -662,16 +661,6 @@ msgstr "Cooldown to unstake"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
 msgstr "Cooling down..."
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copied"
-msgstr "Copied"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copy"
-msgstr "Copy"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
@@ -802,6 +791,10 @@ msgstr "Discord channel"
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
 msgstr "Docs"
+
+#: src/components/Warnings/USDTParaswapWarning.tsx
+msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
+msgstr "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -1357,6 +1350,7 @@ msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
@@ -1697,6 +1691,22 @@ msgstr "Reserve status & configuration"
 msgid "Reset"
 msgstr "Reset"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Restake"
+msgstr "Restake"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restake {symbol}"
+msgstr "Restake {symbol}"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Restaked"
+msgstr "Restaked"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restaking {symbol}"
+msgstr "Restaking {symbol}"
+
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
@@ -1915,6 +1925,7 @@ msgid "Staking"
 msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2350,18 +2361,9 @@ msgstr "Transaction overview"
 msgid "Transactions"
 msgstr "Transactions"
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Tx hash"
-msgstr "Tx hash"
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "UNSTAKE {symbol}"
-
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKING {symbol}"
-msgstr "UNSTAKING {symbol}"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -2397,6 +2399,10 @@ msgstr "Unstake window"
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
 msgstr "Unstaked"
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstaking {symbol}"
+msgstr "Unstaking {symbol}"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 will resolve the disruptions and the market will be operating as normal on ~26th May 13h00 UTC."
@@ -2444,6 +2450,10 @@ msgstr "User is trying to borrow multiple assets including a siloed one"
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+msgid "VIEW TX"
+msgstr "VIEW TX"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
@@ -2476,6 +2486,10 @@ msgstr "Version 2"
 msgid "Version 3"
 msgstr "Version 3"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr "View"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -2491,11 +2505,6 @@ msgstr "View details"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "View on Explorer"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View on block explorer"
-msgstr "View on block explorer"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -2908,6 +2917,10 @@ msgstr "{subtitle}"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "{text}"
+msgstr "{text}"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "{title}"

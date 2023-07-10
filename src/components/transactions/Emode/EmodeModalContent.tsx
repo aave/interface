@@ -372,6 +372,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
         blocked={blockingError !== undefined || !selectedEmode}
         selectedEmode={selectedEmode?.id || 0}
         activeEmode={user.userEmodeCategoryId}
+        eModes={eModes}
       />
     </>
   );

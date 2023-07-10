@@ -54,6 +54,7 @@ export const SwapActions = ({
 
   const { approval, action, approvalTxState, mainTxState, loadingTxns, requiresApproval } =
     useParaSwapTransactionHandler({
+      protocolAction: ProtocolAction.swapCollateral,
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
         return swapCollateral({
@@ -96,6 +97,7 @@ export const SwapActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}

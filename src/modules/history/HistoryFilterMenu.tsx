@@ -53,9 +53,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
-  const { trackEvent } = useRootStore((state) => ({
-    trackEvent: state.trackEvent,
-  }));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   useEffect(() => {
     onFilterChange(localFilter);
   }, [localFilter, onFilterChange]);
@@ -111,8 +110,14 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           <Typography variant="description" color={theme.palette.primary.main} sx={{ mr: 1 }}>
             TXs:
           </Typography>
-          {displayedFilters}
-          {hiddenCount > 0 && <React.Fragment>...(+{hiddenCount})</React.Fragment>}
+          <Typography
+            variant="description"
+            color={theme.palette.primary.main}
+            sx={{ mr: 1, fontWeight: 600 }}
+          >
+            {displayedFilters}
+            {hiddenCount > 0 && <React.Fragment>...(+{hiddenCount})</React.Fragment>}
+          </Typography>
         </Box>
       );
     }
@@ -148,19 +153,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           <SvgIcon height={9} width={9} color="primary">
             <SortIcon />
           </SvgIcon>
-          <Typography
-            variant="subheader1"
-            color="text.primary"
-            sx={{
-              ml: 1,
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              mr: 1,
-            }}
-          >
-            <FilterButtonLabel />
-          </Typography>
+          <FilterButtonLabel />
         </Box>
         {!allSelected && (
           <DarkTooltip

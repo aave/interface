@@ -20,14 +20,17 @@ export const BuyWithFiat = ({ cryptoSymbol, networkMarketName, funnel }: BuyWith
   const open = Boolean(anchorEl);
   const trackEvent = useRootStore((store) => store.trackEvent);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    trackEvent(GENERAL.OPEN_BUY_WITH_FIAT, { assetName: cryptoSymbol, funnel: funnel });
+    trackEvent(GENERAL.OPEN_MODAL, {
+      modal: 'Buy crypto with fiat',
+      assetName: cryptoSymbol,
+      funnel: funnel,
+    });
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return isAvailable ? (
     <>
       <Button

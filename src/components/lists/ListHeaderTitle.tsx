@@ -8,6 +8,7 @@ interface ListHeaderTitleProps {
   sortName?: string;
   sortDesc?: boolean;
   sortKey?: string;
+  source?: string;
   setSortName?: (value: string) => void;
   setSortDesc?: (value: boolean) => void;
   onClick?: () => void;
@@ -18,6 +19,7 @@ export const ListHeaderTitle = ({
   sortName,
   sortDesc,
   sortKey,
+  source,
   setSortName,
   setSortDesc,
   onClick,
@@ -25,35 +27,8 @@ export const ListHeaderTitle = ({
 }: ListHeaderTitleProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const handleTracking = (sortName: string) => {
-    switch (sortName) {
-      case 'asset':
-        trackEvent(MARKETS.SORT_ASSET_MARKET);
-        break;
-      case 'totalLiquidityUSD':
-        trackEvent(MARKETS.SORT_SUPPLY_MARKET);
-        break;
-      case 'supplyAPY':
-        trackEvent(MARKETS.SORT_SUPPY_APY_MARKET);
-        break;
-      case 'totalDebtUSD':
-        trackEvent(MARKETS.SORT_BORROW_MARKET);
-
-        break;
-      case 'variableBorrowAPY':
-        trackEvent(MARKETS.SORT_BORROW_APY_V_MARKET);
-
-        break;
-      case 'stableBorrowAPY':
-        trackEvent(MARKETS.SORT_BORROW_APY_S_MARKET);
-        break;
-      default:
-        return null;
-    }
-  };
-
   const handleSorting = (name: string) => {
-    handleTracking(name);
+    trackEvent(MARKETS.SORT, { sort_by: name, tile: source });
     setSortDesc && setSortDesc(false);
     setSortName && setSortName(name);
     if (sortName === name) {

@@ -1,5 +1,7 @@
 import { DocumentDownloadIcon } from '@heroicons/react/outline';
+import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import { WarningRounded } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -12,6 +14,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { CustomTooltip } from 'src/components/infoTooltips/CustomToolTip';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
@@ -28,16 +31,25 @@ import { HistoryWrapperMobile } from './HistoryWrapperMobile';
 import TransactionRowItem from './TransactionRowItem';
 import { FilterOptions, TransactionHistoryItemUnion } from './types';
 
+enum downloadState {
+  NEUTRAL,
+  LOADING,
+  ERROR,
+  SUCCESS,
+}
+
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
 
+  const [downloadError, setDownloadError] = useState<JSX.Element | null>(null);
+  const [jsonFileDownload, setJsonFileDownload] = useState(downloadState.NEUTRAL);
+  const [csvFileDownload, setCsvFileDownload] = useState(downloadState.NEUTRAL);
+
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
-  const { trackEvent } = useRootStore((state) => ({
-    trackEvent: state.trackEvent,
-  }));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const {
     data: transactions,
     isLoading,
@@ -49,46 +61,82 @@ export const HistoryWrapper = () => {
 
   const handleJsonDownload = async () => {
     trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'JSON' });
-    setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData({ data, csv: false });
-    const jsonData = JSON.stringify(formattedData, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
+    setDownloadError(null);
+    setJsonFileDownload(downloadState.LOADING);
+    try {
+      const data = await fetchForDownload({ searchQuery, filterQuery });
+      const formattedData = formatTransactionData({ data, csv: false });
+      const jsonData = JSON.stringify(formattedData, null, 2);
+      downloadData('transactions.json', jsonData, 'application/json');
+      setJsonFileDownload(downloadState.SUCCESS);
+      setTimeout(() => setJsonFileDownload(downloadState.NEUTRAL), 4000);
+    } catch (errors) {
+      showDownloadError(errors);
+      setJsonFileDownload(downloadState.ERROR);
+    }
   };
 
   const handleCsvDownload = async () => {
     trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'CSV' });
-
-    setLoadingDownload(true);
-    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
-      searchQuery,
-      filterQuery,
-    });
-    const formattedData = formatTransactionData({ data, csv: true });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItemUnion];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
+    setDownloadError(null);
+    setCsvFileDownload(downloadState.LOADING);
+    try {
+      const data: TransactionHistoryItemUnion[] = await fetchForDownload({
+        searchQuery,
+        filterQuery,
       });
-      csvContent += row.join(',') + '\n';
-    });
+      const formattedData = formatTransactionData({ data, csv: true });
+      // Getting all the unique headers
+      const headersSet = new Set<string>();
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        Object.keys(transaction).forEach((key) => headersSet.add(key));
+      });
 
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
+      const headers: string[] = Array.from(headersSet);
+      let csvContent = headers.join(',') + '\n';
+
+      formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
+        const row: string[] = headers.map((header) => {
+          const value = transaction[header as keyof TransactionHistoryItemUnion];
+          if (typeof value === 'object') {
+            return JSON.stringify(value) ?? '';
+          }
+          return String(value) ?? '';
+        });
+        csvContent += row.join(',') + '\n';
+      });
+
+      downloadData('transactions.csv', csvContent, 'text/csv');
+      setCsvFileDownload(downloadState.SUCCESS);
+      setTimeout(() => setCsvFileDownload(downloadState.NEUTRAL), 4000);
+    } catch (errors) {
+      console.log('Show an error notification', errors);
+      showDownloadError(errors);
+      setCsvFileDownload(downloadState.ERROR);
+    }
+  };
+
+  const showDownloadError = (errors: { message: string }[]) => {
+    if (errors[0] && errors[0].message) {
+      const errorMessage = (
+        <>
+          Failed to download file.{' '}
+          <span onClick={() => handleCopyClick(errors[0].message)} style={{ cursor: 'pointer' }}>
+            Copy Error
+          </span>
+        </>
+      );
+      setDownloadError(errorMessage);
+    } else {
+      const errorMessage = (
+        <p>Failed to download file. Please check your internet connection and try again</p>
+      );
+      setDownloadError(errorMessage);
+    }
+  };
+
+  const handleCopyClick = (textToCopy: string) => {
+    navigator.clipboard.writeText(textToCopy);
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -155,6 +203,48 @@ export const HistoryWrapper = () => {
   const isEmpty = filteredTxns.length === 0;
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
+  const transactionDownloadButton = (
+    text: string,
+    fileDownloadState: downloadState,
+    downloadHandler: () => void
+  ) => {
+    return (
+      <CustomTooltip
+        title={fileDownloadState === downloadState.ERROR ? downloadError : ''}
+        arrow={true}
+        wrap={true}
+        placement="top"
+      >
+        <Button
+          // Arul: To be uncommented
+          // disabled={isEmpty}
+          onClick={downloadHandler}
+        >
+          {fileDownloadState === downloadState.NEUTRAL ? (
+            <SvgIcon>
+              <DocumentDownloadIcon width={22} height={22} />
+            </SvgIcon>
+          ) : fileDownloadState === downloadState.LOADING ? (
+            <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />
+          ) : fileDownloadState === downloadState.ERROR ? (
+            <SvgIcon>
+              <WarningRounded width={22} height={22} />
+            </SvgIcon>
+          ) : (
+            fileDownloadState === downloadState.SUCCESS && (
+              <SvgIcon>
+                <CheckIcon width={22} height={22} />
+              </SvgIcon>
+            )
+          )}
+          <Typography variant="buttonM">
+            <Trans>{text}</Trans>
+          </Typography>
+        </Button>
+      </CustomTooltip>
+    );
+  };
+
   return (
     <ListWrapper
       titleComponent={
@@ -173,45 +263,17 @@ export const HistoryWrapper = () => {
             key={searchResetKey}
           />
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-          {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              mr: 6,
-            }}
-            onClick={handleCsvDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.CSV</Trans>
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onClick={handleJsonDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.JSON</Trans>
-            </Typography>
-          </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            height: 36,
+            gap: 0.5,
+            cursor: isEmpty ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {transactionDownloadButton('.CSV', csvFileDownload, handleCsvDownload)}
+          {transactionDownloadButton('.JSON', jsonFileDownload, handleJsonDownload)}
         </Box>
       </Box>
 

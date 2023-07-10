@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
-import { STAKE } from 'src/utils/mixPanelEvents';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { GetABPTokenModal } from './GetABPTokenModal';
 
@@ -14,7 +14,7 @@ export const GetABPToken = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    trackEvent(STAKE.OPEN_GET_ABP_TOKEN, {});
+    trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'Get ABPT Tokens' });
     setAnchorEl(event.currentTarget);
   };
 

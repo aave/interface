@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -28,6 +28,14 @@ export const RateSwitchActions = ({
         reserve: poolReserve.underlyingAsset,
         interestRateMode: currentRateMode,
       });
+    },
+    protocolAction: ProtocolAction.switchBorrowRateMode,
+    eventTxInfo: {
+      asset: poolReserve.underlyingAsset,
+      assetName: poolReserve.name,
+      previousState: currentRateMode,
+      newState:
+        currentRateMode === InterestRate.Variable ? InterestRate.Stable : InterestRate.Variable,
     },
     skip: blocked,
   });

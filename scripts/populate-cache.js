@@ -106,13 +106,10 @@ __export(tslib_es6_exports, {
   __read: () => __read,
   __rest: () => __rest,
   __spread: () => __spread,
-  __spreadArray: () => __spreadArray,
   __spreadArrays: () => __spreadArrays,
   __values: () => __values
 });
 function __extends(d, b) {
-  if (typeof b !== "function" && b !== null)
-    throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
   extendStatics(d, b);
   function __() {
     this.constructor = d;
@@ -253,10 +250,15 @@ function __generator(thisArg, body) {
     return { value: op[0] ? op[1] : void 0, done: true };
   }
 }
-function __exportStar(m, o) {
+function __createBinding(o, m, k, k2) {
+  if (k2 === void 0)
+    k2 = k;
+  o[k2] = m[k];
+}
+function __exportStar(m, exports2) {
   for (var p in m)
-    if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p))
-      __createBinding(o, m, p);
+    if (p !== "default" && !exports2.hasOwnProperty(p))
+      exports2[p] = m[p];
 }
 function __values(o) {
   var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
@@ -305,17 +307,6 @@ function __spreadArrays() {
     for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
       r[k] = a[j];
   return r;
-}
-function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2)
-    for (var i = 0, l = from.length, ar; i < l; i++) {
-      if (ar || !(i in from)) {
-        if (!ar)
-          ar = Array.prototype.slice.call(from, 0, i);
-        ar[i] = from[i];
-      }
-    }
-  return to.concat(ar || Array.prototype.slice.call(from));
 }
 function __await(v) {
   return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -403,32 +394,29 @@ function __importStar(mod) {
   var result = {};
   if (mod != null) {
     for (var k in mod)
-      if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-        __createBinding(result, mod, k);
+      if (Object.hasOwnProperty.call(mod, k))
+        result[k] = mod[k];
   }
-  __setModuleDefault(result, mod);
+  result.default = mod;
   return result;
 }
 function __importDefault(mod) {
   return mod && mod.__esModule ? mod : { default: mod };
 }
-function __classPrivateFieldGet(receiver, state, kind, f) {
-  if (kind === "a" && !f)
-    throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError("Cannot read private member from an object whose class did not declare it");
-  return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+function __classPrivateFieldGet(receiver, privateMap) {
+  if (!privateMap.has(receiver)) {
+    throw new TypeError("attempted to get private field on non-instance");
+  }
+  return privateMap.get(receiver);
 }
-function __classPrivateFieldSet(receiver, state, value, kind, f) {
-  if (kind === "m")
-    throw new TypeError("Private method is not writable");
-  if (kind === "a" && !f)
-    throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-    throw new TypeError("Cannot write private member to an object whose class did not declare it");
-  return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+function __classPrivateFieldSet(receiver, privateMap, value) {
+  if (!privateMap.has(receiver)) {
+    throw new TypeError("attempted to set private field on non-instance");
+  }
+  privateMap.set(receiver, value);
+  return value;
 }
-var extendStatics, __assign, __createBinding, __setModuleDefault;
+var extendStatics, __assign;
 var init_tslib_es6 = __esm({
   "node_modules/tslib/tslib.es6.js"() {
     "use strict";
@@ -437,7 +425,7 @@ var init_tslib_es6 = __esm({
         d2.__proto__ = b2;
       } || function(d2, b2) {
         for (var p in b2)
-          if (Object.prototype.hasOwnProperty.call(b2, p))
+          if (b2.hasOwnProperty(p))
             d2[p] = b2[p];
       };
       return extendStatics(d, b);
@@ -453,22 +441,6 @@ var init_tslib_es6 = __esm({
         return t;
       };
       return __assign.apply(this, arguments);
-    };
-    __createBinding = Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
-    } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      o[k2] = m[k];
-    };
-    __setModuleDefault = Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
-      o["default"] = v;
     };
   }
 });
@@ -15404,7 +15376,7 @@ var require_lib17 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -15418,7 +15390,7 @@ var require_lib17 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -20820,7 +20792,7 @@ var require_utils5 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -20834,7 +20806,7 @@ var require_utils5 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -21294,7 +21266,7 @@ var require_lib28 = __commonJS({
         return { value: op[0] ? op[1] : void 0, done: true };
       }
     };
-    var __spreadArray2 = exports2 && exports2.__spreadArray || function(to, from, pack) {
+    var __spreadArray = exports2 && exports2.__spreadArray || function(to, from, pack) {
       if (pack || arguments.length === 2)
         for (var i = 0, l = from.length, ar; i < l; i++) {
           if (ar || !(i in from)) {
@@ -22139,7 +22111,7 @@ var require_lib28 = __commonJS({
               if (event.decodeError == null) {
                 try {
                   var args = runningEvent.getEmit(event);
-                  _this.emit.apply(_this, __spreadArray2([runningEvent.filter], args, false));
+                  _this.emit.apply(_this, __spreadArray([runningEvent.filter], args, false));
                 } catch (error) {
                   event.decodeError = error.error;
                 }
@@ -26865,9 +26837,9 @@ var require_json_rpc_provider = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js
+// node_modules/ws/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/constants.js"(exports2, module2) {
+  "node_modules/ws/lib/constants.js"(exports2, module2) {
     "use strict";
     module2.exports = {
       BINARY_TYPES: ["nodebuffer", "arraybuffer", "fragments"],
@@ -27101,9 +27073,9 @@ var require_bufferutil = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js
+// node_modules/ws/lib/buffer-util.js
 var require_buffer_util = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/buffer-util.js"(exports2, module2) {
+  "node_modules/ws/lib/buffer-util.js"(exports2, module2) {
     "use strict";
     var { EMPTY_BUFFER } = require_constants();
     function concat(list, totalLength) {
@@ -27186,9 +27158,9 @@ var require_buffer_util = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js
+// node_modules/ws/lib/limiter.js
 var require_limiter = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/limiter.js"(exports2, module2) {
+  "node_modules/ws/lib/limiter.js"(exports2, module2) {
     "use strict";
     var kDone = Symbol("kDone");
     var kRun = Symbol("kRun");
@@ -27237,9 +27209,9 @@ var require_limiter = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js
+// node_modules/ws/lib/permessage-deflate.js
 var require_permessage_deflate = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
+  "node_modules/ws/lib/permessage-deflate.js"(exports2, module2) {
     "use strict";
     var zlib = require("zlib");
     var bufferUtil = require_buffer_util();
@@ -27662,9 +27634,9 @@ var require_utf_8_validate = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js
+// node_modules/ws/lib/validation.js
 var require_validation = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/validation.js"(exports2, module2) {
+  "node_modules/ws/lib/validation.js"(exports2, module2) {
     "use strict";
     function isValidStatusCode(code) {
       return code >= 1e3 && code <= 1014 && code !== 1004 && code !== 1005 && code !== 1006 || code >= 3e3 && code <= 4999;
@@ -27718,9 +27690,9 @@ var require_validation = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js
+// node_modules/ws/lib/receiver.js
 var require_receiver = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/receiver.js"(exports2, module2) {
+  "node_modules/ws/lib/receiver.js"(exports2, module2) {
     "use strict";
     var { Writable } = require("stream");
     var PerMessageDeflate = require_permessage_deflate();
@@ -28140,9 +28112,9 @@ var require_receiver = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js
+// node_modules/ws/lib/sender.js
 var require_sender = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/sender.js"(exports2, module2) {
+  "node_modules/ws/lib/sender.js"(exports2, module2) {
     "use strict";
     var { randomFillSync } = require("crypto");
     var PerMessageDeflate = require_permessage_deflate();
@@ -28504,9 +28476,9 @@ var require_sender = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js
+// node_modules/ws/lib/event-target.js
 var require_event_target = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/event-target.js"(exports2, module2) {
+  "node_modules/ws/lib/event-target.js"(exports2, module2) {
     "use strict";
     var Event = class {
       /**
@@ -28642,9 +28614,9 @@ var require_event_target = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js
+// node_modules/ws/lib/extension.js
 var require_extension = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/extension.js"(exports2, module2) {
+  "node_modules/ws/lib/extension.js"(exports2, module2) {
     "use strict";
     var tokenChars = [
       0,
@@ -28950,9 +28922,9 @@ var require_extension = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js
+// node_modules/ws/lib/websocket.js
 var require_websocket = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var https = require("https");
@@ -29609,9 +29581,9 @@ var require_websocket = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js
+// node_modules/ws/lib/stream.js
 var require_stream = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/stream.js"(exports2, module2) {
+  "node_modules/ws/lib/stream.js"(exports2, module2) {
     "use strict";
     var { Duplex } = require("stream");
     function emitClose(stream) {
@@ -29728,9 +29700,9 @@ var require_stream = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js
+// node_modules/ws/lib/websocket-server.js
 var require_websocket_server = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/lib/websocket-server.js"(exports2, module2) {
+  "node_modules/ws/lib/websocket-server.js"(exports2, module2) {
     "use strict";
     var EventEmitter = require("events");
     var { createHash } = require("crypto");
@@ -30025,9 +29997,9 @@ var require_websocket_server = __commonJS({
   }
 });
 
-// node_modules/@ethersproject/providers/node_modules/ws/index.js
+// node_modules/ws/index.js
 var require_ws = __commonJS({
-  "node_modules/@ethersproject/providers/node_modules/ws/index.js"(exports2, module2) {
+  "node_modules/ws/index.js"(exports2, module2) {
     "use strict";
     var WebSocket = require_websocket();
     WebSocket.createWebSocketStream = require_stream();
@@ -33308,7 +33280,7 @@ var require_ethers = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -33322,7 +33294,7 @@ var require_ethers = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -33400,7 +33372,7 @@ var require_lib31 = __commonJS({
         k2 = k;
       o[k2] = m[k];
     });
-    var __setModuleDefault2 = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
@@ -33414,7 +33386,7 @@ var require_lib31 = __commonJS({
           if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding2(result, mod, k);
       }
-      __setModuleDefault2(result, mod);
+      __setModuleDefault(result, mod);
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -33755,7 +33727,13 @@ var require_types2 = __commonJS({
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
       ProtocolAction2["stake"] = "stake";
+      ProtocolAction2["stakeCooldown"] = "stakeCooldown";
+      ProtocolAction2["unstake"] = "unstake";
+      ProtocolAction2["switchBorrowRateMode"] = "switchBorrowRateMode";
+      ProtocolAction2["setEModeUsage"] = "setEModeUsage";
+      ProtocolAction2["governanceDelegation"] = "governanceDelegation";
       ProtocolAction2["claimRewards"] = "claimRewards";
+      ProtocolAction2["claimRewardsAndStake"] = "claimRewardsAndStake";
       ProtocolAction2["setUsageAsCollateral"] = "setUsageAsCollateral";
     })(ProtocolAction = exports2.ProtocolAction || (exports2.ProtocolAction = {}));
     var GovernanceVote;
@@ -43923,20 +43901,248 @@ var require_IAaveStakingHelper_factory = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedToken__factory.js
-var require_IStakedToken_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedToken__factory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedAaveV3__factory.js
+var require_IStakedAaveV3_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IStakedAaveV3__factory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IStakedToken__factory = void 0;
+    exports2.IStakedAaveV3__factory = void 0;
     var ethers_1 = require_lib31();
-    var IStakedToken__factory = class {
+    var IStakedAaveV3__factory = class {
       static connect(address, signerOrProvider) {
         return new ethers_1.Contract(address, _abi, signerOrProvider);
       }
     };
-    exports2.IStakedToken__factory = IStakedToken__factory;
+    exports2.IStakedAaveV3__factory = IStakedAaveV3__factory;
     var _abi = [
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "Cooldown",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "cooldownSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "CooldownSecondsChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint216",
+            name: "exchangeRate",
+            type: "uint216"
+          }
+        ],
+        name: "ExchangeRateChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "FundsReturned",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "newDebtToken",
+            type: "address"
+          }
+        ],
+        name: "GHODebtTokenChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "newPercentage",
+            type: "uint256"
+          }
+        ],
+        name: "MaxSlashablePercentageChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "Redeem",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "RewardsAccrued",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "RewardsClaimed",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "destination",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "Slashed",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "windowSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "SlashingExitWindowDurationChanged",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [],
+        name: "SlashingSettled",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "Staked",
+        type: "event"
+      },
       {
         inputs: [],
         name: "REWARD_TOKEN",
@@ -43964,6 +44170,19 @@ var require_IStakedToken_factory = __commonJS({
         type: "function"
       },
       {
+        inputs: [],
+        name: "COOLDOWN_SECONDS",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
         inputs: [
           {
             internalType: "address",
@@ -43982,10 +44201,339 @@ var require_IStakedToken_factory = __commonJS({
         type: "function"
       },
       {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "claimAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "redeemAmount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndRedeem",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "claimAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "redeemAmount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndRedeemOnBehalf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndStake",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsAndStakeOnBehalf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "claimRewardsOnBehalf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
         inputs: [],
         name: "cooldown",
         outputs: [],
         stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          }
+        ],
+        name: "cooldownOnBehalfOf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getCooldownSeconds",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getExchangeRate",
+        outputs: [
+          {
+            internalType: "uint216",
+            name: "",
+            type: "uint216"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint32",
+            name: "index",
+            type: "uint32"
+          }
+        ],
+        name: "getExchangeRateSnapshot",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint40",
+                name: "blockNumber",
+                type: "uint40"
+              },
+              {
+                internalType: "uint216",
+                name: "value",
+                type: "uint216"
+              }
+            ],
+            internalType: "struct IStakedAaveV3.ExchangeRateSnapshot",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getExchangeRateSnapshotsCount",
+        outputs: [
+          {
+            internalType: "uint32",
+            name: "",
+            type: "uint32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "getMaxSlashablePercentage",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "staker",
+            type: "address"
+          }
+        ],
+        name: "getTotalRewardsBalance",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "spender",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "v",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "permit",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "shares",
+            type: "uint256"
+          }
+        ],
+        name: "previewRedeem",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "assets",
+            type: "uint256"
+          }
+        ],
+        name: "previewStake",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
         type: "function"
       },
       {
@@ -44010,7 +44558,113 @@ var require_IStakedToken_factory = __commonJS({
         inputs: [
           {
             internalType: "address",
-            name: "onBehalfOf",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "redeemOnBehalf",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "returnFunds",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "cooldownSeconds",
+            type: "uint256"
+          }
+        ],
+        name: "setCooldownSeconds",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IGhoVariableDebtTokenTransferHook",
+            name: "newGHODebtToken",
+            type: "address"
+          }
+        ],
+        name: "setGHODebtToken",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "percentage",
+            type: "uint256"
+          }
+        ],
+        name: "setMaxSlashablePercentage",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "settleSlashing",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "destination",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "slash",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
             type: "address"
           },
           {
@@ -44020,6 +44674,44 @@ var require_IStakedToken_factory = __commonJS({
           }
         ],
         name: "stake",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "v",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "stakeWithPermit",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function"
@@ -44043,11 +44735,11 @@ var require_staking_contract = __commonJS({
     var paramValidators_1 = require_paramValidators();
     var erc20_contract_1 = require_erc20_contract();
     var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
-    var IStakedToken__factory_1 = require_IStakedToken_factory();
+    var IStakedAaveV3__factory_1 = require_IStakedAaveV3_factory();
     var StakingService = class extends BaseService_1.default {
       constructor(provider, stakingServiceConfig) {
         var _a7;
-        super(provider, IStakedToken__factory_1.IStakedToken__factory);
+        super(provider, IStakedAaveV3__factory_1.IStakedAaveV3__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
         this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
@@ -44231,6 +44923,35 @@ var require_staking_contract = __commonJS({
           ];
         });
       }
+      claimRewardsAndStake(user, amount) {
+        return __async(this, null, function* () {
+          let convertedAmount;
+          const stakingContract = this.getContractInstance(this.stakingContractAddress);
+          if (amount === "-1") {
+            convertedAmount = ethers_1.constants.MaxUint256.toString();
+          } else {
+            const { decimalsOf } = this.erc20Service;
+            const stakedToken = yield stakingContract.STAKED_TOKEN();
+            const stakedTokenDecimals = yield decimalsOf(stakedToken);
+            convertedAmount = (0, utils_1.valueToWei)(amount, stakedTokenDecimals);
+          }
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return stakingContract.populateTransaction.claimRewardsAndStake(user, convertedAmount);
+            }),
+            from: user,
+            gasSurplus: 20,
+            action: types_1.ProtocolAction.claimRewardsAndStake
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.STAKE_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.claimRewardsAndStake)
+            }
+          ];
+        });
+      }
     };
     tslib_1.__decorate([
       methodValidators_1.SignStakingValidator,
@@ -44281,6 +45002,14 @@ var require_staking_contract = __commonJS({
       tslib_1.__metadata("design:paramtypes", [String, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "claimRewards", null);
+    tslib_1.__decorate([
+      methodValidators_1.StakingValidator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+      tslib_1.__param(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String, String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], StakingService.prototype, "claimRewardsAndStake", null);
     exports2.StakingService = StakingService;
   }
 });

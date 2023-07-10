@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-06-15 18:05\n"
+"PO-Revision-Date: 2023-07-03 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -192,9 +192,13 @@ msgstr "Vous permet de basculer entre les taux d'intérêt <0>variable</0> et <1
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
 msgstr "Montant"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Amount claimable"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Amount in cooldown"
@@ -511,14 +515,6 @@ msgstr ""
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr ""
 
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIM {symbol}"
-msgstr "RÉCLAMATION {symbole}"
-
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
-msgid "CLAIMING {symbol}"
-msgstr "RÉCLAMATION {symbole}"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -547,12 +543,9 @@ msgid "Choose one of the on-ramp services"
 msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/staking/StakingPanel.tsx
 msgid "Claim"
 msgstr "Réclamer"
-
-#: src/modules/staking/StakingPanel.tsx
-msgid "Claim AAVE"
-msgstr "Réclamer AAVE"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
@@ -567,6 +560,10 @@ msgstr "Réclamez toutes les récompenses"
 msgid "Claim {0}"
 msgstr "Réclamer {0}"
 
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claim {symbol}"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
 msgstr "AAVE Réclamable"
@@ -579,6 +576,10 @@ msgstr ""
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
 msgstr "Réclamer"
+
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
+msgid "Claiming {symbol}"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -667,16 +668,6 @@ msgstr "Temps de recharge pour déstaker"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
 msgstr "Refroidissement..."
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copied"
-msgstr ""
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Copy"
-msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
@@ -806,6 +797,10 @@ msgstr ""
 
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
+msgstr ""
+
+#: src/components/Warnings/USDTParaswapWarning.tsx
+msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
@@ -1362,6 +1357,7 @@ msgid "No assets selected to migrate."
 msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
 msgstr "Aucune récompense à réclamer"
 
@@ -1702,6 +1698,22 @@ msgstr "Statut et configuration de la réserve"
 msgid "Reset"
 msgstr ""
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Restake"
+msgstr ""
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restake {symbol}"
+msgstr ""
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Restaked"
+msgstr ""
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
+msgid "Restaking {symbol}"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Examiner les détails de la taxe d'approbation"
@@ -1920,6 +1932,7 @@ msgid "Staking"
 msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2355,18 +2368,9 @@ msgstr "Aperçu des transactions"
 msgid "Transactions"
 msgstr ""
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "Tx hash"
-msgstr ""
-
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
 msgstr "DÉPOSER {symbole}"
-
-#: src/components/transactions/UnStake/UnStakeActions.tsx
-msgid "UNSTAKING {symbol}"
-msgstr "Arrêter de staker {symbol}"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -2401,6 +2405,10 @@ msgstr "Fenêtre d'arrêt de staking"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
+msgstr ""
+
+#: src/components/transactions/UnStake/UnStakeActions.tsx
+msgid "Unstaking {symbol}"
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -2449,6 +2457,10 @@ msgstr "L'utilisateur essaie d'emprunter plusieurs actifs, y compris un en silo"
 msgid "Utilization Rate"
 msgstr "Taux d'utilisation"
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+msgid "VIEW TX"
+msgstr ""
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
@@ -2481,6 +2493,10 @@ msgstr ""
 msgid "Version 3"
 msgstr ""
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr ""
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr ""
@@ -2496,11 +2512,6 @@ msgstr "Voir détails"
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
 msgstr "Voir sur l'explorer"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View on block explorer"
-msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
