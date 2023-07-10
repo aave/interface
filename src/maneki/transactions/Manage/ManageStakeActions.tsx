@@ -57,7 +57,6 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
         rawError: error,
         txAction: TxAction.APPROVAL,
       });
-      console.log(error);
     }
   };
 
@@ -122,7 +121,7 @@ export const ManageStakeActions = ({ symbol, amount, isWrongNetwork }: ManageSta
       approvalTxState={approvalTxState}
       mainTxState={mainTxState}
       handleAction={handleAction}
-      preparingTransactions={true}
+      preparingTransactions={false}
     />
   );
 };

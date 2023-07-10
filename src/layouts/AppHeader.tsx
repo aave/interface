@@ -101,7 +101,7 @@ export function AppHeader() {
             zIndex: theme.zIndex.appBar,
           })}
         >
-          {currentAccount && chainId !== 97 && <SwitchNetworkHeader />}
+          {currentAccount && chainId !== 97 && !mobileMenuOpen && <SwitchNetworkHeader />}
           <Box
             component="header"
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
