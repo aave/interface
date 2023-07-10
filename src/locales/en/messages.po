@@ -1067,10 +1067,6 @@ msgstr "Funds in the Safety Module"
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "GHO is here! Tell the world!"
-msgstr "GHO is here! Tell the world!"
-
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
@@ -1957,10 +1953,6 @@ msgstr "Share on Lens"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
 msgstr "Share on twitter"
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Share with frens on"
-msgstr "Share with frens on"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"

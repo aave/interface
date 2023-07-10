@@ -119,6 +119,8 @@ export const GhoBorrowModalContent = ({
   const ghoUserQualifiesForDiscount = useRootStore((state) => state.ghoUserQualifiesForDiscount);
   const { borrowCap } = useAssetCaps();
 
+  console.log(borrowTxState);
+
   const { currentMarket: customMarket } = useProtocolDataContext();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
@@ -235,11 +237,11 @@ export const GhoBorrowModalContent = ({
 
   const iconSymbol = poolReserve.iconSymbol;
 
-  if (borrowTxState.success)
+  if (true)
     return (
       <GhoBorrowSuccessView
         action={<Trans>Borrowed</Trans>}
-        amount={amount}
+        amount={'10000'}
         symbol={iconSymbol}
         addToken={addToken}
       />
