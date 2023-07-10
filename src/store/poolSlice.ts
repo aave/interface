@@ -476,7 +476,7 @@ export const createPoolSlice: StateCreator<
         currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? ''
       );
       let signatureDeconstruct: PermitSignature = {
-        amount: maxNewDebtAmount,
+        amount: signedAmount,
         deadline: deadline.toString(),
         v: 0,
         r: '0x0000000000000000000000000000000000000000000000000000000000000000',
