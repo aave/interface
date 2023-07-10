@@ -168,6 +168,7 @@ export const DebtSwitchActions = ({
         deadline: signatureParams ? Number(signatureParams.deadline) : 0,
         repayAll: isMaxSelected,
         txCalldata: route.swapCallData,
+        augustus: route.augustus,
         creditDelSignature: signatureParams?.signature,
         signedAmount: MAX_UINT_AMOUNT,
       });

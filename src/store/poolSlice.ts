@@ -72,6 +72,7 @@ interface DebtSwitchActionsProps {
   maxNewDebtAmount: string;
   repayAll: boolean;
   txCalldata: string;
+  augustus: string;
   deadline: number;
   creditDelSignature?: SignatureLike;
   signedAmount: string;
@@ -462,6 +463,7 @@ export const createPoolSlice: StateCreator<
       maxNewDebtAmount,
       repayAll,
       txCalldata,
+      augustus,
       deadline,
       creditDelSignature,
       signedAmount,
@@ -500,6 +502,7 @@ export const createPoolSlice: StateCreator<
         maxNewDebtAmount,
         repayAll,
         txCalldata,
+        augustus,
         deadline,
         sigV: signatureDeconstruct.v,
         sigR: signatureDeconstruct.r,
