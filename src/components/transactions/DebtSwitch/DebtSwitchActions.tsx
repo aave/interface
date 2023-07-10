@@ -140,8 +140,8 @@ export const DebtSwitchActions = ({
             loading: false,
             success: true,
           });
+          fetchApprovedAmount(true);
         }
-        fetchApprovedAmount(true);
       }
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
