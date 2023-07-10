@@ -3,8 +3,8 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography /*, useMediaQuery, useTheme*/ } from '@mui/material';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ReactNode, useRef, useState } from 'react';
+import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,12 +12,14 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
+import { GhoSuccessImage } from './GhoSuccessImage';
+
 // import LensterIcon from '/public/icons/lenster.svg';
 
 export type SuccessTxViewProps = {
   txHash?: string;
   action?: ReactNode;
-  amount?: string;
+  amount: string;
   symbol?: string;
   collateral?: boolean;
   rate?: InterestRate;
@@ -48,22 +50,8 @@ export const GhoBorrowSuccessView = ({
   // const sm = useMediaQuery(theme.breakpoints.down('xsm'));
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-      //Our first draw
-      if (context) {
-        const img = new Image();
-        img.onload = () => {
-          context.drawImage(img, 0, 0);
-          console.log('123');
-          setGeneratedImage(canvasRef.current?.toDataURL('png'));
-        };
-        img.src = './asd.svg';
-      }
-    }
-  });
+  const compactedNumber = compactNumber({ value: amount, visibleDecimals: 2, roundDown: true });
+  const finalNumber = `${compactedNumber.prefix}${compactedNumber.postfix}`;
 
   const onCopyImage = () => {
     if (canvasRef.current) {
@@ -71,6 +59,25 @@ export const GhoBorrowSuccessView = ({
         navigator.clipboard.setImageData(blob, 'png');
         console.log(blob);
       });
+    }
+  };
+
+  const transformImage = (svg: SVGSVGElement) => {
+    console.log(123123);
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      console.log(svg.outerHTML);
+      //Our first draw
+      if (context) {
+        const img = new Image();
+        img.onload = () => {
+          context.drawImage(img, 0, 0);
+          console.log('123');
+          setGeneratedImage(canvasRef.current?.toDataURL('png', 1));
+        };
+        img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svg.outerHTML)}`;
+      }
     }
   };
 
@@ -166,6 +173,7 @@ export const GhoBorrowSuccessView = ({
         <>
           <img src={generatedImage} />
           <canvas style={{ display: 'none' }} width={1134} height={900} ref={canvasRef} />
+          <GhoSuccessImage onSuccessEditing={transformImage} text={finalNumber} />
         </>
         /*
         <Box

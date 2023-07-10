@@ -17,12 +17,7 @@ interface CompactNumberProps {
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-function CompactNumber({
-  value,
-  visibleDecimals = 2,
-  roundDown,
-  compactThreshold,
-}: CompactNumberProps) {
+export const compactNumber = ({ value, visibleDecimals = 2, roundDown, compactThreshold }: CompactNumberProps) => {
   const bnValue = valueToBigNumber(value);
 
   let integerPlaces = bnValue.toFixed(0).length;
@@ -44,6 +39,12 @@ function CompactNumber({
     maximumFractionDigits: visibleDecimals,
     minimumFractionDigits: visibleDecimals,
   }).format(formattedValue);
+
+  return { prefix, postfix };
+};
+
+function CompactNumber({ value, visibleDecimals, roundDown }: CompactNumberProps) {
+  const { prefix, postfix } = compactNumber({ value, visibleDecimals, roundDown });
 
   return (
     <>
