@@ -457,10 +457,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Buy Crypto With Fiat"
-msgstr "Buy Crypto With Fiat"
-
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Buy Crypto with Fiat"
 msgstr "Buy Crypto with Fiat"
@@ -824,10 +820,6 @@ msgstr "Delegation"
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Details"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Developers"
-msgstr "Developers"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
