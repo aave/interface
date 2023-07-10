@@ -46,6 +46,7 @@ import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewar
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
@@ -131,6 +132,12 @@ export interface PoolSlice {
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
   ) => Promise<ApproveDelegationType>;
+  generateCreditDelegationSignatureRequest: (
+    approval: Approval & {
+      deadline: string;
+      spender: string;
+    }
+  ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
   estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
 }
@@ -453,6 +460,57 @@ export const createPoolSlice: StateCreator<
         augustus,
         permitSignature,
       });
+    },
+    generateCreditDelegationSignatureRequest: async ({
+      amount,
+      deadline,
+      underlyingAsset,
+      spender,
+    }) => {
+      const user = get().account;
+      const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
+
+      const { name } = await getTokenData(underlyingAsset);
+      const chainId = get().currentChainId;
+
+      const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
+
+      const nonce = await erc20_2612Service.getNonce({
+        token: underlyingAsset,
+        owner: user,
+      });
+
+      const typedData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          DelegationWithSig: [
+            { name: 'delegatee', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'DelegationWithSig' as const,
+        domain: {
+          name,
+          version: '1',
+          chainId: chainId,
+          verifyingContract: underlyingAsset,
+        },
+        message: {
+          delegatee: spender,
+          value: amount,
+          nonce,
+          deadline,
+        },
+      };
+
+      return JSON.stringify(typedData);
     },
     debtSwitch: ({
       debtAssetUnderlying,

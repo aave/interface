@@ -74,7 +74,7 @@ export const DebtSwitchActions = ({
     //addTransaction,
     debtSwitch,
     walletApprovalMethodPreference,
-    generatePermitPayloadForMigrationBorrowAsset,
+    generateCreditDelegationSignatureRequest,
   ] = useRootStore((state) => [
     state.getCreditDelegationApprovedAmount,
     state.currentMarketData,
@@ -83,7 +83,7 @@ export const DebtSwitchActions = ({
     //state.addTransaction,
     state.debtSwitch,
     state.walletApprovalMethodPreference,
-    state.generatePermitPayloadForMigrationBorrowAsset,
+    state.generateCreditDelegationSignatureRequest,
   ]);
   const {
     approvalTxState,
@@ -111,12 +111,12 @@ export const DebtSwitchActions = ({
     try {
       if (requiresApproval && approvedAmount) {
         if (useSignature) {
-          // TO-DO: Move from generatePermitPayloadForMigrationBorrowAsset to poolSLice
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const signatureRequest = await generatePermitPayloadForMigrationBorrowAsset({
+          const signatureRequest = await generateCreditDelegationSignatureRequest({
             underlyingAsset: targetReserve.variableDebtTokenAddress,
             deadline,
             amount: MAX_UINT_AMOUNT,
+            spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
           });
           const response = await signTxData(signatureRequest);
           setSignatureParams({ signature: response, deadline, amount: MAX_UINT_AMOUNT });
