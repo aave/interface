@@ -226,6 +226,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon.COLLECTOR,
       V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -510,6 +511,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Optimism.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Optimism.DEBT_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_polygon_v3]: {
@@ -532,6 +534,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Polygon.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Polygon.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
