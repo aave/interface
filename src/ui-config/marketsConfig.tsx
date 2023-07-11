@@ -132,7 +132,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
-      DEBT_SWITCH_ADAPTER: '0x4318f417a11639386382f20b477180abc7ee9dd4',
+      DEBT_SWITCH_ADAPTER: '0x4a662cea899a1578ae80822f6b3e464e5728f5de',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -162,7 +162,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
-      DEBT_SWITCH_ADAPTER: '0xc317970223c39a3a7249119cdcdd8c38b56510a9',
+      DEBT_SWITCH_ADAPTER: '0x103264ffaecd91133079b4aaf7cf832b77ed9d7f',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
