@@ -143,7 +143,16 @@ export const DebtSwitchModalContent = ({
   if (mainTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Switched borrow position</Trans>}
+        customAction={
+          <Typography>
+            <Trans>You switched borrow position of</Trans>
+            <br />
+            <FormattedNumber value={amountRef.current} compact variant="secondary14" />{' '}
+            {poolReserve.symbol} <Trans>to</Trans>{' '}
+            <FormattedNumber value={outputAmount} compact variant="secondary14" />{' '}
+            {switchTarget.reserve.symbol}
+          </Typography>
+        }
         amount={amountRef.current}
         symbol={poolReserve.symbol}
       />

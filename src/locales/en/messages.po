@@ -2080,10 +2080,6 @@ msgstr "Switch to"
 msgid "Switched"
 msgstr "Switched"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
-msgid "Switched borrow position"
-msgstr "Switched borrow position"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Switching"
@@ -2726,6 +2722,10 @@ msgstr "You have no AAVE/stkAAVE balance to delegate."
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "You switched borrow position of"
+msgstr "You switched borrow position of"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -2877,6 +2877,10 @@ msgstr "staking view"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "to"
+msgstr "to"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
