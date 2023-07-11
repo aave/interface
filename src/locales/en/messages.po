@@ -1889,6 +1889,10 @@ msgstr "SEE CHARTS"
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Save and share"
+msgstr "Save and share"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
 msgstr "Seatbelt report"
@@ -1949,6 +1953,14 @@ msgstr "Setup notifications about your Health Factor using the Hal app."
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Share on Lens"
 msgstr "Share on Lens"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Share on Lenster"
+msgstr "Share on Lenster"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Share on Twitter"
+msgstr "Share on Twitter"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
