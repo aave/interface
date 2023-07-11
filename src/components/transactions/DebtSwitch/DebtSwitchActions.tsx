@@ -198,21 +198,22 @@ export const DebtSwitchActions = ({
   const fetchApprovedAmount = useCallback(
     async (forceApprovalCheck?: boolean) => {
       // Check approved amount on-chain on first load or if an action triggers a re-check such as an approveDelegation being confirmed
-      if (approvedAmount === undefined || forceApprovalCheck) {
+      let approval = approvedAmount;
+      if (approval === undefined || forceApprovalCheck) {
         setLoadingTxns(true);
-        const approvedAmount = await getCreditDelegationApprovedAmount({
+        approval = await getCreditDelegationApprovedAmount({
           debtTokenAddress: targetReserve.variableDebtTokenAddress,
           delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
         });
-        setApprovedAmount(approvedAmount);
+        setApprovedAmount(approval);
       } else {
         setRequiresApproval(false);
         setApprovalTxState({});
       }
 
-      if (approvedAmount) {
+      if (approval) {
         const fetchedRequiresApproval = checkRequiresApproval({
-          approvedAmount: approvedAmount.amount,
+          approvedAmount: approval.amount,
           amount: amountToReceive,
           signedAmount: '0',
         });
@@ -233,10 +234,17 @@ export const DebtSwitchActions = ({
     ]
   );
 
-  // Run on first load of reserve to determine execution path
+  // Run on first load and when the target reserve changes
   useEffect(() => {
-    fetchApprovedAmount();
-  }, [fetchApprovedAmount, poolReserve.underlyingAsset]);
+    if (!approvedAmount) {
+      fetchApprovedAmount();
+    } else if (
+      approvedAmount.debtTokenAddress !== targetReserve.variableDebtTokenAddress &&
+      amountToSwap !== '0'
+    ) {
+      fetchApprovedAmount(true);
+    }
+  }, [amountToSwap, approvedAmount, fetchApprovedAmount, targetReserve.variableDebtTokenAddress]);
 
   // Update gas estimation
   useEffect(() => {
