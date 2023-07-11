@@ -236,12 +236,11 @@ export const DebtSwitchActions = ({
 
   // Run on first load and when the target reserve changes
   useEffect(() => {
+    if (amountToSwap === '0') return;
+
     if (!approvedAmount) {
       fetchApprovedAmount();
-    } else if (
-      approvedAmount.debtTokenAddress !== targetReserve.variableDebtTokenAddress &&
-      amountToSwap !== '0'
-    ) {
+    } else if (approvedAmount.debtTokenAddress !== targetReserve.variableDebtTokenAddress) {
       fetchApprovedAmount(true);
     }
   }, [amountToSwap, approvedAmount, fetchApprovedAmount, targetReserve.variableDebtTokenAddress]);
