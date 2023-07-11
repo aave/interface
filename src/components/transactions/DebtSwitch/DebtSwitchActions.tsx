@@ -102,6 +102,8 @@ export const DebtSwitchActions = ({
   const [useSignature, setUseSignature] = useState(false);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
+  const approvalWithSignatureAvailable = currentMarketData.v3;
+
   useEffect(() => {
     const preferSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
     setUseSignature(preferSignature);
@@ -110,7 +112,7 @@ export const DebtSwitchActions = ({
   const approval = async () => {
     try {
       if (requiresApproval && approvedAmount) {
-        if (useSignature) {
+        if (useSignature && approvalWithSignatureAvailable) {
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generateCreditDelegationSignatureRequest({
             underlyingAsset: targetReserve.variableDebtTokenAddress,
@@ -277,7 +279,7 @@ export const DebtSwitchActions = ({
         content: <Trans>Switch</Trans>,
         handleClick: action,
       }}
-      tryPermit
+      tryPermit={approvalWithSignatureAvailable}
     />
   );
 };
