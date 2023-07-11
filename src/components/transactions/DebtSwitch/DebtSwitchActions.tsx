@@ -140,6 +140,7 @@ export const DebtSwitchActions = ({
             loading: false,
             success: true,
           });
+          setTxError(undefined);
           fetchApprovedAmount(true);
         }
       }
@@ -272,7 +273,7 @@ export const DebtSwitchActions = ({
       fetchingData={loading}
       errorParams={{
         loading: false,
-        disabled: blocked,
+        disabled: blocked || !approvalTxState?.success,
         content: <Trans>Switch</Trans>,
         handleClick: action,
       }}
