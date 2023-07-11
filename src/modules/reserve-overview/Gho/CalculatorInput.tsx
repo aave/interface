@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { NumberFormatValues } from 'react-number-format';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 const sliderStyles = {
   color: '#669AFF',
@@ -53,6 +55,7 @@ export const CalculatorInput = ({
   sliderMin = 0,
   onValueChanged,
 }: CalculatorInputProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const [toolTipVisible, setToolTipVisible] = useState(false);
 
   let formattedValue = value;
@@ -120,6 +123,11 @@ export const CalculatorInput = ({
         size="small"
         value={value ?? 0}
         onChange={(_, val) => onValueChanged(Number(val))}
+        onChangeCommitted={() =>
+          trackEvent(RESERVE_DETAILS.GHO_CALCULATOR_AMOUNT_CHANGE, {
+            type: title,
+          })
+        }
         step={5}
         min={sliderMin}
         max={sliderMax}

@@ -10,6 +10,8 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
+import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
 import { CalculatorInput } from './CalculatorInput';
@@ -26,6 +28,7 @@ let initialRateValuesSet = false;
 
 // We start this calculator off showing values to reach max discount
 export const GhoDiscountCalculator = () => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const { ghoLoadingData, ghoReserveData } = useAppDataContext();
   const { breakpoints, palette } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
@@ -93,6 +96,8 @@ export const GhoDiscountCalculator = () => {
         setGhoBorrow(10000);
         setStkAave(100);
       }
+
+      trackEvent(RESERVE_DETAILS.GHO_CALCULATOR_ADD);
     };
 
     let alertText = null;
