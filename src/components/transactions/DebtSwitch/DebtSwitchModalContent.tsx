@@ -270,7 +270,7 @@ export const DebtSwitchModalContent = ({
 
 const SelectOptionListHeader = () => {
   return (
-    <ListSubheader sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}>
+    <ListSubheader sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}`, mt: -1 })}>
       <Stack direction="row" sx={{ py: 4 }} gap={14}>
         <Typography variant="subheader2">
           <Trans>Select an asset</Trans>

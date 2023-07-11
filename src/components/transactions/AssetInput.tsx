@@ -208,6 +208,7 @@ export const AssetInput = <T extends Asset = Asset>({
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
+                MenuProps={{ sx: { maxHeight: '240px' } }}
                 sx={{
                   p: 0,
                   '&.AssetInput__select .MuiOutlinedInput-input': {
