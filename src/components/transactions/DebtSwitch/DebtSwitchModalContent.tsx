@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { MaxUint256 } from '@ethersproject/constants';
 import { ArrowDownIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, ListItemText, ListSubheader, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
@@ -146,17 +147,23 @@ export const DebtSwitchModalContent = ({
     return (
       <TxSuccessView
         customAction={
-          <Typography>
-            <Trans>You switched borrow position of</Trans>
-            <br />
-            <FormattedNumber value={amountRef.current} compact variant="secondary14" />{' '}
-            {poolReserve.symbol} <Trans>to</Trans>{' '}
-            <FormattedNumber value={inputAmount} compact variant="secondary14" />{' '}
-            {switchTarget.reserve.symbol}
-          </Typography>
+          <Stack gap={3}>
+            <Typography variant="description" color="text.primary">
+              <Trans>You&apos;ve successfully switched borrow position.</Trans>
+            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="center" gap={1}>
+              <TokenIcon symbol={poolReserve.symbol} sx={{ mx: 1 }} />
+              <FormattedNumber value={amountRef.current} compact variant="subheader1" />
+              {poolReserve.symbol}
+              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+              <TokenIcon symbol={switchTarget.reserve.symbol} sx={{ mx: 1 }} />
+              <FormattedNumber value={inputAmount} compact variant="subheader1" />
+              {switchTarget.reserve.symbol}
+            </Stack>
+          </Stack>
         }
-        amount={amountRef.current}
-        symbol={poolReserve.symbol}
       />
     );
 
