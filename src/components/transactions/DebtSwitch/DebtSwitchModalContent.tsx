@@ -121,6 +121,8 @@ export const DebtSwitchModalContent = ({
     0
   );
 
+  const poolReserveAmountUSD = Number(amount) * Number(poolReserve.priceInUSD);
+
   let blockingError: ErrorType | undefined = undefined;
   if (BigNumber(outputAmount).gt(availableLiquidityOfTargetReserve)) {
     blockingError = ErrorType.INSUFFICIENT_LIQUIDITY;
@@ -163,7 +165,7 @@ export const DebtSwitchModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={outputAmountUSD}
+        usdValue={poolReserveAmountUSD.toString()}
         symbol={poolReserve.iconSymbol}
         assets={[
           {
@@ -177,11 +179,6 @@ export const DebtSwitchModalContent = ({
         inputTitle={<Trans>Borrowed asset amount</Trans>}
         balanceText={
           <React.Fragment>
-            {currentRateMode === InterestRate.Variable ? (
-              <Trans>Variable</Trans>
-            ) : (
-              <Trans>Stable</Trans>
-            )}{' '}
             <Trans>Borrow balance</Trans>
           </React.Fragment>
         }

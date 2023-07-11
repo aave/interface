@@ -1887,7 +1887,6 @@ msgid "Spanish"
 msgstr "Spanish"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
@@ -2502,7 +2501,6 @@ msgid "VOTE YAE"
 msgstr "VOTE YAE"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
