@@ -44,7 +44,7 @@ export const DebtSwitchModalDetails = ({
 }: DebtSwitchModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
-  const targetAmountAfterSwap = valueToBigNumber(switchTarget.underlyingBalance).plus(
+  const targetAmountAfterSwap = valueToBigNumber(switchTarget.variableBorrows).plus(
     valueToBigNumber(toAmount)
   );
 

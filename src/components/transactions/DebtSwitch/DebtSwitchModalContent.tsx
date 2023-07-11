@@ -151,7 +151,7 @@ export const DebtSwitchModalContent = ({
             <br />
             <FormattedNumber value={amountRef.current} compact variant="secondary14" />{' '}
             {poolReserve.symbol} <Trans>to</Trans>{' '}
-            <FormattedNumber value={outputAmount} compact variant="secondary14" />{' '}
+            <FormattedNumber value={inputAmount} compact variant="secondary14" />{' '}
             {switchTarget.reserve.symbol}
           </Typography>
         }
