@@ -237,7 +237,7 @@ export const GhoBorrowModalContent = ({
 
   const iconSymbol = poolReserve.iconSymbol;
 
-  if (true)
+  if ('asd' === 'asd')
     return (
       <GhoBorrowSuccessView
         action={<Trans>Borrowed</Trans>}
