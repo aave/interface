@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import {
   GhoIncentivesCard,
@@ -18,7 +18,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -38,7 +37,9 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
+import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { GhoBorrowSuccessView } from './GhoBorrowSuccessView';
+import { ParameterChangewarning } from './ParameterChangewarning';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -337,42 +338,15 @@ export const GhoBorrowModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       {displayRiskCheckbox && (
-        <>
-          <Warning severity="error" sx={{ my: 6 }}>
-            <Trans>
-              Borrowing this amount will reduce your health factor and increase risk of liquidation.
-            </Trans>
-          </Warning>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              mx: '24px',
-              mb: '12px',
-            }}
-          >
-            <Checkbox
-              checked={riskCheckboxAccepted}
-              onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
-              size="small"
-              data-cy={'risk-checkbox'}
-            />
-            <Typography variant="description">
-              <Trans>I acknowledge the risks involved.</Trans>
-            </Typography>
-          </Box>
-        </>
+        <BorrowAmountWarning
+          riskCheckboxAccepted={riskCheckboxAccepted}
+          onRiskCheckboxChange={() => {
+            setRiskCheckboxAccepted(!riskCheckboxAccepted);
+          }}
+        />
       )}
 
-      <Warning severity="info" sx={{ my: 6 }}>
-        <Trans>
-          <b>Attention:</b> Parameter changes via governance can alter your account health factor
-          and risk of liquidation. Follow the{' '}
-          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
-        </Trans>
-      </Warning>
+      <ParameterChangewarning underlyingAsset={underlyingAsset} />
 
       <BorrowActions
         poolReserve={poolReserve}

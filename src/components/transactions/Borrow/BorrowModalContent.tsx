@@ -5,12 +5,11 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -18,7 +17,6 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
@@ -35,6 +33,8 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
+import { BorrowAmountWarning } from './BorrowAmountWarning';
+import { ParameterChangewarning } from './ParameterChangewarning';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -114,7 +114,6 @@ export const BorrowModalContent = ({
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
@@ -292,60 +291,15 @@ export const BorrowModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       {displayRiskCheckbox && (
-        <>
-          <Warning severity="error" sx={{ my: 6 }}>
-            <Trans>
-              Borrowing this amount will reduce your health factor and increase risk of liquidation.
-            </Trans>
-          </Warning>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              mx: '24px',
-              mb: '12px',
-            }}
-          >
-            <Checkbox
-              checked={riskCheckboxAccepted}
-              onChange={() => {
-                trackEvent(GENERAL.ACCEPT_RISK, {
-                  modal: 'Borrow',
-                  riskCheckboxAccepted: riskCheckboxAccepted,
-                });
-
-                setRiskCheckboxAccepted(!riskCheckboxAccepted);
-              }}
-              size="small"
-              data-cy={'risk-checkbox'}
-            />
-            <Typography variant="description">
-              <Trans>I acknowledge the risks involved.</Trans>
-            </Typography>
-          </Box>
-        </>
+        <BorrowAmountWarning
+          riskCheckboxAccepted={riskCheckboxAccepted}
+          onRiskCheckboxChange={() => {
+            setRiskCheckboxAccepted(!riskCheckboxAccepted);
+          }}
+        />
       )}
 
-      <Warning severity="info" sx={{ my: 6 }}>
-        <Trans>
-          <b>Attention:</b> Parameter changes via governance can alter your account health factor
-          and risk of liquidation. Follow the{' '}
-          <a
-            onClick={() => {
-              trackEvent(GENERAL.EXTERNAL_LINK, {
-                asset: underlyingAsset,
-                Link: 'Governance Link',
-              });
-            }}
-            href="https://governance.aave.com/"
-          >
-            Aave governance forum
-          </a>{' '}
-          for updates.
-        </Trans>
-      </Warning>
+      <ParameterChangewarning underlyingAsset={underlyingAsset} />
 
       <BorrowActions
         poolReserve={poolReserve}
