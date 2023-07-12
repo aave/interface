@@ -12,6 +12,7 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
+  useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
@@ -103,6 +104,7 @@ export const AssetInput = <T extends Asset = Asset>({
   selectOptionHeader,
   selectOption,
 }: AssetInputProps<T>) => {
+  const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -212,7 +214,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   sx: {
                     maxHeight: '240px',
                     '.MuiPaper-root': {
-                      border: '1px solid #EBEBED1F',
+                      border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
                       boxShadow: '0px 2px 10px 0px #0000001A',
                     },
                   },
