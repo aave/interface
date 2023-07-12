@@ -414,6 +414,7 @@ export const swap = (
     isBorrowed = false,
     isVariableBorrowedAPY = true,
     isCollateralFromAsset,
+    changeApprove = false,
     amount,
     hasApproval = true,
     isMaxAmount = false,
@@ -423,6 +424,7 @@ export const swap = (
     isBorrowed?: boolean;
     isVariableBorrowedAPY?: boolean;
     isCollateralFromAsset?: boolean;
+    changeApprove?: boolean;
     amount: number;
     hasApproval: boolean;
     isMaxAmount?: boolean;
@@ -464,11 +466,13 @@ export const swap = (
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       cy.setAmount(amount, isMaxAmount);
-      cy.get('[data-cy=Modal]')
-        .find('[data-cy=approveButtonChange]')
-        .click()
-        .get('[data-cy=approveOption_Transaction]')
-        .click();
+      if (!changeApprove) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
       cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
