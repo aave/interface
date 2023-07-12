@@ -51,7 +51,7 @@ export const DebtSwitchModalContent = ({
   const { reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { gasLimit, mainTxState, txError } = useModalContext();
+  const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
 
   const switchTargets = reserves
     .filter(
@@ -65,6 +65,7 @@ export const DebtSwitchModalContent = ({
       symbol: reserve.symbol,
       iconSymbol: reserve.iconSymbol,
       variableApy: reserve.variableBorrowAPY,
+      priceInUsd: reserve.priceInUSD,
     }));
 
   // states
@@ -86,7 +87,6 @@ export const DebtSwitchModalContent = ({
   const amount = isMaxSelected ? maxAmountToSwitch : _amount;
 
   const {
-    inputAmountUSD,
     inputAmount,
     outputAmount,
     outputAmountUSD,
@@ -109,6 +109,7 @@ export const DebtSwitchModalContent = ({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToSwitch : value;
     setAmount(value);
+    setTxError(undefined);
   };
 
   const availableBorrowCap =
@@ -123,6 +124,7 @@ export const DebtSwitchModalContent = ({
   );
 
   const poolReserveAmountUSD = Number(amount) * Number(poolReserve.priceInUSD);
+  const targetReserveAmountUSD = Number(inputAmount) * Number(targetReserve.priceInUsd);
 
   let blockingError: ErrorType | undefined = undefined;
   if (BigNumber(outputAmount).gt(availableLiquidityOfTargetReserve)) {
@@ -152,12 +154,13 @@ export const DebtSwitchModalContent = ({
               <Trans>You&apos;ve successfully switched borrow position.</Trans>
             </Typography>
             <Stack direction="row" alignItems="center" justifyContent="center" gap={1}>
-              <TokenIcon symbol={poolReserve.symbol} sx={{ mx: 1 }} />
+              <TokenIcon symbol={poolReserve.iconSymbol} sx={{ mx: 1 }} />
               <FormattedNumber value={amountRef.current} compact variant="subheader1" />
               {poolReserve.symbol}
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
               </SvgIcon>
+              <Trans>~</Trans>
               <TokenIcon symbol={switchTarget.reserve.symbol} sx={{ mx: 1 }} />
               <FormattedNumber value={inputAmount} compact variant="subheader1" />
               {switchTarget.reserve.symbol}
@@ -196,17 +199,17 @@ export const DebtSwitchModalContent = ({
           <ArrowDownIcon />
         </SvgIcon>
 
-        {/** For debt switch, inputAmountUSD > outputAmountUSD means that more is being borrowed to cover the current borrow balance as exactOut, so this should be treated as positive impact */}
+        {/** For debt switch, targetAmountUSD (input) > poolReserveAmountUSD (output) means that more is being borrowed to cover the current borrow balance as exactOut, so this should be treated as positive impact */}
         <PriceImpactTooltip
           loading={loadingSkeleton}
-          outputAmountUSD={inputAmountUSD}
-          inputAmountUSD={outputAmountUSD}
+          outputAmountUSD={targetReserveAmountUSD.toString()}
+          inputAmountUSD={poolReserveAmountUSD.toString()}
         />
       </Box>
       <AssetInput<SwitchTargetAsset>
         value={inputAmount}
         onSelect={setTargetReserve}
-        usdValue={inputAmountUSD}
+        usdValue={targetReserveAmountUSD.toString()}
         symbol={targetReserve.symbol}
         assets={switchTargets}
         inputTitle={<Trans>Switch to</Trans>}
@@ -230,7 +233,13 @@ export const DebtSwitchModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          <ListSlippageButton
+            selectedSlippage={maxSlippage}
+            setSlippage={(newMaxSlippage) => {
+              setTxError(undefined);
+              setMaxSlippage(newMaxSlippage);
+            }}
+          />
         }
       >
         <DebtSwitchModalDetails
