@@ -37,7 +37,6 @@ import {
   getMaxGhoMintAmount,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { amountToUsd } from 'src/utils/utils';
 
@@ -77,9 +76,10 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
 
-  const {
-    poolComputed: { minRemainingBaseTokenBalance },
-  } = useRootStore();
+  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+    store.poolComputed.minRemainingBaseTokenBalance,
+    store.displayGho,
+  ]);
   const { baseAssetSymbol } = currentNetworkConfig;
   let balance = walletBalances[reserve.underlyingAsset];
   if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
@@ -88,7 +88,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
-  const isGho = isGhoAndSupported({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
 
   if (isGho) {
     const maxMintAmount = getMaxGhoMintAmount(user);

@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { useRootStore } from 'src/store/root';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -37,6 +37,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const { currentMarket, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -72,7 +73,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     );
   };
 
-  const isGho = isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket });
+  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket });
 
   return (
     <TopInfoPanel

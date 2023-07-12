@@ -10,8 +10,8 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -53,6 +53,7 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
   } = useAppDataContext();
   const { walletBalances, loading } = useWalletBalances();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -70,7 +71,7 @@ export const SupplyAssetsList = () => {
     .filter(
       (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
-        !isGhoAndSupported({ symbol: reserve.symbol, currentMarket })
+        !displayGho({ symbol: reserve.symbol, currentMarket })
     )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
