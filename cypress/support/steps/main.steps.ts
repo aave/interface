@@ -450,7 +450,7 @@ export const swap = (
         .click();
       cy.get(
         `[data-cy=Modal] h2:contains(${
-          isBorrowed ? 'Switch borrow position' : 'Switch ${_shortNameFrom}'
+          isBorrowed ? 'Switch borrow position' : `Switch ${_shortNameFrom}`
         })`
       ).should('be.visible');
     });
