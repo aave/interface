@@ -160,7 +160,6 @@ export const DebtSwitchModalContent = ({
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
               </SvgIcon>
-              <Trans>~</Trans>
               <TokenIcon symbol={switchTarget.reserve.symbol} sx={{ mx: 1 }} />
               <FormattedNumber value={inputAmount} compact variant="subheader1" />
               {switchTarget.reserve.symbol}
