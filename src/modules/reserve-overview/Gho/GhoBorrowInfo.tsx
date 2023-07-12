@@ -9,6 +9,8 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { PanelItem } from '../ReservePanels';
 
@@ -30,10 +32,19 @@ interface GhoBorrowInfoProps {
 }
 
 const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Stack direction="row">
       <CapsCircularStatus
         value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
+        onClick={(open) => {
+          if (open) {
+            trackEvent(GENERAL.TOOL_TIP, {
+              tooltip: 'Total GHO borrowed',
+            });
+          }
+        }}
         tooltipContent={
           <>
             <Trans>
@@ -102,6 +113,8 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
 };
 
 const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Stack direction="row" gap={3}>
       <Stack>
@@ -153,6 +166,13 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
       <Box>
         <CapsCircularStatus
           value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
+          onClick={(open) => {
+            if (open) {
+              trackEvent(GENERAL.TOOL_TIP, {
+                tooltip: 'Total GHO borrowed',
+              });
+            }
+          }}
           tooltipContent={
             <>
               <Trans>

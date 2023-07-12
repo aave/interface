@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../primitives/Link';
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
@@ -19,5 +20,15 @@ export const FixedAPYTooltipText = (
 );
 
 export const FixedAPYTooltip = (props: FixedToolTipProps) => {
-  return <TextWithTooltip {...props}>{FixedAPYTooltipText}</TextWithTooltip>;
+  return (
+    <TextWithTooltip
+      event={{
+        eventName: GENERAL.TOOL_TIP,
+        eventParams: { tooltip: 'GHO APY' },
+      }}
+      {...props}
+    >
+      {FixedAPYTooltipText}
+    </TextWithTooltip>
+  );
 };
