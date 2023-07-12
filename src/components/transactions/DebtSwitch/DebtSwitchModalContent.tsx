@@ -196,10 +196,11 @@ export const DebtSwitchModalContent = ({
           <ArrowDownIcon />
         </SvgIcon>
 
+        {/** For debt switch, inputAmountUSD > outputAmountUSD means that more is being borrowed to cover the current borrow balance as exactOut, so this should be treated as positive impact */}
         <PriceImpactTooltip
           loading={loadingSkeleton}
-          outputAmountUSD={outputAmountUSD}
-          inputAmountUSD={inputAmountUSD}
+          outputAmountUSD={inputAmountUSD}
+          inputAmountUSD={outputAmountUSD}
         />
       </Box>
       <AssetInput<SwitchTargetAsset>
