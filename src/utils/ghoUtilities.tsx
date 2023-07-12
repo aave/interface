@@ -7,29 +7,12 @@ export const GHO_SYMBOL = 'GHO';
  * @param {GhoUtilMintingAvailableParams} - The reserve symbol and current market name
  * @returns {bool} - If the GHO token is available for minting
  */
-type GhoUtilMintingAvailableParams = {
-  symbol: string;
-  currentMarket: string;
-};
 
 export const GHO_SUPPORTED_MARKETS = [
   'proto_mainnet_v3',
   'fork_proto_mainnet_v3',
   'proto_mainnet_gho_v3',
 ];
-
-/**
- * Determines if the provided asset is GHO and is available to borrow on a given market. It takes in symbol as a param due that this can be run within a loop over all assets to determine whether to display GHO-related components in the UI.
- * @param {string} symbol - The asset symbol, ie GHO, AAVE, etc.
- * @param {string} currentMarket - The market name to check against
- * @returns {boolean} - If the provided asset is GHO and also if the market passed in supports GHO.
- */
-export const isGhoAndSupported = ({
-  symbol,
-  currentMarket,
-}: GhoUtilMintingAvailableParams): boolean => {
-  return symbol === GHO_SYMBOL && GHO_SUPPORTED_MARKETS.includes(currentMarket);
-};
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
