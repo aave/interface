@@ -15,6 +15,7 @@ export default defineConfig({
       '/**/e-mode.avalanche-v3.cy.ts',
       '/**/isolated-mode.avalanche-v3.cy.ts',
       '/**/critical-conditions.avalanche-v2.cy.ts',
+      '/**/switch.avalanche-v3.cy.ts',
     ],
   },
 });
