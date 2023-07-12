@@ -155,7 +155,7 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleSwap];
+    options.excludeContractMethods = [ContractMethod.simpleSwap, ContractMethod.directUniV3Swap];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -241,7 +241,7 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleBuy];
+    options.excludeContractMethods = [ContractMethod.simpleBuy, ContractMethod.directUniV3Buy];
   }
 
   const swapper = ExactOutSwapper(chainId);
