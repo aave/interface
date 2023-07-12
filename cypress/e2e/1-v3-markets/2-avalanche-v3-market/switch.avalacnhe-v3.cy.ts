@@ -1,10 +1,7 @@
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import { skipState } from '../../../support/steps/common';
-import {
-  configEnvWithTenderlyAvalancheFork,
-  configEnvWithTenderlyPolygonFork,
-} from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
 import { borrow, supply, swap } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 
