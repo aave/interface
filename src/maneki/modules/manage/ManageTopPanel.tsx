@@ -13,6 +13,10 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 
+export const ManageTemporaryTopPanel = () => {
+  return <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>} />;
+};
+
 export const ManageTopPanel = () => {
   const {
     stakedPAW,

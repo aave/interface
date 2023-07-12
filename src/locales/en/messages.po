@@ -1321,6 +1321,7 @@ msgid "MAX"
 msgstr "MAX"
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
+#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Manage PAW"
 msgstr "Manage PAW"

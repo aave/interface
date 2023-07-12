@@ -74,7 +74,7 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: 'https://docs.maneki.finance/',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
@@ -84,12 +84,12 @@ const moreMenuItems: MoreMenuItem[] = [
   //   icon: <BookOpenIcon />,
   // },
   {
-    link: 'https://discord.gg/7kHKnkDEUf',
+    link: 'https://discord.gg/kecSAkkF',
     title: t`Discord`,
     icon: <DiscordIcon />,
   },
   {
-    link: 'https://github.com/aave/interface',
+    link: 'https://github.com/',
     title: t`Github`,
     icon: <GithubIcon />,
   },
