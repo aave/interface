@@ -61,7 +61,12 @@ export const ManageClaimAllVest = ({ symbol, isWrongNetwork, action }: ManekiMod
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
+      <Image
+        src={'/maneki-logo-center.png'}
+        width={'200px'}
+        height={'200px'}
+        alt="maneki cat in 3d"
+      />
       <Typography variant="h3" sx={{ color: 'text.secondary' }}>
         <Trans>Claiming All Vests</Trans>
       </Typography>
