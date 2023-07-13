@@ -203,8 +203,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       gradients: {
         aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
         newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
-        testGradient:
-          'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08))',
       },
     },
     spacing: 4,
