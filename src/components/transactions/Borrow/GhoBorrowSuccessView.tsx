@@ -3,20 +3,67 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { ContentCopyOutlined, Twitter } from '@mui/icons-material';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, IconButton, styled, SvgIcon, SvgIconProps, Typography } from '@mui/material';
 import { ReactNode, useRef, useState } from 'react';
 import { LensterIcon } from 'src/components/icons/LensterIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
-import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 import { GhoSuccessImage } from './GhoSuccessImage';
 
-// import LensterIcon from '/public/icons/lenster.svg';
+const CopyImageButton = styled(Button)(() => ({
+  borderRadius: 32,
+  background:
+    'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08))',
+  transition: 'transform 0.1s',
+  height: 48,
+  '&:hover': {
+    background:
+      'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))',
+    transform: 'translateY(-3px)',
+    border: '1px solid #FFFFFF20',
+  },
+  backdropFilter: 'blur(5px)',
+  border: '1px solid #FFFFFF20',
+}));
+
+const IconButtonCustom = styled(IconButton)(() => ({
+  backgroundColor: 'white',
+  width: 48,
+  height: 48,
+  transition: 'translateY 0.1s',
+  '&:hover': {
+    backgroundColor: 'white',
+    transform: 'translateY(-3px)',
+    boxShadow: '0px 4px 4px 0px #00000040',
+  },
+})) as typeof IconButton;
+
+const ImageContainer = styled(Box)(() => ({
+  position: 'relative',
+  overflow: 'hidden',
+  '&:hover': {
+    '.image-bar': {
+      display: 'flex',
+      bottom: 30,
+    },
+  },
+}));
+
+const ImageBar = styled(Box)(() => ({
+  transition: 'bottom 0.3s',
+  position: 'absolute',
+  bottom: -50,
+  display: 'flex',
+  width: '100%',
+  alignItems: 'center',
+  paddingLeft: 16,
+  paddingRight: 16,
+  '@media (hover: none)': {
+    bottom: 30,
+  },
+}));
 
 export type SuccessTxViewProps = {
   txHash?: string;
@@ -25,31 +72,20 @@ export type SuccessTxViewProps = {
   symbol?: string;
   collateral?: boolean;
   rate?: InterestRate;
-  addToken: ERC20TokenType;
   customAction?: ReactNode;
   customText?: ReactNode;
 };
 
-const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+const ExtLinkIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props}>
     <ExternalLinkIcon />
   </SvgIcon>
 );
 
-export const GhoBorrowSuccessView = ({
-  txHash,
-  action,
-  amount,
-  symbol,
-  addToken,
-}: SuccessTxViewProps) => {
+export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: SuccessTxViewProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | undefined>();
-  const { close, mainTxState } = useModalContext();
-  const { addERC20Token } = useWeb3Context();
+  const { mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const [base64, setBase64] = useState('');
-  // const theme = useTheme();
-  // const sm = useMediaQuery(theme.breakpoints.down('xsm'));
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const compactedNumber = compactNumber({ value: amount, visibleDecimals: 2, roundDown: true });
@@ -87,8 +123,6 @@ export const GhoBorrowSuccessView = ({
     }
   };
 
-  // const bannerTextVariant = sm ? 'subheader1' : 'h4';
-
   return (
     <>
       <Box
@@ -105,7 +139,6 @@ export const GhoBorrowSuccessView = ({
             height: '48px',
             bgcolor: 'success.200',
             borderRadius: '50%',
-            mt: 8,
             mx: 'auto',
             display: 'flex',
             alignItems: 'center',
@@ -144,34 +177,14 @@ export const GhoBorrowSuccessView = ({
           sx={{ mt: 4 }}
           variant="outlined"
           size="small"
-          startIcon={
-            <SvgIcon sx={{ width: '14px', height: '14px' }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"
-                />
-              </svg>
-            </SvgIcon>
-          }
-          onClick={() => {
-            addERC20Token({
-              address: addToken.address,
-              decimals: addToken.decimals,
-              symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
-              image: !/_/.test(addToken.symbol) ? base64 : undefined,
-            });
-          }}
+          endIcon={<ExtLinkIcon style={{ fontSize: 12 }} />}
+          href={currentNetworkConfig.explorerLinkBuilder({
+            tx: txHash ? txHash : mainTxState.txHash,
+          })}
+          target="_blank"
         >
           <Typography variant="buttonS">
-            <Trans>Add token to wallet</Trans>
+            <Trans>Review tx details</Trans>
           </Typography>
         </Button>
         <Typography sx={{ mt: 6, mb: 4 }} variant="h2">
@@ -179,7 +192,41 @@ export const GhoBorrowSuccessView = ({
         </Typography>
         <canvas style={{ display: 'none' }} width={1134} height={900} ref={canvasRef} />
         {generatedImage ? (
-          <img src={generatedImage} alt="minted gho" style={{ maxWidth: '100%' }} />
+          <ImageContainer>
+            <img src={generatedImage} alt="minted gho" style={{ maxWidth: '100%' }} />
+            <ImageBar className="image-bar">
+              <CopyImageButton
+                onClick={onCopyImage}
+                sx={{
+                  display: isFirefox ? 'none' : 'flex',
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={<ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />}
+              >
+                <Typography variant="buttonS" color="white">
+                  <Trans>COPY IMAGE</Trans>
+                </Typography>
+              </CopyImageButton>
+              <IconButtonCustom
+                target="_blank"
+                href={`https://lenster.xyz/?url=${
+                  window.location.href
+                }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
+                size="small"
+                sx={{ ml: 'auto' }}
+              >
+                <LensterIcon sx={{ fill: '#845EEE' }} fontSize="small" />
+              </IconButtonCustom>
+              <IconButtonCustom
+                target="_blank"
+                href={`https://twitter.com/intent/tweet?text=I Just minted ${finalNumber} GHO`}
+                sx={{ ml: 2 }}
+              >
+                <Twitter fontSize="small" sx={{ fill: '#33CEFF' }} />
+              </IconButtonCustom>
+            </ImageBar>
+          </ImageContainer>
         ) : (
           <>
             <div style={{ visibility: 'hidden', position: 'absolute' }}>
@@ -187,79 +234,7 @@ export const GhoBorrowSuccessView = ({
             </div>
           </>
         )}
-        <Button
-          onClick={onCopyImage}
-          sx={{ mt: 3, display: isFirefox ? 'none' : 'flex' }}
-          variant="outlined"
-          size="small"
-          startIcon={<ContentCopyOutlined style={{ fontSize: 16 }} />}
-        >
-          <Typography variant="buttonS">
-            <Trans>COPY IMAGE TO CLIPBOARD</Trans>
-          </Typography>
-        </Button>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 3,
-            width: '100%',
-            mt: 8,
-          }}
-        >
-          <Button
-            target="_blank"
-            href={`https://lenster.xyz/?url=${
-              window.location.href
-            }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
-            sx={{ width: '100%' }}
-            variant="contained"
-            startIcon={<LensterIcon />}
-          >
-            <Trans>Share on Lenster</Trans>
-          </Button>
-          <Button
-            target="_blank"
-            href={`https://twitter.com/intent/tweet?text=I Just minted ${finalNumber} GHO`}
-            sx={{ width: '100%' }}
-            variant="contained"
-            startIcon={<Twitter />}
-          >
-            <Trans>Share on Twitter</Trans>
-          </Button>
-        </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Link
-          variant="helperText"
-          href={currentNetworkConfig.explorerLinkBuilder({
-            tx: txHash ? txHash : mainTxState.txHash,
-          })}
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'right',
-            mt: 6,
-            mb: 3,
-          }}
-          underline="hover"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          <Trans>Review tx details</Trans>
-          <ExtLinkIcon />
-        </Link>
-        <Button
-          onClick={close}
-          variant="contained"
-          size="large"
-          sx={{ minHeight: '44px' }}
-          data-cy="closeButton"
-        >
-          <Trans>Done</Trans>
-        </Button>
-      </Box>
-
-      <Base64Token symbol={addToken.symbol} onImageGenerated={setBase64} aToken={addToken.aToken} />
     </>
   );
 };
