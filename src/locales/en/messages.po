@@ -565,6 +565,10 @@ msgstr "Buy Crypto with Fiat"
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "COPY IMAGE"
+msgstr "COPY IMAGE"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -868,21 +872,14 @@ msgstr "Discount parameters are decided by the Aave community and may be changed
 msgid "Discountable amount"
 msgstr "Discountable amount"
 
-<<<<<<< HEAD
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
 msgstr "Docs"
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Done"
-msgstr "Done"
 
 #: src/components/Warnings/USDTParaswapWarning.tsx
 msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 msgstr "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 
-=======
->>>>>>> e76af23a (feat: finished styling)
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
 msgstr "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."

@@ -17,7 +17,12 @@ interface CompactNumberProps {
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-export const compactNumber = ({ value, visibleDecimals = 2, roundDown, compactThreshold }: CompactNumberProps) => {
+export const compactNumber = ({
+  value,
+  visibleDecimals = 2,
+  roundDown,
+  compactThreshold,
+}: CompactNumberProps) => {
   const bnValue = valueToBigNumber(value);
 
   let integerPlaces = bnValue.toFixed(0).length;
