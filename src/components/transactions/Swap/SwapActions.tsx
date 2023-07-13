@@ -50,7 +50,10 @@ export const SwapActions = ({
   buildTxFn,
   ...props
 }: SwapBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const { swapCollateral, currentMarketData } = useRootStore();
+  const [swapCollateral, currentMarketData] = useRootStore((state) => [
+    state.swapCollateral,
+    state.currentMarketData,
+  ]);
 
   const { approval, action, approvalTxState, mainTxState, loadingTxns, requiresApproval } =
     useParaSwapTransactionHandler({
