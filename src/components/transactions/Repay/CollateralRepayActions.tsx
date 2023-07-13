@@ -106,7 +106,6 @@ export const CollateralRepayActions = ({
 
   return (
     <TxActionsWrapper
-      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
