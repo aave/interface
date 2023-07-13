@@ -13,15 +13,19 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { GhoSuccessImage } from './GhoSuccessImage';
 
 const CopyImageButton = styled(Button)(() => ({
+  minWidth: 139,
   borderRadius: 32,
   background:
     'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08))',
-  transition: 'transform 0.1s',
+  transition: 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
   height: 48,
   '&:hover': {
     background:
       'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))',
     transform: 'translateY(-3px)',
+    border: '1px solid #FFFFFF20',
+  },
+  '&:disabled': {
     border: '1px solid #FFFFFF20',
   },
   backdropFilter: 'blur(5px)',
@@ -32,7 +36,7 @@ const IconButtonCustom = styled(IconButton)(() => ({
   backgroundColor: 'white',
   width: 48,
   height: 48,
-  transition: 'translateY 0.1s',
+  transition: 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
   '&:hover': {
     backgroundColor: 'white',
     transform: 'translateY(-3px)',
@@ -82,8 +86,11 @@ const ExtLinkIcon = (props: SvgIconProps) => (
   </SvgIcon>
 );
 
+const COPY_IMAGE_TIME = 5000;
+
 export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: SuccessTxViewProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | undefined>();
+  const [clickedCopyImage, setClickedCopyImage] = useState(false);
   const { mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,11 +103,18 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
     if (generatedImage) {
       fetch(generatedImage).then((img) => {
         img.blob().then((blob) => {
-          navigator.clipboard.write([
-            new ClipboardItem({
-              [blob.type]: blob,
-            }),
-          ]);
+          navigator.clipboard
+            .write([
+              new ClipboardItem({
+                [blob.type]: blob,
+              }),
+            ])
+            .then(() => {
+              setClickedCopyImage(true);
+              setTimeout(() => {
+                setClickedCopyImage(false);
+              }, COPY_IMAGE_TIME);
+            });
         });
       });
     }
@@ -190,22 +204,31 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
         <Typography sx={{ mt: 6, mb: 4 }} variant="h2">
           <Trans>Save and share</Trans>
         </Typography>
-        <canvas style={{ display: 'none' }} width={1134} height={900} ref={canvasRef} />
+        <canvas style={{ display: 'none' }} width={1169} height={900} ref={canvasRef} />
         {generatedImage ? (
           <ImageContainer>
             <img src={generatedImage} alt="minted gho" style={{ maxWidth: '100%' }} />
             <ImageBar className="image-bar">
               <CopyImageButton
+                disabled={clickedCopyImage}
                 onClick={onCopyImage}
                 sx={{
                   display: isFirefox ? 'none' : 'flex',
                 }}
                 variant="outlined"
                 size="large"
-                startIcon={<ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />}
+                startIcon={
+                  clickedCopyImage ? (
+                    <SvgIcon sx={{ color: 'white', fontSize: 16 }}>
+                      <CheckIcon />
+                    </SvgIcon>
+                  ) : (
+                    <ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />
+                  )
+                }
               >
                 <Typography variant="buttonS" color="white">
-                  <Trans>COPY IMAGE</Trans>
+                  {clickedCopyImage ? <Trans>COPIED!</Trans> : <Trans>COPY IMAGE</Trans>}
                 </Typography>
               </CopyImageButton>
               <IconButtonCustom

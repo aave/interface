@@ -566,6 +566,10 @@ msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "COPIED!"
+msgstr "COPIED!"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "COPY IMAGE"
 msgstr "COPY IMAGE"
 
