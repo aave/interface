@@ -104,8 +104,9 @@ export const useDebtSwitch = ({
         setError('');
         setRoute(route);
 
+        // Source asset is the target asset which is incurred as a borrow position, positive slippage increases the amount to be borrowed
         const srcAmount = new BigNumberZeroDecimal(route.srcAmount)
-          .multipliedBy(1 - maxSlippage / 100)
+          .multipliedBy(1 + maxSlippage / 100)
           .toFixed(0);
 
         setInputAmount(normalize(srcAmount, route.srcDecimals));
