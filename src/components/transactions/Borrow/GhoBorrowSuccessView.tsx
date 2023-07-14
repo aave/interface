@@ -90,6 +90,7 @@ const COPY_IMAGE_TIME = 5000;
 
 export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: SuccessTxViewProps) => {
   const [generatedImage, setGeneratedImage] = useState<string | undefined>();
+  const [generatedBlob, setGeneratedBlob] = useState<Blob | null>();
   const [clickedCopyImage, setClickedCopyImage] = useState(false);
   const { mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -100,23 +101,19 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
   const isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
 
   const onCopyImage = () => {
-    if (generatedImage) {
-      fetch(generatedImage).then((img) => {
-        img.blob().then((blob) => {
-          navigator.clipboard
-            .write([
-              new ClipboardItem({
-                [blob.type]: blob,
-              }),
-            ])
-            .then(() => {
-              setClickedCopyImage(true);
-              setTimeout(() => {
-                setClickedCopyImage(false);
-              }, COPY_IMAGE_TIME);
-            });
+    if (generatedBlob) {
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            [generatedBlob.type]: generatedBlob,
+          }),
+        ])
+        .then(() => {
+          setClickedCopyImage(true);
+          setTimeout(() => {
+            setClickedCopyImage(false);
+          }, COPY_IMAGE_TIME);
         });
-      });
     }
   };
 
@@ -130,6 +127,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           document.fonts.ready.then(() => {
             context.drawImage(img, 0, 0);
             setGeneratedImage(canvasRef.current?.toDataURL('png', 1));
+            canvasRef.current?.toBlob((blob) => setGeneratedBlob(blob), 'png');
           });
         };
         img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svg.outerHTML)}`;
