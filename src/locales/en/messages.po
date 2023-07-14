@@ -166,10 +166,6 @@ msgstr "Add stkAAVE to see borrow APY with the discount"
 msgid "Add to wallet"
 msgstr "Add to wallet"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Add token to wallet"
-msgstr "Add token to wallet"
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
@@ -569,6 +565,14 @@ msgstr "Buy Crypto with Fiat"
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "COPIED!"
+msgstr "COPIED!"
+
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "COPY IMAGE"
+msgstr "COPY IMAGE"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -876,10 +880,6 @@ msgstr "Discountable amount"
 msgid "Docs"
 msgstr "Docs"
 
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Done"
-msgstr "Done"
-
 #: src/components/Warnings/USDTParaswapWarning.tsx
 msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 msgstr "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
@@ -1066,10 +1066,6 @@ msgstr "Funds in the Safety Module"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "GHO is here! Tell the world!"
-msgstr "GHO is here! Tell the world!"
 
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
@@ -1893,6 +1889,10 @@ msgstr "SEE CHARTS"
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Save and share"
+msgstr "Save and share"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
 msgstr "Seatbelt report"
@@ -1957,10 +1957,6 @@ msgstr "Share on Lens"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
 msgstr "Share on twitter"
-
-#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-msgid "Share with frens on"
-msgstr "Share with frens on"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"

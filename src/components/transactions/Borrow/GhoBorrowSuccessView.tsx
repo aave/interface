@@ -2,51 +2,138 @@ import { InterestRate } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { ReactNode, useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
-import { Base64Token } from 'src/components/primitives/TokenIcon';
+import { ContentCopyOutlined, Twitter } from '@mui/icons-material';
+import { Box, Button, IconButton, styled, SvgIcon, SvgIconProps, Typography } from '@mui/material';
+import { ReactNode, useRef, useState } from 'react';
+import { LensterIcon } from 'src/components/icons/LensterIcon';
+import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
-import LensterIcon from '/public/icons/lenster.svg';
+import { GhoSuccessImage } from './GhoSuccessImage';
+
+const CopyImageButton = styled(Button)(() => ({
+  minWidth: 139,
+  borderRadius: 32,
+  background:
+    'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08))',
+  transition: 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+  height: 48,
+  '&:hover': {
+    background:
+      'linear-gradient(252.63deg, rgba(255, 255, 255, 0.2) 33.91%, rgba(255, 255, 255, 0.08) 73.97%), linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))',
+    transform: 'translateY(-3px)',
+    border: '1px solid #FFFFFF20',
+  },
+  '&:disabled': {
+    border: '1px solid #FFFFFF20',
+  },
+  backdropFilter: 'blur(5px)',
+  border: '1px solid #FFFFFF20',
+}));
+
+const IconButtonCustom = styled(IconButton)(() => ({
+  backgroundColor: 'white',
+  width: 48,
+  height: 48,
+  transition: 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+  '&:hover': {
+    backgroundColor: 'white',
+    transform: 'translateY(-3px)',
+    boxShadow: '0px 4px 4px 0px #00000040',
+  },
+})) as typeof IconButton;
+
+const ImageContainer = styled(Box)(() => ({
+  position: 'relative',
+  overflow: 'hidden',
+  '&:hover': {
+    '.image-bar': {
+      display: 'flex',
+      bottom: 30,
+    },
+  },
+}));
+
+const ImageBar = styled(Box)(() => ({
+  transition: 'bottom 0.3s',
+  position: 'absolute',
+  bottom: -50,
+  display: 'flex',
+  width: '100%',
+  alignItems: 'center',
+  paddingLeft: 16,
+  paddingRight: 16,
+  '@media (hover: none)': {
+    bottom: 30,
+  },
+}));
 
 export type SuccessTxViewProps = {
   txHash?: string;
   action?: ReactNode;
-  amount?: string;
+  amount: string;
   symbol?: string;
   collateral?: boolean;
   rate?: InterestRate;
-  addToken: ERC20TokenType;
   customAction?: ReactNode;
   customText?: ReactNode;
 };
 
-const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+const ExtLinkIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props}>
     <ExternalLinkIcon />
   </SvgIcon>
 );
 
-export const GhoBorrowSuccessView = ({
-  txHash,
-  action,
-  amount,
-  symbol,
-  addToken,
-}: SuccessTxViewProps) => {
-  const { close, mainTxState } = useModalContext();
-  const { addERC20Token } = useWeb3Context();
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const [base64, setBase64] = useState('');
-  const theme = useTheme();
-  const sm = useMediaQuery(theme.breakpoints.down('xsm'));
+const COPY_IMAGE_TIME = 5000;
 
-  const bannerTextVariant = sm ? 'subheader1' : 'h4';
+export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: SuccessTxViewProps) => {
+  const [generatedImage, setGeneratedImage] = useState<string | undefined>();
+  const [generatedBlob, setGeneratedBlob] = useState<Blob | null>();
+  const [clickedCopyImage, setClickedCopyImage] = useState(false);
+  const { mainTxState } = useModalContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const compactedNumber = compactNumber({ value: amount, visibleDecimals: 2, roundDown: true });
+  const finalNumber = `${compactedNumber.prefix}${compactedNumber.postfix}`;
+  const isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
+
+  const onCopyImage = () => {
+    if (generatedBlob) {
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            [generatedBlob.type]: generatedBlob,
+          }),
+        ])
+        .then(() => {
+          setClickedCopyImage(true);
+          setTimeout(() => {
+            setClickedCopyImage(false);
+          }, COPY_IMAGE_TIME);
+        });
+    }
+  };
+
+  const transformImage = (svg: SVGSVGElement) => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      if (context) {
+        const img = new Image();
+        img.onload = () => {
+          document.fonts.ready.then(() => {
+            context.drawImage(img, 0, 0);
+            setGeneratedImage(canvasRef.current?.toDataURL('png', 1));
+            canvasRef.current?.toBlob((blob) => setGeneratedBlob(blob), 'png');
+          });
+        };
+        img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svg.outerHTML)}`;
+      }
+    }
+  };
 
   return (
     <>
@@ -64,7 +151,6 @@ export const GhoBorrowSuccessView = ({
             height: '48px',
             bgcolor: 'success.200',
             borderRadius: '50%',
-            mt: 8,
             mx: 'auto',
             display: 'flex',
             alignItems: 'center',
@@ -103,146 +189,73 @@ export const GhoBorrowSuccessView = ({
           sx={{ mt: 4 }}
           variant="outlined"
           size="small"
-          startIcon={
-            <SvgIcon sx={{ width: '14px', height: '14px' }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"
-                />
-              </svg>
-            </SvgIcon>
-          }
-          onClick={() => {
-            addERC20Token({
-              address: addToken.address,
-              decimals: addToken.decimals,
-              symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
-              image: !/_/.test(addToken.symbol) ? base64 : undefined,
-            });
-          }}
-        >
-          <Typography variant="buttonS">
-            <Trans>Add token to wallet</Trans>
-          </Typography>
-        </Button>
-      </Box>
-
-      <Box
-        sx={(theme) => ({
-          mt: 10,
-          position: 'relative',
-          height: '108px',
-          border: '1px solid rgba(56, 61, 81, 0.12)',
-          borderRadius: '4px 4px 4px 4px',
-          backgroundColor: theme.palette.background.surface,
-        })}
-      >
-        <Box
-          component="img"
-          src="/illustration_borrow.png"
-          sx={{
-            position: 'absolute',
-            bottom: 0,
-            width: '183px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        />
-        <Box sx={{ position: 'absolute', top: '20px', left: sm ? '100px' : '112px' }}>
-          <Typography variant={bannerTextVariant} color="primary">
-            <Trans>GHO is here! Tell the world!</Trans>
-          </Typography>
-        </Box>
-        <Box
-          component={Link}
-          href={`https://lenster.xyz/?text=${`I just minted GHO`}&hashtags=Aave&preview=true`}
-          sx={(theme) => ({
-            position: 'absolute',
-            bottom: 0,
-            background: theme.palette.background.paper,
-            width: '100%',
-            height: '44px',
-            borderTop: '1px solid rgba(56, 61, 81, 0.12)',
-            borderRadius: '0px 0px 4px 4px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            px: 3,
-          })}
-        >
-          <Box sx={{ display: 'inline-flex' }}>
-            <Typography variant="subheader1" color="primary">
-              <Trans>Share with frens on</Trans>
-            </Typography>
-            <SvgIcon
-              viewBox="0 0 14 14"
-              sx={{ width: '14px', height: '14px', marginTop: '3px', mx: 1 }}
-            >
-              <LensterIcon />
-            </SvgIcon>
-            <Typography variant="subheader1" sx={{ fontWeight: '700' }} color="#845EEE">
-              Lenster
-            </Typography>
-          </Box>
-
-          <SvgIcon sx={{ fontSize: '18px', color: 'text.primary' }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-              />
-            </svg>
-          </SvgIcon>
-        </Box>
-      </Box>
-
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Link
-          variant="helperText"
+          endIcon={<ExtLinkIcon style={{ fontSize: 12 }} />}
           href={currentNetworkConfig.explorerLinkBuilder({
             tx: txHash ? txHash : mainTxState.txHash,
           })}
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'right',
-            mt: 6,
-            mb: 3,
-          }}
-          underline="hover"
           target="_blank"
-          rel="noreferrer noopener"
         >
-          <Trans>Review tx details</Trans>
-          <ExtLinkIcon />
-        </Link>
-        <Button
-          onClick={close}
-          variant="contained"
-          size="large"
-          sx={{ minHeight: '44px' }}
-          data-cy="closeButton"
-        >
-          <Trans>Done</Trans>
+          <Typography variant="buttonS">
+            <Trans>Review tx details</Trans>
+          </Typography>
         </Button>
+        <Typography sx={{ mt: 6, mb: 4 }} variant="h2">
+          <Trans>Save and share</Trans>
+        </Typography>
+        <canvas style={{ display: 'none' }} width={1169} height={900} ref={canvasRef} />
+        {generatedImage ? (
+          <ImageContainer>
+            <img src={generatedImage} alt="minted gho" style={{ maxWidth: '100%' }} />
+            <ImageBar className="image-bar">
+              <CopyImageButton
+                disabled={clickedCopyImage}
+                onClick={onCopyImage}
+                sx={{
+                  display: isFirefox ? 'none' : 'flex',
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={
+                  clickedCopyImage ? (
+                    <SvgIcon sx={{ color: 'white', fontSize: 16 }}>
+                      <CheckIcon />
+                    </SvgIcon>
+                  ) : (
+                    <ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />
+                  )
+                }
+              >
+                <Typography variant="buttonS" color="white">
+                  {clickedCopyImage ? <Trans>COPIED!</Trans> : <Trans>COPY IMAGE</Trans>}
+                </Typography>
+              </CopyImageButton>
+              <IconButtonCustom
+                target="_blank"
+                href={`https://lenster.xyz/?url=${
+                  window.location.href
+                }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
+                size="small"
+                sx={{ ml: 'auto' }}
+              >
+                <LensterIcon sx={{ fill: '#845EEE' }} fontSize="small" />
+              </IconButtonCustom>
+              <IconButtonCustom
+                target="_blank"
+                href={`https://twitter.com/intent/tweet?text=I Just minted ${finalNumber} GHO`}
+                sx={{ ml: 2 }}
+              >
+                <Twitter fontSize="small" sx={{ fill: '#33CEFF' }} />
+              </IconButtonCustom>
+            </ImageBar>
+          </ImageContainer>
+        ) : (
+          <>
+            <div style={{ visibility: 'hidden', position: 'absolute' }}>
+              <GhoSuccessImage onSuccessEditing={transformImage} text={finalNumber} />
+            </div>
+          </>
+        )}
       </Box>
-
-      <Base64Token symbol={addToken.symbol} onImageGenerated={setBase64} aToken={addToken.aToken} />
     </>
   );
 };

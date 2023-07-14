@@ -24,7 +24,6 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
@@ -226,23 +225,11 @@ export const GhoBorrowModalContent = ({
     }
   };
 
-  // token info to add to wallet
-  const addToken: ERC20TokenType = {
-    address: underlyingAsset,
-    symbol: poolReserve.iconSymbol,
-    decimals: poolReserve.decimals,
-  };
-
   const iconSymbol = poolReserve.iconSymbol;
 
   if (borrowTxState.success)
     return (
-      <GhoBorrowSuccessView
-        action={<Trans>Borrowed</Trans>}
-        amount={amount}
-        symbol={iconSymbol}
-        addToken={addToken}
-      />
+      <GhoBorrowSuccessView action={<Trans>Borrowed</Trans>} amount={amount} symbol={iconSymbol} />
     );
 
   return (
