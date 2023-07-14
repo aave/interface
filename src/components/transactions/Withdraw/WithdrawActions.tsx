@@ -1,4 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -40,6 +41,9 @@ export const WithdrawActions = ({
       deps: [amountToWithdraw, poolAddress],
       eventTxInfo: {
         amount: amountToWithdraw,
+        amountUSD: valueToBigNumber(amountToWithdraw)
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(10),
         assetName: poolReserve.name,
         asset: poolReserve.underlyingAsset,
       },

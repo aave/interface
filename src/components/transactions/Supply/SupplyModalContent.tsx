@@ -169,6 +169,7 @@ export const SupplyModalContent = React.memo(
 
     const supplyActionsProps = {
       amountToSupply: amount,
+      amountToSupplyUSD: amountInUsd.toString(10),
       isWrongNetwork,
       poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
       symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,

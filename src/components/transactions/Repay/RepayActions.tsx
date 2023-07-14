@@ -1,4 +1,5 @@
 import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -41,6 +42,9 @@ export const RepayActions = ({
       protocolAction: ProtocolAction.repay,
       eventTxInfo: {
         amount: amountToRepay,
+        amountUSD: valueToBigNumber(amountToRepay)
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(10),
         assetName: poolReserve.name,
         asset: poolReserve.underlyingAsset,
       },

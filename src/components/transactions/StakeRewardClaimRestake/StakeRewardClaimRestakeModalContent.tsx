@@ -143,6 +143,7 @@ export const StakeRewardClaimRestakeModalContent = ({
       <StakeRewardClaimRestakeActions
         sx={{ mt: '48px' }}
         amountToClaim={amount}
+        amountToClaimUSD={amountInUsd.toString()}
         isWrongNetwork={isWrongNetwork}
         symbol={rewardsSymbol}
         blocked={blockingError !== undefined || Number(amount) === 0}

@@ -8,6 +8,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
+  amountToStakeUSD: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
@@ -18,6 +19,7 @@ export interface StakeActionProps extends BoxProps {
 
 export const StakeActions = ({
   amountToStake,
+  amountToStakeUSD,
   isWrongNetwork,
   sx,
   symbol,
@@ -40,6 +42,7 @@ export const StakeActions = ({
       },
       eventTxInfo: {
         amount: amountToStake,
+        amountUSD: amountToStakeUSD,
         assetName: selectedToken,
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,

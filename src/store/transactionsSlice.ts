@@ -15,6 +15,7 @@ export type TransactionDetails = {
   txState?: TransactionState;
   asset?: string;
   amount?: string;
+  amountUSD?: string;
   assetName?: string;
   proposalId?: number;
   support?: boolean;

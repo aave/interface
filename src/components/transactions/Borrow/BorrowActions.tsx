@@ -6,6 +6,7 @@ import {
   MAX_UINT_AMOUNT,
   ProtocolAction,
 } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
@@ -131,6 +132,9 @@ export const BorrowActions = React.memo(
           txState: 'success',
           asset: poolAddress,
           amount: amountToBorrow,
+          amountUSD: valueToBigNumber(amountToBorrow)
+            .multipliedBy(poolReserve.priceInUSD)
+            .toString(10),
           assetName: poolReserve.name,
         });
 

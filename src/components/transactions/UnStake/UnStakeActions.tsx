@@ -8,6 +8,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
+  amountToUnStakeUSD: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
@@ -17,6 +18,7 @@ export interface UnStakeActionProps extends BoxProps {
 
 export const UnStakeActions = ({
   amountToUnStake,
+  amountToUnStakeUSD,
   isWrongNetwork,
   sx,
   symbol,
@@ -36,6 +38,7 @@ export const UnStakeActions = ({
     protocolAction: ProtocolAction.unstake,
     eventTxInfo: {
       amount: amountToUnStake,
+      amountUSD: amountToUnStakeUSD,
       assetName: selectedToken,
     },
   });

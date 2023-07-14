@@ -144,6 +144,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       <StakeActions
         sx={{ mt: '48px' }}
         amountToStake={amount}
+        amountToStakeUSD={amountInUsd.toString()}
         isWrongNetwork={isWrongNetwork}
         symbol={icon}
         blocked={blockingError !== undefined}

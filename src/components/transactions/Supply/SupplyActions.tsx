@@ -25,6 +25,7 @@ import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
+  amountToSupplyUSD: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   poolAddress: string;
@@ -48,6 +49,7 @@ export const SupplyActions = React.memo(
     symbol,
     blocked,
     decimals,
+    amountToSupplyUSD,
     ...props
   }: SupplyActionProps) => {
     const [
@@ -244,6 +246,7 @@ export const SupplyActions = React.memo(
           txState: 'success',
           asset: poolAddress,
           amount: amountToSupply,
+          amountUSD: amountToSupplyUSD,
           assetName: symbol,
         });
 

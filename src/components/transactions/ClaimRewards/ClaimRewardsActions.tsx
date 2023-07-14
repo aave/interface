@@ -24,6 +24,7 @@ export const ClaimRewardsActions = ({
     eventTxInfo: {
       assetName: selectedReward.symbol,
       amount: selectedReward.balance,
+      amountUSD: selectedReward.balanceUsd,
     },
     tryPermit: false,
     handleGetTxns: async () => {

@@ -129,6 +129,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
       <UnStakeActions
         sx={{ mt: '48px' }}
         amountToUnStake={amount}
+        amountToUnStakeUSD={amountInUsd.toString()}
         isWrongNetwork={isWrongNetwork}
         symbol={icon}
         blocked={blockingError !== undefined}
