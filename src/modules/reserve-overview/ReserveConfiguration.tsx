@@ -97,7 +97,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
-          <Divider sx={{ my: '40px' }} />
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <PanelRow>
             <PanelTitle>Borrow info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
@@ -121,14 +121,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
       {reserve.eModeCategoryId !== 0 && (
         <>
-          <Divider sx={{ my: '40px' }} />
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <ReserveEModePanel reserve={reserve} />
         </>
       )}
 
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
-          <Divider sx={{ my: '40px' }} />
+          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
 
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
