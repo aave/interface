@@ -21,7 +21,7 @@ import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -45,7 +45,7 @@ export default function Staking() {
   const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, isGhoLive] = useRootStore((store) => [store.trackEvent, store.isGhoLive]);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
@@ -113,8 +113,10 @@ export default function Staking() {
               <Grid
                 item
                 xs={12}
-                lg={6}
-                sx={{ display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+                lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
+                sx={{
+                  display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' },
+                }}
               >
                 <StakingPanel
                   stakeTitle="AAVE"
@@ -132,6 +134,7 @@ export default function Staking() {
                     openStakeRewardsRestakeClaim('aave', 'AAVE')
                   }
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
+                  hasDiscountProgram={isGhoLive}
                 />
               </Grid>
               <Grid

@@ -19,7 +19,6 @@ export function ReserveOverviewBox({
         border: `1px solid ${theme.palette.divider}`,
         flex: fullWidth ? '0 100%' : '0 32%',
         marginBottom: '2%',
-        height: { md: '70px', lg: '60px' },
         maxWidth: fullWidth ? '100%' : '32%',
       })}
     >

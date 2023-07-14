@@ -30,6 +30,7 @@ declare module '@mui/material/styles/createPalette' {
     default: string;
     paper: string;
     surface: string;
+    surface2: string;
     header: string;
     disabled: string;
   }
@@ -137,6 +138,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor('#383D51', '#EAEBEF'),
         light: getColor('#62677B', '#F1F1F3'),
         dark: getColor('#292E41', '#D2D4DC'),
+        contrast: getColor('#FFFFFF', '#0F121D'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
@@ -176,11 +178,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         secondary: getColor('#62677B', '#A5A8B6'),
         disabled: getColor('#D2D4DC', '#62677B'),
         muted: getColor('#A5A8B6', '#8E92A3'),
+        highlight: getColor('#383D51', '#C9B3F9'),
       },
       background: {
         default: getColor('#F1F1F3', '#1B2030'),
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
+        surface2: getColor('#F9F9FB', '#383D51'),
         header: getColor('#2B2D3C', '#1B2030'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
@@ -388,6 +392,18 @@ export function getThemedComponents(theme: Theme) {
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: '#CBCDD8',
+            },
+          },
+        },
+      },
+      MuiSlider: {
+        styleOverrides: {
+          root: {
+            '& .MuiSlider-thumb': {
+              color: theme.palette.mode === 'light' ? '#62677B' : '#C9B3F9',
+            },
+            '& .MuiSlider-track': {
+              color: theme.palette.mode === 'light' ? '#383D51' : '#9C93B3',
             },
           },
         },

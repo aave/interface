@@ -17,11 +17,11 @@ export const ListItem = ({ children, minHeight = 71, px = 4, button, ...rest }: 
         alignItems: 'center',
         minHeight,
         px,
-        ...(button ? { '&:hover': { bgcolor: 'action.hover' } } : {}),
         '&:not(:last-child)': {
           borderBottom: '1px solid',
           borderColor: 'divider',
         },
+        ...(button ? { '&:hover': { bgcolor: 'action.hover' } } : {}),
         ...rest.sx,
       }}
     >

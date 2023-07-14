@@ -1,0 +1,17 @@
+{
+  "stkAAVE": {
+    "name": "stkAAVE",
+    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
+    "tokenAddress": "0x47805f115eD9Dffc3506c9cB9805725FAe1cA9d3"
+  },
+  "aAAVE": {
+    "name": "aAAVE",
+    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
+    "tokenAddress": "0xFC9b4259Cbb3B7fCD031c2488a618fE0bb79B001"
+  },
+  "aDAI": {
+    "name": "aDAI",
+    "donorWalletAddress": "0xE4217040c894e8873EE19d675b6d0EeC992c2c0D",
+    "tokenAddress": "0x5461294Cd207f596Eda2C983E68f3fcE853d4602"
+  }
+}

@@ -299,10 +299,10 @@
       "shortName": "ABPT",
       "address": "0x41A08648C3766F9F9d85598fF102a08f4ef84F84"
     },
-    "MKR": {
-      "fullName": "MKR",
-      "shortName": "MKR",
-      "address": "0x7deB5e830be29F91E298ba5FF1356BB7f8146998"
+    "AAVEG": {
+      "fullName": "AAVE",
+      "shortName": "AAVE",
+      "address": "0x8D38414592AC67dc42F32a00D322F2319990e8Ac"
     }
   },
   "fantomMarket": {
@@ -997,6 +997,26 @@
       "fullName": "acbETH",
       "shortName": "acbETH",
       "collateral": true,
+      "wrapped": false
+    }
+  },
+  "ghoV3Market": {
+    "ETH": {
+      "fullName": "Ethereum",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": true
+    },
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "GHO": {
+      "fullName": "GHO",
+      "shortName": "GHO",
+      "collateral": false,
       "wrapped": false
     }
   }

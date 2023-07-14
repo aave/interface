@@ -29,7 +29,14 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const { currentNetworkConfig, currentChainId } = useRootStore();
+  const [currentMarket, currentNetworkConfig, currentChainId, displayGho] = useRootStore(
+    (store) => [
+      store.currentMarket,
+      store.currentNetworkConfig,
+      store.currentChainId,
+      store.displayGho,
+    ]
+  );
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;
@@ -40,8 +47,10 @@ export const useReserveActionState = ({
   const eModeBorrowDisabled =
     user?.isInEmode && reserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  const isGho = displayGho({ symbol: reserve.symbol, currentMarket });
+
   return {
-    disableSupplyButton: balance === '0' || maxAmountToSupply === '0',
+    disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
@@ -50,7 +59,7 @@ export const useReserveActionState = ({
       maxAmountToBorrow === '0',
     alerts: (
       <Stack gap={3}>
-        {balance === '0' && (
+        {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (
               <Warning sx={{ mb: 0 }} severity="info" icon={false}>
@@ -80,7 +89,7 @@ export const useReserveActionState = ({
           </>
         )}
 
-        {balance !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
+        {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Warning>
@@ -122,13 +131,13 @@ export const useReserveActionState = ({
         )}
 
         {maxAmountToSupply === '0' &&
-          supplyCap.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
+          supplyCap?.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
         {maxAmountToBorrow === '0' &&
-          borrowCap.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
+          borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
         {reserve.isIsolated &&
           balance !== '0' &&
           user?.totalCollateralUSD !== '0' &&
-          debtCeiling.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
+          debtCeiling?.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
       </Stack>
     ),
   };

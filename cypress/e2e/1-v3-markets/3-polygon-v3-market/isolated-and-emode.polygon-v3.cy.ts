@@ -55,8 +55,8 @@ const testData = {
     assets.polygonV3Market.USDC,
   ],
 };
+
 //skip due unstable swap and polygon at all
-//TODO: need to refactor without swap
 describe.skip('ISOLATED MODE with EMODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });

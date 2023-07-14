@@ -58,7 +58,7 @@ describe('E-MODE SPEC, POLYGON V3 MARKET', () => {
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
     emodeActivating(
-      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoins' },
       skipTestState,
       true
     );
@@ -72,7 +72,7 @@ describe('E-MODE SPEC, POLYGON V3 MARKET', () => {
   });
   describe('Turn off E-mode blocked with low health factor', () => {
     emodeActivating(
-      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoins' },
       skipTestState,
       true
     );

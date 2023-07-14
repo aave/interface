@@ -5,9 +5,14 @@
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
 import { makeCancelable } from 'src/utils/utils';
 
-export const reserveRateTimeRangeOptions = ['1m', '6m', '1y'] as const;
+export const reserveRateTimeRangeOptions = [
+  ESupportedTimeRanges.OneMonth,
+  ESupportedTimeRanges.SixMonths,
+  ESupportedTimeRanges.OneYear,
+];
 export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
 
 type RatesHistoryParams = {
@@ -42,21 +47,31 @@ const fetchStats = async (
 // TODO: there is possibly a bug here, as Polygon and Avalanche v2 data is coming through empty and erroring in our hook
 // The same asset without the 'from' field comes through just fine.
 const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
+  // Return today as a fallback
+  let calculatedDate = dayjs().unix();
   switch (timeRange) {
-    case '1m':
+    case ESupportedTimeRanges.OneMonth:
+      calculatedDate = dayjs().subtract(30, 'day').unix();
       return {
-        from: dayjs().subtract(30, 'day').unix(),
+        from: calculatedDate,
         resolutionInHours: 6,
       };
-    case '6m':
+    case ESupportedTimeRanges.SixMonths:
+      calculatedDate = dayjs().subtract(6, 'month').unix();
       return {
-        from: dayjs().subtract(6, 'month').unix(),
+        from: calculatedDate,
         resolutionInHours: 24,
       };
-    case '1y':
+    case ESupportedTimeRanges.OneYear:
+      calculatedDate = dayjs().subtract(1, 'year').unix();
       return {
-        from: dayjs().subtract(1, 'year').unix(),
+        from: calculatedDate,
         resolutionInHours: 24,
+      };
+    default:
+      return {
+        from: calculatedDate,
+        resolutionInHours: 6,
       };
   }
 };

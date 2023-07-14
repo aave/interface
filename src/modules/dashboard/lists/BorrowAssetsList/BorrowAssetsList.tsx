@@ -11,7 +11,9 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { findAndFilterGhoReserve } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CapType } from '../../../../components/caps/helper';
@@ -36,6 +38,7 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
 
 const head = [
   {
@@ -89,8 +92,9 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -141,24 +145,26 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  // Filter out reserves with no liquidity or debt
-  const borrowReserves: unknown =
+  const borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
-            availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
+          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
+            (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
+            displayGho({
+              symbol,
+              currentMarket,
+            })
         );
 
-  // Transform to the DashboardReserve schema so the sort utils can work with it
-  const preSortedReserves = borrowReserves as DashboardReserve[];
+  const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
     'asset',
-    preSortedReserves
+    filteredReserves as unknown as DashboardReserve[]
   );
-  const borrowDisabled = !sortedReserves.length;
+  const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
   const RenderHeader: React.FC = () => {
     return (
@@ -206,57 +212,69 @@ export const BorrowAssetsList = () => {
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <Box sx={{ px: 6, mb: 4 }}>
-          {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-            <MarketWarning marketName="Harmony" />
-          )}
+        <>
+          <Box sx={{ px: 6, mb: 4 }}>
+            {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
+              <MarketWarning marketName="Harmony" />
+            )}
 
-          {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
-            <MarketWarning marketName="Fantom" />
-          )}
-          {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
-            <MarketWarning marketName="Ethereum AMM" />
-          )}
+            {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
+              <MarketWarning marketName="Fantom" />
+            )}
+            {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
+              <MarketWarning marketName="Ethereum AMM" />
+            )}
 
-          {+collateralUsagePercent >= 0.98 && (
-            <Warning severity="error">
-              <Trans>
-                Be careful - You are very close to liquidation. Consider depositing more collateral
-                or paying down some of your borrowed positions
-              </Trans>
-            </Warning>
-          )}
+            {+collateralUsagePercent >= 0.98 && (
+              <Warning severity="error">
+                <Trans>
+                  Be careful - You are very close to liquidation. Consider depositing more
+                  collateral or paying down some of your borrowed positions
+                </Trans>
+              </Warning>
+            )}
 
-          {!borrowDisabled && (
-            <>
-              {user?.isInIsolationMode && (
-                <Warning severity="warning">
-                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                    Learn More
-                  </Link>
-                </Warning>
-              )}
-              {user?.isInEmode && (
-                <Warning severity="warning">
-                  <Trans>
-                    In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
-                    assets
-                  </Trans>
-                </Warning>
-              )}
-              {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                <Warning severity="info">
-                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                </Warning>
-              )}
-            </>
+            {!borrowDisabled && (
+              <>
+                {user?.isInIsolationMode && (
+                  <Warning severity="warning">
+                    <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                    <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                      Learn More
+                    </Link>
+                  </Warning>
+                )}
+                {user?.isInEmode && (
+                  <Warning severity="warning">
+                    <Trans>
+                      In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
+                      assets
+                    </Trans>
+                  </Warning>
+                )}
+                {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                  <Warning severity="info">
+                    <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+                  </Warning>
+                )}
+              </>
+            )}
+          </Box>
+          {ghoReserve && !downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
+            <AssetCapsProvider asset={ghoReserve.reserve}>
+              <GhoBorrowAssetsListItem {...ghoReserve} />
+            </AssetCapsProvider>
           )}
-        </Box>
+        </>
       }
     >
       <>
-        {!downToXSM && !!sortedReserves.length && <RenderHeader />}
+        {!downToXSM && reserves.length && <RenderHeader />}
+        {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
+          <AssetCapsProvider asset={ghoReserve.reserve}>
+            <GhoBorrowAssetsListItem {...ghoReserve} />
+          </AssetCapsProvider>
+        )}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

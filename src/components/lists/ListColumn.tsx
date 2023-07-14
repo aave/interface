@@ -1,13 +1,15 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
-interface ListColumnProps {
+export interface ListColumnProps {
   children?: ReactNode;
   maxWidth?: number;
   minWidth?: number;
   isRow?: boolean;
   align?: 'left' | 'center' | 'right';
   overFlow?: 'hidden' | 'visible';
+  flex?: string | number;
+  p?: string | number;
 }
 
 export const ListColumn = ({
@@ -17,6 +19,8 @@ export const ListColumn = ({
   maxWidth,
   align = 'center',
   overFlow = 'visible',
+  flex = 1,
+  p = 1,
 }: ListColumnProps) => {
   return (
     <Box
@@ -31,11 +35,11 @@ export const ListColumn = ({
           ? 'flex-end'
           : align,
         justifyContent: isRow ? 'flex-start' : 'flex-end',
-        flex: 1,
+        flex,
         minWidth: minWidth || '70px',
         maxWidth,
         overflow: overFlow,
-        p: 1,
+        padding: p,
       }}
     >
       {children}

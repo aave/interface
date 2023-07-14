@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { getGhoReserve } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -23,13 +24,16 @@ export const RepayModal = () => {
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
   const stETHAddress = reserves.find((reserve) => reserve.symbol === 'stETH')?.underlyingAsset;
+  const ghoReserve = getGhoReserve(reserves);
 
   // repay with collateral is only possible:
   // 1. on chains with paraswap deployed
-  // 2. when you have a different supplied(not necessarily collateral) asset then the one your debt is in
+  // 2. if asset is not GHO (disabled initially until there is enough liquidity)
+  // 3. when you have a different supplied(not necessarily collateral) asset then the one your debt is in
   // For repaying your debt with the same assets aToken you can use repayWithAToken on aave protocol v3
   const collateralRepayPossible =
     isFeatureEnabled.collateralRepay(currentMarketData) &&
+    args.underlyingAsset !== ghoReserve?.underlyingAsset &&
     userReserves.some(
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&

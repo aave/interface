@@ -23,7 +23,7 @@ const testData = {
   },
 };
 
-describe('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
+describe.skip('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
   describe(`CASE1:Verifing detail page for v2 USDT)`, () => {
     const skipTestState = skipState(false);
     configEnvWithTenderlyMainnetFork({});

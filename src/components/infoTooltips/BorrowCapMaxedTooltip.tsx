@@ -15,7 +15,7 @@ export const BorrowCapMaxedTooltip = ({ borrowCap, ...rest }: BorrowCapMaxedTool
 
   return (
     <Box sx={{ ml: 2 }}>
-      <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>
+      <TextWithTooltip {...rest} icon={<ExclamationIcon />} iconColor="warning.main" iconSize={18}>
         <>
           <Trans>Protocol borrow cap at 100% for this asset. Further borrowing unavailable.</Trans>{' '}
           <Link

@@ -7,8 +7,6 @@ import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
-import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
@@ -66,7 +64,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       }
     >
       <TopInfoPanelItem
-        icon={<TrustIcon />}
+        hideIcon
         title={<Trans>Funds in the Safety Module</Trans>}
         loading={loading}
       >
@@ -81,11 +79,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<EmissionIcon />}
-        title={<Trans>Total emission per day</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem hideIcon title={<Trans>Total emission per day</Trans>} loading={loading}>
         {/** TBD value */}
         <FormattedNumber
           value={stkEmission || 0}

@@ -10,6 +10,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -43,7 +44,8 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig, currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarketData, currentMarket } =
+    useProtocolDataContext();
   const {
     user,
     reserves,
@@ -51,6 +53,7 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
   } = useAppDataContext();
   const { walletBalances, loading } = useWalletBalances();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -65,7 +68,11 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves
-    .filter((reserve: ComputedReserveData) => !(reserve.isFrozen || reserve.isPaused))
+    .filter(
+      (reserve: ComputedReserveData) =>
+        !(reserve.isFrozen || reserve.isPaused) &&
+        !displayGho({ symbol: reserve.symbol, currentMarket })
+    )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;

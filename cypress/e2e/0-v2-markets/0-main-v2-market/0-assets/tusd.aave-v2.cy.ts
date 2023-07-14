@@ -96,7 +96,8 @@ const testData = {
   },
 };
 
-describe('TUSD INTEGRATION SPEC, AAVE V2 MARKET', () => {
+//asset was frozen
+describe.skip('TUSD INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);
