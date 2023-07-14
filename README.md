@@ -67,7 +67,7 @@ Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
 
 ## License
 
-[All Rights Reserved © AaveCo](./LICENSE.md)
+[BSD-3-Clause](./LICENSE.md)
 
 ## Credits
 

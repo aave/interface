@@ -1,4 +1,4 @@
-# License
+# The 3-Clause BSD License
 
 Copyright 2023 Aave Co
 
