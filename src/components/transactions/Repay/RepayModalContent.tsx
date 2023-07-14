@@ -17,7 +17,6 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -47,9 +46,11 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
-  const {
-    poolComputed: { minRemainingBaseTokenBalance },
-  } = useRootStore();
+
+  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+    store.poolComputed.minRemainingBaseTokenBalance,
+    store.displayGho,
+  ]);
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -157,7 +158,7 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    if (currentMarketData.v3 && !isGhoAndSupported({ symbol: poolReserve.symbol, currentMarket })) {
+    if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,

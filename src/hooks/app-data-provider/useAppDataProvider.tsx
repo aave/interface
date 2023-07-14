@@ -17,7 +17,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { isGhoAndSupported, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -97,6 +97,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     ghoReserveDataFetched,
     formattedPoolReserves,
     userSummary,
+    displayGho,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -108,6 +109,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.ghoReserveDataFetched,
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
+    state.displayGho,
   ]);
 
   const formattedGhoReserveData: FormattedGhoReserveData = formatGhoReserveData({
@@ -156,7 +158,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         }
         if (value.variableBorrowsUSD !== '0') {
           // TODO: Export to unified helper function
-          if (isGhoAndSupported({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+          if (displayGho({ symbol: reserve.symbol, currentMarket: currentMarket })) {
             const borrowRateAfterDiscount = weightedAverageAPY(
               formattedGhoReserveData.ghoVariableBorrowAPY,
               formattedGhoUserData.userGhoBorrowBalance,

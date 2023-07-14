@@ -8,8 +8,9 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -66,6 +67,7 @@ const head = [
 export const BorrowedPositionsList = () => {
   const { user, loading, eModes } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig, currentMarket } = useProtocolDataContext();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const theme = useTheme();
@@ -222,7 +224,7 @@ export const BorrowedPositionsList = () => {
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
-                {isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
+                {displayGho({ symbol: item.reserve.symbol, currentMarket }) ? (
                   <GhoBorrowedPositionsListItem
                     {...item}
                     key={item.underlyingAsset + item.borrowRateMode}

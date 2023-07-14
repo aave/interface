@@ -24,7 +24,7 @@ export const MarketAssetsListContainer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  const [trackEvent, isGhoLive] = useRootStore((store) => [store.trackEvent, store.isGhoLive]);
 
   const ghoReserve = getGhoReserve(reserves);
   const filteredData = reserves
@@ -60,8 +60,7 @@ export const MarketAssetsListContainer = () => {
 
   // Determine if to show GHO market list item
   const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
-    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
-      // TODO add to utilities
+    if (!GHO_SUPPORTED_MARKETS.includes(marketTitle) || !isGhoLive) {
       return false;
     }
 

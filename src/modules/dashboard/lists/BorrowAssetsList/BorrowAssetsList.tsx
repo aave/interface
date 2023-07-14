@@ -11,8 +11,9 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { findAndFilterGhoReserve, isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { findAndFilterGhoReserve } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { CapType } from '../../../../components/caps/helper';
@@ -93,6 +94,7 @@ const head = [
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -149,7 +151,7 @@ export const BorrowAssetsList = () => {
       : tokensToBorrow.filter(
           ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
             (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
-            isGhoAndSupported({
+            displayGho({
               symbol,
               currentMarket,
             })
@@ -258,25 +260,21 @@ export const BorrowAssetsList = () => {
               </>
             )}
           </Box>
-          {ghoReserve &&
-            !downToXSM &&
-            isGhoAndSupported({ symbol: ghoReserve.symbol, currentMarket }) && (
-              <AssetCapsProvider asset={ghoReserve.reserve}>
-                <GhoBorrowAssetsListItem {...ghoReserve} />
-              </AssetCapsProvider>
-            )}
+          {ghoReserve && !downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
+            <AssetCapsProvider asset={ghoReserve.reserve}>
+              <GhoBorrowAssetsListItem {...ghoReserve} />
+            </AssetCapsProvider>
+          )}
         </>
       }
     >
       <>
         {!downToXSM && reserves.length && <RenderHeader />}
-        {ghoReserve &&
-          downToXSM &&
-          isGhoAndSupported({ symbol: ghoReserve.symbol, currentMarket }) && (
-            <AssetCapsProvider asset={ghoReserve.reserve}>
-              <GhoBorrowAssetsListItem {...ghoReserve} />
-            </AssetCapsProvider>
-          )}
+        {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
+          <AssetCapsProvider asset={ghoReserve.reserve}>
+            <GhoBorrowAssetsListItem {...ghoReserve} />
+          </AssetCapsProvider>
+        )}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
