@@ -119,7 +119,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
-      debtSwitch: true,
+      debtSwitch: false,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -212,6 +212,7 @@ export const marketsData: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
     addresses: {
@@ -239,6 +240,7 @@ export const marketsData: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
     addresses: {
@@ -304,6 +306,7 @@ export const marketsData: {
       incentives: true,
       liquiditySwap: true,
       collateralRepay: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
     addresses: {
@@ -352,6 +355,7 @@ export const marketsData: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche',
     addresses: {
@@ -500,6 +504,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
       liquiditySwap: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism',
     addresses: {
@@ -524,6 +529,7 @@ export const marketsData: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon',
     addresses: {

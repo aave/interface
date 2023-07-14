@@ -43,7 +43,7 @@ export const BorrowedPositionsListItem = ({
 
   const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
 
-  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
   const disableSwitch = !isActive || isFrozen || reserve.symbol == 'stETH';
 
   return (
