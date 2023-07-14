@@ -254,7 +254,13 @@ export const AppDataProvider: React.FC = ({ children }) => {
         // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
         // would work out pretty well. We could even extend that pattern for the other reserves, and migrate towards the global store instead of the app data provider.
         // ghoLoadingData for now is just propagated through to reduce changes to other components.
-        ghoReserveData: formattedGhoReserveData,
+        ghoReserveData: {
+          ...formattedGhoReserveData,
+          aaveFacilitatorRemainingCapacity: Math.max(
+            formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
+            0
+          ),
+        },
         ghoUserData: formattedGhoUserData,
         ghoLoadingData: !ghoReserveDataFetched,
       }}

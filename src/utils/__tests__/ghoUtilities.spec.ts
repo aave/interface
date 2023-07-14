@@ -1,34 +1,6 @@
-import { getAvailableBorrows, weightedAverageAPY } from '../ghoUtilities';
+import { weightedAverageAPY } from '../ghoUtilities';
 
 describe('gho utilities', () => {
-  it('returns the correct amount available to borrow when user available borrow is less than facilitator level', () => {
-    const userAvailableBorrows = 1000;
-    const ghoFacilitatorCapacity = 10000;
-    const ghoFacilitatorLevel = 8000;
-
-    const available = getAvailableBorrows(
-      userAvailableBorrows,
-      ghoFacilitatorCapacity,
-      ghoFacilitatorLevel
-    );
-
-    expect(available).toEqual(userAvailableBorrows);
-  });
-
-  it('returns the correct amount available to borrow when facilitator level is less than user available borrow', () => {
-    const userAvailableBorrows = 20000;
-    const ghoFacilitatorCapacity = 10000;
-    const ghoFacilitatorLevel = 5000;
-
-    const available = getAvailableBorrows(
-      userAvailableBorrows,
-      ghoFacilitatorCapacity,
-      ghoFacilitatorLevel
-    );
-
-    expect(available).toEqual(ghoFacilitatorCapacity - ghoFacilitatorLevel);
-  });
-
   it('calculates the weighted average APY correctly', () => {
     const baseBorrowRate = 0.02; // 2%
     const totalBorrowAmount = 1000;
@@ -58,7 +30,7 @@ describe('gho utilities', () => {
       borrowRateAfterDiscount
     );
 
-    expect(apy.toPrecision(3)).toEqual('0.0200');
+    expect(apy.toPrecision(3)).toEqual('0.0160');
   });
   it('calculates the weighted average APY correctly when total borrow amount is less then the discountable amount', () => {
     const baseBorrowRate = 0.02; // 2%

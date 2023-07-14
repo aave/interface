@@ -15,7 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { getAvailableBorrows, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListButtonsColumn } from '../ListButtonsColumn';
@@ -38,13 +38,11 @@ export const GhoBorrowAssetsListItem = ({
   const { ghoUserDataFetched } = useRootStore();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   // Available borrows is min of user available borrows and remaining facilitator capacity
   const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
-  const availableBorrows = getAvailableBorrows(
+  const availableBorrows = Math.min(
     maxAmountUserCanMint,
-    ghoReserveData.aaveFacilitatorBucketMaxCapacity,
-    ghoReserveData.aaveFacilitatorBucketLevel
+    ghoReserveData.aaveFacilitatorRemainingCapacity
   );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
   const debtBalanceAfterMaxBorrow = availableBorrows + ghoUserData.userGhoBorrowBalance;
