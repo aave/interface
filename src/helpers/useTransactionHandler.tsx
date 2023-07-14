@@ -183,6 +183,7 @@ export const useTransactionHandler = ({
                 signStakingApproval({
                   token: approval.underlyingAsset,
                   amount: approval.amount,
+                  deadline,
                 })
               );
             }

@@ -7,11 +7,16 @@ import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
 export interface StakeSlice {
-  signStakingApproval: (args: { token: string; amount: string }) => Promise<string>;
+  signStakingApproval: (args: {
+    token: string;
+    amount: string;
+    deadline: string;
+  }) => Promise<string>;
   stakeWithPermit: (args: {
     token: string;
     amount: string;
     signature: SignatureLike;
+    deadline: string;
   }) => Promise<EthereumTransactionTypeExtended[]>;
   stake: (args: {
     token: string;
@@ -44,23 +49,21 @@ export const createStakeSlice: StateCreator<
     return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
   }
   return {
-    signStakingApproval({ token, amount }) {
+    signStakingApproval({ token, amount, deadline }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
-      return service.signStaking(currentUser, amount);
+      return service.signStaking(currentUser, amount, deadline);
     },
-    stakeWithPermit({ token, amount, signature }) {
+    stakeWithPermit({ token, amount, signature, deadline }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
-        STAKING_HELPER_ADDRESS: stakeConfig.tokens[token].STAKING_HELPER,
       });
       const currentUser = get().account;
-      return service.stakeWithPermit(currentUser, amount, signature);
+      return service.stakeWithPermit(currentUser, amount, signature, deadline);
     },
     stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();

@@ -39,11 +39,12 @@ export const StakeActions = ({
           amount: amountToStake.toString(),
         });
       },
-      handleGetPermitTxns: async (signature) => {
+      handleGetPermitTxns: async (signature, deadline) => {
         return stakeWithPermit({
           token: selectedToken,
           amount: amountToStake.toString(),
           signature: signature[0],
+          deadline,
         });
       },
       eventTxInfo: {
