@@ -134,7 +134,7 @@ export const GhoBorrowModalContent = ({
   let maxAmountToBorrow = getMaxGhoMintAmount(user);
   maxAmountToBorrow = Math.min(
     Number(maxAmountToBorrow),
-    ghoReserveData.aaveFacilitatorRemainingCapacity
+    Math.max(ghoReserveData.aaveFacilitatorRemainingCapacity, 0)
   ).toFixed(10);
 
   // We set this in a useEffect, so it doesn't constantly change when

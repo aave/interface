@@ -15,22 +15,6 @@ export const getGhoReserve = (reserves: ComputedReserveData[]) => {
 };
 
 /**
- * Returns the minimum of user available borrows and remaining facilitator capacity
- * @param userAvailableBorrows The max amount a user can borrow with their current collateral
- * @param ghoFacilitatorCapacity The max amount the GHO facilitator can mint
- * @param ghoFacilitatorLevel The current amount minted by the GHO facilitator
- * @returns
- */
-export const getAvailableBorrows = (
-  userAvailableBorrows: number,
-  ghoFacilitatorCapacity: number,
-  ghoFacilitatorLevel: number
-): number => {
-  const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
-  return Math.min(userAvailableBorrows, remainingBucketCapacity);
-};
-
-/**
  * Calculates the weighted average APY
  * @param baseVariableBorrowRate - The base variable borrow rate, normalized
  * @param totalBorrowAmount - The total amount of the asset that is being borrowed

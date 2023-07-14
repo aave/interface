@@ -11,6 +11,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -31,7 +32,7 @@ export const GhoBorrowedPositionsListItem = ({
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const { ghoLoadingData, ghoReserveData, ghoUserData } = useAppDataContext();
+  const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
   const { ghoUserDataFetched, ghoUserQualifiesForDiscount } = useRootStore();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -50,6 +51,11 @@ export const GhoBorrowedPositionsListItem = ({
   const hasDiscount = ghoUserQualifiesForDiscount();
 
   const { isActive, isFrozen, borrowingEnabled } = reserve;
+  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
+  const availableBorrows = Math.min(
+    maxAmountUserCanMint,
+    ghoReserveData.aaveFacilitatorRemainingCapacity
+  );
 
   const props: GhoBorrowedPositionsListItemProps = {
     reserve,
@@ -61,7 +67,12 @@ export const GhoBorrowedPositionsListItem = ({
     borrowRateAfterDiscount,
     currentMarket,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
-    borrowDisabled: !isActive || !borrowingEnabled || isFrozen,
+    borrowDisabled:
+      !isActive ||
+      !borrowingEnabled ||
+      isFrozen ||
+      availableBorrows <= 0 ||
+      ghoReserveData.aaveFacilitatorRemainingCapacity < 0.000001,
     onRepayClick: () =>
       openRepay(
         reserve.underlyingAsset,
