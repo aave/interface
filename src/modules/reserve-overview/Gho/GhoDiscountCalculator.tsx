@@ -375,7 +375,7 @@ const GhoDiscountParametersComponent: React.FC<{
           loading={loading}
         >
           <FormattedNumber
-            value={ghoReserveData.ghoDiscountRate * -1}
+            value={ghoReserveData.ghoDiscountRate}
             percent
             variant="secondary14"
             color="text.primary"
