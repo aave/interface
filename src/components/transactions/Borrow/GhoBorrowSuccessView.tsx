@@ -4,13 +4,14 @@ import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { ContentCopyOutlined, Twitter } from '@mui/icons-material';
 import { Box, Button, IconButton, styled, SvgIcon, SvgIconProps, Typography } from '@mui/material';
+import dynamic from 'next/dynamic.js';
 import { ReactNode, useRef, useState } from 'react';
 import { LensterIcon } from 'src/components/icons/LensterIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
-import { GhoSuccessImage } from './GhoSuccessImage';
+const GhoSuccessImage = dynamic(() => import('./GhoSuccessImage'));
 
 const CopyImageButton = styled(Button)(() => ({
   minWidth: 139,
