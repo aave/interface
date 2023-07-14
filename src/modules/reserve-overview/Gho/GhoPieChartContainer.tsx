@@ -207,7 +207,7 @@ const PieChartLegend = ({
           >
             <TableCell align="left" sx={{ pl: 0 }}>
               <Typography variant="helperText">
-                <Trans>Principal balance</Trans>
+                <Trans>Borrow balance</Trans>
               </Typography>
             </TableCell>
             <TableCell align="right">

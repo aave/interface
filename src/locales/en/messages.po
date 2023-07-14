@@ -472,6 +472,7 @@ msgstr "Borrow and repay in same block is not allowed"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Borrow balance"
 msgstr "Borrow balance"
 
@@ -1660,10 +1661,6 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
-
-#: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
-msgid "Principal balance"
-msgstr "Principal balance"
 
 #: src/layouts/AppFooter.tsx
 msgid "Privacy"
