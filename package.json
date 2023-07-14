@@ -2,7 +2,7 @@
   "name": "aave-ui",
   "version": "1.0.0",
   "private": true,
-  "license": "BSD-3-Clause",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
