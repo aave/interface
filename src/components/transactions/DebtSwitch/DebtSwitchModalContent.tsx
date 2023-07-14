@@ -10,6 +10,7 @@ import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
@@ -37,7 +38,6 @@ interface SwitchTargetAsset extends Asset {
   variableApy: string;
 }
 
-// TODO: other errors?
 enum ErrorType {
   INSUFFICIENT_LIQUIDITY,
 }
@@ -125,6 +125,11 @@ export const DebtSwitchModalContent = ({
 
   const poolReserveAmountUSD = Number(amount) * Number(poolReserve.priceInUSD);
   const targetReserveAmountUSD = Number(inputAmount) * Number(targetReserve.priceInUsd);
+
+  const priceImpactDifference: number = targetReserveAmountUSD - poolReserveAmountUSD;
+  const insufficientCollateral =
+    Number(user.availableBorrowsUSD) === 0 ||
+    priceImpactDifference > Number(user.availableBorrowsUSD);
 
   let blockingError: ErrorType | undefined = undefined;
   if (BigNumber(outputAmount).gt(availableLiquidityOfTargetReserve)) {
@@ -260,6 +265,17 @@ export const DebtSwitchModalContent = ({
 
       {txError && <ParaswapErrorDisplay txError={txError} />}
 
+      {insufficientCollateral && (
+        <Warning severity="error" sx={{ mt: 4 }}>
+          <Typography variant="caption">
+            <Trans>
+              Insufficient collateral to cover new borrow position. Wallet must have borrowing power
+              remaining to perform debt switch.
+            </Trans>
+          </Typography>
+        </Warning>
+      )}
+
       <DebtSwitchActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
@@ -268,7 +284,7 @@ export const DebtSwitchModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={switchTarget.reserve}
         symbol={poolReserve.symbol}
-        blocked={blockingError !== undefined || error !== ''}
+        blocked={blockingError !== undefined || error !== '' || insufficientCollateral}
         loading={routeLoading}
         buildTxFn={buildTxFn}
         currentRateMode={currentRateMode}

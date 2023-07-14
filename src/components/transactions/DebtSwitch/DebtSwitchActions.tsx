@@ -257,7 +257,8 @@ export const DebtSwitchActions = ({
     }
     setGasLimit(switchGasLimit.toString());
   }, [requiresApproval, approvalTxState, setGasLimit]);
-
+  console.log('BLOCKED');
+  console.log(blocked);
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
@@ -279,6 +280,7 @@ export const DebtSwitchActions = ({
         content: <Trans>Switch</Trans>,
         handleClick: action,
       }}
+      blocked={blocked}
       tryPermit={approvalWithSignatureAvailable}
     />
   );

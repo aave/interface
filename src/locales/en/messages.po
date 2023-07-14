@@ -1078,6 +1078,10 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
