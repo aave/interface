@@ -3,7 +3,18 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { ContentCopyOutlined, Twitter } from '@mui/icons-material';
-import { Box, Button, IconButton, styled, SvgIcon, SvgIconProps, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Skeleton,
+  styled,
+  SvgIcon,
+  SvgIconProps,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import dynamic from 'next/dynamic.js';
 import { ReactNode, useRef, useState } from 'react';
 import { LensterIcon } from 'src/components/icons/LensterIcon';
@@ -96,6 +107,8 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
   const { mainTxState } = useModalContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const compactedNumber = compactNumber({ value: amount, visibleDecimals: 2, roundDown: true });
   const finalNumber = `${compactedNumber.prefix}${compactedNumber.postfix}`;
@@ -251,6 +264,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           </ImageContainer>
         ) : (
           <>
+            <Skeleton height={downToXSM ? 240 : 286} sx={{ borderRadius: 4, width: '100%' }} />
             <div style={{ visibility: 'hidden', position: 'absolute' }}>
               <GhoSuccessImage onSuccessEditing={transformImage} text={finalNumber} />
             </div>
