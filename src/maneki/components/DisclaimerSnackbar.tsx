@@ -25,11 +25,19 @@ const DisclaimerSnackbar = () => {
     else setOpen(true);
   }, []);
   return (
-    <Snackbar open={open} onClose={handleClose}>
+    <Snackbar
+      open={open}
+      onClose={handleClose}
+      sx={{ height: '100%' }}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+    >
       <Paper
         sx={{
-          padding: '12px',
-          maxWidth: '300px',
+          padding: '24px 16px',
+          maxWidth: '350px',
         }}
       >
         <Typography>
