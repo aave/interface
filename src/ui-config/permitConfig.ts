@@ -6,11 +6,13 @@ export const permitByChainAndToken: {
   [ChainId.mainnet]: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': false,
     '0x6b175474e89094c44da98b954eedeac495271d0f': false,
-    '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': true,
+    '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9': true, // wsteth
     '0x514910771af9ca656af840dff83e8264ecf986ca': false,
     '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': false,
     '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false,
-    '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true,
+    '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true, // aave
+    '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true, // gho
+    '0x5f98805a4e8be255a32880fdec7f6728c6568ba0': true, // lusd
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
