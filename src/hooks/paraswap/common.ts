@@ -5,10 +5,12 @@ import {
   constructFetchFetcher,
   constructGetRate,
   constructPartialSDK,
+  ContractMethod,
+  OptimalRate,
+  SwapSide,
   TransactionParams,
 } from '@paraswap/sdk';
-import { RateOptions } from '@paraswap/sdk/dist/rates';
-import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
+import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
@@ -47,7 +49,7 @@ const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
   return constructPartialSDK(
     {
-      network: chainId,
+      chainId,
       fetcher,
     },
     constructBuildTx,
@@ -151,7 +153,14 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleSwap];
+    options.excludeContractMethods = [
+      ContractMethod.simpleSwap,
+      ContractMethod.directUniV3Swap,
+      ContractMethod.directBalancerV2GivenInSwap,
+      ContractMethod.directBalancerV2GivenOutSwap,
+      ContractMethod.directCurveV1Swap,
+      ContractMethod.directCurveV2Swap,
+    ];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -237,7 +246,11 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleBuy];
+    options.excludeContractMethods = [
+      ContractMethod.simpleBuy,
+      ContractMethod.directUniV3Buy,
+      ContractMethod.directBalancerV2GivenOutSwap,
+    ];
   }
 
   const swapper = ExactOutSwapper(chainId);
