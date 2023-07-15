@@ -219,7 +219,11 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
         <canvas style={{ display: 'none' }} width={1169} height={900} ref={canvasRef} />
         {generatedImage ? (
           <ImageContainer>
-            <img src={generatedImage} alt="minted gho" style={{ maxWidth: '100%' }} />
+            <img
+              src={generatedImage}
+              alt="minted gho"
+              style={{ maxWidth: '100%', borderRadius: '10px' }}
+            />
             <ImageBar className="image-bar">
               <CopyImageButton
                 disabled={clickedCopyImage}
