@@ -269,7 +269,7 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && reserves.length && <RenderHeader />}
+        {!downToXSM && !borrowDisabled && <RenderHeader />}
         {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
           <AssetCapsProvider asset={ghoReserve.reserve}>
             <GhoBorrowAssetsListItem {...ghoReserve} />
