@@ -98,7 +98,7 @@ export const GhoDiscountProgram = () => {
         </Box>
         <Box
           component="img"
-          src="/illustration_aave_friendly_ghost.png"
+          src="/illustration_friendly_ghost.png"
           sx={{
             position: 'absolute',
             right: [-200, -190],
