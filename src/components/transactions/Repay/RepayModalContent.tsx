@@ -203,11 +203,13 @@ export const RepayModalContent = ({
     );
     const borrowBalanceMarketReferenceCurrency = BigNumber.max(remainingBorrowBalance, 0);
 
-    newHF = calculateHealthFactorFromBalancesBigUnits({
+    const calculatedHealthFactor = calculateHealthFactorFromBalancesBigUnits({
       collateralBalanceMarketReferenceCurrency,
       borrowBalanceMarketReferenceCurrency,
       currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
-    }).toString(10);
+    });
+
+    newHF = calculatedHealthFactor.isLessThan(0) ? '0' : calculatedHealthFactor.toString(10);
   }
 
   // calculating input usd value
