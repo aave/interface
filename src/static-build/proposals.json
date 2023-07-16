@@ -10672,22 +10672,22 @@
       ],
       "startBlock": 17687047,
       "endBlock": 17706247,
-      "executionTime": 0,
+      "executionTime": 1689601835,
       "forVotes": "735974190915540302970204",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1690033835,
       "proposalCreated": 17679847,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x92ba22fcbc5cce90c7b5eacd64bcabf6c68a7165b6d6b14a7f17100138c89c31",
       "startTimestamp": 1689281231,
       "creationTimestamp": 1689193667,
-      "expirationTimestamp": 1689515255
+      "expirationTimestamp": 1689511631
     },
     {
       "id": 275,
@@ -10708,7 +10708,7 @@
       "startBlock": 17693756,
       "endBlock": 17712956,
       "executionTime": 0,
-      "forVotes": "187330525633674489057106",
+      "forVotes": "239253907665481960338258",
       "againstVotes": "195000000000000000",
       "executed": false,
       "canceled": false,
@@ -10722,7 +10722,7 @@
       "ipfsHash": "0xf5cd680c7df66b2e603b4c16ffdb2c07e19903e6f4df9742886922d13000b839",
       "startTimestamp": 1689362651,
       "creationTimestamp": 1689275303,
-      "expirationTimestamp": 1689595763
+      "expirationTimestamp": 1689595895
     },
     {
       "id": 276,
@@ -10743,7 +10743,7 @@
       "startBlock": 17693840,
       "endBlock": 17713040,
       "executionTime": 0,
-      "forVotes": "939520252129101037258",
+      "forVotes": "52849502943939101037258",
       "againstVotes": "24525841886193145",
       "executed": false,
       "canceled": false,
@@ -10757,7 +10757,7 @@
       "ipfsHash": "0xdc2654339761e78195b693d8d90ee96531d71c9c1236612d94a22c62554e3a92",
       "startTimestamp": 1689363719,
       "creationTimestamp": 1689276311,
-      "expirationTimestamp": 1689596771
+      "expirationTimestamp": 1689596903
     }
   ]
 }
