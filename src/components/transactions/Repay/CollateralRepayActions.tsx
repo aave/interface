@@ -54,7 +54,10 @@ export const CollateralRepayActions = ({
   buildTxFn,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  const { paraswapRepayWithCollateral, currentMarketData } = useRootStore();
+  const [paraswapRepayWithCollateral, currentMarketData] = useRootStore((state) => [
+    state.paraswapRepayWithCollateral,
+    state.currentMarketData,
+  ]);
 
   const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
@@ -103,7 +106,6 @@ export const CollateralRepayActions = ({
 
   return (
     <TxActionsWrapper
-      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}

@@ -6,8 +6,6 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { Warning } from 'src/components/primitives/Warning';
-import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -41,7 +39,7 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value
@@ -181,10 +179,6 @@ export function CollateralRepayModalContent({
   const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
-  const isUSDTEthMainnetV3 =
-    currentChainId === 1 &&
-    !!currentMarketData.v3 &&
-    (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   let blockingError: ErrorType | undefined = undefined;
 
@@ -276,12 +270,6 @@ export function CollateralRepayModalContent({
         </Typography>
       )}
 
-      {isUSDTEthMainnetV3 && (
-        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-          <USDTParaswapWarning />
-        </Warning>
-      )}
-
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
@@ -326,7 +314,7 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        blocked={blockingError !== undefined || error !== '' || isUSDTEthMainnetV3}
+        blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
         buildTxFn={buildTxFn}
       />
