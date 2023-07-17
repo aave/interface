@@ -2,7 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ContentCopyOutlined, Twitter } from '@mui/icons-material';
+import { ContentCopyOutlined, Download, Twitter } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -21,6 +21,8 @@ import { LensterIcon } from 'src/components/icons/LensterIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { GHO_SUCCESS_MODAL } from 'src/utils/mixPanelEvents';
 
 const GhoSuccessImage = dynamic(() => import('./GhoSuccessImage'));
 
@@ -42,7 +44,7 @@ const CopyImageButton = styled(Button)(() => ({
   },
   backdropFilter: 'blur(5px)',
   border: '1px solid #FFFFFF20',
-}));
+})) as typeof Button;
 
 const IconButtonCustom = styled(IconButton)(() => ({
   backgroundColor: 'white',
@@ -60,7 +62,7 @@ const ImageContainer = styled(Box)(() => ({
   position: 'relative',
   overflow: 'hidden',
   '&:hover': {
-    '.image-bar': {
+    '.image-bar-gho': {
       display: 'flex',
       bottom: 30,
     },
@@ -109,10 +111,11 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const compactedNumber = compactNumber({ value: amount, visibleDecimals: 2, roundDown: true });
   const finalNumber = `${compactedNumber.prefix}${compactedNumber.postfix}`;
-  const isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
+  const canCopyImage = typeof ClipboardItem !== 'undefined';
 
   const onCopyImage = () => {
     if (generatedBlob) {
@@ -123,10 +126,14 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           }),
         ])
         .then(() => {
+          trackEvent(GHO_SUCCESS_MODAL.GHO_COPY_IMAGE);
           setClickedCopyImage(true);
           setTimeout(() => {
             setClickedCopyImage(false);
           }, COPY_IMAGE_TIME);
+        })
+        .catch(() => {
+          trackEvent(GHO_SUCCESS_MODAL.GHO_FAIL_COPY_IMAGE);
         });
     }
   };
@@ -204,6 +211,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           variant="outlined"
           size="small"
           endIcon={<ExtLinkIcon style={{ fontSize: 12 }} />}
+          onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_BORROW_VIEW_TX_DETAILS)}
           href={currentNetworkConfig.explorerLinkBuilder({
             tx: txHash ? txHash : mainTxState.txHash,
           })}
@@ -217,36 +225,62 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           <Trans>Save and share</Trans>
         </Typography>
         <canvas style={{ display: 'none' }} width={1169} height={900} ref={canvasRef} />
-        {generatedImage ? (
+        {generatedImage && generatedBlob ? (
           <ImageContainer>
             <img
               src={generatedImage}
               alt="minted gho"
               style={{ maxWidth: '100%', borderRadius: '10px' }}
             />
-            <ImageBar className="image-bar">
-              <CopyImageButton
-                disabled={clickedCopyImage}
-                onClick={onCopyImage}
-                sx={{
-                  display: isFirefox ? 'none' : 'flex',
-                }}
-                variant="outlined"
-                size="large"
-                startIcon={
-                  clickedCopyImage ? (
-                    <SvgIcon sx={{ color: 'white', fontSize: 16 }}>
-                      <CheckIcon />
-                    </SvgIcon>
-                  ) : (
-                    <ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />
-                  )
-                }
-              >
-                <Typography variant="buttonS" color="white">
-                  {clickedCopyImage ? <Trans>COPIED!</Trans> : <Trans>COPY IMAGE</Trans>}
-                </Typography>
-              </CopyImageButton>
+            <ImageBar className="image-bar-gho">
+              {canCopyImage ? (
+                <CopyImageButton
+                  disabled={clickedCopyImage}
+                  onClick={onCopyImage}
+                  sx={{
+                    display: 'flex',
+                  }}
+                  variant="outlined"
+                  size="large"
+                  startIcon={
+                    clickedCopyImage ? (
+                      <SvgIcon sx={{ color: 'white', fontSize: 16 }}>
+                        <CheckIcon />
+                      </SvgIcon>
+                    ) : (
+                      <ContentCopyOutlined style={{ fontSize: 16, fill: 'white' }} />
+                    )
+                  }
+                >
+                  <Typography variant="buttonS" color="white">
+                    {clickedCopyImage ? <Trans>COPIED!</Trans> : <Trans>COPY IMAGE</Trans>}
+                  </Typography>
+                </CopyImageButton>
+              ) : (
+                <CopyImageButton
+                  download={'minted_gho.png'}
+                  href={URL.createObjectURL(generatedBlob)}
+                  onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_DOWNLOAD_IMAGE)}
+                  sx={{
+                    display: 'flex',
+                  }}
+                  variant="outlined"
+                  size="large"
+                  startIcon={
+                    clickedCopyImage ? (
+                      <SvgIcon sx={{ color: 'white', fontSize: 16 }}>
+                        <CheckIcon />
+                      </SvgIcon>
+                    ) : (
+                      <Download style={{ fontSize: 16, fill: 'white' }} />
+                    )
+                  }
+                >
+                  <Typography variant="buttonS" color="white">
+                    <Trans>Download</Trans>
+                  </Typography>
+                </CopyImageButton>
+              )}
               <IconButtonCustom
                 target="_blank"
                 href={`https://lenster.xyz/?url=${
@@ -254,6 +288,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
                 }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
                 size="small"
                 sx={{ ml: 'auto' }}
+                onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_SHARE_LENSTER)}
               >
                 <LensterIcon sx={{ fill: '#845EEE' }} fontSize="small" />
               </IconButtonCustom>
@@ -261,6 +296,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
                 target="_blank"
                 href={`https://twitter.com/intent/tweet?text=I Just minted ${finalNumber} GHO`}
                 sx={{ ml: 2 }}
+                onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_SHARE_TWITTER)}
               >
                 <Twitter fontSize="small" sx={{ fill: '#33CEFF' }} />
               </IconButtonCustom>
