@@ -272,7 +272,7 @@ export const SupplyModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <SupplyActions
-        poolReserve={poolReserve}
+        // poolReserve={poolReserve}
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
         poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}

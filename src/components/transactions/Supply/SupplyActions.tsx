@@ -1,7 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+// import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -9,7 +9,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
-  poolReserve: ComputedReserveData;
+  // poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   poolAddress: string;
