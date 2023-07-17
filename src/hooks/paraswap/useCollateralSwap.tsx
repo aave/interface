@@ -1,5 +1,5 @@
 import { BigNumberZeroDecimal, normalize } from '@aave/math-utils';
-import { OptimalRate } from 'paraswap-core';
+import { OptimalRate } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
