@@ -23,8 +23,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
+import { GhoDiscountProgram } from './GhoDiscountProgram';
 import { StakeActionBox } from './StakeActionBox';
 
 function secondsToDHMS(seconds: number) {
@@ -78,6 +80,7 @@ export interface StakingPanelProps {
   stakedToken: string;
   maxSlash: string;
   icon: string;
+  hasDiscountProgram?: boolean;
 }
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
@@ -95,6 +98,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeUserData,
   ethPriceUsd,
   maxSlash,
+  hasDiscountProgram,
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
@@ -524,6 +528,30 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       </Stack>
 
       {!!description && description}
+
+      {hasDiscountProgram && (
+        <Box
+          sx={{
+            mt: {
+              xs: '20px',
+              xsm: '36px',
+            },
+            px: {
+              xsm: 6,
+            },
+            width:
+              STAGING_ENV || ENABLE_TESTNET
+                ? {
+                    xs: '100%',
+                    lg: '50%',
+                  }
+                : '100%',
+            marginX: 'auto',
+          }}
+        >
+          <GhoDiscountProgram />
+        </Box>
+      )}
     </Paper>
   );
 };

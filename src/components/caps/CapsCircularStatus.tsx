@@ -8,9 +8,10 @@ import { ContentWithTooltip } from '../ContentWithTooltip';
 type CapsCircularStatusProps = {
   value: number;
   tooltipContent: ReactNode;
+  onClick?: (open: boolean) => void;
 };
 
-export const CapsCircularStatus = ({ value, tooltipContent }: CapsCircularStatusProps) => {
+export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircularStatusProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   // If value is zero, don't show anything
@@ -39,7 +40,14 @@ export const CapsCircularStatus = ({ value, tooltipContent }: CapsCircularStatus
   };
 
   return (
-    <ContentWithTooltip tooltipContent={<>{tooltipContent}</>} open={open} setOpen={setOpen}>
+    <ContentWithTooltip
+      tooltipContent={<>{tooltipContent}</>}
+      open={open}
+      setOpen={(value) => {
+        setOpen(value);
+        if (onClick) onClick(value);
+      }}
+    >
       <Box sx={{ position: 'relative', mr: 4 }}>
         <CircularProgress
           variant="determinate"

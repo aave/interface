@@ -47,6 +47,8 @@ export const RESERVE_DETAILS = {
   ADD_TOKEN_TO_WALLET_DROPDOWN: 'View add token to wallet dropdown', //done
   GO_DASHBOARD_EMODE: 'Click Dashboard from E-Mode section', //done
   GRAPH_TIME_PERIOD: 'Graph Time Period Selector',
+  GHO_CALCULATOR_ADD: 'Add stkAAVE to borrow at max discount',
+  GHO_CALCULATOR_AMOUNT_CHANGE: 'Slider amount change',
 };
 
 export const YOUR_INFO_RESERVE_DETAILS = {
