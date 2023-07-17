@@ -881,6 +881,10 @@ msgstr "Discountable amount"
 msgid "Docs"
 msgstr "Docs"
 
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Download"
+msgstr "Download"
+
 #: src/components/Warnings/USDTParaswapWarning.tsx
 msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
 msgstr "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
