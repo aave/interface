@@ -33723,6 +33723,7 @@ var require_types2 = __commonJS({
       ProtocolAction2["migrateV3"] = "migrateV3";
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
+      ProtocolAction2["stakeWithPermit"] = "stakeWithPermit";
       ProtocolAction2["vote"] = "vote";
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
@@ -35343,6 +35344,14 @@ var require_utils6 = __commonJS({
         limit: "350000",
         recommended: "350000"
       },
+      [types_1.ProtocolAction.stake]: {
+        limit: "350000",
+        recommended: "350000"
+      },
+      [types_1.ProtocolAction.stakeWithPermit]: {
+        limit: "400000",
+        recommended: "400000"
+      },
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
         recommended: "125000"
@@ -35412,6 +35421,8 @@ var require_utils6 = __commonJS({
         case "0xb66bcbac":
         case "0x35326910":
           return 164;
+        case "0x87a63926":
+          return 68;
         default:
           throw new Error("Unrecognized function selector for Augustus");
       }
@@ -36836,8 +36847,7 @@ var require_methodValidators = __commonJS({
       descriptor.value = function() {
         if (
           // @ts-expect-error todo: check why this ignore is needed
-          !ethers_1.utils.isAddress(this.stakingContractAddress) || // @ts-expect-error todo: check why this ignore is needed
-          !ethers_1.utils.isAddress(this.stakingHelperContractAddress)
+          !ethers_1.utils.isAddress(this.stakingContractAddress)
         ) {
           console.error(`[StakingValidator] You need to pass valid addresses`);
           return [];
@@ -41332,6 +41342,16 @@ var require_paraswap_liquiditySwapAdapter_contract = __commonJS({
           return 68;
         case "0x46c67b6d":
           return 68;
+        case "0xb22f4db8":
+          return 68;
+        case "0x19fc5be0":
+          return 68;
+        case "0x3865bde6":
+          return 68;
+        case "0x58f15100":
+          return 68;
+        case "0xa6866da9":
+          return 68;
         default:
           throw new Error("Unrecognized function selector for Augustus");
       }
@@ -43850,54 +43870,110 @@ var require_v3_faucet_contract = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js
-var require_IAaveStakingHelper_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
+var require_IERC202612_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IAaveStakingHelper__factory = void 0;
+    exports2.IERC202612__factory = void 0;
     var ethers_1 = require_lib31();
-    var IAaveStakingHelper__factory = class {
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IAaveStakingHelper__factory = IAaveStakingHelper__factory;
     var _abi = [
       {
         inputs: [
           {
             internalType: "address",
-            name: "user",
+            name: "owner",
             type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint8",
-            name: "v",
-            type: "uint8"
-          },
-          {
-            internalType: "bytes32",
-            name: "r",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "s",
-            type: "bytes32"
           }
         ],
-        name: "stake",
-        outputs: [],
-        stateMutability: "nonpayable",
+        name: "_nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
         type: "function"
       }
     ];
+    var IERC202612__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IERC202612__factory = IERC202612__factory;
+    IERC202612__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
+var require_erc20_2612 = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ERC20_2612Service = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IERC202612__factory_1 = require_IERC202612_factory();
+    var ERC20_2612Service = class extends BaseService_1.default {
+      constructor(provider) {
+        super(provider, IERC202612__factory_1.IERC202612__factory);
+        this.getNonce = this.getNonce.bind(this);
+      }
+      getNonce(_0) {
+        return __async(this, arguments, function* ({ token, owner }) {
+          const tokenContract = this.getContractInstance(token);
+          let nonce;
+          try {
+            nonce = yield tokenContract.nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+          }
+          try {
+            nonce = yield tokenContract._nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+            console.log(`Token ${token} does not implement nonces or _nonces method`);
+          }
+          return null;
+        });
+      }
+    };
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], ERC20_2612Service.prototype, "getNonce", null);
+    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -44733,21 +44809,17 @@ var require_staking_contract = __commonJS({
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
+    var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
-    var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
     var IStakedAaveV3__factory_1 = require_IStakedAaveV3_factory();
     var StakingService = class extends BaseService_1.default {
       constructor(provider, stakingServiceConfig) {
-        var _a7;
         super(provider, IStakedAaveV3__factory_1.IStakedAaveV3__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
-        this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
-        if (this.stakingHelperContractAddress !== "") {
-          this.stakingHelperContract = IAaveStakingHelper__factory_1.IAaveStakingHelper__factory.connect(this.stakingHelperContractAddress, provider);
-        }
       }
-      signStaking(user, amount, nonce) {
+      signStaking(user, amount, deadline) {
         return __async(this, null, function* () {
           const { getTokenData } = this.erc20Service;
           const stakingContract = this.getContractInstance(this.stakingContractAddress);
@@ -44755,6 +44827,13 @@ var require_staking_contract = __commonJS({
           const { name: name2, decimals } = yield getTokenData(stakedToken);
           const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
           const { chainId } = yield this.provider.getNetwork();
+          const nonce = yield this.erc20_2612Service.getNonce({
+            token: stakedToken,
+            owner: user
+          });
+          if (nonce === null) {
+            return "";
+          }
           const typeData = {
             types: {
               EIP712Domain: [
@@ -44780,16 +44859,16 @@ var require_staking_contract = __commonJS({
             },
             message: {
               owner: user,
-              spender: this.stakingHelperContractAddress,
+              spender: this.stakingContractAddress,
               value: convertedAmount,
               nonce,
-              deadline: ethers_1.constants.MaxUint256.toString()
+              deadline
             }
           };
           return JSON.stringify(typeData);
         });
       }
-      stakeWithPermit(user, amount, signature) {
+      stakeWithPermit(user, amount, signature, deadline) {
         return __async(this, null, function* () {
           const txs = [];
           const { decimalsOf } = this.erc20Service;
@@ -44800,14 +44879,14 @@ var require_staking_contract = __commonJS({
           const sig = ethers_1.utils.splitSignature(signature);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return this.stakingHelperContract.populateTransaction.stake(user, convertedAmount, sig.v, sig.r, sig.s);
+              return stakingContract.populateTransaction.stakeWithPermit(user, convertedAmount, deadline, sig.v, sig.r, sig.s);
             }),
             from: user
           });
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.STAKE_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.stakeWithPermit)
           });
           return txs;
         });
@@ -44957,7 +45036,6 @@ var require_staking_contract = __commonJS({
       methodValidators_1.SignStakingValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
-      tslib_1.__param(2, (0, paramValidators_1.is0OrPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [String, String, String]),
       tslib_1.__metadata("design:returntype", Promise)
@@ -44967,7 +45045,7 @@ var require_staking_contract = __commonJS({
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [String, String, Object]),
+      tslib_1.__metadata("design:paramtypes", [String, String, Object, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "stakeWithPermit", null);
     tslib_1.__decorate([
@@ -47122,113 +47200,6 @@ var require_governance_power_delegation_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], GovernancePowerDelegationTokenService.prototype, "getNonce", null);
     exports2.GovernancePowerDelegationTokenService = GovernancePowerDelegationTokenService;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
-var require_IERC202612_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IERC202612__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "_nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ];
-    var IERC202612__factory = class {
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IERC202612__factory = IERC202612__factory;
-    IERC202612__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
-var require_erc20_2612 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.ERC20_2612Service = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
-    var methodValidators_1 = require_methodValidators();
-    var paramValidators_1 = require_paramValidators();
-    var IERC202612__factory_1 = require_IERC202612_factory();
-    var ERC20_2612Service = class extends BaseService_1.default {
-      constructor(provider) {
-        super(provider, IERC202612__factory_1.IERC202612__factory);
-        this.getNonce = this.getNonce.bind(this);
-      }
-      getNonce(_0) {
-        return __async(this, arguments, function* ({ token, owner }) {
-          const tokenContract = this.getContractInstance(token);
-          let nonce;
-          try {
-            nonce = yield tokenContract.nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-          }
-          try {
-            nonce = yield tokenContract._nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-            console.log(`Token ${token} does not implement nonces or _nonces method`);
-          }
-          return null;
-        });
-      }
-    };
-    tslib_1.__decorate([
-      methodValidators_1.ERC20Validator,
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], ERC20_2612Service.prototype, "getNonce", null);
-    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -49958,6 +49929,12 @@ var require_v3_pool_contract = __commonJS({
           encoderAddress: this.l2EncoderAddress
         });
       }
+      getReserveData(reserve) {
+        return __async(this, null, function* () {
+          const lendingPoolContract = this.getContractInstance(this.poolAddress);
+          return lendingPoolContract.getReserveData(reserve);
+        });
+      }
       deposit(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
@@ -50734,6 +50711,13 @@ var require_v3_pool_contract = __commonJS({
     };
     tslib_1.__decorate([
       methodValidators_1.LPValidatorV3,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], Pool.prototype, "getReserveData", null);
+    tslib_1.__decorate([
+      methodValidators_1.LPValidatorV3,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
       tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
@@ -51091,6 +51075,201 @@ var require_v3_pool_contract_bundle = __commonJS({
       }
     };
     exports2.PoolBundle = PoolBundle;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js
+var require_IUiGhoDataProvider_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IUiGhoDataProvider__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [],
+        name: "getGhoReserveData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "ghoBaseVariableBorrowRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountedPerToken",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDebtTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDiscountTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "ghoReserveLastUpdateTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint128",
+                name: "ghoCurrentBorrowIndex",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketLevel",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketMaxCapacity",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoReserveData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getGhoUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "userGhoDiscountPercent",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userDiscountTokenBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userPreviousGhoBorrowIndex",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userGhoScaledBorrowBalance",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoUserData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IUiGhoDataProvider__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IUiGhoDataProvider__factory = IUiGhoDataProvider__factory;
+    IUiGhoDataProvider__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js
+var require_GhoService = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var utils_1 = require_utils5();
+    var IUiGhoDataProvider__factory_1 = require_IUiGhoDataProvider_factory();
+    var GhoService = class {
+      constructor({ provider, uiGhoDataProviderAddress }) {
+        if (!(0, utils_1.isAddress)(uiGhoDataProviderAddress)) {
+          throw new Error("UiGhoDataProvider contract address is not valid");
+        }
+        this.ghoDataProviderService = IUiGhoDataProvider__factory_1.IUiGhoDataProvider__factory.connect(uiGhoDataProviderAddress, provider);
+      }
+      /**
+       * Fetches Gho reserve, discount, facilitator data
+       * @returns - instance of GhoReserveData with reserve, discount, facilitator data
+       */
+      getGhoReserveData() {
+        return __async(this, null, function* () {
+          const ghoReserveData = yield this.ghoDataProviderService.getGhoReserveData();
+          return {
+            ghoBaseVariableBorrowRate: ghoReserveData.ghoBaseVariableBorrowRate.toString(),
+            ghoDiscountedPerToken: ghoReserveData.ghoDiscountedPerToken.toString(),
+            ghoDiscountRate: ghoReserveData.ghoDiscountRate.toString(),
+            aaveFacilitatorBucketMaxCapacity: ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString(),
+            aaveFacilitatorBucketLevel: ghoReserveData.aaveFacilitatorBucketLevel.toString(),
+            ghoMinDebtTokenBalanceForDiscount: ghoReserveData.ghoMinDebtTokenBalanceForDiscount.toString(),
+            ghoMinDiscountTokenBalanceForDiscount: ghoReserveData.ghoMinDiscountTokenBalanceForDiscount.toString(),
+            ghoCurrentBorrowIndex: ghoReserveData.ghoCurrentBorrowIndex.toString(),
+            ghoReserveLastUpdateTimestamp: ghoReserveData.ghoReserveLastUpdateTimestamp.toString()
+          };
+        });
+      }
+      /**
+       * Fetches Gho user data for UI display
+       * @param userAddress - Address of user to fetch ghoDiscountRate, ghoDiscountTokenBalance, and gho balance indeces
+       * @returns - instance of GhoUserData
+       */
+      getGhoUserData(userAddress) {
+        return __async(this, null, function* () {
+          if (!(0, utils_1.isAddress)(userAddress)) {
+            throw new Error("user address is not valid");
+          }
+          const ghoUserData = yield this.ghoDataProviderService.getGhoUserData(userAddress);
+          return {
+            userGhoDiscountPercent: ghoUserData.userGhoDiscountPercent.toString(),
+            userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance.toString(),
+            userGhoScaledBorrowBalance: ghoUserData.userGhoScaledBorrowBalance.toString(),
+            userPreviousGhoBorrowIndex: ghoUserData.userPreviousGhoBorrowIndex.toString()
+          };
+        });
+      }
+    };
+    exports2.GhoService = GhoService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/index.js
+var require_gho = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var GhoService_1 = require_GhoService();
+    Object.defineProperty(exports2, "GhoService", { enumerable: true, get: function() {
+      return GhoService_1.GhoService;
+    } });
   }
 });
 
@@ -51529,6 +51708,479 @@ var require_v3_migration_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], V3MigrationHelperService.prototype, "migrate", null);
     exports2.V3MigrationHelperService = V3MigrationHelperService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/typechain/ParaSwapDebtSwitchAdapter__factory.js
+var require_ParaSwapDebtSwitchAdapter_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/typechain/ParaSwapDebtSwitchAdapter__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ParaSwapDebtSwapAdapter__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "addressesProvider",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "pool",
+            type: "address"
+          },
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "augustusRegistry",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amountSold",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Bought",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "previousOwner",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "OwnershipTransferred",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "fromAmount",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Swapped",
+        type: "event"
+      },
+      {
+        inputs: [],
+        name: "ADDRESSES_PROVIDER",
+        outputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "AUGUSTUS_REGISTRY",
+        outputs: [
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "MAX_SLIPPAGE_PERCENT",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "ORACLE",
+        outputs: [
+          {
+            internalType: "contract IPriceOracleGetter",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "POOL",
+        outputs: [
+          {
+            internalType: "contract IPool",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "REFERRER",
+        outputs: [
+          {
+            internalType: "uint16",
+            name: "",
+            type: "uint16"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "cacheReserves",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "assets",
+            type: "address[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "amounts",
+            type: "uint256[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "",
+            type: "uint256[]"
+          },
+          {
+            internalType: "address",
+            name: "initiator",
+            type: "address"
+          },
+          {
+            internalType: "bytes",
+            name: "params",
+            type: "bytes"
+          }
+        ],
+        name: "executeOperation",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "owner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "reserve",
+            type: "address"
+          }
+        ],
+        name: "renewAllowance",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "renounceOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IERC20",
+            name: "token",
+            type: "address"
+          }
+        ],
+        name: "rescueTokens",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "debtAsset",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "debtRepayAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "debtRateMode",
+                type: "uint256"
+              },
+              {
+                internalType: "address",
+                name: "newDebtAsset",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "maxNewDebtAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "offset",
+                type: "uint256"
+              },
+              {
+                internalType: "bytes",
+                name: "paraswapData",
+                type: "bytes"
+              }
+            ],
+            internalType: "struct ParaSwapDebtSwapAdapter.DebtSwapParams",
+            name: "debtSwapParams",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "contract ICreditDelegationToken",
+                name: "debtToken",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "value",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "deadline",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct ParaSwapDebtSwapAdapter.CreditDelegationInput",
+            name: "creditDelegationPermit",
+            type: "tuple"
+          }
+        ],
+        name: "swapDebt",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
+    var _bytecode = "0x6101006040523480156200001257600080fd5b5060405162003410380380620034108339810160408190526200003591620007c5565b838383838383838282600033600080546001600160a01b0319166001600160a01b038316908117825560405192935091600080516020620033f0833981519152908290a350816001600160a01b031663fca513a86040518163ffffffff1660e01b8152600401602060405180830381865afa158015620000b9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000df91906200082d565b6001600160a01b0390811660805291821660a052811660c05260405163fb04e17b60e01b8152600060048201529082169063fb04e17b90602401602060405180830381865afa15801562000137573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200015d919062000854565b15620001b05760405162461bcd60e51b815260206004820152601c60248201527f4e6f7420612076616c696420417567757374757320616464726573730000000060448201526064015b60405180910390fd5b6001600160a01b031660e052505060018055620001cd81620001e5565b620001d7620002f2565b505050505050505062000a40565b6000546001600160a01b03163314620002415760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401620001a7565b6001600160a01b038116620002a85760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b6064820152608401620001a7565b600080546040516001600160a01b0380851693921691600080516020620033f083398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b600060c0516001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa15801562000335573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f191682016040526200035f91908101906200088e565b905060005b8151811015620003c857620003b360c0516000198484815181106200038d576200038d62000960565b60200260200101516001600160a01b0316620003cc60201b62000cf6179092919060201c565b80620003bf8162000976565b91505062000364565b5050565b8015806200044a5750604051636eb1769f60e11b81523060048201526001600160a01b03838116602483015284169063dd62ed3e90604401602060405180830381865afa15801562000422573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620004489190620009a0565b155b620004be5760405162461bcd60e51b815260206004820152603660248201527f5361666545524332303a20617070726f76652066726f6d206e6f6e2d7a65726f60448201527f20746f206e6f6e2d7a65726f20616c6c6f77616e6365000000000000000000006064820152608401620001a7565b604080516001600160a01b038416602482015260448082018490528251808303909101815260649091019091526020810180516001600160e01b0390811663095ea7b360e01b17909152620005169185916200051b16565b505050565b600062000577826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c6564815250856001600160a01b0316620005f960201b62000e32179092919060201c565b80519091501562000516578080602001905181019062000598919062000854565b620005165760405162461bcd60e51b815260206004820152602a60248201527f5361666545524332303a204552433230206f7065726174696f6e20646964206e6044820152691bdd081cdd58d8d9595960b21b6064820152608401620001a7565b60606200060a848460008562000612565b949350505050565b606082471015620006755760405162461bcd60e51b815260206004820152602660248201527f416464726573733a20696e73756666696369656e742062616c616e636520666f6044820152651c8818d85b1b60d21b6064820152608401620001a7565b600080866001600160a01b03168587604051620006939190620009ed565b60006040518083038185875af1925050503d8060008114620006d2576040519150601f19603f3d011682016040523d82523d6000602084013e620006d7565b606091505b509092509050620006eb87838387620006f6565b979650505050505050565b60608315620007675782516200075f576001600160a01b0385163b6200075f5760405162461bcd60e51b815260206004820152601d60248201527f416464726573733a2063616c6c20746f206e6f6e2d636f6e74726163740000006044820152606401620001a7565b50816200060a565b6200060a83838151156200077e5781518083602001fd5b8060405162461bcd60e51b8152600401620001a7919062000a0b565b6001600160a01b0381168114620007b057600080fd5b50565b8051620007c0816200079a565b919050565b60008060008060808587031215620007dc57600080fd5b8451620007e9816200079a565b6020860151909450620007fc816200079a565b60408601519093506200080f816200079a565b606086015190925062000822816200079a565b939692955090935050565b6000602082840312156200084057600080fd5b81516200084d816200079a565b9392505050565b6000602082840312156200086757600080fd5b815180151581146200084d57600080fd5b634e487b7160e01b600052604160045260246000fd5b60006020808385031215620008a257600080fd5b82516001600160401b0380821115620008ba57600080fd5b818501915085601f830112620008cf57600080fd5b815181811115620008e457620008e462000878565b8060051b604051601f19603f830116810181811085821117156200090c576200090c62000878565b6040529182528482019250838101850191888311156200092b57600080fd5b938501935b8285101562000954576200094485620007b3565b8452938501939285019262000930565b98975050505050505050565b634e487b7160e01b600052603260045260246000fd5b60006000198214156200099957634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215620009b357600080fd5b5051919050565b60005b83811015620009d7578181015183820152602001620009bd565b83811115620009e7576000848401525b50505050565b6000825162000a01818460208701620009ba565b9190910192915050565b602081526000825180602084015262000a2c816040850160208701620009ba565b601f01601f19169190910160400192915050565b60805160a05160c05160e05161291b62000ad56000396000818161019d01526113b20152600081816101e70152818161033f015281816103740152818161071801528181610834015281816108f8015281816109ee01528181610a8501528181610afc01528181610f0001528181610fd401526110a6015260006101080152600081816101760152611c05015261291b6000f3fe608060405234801561001057600080fd5b50600436106100e95760003560e01c8063715018a61161008c5780638da5cb5b116100665780638da5cb5b14610209578063920f5c841461021a578063c05603741461023d578063f2fde38b1461025957600080fd5b8063715018a6146101d257806371f893ea146101da5780637535d246146101e257600080fd5b806332e4b286116100c857806332e4b2861461015a57806338013f02146101715780633a82986714610198578063636aa619146101bf57600080fd5b8062ae3bf8146100ee5780630542975c146101035780630a03635114610147575b600080fd5b6101016100fc366004611d34565b61026c565b005b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b610101610155366004611d34565b610330565b610163610bb881565b60405190815260200161013e565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6101016101cd366004611f13565b61039b565b610101610976565b6101016109ea565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6000546001600160a01b031661012a565b61022d61022836600461202a565b610aef565b604051901515815260200161013e565b61024661173081565b60405161ffff909116815260200161013e565b610101610267366004611d34565b610c0c565b6000546001600160a01b0316331461029f5760405162461bcd60e51b81526004016102969061212f565b60405180910390fd5b61032d6102b46000546001600160a01b031690565b6040516370a0823160e01b81523060048201526001600160a01b038416906370a0823190602401602060405180830381865afa1580156102f8573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061031c9190612164565b6001600160a01b0384169190610e49565b50565b6103656001600160a01b0382167f00000000000000000000000000000000000000000000000000000000000000006000610cf6565b61032d6001600160a01b0382167f0000000000000000000000000000000000000000000000000000000000000000600019610cf6565b60608201516040516370a0823160e01b81523060048201526000916001600160a01b0316906370a0823190602401602060405180830381865afa1580156103e6573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061040a9190612164565b905081604001516000146104b657815160208301516040808501516060860151608087015160a0880151935163016a5aab60e31b81523360048201523060248201526044810195909552606485019290925260ff16608484015260a483015260c48201526001600160a01b0390911690630b52d5589060e401600060405180830381600087803b15801561049d57600080fd5b505af11580156104b1573d6000803e3d6000fd5b505050505b600019836020015114156105c1576000806104d48560000151610eda565b915091508460400151600214610551576040516370a0823160e01b81523360048201526001600160a01b038216906370a0823190602401602060405180830381865afa158015610528573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061054c9190612164565b6105b9565b6040516370a0823160e01b81523360048201526001600160a01b038316906370a0823190602401602060405180830381865afa158015610595573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105b99190612164565b602086015250505b6040805160c0808201835285516001600160a01b0316825260208087015181840152868401518385015290860151606083015260a0808701516080840152339083015291519091600091610617918491016121d5565b60408051601f1981840301815260018084528383019092529250600091906020808301908036833701905050905085606001518160008151811061065d5761065d61223b565b6001600160a01b0392909216602092830291909101909101526040805160018082528183019092526000918160200160208202803683370190505090508660800151816000815181106106b2576106b261223b565b60209081029190910101526040805160018082528183019092526000918160200160208202803683370190505090506002816000815181106106f6576106f661223b565b602090810291909101015260405163ab9c4b5d60e01b81526001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000169063ab9c4b5d9061075b90309087908790879033908c906117309060040161228c565b600060405180830381600087803b15801561077557600080fd5b505af1158015610789573d6000803e3d6000fd5b5050505060608801516040516370a0823160e01b81523060048201526000916001600160a01b0316906370a0823190602401602060405180830381865afa1580156107d8573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107fc9190612164565b9050600061080a888361235e565b9050801561096a5760608a0151604051636eb1769f60e11b81523060048201526001600160a01b037f000000000000000000000000000000000000000000000000000000000000000081166024830152600092169063dd62ed3e90604401602060405180830381865afa158015610885573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108a99190612164565b9050818110156108c0576108c08b60600151610330565b60608b015160405163573ade8160e01b81526001600160a01b03918216600482015260248101849052600260448201523360648201527f00000000000000000000000000000000000000000000000000000000000000009091169063573ade81906084016020604051808303816000875af1158015610943573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109679190612164565b50505b50505050505050505050565b6000546001600160a01b031633146109a05760405162461bcd60e51b81526004016102969061212f565b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa158015610a4a573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052610a729190810190612380565b905060005b8151811015610aeb57610ad97f0000000000000000000000000000000000000000000000000000000000000000600019848481518110610ab957610ab961223b565b60200260200101516001600160a01b0316610cf69092919063ffffffff16565b80610ae381612426565b915050610a77565b5050565b6000336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610b5f5760405162461bcd60e51b815260206004820152601360248201527210d05313115497d35554d517d09157d413d3d3606a1b6044820152606401610296565b6001600160a01b0384163014610bb05760405162461bcd60e51b8152602060048201526016602482015275494e49544941544f525f4d5553545f42455f5448495360501b6044820152606401610296565b610bfc83838c8c6000818110610bc857610bc861223b565b9050602002016020810190610bdd9190611d34565b8b8b6000818110610bf057610bf061223b565b90506020020135610f86565b5060019998505050505050505050565b6000546001600160a01b03163314610c365760405162461bcd60e51b81526004016102969061212f565b6001600160a01b038116610c9b5760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b6064820152608401610296565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b801580610d705750604051636eb1769f60e11b81523060048201526001600160a01b03838116602483015284169063dd62ed3e90604401602060405180830381865afa158015610d4a573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d6e9190612164565b155b610ddb5760405162461bcd60e51b815260206004820152603660248201527f5361666545524332303a20617070726f76652066726f6d206e6f6e2d7a65726f60448201527520746f206e6f6e2d7a65726f20616c6c6f77616e636560501b6064820152608401610296565b604080516001600160a01b038416602482015260448082018490528251808303909101815260649091019091526020810180516001600160e01b031663095ea7b360e01b179052610e2d90849061111e565b505050565b6060610e4184846000856111f0565b949350505050565b60405163a9059cbb60e01b8082526001600160a01b0384166004830152602482018390529060008060448382895af1610e86573d6000803e3d6000fd5b50610e90846112cb565b610ed45760405162461bcd60e51b815260206004820152601560248201527423a83b191d103330b4b632b2103a3930b739b332b960591b6044820152606401610296565b50505050565b6040516335ea6a7560e01b81526001600160a01b038281166004830152600091829182917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610f4a573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f6e91906124ca565b90508061014001518161012001519250925050915091565b6000610f94848601866125ed565b9050610fb481608001518260600151858460000151868660200151611374565b508051604051636eb1769f60e11b81523060048201526001600160a01b037f000000000000000000000000000000000000000000000000000000000000000081166024830152600092169063dd62ed3e90604401602060405180830381865afa158015611025573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906110499190612164565b9050816020015181101561106257815161106290610330565b8151602083015160408085015160a0860151915163573ade8160e01b81526001600160a01b03948516600482015260248101939093526044830152821660648201527f00000000000000000000000000000000000000000000000000000000000000009091169063573ade81906084016020604051808303816000875af11580156110f1573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906111159190612164565b50505050505050565b6000611173826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c6564815250856001600160a01b0316610e329092919063ffffffff16565b805190915015610e2d578080602001905181019061119191906126a4565b610e2d5760405162461bcd60e51b815260206004820152602a60248201527f5361666545524332303a204552433230206f7065726174696f6e20646964206e6044820152691bdd081cdd58d8d9595960b21b6064820152608401610296565b6060824710156112515760405162461bcd60e51b815260206004820152602660248201527f416464726573733a20696e73756666696369656e742062616c616e636520666f6044820152651c8818d85b1b60d21b6064820152608401610296565b600080866001600160a01b0316858760405161126d91906126c6565b60006040518083038185875af1925050503d80600081146112aa576040519150601f19603f3d011682016040523d82523d6000602084013e6112af565b606091505b50915091506112c087838387611aac565b979650505050505050565b60006112f1565b62461bcd60e51b60005260206004528060245250806044525060646000fd5b3d801561133057602081146113615761132b7f475076323a206d616c666f726d6564207472616e7366657220726573756c7400601f6112d2565b61136e565b823b611358576113587311d41d8c8e881b9bdd08184818dbdb9d1c9858dd60621b60146112d2565b6001915061136e565b3d6000803e600051151591505b50919050565b60008060008780602001905181019061138d91906126e2565b60405163fb04e17b60e01b81526001600160a01b0380831660048301529294509092507f00000000000000000000000000000000000000000000000000000000000000009091169063fb04e17b90602401602060405180830381865afa1580156113fb573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061141f91906126a4565b61145e5760405162461bcd60e51b815260206004820152601060248201526f494e56414c49445f415547555354555360801b6044820152606401610296565b600061146988611b22565b60ff169050600061147988611b22565b60ff16905060006114898a611be3565b905060006114968a611be3565b905060006114ee6114ab612710610bb8611c72565b6114e86114c36114bc88600a612854565b8790611c82565b6114e26114db6114d48b600a612854565b8890611c82565b8e90611c82565b90611cac565b90611cbf565b9050808a111561154c5760405162461bcd60e51b815260206004820152602360248201527f6d6178416d6f756e74546f5377617020657863656564206d617820736c69707060448201526261676560e81b6064820152608401610296565b50506040516370a0823160e01b8152306004820152600093506001600160a01b038b1692506370a082319150602401602060405180830381865afa158015611598573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115bc9190612164565b90508581101561160e5760405162461bcd60e51b815260206004820181905260248201527f494e53554646494349454e545f42414c414e43455f4245464f52455f535741506044820152606401610296565b6040516370a0823160e01b81523060048201526000906001600160a01b038916906370a0823190602401602060405180830381865afa158015611655573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906116799190612164565b90506000836001600160a01b031663d2c4b5986040518163ffffffff1660e01b8152600401602060405180830381865afa1580156116bb573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906116df9190612860565b60405163095ea7b360e01b81526001600160a01b03808316600483015260006024830152919250908b169063095ea7b3906044016020604051808303816000875af1158015611732573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061175691906126a4565b5060405163095ea7b360e01b81526001600160a01b038281166004830152602482018a90528b169063095ea7b3906044016020604051808303816000875af11580156117a6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906117ca91906126a4565b508b156118435760048c101580156117ee575084516117ea906020611ce5565b8c11155b61183a5760405162461bcd60e51b815260206004820152601d60248201527f544f5f414d4f554e545f4f46465345545f4f55545f4f465f52414e47450000006044820152606401610296565b8660208d018601525b6000846001600160a01b03168660405161185d91906126c6565b6000604051808303816000865af19150503d806000811461189a576040519150601f19603f3d011682016040523d82523d6000602084013e61189f565b606091505b50509050806118b2573d6000803e3d6000fd5b6040516370a0823160e01b81523060048201526000906001600160a01b038d16906370a0823190602401602060405180830381865afa1580156118f9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061191d9190612164565b9050611929818661235e565b97508988111561197b5760405162461bcd60e51b815260206004820152601860248201527f57524f4e475f42414c414e43455f41465445525f5357415000000000000000006044820152606401610296565b6040516370a0823160e01b81523060048201526000906119f29086906001600160a01b038f16906370a0823190602401602060405180830381865afa1580156119c8573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906119ec9190612164565b90611ce5565b905089811015611a445760405162461bcd60e51b815260206004820152601c60248201527f494e53554646494349454e545f414d4f554e545f5245434549564544000000006044820152606401610296565b8b6001600160a01b03168d6001600160a01b03167fbf77fd13a39d14dc0da779342c14105c38d9a5d0c60f2caa22f5fd1d5525416d8b84604051611a92929190918252602082015260400190565b60405180910390a350505050505050509695505050505050565b60608315611b18578251611b11576001600160a01b0385163b611b115760405162461bcd60e51b815260206004820152601d60248201527f416464726573733a2063616c6c20746f206e6f6e2d636f6e74726163740000006044820152606401610296565b5081610e41565b610e418383611cf5565b600080826001600160a01b031663313ce5676040518163ffffffff1660e01b8152600401602060405180830381865afa158015611b63573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611b87919061287d565b9050604d8160ff161115611bdd5760405162461bcd60e51b815260206004820152601a60248201527f544f4f5f4d414e595f444543494d414c535f4f4e5f544f4b454e0000000000006044820152606401610296565b92915050565b60405163b3596f0760e01b81526001600160a01b0382811660048301526000917f00000000000000000000000000000000000000000000000000000000000000009091169063b3596f0790602401602060405180830381865afa158015611c4e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611bdd9190612164565b80820182811015611bdd57600080fd5b6000821580611ca357505081810281838281611ca057611ca061289a565b04145b611bdd57600080fd5b6000611cb882846128b0565b9392505050565b600081156113881983900484111517611cd757600080fd5b506127109102611388010490565b80820382811115611bdd57600080fd5b815115611d055781518083602001fd5b8060405162461bcd60e51b815260040161029691906128d2565b6001600160a01b038116811461032d57600080fd5b600060208284031215611d4657600080fd5b8135611cb881611d1f565b8035611d5c81611d1f565b919050565b634e487b7160e01b600052604160045260246000fd5b60405160c0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b60405290565b60405160e0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b6040516101e0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b604051601f8201601f1916810167ffffffffffffffff81118282101715611e1057611e10611d61565b604052919050565b600067ffffffffffffffff821115611e3257611e32611d61565b50601f01601f191660200190565b600082601f830112611e5157600080fd5b8135611e64611e5f82611e18565b611de7565b818152846020838601011115611e7957600080fd5b816020850160208301376000918101602001919091529392505050565b60ff8116811461032d57600080fd5b600060c08284031215611eb757600080fd5b611ebf611d77565b90508135611ecc81611d1f565b8082525060208201356020820152604082013560408201526060820135611ef281611e96565b806060830152506080820135608082015260a082013560a082015292915050565b60008060e08385031215611f2657600080fd5b823567ffffffffffffffff80821115611f3e57600080fd5b9084019060e08287031215611f5257600080fd5b611f5a611da0565b611f6383611d51565b81526020830135602082015260408301356040820152611f8560608401611d51565b60608201526080830135608082015260a083013560a082015260c083013582811115611fb057600080fd5b611fbc88828601611e40565b60c083015250809450505050611fd58460208501611ea5565b90509250929050565b60008083601f840112611ff057600080fd5b50813567ffffffffffffffff81111561200857600080fd5b6020830191508360208260051b850101111561202357600080fd5b9250929050565b600080600080600080600080600060a08a8c03121561204857600080fd5b893567ffffffffffffffff8082111561206057600080fd5b61206c8d838e01611fde565b909b50995060208c013591508082111561208557600080fd5b6120918d838e01611fde565b909950975060408c01359150808211156120aa57600080fd5b6120b68d838e01611fde565b909750955060608c013591506120cb82611d1f565b90935060808b013590808211156120e157600080fd5b818c0191508c601f8301126120f557600080fd5b81358181111561210457600080fd5b8d602082850101111561211657600080fd5b6020830194508093505050509295985092959850929598565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b60006020828403121561217657600080fd5b5051919050565b60005b83811015612198578181015183820152602001612180565b83811115610ed45750506000910152565b600081518084526121c181602086016020860161217d565b601f01601f19169290920160200192915050565b60208152600060018060a01b038084511660208401526020840151604084015260408401516060840152606084015160c0608085015261221860e08501826121a9565b9050608085015160a08501528160a08601511660c0850152809250505092915050565b634e487b7160e01b600052603260045260246000fd5b600081518084526020808501945080840160005b8381101561228157815187529582019590820190600101612265565b509495945050505050565b6001600160a01b03888116825260e0602080840182905289519184018290526000928a820192909190610100860190855b818110156122db5785518516835294830194918301916001016122bd565b505085810360408701526122ef818c612251565b935050505082810360608401526123068188612251565b6001600160a01b0387166080850152905082810360a084015261232981866121a9565b91505061233c60c083018461ffff169052565b98975050505050505050565b634e487b7160e01b600052601160045260246000fd5b60008282101561237057612370612348565b500390565b8051611d5c81611d1f565b6000602080838503121561239357600080fd5b825167ffffffffffffffff808211156123ab57600080fd5b818501915085601f8301126123bf57600080fd5b8151818111156123d1576123d1611d61565b8060051b91506123e2848301611de7565b81815291830184019184810190888411156123fc57600080fd5b938501935b8385101561233c578451925061241683611d1f565b8282529385019390850190612401565b600060001982141561243a5761243a612348565b5060010190565b60006020828403121561245357600080fd5b6040516020810181811067ffffffffffffffff8211171561247657612476611d61565b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114611d5c57600080fd5b805164ffffffffff81168114611d5c57600080fd5b805161ffff81168114611d5c57600080fd5b60006101e082840312156124dd57600080fd5b6124e5611dc3565b6124ef8484612441565b81526124fd60208401612483565b602082015261250e60408401612483565b604082015261251f60608401612483565b606082015261253060808401612483565b608082015261254160a08401612483565b60a082015261255260c084016124a3565b60c082015261256360e084016124b8565b60e0820152610100612576818501612375565b90820152610120612588848201612375565b9082015261014061259a848201612375565b908201526101606125ac848201612375565b908201526101806125be848201612483565b908201526101a06125d0848201612483565b908201526101c06125e2848201612483565b908201529392505050565b6000602082840312156125ff57600080fd5b813567ffffffffffffffff8082111561261757600080fd5b9083019060c0828603121561262b57600080fd5b612633611d77565b823561263e81611d1f565b80825250602083013560208201526040830135604082015260608301358281111561266857600080fd5b61267487828601611e40565b6060830152506080830135608082015260a0830135925061269483611d1f565b60a0810192909252509392505050565b6000602082840312156126b657600080fd5b81518015158114611cb857600080fd5b600082516126d881846020870161217d565b9190910192915050565b600080604083850312156126f557600080fd5b825167ffffffffffffffff81111561270c57600080fd5b8301601f8101851361271d57600080fd5b805161272b611e5f82611e18565b81815286602083850101111561274057600080fd5b61275182602083016020860161217d565b809450505050602083015161276581611d1f565b809150509250929050565b600181815b808511156127ab57816000190482111561279157612791612348565b8085161561279e57918102915b93841c9390800290612775565b509250929050565b6000826127c257506001611bdd565b816127cf57506000611bdd565b81600181146127e557600281146127ef5761280b565b6001915050611bdd565b60ff84111561280057612800612348565b50506001821b611bdd565b5060208310610133831016604e8410600b841016171561282e575081810a611bdd565b6128388383612770565b806000190482111561284c5761284c612348565b029392505050565b6000611cb883836127b3565b60006020828403121561287257600080fd5b8151611cb881611d1f565b60006020828403121561288f57600080fd5b8151611cb881611e96565b634e487b7160e01b600052601260045260246000fd5b6000826128cd57634e487b7160e01b600052601260045260246000fd5b500490565b602081526000611cb860208301846121a956fea264697066735822122083916c2e867ffe5cc5586626cf69491670775747aa658d7b03240abbbe94052f64736f6c634300080a00338be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0";
+    var isSuperArgs = (xs) => xs.length > 1;
+    var ParaSwapDebtSwapAdapter__factory = class extends ethers_1.ContractFactory {
+      constructor(...args) {
+        if (isSuperArgs(args)) {
+          super(...args);
+        } else {
+          super(_abi, _bytecode, args[0]);
+        }
+      }
+      deploy(addressesProvider, pool, augustusRegistry, owner, overrides) {
+        return super.deploy(addressesProvider, pool, augustusRegistry, owner, overrides || {});
+      }
+      getDeployTransaction(addressesProvider, pool, augustusRegistry, owner, overrides) {
+        return super.getDeployTransaction(addressesProvider, pool, augustusRegistry, owner, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.ParaSwapDebtSwapAdapter__factory = ParaSwapDebtSwapAdapter__factory;
+    ParaSwapDebtSwapAdapter__factory.bytecode = _bytecode;
+    ParaSwapDebtSwapAdapter__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/index.js
+var require_paraswap_debtSwitch_contract = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.DebtSwitchAdapterService = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var utils_1 = require_utils6();
+    var ParaSwapDebtSwitchAdapter__factory_1 = require_ParaSwapDebtSwitchAdapter_factory();
+    var DebtSwitchAdapterService = class extends BaseService_1.default {
+      constructor(provider, debtSwitchAddress) {
+        super(provider, ParaSwapDebtSwitchAdapter__factory_1.ParaSwapDebtSwapAdapter__factory);
+        this.debtSwitchAddress = debtSwitchAddress !== null && debtSwitchAddress !== void 0 ? debtSwitchAddress : "";
+        this.contractInterface = ParaSwapDebtSwitchAdapter__factory_1.ParaSwapDebtSwapAdapter__factory.createInterface();
+        this.debtSwitch = this.debtSwitch.bind(this);
+      }
+      debtSwitch({ user, debtAssetUnderlying, debtRepayAmount, debtRateMode, newAssetDebtToken, newAssetUnderlying, maxNewDebtAmount, repayAll, txCalldata, augustus, deadline, sigV, sigR, sigS, signedAmount }) {
+        const callDataEncoded = ethers_1.utils.defaultAbiCoder.encode(["bytes", "address"], [txCalldata, augustus]);
+        const txParamsStruct = {
+          debtAsset: debtAssetUnderlying,
+          debtRepayAmount,
+          debtRateMode,
+          newDebtAsset: newAssetUnderlying,
+          maxNewDebtAmount,
+          offset: repayAll ? (0, utils_1.augustusToAmountOffsetFromCalldata)(txCalldata) : 0,
+          paraswapData: callDataEncoded
+        };
+        const creditDelParamsStruct = {
+          debtToken: newAssetDebtToken,
+          value: signedAmount,
+          deadline,
+          v: sigV,
+          r: sigR,
+          s: sigS
+        };
+        const actionTx = {};
+        const txData = this.contractInterface.encodeFunctionData("swapDebt", [
+          txParamsStruct,
+          creditDelParamsStruct
+        ]);
+        actionTx.to = this.debtSwitchAddress;
+        actionTx.data = txData;
+        actionTx.from = user;
+        return actionTx;
+      }
+    };
+    exports2.DebtSwitchAdapterService = DebtSwitchAdapterService;
   }
 });
 
@@ -54632,8 +55284,10 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_v3_migration_contract(), exports2);
     tslib_1.__exportStar(require_erc20_2612(), exports2);
+    tslib_1.__exportStar(require_paraswap_debtSwitch_contract(), exports2);
     tslib_1.__exportStar(require_types2(), exports2);
     tslib_1.__exportStar(require_ipfs(), exports2);
     tslib_1.__exportStar(require_utils6(), exports2);
@@ -64870,7 +65524,9 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Ethereum_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR
+      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR,
+      GHO_TOKEN_ADDRESS: "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f",
+      GHO_UI_DATA_PROVIDER: "0x379c1EDD1A41218bdbFf960a9d5AD2818Bf61aE8"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",

@@ -11,7 +11,7 @@ import {
   selectedUserSupplyReservesForMigration,
   selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
-import { CustomMarket, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -36,7 +36,7 @@ export const MigrateV3ModalContent = () => {
   );
 
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { currentChainId, setCurrentMarket, currentMarket } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -72,7 +72,9 @@ export const MigrateV3ModalContent = () => {
   }
 
   const handleRoute = () => {
-    if (currentMarket === CustomMarket.proto_polygon) {
+    /* 
+TO-DO: re-enable in merge
+if (currentMarket === CustomMarket.proto_polygon) {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);
       window.location.href = `/?marketName=${CustomMarket.proto_polygon_v3}`;
     } else if (currentMarket === CustomMarket.proto_avalanche) {
@@ -81,7 +83,7 @@ export const MigrateV3ModalContent = () => {
     } else {
       setCurrentMarket('proto_mainnet_v3' as CustomMarket);
       window.location.href = `/?marketName=${CustomMarket.proto_mainnet_v3}`;
-    }
+    } */
   };
 
   if (migrateTxState.success) {

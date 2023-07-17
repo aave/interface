@@ -11,8 +11,8 @@ import {
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
-import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
-import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
+import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
+import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTopDetailsWrapper';
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -39,7 +39,7 @@ export default function ReserveOverview() {
 
   return (
     <AssetCapsProvider asset={reserve}>
-      <ReserveTopDetails underlyingAsset={underlyingAsset} />
+      <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
         <Box
@@ -78,7 +78,7 @@ export default function ReserveOverview() {
               mr: { xs: 0, lg: 4 },
             }}
           >
-            {reserve && <ReserveConfiguration reserve={reserve} />}
+            <ReserveConfigurationWrapper reserve={reserve} />
           </Box>
 
           {/** Right panel with actions*/}
