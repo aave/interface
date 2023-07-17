@@ -7,6 +7,7 @@ const DisclaimerSnackbar = () => {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    void event;
     if (reason === 'clickaway') {
       return;
     }
