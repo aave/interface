@@ -1,5 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
+const current = { chainId: 42161, chainIdHex: '0xa4b1' };
 
 const handleSwitchNetwork = async () => {
   try {
@@ -7,7 +10,7 @@ const handleSwitchNetwork = async () => {
     // @ts-ignore
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0xa4b1' || 42161 }],
+      params: [{ chainId: current.chainIdHex || current.chainId }],
     });
   } catch (switchError) {
     // This error code indicates that the chain has not been added to MetaMask.
@@ -19,7 +22,7 @@ const handleSwitchNetwork = async () => {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: '0xa4b1' || 42161,
+              chainId: current.chainIdHex || current.chainId,
               rpcUrls: ['https://arb1.arbitrum.io/rpc'],
               chainName: 'Arbitrum One',
               nativeCurrency: {
@@ -44,6 +47,9 @@ const handleSwitchNetwork = async () => {
 const SwitchNetworkHeader = () => {
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
+  const { chainId, currentAccount } = useWeb3Context();
+
+  if (!currentAccount && chainId === current.chainId) return <></>;
 
   return (
     <Box

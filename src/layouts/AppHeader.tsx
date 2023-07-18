@@ -14,7 +14,6 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import DisclaimerSnackbar from 'src/maneki/components/DisclaimerSnackbar';
 import { SwitchNetworkHeader } from 'src/maneki/components/SwitchNetworkHeader';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
@@ -46,8 +45,6 @@ export function AppHeader() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
-
-  const { chainId, currentAccount } = useWeb3Context();
 
   useEffect(() => {
     if (mobileMenuOpen && !md) {
@@ -102,7 +99,7 @@ export function AppHeader() {
             zIndex: theme.zIndex.appBar,
           })}
         >
-          {currentAccount && chainId !== 42161 && !mobileMenuOpen && <SwitchNetworkHeader />}
+          {!mobileMenuOpen && <SwitchNetworkHeader />}
           <Box
             component="header"
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
