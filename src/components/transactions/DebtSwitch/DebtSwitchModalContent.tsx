@@ -18,7 +18,11 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { useRootStore } from 'src/store/root';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxGhoMintAmount,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import {
   ComputedUserReserveData,
@@ -48,10 +52,14 @@ export const DebtSwitchModalContent = ({
   isWrongNetwork,
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
-  const { reserves, user } = useAppDataContext();
+  const { reserves, user, ghoReserveData } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
+  const [displayGho, currentMarket] = useRootStore((state) => [
+    state.displayGho,
+    state.currentMarket,
+  ]);
 
   const switchTargets = reserves
     .filter(
@@ -112,14 +120,29 @@ export const DebtSwitchModalContent = ({
     setTxError(undefined);
   };
 
-  const availableBorrowCap =
-    switchTarget.reserve.borrowCap === '0'
-      ? valueToBigNumber(MaxUint256.toString())
-      : valueToBigNumber(Number(switchTarget.reserve.borrowCap)).minus(
-          valueToBigNumber(switchTarget.reserve.totalDebt)
-        );
+  // TODO consider pulling out a util helper here or maybe moving this logic into the store
+  let availableBorrowCap = valueToBigNumber(MaxUint256.toString());
+  let availableLiquidity: string | number = '0';
+  if (displayGho({ symbol: switchTarget.reserve.symbol, currentMarket })) {
+    const maxMintAmount = getMaxGhoMintAmount(user);
+    const maxAmountToBorrow = Math.min(
+      Number(maxMintAmount),
+      ghoReserveData.aaveFacilitatorRemainingCapacity
+    );
+    availableBorrowCap = valueToBigNumber(maxAmountToBorrow.toString());
+    availableLiquidity = ghoReserveData.aaveFacilitatorRemainingCapacity.toString();
+  } else {
+    availableBorrowCap =
+      switchTarget.reserve.borrowCap === '0'
+        ? valueToBigNumber(MaxUint256.toString())
+        : valueToBigNumber(Number(switchTarget.reserve.borrowCap)).minus(
+            valueToBigNumber(switchTarget.reserve.totalDebt)
+          );
+    availableLiquidity = switchTarget.reserve.formattedAvailableLiquidity;
+  }
+
   const availableLiquidityOfTargetReserve = BigNumber.max(
-    BigNumber.min(switchTarget.reserve.formattedAvailableLiquidity, availableBorrowCap),
+    BigNumber.min(availableLiquidity, availableBorrowCap),
     0
   );
 
