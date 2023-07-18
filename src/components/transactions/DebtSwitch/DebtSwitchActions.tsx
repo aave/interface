@@ -67,7 +67,7 @@ export const DebtSwitchActions = ({
     currentMarketData,
     generateApproveDelegation,
     estimateGasLimit,
-    //addTransaction,
+    addTransaction,
     debtSwitch,
     walletApprovalMethodPreference,
     generateCreditDelegationSignatureRequest,
@@ -76,7 +76,7 @@ export const DebtSwitchActions = ({
     state.currentMarketData,
     state.generateApproveDelegation,
     state.estimateGasLimit,
-    //state.addTransaction,
+    state.addTransaction,
     state.debtSwitch,
     state.walletApprovalMethodPreference,
     state.generateCreditDelegationSignatureRequest,
@@ -108,17 +108,21 @@ export const DebtSwitchActions = ({
   const approval = async () => {
     try {
       if (requiresApproval && approvedAmount) {
-        const signedAmount = calculateSignedAmount(amountToReceive, targetReserve.decimals, 0.25);
+        const approveDelegationAmount = calculateSignedAmount(
+          amountToReceive,
+          targetReserve.decimals,
+          0.25
+        );
         if (useSignature && approvalWithSignatureAvailable) {
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generateCreditDelegationSignatureRequest({
             underlyingAsset: targetReserve.variableDebtTokenAddress,
             deadline,
-            amount: signedAmount,
+            amount: approveDelegationAmount,
             spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
           });
           const response = await signTxData(signatureRequest);
-          setSignatureParams({ signature: response, deadline, amount: signedAmount });
+          setSignatureParams({ signature: response, deadline, amount: approveDelegationAmount });
           setApprovalTxState({
             txHash: MOCK_SIGNED_HASH,
             loading: false,
@@ -128,7 +132,7 @@ export const DebtSwitchActions = ({
           let approveDelegationTxData = generateApproveDelegation({
             debtTokenAddress: targetReserve.variableDebtTokenAddress,
             delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
-            amount: signedAmount,
+            amount: approveDelegationAmount,
           });
           setApprovalTxState({ ...approvalTxState, loading: true });
           approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
@@ -138,6 +142,14 @@ export const DebtSwitchActions = ({
             txHash: response.hash,
             loading: false,
             success: true,
+          });
+          addTransaction(response.hash, {
+            action: ProtocolAction.approval,
+            txState: 'success',
+            asset: targetReserve.variableDebtTokenAddress,
+            amount: approveDelegationAmount,
+            assetName: 'varDebt' + targetReserve.name,
+            spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER,
           });
           setTxError(undefined);
           fetchApprovedAmount(true);
@@ -177,6 +189,16 @@ export const DebtSwitchActions = ({
         txHash: response.hash,
         loading: false,
         success: true,
+      });
+      addTransaction(response.hash, {
+        action: 'debtSwitch',
+        txState: 'success',
+        previousState:
+          route.outputAmount +
+          (currentRateMode === 2
+            ? ' variable' + poolReserve.symbol
+            : ' stable' + poolReserve.symbol),
+        newState: route.inputAmount + ' variable' + targetReserve.symbol,
       });
 
       queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
