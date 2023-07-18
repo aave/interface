@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-07-15 00:19\n"
+"PO-Revision-Date: 2023-07-18 00:26\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -886,8 +886,8 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: src/components/Warnings/USDTParaswapWarning.tsx
-msgid "Due to approval mechanics of USDT on Ethereum Mainnet, it cannot be used with the current adapter contract for this action."
+#: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
+msgid "Download"
 msgstr ""
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
