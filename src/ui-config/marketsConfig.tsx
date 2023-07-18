@@ -71,7 +71,7 @@ export enum CustomMarket {
 
   // v3 mainnets
   bsc_testnet_v3 = 'bsc_testnet_v3',
-
+  arbitrum_mainnet_v3 = 'arbitrum_mainnet_v3',
   /*
   proto_mainnet_v3 = 'proto_mainnet_v3',
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -172,6 +172,39 @@ export const marketsData: {
     v3: true,
     marketTitle: 'BSC',
     chainId: parseInt(process.env.NEXT_PUBLIC_MANEKI_CHAINID as string) || 97,
+    enabledFeatures: {},
+    addresses: {
+      MERKLE_DIST: process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIST || '',
+      LENDING_POOL_ADDRESS_PROVIDER:
+        process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL_ADDRESS_PROVIDER || '',
+      LENDING_POOL: process.env.NEXT_PUBLIC_MANEKI_LENDING_POOL || '',
+      WETH_GATEWAY: process.env.NEXT_PUBLIC_MANEKI_WETH_GATEWAY || '',
+      SWAP_COLLATERAL_ADAPTER: '',
+      REPAY_WITH_COLLATERAL_ADAPTER: '',
+      FAUCET: '',
+      PERMISSION_MANAGER: '',
+      WALLET_BALANCE_PROVIDER: process.env.NEXT_PUBLIC_MANEKI_WALLET_BALANCE_PROVIDER || '',
+      L2_ENCODER: '',
+      UI_POOL_DATA_PROVIDER: process.env.NEXT_PUBLIC_MANEKI_UI_POOL_DATA_PROVIDER || '',
+      UI_INCENTIVE_DATA_PROVIDER: process.env.NEXT_PUBLIC_MANEKI_UI_INCENTIVE_DATA_PROVIDER || '',
+      COLLECTOR: process.env.NEXT_PUBLIC_MANEKI_COLLECTOR || '',
+      V3_MIGRATOR: '',
+      STAKING_DATA_PROVIDER: process.env.NEXT_PUBLIC_MANEKI_STAKING_DATA_PROVIDER || '',
+      MASTER_CHEF: process.env.NEXT_PUBLIC_MANEKI_MASTER_CHEF || '',
+      LP_TOKEN: process.env.NEXT_PUBLIC_MANEKI_LP_TOKEN || '',
+      PAW_TOKEN: process.env.NEXT_PUBLIC_MANEKI_PAW_TOKEN || '',
+      PAW_PRICE_ORACLE: process.env.NEXT_PUBLIC_MANEKI_PAW_PRICE_ORACLE || '',
+      PRICE_ORACLE: process.env.NEXT_PUBLIC_MANEKI_PRICE_ORACLE || '',
+      LENDING_PROTOCOL_DATA_PROVIDER:
+        process.env.NEXT_PUBLIC_MANEKI_LENDING_PROTOCOL_DATA_PROVIDER || '',
+      CHEF_INCENTIVES_CONTROLLER: process.env.NEXT_PUBLIC_MANEKI_CHEF_INCENTIVES_CONTROLLER || '',
+      EARLY_TOKEN_GENERATION: process.env.NEXT_PUBLIC_MANEKI_EARLY_TOKEN_GENERATION || '',
+    },
+  },
+  [CustomMarket.arbitrum_mainnet_v3]: {
+    marketTitle: 'Arbitrum',
+    v3: true,
+    chainId: parseInt(process.env.NEXT_PUBLIC_MANEKI_CHAINID as string) || 42161,
     enabledFeatures: {},
     addresses: {
       MERKLE_DIST: process.env.NEXT_PUBLIC_MANEKI_MERKLE_DIST || '',
