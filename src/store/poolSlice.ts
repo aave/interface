@@ -43,6 +43,7 @@ import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
+import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
@@ -62,22 +63,6 @@ export type PoolReserve = {
   userEmodeCategoryId?: number;
   userReserves?: UserReserveDataHumanized[];
 };
-
-//TODO: temp, move to DebtSwitchActions once types are finalized
-interface DebtSwitchActionsProps {
-  debtAssetUnderlying: string;
-  debtRepayAmount: string;
-  debtRateMode: number;
-  newAssetUnderlying: string;
-  newAssetDebtToken: string;
-  maxNewDebtAmount: string;
-  repayAll: boolean;
-  txCalldata: string;
-  augustus: string;
-  deadline: number;
-  creditDelSignature?: SignatureLike;
-  signedAmount: string;
-}
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
@@ -101,7 +86,7 @@ export interface PoolSlice {
   paraswapRepayWithCollateral: (
     args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  debtSwitch: (args: DebtSwitchActionsProps) => PopulatedTransaction;
+  debtSwitch: (args: DebtSwitchActionProps) => PopulatedTransaction;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
@@ -513,18 +498,15 @@ export const createPoolSlice: StateCreator<
       return JSON.stringify(typedData);
     },
     debtSwitch: ({
-      debtAssetUnderlying,
-      debtRepayAmount,
-      debtRateMode,
-      newAssetUnderlying,
-      newAssetDebtToken,
-      maxNewDebtAmount,
-      repayAll,
+      currentRateMode,
+      poolReserve,
+      amountToSwap,
+      targetReserve,
+      amountToReceive,
+      isMaxSelected,
       txCalldata,
       augustus,
-      deadline,
-      creditDelSignature,
-      signedAmount,
+      signatureParams,
     }) => {
       const user = get().account;
       const provider = get().jsonRpcProvider();
@@ -534,15 +516,15 @@ export const createPoolSlice: StateCreator<
         currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? ''
       );
       let signatureDeconstruct: PermitSignature = {
-        amount: signedAmount,
-        deadline: deadline.toString(),
+        amount: signatureParams?.amount ?? '0',
+        deadline: signatureParams?.deadline?.toString() ?? '0',
         v: 0,
         r: '0x0000000000000000000000000000000000000000000000000000000000000000',
         s: '0x0000000000000000000000000000000000000000000000000000000000000000',
       };
 
-      if (creditDelSignature) {
-        const sig: Signature = splitSignature(creditDelSignature);
+      if (signatureParams) {
+        const sig: Signature = splitSignature(signatureParams.signature);
         signatureDeconstruct = {
           ...signatureDeconstruct,
           v: sig.v,
@@ -552,20 +534,20 @@ export const createPoolSlice: StateCreator<
       }
       return debtSwitchService.debtSwitch({
         user,
-        debtAssetUnderlying,
-        debtRepayAmount,
-        debtRateMode,
-        newAssetUnderlying,
-        newAssetDebtToken,
-        maxNewDebtAmount,
-        repayAll,
+        debtAssetUnderlying: poolReserve.underlyingAsset,
+        debtRepayAmount: amountToSwap,
+        debtRateMode: currentRateMode,
+        newAssetUnderlying: targetReserve.underlyingAsset,
+        newAssetDebtToken: targetReserve.variableDebtTokenAddress,
+        maxNewDebtAmount: amountToReceive,
+        repayAll: isMaxSelected,
         txCalldata,
         augustus,
-        deadline,
+        deadline: signatureDeconstruct.deadline,
         sigV: signatureDeconstruct.v,
         sigR: signatureDeconstruct.r,
         sigS: signatureDeconstruct.s,
-        signedAmount,
+        signedAmount: signatureDeconstruct.amount,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {

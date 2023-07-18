@@ -287,7 +287,7 @@ export const DebtSwitchModalContent = ({
         blocked={blockingError !== undefined || error !== '' || insufficientCollateral}
         loading={routeLoading}
         buildTxFn={buildTxFn}
-        currentRateMode={currentRateMode}
+        currentRateMode={currentRateMode === InterestRate.Variable ? 2 : 1}
       />
     </>
   );

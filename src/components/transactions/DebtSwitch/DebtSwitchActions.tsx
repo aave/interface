@@ -1,8 +1,6 @@
 import {
   ApproveDelegationType,
   gasLimitRecommendations,
-  InterestRate,
-  MAX_UINT_AMOUNT,
   ProtocolAction,
 } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
@@ -14,7 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -32,19 +30,17 @@ interface DebtSwitchBaseProps extends BoxProps {
   targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
-  symbol: string;
-  blocked: boolean;
+  symbol?: string;
+  blocked?: boolean;
   isMaxSelected: boolean;
   loading?: boolean;
-  signature?: SignatureLike;
-  deadline?: string;
-  signedAmount?: string;
-  currentRateMode: InterestRate;
+  currentRateMode: number;
+  signatureParams?: SignedParams;
 }
 
-export interface SwapActionProps extends DebtSwitchBaseProps {
-  swapCallData: string;
+export interface DebtSwitchActionProps extends DebtSwitchBaseProps {
   augustus: string;
+  txCalldata: string;
 }
 
 interface SignedParams {
@@ -112,16 +108,17 @@ export const DebtSwitchActions = ({
   const approval = async () => {
     try {
       if (requiresApproval && approvedAmount) {
+        const signedAmount = calculateSignedAmount(amountToReceive, targetReserve.decimals, 0.25);
         if (useSignature && approvalWithSignatureAvailable) {
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generateCreditDelegationSignatureRequest({
             underlyingAsset: targetReserve.variableDebtTokenAddress,
             deadline,
-            amount: MAX_UINT_AMOUNT,
+            amount: signedAmount,
             spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
           });
           const response = await signTxData(signatureRequest);
-          setSignatureParams({ signature: response, deadline, amount: MAX_UINT_AMOUNT });
+          setSignatureParams({ signature: response, deadline, amount: signedAmount });
           setApprovalTxState({
             txHash: MOCK_SIGNED_HASH,
             loading: false,
@@ -131,7 +128,7 @@ export const DebtSwitchActions = ({
           let approveDelegationTxData = generateApproveDelegation({
             debtTokenAddress: targetReserve.variableDebtTokenAddress,
             delegatee: currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? '',
-            amount: MAX_UINT_AMOUNT,
+            amount: signedAmount,
           });
           setApprovalTxState({ ...approvalTxState, loading: true });
           approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
@@ -162,18 +159,16 @@ export const DebtSwitchActions = ({
       setMainTxState({ ...mainTxState, loading: true });
       const route = await buildTxFn();
       let debtSwitchTxData = debtSwitch({
-        debtAssetUnderlying: poolReserve.underlyingAsset,
-        debtRateMode: currentRateMode === InterestRate.Variable ? 2 : 1,
-        maxNewDebtAmount: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        debtRepayAmount: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
-        newAssetDebtToken: targetReserve.variableDebtTokenAddress,
-        newAssetUnderlying: targetReserve.underlyingAsset,
-        deadline: signatureParams ? Number(signatureParams.deadline) : 0,
-        repayAll: isMaxSelected,
+        poolReserve,
+        targetReserve,
+        currentRateMode: currentRateMode,
+        amountToReceive: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
+        amountToSwap: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        isMaxSelected,
         txCalldata: route.swapCallData,
         augustus: route.augustus,
-        creditDelSignature: signatureParams?.signature,
-        signedAmount: MAX_UINT_AMOUNT,
+        signatureParams,
+        isWrongNetwork,
       });
       debtSwitchTxData = await estimateGasLimit(debtSwitchTxData);
       const response = await sendTx(debtSwitchTxData);
