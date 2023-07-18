@@ -21,9 +21,9 @@ const handleSwitchNetwork = async () => {
             {
               chainId: '0xa4b1' || 42161,
               rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-              chainName: 'BNB Smart Chain - Testnet',
+              chainName: 'Arbitrum One',
               nativeCurrency: {
-                symbol: 'ARB',
+                symbol: 'AETH',
                 name: 'Arbitrum',
                 decimals: 18,
               },
