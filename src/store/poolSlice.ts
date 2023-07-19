@@ -2,6 +2,7 @@ import {
   ApproveDelegationType,
   ApproveType,
   BaseDebtToken,
+  DebtSwitchAdapterService,
   ERC20_2612Service,
   ERC20Service,
   EthereumTransactionTypeExtended,
@@ -42,9 +43,11 @@ import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
+import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
@@ -83,6 +86,7 @@ export interface PoolSlice {
   paraswapRepayWithCollateral: (
     args: CollateralRepayActionProps
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  debtSwitch: (args: DebtSwitchActionProps) => PopulatedTransaction;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
@@ -113,6 +117,12 @@ export interface PoolSlice {
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
   ) => Promise<ApproveDelegationType>;
+  generateCreditDelegationSignatureRequest: (
+    approval: Approval & {
+      deadline: string;
+      spender: string;
+    }
+  ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
   estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
 }
@@ -434,6 +444,110 @@ export const createPoolSlice: StateCreator<
         swapAndRepayCallData: swapCallData,
         augustus,
         permitSignature,
+      });
+    },
+    generateCreditDelegationSignatureRequest: async ({
+      amount,
+      deadline,
+      underlyingAsset,
+      spender,
+    }) => {
+      const user = get().account;
+      const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
+
+      const { name } = await getTokenData(underlyingAsset);
+      const chainId = get().currentChainId;
+
+      const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
+
+      const nonce = await erc20_2612Service.getNonce({
+        token: underlyingAsset,
+        owner: user,
+      });
+
+      const typedData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          DelegationWithSig: [
+            { name: 'delegatee', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'DelegationWithSig' as const,
+        domain: {
+          name,
+          version: '1',
+          chainId: chainId,
+          verifyingContract: underlyingAsset,
+        },
+        message: {
+          delegatee: spender,
+          value: amount,
+          nonce,
+          deadline,
+        },
+      };
+
+      return JSON.stringify(typedData);
+    },
+    debtSwitch: ({
+      currentRateMode,
+      poolReserve,
+      amountToSwap,
+      targetReserve,
+      amountToReceive,
+      isMaxSelected,
+      txCalldata,
+      augustus,
+      signatureParams,
+    }) => {
+      const user = get().account;
+      const provider = get().jsonRpcProvider();
+      const currentMarketData = get().currentMarketData;
+      const debtSwitchService = new DebtSwitchAdapterService(
+        provider,
+        currentMarketData.addresses.DEBT_SWITCH_ADAPTER ?? ''
+      );
+      let signatureDeconstruct: PermitSignature = {
+        amount: signatureParams?.amount ?? '0',
+        deadline: signatureParams?.deadline?.toString() ?? '0',
+        v: 0,
+        r: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        s: '0x0000000000000000000000000000000000000000000000000000000000000000',
+      };
+
+      if (signatureParams) {
+        const sig: Signature = splitSignature(signatureParams.signature);
+        signatureDeconstruct = {
+          ...signatureDeconstruct,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
+      return debtSwitchService.debtSwitch({
+        user,
+        debtAssetUnderlying: poolReserve.underlyingAsset,
+        debtRepayAmount: amountToSwap,
+        debtRateMode: currentRateMode,
+        newAssetUnderlying: targetReserve.underlyingAsset,
+        newAssetDebtToken: targetReserve.variableDebtTokenAddress,
+        maxNewDebtAmount: amountToReceive,
+        repayAll: isMaxSelected,
+        txCalldata,
+        augustus,
+        deadline: signatureDeconstruct.deadline,
+        sigV: signatureDeconstruct.v,
+        sigR: signatureDeconstruct.r,
+        sigS: signatureDeconstruct.s,
+        signedAmount: signatureDeconstruct.amount,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {

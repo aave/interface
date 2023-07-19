@@ -15,6 +15,7 @@ export default defineConfig({
       folder + 'isolated-mode.polygon-v3.cy.ts',
       folder + 'isolated-and-emode.polygon-v3.cy.ts',
       folder + 'critical-conditions.polygon-v3.cy.ts',
+      folder + 'switch.polygon-v3.cy.ts',
     ],
   },
 });

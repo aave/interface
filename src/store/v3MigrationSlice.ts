@@ -69,11 +69,6 @@ export type V3MigrationSlice = {
       deadline: string;
     }
   ) => Promise<string>;
-  generatePermitPayloadForMigrationBorrowAsset: (
-    approval: Approval & {
-      deadline: string;
-    }
-  ) => Promise<string>;
   getApprovePermitsForSelectedAssets: () => Approval[];
   toggleMigrationSelectedSupplyAsset: (assetName: string) => void;
   toggleMigrationSelectedBorrowAsset: (asset: MigrationSelectedBorrowAsset) => void;
@@ -151,52 +146,6 @@ export const createV3MigrationSlice: StateCreator<
         },
       };
       return JSON.stringify(typeData);
-    },
-    generatePermitPayloadForMigrationBorrowAsset: async ({ amount, deadline, underlyingAsset }) => {
-      const user = get().account;
-      const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
-
-      const { name } = await getTokenData(underlyingAsset);
-      const chainId = get().currentChainId;
-
-      const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
-
-      const nonce = await erc20_2612Service.getNonce({
-        token: underlyingAsset,
-        owner: user,
-      });
-
-      const typedData = {
-        types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-          ],
-          DelegationWithSig: [
-            { name: 'delegatee', type: 'address' },
-            { name: 'value', type: 'uint256' },
-            { name: 'nonce', type: 'uint256' },
-            { name: 'deadline', type: 'uint256' },
-          ],
-        },
-        primaryType: 'DelegationWithSig' as const,
-        domain: {
-          name,
-          version: '1',
-          chainId: chainId,
-          verifyingContract: underlyingAsset,
-        },
-        message: {
-          delegatee: get().getMigratorAddress(),
-          value: amount,
-          nonce,
-          deadline,
-        },
-      };
-
-      return JSON.stringify(typedData);
     },
     toggleMigrationSelectedSupplyAsset: (underlyingAsset: string) => {
       set((state) =>

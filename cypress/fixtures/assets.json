@@ -223,6 +223,12 @@
       "collateral": true,
       "wrapped": true
     },
+    "LUSD": {
+      "fullName": "LUSD",
+      "shortName": "LUSD",
+      "collateral": true,
+      "wrapped": false
+    },
     "WETH": {
       "fullName": "WrappedEthereum",
       "shortName": "WETH",
