@@ -72,7 +72,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const setAccount = useRootStore((store) => store.setAccount);
+  const [setAccount, currentChainId] = useRootStore((store) => [
+    store.setAccount,
+    store.currentChainId,
+  ]);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
   // for now we use network changed as it returns the chain string instead of hex
@@ -129,7 +132,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     async (wallet: WalletType) => {
       setLoading(true);
       try {
-        const connector: AbstractConnector = getWallet(wallet, chainId);
+        const connector: AbstractConnector = getWallet(wallet, chainId, currentChainId);
 
         if (connector instanceof ReadOnlyModeConnector) {
           setReadOnlyMode(true);
@@ -155,7 +158,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setLoading(false);
       }
     },
-    [disconnectWallet]
+    [disconnectWallet, currentChainId]
   );
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
