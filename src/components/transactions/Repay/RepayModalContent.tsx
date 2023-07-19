@@ -209,7 +209,10 @@ export const RepayModalContent = ({
       currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
     });
 
-    newHF = calculatedHealthFactor.isLessThan(0) ? '0' : calculatedHealthFactor.toString(10);
+    newHF =
+      calculatedHealthFactor.isLessThan(0) && !calculatedHealthFactor.eq(-1)
+        ? '0'
+        : calculatedHealthFactor.toString(10);
   }
 
   // calculating input usd value
