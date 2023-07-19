@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-07-18 00:26\n"
+"PO-Revision-Date: 2023-07-19 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -76,6 +76,7 @@ msgstr "APY"
 msgid "APY change"
 msgstr ""
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
@@ -462,6 +463,7 @@ msgstr ""
 msgid "Borrow APY, stable"
 msgstr "Δανεισμός APY, σταθερό"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -475,6 +477,11 @@ msgstr ""
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Δεν επιτρέπεται ο δανεισμός και η αποπληρωμή στο ίδιο block"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Borrow apy"
+msgstr ""
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
@@ -483,6 +490,10 @@ msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Borrow balance after repay"
+msgstr ""
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Borrow balance after switch"
 msgstr ""
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -512,6 +523,10 @@ msgstr "Δανεισμός {symbol}"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowed"
+msgstr ""
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Borrowed asset amount"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
@@ -1175,6 +1190,10 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Ασυνεπείς παράμετροι flashloan"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
@@ -1911,6 +1930,10 @@ msgstr ""
 msgid "Select APY type to switch"
 msgstr "Επιλέξτε τύπο APY για εναλλαγή"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Select an asset"
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Επιλέξτε γλώσσα"
@@ -2015,6 +2038,7 @@ msgstr "Ισπανικά"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Stable"
@@ -2138,6 +2162,7 @@ msgid "Supply apy"
 msgstr "Προσφορά apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -2171,9 +2196,13 @@ msgstr "Προμηθεύοντας το"
 msgid "Supplying {symbol}"
 msgstr "Παροχή {symbol}"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Switch"
@@ -2195,10 +2224,15 @@ msgstr ""
 msgid "Switch Network"
 msgstr "Αλλαγή Δικτύου"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModal.tsx
+msgid "Switch borrow position"
+msgstr ""
+
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Αλλαγή ποσοστού"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Switch to"
 msgstr ""
@@ -2207,6 +2241,7 @@ msgstr ""
 msgid "Switched"
 msgstr ""
 
+#: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Switching"
 msgstr ""
@@ -2335,6 +2370,10 @@ msgstr "Δεν υπάρχουν αρκετά κεφάλαια στο{0}αποθ�
 #: src/ui-config/errorMapping.tsx
 msgid "There is not enough collateral to cover a new borrow"
 msgstr "Δεν υπάρχουν επαρκείς εξασφαλίσεις για την κάλυψη ενός νέου δανείου"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
@@ -2646,6 +2685,7 @@ msgstr "ΨΗΦΙΣΤΕ ΥΠΕΡ"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 #: src/modules/history/actions/BorrowRateModeBlock.tsx
 msgid "Variable"
@@ -2838,6 +2878,10 @@ msgstr "Δεν μπορείτε να χρησιμοποιήσετε αυτό τ�
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "Δεν μπορείτε να αποσύρετε αυτό το ποσό, διότι θα προκληθεί κλήση εγγύησης"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "You can only switch to tokens with variable APY types. After this transaction, you may change the variable rate to a stable one if available."
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
 msgstr "Μπορείτε να αποσύρετε τα περιουσιακά σας στοιχεία από τη Μονάδα Ασφαλείας μόνο αφού λήξει η περίοδος αναμονής και το παράθυρο ξεκλειδώματος είναι ενεργό."
@@ -2898,6 +2942,10 @@ msgstr "Θα βγείτε από τη λειτουργία απομόνωσης 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action} <0/> {symbol}"
 msgstr "Εσείς {action} <0/> {symbol}"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "You've successfully switched borrow position."
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
