@@ -14,6 +14,8 @@ import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
+const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
+
 export type UseSwapProps = {
   chainId: ChainId;
   max: boolean;
@@ -318,6 +320,7 @@ const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
         },
         { ignoreChecks: true }
       );
@@ -389,6 +392,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
           srcDecimals,
           destDecimals,
         },
@@ -416,8 +420,8 @@ const ExactOutSwapper = (chainId: ChainId) => {
 export const SIGNATURE_AMOUNT_MARGIN = 0.1;
 
 // Calculate aToken amount to request for signature, adding small margin to account for accruing interest
-export const calculateSignedAmount = (amount: string, decimals: number) => {
-  const amountWithMargin = Number(amount) + Number(amount) * SIGNATURE_AMOUNT_MARGIN; // 10% margin for aToken interest accrual
+export const calculateSignedAmount = (amount: string, decimals: number, margin?: number) => {
+  const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
 };
