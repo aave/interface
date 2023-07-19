@@ -65548,7 +65548,8 @@ var marketsData = {
       staking: true,
       liquiditySwap: true,
       collateralRepay: true,
-      incentives: true
+      incentives: true,
+      debtSwitch: false
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3",
     addresses: {
@@ -65577,7 +65578,8 @@ var marketsData = {
       staking: true,
       liquiditySwap: true,
       collateralRepay: true,
-      incentives: true
+      incentives: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
@@ -65590,7 +65592,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Ethereum_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Ethereum_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Ethereum_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Ethereum_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -65640,7 +65643,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic",
     addresses: {
@@ -65653,7 +65657,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Polygon_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Polygon_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Polygon_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Polygon_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -65666,7 +65671,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche",
     addresses: {
@@ -65679,7 +65685,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Avalanche_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Avalanche_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Avalanche_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Avalanche_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Avalanche_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Avalanche_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -65729,7 +65736,8 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
       liquiditySwap: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
     addresses: {
@@ -65742,7 +65750,8 @@ var marketsData = {
       L2_ENCODER: AaveV3Arbitrum_exports.L2_ENCODER,
       COLLECTOR: AaveV3Arbitrum_exports.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.REPAY_WITH_COLLATERAL_ADAPTER
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Arbitrum_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -65776,7 +65785,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche",
     addresses: {
@@ -65788,7 +65798,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Avalanche_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Avalanche_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Avalanche_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Avalanche_exports.COLLECTOR
+      COLLECTOR: AaveV3Avalanche_exports.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: AaveV3Avalanche_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -65923,7 +65934,8 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
       collateralRepay: true,
-      liquiditySwap: true
+      liquiditySwap: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism",
     addresses: {
@@ -65936,7 +65948,8 @@ var marketsData = {
       L2_ENCODER: AaveV3Optimism_exports.L2_ENCODER,
       COLLECTOR: AaveV3Optimism_exports.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: AaveV3Optimism_exports.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism_exports.REPAY_WITH_COLLATERAL_ADAPTER
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism_exports.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Optimism_exports.DEBT_SWAP_ADAPTER
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -65946,7 +65959,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon",
     addresses: {
@@ -65958,7 +65972,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Polygon_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Polygon_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Polygon_exports.COLLECTOR
+      COLLECTOR: AaveV3Polygon_exports.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: AaveV3Polygon_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
