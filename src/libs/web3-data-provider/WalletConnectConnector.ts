@@ -35,8 +35,8 @@ export class WalletConnectConnector extends AbstractConnector {
     }, {} as { [networkId: number]: string });
 
     this.config = {
-      chains: [mainnet],
-      optionalChains,
+      chains: undefined,
+      optionalChains: [mainnet, ...optionalChains],
       rpcMap,
       projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
