@@ -26,7 +26,7 @@ const handleSwitchNetwork = async () => {
               rpcUrls: ['https://arb1.arbitrum.io/rpc'],
               chainName: 'Arbitrum One',
               nativeCurrency: {
-                symbol: 'AETH',
+                symbol: 'ETH',
                 name: 'Arbitrum',
                 decimals: 18,
               },
@@ -49,7 +49,7 @@ const SwitchNetworkHeader = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const { chainId, currentAccount } = useWeb3Context();
 
-  if (!currentAccount && chainId === current.chainId) return <></>;
+  if (currentAccount && chainId === current.chainId) return <></>;
 
   return (
     <Box
