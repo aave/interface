@@ -58,7 +58,7 @@ const TosComponent = () => {
               target="_blank"
               sx={{ fontSize: '16px', fontWeight: 500 }}
             >
-              QuickSwap Terms and Conditions
+              Maneki Terms and Conditions
             </Link>
           </Typography>
           <FormGroup
@@ -85,8 +85,8 @@ const TosComponent = () => {
                 <Typography sx={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.5 }}>
                   I have read and understood, and do hereby agree to be legally bound as a `User`
                   under,the Terms, including all future amendments thereto. Such agreement is
-                  irrevocable andwill apply to all of my uses of the Site without me providing
-                  confirmation in eachspecific instance.
+                  irrevocable and will apply to all of my uses of the Site without me providing
+                  confirmation in each specific instance.
                 </Typography>
               }
             />
