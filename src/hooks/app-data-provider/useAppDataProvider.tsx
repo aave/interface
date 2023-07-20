@@ -17,7 +17,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { GHO_SUPPORTED_MARKETS, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -123,7 +123,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields
-  if (formattedGhoUserData.userDiscountedGhoInterest > 0) {
+  if (
+    GHO_SUPPORTED_MARKETS.includes(currentMarket) &&
+    formattedGhoUserData.userDiscountedGhoInterest > 0
+  ) {
     const userSummaryWithDiscount = formatUserSummaryWithDiscount({
       userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
       user,
