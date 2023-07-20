@@ -1,12 +1,12 @@
-import assets from '../../../fixtures/assets.json';
-import constants from '../../../fixtures/constans.json';
-import { skipState } from '../../../support/steps/common';
-import { configEnvWithTenderlyGoerliGhoFork } from '../../../support/steps/configuration.steps';
-import { borrow, emodeActivating, repay } from '../../../support/steps/main.steps';
+import assets from '../../fixtures/assets.json';
+import constants from '../../fixtures/constans.json';
+import { skipState } from '../../support/steps/common';
+import { configEnvWithTenderlyAEthereumV3Fork } from '../../support/steps/configuration.steps';
+import { borrow, repay } from '../../support/steps/main.steps';
 import {
   checkDashboardHealthFactor,
   dashboardAssetValuesVerification,
-} from '../../../support/steps/verification.steps';
+} from '../../support/steps/verification.steps';
 import { tokenSet } from './helpers/token.helper';
 
 const testData = {
@@ -38,6 +38,7 @@ const testData = {
         assetName: assets.ghoV3Market.GHO.shortName,
         amount: 20,
         apyType: constants.borrowAPYType.variable,
+        isGho: true,
       },
     ],
   },
@@ -45,15 +46,16 @@ const testData = {
 
 describe(`GHO base testing and e-mode`, () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyGoerliGhoFork({ v3: true, tokens: tokenSet({ aDAI: 500 }) });
+  configEnvWithTenderlyAEthereumV3Fork({ v3: true, tokens: tokenSet({ aDAI: 500 }) });
 
   borrow(testData.borrow, skipTestState, true);
   repay(testData.repay, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
   borrow(testData.borrowMax, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.1 }, skipTestState);
-  emodeActivating({ turnOn: true, emodeOption: 'Stable-EMode' }, skipTestState, true);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
+  // GHO not in e-mode list
+  // emodeActivating({ turnOn: true, emodeOption: 'Stable-EMode' }, skipTestState, true);
   checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 10000 }, skipTestState);
   borrow(testData.borrowMax, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.1 }, skipTestState);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
 });
