@@ -29,6 +29,7 @@ export const MigrationListBorrowItem = ({
           : selectedAsset.debtKey == userReserve.reserve.variableDebtTokenAddress
       ) >= 0
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBorrowAssets]);
 
   const handleCheckboxClick = () => {

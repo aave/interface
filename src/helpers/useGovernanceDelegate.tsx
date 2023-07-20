@@ -307,6 +307,7 @@ export const useGovernanceDelegate = (
       }
     }, 1000);
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegationTokenType, delegationType, delegatee, skip]);
 
   return { approvalTxState, signMetaTxs, mainTxState, loadingTxns, action, isSignatureAction };

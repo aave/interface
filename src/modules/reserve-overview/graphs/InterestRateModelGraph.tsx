@@ -172,6 +172,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       background: theme.palette.background.default,
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
 
     // bounds
