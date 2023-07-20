@@ -1,6 +1,5 @@
-import { GhoService, UiPoolDataProvider } from '@aave/contract-helpers';
+import { GhoService } from '@aave/contract-helpers';
 import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
@@ -25,7 +24,6 @@ export interface GhoSlice {
   ghoUserQualifiesForDiscount: (futureBorrowAmount?: string) => boolean;
   ghoMarketConfig: () => GhoMarketConfig | undefined;
   refreshGhoData: () => Promise<void>;
-  isGhoLive: boolean;
   displayGho: ({ symbol, currentMarket }: GhoUtilMintingAvailableParams) => boolean;
 }
 
@@ -55,10 +53,8 @@ export const createGhoSlice: StateCreator<
     },
     ghoReserveDataFetched: false,
     ghoUserDataFetched: false,
-    isGhoLive: false,
     displayGho: ({ symbol, currentMarket }: GhoUtilMintingAvailableParams): boolean => {
-      const ghoLive = get().isGhoLive;
-      return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket) && ghoLive;
+      return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
     },
     ghoUserQualifiesForDiscount: (futureBorrowAmount = '0') => {
       const ghoReserveDataFetched = get().ghoReserveDataFetched;
@@ -103,67 +99,42 @@ export const createGhoSlice: StateCreator<
     },
     refreshGhoData: async () => {
       const ghoConfig = get().ghoMarketConfig();
-      const ghoLive = get().isGhoLive;
-      let fetchedIsLive = false;
       if (!ghoConfig) return;
 
-      // Check reserves list to see if gho is live, if it is, fetch UiGhoDataProvider data
-      if (!ghoLive) {
+      const account = get().account;
+
+      const ghoService = new GhoService({
+        provider: getProvider(get().currentMarketData.chainId),
+        uiGhoDataProviderAddress: ghoConfig.uiGhoDataProviderAddress,
+      });
+
+      if (account) {
         try {
-          const poolDataProviderContract = new UiPoolDataProvider({
-            uiPoolDataProviderAddress: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
-            provider: getProvider(1),
-            chainId: 1,
+          const [ghoReserveData, ghoUserData] = await Promise.all([
+            ghoService.getGhoReserveData(),
+            ghoService.getGhoUserData(account),
+          ]);
+
+          set({
+            ghoReserveData: ghoReserveData,
+            ghoUserData: ghoUserData,
+            ghoReserveDataFetched: true,
+            ghoUserDataFetched: true,
           });
-          const reservesList = await poolDataProviderContract.getReservesList({
-            lendingPoolAddressProvider: AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
-          });
-          if (reservesList.includes(ghoConfig.ghoTokenAddress)) {
-            set({
-              isGhoLive: true,
-            });
-            fetchedIsLive = true;
-          }
         } catch (err) {
-          console.log('error fetching gho live status', err);
+          console.log('error', err);
         }
-      }
-      if (ghoLive || fetchedIsLive) {
-        const account = get().account;
+      } else {
+        try {
+          const ghoReserveData = await ghoService.getGhoReserveData();
 
-        const ghoService = new GhoService({
-          provider: getProvider(get().currentMarketData.chainId),
-          uiGhoDataProviderAddress: ghoConfig.uiGhoDataProviderAddress,
-        });
-
-        if (account) {
-          try {
-            const [ghoReserveData, ghoUserData] = await Promise.all([
-              ghoService.getGhoReserveData(),
-              ghoService.getGhoUserData(account),
-            ]);
-
-            set({
-              ghoReserveData: ghoReserveData,
-              ghoUserData: ghoUserData,
-              ghoReserveDataFetched: true,
-              ghoUserDataFetched: true,
-            });
-          } catch (err) {
-            console.log('error', err);
-          }
-        } else {
-          try {
-            const ghoReserveData = await ghoService.getGhoReserveData();
-
-            set({
-              ghoReserveData: ghoReserveData,
-              ghoReserveDataFetched: true,
-              ghoUserDataFetched: false,
-            });
-          } catch (err) {
-            console.log('error', err);
-          }
+          set({
+            ghoReserveData: ghoReserveData,
+            ghoReserveDataFetched: true,
+            ghoUserDataFetched: false,
+          });
+        } catch (err) {
+          console.log('error', err);
         }
       }
     },
