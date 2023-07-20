@@ -74,7 +74,8 @@ export class ReadOnlyModeConnector extends AbstractConnector {
 
 export const getWallet = (
   wallet: WalletType,
-  chainId: ChainId = ChainId.mainnet
+  chainId: ChainId = ChainId.mainnet,
+  currentChainId: ChainId = ChainId.mainnet
 ): AbstractConnector => {
   switch (wallet) {
     case WalletType.READ_ONLY_MODE:
@@ -91,7 +92,7 @@ export const getWallet = (
         url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector();
+      return new WalletConnectConnector(currentChainId);
     case WalletType.GNOSIS:
       if (window) {
         return new SafeAppConnector();
