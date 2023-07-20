@@ -54,7 +54,7 @@ msgstr "APR"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -73,7 +73,7 @@ msgstr "APY change"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 msgid "APY type"
 msgstr "APY type"
@@ -435,7 +435,7 @@ msgstr "Blocked Address"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -798,7 +798,7 @@ msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 msgid "Debt"
 msgstr "Debt"
@@ -1801,7 +1801,7 @@ msgstr "Repaid"
 
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -2196,7 +2196,7 @@ msgstr "Supplying {symbol}"
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
