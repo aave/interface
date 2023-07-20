@@ -45,7 +45,7 @@ export default function Staking() {
   const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
-  const [trackEvent, isGhoLive] = useRootStore((store) => [store.trackEvent, store.isGhoLive]);
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
     trackEvent('Page Viewed', {
@@ -134,7 +134,7 @@ export default function Staking() {
                     openStakeRewardsRestakeClaim('aave', 'AAVE')
                   }
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
-                  hasDiscountProgram={isGhoLive}
+                  hasDiscountProgram={true}
                 />
               </Grid>
               <Grid
