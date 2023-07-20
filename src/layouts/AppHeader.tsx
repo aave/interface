@@ -14,7 +14,6 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import DisclaimerSnackbar from 'src/maneki/components/DisclaimerSnackbar';
 import { SwitchNetworkHeader } from 'src/maneki/components/SwitchNetworkHeader';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
@@ -187,7 +186,6 @@ export function AppHeader() {
           </Box>
         </Box>
       </HideOnScroll>
-      <DisclaimerSnackbar />
     </>
   );
 }
