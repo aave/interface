@@ -7,9 +7,9 @@ import { TopInfoPanel } from '../../../components/TopInfoPanel/TopInfoPanel';
 
 export const TGETopPanel = () => {
   return (
-    <TopInfoPanel pageTitle={<Trans>PAW Token Generation Event</Trans>}>
-      <TGETopPanelLinks title={<Trans>Tokenomics</Trans>} link={'https://docs.maneki.finance'} />
-      <TGETopPanelLinks title={<Trans>Guide</Trans>} link={'https://docs.maneki.finance'} />
+    <TopInfoPanel pageTitle={<Trans>Maneki Token Generation Event</Trans>}>
+      {/* <TGETopPanelLinks title={<Trans>Tokenomics</Trans>} link={'https://docs.maneki.finance'} />
+      <TGETopPanelLinks title={<Trans>Guide</Trans>} link={'https://docs.maneki.finance'} /> */}
       {/* <TGETopPanelLinks title={<Trans>Audit Report</Trans>} link={'#'} /> */}
     </TopInfoPanel>
   );
@@ -44,3 +44,4 @@ const TGETopPanelLinks = ({ title, link }: TGETopPanelLinksProps) => {
     </Link>
   );
 };
+void TGETopPanelLinks;

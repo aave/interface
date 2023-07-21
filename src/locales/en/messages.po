@@ -1077,10 +1077,6 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "Guide"
-msgstr "Guide"
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Health Factor ({0} v2)"
 msgstr "Health Factor ({0} v2)"
@@ -1330,6 +1326,10 @@ msgstr "Manage PAW"
 msgid "Maneki Airdrops"
 msgstr "Maneki Airdrops"
 
+#: src/maneki/modules/tge/TGETopPanel.tsx
+msgid "Maneki Token Generation Event"
+msgstr "Maneki Token Generation Event"
+
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
 msgstr "Market"
@@ -1557,10 +1557,6 @@ msgstr "Overview"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Locks"
 msgstr "PAW Locks"
-
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "PAW Token Generation Event"
-msgstr "PAW Token Generation Event"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Vests"
@@ -2379,10 +2375,6 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
-
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "Tokenomics"
-msgstr "Tokenomics"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Tokens"
