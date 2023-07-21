@@ -3,6 +3,7 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -109,15 +110,25 @@ export const DebtSwitchModalDetails = ({
                 sx={{ borderRadius: '4px' }}
               />
             ) : (
-              <Typography variant="secondary14">
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Trans>Stable</Trans>
-                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                    <ArrowNarrowRightIcon />
-                  </SvgIcon>
-                  <Trans>Variable</Trans>
-                </Box>
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {switchSource.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Stable</Trans>
+                  </Typography>
+                )}
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                {switchTarget.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Variable</Trans>
+                  </Typography>
+                )}
+              </Box>
             )}
           </Box>
         </Row>
