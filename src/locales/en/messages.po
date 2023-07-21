@@ -334,8 +334,8 @@ msgid "Available to supply"
 msgstr "Available to supply"
 
 #: pages/404.page.tsx
-msgid "Back to Dashboard"
-msgstr "Back to Dashboard"
+msgid "Back to Home Page"
+msgstr "Back to Home Page"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -2668,8 +2668,8 @@ msgid "Wallets are provided by External Providers and by selecting you agree to 
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
 #: pages/404.page.tsx
-msgid "We suggest you go back to the Dashboard."
-msgstr "We suggest you go back to the Dashboard."
+msgid "We suggest you go back to the Home Page."
+msgstr "We suggest you go back to the Home Page."
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/modules/stake/StakeTopPanel.tsx
