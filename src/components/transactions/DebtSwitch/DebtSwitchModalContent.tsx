@@ -69,7 +69,7 @@ export const DebtSwitchModalContent = ({
     ]
   );
 
-  const switchTargets = reserves
+  let switchTargets = reserves
     .filter(
       (r) =>
         r.underlyingAsset !== poolReserve.underlyingAsset &&
@@ -83,6 +83,11 @@ export const DebtSwitchModalContent = ({
       variableApy: reserve.variableBorrowAPY,
       priceInUsd: reserve.priceInUSD,
     }));
+
+  switchTargets = [
+    ...switchTargets.filter((r) => r.symbol === 'GHO'),
+    ...switchTargets.filter((r) => r.symbol !== 'GHO'),
+  ];
 
   // states
   const [_amount, setAmount] = useState('');
@@ -382,7 +387,7 @@ const SelectOptionListHeader = () => {
           <Trans>Select an asset</Trans>
         </Typography>
         <Typography variant="subheader2">
-          <Trans>Borrow APY, variable</Trans>
+          <Trans>Borrow APY</Trans>
         </Typography>
       </Stack>
     </ListSubheader>
@@ -398,12 +403,17 @@ const SwitchTargetSelectOption = ({ asset }: { asset: SwitchTargetAsset }) => {
         sx={{ fontSize: '22px', mr: 1 }}
       />
       <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-      <FormattedNumber
-        value={asset.variableApy}
-        percent
-        variant="secondary14"
-        color="text.secondary"
-      />
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+        <FormattedNumber
+          value={asset.variableApy}
+          percent
+          variant="secondary14"
+          color="text.secondary"
+        />
+        <Typography variant="helperText" color="text.secondary">
+          <Trans>Variable rate</Trans>
+        </Typography>
+      </Box>
     </>
   );
 };
@@ -435,16 +445,21 @@ const GhoSwitchTargetSelectOption = ({
         sx={{ fontSize: '22px', mr: 1 }}
       />
       <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-      <GhoIncentivesCard
-        useApyRange
-        rangeValues={ghoApyRange}
-        value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
-        data-cy={`apyType`}
-        stkAaveBalance={userDiscountTokenBalance}
-        ghoRoute={ROUTES.reserveOverview(asset?.address ?? '', currentMarket) + '/#discount'}
-        forceShowTooltip
-        userQualifiesForDiscount={qualifiesForDiscount}
-      />
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+        <GhoIncentivesCard
+          useApyRange
+          rangeValues={ghoApyRange}
+          value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
+          data-cy={`apyType`}
+          stkAaveBalance={userDiscountTokenBalance}
+          ghoRoute={ROUTES.reserveOverview(asset?.address ?? '', currentMarket) + '/#discount'}
+          forceShowTooltip
+          userQualifiesForDiscount={qualifiesForDiscount}
+        />
+        <Typography variant="helperText" color="text.secondary">
+          <Trans>Variable rate</Trans>
+        </Typography>
+      </Box>
     </>
   );
 };
