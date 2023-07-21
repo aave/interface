@@ -9,13 +9,11 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { TrackEventProperties } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import {
@@ -36,10 +34,9 @@ export const GhoBorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
-  const [ghoUserDataFetched, ghoUserQualifiesForDiscount, trackEvent] = useRootStore((store) => [
+  const [ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore((store) => [
     store.ghoUserDataFetched,
     store.ghoUserQualifiesForDiscount,
-    store.trackEvent,
   ]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -81,6 +78,8 @@ export const GhoBorrowedPositionsListItem = ({
       isFrozen ||
       availableBorrows <= 0 ||
       ghoReserveData.aaveFacilitatorRemainingCapacity < 0.000001,
+    showSwitchButton: isFeatureEnabled.debtSwitch(currentMarketData) || false,
+    disableSwitch: !isActive || isFrozen,
     onRepayClick: () =>
       openRepay(
         reserve.underlyingAsset,
@@ -93,7 +92,6 @@ export const GhoBorrowedPositionsListItem = ({
     onBorrowClick: () =>
       openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard'),
     onSwitchClick: () => openDebtSwitch(reserve.underlyingAsset, borrowRateMode),
-    trackEvent,
   };
 
   if (downToXSM) {
@@ -115,10 +113,11 @@ interface GhoBorrowedPositionsListItemProps {
   userDiscountTokenBalance: number;
   borrowDisabled: boolean;
   currentMarketData: MarketDataType;
+  showSwitchButton: boolean;
+  disableSwitch: boolean;
   onRepayClick: () => void;
   onBorrowClick: () => void;
   onSwitchClick: () => void;
-  trackEvent: (eventName: string, properties?: TrackEventProperties) => void;
 }
 
 const GhoBorrowedPositionsListItemDesktop = ({
@@ -135,12 +134,10 @@ const GhoBorrowedPositionsListItemDesktop = ({
   onRepayClick,
   onBorrowClick,
   onSwitchClick,
-  currentMarketData,
-  trackEvent,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isActive, isFrozen, underlyingAsset } = reserve;
-  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen;
 
   return (
     <ListItemWrapper
@@ -192,15 +189,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
           <Button
             disabled={disableSwitch}
             variant="outlined"
-            onClick={() => {
-              trackEvent(GENERAL.OPEN_MODAL, {
-                modal: 'Debt Switch',
-                market: currentMarket,
-                assetName: reserve.name,
-                asset: reserve.underlyingAsset,
-              });
-              onSwitchClick();
-            }}
+            onClick={onSwitchClick}
             data-cy={`swapButton`}
           >
             <Trans>Switch</Trans>
@@ -227,12 +216,10 @@ const GhoBorrowedPositionsListItemMobile = ({
   onRepayClick,
   onBorrowClick,
   onSwitchClick,
-  currentMarketData,
-  trackEvent,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
-  const { symbol, iconSymbol, name, isActive, isFrozen } = reserve;
-  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen;
+  const { symbol, iconSymbol, name, isActive } = reserve;
 
   return (
     <ListMobileItemWrapper
@@ -281,20 +268,7 @@ const GhoBorrowedPositionsListItemMobile = ({
           <Trans>Repay</Trans>
         </Button>
         {showSwitchButton ? (
-          <Button
-            disabled={disableSwitch}
-            variant="outlined"
-            fullWidth
-            onClick={() => {
-              trackEvent(GENERAL.OPEN_MODAL, {
-                modal: 'Debt Switch',
-                market: currentMarket,
-                assetName: reserve.name,
-                asset: reserve.underlyingAsset,
-              });
-              onSwitchClick();
-            }}
-          >
+          <Button disabled={disableSwitch} variant="outlined" fullWidth onClick={onSwitchClick}>
             <Trans>Switch</Trans>
           </Button>
         ) : (
