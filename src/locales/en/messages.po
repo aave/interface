@@ -444,6 +444,10 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Borrow APY"
+msgstr "Borrow APY"
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrow APY rate"
@@ -458,7 +462,6 @@ msgstr "Borrow APY, fixed rate"
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -1054,6 +1057,15 @@ msgstr "Fetching data..."
 #: src/modules/governance/ProposalListHeader.tsx
 msgid "Filter"
 msgstr "Filter"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+msgid "Fixed"
+msgstr "Fixed"
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Fixed rate"
+msgstr "Fixed rate"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
@@ -2694,6 +2706,10 @@ msgstr "Variable debt supply is not zero"
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+
+#: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
+msgid "Variable rate"
+msgstr "Variable rate"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 2"

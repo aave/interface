@@ -81,6 +81,8 @@ export const GhoBorrowedPositionsListItem = ({
       isFrozen ||
       availableBorrows <= 0 ||
       ghoReserveData.aaveFacilitatorRemainingCapacity < 0.000001,
+    showSwitchButton: isFeatureEnabled.debtSwitch(currentMarketData) || false,
+    disableSwitch: !isActive || isFrozen,
     onRepayClick: () =>
       openRepay(
         reserve.underlyingAsset,
@@ -115,6 +117,8 @@ interface GhoBorrowedPositionsListItemProps {
   userDiscountTokenBalance: number;
   borrowDisabled: boolean;
   currentMarketData: MarketDataType;
+  showSwitchButton: boolean;
+  disableSwitch: boolean;
   onRepayClick: () => void;
   onBorrowClick: () => void;
   onSwitchClick: () => void;
@@ -135,12 +139,11 @@ const GhoBorrowedPositionsListItemDesktop = ({
   onRepayClick,
   onBorrowClick,
   onSwitchClick,
-  currentMarketData,
   trackEvent,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isActive, isFrozen, underlyingAsset } = reserve;
-  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen;
 
   return (
     <ListItemWrapper
@@ -227,12 +230,11 @@ const GhoBorrowedPositionsListItemMobile = ({
   onRepayClick,
   onBorrowClick,
   onSwitchClick,
-  currentMarketData,
   trackEvent,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
-  const { symbol, iconSymbol, name, isActive, isFrozen } = reserve;
-  const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen || symbol == 'stETH';
+  const { symbol, iconSymbol, name, isActive } = reserve;
 
   return (
     <ListMobileItemWrapper
