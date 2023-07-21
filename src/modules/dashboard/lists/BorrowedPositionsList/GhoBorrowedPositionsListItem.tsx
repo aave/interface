@@ -232,7 +232,7 @@ const GhoBorrowedPositionsListItemMobile = ({
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isActive, isFrozen } = reserve;
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen || symbol == 'stETH';
+  const disableSwitch = !isActive || isFrozen;
 
   return (
     <ListMobileItemWrapper
