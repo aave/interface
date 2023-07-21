@@ -1422,10 +1422,6 @@ msgstr "More"
 msgid "NAY"
 msgstr "NAY"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
-
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
 msgstr "Net APR"
