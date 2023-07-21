@@ -10,17 +10,14 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import {
-  // DetailsHFLine,
-  DetailsIncentivesLine,
-} from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { GhoRange } from './DebtSwitchModalContent';
 
 export type DebtSwitchModalDetailsProps = {
-  // healthFactor: string;
-  // healthFactorAfterSwap: string;
   switchSource: ComputedUserReserveData;
   switchTarget: ComputedUserReserveData;
   toAmount: string;
@@ -30,12 +27,7 @@ export type DebtSwitchModalDetailsProps = {
   sourceBorrowAPY: string;
   targetBorrowAPY: string;
   showAPYTypeChange: boolean;
-  qualifiesForDiscount: boolean;
-  ghoApySourceRange?: [number, number];
-  ghoUserDataFetched: boolean;
-  userBorrowApyAfterNewBorrow: number;
-  ghoApyTargetRange?: [number, number];
-  userDiscountTokenBalance: number;
+  ghoData?: GhoRange;
   currentMarket: CustomMarket;
 };
 const ArrowRightIcon = (
@@ -45,8 +37,6 @@ const ArrowRightIcon = (
 );
 
 export const DebtSwitchModalDetails = ({
-  // healthFactor,
-  // healthFactorAfterSwap,
   switchSource,
   switchTarget,
   toAmount,
@@ -56,14 +46,10 @@ export const DebtSwitchModalDetails = ({
   sourceBorrowAPY,
   targetBorrowAPY,
   showAPYTypeChange,
-  qualifiesForDiscount,
-  ghoApySourceRange,
-  ghoUserDataFetched,
-  userBorrowApyAfterNewBorrow,
-  ghoApyTargetRange,
-  userDiscountTokenBalance,
+  ghoData,
   currentMarket,
 }: DebtSwitchModalDetailsProps) => {
+  // if there is an inputAmount + GHO -> re-calculate max
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
   const targetAmountAfterSwap = valueToBigNumber(switchTarget.variableBorrows).plus(
@@ -82,59 +68,67 @@ export const DebtSwitchModalDetails = ({
     </>
   );
 
+  let switchToApy = 0;
+  let switchToRange = ghoData?.ghoApyRange;
+  if (switchTarget.reserve.symbol === 'GHO' && ghoData) {
+    switchToApy = weightedAverageAPY(
+      ghoData.ghoVariableBorrowApy,
+      ghoData.userCurrentBorrowBalance + ghoData.inputAmount,
+      ghoData.userGhoAvailableToBorrowAtDiscount,
+      ghoData.ghoBorrowAPYWithMaxDiscount
+    );
+    if (switchToRange) {
+      switchToRange = [switchToRange[0], switchToApy];
+    }
+  }
+
   return (
     <>
-      {/* {healthFactorAfterSwap && (
-        <DetailsHFLine
-          healthFactor={healthFactor}
-          futureHealthFactor={healthFactorAfterSwap}
-          visibleHfChange={true}
-          loading={loading}
-        />
-      )} */}
       <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              {switchSource.reserve.symbol === 'GHO' ? (
+              {switchSource.reserve.symbol === 'GHO' && ghoData ? (
                 <GhoIncentivesCard
-                  useApyRange={qualifiesForDiscount}
-                  rangeValues={ghoApySourceRange}
+                  useApyRange={false}
+                  rangeValues={ghoData.ghoApyRange}
                   variant="main14"
                   color="text.secondary"
-                  value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
+                  value={ghoData.userCurrentBorrowApy}
                   data-cy={`apyType`}
-                  stkAaveBalance={userDiscountTokenBalance}
+                  stkAaveBalance={ghoData.userDiscountTokenBalance}
                   ghoRoute={
                     ROUTES.reserveOverview(switchSource.underlyingAsset ?? '', currentMarket) +
                     '/#discount'
                   }
                   forceShowTooltip
                   withTokenIcon
-                  userQualifiesForDiscount={qualifiesForDiscount}
+                  userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
                 <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
               )}
               {ArrowRightIcon}
-              {switchSource.reserve.symbol === 'GHO' ? (
+              {switchTarget.reserve.symbol === 'GHO' && ghoData ? (
                 <GhoIncentivesCard
-                  useApyRange={qualifiesForDiscount}
-                  rangeValues={ghoApyTargetRange}
+                  useApyRange={ghoData.qualifiesForDiscount && !ghoData.inputAmount}
+                  rangeValues={ghoData.inputAmount === 0 ? ghoData.ghoApyRange : switchToRange}
                   variant="main14"
                   color="text.secondary"
-                  value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
+                  value={
+                    ghoData.inputAmount === 0 ? ghoData.userBorrowApyAfterMaxSwitch : switchToApy
+                  }
                   data-cy={`apyType`}
-                  stkAaveBalance={userDiscountTokenBalance}
+                  stkAaveBalance={ghoData.userDiscountTokenBalance}
                   ghoRoute={
                     ROUTES.reserveOverview(switchTarget.underlyingAsset ?? '', currentMarket) +
                     '/#discount'
                   }
                   forceShowTooltip
                   withTokenIcon
-                  userQualifiesForDiscount={qualifiesForDiscount}
+                  userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
                 <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
