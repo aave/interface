@@ -210,13 +210,12 @@ export const DebtSwitchModalContent = ({
       />
     );
 
-  // Available borrows is min of user available borrows and remaining facilitator capacity
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
-  const availableBorrows = Math.min(
-    maxAmountUserCanMint,
-    ghoReserveData.aaveFacilitatorRemainingCapacity
+  const ghoBalanceAfterMaxSwitch =
+    Number(maxAmountToSwitch) * Number(poolReserve.priceInUSD) + ghoUserData.userGhoBorrowBalance;
+  const ghoBalanceAfterMaxSwitchTo = Math.max(
+    0,
+    ghoUserData.userGhoBorrowBalance - Number(maxAmountToSwitch) * Number(poolReserve.priceInUSD)
   );
-  const debtBalanceAfterMaxBorrow = availableBorrows + ghoUserData.userGhoBorrowBalance;
 
   // Determine borrow APY range
   const userCurrentBorrowApy = weightedAverageAPY(
@@ -225,9 +224,15 @@ export const DebtSwitchModalContent = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  const userBorrowApyAfterNewBorrow = weightedAverageAPY(
+  const userBorrowApyAfterMaxSwitch = weightedAverageAPY(
     ghoReserveData.ghoVariableBorrowAPY,
-    debtBalanceAfterMaxBorrow,
+    ghoBalanceAfterMaxSwitch,
+    ghoUserData.userGhoAvailableToBorrowAtDiscount,
+    ghoReserveData.ghoBorrowAPYWithMaxDiscount
+  );
+  const userBorrowApyAfterMaxSwitchTo = weightedAverageAPY(
+    ghoReserveData.ghoVariableBorrowAPY,
+    ghoBalanceAfterMaxSwitchTo,
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
@@ -236,7 +241,7 @@ export const DebtSwitchModalContent = ({
         ghoUserData.userGhoAvailableToBorrowAtDiscount === 0
           ? ghoReserveData.ghoBorrowAPYWithMaxDiscount
           : userCurrentBorrowApy,
-        userBorrowApyAfterNewBorrow,
+        poolReserve.symbol === 'GHO' ? userBorrowApyAfterMaxSwitch : userBorrowApyAfterMaxSwitchTo,
       ]
     : undefined;
 
@@ -294,7 +299,7 @@ export const DebtSwitchModalContent = ({
             <GhoSwitchTargetSelectOption
               asset={asset}
               ghoApyRange={ghoApyRange}
-              userBorrowApyAfterNewBorrow={userBorrowApyAfterNewBorrow}
+              userBorrowApyAfterNewBorrow={userBorrowApyAfterMaxSwitch}
               userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
               ghoUserDataFetched={ghoUserDataFetched}
               currentMarket={currentMarket}
@@ -346,6 +351,13 @@ export const DebtSwitchModalContent = ({
             userReserve.reserve.symbol === 'GHO' ||
             switchTarget.reserve.symbol === 'GHO'
           }
+          currentMarket={currentMarket}
+          qualifiesForDiscount={qualifiesForDiscount}
+          ghoApySourceRange={ghoApyRange}
+          ghoApyTargetRange={ghoApyRange}
+          userBorrowApyAfterNewBorrow={userBorrowApyAfterMaxSwitch}
+          ghoUserDataFetched={ghoUserDataFetched}
+          userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
         />
       </TxModalDetails>
 
@@ -407,7 +419,7 @@ const SwitchTargetSelectOption = ({ asset }: { asset: SwitchTargetAsset }) => {
         <FormattedNumber
           value={asset.variableApy}
           percent
-          variant="secondary14"
+          variant="main14"
           color="text.secondary"
         />
         <Typography variant="helperText" color="text.secondary">
@@ -447,17 +459,20 @@ const GhoSwitchTargetSelectOption = ({
       <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
         <GhoIncentivesCard
-          useApyRange
+          useApyRange={qualifiesForDiscount}
           rangeValues={ghoApyRange}
+          variant="main14"
+          color="text.secondary"
           value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
           data-cy={`apyType`}
           stkAaveBalance={userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(asset?.address ?? '', currentMarket) + '/#discount'}
           forceShowTooltip
+          withTokenIcon
           userQualifiesForDiscount={qualifiesForDiscount}
         />
         <Typography variant="helperText" color="text.secondary">
-          <Trans>Variable rate</Trans>
+          <Trans>Fixed rate</Trans>
         </Typography>
       </Box>
     </>
