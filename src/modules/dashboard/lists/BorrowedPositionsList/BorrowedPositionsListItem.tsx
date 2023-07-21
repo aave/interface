@@ -33,10 +33,10 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const reserve = item.reserve;
 
   const disableBorrow =
-    !item.isActive || !item.borrowingEnabled || item.isFrozen || borrowCap.isMaxed;
+    !reserve.isActive || !reserve.borrowingEnabled || reserve.isFrozen || borrowCap.isMaxed;
 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
-  const disableSwitch = !item.isActive || item.isFrozen || reserve.symbol == 'stETH';
+  const disableSwitch = !reserve.isActive || reserve.isFrozen || reserve.symbol == 'stETH';
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
@@ -177,7 +177,6 @@ const BorrowedPositionsListItemDesktop = ({
 const BorrowedPositionsListItemMobile = ({
   reserve,
   borrowRateMode,
-  stableBorrowAPY,
   totalBorrows,
   totalBorrowsUSD,
   disableBorrow,
@@ -200,6 +199,7 @@ const BorrowedPositionsListItemMobile = ({
     isFrozen,
     stableBorrowRateEnabled,
     variableBorrowAPY,
+    stableBorrowAPY,
     underlyingAsset,
   } = reserve;
 
