@@ -8,10 +8,8 @@ import { Row } from 'src/components/primitives/Row';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -27,7 +25,6 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const trackEvent = useRootStore((store) => store.trackEvent);
   const { openBorrow, openRepay, openRateSwitch, openDebtSwitch } = useModalContext();
 
   const reserve = item.reserve;
@@ -58,12 +55,6 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
         ? reserve.vIncentivesData
         : reserve.sIncentivesData,
     onDetbSwitchClick: () => {
-      trackEvent(GENERAL.OPEN_MODAL, {
-        modal: 'Debt Switch',
-        market: currentMarket,
-        assetName: reserve.name,
-        asset: reserve.underlyingAsset,
-      });
       openDebtSwitch(reserve.underlyingAsset, item.borrowRateMode);
     },
     onOpenBorrow: () => {
