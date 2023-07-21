@@ -3,15 +3,18 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
+import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   // DetailsHFLine,
   DetailsIncentivesLine,
-  DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
@@ -27,7 +30,19 @@ export type DebtSwitchModalDetailsProps = {
   sourceBorrowAPY: string;
   targetBorrowAPY: string;
   showAPYTypeChange: boolean;
+  qualifiesForDiscount: boolean;
+  ghoApySourceRange?: [number, number];
+  ghoUserDataFetched: boolean;
+  userBorrowApyAfterNewBorrow: number;
+  ghoApyTargetRange?: [number, number];
+  userDiscountTokenBalance: number;
+  currentMarket: CustomMarket;
 };
+const ArrowRightIcon = (
+  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+    <ArrowNarrowRightIcon />
+  </SvgIcon>
+);
 
 export const DebtSwitchModalDetails = ({
   // healthFactor,
@@ -41,6 +56,13 @@ export const DebtSwitchModalDetails = ({
   sourceBorrowAPY,
   targetBorrowAPY,
   showAPYTypeChange,
+  qualifiesForDiscount,
+  ghoApySourceRange,
+  ghoUserDataFetched,
+  userBorrowApyAfterNewBorrow,
+  ghoApyTargetRange,
+  userDiscountTokenBalance,
+  currentMarket,
 }: DebtSwitchModalDetailsProps) => {
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
@@ -70,13 +92,57 @@ export const DebtSwitchModalDetails = ({
           loading={loading}
         />
       )} */}
-      <DetailsNumberLine
-        description={<Trans>Borrow apy</Trans>}
-        value={sourceBorrowAPY}
-        futureValue={targetBorrowAPY}
-        percent
-        loading={loading}
-      />
+      <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {loading ? (
+            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+          ) : (
+            <>
+              {switchSource.reserve.symbol === 'GHO' ? (
+                <GhoIncentivesCard
+                  useApyRange={qualifiesForDiscount}
+                  rangeValues={ghoApySourceRange}
+                  variant="main14"
+                  color="text.secondary"
+                  value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
+                  data-cy={`apyType`}
+                  stkAaveBalance={userDiscountTokenBalance}
+                  ghoRoute={
+                    ROUTES.reserveOverview(switchSource.underlyingAsset ?? '', currentMarket) +
+                    '/#discount'
+                  }
+                  forceShowTooltip
+                  withTokenIcon
+                  userQualifiesForDiscount={qualifiesForDiscount}
+                />
+              ) : (
+                <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
+              )}
+              {ArrowRightIcon}
+              {switchSource.reserve.symbol === 'GHO' ? (
+                <GhoIncentivesCard
+                  useApyRange={qualifiesForDiscount}
+                  rangeValues={ghoApyTargetRange}
+                  variant="main14"
+                  color="text.secondary"
+                  value={ghoUserDataFetched ? userBorrowApyAfterNewBorrow : -1}
+                  data-cy={`apyType`}
+                  stkAaveBalance={userDiscountTokenBalance}
+                  ghoRoute={
+                    ROUTES.reserveOverview(switchTarget.underlyingAsset ?? '', currentMarket) +
+                    '/#discount'
+                  }
+                  forceShowTooltip
+                  withTokenIcon
+                  userQualifiesForDiscount={qualifiesForDiscount}
+                />
+              ) : (
+                <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
+              )}
+            </>
+          )}
+        </Box>
+      </Row>
       {showAPYTypeChange && (
         <Row
           caption={
@@ -109,15 +175,25 @@ export const DebtSwitchModalDetails = ({
                 sx={{ borderRadius: '4px' }}
               />
             ) : (
-              <Typography variant="secondary14">
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Trans>Stable</Trans>
-                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                    <ArrowNarrowRightIcon />
-                  </SvgIcon>
-                  <Trans>Variable</Trans>
-                </Box>
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {switchSource.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Stable</Trans>
+                  </Typography>
+                )}
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                {switchTarget.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Variable</Trans>
+                  </Typography>
+                )}
+              </Box>
             )}
           </Box>
         </Row>
