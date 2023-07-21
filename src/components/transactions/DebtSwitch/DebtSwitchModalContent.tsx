@@ -224,7 +224,7 @@ export const DebtSwitchModalContent = ({
       />
     );
 
-  const qualifiesForDiscount = ghoUserQualifiesForDiscount();
+  let qualifiesForDiscount = false;
   let ghoTargetData: GhoRange | undefined;
   if (reserves.some((reserve) => reserve.symbol === 'GHO')) {
     const ghoBalanceAfterMaxSwitchTo =
@@ -244,6 +244,7 @@ export const DebtSwitchModalContent = ({
     const ghoApyRange: [number, number] | undefined = ghoUserDataFetched
       ? [userCurrentBorrowApy, userBorrowApyAfterMaxSwitchTo]
       : undefined;
+    qualifiesForDiscount = ghoUserQualifiesForDiscount(maxAmountToSwitch);
     ghoTargetData = {
       qualifiesForDiscount,
       ghoApyRange,
