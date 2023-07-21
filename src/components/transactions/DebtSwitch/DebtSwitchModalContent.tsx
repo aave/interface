@@ -247,7 +247,7 @@ export const DebtSwitchModalContent = ({
     ghoTargetData = {
       qualifiesForDiscount,
       ghoApyRange,
-      userBorrowApyAfterMaxSwitch: ghoBalanceAfterMaxSwitchTo,
+      userBorrowApyAfterMaxSwitch: userBorrowApyAfterMaxSwitchTo,
       userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
       inputAmount: Number(amount),
       targetAmount: Number(inputAmount),
@@ -472,7 +472,7 @@ const GhoSwitchTargetSelectOption = ({
           stkAaveBalance={userDiscountTokenBalance}
           ghoRoute={ROUTES.reserveOverview(asset?.address ?? '', currentMarket) + '/#discount'}
           forceShowTooltip
-          withTokenIcon
+          withTokenIcon={qualifiesForDiscount}
           userQualifiesForDiscount={qualifiesForDiscount}
         />
         <Typography variant="helperText" color="text.secondary">

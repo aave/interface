@@ -104,7 +104,7 @@ export const DebtSwitchModalDetails = ({
                     '/#discount'
                   }
                   forceShowTooltip
-                  withTokenIcon
+                  withTokenIcon={ghoData.qualifiesForDiscount}
                   userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
@@ -127,7 +127,7 @@ export const DebtSwitchModalDetails = ({
                     '/#discount'
                   }
                   forceShowTooltip
-                  withTokenIcon
+                  withTokenIcon={ghoData.qualifiesForDiscount}
                   userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
