@@ -13,10 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".CSV"
 msgstr ".CSV"
 
+#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid ".JSON"
 msgstr ".JSON"
@@ -3118,10 +3120,6 @@ msgstr "{numSelected}/{numAvailable} assets selected"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "{text}"
-msgstr "{text}"
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 #: src/modules/reserve-overview/Gho/CalculatorInput.tsx

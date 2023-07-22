@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { CustomTooltip } from 'src/components/infoTooltips/CustomToolTip';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
@@ -204,7 +204,7 @@ export const HistoryWrapper = () => {
   const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
   const transactionDownloadButton = (
-    text: string,
+    text: ReactNode,
     fileDownloadState: downloadState,
     downloadHandler: () => void
   ) => {
@@ -215,11 +215,7 @@ export const HistoryWrapper = () => {
         wrap={true}
         placement="top"
       >
-        <Button
-          // Arul: To be uncommented
-          // disabled={isEmpty}
-          onClick={downloadHandler}
-        >
+        <Button onClick={downloadHandler}>
           {fileDownloadState === downloadState.NEUTRAL ? (
             <SvgIcon>
               <DocumentDownloadIcon width={22} height={22} />
@@ -237,9 +233,7 @@ export const HistoryWrapper = () => {
               </SvgIcon>
             )
           )}
-          <Typography variant="buttonM">
-            <Trans>{text}</Trans>
-          </Typography>
+          <Typography variant="buttonM">{text}</Typography>
         </Button>
       </CustomTooltip>
     );
@@ -272,8 +266,8 @@ export const HistoryWrapper = () => {
             cursor: isEmpty ? 'not-allowed' : 'pointer',
           }}
         >
-          {transactionDownloadButton('.CSV', csvFileDownload, handleCsvDownload)}
-          {transactionDownloadButton('.JSON', jsonFileDownload, handleJsonDownload)}
+          {transactionDownloadButton(<Trans>.CSV</Trans>, csvFileDownload, handleCsvDownload)}
+          {transactionDownloadButton(<Trans>.JSON</Trans>, jsonFileDownload, handleJsonDownload)}
         </Box>
       </Box>
 
