@@ -3,15 +3,15 @@ import { OptimalRate } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
-  fetchExactInRate,
-  fetchExactInTxParams,
+  fetchExactOutRate,
+  fetchExactOutTxParams,
   MESSAGE_MAP,
   SwapData,
   SwapTransactionParams,
   UseSwapProps,
 } from './common';
 
-interface UseSwapResponse {
+interface UseDebtSwitchResponse {
   outputAmount: string;
   outputAmountUSD: string;
   inputAmount: string;
@@ -21,15 +21,15 @@ interface UseSwapResponse {
   buildTxFn: () => Promise<SwapTransactionParams>;
 }
 
-export const useCollateralSwap = ({
+export const useDebtSwitch = ({
   chainId,
   max,
   maxSlippage,
+  skip,
   swapIn,
   swapOut,
   userAddress,
-  skip,
-}: UseSwapProps): UseSwapResponse => {
+}: UseSwapProps): UseDebtSwitchResponse => {
   const [inputAmount, setInputAmount] = useState<string>('0');
   const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
   const [outputAmount, setOutputAmount] = useState<string>('0');
@@ -72,9 +72,10 @@ export const useCollateralSwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
-  const exactInRate = useCallback(() => {
-    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, max);
-  }, [chainId, swapInData, swapOutData, userAddress, max]);
+  const exactOutRate = useCallback(
+    () => fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max),
+    [chainId, max, swapInData, swapOutData, userAddress]
+  );
 
   useEffect(() => {
     if (skip) return;
@@ -83,14 +84,14 @@ export const useCollateralSwap = ({
       if (
         !swapInData.underlyingAsset ||
         !swapOutData.underlyingAsset ||
-        !swapInData.amount ||
-        swapInData.amount === '0' ||
-        isNaN(+swapInData.amount)
+        !swapOutData.amount ||
+        swapOutData.amount === '0' ||
+        isNaN(+swapOutData.amount)
       ) {
         setInputAmount('0');
+        setInputAmountUSD('0');
         setOutputAmount('0');
         setOutputAmountUSD('0');
-        setInputAmountUSD('0');
         setRoute(undefined);
         return;
       }
@@ -98,18 +99,20 @@ export const useCollateralSwap = ({
       setLoading(true);
 
       try {
-        const route = await exactInRate();
+        const route: OptimalRate = await exactOutRate();
+
         setError('');
         setRoute(route);
 
-        setInputAmount(normalize(route.srcAmount, route.srcDecimals));
-        setInputAmountUSD(route.srcUSD);
-
-        const minAmount = new BigNumberZeroDecimal(route.destAmount)
-          .multipliedBy(1 - maxSlippage / 100)
+        // Source asset is the target asset which is incurred as a borrow position, positive slippage increases the amount to be borrowed
+        const srcAmount = new BigNumberZeroDecimal(route.srcAmount)
+          .multipliedBy(1 + maxSlippage / 100)
           .toFixed(0);
 
-        setOutputAmount(normalize(minAmount, route.destDecimals));
+        setInputAmount(normalize(srcAmount, route.srcDecimals));
+        setOutputAmount(normalize(route.destAmount, route.destDecimals));
+
+        setInputAmountUSD(route.srcUSD);
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
@@ -129,15 +132,13 @@ export const useCollateralSwap = ({
       clearTimeout(timeout);
     };
   }, [
-    error,
     skip,
     swapInData.underlyingAsset,
-    swapOutData.underlyingAsset,
-    exactInRate,
-    maxSlippage,
     swapInData.amount,
-    userAddress,
-    max,
+    swapOutData.underlyingAsset,
+    swapOutData.amount,
+    exactOutRate,
+    maxSlippage,
   ]);
 
   return {
@@ -150,7 +151,7 @@ export const useCollateralSwap = ({
     // Used for calling paraswap buildTx as very last step in transaction
     buildTxFn: async () => {
       if (!route) throw new Error('Route required to build transaction');
-      return fetchExactInTxParams(route, swapIn, swapOut, chainId, userAddress, maxSlippage);
+      return fetchExactOutTxParams(route, swapIn, swapOut, chainId, userAddress, maxSlippage);
     },
   };
 };

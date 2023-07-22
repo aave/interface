@@ -66,17 +66,19 @@ export const useTransactionHandler = ({
   const [
     signPoolERC20Approval,
     walletApprovalMethodPreference,
-    generatePermitPayloadForMigrationBorrowAsset,
+    generateCreditDelegationSignatureRequest,
     generatePermitPayloadForMigrationSupplyAsset,
     addTransaction,
     signStakingApproval,
+    currentMarketData,
   ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
-    state.generatePermitPayloadForMigrationBorrowAsset,
+    state.generateCreditDelegationSignatureRequest,
     state.generatePermitPayloadForMigrationSupplyAsset,
     state.addTransaction,
     state.signStakingApproval,
+    state.currentMarketData,
   ]);
 
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
@@ -176,7 +178,11 @@ export const useTransactionHandler = ({
               );
             } else if (approval.permitType === 'BORROW_MIGRATOR_V3') {
               unsignedPromisePayloads.push(
-                generatePermitPayloadForMigrationBorrowAsset({ ...approval, deadline })
+                generateCreditDelegationSignatureRequest({
+                  ...approval,
+                  deadline,
+                  spender: currentMarketData.addresses.V3_MIGRATOR || '',
+                })
               );
             } else if (approval.permitType === 'STAKE') {
               unsignedPromisePayloads.push(

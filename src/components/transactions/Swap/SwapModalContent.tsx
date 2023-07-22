@@ -8,7 +8,6 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
-import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
@@ -41,7 +40,7 @@ export const SwapModalContent = ({
   isWrongNetwork,
 }: ModalWrapperProps) => {
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
@@ -110,11 +109,6 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
 
-  const isUSDTEthMainnetV3 =
-    currentChainId === 1 &&
-    !!currentMarketData.v3 &&
-    (swapTarget.reserve.symbol === 'USDT' || poolReserve.symbol === 'USDT');
-
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   const remainingSupplyCap = remainingCap(
@@ -174,16 +168,6 @@ export const SwapModalContent = ({
     user &&
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
     poolReserve.reserveLiquidationThreshold !== '0';
-
-  // calculate impact based on $ difference
-  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
-  let priceImpact =
-    inputAmountUSD && inputAmountUSD !== '0'
-      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
-      : '0';
-  if (priceImpact === '-0.00') {
-    priceImpact = '0.00';
-  }
 
   const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(swapTarget.reserve);
   const swapSourceCollateralType = getAssetCollateralType(
@@ -264,7 +248,11 @@ export const SwapModalContent = ({
           <SwitchVerticalIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
+        <PriceImpactTooltip
+          loading={loadingSkeleton}
+          outputAmountUSD={outputAmountUSD}
+          inputAmountUSD={inputAmountUSD}
+        />
       </Box>
       <AssetInput
         value={outputAmount}
@@ -291,12 +279,6 @@ export const SwapModalContent = ({
       {swapTarget.reserve.symbol === 'stETH' && (
         <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
           <StETHCollateralWarning />
-        </Warning>
-      )}
-
-      {isUSDTEthMainnetV3 && (
-        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-          <USDTParaswapWarning />
         </Warning>
       )}
 
@@ -329,10 +311,7 @@ export const SwapModalContent = ({
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={
-          blockingError !== undefined ||
-          error !== '' ||
-          isUSDTEthMainnetV3 ||
-          swapTarget.reserve.symbol === 'stETH'
+          blockingError !== undefined || error !== '' || swapTarget.reserve.symbol === 'stETH'
         }
         useFlashLoan={shouldUseFlashloan}
         loading={routeLoading}

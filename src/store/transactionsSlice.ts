@@ -11,7 +11,7 @@ export type Transactions = {
 };
 
 export type TransactionDetails = {
-  action?: ProtocolAction;
+  action?: ProtocolAction | string;
   txState?: TransactionState;
   asset?: string;
   amount?: string;
@@ -20,6 +20,7 @@ export type TransactionDetails = {
   support?: boolean;
   previousState?: string;
   newState?: string;
+  spender?: string;
 };
 
 export type TransactionEvent = TransactionDetails & {

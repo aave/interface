@@ -18,6 +18,7 @@ export default defineConfig({
       '/**/isolated-mode.polygon-v3.cy.ts',
       '/**/isolated-and-emode.polygon-v3.cy.ts',
       '/**/critical-conditions.polygon-v3.cy.ts',
+      '/**/switch.polygon-v3.cy.ts',
     ],
   },
 });

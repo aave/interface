@@ -5,12 +5,16 @@ import {
   constructFetchFetcher,
   constructGetRate,
   constructPartialSDK,
+  ContractMethod,
+  OptimalRate,
+  SwapSide,
   TransactionParams,
 } from '@paraswap/sdk';
-import { RateOptions } from '@paraswap/sdk/dist/rates';
-import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
+import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
+
+const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
 
 export type UseSwapProps = {
   chainId: ChainId;
@@ -47,7 +51,7 @@ const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
   return constructPartialSDK(
     {
-      network: chainId,
+      chainId,
       fetcher,
     },
     constructBuildTx,
@@ -151,7 +155,14 @@ export async function fetchExactInRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleSwap];
+    options.excludeContractMethods = [
+      ContractMethod.simpleSwap,
+      ContractMethod.directUniV3Swap,
+      ContractMethod.directBalancerV2GivenInSwap,
+      ContractMethod.directBalancerV2GivenOutSwap,
+      ContractMethod.directCurveV1Swap,
+      ContractMethod.directCurveV2Swap,
+    ];
   }
 
   const swapper = ExactInSwapper(chainId);
@@ -237,7 +248,11 @@ export async function fetchExactOutRate(
   };
 
   if (max) {
-    options.excludeContractMethods = [ContractMethod.simpleBuy];
+    options.excludeContractMethods = [
+      ContractMethod.simpleBuy,
+      ContractMethod.directUniV3Buy,
+      ContractMethod.directBalancerV2GivenOutSwap,
+    ];
   }
 
   const swapper = ExactOutSwapper(chainId);
@@ -305,6 +320,7 @@ const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
         },
         { ignoreChecks: true }
       );
@@ -376,6 +392,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
           srcDecimals,
           destDecimals,
         },
@@ -403,8 +420,8 @@ const ExactOutSwapper = (chainId: ChainId) => {
 export const SIGNATURE_AMOUNT_MARGIN = 0.1;
 
 // Calculate aToken amount to request for signature, adding small margin to account for accruing interest
-export const calculateSignedAmount = (amount: string, decimals: number) => {
-  const amountWithMargin = Number(amount) + Number(amount) * SIGNATURE_AMOUNT_MARGIN; // 10% margin for aToken interest accrual
+export const calculateSignedAmount = (amount: string, decimals: number, margin?: number) => {
+  const amountWithMargin = Number(amount) + Number(amount) * (margin ?? SIGNATURE_AMOUNT_MARGIN); // 10% margin for aToken interest accrual, custom amount for actions where output amount is variable
   const formattedAmountWithMargin = valueToWei(amountWithMargin.toString(), decimals);
   return formattedAmountWithMargin;
 };
