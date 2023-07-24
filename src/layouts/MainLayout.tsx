@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect, useState } from 'react';
-import TosComponent from 'src/maneki/components/TosComponent';
+import DisclaimerComponent from 'src/maneki/components/DisclaimerComponent';
 
 import { AppHeader } from './AppHeader';
 
@@ -12,7 +12,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
     const manekiTOS = localStorage.getItem('manekiTOS');
     manekiTOS !== 'agreed' ? setTos(false) : setTos(true);
   }, [route]);
-  if (!tos) return <TosComponent />;
+  if (!tos) return <DisclaimerComponent />;
   else {
     return (
       <>
