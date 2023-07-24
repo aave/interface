@@ -14,6 +14,7 @@ import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
+import { PROPOSAL_TEXT_MAP } from './StateBadge';
 
 type ProposalListHeaderProps = {
   proposalFilter: string;
@@ -46,7 +47,7 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
         </MenuItem>
         {Object.keys(ProposalState).map((key) => (
           <MenuItem key={key} value={key}>
-            {key}
+            {PROPOSAL_TEXT_MAP[key as ProposalState]}
           </MenuItem>
         ))}
       </Select>
@@ -84,7 +85,7 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
           </MenuItem>
           {Object.keys(ProposalState).map((key) => (
             <MenuItem key={key} value={key}>
-              {key}
+              {PROPOSAL_TEXT_MAP[key as ProposalState]}
             </MenuItem>
           ))}
         </Select>

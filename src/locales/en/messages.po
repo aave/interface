@@ -449,14 +449,14 @@ msgstr "Borrow"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, fixed rate"
-msgstr "Borrow APY, fixed rate"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow APY, stepped rate"
+msgstr "Borrow APY, stepped rate"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/modules/markets/MarketAssetsList.tsx

@@ -10,13 +10,14 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
     [ProposalState.Active]: theme.palette.secondary.main,
     [ProposalState.Queued]: theme.palette.warning.main,
-    [ProposalState.Pending]: theme.palette.info.main,
-    [ProposalState.Succeeded]: theme.palette.success.main,
+    [ProposalState.Pending]: '#2EBAC680',
+    [ProposalState.Succeeded]: theme.palette.info.main,
     [ProposalState.Executed]: theme.palette.success.main,
     [ProposalState.Canceled]: theme.palette.primary.light,
     [ProposalState.Expired]: theme.palette.primary.light,
-    [ProposalState.Failed]: theme.palette.error.main,
+    [ProposalState.Failed]: theme.palette.primary.light,
   };
+
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
     ...theme.typography.subheader2,
@@ -40,7 +41,23 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   });
 });
 
+type ProposalTextMap = {
+  [key in ProposalState]: string;
+};
+
+export const PROPOSAL_TEXT_MAP: ProposalTextMap = {
+  [ProposalState.Active]: 'Voting Active',
+  [ProposalState.Queued]: 'Queued',
+  [ProposalState.Pending]: 'New',
+  [ProposalState.Succeeded]: 'Passed',
+  [ProposalState.Executed]: 'Executed',
+  [ProposalState.Canceled]: 'Canceled',
+  [ProposalState.Expired]: 'Expired',
+  [ProposalState.Failed]: 'Failed',
+};
+
 export function StateBadge({ state, loading }: StateBadgeProps) {
   if (loading) return <Skeleton width={70} />;
-  return <Badge state={state}>{state}</Badge>;
+
+  return <Badge state={state}>{PROPOSAL_TEXT_MAP[state]}</Badge>;
 }
