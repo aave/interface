@@ -239,7 +239,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.harmony]: {
     name: 'Harmony',
