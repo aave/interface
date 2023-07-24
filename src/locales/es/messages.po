@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-07-19 18:05\n"
+"PO-Revision-Date: 2023-07-24 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -90,7 +90,7 @@ msgstr "Cambio tipo de APY"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "APY with discount applied"
-msgstr ""
+msgstr "APY con descuento aplicado"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -98,7 +98,7 @@ msgstr ""
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "APY, fixed rate"
-msgstr ""
+msgstr "APY, interés fijo"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -141,7 +141,7 @@ msgstr "Aave por mes"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "About GHO"
-msgstr ""
+msgstr "Sobre GHO"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
@@ -456,7 +456,7 @@ msgstr "Tasa de interés de préstamo APY"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Borrow APY, fixed rate"
-msgstr ""
+msgstr "APY préstamo, interés fijo"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -479,7 +479,7 @@ msgstr "Tomar prestado y pagar en el mismo bloque no está permitido"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 msgid "Borrow apy"
-msgstr ""
+msgstr "Apy préstamo"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
@@ -588,11 +588,11 @@ msgstr "Comprar {cryptoSymbol} con Fiat"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "COPIED!"
-msgstr ""
+msgstr "¡COPIADO!"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "COPY IMAGE"
-msgstr ""
+msgstr "COPIAR IMAGEN"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -879,7 +879,7 @@ msgstr "Canal de Discord"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount"
-msgstr ""
+msgstr "Descuento"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount applied for <0/> staking AAVE"
@@ -903,7 +903,7 @@ msgstr "Docs"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Download"
-msgstr ""
+msgstr "Descargar"
 
 #: src/components/Warnings/StETHCollateralWarning.tsx
 msgid "Due to internal stETH mechanics required for rebasing support, it is not possible to perform a collateral switch where stETH is the source token."
@@ -939,7 +939,7 @@ msgstr "El E-Mode aumenta tu LTV para una categoría seleccionada de activos, lo
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Effective interest rate"
-msgstr ""
+msgstr "Tasa de interés efectiva"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -1197,7 +1197,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
-msgstr ""
+msgstr "Intereses acumulados"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1414,7 +1414,7 @@ msgstr "Máxima relación préstamo-valor"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Meet GHO"
-msgstr ""
+msgstr "Conoce GHO"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
@@ -1672,7 +1672,7 @@ msgstr "Previsualizar la tx y migrar"
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "Price"
-msgstr ""
+msgstr "Precio"
 
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
@@ -1912,7 +1912,7 @@ msgstr "Seguridad de tu garantía depositada contra los activos prestados y su v
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
 msgid "Save and share"
-msgstr ""
+msgstr "Guardar y compartir"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
@@ -1932,7 +1932,7 @@ msgstr "Selecciona el tipo APY para cambiar"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Select an asset"
-msgstr ""
+msgstr "Selecciona un activo"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
@@ -2805,7 +2805,7 @@ msgstr "Te sugerimos volver al Panel de control."
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Website"
-msgstr ""
+msgstr "Página web"
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
