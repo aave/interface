@@ -13,7 +13,7 @@ export const BorrowedPositionsListItemWrapper = ({ item }: { item: DashboardRese
   return (
     <AssetCapsProvider asset={item.reserve}>
       {displayGho({ symbol: item.reserve.symbol, currentMarket }) ? (
-        <GhoBorrowedPositionsListItem {...item} key={item.underlyingAsset + item.borrowRateMode} />
+        <GhoBorrowedPositionsListItem {...item} />
       ) : (
         <BorrowedPositionsListItem item={item} />
       )}
