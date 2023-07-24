@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-07-24 12:06\n"
+"PO-Revision-Date: 2023-07-24 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -30,11 +30,11 @@ msgstr ".JSON"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "<0><1><2/></1>Add <3/> stkAAVE</0> to borrow at <4/> (max discount)"
-msgstr ""
+msgstr "<0><1><2/></1>añade <3/> stkAAVE</0> para tomar prestado al <4/> (descuento máximo)"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "<0><1><2/></1>Add stkAAVE</0> to see borrow rate with discount"
-msgstr ""
+msgstr "<0><1><2/></1>Añade stkAAVE</0> para ver la tasa de préstamo con descuento"
 
 #: src/components/Warnings/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
@@ -166,7 +166,7 @@ msgstr "Activar Cooldown"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Add stkAAVE to see borrow APY with the discount"
-msgstr ""
+msgstr "Añade stkAAVE para ver el APY de préstamo con el descuento"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
@@ -354,7 +354,7 @@ msgstr "Los activos con cero LTV ({assetsBlockingWithdraw}) deben retirarse o in
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "At a discount"
-msgstr ""
+msgstr "Con un descuento"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
@@ -494,7 +494,7 @@ msgstr "Balance tomado prestado tras pagar"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 msgid "Borrow balance after switch"
-msgstr ""
+msgstr "Balance de préstamo después del cambio"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
@@ -506,7 +506,7 @@ msgstr "El límite del préstamo se ha sobrepasado"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Borrow info"
-msgstr ""
+msgstr "Información de préstamo"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
@@ -527,7 +527,7 @@ msgstr "Prestado"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
-msgstr ""
+msgstr "Cantidad de activos tomados prestados"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -560,7 +560,7 @@ msgstr "Tomar prestado este activo está limitado a una cierta cantidad para min
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
-msgstr "La capacidad de préstamo y los activos están limitados debido al Isolation mode."
+msgstr "El poder de préstamo y los activos están limitados debido al Isolation mode."
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
@@ -883,19 +883,19 @@ msgstr "Descuento"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount applied for <0/> staking AAVE"
-msgstr ""
+msgstr "Descuento aplicado para <0/> AAVE stakeados"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount model parameters"
-msgstr ""
+msgstr "Parámetros del modelo de descuento"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
-msgstr ""
+msgstr "Los parámetros de descuento son decididos por la comunidad de Aave y pueden cambiar con el tiempo. Consulta el Gobierno para ver actualizaciones y vota para participar. <0>-Aprende más</0>"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Discountable amount"
-msgstr ""
+msgstr "Cantidad descontable"
 
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
@@ -1001,11 +1001,11 @@ msgstr "Error de conexión. Intenta actualizar la página."
 
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
-msgstr ""
+msgstr "Interés compuesto estimado, incluyendo el descuento por Staking {0}AAVE en el Módulo de Seguridad."
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
-msgstr ""
+msgstr "Supera el descuento"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
@@ -1086,7 +1086,7 @@ msgstr "Fondos en el módulo de seguridad"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
-msgstr ""
+msgstr "GHO es un activo nativo descentralizado, digital y respaldado por garantía, vinculado al USD. Es creado por los usuarios que lo toman prestado contra múltiples garantías. Cuando el usuario paga su posición de préstamo de GHO, el protocolo quema el GHO de ese usuario. Todos los pagos de interés acumulados por los acuñadores de GHO serán transferidos directamente a la tesorería de la DAO de Aave."
 
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
@@ -1148,7 +1148,7 @@ msgstr "Ocultar"
 
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
-msgstr ""
+msgstr "Los poseedores de stkAAVE reciben un descuento en la tasa de préstamo de GHO"
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1193,11 +1193,11 @@ msgstr "Parámetros inconsistentes del préstamo flash"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
-msgstr ""
+msgstr "Garantía insuficiente para cubrir la nueva posición de préstamo. La cartera debe tener poder de préstamo suficiente para realizar el cambio de deuda."
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Interest accrued"
-msgstr "Intereses acumulados"
+msgstr "Interés acumulado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1393,7 +1393,7 @@ msgstr "La cantidad máxima disponible para tomar prestado contra este activo es
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
-msgstr ""
+msgstr "La máxima cantidad disponible para tomar prestado es <0/> {0} (<1/>)."
 
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
@@ -1455,11 +1455,11 @@ msgstr "Riesgos de migración"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum GHO borrow amount"
-msgstr ""
+msgstr "Cantidad de préstamo mínima de GHO"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
-msgstr ""
+msgstr "Cantidad mínima de Aave stakeado"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -2115,7 +2115,7 @@ msgstr "Balance stakeado"
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Staking discount"
-msgstr ""
+msgstr "Descuento por staking"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2127,7 +2127,7 @@ msgstr "Estado"
 
 #: src/components/infoTooltips/FixedAPYTooltip.tsx
 msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr ""
+msgstr "Tasa de interés estática determinada por el Gobierno de Aave. Esta tasa puede ser cambiada con el tiempo dependiendo de la necesidad de que el suministro de GHO se reduzca/expanda. <0>Aprende más</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
@@ -2225,7 +2225,7 @@ msgstr "Cambiar de red"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModal.tsx
 msgid "Switch borrow position"
-msgstr ""
+msgstr "Cambiar posición de préstamo"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
@@ -2255,7 +2255,7 @@ msgstr "Tasa de cambio"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
-msgstr ""
+msgstr "Documento técnico"
 
 #: src/layouts/AppFooter.tsx
 msgid "Terms"
@@ -2287,7 +2287,7 @@ msgstr "El Aave Balancer Pool Token (ABPT) es un token del pool de liquidez. Pue
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
-msgstr ""
+msgstr "El Protocolo Aave está programado para usar siempre el precio de 1 GHO = $1. Esto es diferente del uso del precio de mercado a través de oráculos para otros criptoactivos. Esto crea oportunidades de arbitraje estabilizadoras cuando el precio de GHO fluctúa."
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
@@ -2372,7 +2372,7 @@ msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "There is not enough liquidity for the target asset to perform the switch. Try lowering the amount."
-msgstr ""
+msgstr "No hay suficiente liquidez para que el activo seleccionado realice el cambio. Prueba reduciendo la cantidad."
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
@@ -2524,7 +2524,7 @@ msgstr "Emisiones totales por día"
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Total interest accrued"
-msgstr ""
+msgstr "Interés total acumulado"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
@@ -2660,7 +2660,7 @@ msgstr "El usuario está intentando tomar prestado múltiples activos incluido u
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
-msgstr ""
+msgstr "Los usuarios que stakean AAVE en el Modulo de Seguridad (es decir, poseedores de stkAAVE) reciben un descuento en la tasa de interés de préstamo de GHO. Este descuento se aplica a 100 GHO por cada 1 stkAAVE en posesión. Usa el calculador de abajo para ver la tasa de préstamo de GHO con el descuento aplicado."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
@@ -2788,7 +2788,7 @@ msgstr "Las carteras son proporcionadas por proveedores externos y al selecciona
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr ""
+msgstr "No pudimos encontrar ningún activo relacionado con tu búsqueda. Vuelve a intentarlo con un nombre diferente de activo, símbolo o dirección."
 
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -2879,7 +2879,7 @@ msgstr "No puedes retirar esta cantidad porque causará una liquidación"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 msgid "You can only switch to tokens with variable APY types. After this transaction, you may change the variable rate to a stable one if available."
-msgstr ""
+msgstr "Solo puedes cambiar a tokens con tipos de APY variables. Después de esta transacción, puedes cambiar la tasa variable a una estable si está disponible."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
@@ -2915,11 +2915,11 @@ msgstr "Aún no has tomado prestado usando este activo"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
-msgstr ""
+msgstr "Puedes tomar prestado hasta <0/> GHO al <1/> (descuento máximo)"
 
 #: src/modules/reserve-overview/Gho/CalculatorInput.tsx
 msgid "You may enter a custom amount in the field."
-msgstr ""
+msgstr "Puedes ingresar una cantidad específica en el campo."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2944,7 +2944,7 @@ msgstr "Tu {action} <0/> {symbol}"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "You've successfully switched borrow position."
-msgstr ""
+msgstr "Has cambiado con éxito la posición de préstamo."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -3084,11 +3084,11 @@ msgstr "empieza"
 
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "stkAAVE holders get a discount on GHO borrow rate"
-msgstr ""
+msgstr "poseedores de stkAAVE obtienen un descuento en la tasa de préstamo de GHO"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "to"
-msgstr ""
+msgstr "para"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
