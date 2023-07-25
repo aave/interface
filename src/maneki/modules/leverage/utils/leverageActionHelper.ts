@@ -5,6 +5,7 @@ export interface collateralAssetsType {
   address: string;
   value: BigNumber;
   balance: BigNumber;
+  decimals: BigNumber;
 }
 
 export type reservesTokensTuple = [string, string];
@@ -17,6 +18,7 @@ export function convertReservesTokens(
     address,
     value: BigNumber.from(0),
     balance: BigNumber.from(0),
+    decimals: BigNumber.from(0),
   }));
   return reservesTokensAddress;
 }

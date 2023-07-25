@@ -4,6 +4,7 @@ import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import LENDING_PROTOCOL_DATA_PROVIDER_ABI from 'src/maneki/abi/lendingProtocolDataProviderABI';
 import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
+import PROXY_TOKEN_ABI from 'src/maneki/abi/proxyTokenABI';
 import {
   collateralAssetsType,
   convertReservesTokens,
@@ -81,25 +82,26 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
   }, [provider, currentAccount, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
 
   const getAssetsBalance = (collateralAssets: collateralAssetsType[], currentAccount: string) => {
-    const abi = ['function balanceOf(address owner) view returns (uint256)'];
-    const promises = [];
-    for (let i = 0; i < collateralAssets.length; i++) {
-      const contract = new Contract(collateralAssets[i].address, abi, provider);
-      promises.push(contract.balanceOf(currentAccount));
-    }
-    const assetsWithBalances = Promise.all(promises)
-      .then((data: BigNumber[]) => {
-        const copy = collateralAssets.map((asset, index) => {
-          asset.balance = data[index];
-          return asset;
+    const assetsCopy = collateralAssets.map((asset) => asset);
+
+    for (let i = 0; i < assetsCopy.length; i++) {
+      const contract = new Contract(assetsCopy[i].address, PROXY_TOKEN_ABI, provider);
+      const promises = [];
+
+      promises.push(contract.balanceOf(currentAccount) as BigNumber);
+      promises.push(contract.decimals() as BigNumber);
+
+      Promise.all(promises)
+        .then((data: BigNumber[]) => {
+          assetsCopy[i].balance = data[0];
+          assetsCopy[i].decimals = data[1];
+        })
+        .catch((e) => {
+          console.log('Asset Balance Error: ', e);
         });
-        return copy;
-      })
-      .catch((e) => {
-        console.log('Asset Balance Error: ', e);
-        return collateralAssets;
-      });
-    return assetsWithBalances;
+    }
+
+    return assetsCopy;
   };
 
   return (
