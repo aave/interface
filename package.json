@@ -73,7 +73,7 @@
     "ethers": "^5.5.4",
     "fuse.js": "^6.6.2",
     "gray-matter": "^4.0.3",
-    "immer": "^9.0.15",
+    "immer": "^9.0.21",
     "lowdb": "^3.0.0",
     "mixpanel-browser": "^2.45.0",
     "next": "12.1.1",
