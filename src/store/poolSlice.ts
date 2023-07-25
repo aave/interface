@@ -535,7 +535,7 @@ export const createPoolSlice: StateCreator<
       return debtSwitchService.debtSwitch({
         user,
         debtAssetUnderlying: poolReserve.underlyingAsset,
-        debtRepayAmount: amountToSwap,
+        debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
         debtRateMode: currentRateMode,
         newAssetUnderlying: targetReserve.underlyingAsset,
         newAssetDebtToken: targetReserve.variableDebtTokenAddress,
