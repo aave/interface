@@ -4,6 +4,7 @@ import React from 'react';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
+import ChooseBorrowedAssets from './components/ChooseBorrowedAssets';
 import SelectCollateralAsset from './components/SelectCollateralAsset';
 import { collateralAssetsType } from './utils/leverageActionHelper';
 
@@ -33,6 +34,10 @@ const LeverageContainer = () => {
       <SelectCollateralAsset {...{ amount, setAmount, currentCollateral, setCurrentCollateral }} />
       <Typography variant="h3" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
         <Trans>Choose Borrowed Assets</Trans>
+      </Typography>
+      <ChooseBorrowedAssets />
+      <Typography variant="h3" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
+        <Trans>Delta Hedged Strategy</Trans>
       </Typography>
     </Paper>
   );

@@ -818,6 +818,10 @@ msgstr "Delegating"
 msgid "Delegation"
 msgstr "Delegation"
 
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Delta Hedged Strategy"
+msgstr "Delta Hedged Strategy"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
