@@ -10,7 +10,7 @@ import { Row } from 'src/components/primitives/Row';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
@@ -70,7 +70,6 @@ export const GhoBorrowedPositionsListItem = ({
     ghoUserDataFetched,
     borrowRateAfterDiscount,
     currentMarket,
-    currentMarketData,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
     borrowDisabled:
       !isActive ||
@@ -112,7 +111,6 @@ interface GhoBorrowedPositionsListItemProps {
   currentMarket: CustomMarket;
   userDiscountTokenBalance: number;
   borrowDisabled: boolean;
-  currentMarketData: MarketDataType;
   showSwitchButton: boolean;
   disableSwitch: boolean;
   onRepayClick: () => void;
