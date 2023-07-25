@@ -262,6 +262,7 @@ export const RepayModalContent = ({
       <RepayActions
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
+        inputAmount={amount}
         poolAddress={
           repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
         }

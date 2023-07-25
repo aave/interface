@@ -18,6 +18,7 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   repayWithATokens: boolean;
   blocked?: boolean;
+  inputAmount: string;
 }
 
 export const RepayActions = ({
@@ -30,6 +31,7 @@ export const RepayActions = ({
   debtType,
   repayWithATokens,
   blocked,
+  inputAmount,
   ...props
 }: RepayActionProps) => {
   const { repay, repayWithPermit, tryPermit } = useRootStore();
@@ -41,10 +43,8 @@ export const RepayActions = ({
       permitAction: ProtocolAction.repayWithPermit,
       protocolAction: ProtocolAction.repay,
       eventTxInfo: {
-        amount: amountToRepay,
-        amountUSD: valueToBigNumber(amountToRepay)
-          .multipliedBy(poolReserve.priceInUSD)
-          .toString(10),
+        amount: inputAmount,
+        amountUSD: valueToBigNumber(inputAmount).multipliedBy(poolReserve.priceInUSD).toString(10),
         assetName: poolReserve.name,
         asset: poolReserve.underlyingAsset,
       },
@@ -54,20 +54,13 @@ export const RepayActions = ({
           poolAddress,
           repayWithATokens,
           debtType,
-          poolReserve,
-          isWrongNetwork,
-          symbol,
         });
       },
       handleGetPermitTxns: async (signatures, deadline) => {
         return repayWithPermit({
           amountToRepay,
-          poolReserve,
-          isWrongNetwork,
           poolAddress,
-          symbol,
           debtType,
-          repayWithATokens,
           signature: signatures[0],
           deadline,
         });

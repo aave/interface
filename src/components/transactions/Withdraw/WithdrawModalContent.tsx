@@ -290,6 +290,7 @@ export const WithdrawModalContent = ({
       <WithdrawActions
         poolReserve={poolReserve}
         amountToWithdraw={isMaxSelected ? withdrawMax : amount}
+        inputAmount={amount}
         poolAddress={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS

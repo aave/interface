@@ -88,9 +88,11 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  repay: (
+    args: Pick<RepayActionProps, 'repayWithATokens' | 'amountToRepay' | 'poolAddress' | 'debtType'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
-    args: RepayActionProps & {
+    args: Pick<RepayActionProps, 'poolAddress' | 'amountToRepay' | 'debtType'> & {
       signature: SignatureLike;
       deadline: string;
     }

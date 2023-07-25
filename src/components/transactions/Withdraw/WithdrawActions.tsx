@@ -10,6 +10,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface WithdrawActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
+  inputAmount: string;
   amountToWithdraw: string;
   poolAddress: string;
   isWrongNetwork: boolean;
@@ -25,6 +26,7 @@ export const WithdrawActions = ({
   symbol,
   blocked,
   sx,
+  inputAmount,
 }: WithdrawActionsProps) => {
   const withdraw = useRootStore((state) => state.withdraw);
 
@@ -40,10 +42,8 @@ export const WithdrawActions = ({
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
       eventTxInfo: {
-        amount: amountToWithdraw,
-        amountUSD: valueToBigNumber(amountToWithdraw)
-          .multipliedBy(poolReserve.priceInUSD)
-          .toString(10),
+        amount: inputAmount,
+        amountUSD: valueToBigNumber(inputAmount).multipliedBy(poolReserve.priceInUSD).toString(10),
         assetName: poolReserve.name,
         asset: poolReserve.underlyingAsset,
       },
