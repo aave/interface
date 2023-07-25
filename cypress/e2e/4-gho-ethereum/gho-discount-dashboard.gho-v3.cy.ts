@@ -1,9 +1,9 @@
-import assets from '../../../fixtures/assets.json';
-import constants from '../../../fixtures/constans.json';
-import { DashboardActions } from '../../../support/actions/dashboard.actions';
-import { TenderlyActions } from '../../../support/actions/tenderly.actions';
-import { DashboardHelpers } from '../../../support/helpers/dashboard.helper';
-import { configEnvWithTenderlySepoliaGhoFork } from '../../../support/steps/configuration.steps';
+import assets from '../../fixtures/assets.json';
+import constants from '../../fixtures/constans.json';
+import { DashboardActions } from '../../support/actions/dashboard.actions';
+import { TenderlyActions } from '../../support/actions/tenderly.actions';
+import { DashboardHelpers } from '../../support/helpers/dashboard.helper';
+import { configEnvWithTenderlyAEthereumV3Fork } from '../../support/steps/configuration.steps';
 import gho from './fixtures/gho.json';
 import { tokenSet } from './helpers/token.helper';
 
@@ -32,9 +32,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
   let baseApy: number;
 
   describe(`Verify max APY for GHO`, () => {
-    configEnvWithTenderlySepoliaGhoFork({
-      v3: true,
-    });
+    configEnvWithTenderlyAEthereumV3Fork({ v3: true });
     it(`Check APY rate from dashboard min = ${gho.apy.min}% and max = ${gho.apy.max}%`, () => {
       DashboardHelpers.waitLoadingGHODashboardRange();
       DashboardHelpers.getGhoApyBorrowRangeMin(gho.shortName).then(($val) => {
@@ -61,7 +59,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
     });
   });
   describe(`Verify min APY for GHO`, () => {
-    configEnvWithTenderlySepoliaGhoFork({
+    configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
       tokens: tokenSet({ stkAave: 6, aDAI: 500 }),
     });
@@ -87,7 +85,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
   });
   describe(`Verify APY range for GHO`, () => {
     describe(`APY range:  min = ${gho.apy.min}% - low then ${gho.apy.max}%`, () => {
-      configEnvWithTenderlySepoliaGhoFork({
+      configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
         tokens: tokenSet({ stkAave: 1, aDAI: 500 }),
       });
@@ -115,7 +113,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
       });
     });
     describe(`APY range:  higher then ${gho.apy.min}% - low then ${gho.apy.max}%`, () => {
-      configEnvWithTenderlySepoliaGhoFork({
+      configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
         tokens: tokenSet({ stkAave: 1, aDAI: 500 }),
       });
@@ -136,7 +134,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
       });
     });
     describe(`APY range:  min = ${gho.apy.min}% - max = ${gho.apy.max}%`, () => {
-      configEnvWithTenderlySepoliaGhoFork({
+      configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
         tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
       });
@@ -158,7 +156,7 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
   });
   describe(`Verify APY updating for borrowed GHO`, () => {
     let stepBackAPY: number;
-    configEnvWithTenderlySepoliaGhoFork({
+    configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
       tokens: tokenSet({ stkAave: 3, aDAI: 300 }),
     });
