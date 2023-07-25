@@ -185,10 +185,15 @@ export const configEnvWithTenderlyAEthereumV3Fork = ({
   v3,
 }: {
   market?: string;
-  tokens?: { tokenAddress: string }[];
+  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
   v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3 });
+  configEnvWithTenderly({
+    chainId: ChainId.mainnet,
+    market,
+    tokens,
+    unpause: v3,
+  });
 };
 
 export const configEnvWithTenderlyGoerliGhoFork = ({
