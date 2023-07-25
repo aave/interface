@@ -180,7 +180,7 @@ export const DebtSwitchModalContent = ({
         value={amount}
         onChange={handleChange}
         usdValue={poolReserveAmountUSD.toString()}
-        symbol={poolReserve.iconSymbol}
+        symbol={poolReserve.symbol}
         assets={[
           {
             balance: maxAmountToSwitch,
