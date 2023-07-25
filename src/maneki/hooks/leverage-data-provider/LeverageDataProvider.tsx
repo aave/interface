@@ -27,6 +27,8 @@ interface LeverageData {
   setBorrowAmount: (value: { stable: BigNumber; unstable: BigNumber }) => void;
   leverageLoading: boolean;
   setLeverageLoading: (value: boolean) => void;
+  assetsLoading: boolean;
+  setAssetsLoading: (value: boolean) => void;
 }
 
 export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -40,15 +42,15 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
     stable: BigNumber.from(-1),
     unstable: BigNumber.from(-1),
   });
+  const [assetsLoading, setAssetsLoading] = React.useState<boolean>(true);
   const [leverageLoading, setLeverageLoading] = React.useState<boolean>(true);
-
-  const { provider } = useWeb3Context();
+  const { provider, currentAccount } = useWeb3Context();
   const PROTOCOL_DATA_PROVIDER = marketsData.arbitrum_mainnet_v3.addresses
     .LENDING_PROTOCOL_DATA_PROVIDER as string;
   const PRICE_ORACLE = marketsData.arbitrum_mainnet_v3.addresses.PRICE_ORACLE as string;
 
   React.useEffect(() => {
-    if (!provider) return;
+    if (!provider || !currentAccount) return;
     const getCollateralAssets = async () => {
       const dataProviderContract = new Contract(
         PROTOCOL_DATA_PROVIDER,
@@ -65,13 +67,40 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         for (let i = 0; i < assetsObject.length; i++) {
           assetsObject[i].value = priceOracle[i];
         }
-        setCollateralAssets(assetsObject);
+        const assetWithBalances = (await getAssetsBalance(
+          assetsObject,
+          currentAccount
+        )) as collateralAssetsType[];
+        setCollateralAssets(assetWithBalances);
+        setAssetsLoading(false);
       } catch (e) {
         console.error(e);
       }
     };
     getCollateralAssets();
-  }, [provider, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
+  }, [provider, currentAccount, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
+
+  const getAssetsBalance = (collateralAssets: collateralAssetsType[], currentAccount: string) => {
+    const abi = ['function balanceOf(address owner) view returns (uint256)'];
+    const promises = [];
+    for (let i = 0; i < collateralAssets.length; i++) {
+      const contract = new Contract(collateralAssets[i].address, abi, provider);
+      promises.push(contract.balanceOf(currentAccount));
+    }
+    const assetsWithBalances = Promise.all(promises)
+      .then((data: BigNumber[]) => {
+        const copy = collateralAssets.map((asset, index) => {
+          asset.balance = data[index];
+          return asset;
+        });
+        return copy;
+      })
+      .catch((e) => {
+        console.log('Asset Balance Error: ', e);
+        return collateralAssets;
+      });
+    return assetsWithBalances;
+  };
 
   return (
     <LeverageContext.Provider
@@ -92,6 +121,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setBorrowAmount,
         leverageLoading,
         setLeverageLoading,
+        assetsLoading,
+        setAssetsLoading,
       }}
     >
       {children}
