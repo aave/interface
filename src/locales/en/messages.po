@@ -339,6 +339,7 @@ msgstr "Back to Home Page"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/maneki/modules/leverage/components/SelectCollateralAsset.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -500,6 +501,10 @@ msgstr "Cant get signer"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
+
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Choose Borrowed Assets"
+msgstr "Choose Borrowed Assets"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -1838,6 +1843,10 @@ msgstr "Select"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
+
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Select Collateral Asset"
+msgstr "Select Collateral Asset"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
