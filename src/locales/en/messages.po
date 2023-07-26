@@ -1945,6 +1945,10 @@ msgstr "Spanish"
 msgid "Stable"
 msgstr "Stable"
 
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Stable Coin:"
+msgstr "Stable Coin:"
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable Interest Type is disabled for this currency"
 msgstr "Stable Interest Type is disabled for this currency"
@@ -2504,6 +2508,10 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 msgid "Unlocked PAW"
 msgstr "Unlocked PAW"
 
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Unstable Coin:"
+msgstr "Unstable Coin:"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"
@@ -2814,6 +2822,10 @@ msgstr "You will exit isolation mode and other tokens can now be used as collate
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action}"
 msgstr "You {action}"
+
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Your Borrowed Assets:"
+msgstr "Your Borrowed Assets:"
 
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 msgid "Your Staked PAW"
