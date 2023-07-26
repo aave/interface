@@ -33,6 +33,7 @@ export default function SelectCollateralAsset({
   const handleMenuItemClick = (collateralAsset: collateralAssetsType) => {
     setAnchorEl(null);
     setCurrentCollateral(collateralAsset);
+    setAmount('');
   };
   return (
     <Box
@@ -40,7 +41,9 @@ export default function SelectCollateralAsset({
         display: 'flex',
         flexDirection: 'column',
         p: '5px 20px',
-        border: 'solid 1px black',
+        border: 'solid 2px grey',
+        m: '20px auto',
+        borderRadius: '15px',
       }}
     >
       <Box
@@ -125,6 +128,7 @@ export default function SelectCollateralAsset({
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
+          pl: '8px',
         }}
       >
         <FormattedNumber

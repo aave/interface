@@ -4,12 +4,13 @@ import React from 'react';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
-import ChooseBorrowedAssets from './components/ChooseBorrowedAssets';
+import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
+import LeverageSlider from './components/LeverageSlider';
 import SelectCollateralAsset from './components/SelectCollateralAsset';
 import { collateralAssetsType } from './utils/leverageActionHelper';
 
 const LeverageContainer = () => {
-  const { collateralAssets, assetsLoading } = useLeverageContext();
+  const { collateralAssets, assetsLoading, leverage } = useLeverageContext();
   const [currentCollateral, setCurrentCollateral] = React.useState<collateralAssetsType | null>(
     null
   );
@@ -28,19 +29,28 @@ const LeverageContainer = () => {
         borderRadius: '15px',
       }}
     >
-      <Typography variant="h2" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
+      <SectionText>
         <Trans>Select Collateral Asset</Trans>
-      </Typography>
+      </SectionText>
       <SelectCollateralAsset {...{ amount, setAmount, currentCollateral, setCurrentCollateral }} />
-      <Typography variant="h3" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
-        <Trans>Choose Borrowed Assets</Trans>
-      </Typography>
-      <ChooseBorrowedAssets />
-      <Typography variant="h3" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
+      <SectionText>
         <Trans>Delta Hedged Strategy</Trans>
-      </Typography>
+      </SectionText>
+      <DeltaHedgedStrategy />
+      <SectionText>
+        <Trans>Leverage: {leverage}x</Trans>
+      </SectionText>
+      <LeverageSlider />
     </Paper>
   );
 };
+
+function SectionText({ children }: { children: React.ReactElement }) {
+  return (
+    <Typography variant="h3" sx={{ fontWeight: '700', lineHeight: '1.8', fontSize: '16px' }}>
+      {children}
+    </Typography>
+  );
+}
 
 export default LeverageContainer;
