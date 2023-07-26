@@ -1,11 +1,6 @@
 import { Box, Slider } from '@mui/material';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
-// interface IMarks {
-//   value: number;
-//   label: string;
-// }
-
 const marks = [
   {
     value: 2,
@@ -64,14 +59,12 @@ export default function LeverageSlider() {
         step={1}
         defaultValue={2}
         aria-label="Leverage"
-        getAriaValueText={(value: number) => {
-          setLeverage(value);
-          return `${value}`;
-        }}
+        getAriaValueText={(value: number) => `${value}`}
         sx={{
           fontWeight: '800',
           fontSize: '14px',
         }}
+        onChange={(e, val) => setLeverage(val as number)}
       />
     </Box>
   );
