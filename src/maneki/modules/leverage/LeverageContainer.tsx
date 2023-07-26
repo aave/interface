@@ -1,24 +1,19 @@
 import { Trans } from '@lingui/macro';
 import { Paper, Typography } from '@mui/material';
+// import { BigNumber } from 'ethers';
 import React from 'react';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
 import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
+import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
 import SelectCollateralAsset from './components/SelectCollateralAsset';
-import { collateralAssetsType } from './utils/leverageActionHelper';
 
 const LeverageContainer = () => {
-  const { collateralAssets, assetsLoading, leverage } = useLeverageContext();
-  const [currentCollateral, setCurrentCollateral] = React.useState<collateralAssetsType | null>(
-    null
-  );
+  const { assetsLoading, leverage, currentCollateral } = useLeverageContext();
   const [amount, setAmount] = React.useState<string>('');
-  React.useEffect(() => {
-    setCurrentCollateral(collateralAssets.filter((asset) => asset['token'] === 'sGLP')[0]);
-  }, [assetsLoading]);
-  if (assetsLoading || !currentCollateral) return <ManekiLoadingPaper />;
+  if (assetsLoading || currentCollateral.token === '') return <ManekiLoadingPaper />;
   return (
     <Paper
       sx={{
@@ -32,7 +27,7 @@ const LeverageContainer = () => {
       <SectionText>
         <Trans>Select Collateral Asset</Trans>
       </SectionText>
-      <SelectCollateralAsset {...{ amount, setAmount, currentCollateral, setCurrentCollateral }} />
+      <SelectCollateralAsset {...{ amount, setAmount }} />
       <SectionText>
         <Trans>Delta Hedged Strategy</Trans>
       </SectionText>
@@ -41,6 +36,7 @@ const LeverageContainer = () => {
         <Trans>Leverage: {leverage}x</Trans>
       </SectionText>
       <LeverageSlider />
+      <LeverageInfoDisplay />
     </Paper>
   );
 };

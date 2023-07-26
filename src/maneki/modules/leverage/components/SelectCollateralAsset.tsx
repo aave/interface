@@ -5,7 +5,6 @@ import { utils } from 'ethers';
 import Image from 'next/image';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-// import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CustomNumberInput from 'src/maneki/components/CustomNumberInput';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
@@ -14,17 +13,10 @@ import { collateralAssetsType } from '../utils/leverageActionHelper';
 interface SelectCollateralAssetProps {
   amount: string;
   setAmount: React.Dispatch<React.SetStateAction<string>>;
-  currentCollateral: collateralAssetsType;
-  setCurrentCollateral: (value: collateralAssetsType) => void;
 }
 
-export default function SelectCollateralAsset({
-  amount,
-  setAmount,
-  currentCollateral,
-  setCurrentCollateral,
-}: SelectCollateralAssetProps) {
-  const { collateralAssets } = useLeverageContext();
+export default function SelectCollateralAsset({ amount, setAmount }: SelectCollateralAssetProps) {
+  const { collateralAssets, currentCollateral, setCurrentCollateral } = useLeverageContext();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openAssetsMenu = Boolean(anchorEl);
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,6 +27,13 @@ export default function SelectCollateralAsset({
     setCurrentCollateral(collateralAsset);
     setAmount('');
   };
+
+  // React.useEffect(() => {
+  //   console.log(currentCollateral);
+  //   console.log(currentCollateral.balance.toString());
+  //   console.log(utils.formatUnits(currentCollateral.balance, 18));
+  //   return;
+  // }, [currentCollateral]);
   return (
     <Box
       sx={{
@@ -139,7 +138,6 @@ export default function SelectCollateralAsset({
           <Typography sx={{ fontSize: '12px' }}>
             <Trans>Balance</Trans>:{' '}
           </Typography>
-          {console.log(currentCollateral)}
           <FormattedNumber
             symbol={currentCollateral.token}
             value={utils.formatUnits(currentCollateral.balance, 18)}

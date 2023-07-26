@@ -30,12 +30,21 @@ interface LeverageData {
   setLeverageLoading: (value: boolean) => void;
   assetsLoading: boolean;
   setAssetsLoading: (value: boolean) => void;
+  currentCollateral: collateralAssetsType;
+  setCurrentCollateral: (value: collateralAssetsType) => void;
 }
 
 export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [collateralAmount, setCollateralAmount] = React.useState<BigNumber>(BigNumber.from(-1));
   const [collateralValue, setCollateralValue] = React.useState<BigNumber>(BigNumber.from(-1));
   const [collateralAssets, setCollateralAssets] = React.useState<collateralAssetsType[]>([]);
+  const [currentCollateral, setCurrentCollateral] = React.useState<collateralAssetsType>({
+    token: '',
+    address: '',
+    value: BigNumber.from(0),
+    balance: BigNumber.from(0),
+    decimals: BigNumber.from(0),
+  });
   const [walletBalance, setWalletBalance] = React.useState<BigNumber>(BigNumber.from(-1));
   const [leverage, setLeverage] = React.useState<number>(2);
   const [apr, setApr] = React.useState<BigNumber>(BigNumber.from(-1));
@@ -73,6 +82,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
           currentAccount
         )) as collateralAssetsType[];
         setCollateralAssets(assetWithBalances);
+        setCurrentCollateral(assetWithBalances.filter((asset) => asset['token'] === 'sGLP')[0]);
         setAssetsLoading(false);
       } catch (e) {
         console.error(e);
@@ -125,6 +135,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setLeverageLoading,
         assetsLoading,
         setAssetsLoading,
+        currentCollateral,
+        setCurrentCollateral,
       }}
     >
       {children}
