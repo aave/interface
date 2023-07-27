@@ -22,7 +22,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   return experimental_sx({
     ...theme.typography.subheader2,
     color,
-    border: '1px solid',
+    border: `1px solid ${alpha(color, 0.5)}`,
     borderColor: alpha(color, 0.5),
     py: 0.5,
     px: 2,
