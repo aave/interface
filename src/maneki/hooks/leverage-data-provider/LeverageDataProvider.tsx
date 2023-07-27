@@ -11,6 +11,11 @@ import {
 } from 'src/maneki/modules/leverage/utils/leverageActionHelper';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
+interface IBorrowAssets {
+  unstable: string;
+  stable: string;
+}
+
 interface LeverageData {
   collateralAmount: BigNumber;
   setCollateralAmount: (value: BigNumber) => void;
@@ -28,6 +33,10 @@ interface LeverageData {
   setAssetsLoading: (value: boolean) => void;
   currentCollateral: collateralAssetsType;
   setCurrentCollateral: (value: collateralAssetsType) => void;
+  borrowAssets: IBorrowAssets;
+  setBorrowAssets: (value: IBorrowAssets) => void;
+  ratio: number[];
+  setRatio: (value: number[]) => void;
 }
 
 export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -41,6 +50,11 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
     balance: BigNumber.from(0),
     decimals: 0,
   });
+  const [borrowAssets, setBorrowAssets] = React.useState<IBorrowAssets>({
+    unstable: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+    stable: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+  });
+  const [ratio, setRatio] = React.useState<number[]>([5000, 5000]); // 10000 = 100%
   const [walletBalance, setWalletBalance] = React.useState<BigNumber>(BigNumber.from(-1));
   const [leverage, setLeverage] = React.useState<number>(2);
   const [assetsLoading, setAssetsLoading] = React.useState<boolean>(true);
@@ -80,6 +94,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
       }
     };
     getCollateralAssets();
+    //eslint-disable-next-line
   }, [provider, currentAccount, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
 
   const getAssetsBalance = async (
@@ -128,6 +143,10 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setAssetsLoading,
         currentCollateral,
         setCurrentCollateral,
+        borrowAssets,
+        setBorrowAssets,
+        ratio,
+        setRatio,
       }}
     >
       {children}
