@@ -46,6 +46,7 @@ export type MarketDataType = {
     LENDING_PROTOCOL_DATA_PROVIDER?: string;
     CHEF_INCENTIVES_CONTROLLER?: string;
     EARLY_TOKEN_GENERATION?: string;
+    LEVERAGER_V2?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -232,6 +233,7 @@ export const marketsData: {
         process.env.NEXT_PUBLIC_MANEKI_LENDING_PROTOCOL_DATA_PROVIDER || '',
       CHEF_INCENTIVES_CONTROLLER: process.env.NEXT_PUBLIC_MANEKI_CHEF_INCENTIVES_CONTROLLER || '',
       EARLY_TOKEN_GENERATION: process.env.NEXT_PUBLIC_MANEKI_EARLY_TOKEN_GENERATION || '',
+      LEVERAGER_V2: process.env.NEXT_PUBLIC_MANEKI_LEVERAGER_V2 || '',
     },
   },
   /*
