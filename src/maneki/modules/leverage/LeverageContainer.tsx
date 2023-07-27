@@ -36,7 +36,7 @@ const LeverageContainer = () => {
         <Trans>Leverage: {leverage}x</Trans>
       </SectionText>
       <LeverageSlider />
-      <LeverageInfoDisplay />
+      <LeverageInfoDisplay amount={amount} />
     </Paper>
   );
 };

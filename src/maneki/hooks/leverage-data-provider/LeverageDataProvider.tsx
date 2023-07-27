@@ -22,10 +22,6 @@ interface LeverageData {
   setWalletBalance: (value: BigNumber) => void;
   leverage: number;
   setLeverage: (value: number) => void;
-  apr: BigNumber;
-  setApr: (value: BigNumber) => void;
-  borrowAmount: { stable: BigNumber; unstable: BigNumber };
-  setBorrowAmount: (value: { stable: BigNumber; unstable: BigNumber }) => void;
   leverageLoading: boolean;
   setLeverageLoading: (value: boolean) => void;
   assetsLoading: boolean;
@@ -43,15 +39,10 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
     address: '',
     value: BigNumber.from(0),
     balance: BigNumber.from(0),
-    decimals: BigNumber.from(0),
+    decimals: 0,
   });
   const [walletBalance, setWalletBalance] = React.useState<BigNumber>(BigNumber.from(-1));
   const [leverage, setLeverage] = React.useState<number>(2);
-  const [apr, setApr] = React.useState<BigNumber>(BigNumber.from(-1));
-  const [borrowAmount, setBorrowAmount] = React.useState({
-    stable: BigNumber.from(-1),
-    unstable: BigNumber.from(-1),
-  });
   const [assetsLoading, setAssetsLoading] = React.useState<boolean>(true);
   const [leverageLoading, setLeverageLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
@@ -91,27 +82,31 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
     getCollateralAssets();
   }, [provider, currentAccount, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
 
-  const getAssetsBalance = (collateralAssets: collateralAssetsType[], currentAccount: string) => {
-    const assetsCopy = collateralAssets.map((asset) => asset);
-
-    for (let i = 0; i < assetsCopy.length; i++) {
-      const contract = new Contract(assetsCopy[i].address, PROXY_TOKEN_ABI, provider);
+  const getAssetsBalance = async (
+    collateralAssets: collateralAssetsType[],
+    currentAccount: string
+  ) => {
+    for (let i = 0; i < collateralAssets.length; i++) {
+      const contract = new Contract(collateralAssets[i].address, PROXY_TOKEN_ABI, provider);
       const promises = [];
 
       promises.push(contract.balanceOf(currentAccount) as BigNumber);
       promises.push(contract.decimals() as BigNumber);
 
-      Promise.all(promises)
-        .then((data: BigNumber[]) => {
-          assetsCopy[i].balance = data[0];
-          assetsCopy[i].decimals = data[1];
+      type promiseType = BigNumber | number;
+      const promiseReturn = await Promise.all(promises)
+        .then((data: promiseType[]) => {
+          return data;
         })
         .catch((e) => {
           console.log('Asset Balance Error: ', e);
+          return [BigNumber.from(0), 0];
         });
+      collateralAssets[i].balance = promiseReturn[0] as BigNumber;
+      collateralAssets[i].decimals = promiseReturn[1] as number;
     }
 
-    return assetsCopy;
+    return collateralAssets;
   };
 
   return (
@@ -127,10 +122,6 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setWalletBalance,
         leverage,
         setLeverage,
-        apr,
-        setApr,
-        borrowAmount,
-        setBorrowAmount,
         leverageLoading,
         setLeverageLoading,
         assetsLoading,
