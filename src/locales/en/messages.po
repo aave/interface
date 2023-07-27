@@ -2760,6 +2760,10 @@ msgstr "Voting power"
 msgid "Voting results"
 msgstr "Voting results"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Voting starts"
+msgstr "Voting starts"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Wallet Balance"
 msgstr "Wallet Balance"
@@ -3072,10 +3076,6 @@ msgstr "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapp
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "staking view"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "starts"
-msgstr "starts"
 
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "stkAAVE holders get a discount on GHO borrow rate"

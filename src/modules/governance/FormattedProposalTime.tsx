@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
+import { PROPOSAL_TEXT_MAP } from './StateBadge';
+
 dayjs.extend(relativeTime);
 
 interface FormattedProposalTimeProps {
@@ -32,8 +34,8 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
-          {state}&nbsp;
-          <Trans>starts</Trans>
+          {/* {PROPOSAL_TEXT_MAP[state]}&nbsp; */}
+          <Trans>Voting starts</Trans>
           &nbsp;
         </Typography>
         {dayjs.unix(startTimestamp).fromNow()}
@@ -48,7 +50,7 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
-          {state}&nbsp;
+          {PROPOSAL_TEXT_MAP[state]}&nbsp;
           <Trans>ends</Trans>
           &nbsp;
         </Typography>
@@ -72,7 +74,7 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
-          {state}&nbsp;
+          {PROPOSAL_TEXT_MAP[state]}&nbsp;
           <Trans>on</Trans>
           &nbsp;
         </Typography>

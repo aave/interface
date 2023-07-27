@@ -10,7 +10,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
     [ProposalState.Active]: theme.palette.secondary.main,
     [ProposalState.Queued]: theme.palette.warning.main,
-    [ProposalState.Pending]: '#2EBAC680',
+    [ProposalState.Pending]: '#2EBAC6',
     [ProposalState.Succeeded]: theme.palette.info.main,
     [ProposalState.Executed]: theme.palette.success.main,
     [ProposalState.Canceled]: theme.palette.primary.light,
@@ -29,15 +29,6 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
     borderRadius: 1,
     display: 'inline-flex',
     alignItems: 'center',
-    '&:before': {
-      content: '""',
-      width: '6px',
-      height: '6px',
-      borderRadius: '50%',
-      marginRight: '7px',
-      display: 'inline-block',
-      backgroundColor: color,
-    },
   });
 });
 
