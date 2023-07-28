@@ -7,13 +7,18 @@ import MANEKI_PRICE_ORACLE_ABI from 'src/maneki/abi/priceOracleABI';
 import PROXY_TOKEN_ABI from 'src/maneki/abi/proxyTokenABI';
 import {
   collateralAssetsType,
-  convertReservesTokens,
+  convertReserveTokens,
 } from 'src/maneki/modules/leverage/utils/leverageActionHelper';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
-interface IBorrowAssets {
+export interface IBorrowAssets {
   unstable: string;
   stable: string;
+}
+
+export interface IBorrowAmount {
+  unstable: BigNumber;
+  stable: BigNumber;
 }
 
 interface LeverageData {
@@ -35,6 +40,8 @@ interface LeverageData {
   setCurrentCollateral: (value: collateralAssetsType) => void;
   borrowAssets: IBorrowAssets;
   setBorrowAssets: (value: IBorrowAssets) => void;
+  borrowAmount: IBorrowAmount;
+  setBorrowAmount: (value: IBorrowAmount) => void;
   ratio: number[];
   setRatio: (value: number[]) => void;
 }
@@ -53,6 +60,10 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
   const [borrowAssets, setBorrowAssets] = React.useState<IBorrowAssets>({
     unstable: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
     stable: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+  });
+  const [borrowAmount, setBorrowAmount] = React.useState<IBorrowAmount>({
+    unstable: BigNumber.from(0),
+    stable: BigNumber.from(0),
   });
   const [ratio, setRatio] = React.useState<number[]>([5000, 5000]); // 10000 = 100%
   const [walletBalance, setWalletBalance] = React.useState<BigNumber>(BigNumber.from(-1));
@@ -75,7 +86,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
       const priceOracleContract = new Contract(PRICE_ORACLE, MANEKI_PRICE_ORACLE_ABI, provider);
       try {
         const dataProvider = await dataProviderContract.getAllReservesTokens();
-        const assetsObject = convertReservesTokens(dataProvider);
+        const assetsObject = convertReserveTokens(dataProvider);
         const priceOracle = await priceOracleContract.getAssetsPrices(
           assetsObject.map((obj) => obj['address'])
         );
@@ -145,6 +156,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setCurrentCollateral,
         borrowAssets,
         setBorrowAssets,
+        borrowAmount,
+        setBorrowAmount,
         ratio,
         setRatio,
       }}

@@ -16,20 +16,14 @@ interface LeverageInfoDisplayProps {
 
 export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps) {
   const { provider } = useWeb3Context();
-  const { leverage, currentCollateral } = useLeverageContext();
+  const { leverage, currentCollateral, borrowAssets, borrowAmount, setBorrowAmount } =
+    useLeverageContext();
   const [apr, setApr] = React.useState<number>(0);
-  const [borrowedAmount, setBorrowedAmount] = React.useState<{ unstable: string; stable: string }>({
-    unstable: '',
-    stable: '',
-  });
+
   const LEVERAGER_V2_ADDR = marketsData.arbitrum_mainnet_v3.addresses.LEVERAGER_V2 as string;
 
   React.useEffect(() => {
-    const borrowTokens = [
-      '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
-      '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-    ];
-    const ratio = [BigNumber.from(5000), BigNumber.from(5000)];
+    const ratio = [5000, 5000];
     const contract = new Contract(LEVERAGER_V2_ADDR, MANEKI_LEVERAGER_V2_ABI, provider);
     const convertedAmount = manekiParseUnits(amount, currentCollateral.decimals);
 
@@ -38,7 +32,7 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
       contract.calculateFlashLoanTokens(
         currentCollateral.address,
         convertedAmount,
-        borrowTokens,
+        [borrowAssets.unstable, borrowAssets.stable],
         ratio,
         leverage
       )
@@ -47,9 +41,9 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
     Promise.all(promises)
       .then((data) => {
         const dataAmount = data[0][1] as BigNumber[];
-        setBorrowedAmount({
-          unstable: utils.formatUnits(dataAmount[0], 18),
-          stable: utils.formatUnits(dataAmount[1], 6),
+        setBorrowAmount({
+          unstable: dataAmount[0],
+          stable: dataAmount[1],
         });
       })
       .catch((e) => {
@@ -82,7 +76,7 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
           <FormattedNumber
             sx={{ fontWeight: '700' }}
             symbolSx={{ fontWeight: '700' }}
-            value={borrowedAmount.unstable}
+            value={utils.formatUnits(borrowAmount.unstable, 18)}
             symbol="ETH"
           />
         </ValueBox>
@@ -93,7 +87,7 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
           <FormattedNumber
             sx={{ fontWeight: '700' }}
             symbolSx={{ fontWeight: '700' }}
-            value={borrowedAmount.stable}
+            value={utils.formatUnits(borrowAmount.stable, 6)}
             symbol="USDC"
           />
         </ValueBox>

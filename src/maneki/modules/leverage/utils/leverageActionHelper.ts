@@ -10,7 +10,7 @@ export interface collateralAssetsType {
 
 export type reservesTokensTuple = [string, string];
 
-export function convertReservesTokens(
+export function convertReserveTokens(
   reservesTokens: reservesTokensTuple[]
 ): collateralAssetsType[] {
   const reservesTokensAddress: collateralAssetsType[] = reservesTokens.map(([token, address]) => ({
