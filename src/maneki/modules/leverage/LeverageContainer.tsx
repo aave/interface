@@ -5,6 +5,7 @@ import React from 'react';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
+import ActionFunction from './components/ActionButton';
 import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
 import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
@@ -37,6 +38,7 @@ const LeverageContainer = () => {
       </SectionText>
       <LeverageSlider />
       <LeverageInfoDisplay amount={amount} />
+      <ActionFunction amount={amount} />
     </Paper>
   );
 };
