@@ -14,7 +14,6 @@ import {
   AaveV3Fantom,
   // AaveV3FantomTestnet,
   // AaveV3Fuji,
-  AaveV3Goerli,
   AaveV3Harmony,
   AaveV3Metis,
   // AaveV3Mumbai,
@@ -78,12 +77,11 @@ export type MarketDataType = {
 };
 
 export enum CustomMarket {
-  // v3 test networks, all v3.0.1 with permissioned faucet
+  // v3 test networks, all v3.0.1
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
-  proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   proto_scroll_alpha_v3 = 'proto_scroll_alpha_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
@@ -283,25 +281,24 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0xBA25de9a7DC623B30799F33B770d31B44c2C3b77', // AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
-  [CustomMarket.proto_goerli_v3]: {
-    marketTitle: 'Ethereum Görli',
-    v3: true,
-    chainId: ChainId.goerli,
-    enabledFeatures: {
-      faucet: true,
-    },
-    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli', needs re-deployment
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Goerli.POOL,
-      WETH_GATEWAY: AaveV3Goerli.WETH_GATEWAY,
-      FAUCET: AaveV3Goerli.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3Goerli.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Goerli.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
-    },
-  },
-
+  // [CustomMarket.proto_goerli_v3]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   v3: true,
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //     faucet: true,
+  //   },
+  //   // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli', needs re-deployment
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
+  //     LENDING_POOL: AaveV3Goerli.POOL,
+  //     WETH_GATEWAY: AaveV3Goerli.WETH_GATEWAY,
+  //     FAUCET: AaveV3Goerli.FAUCET,
+  //     WALLET_BALANCE_PROVIDER: AaveV3Goerli.WALLET_BALANCE_PROVIDER,
+  //     UI_POOL_DATA_PROVIDER: AaveV3Goerli.UI_POOL_DATA_PROVIDER,
+  //     UI_INCENTIVE_DATA_PROVIDER: AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
+  //   },
+  // },
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     v3: true,
