@@ -6,6 +6,7 @@ import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 
 import ActionFunction from './components/ActionButton';
+import ChooseBorrowedAssets from './components/ChooseBorrowedAssets';
 import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
 import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
@@ -30,9 +31,15 @@ const LeverageContainer = () => {
       </SectionText>
       <SelectCollateralAsset {...{ amount, setAmount }} />
       <SectionText>
+        {/* START HERE */}
+        <Trans>Choose Borrowed Assets</Trans>
+      </SectionText>
+      <ChooseBorrowedAssets />
+      <SectionText>
         <Trans>Delta Hedged Strategy</Trans>
       </SectionText>
       <DeltaHedgedStrategy />
+      {/* END HERE */}
       <SectionText>
         <Trans>Leverage: {leverage}x</Trans>
       </SectionText>

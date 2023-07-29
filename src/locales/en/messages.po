@@ -502,6 +502,10 @@ msgstr "Cant get signer"
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
 
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Choose Borrowed Assets"
+msgstr "Choose Borrowed Assets"
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
