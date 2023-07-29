@@ -15,7 +15,8 @@ import SelectCollateralAsset from './components/SelectCollateralAsset';
 const LeverageContainer = () => {
   const { assetsLoading, leverage, currentCollateral } = useLeverageContext();
   const [amount, setAmount] = React.useState<string>('');
-  if (assetsLoading || currentCollateral.token === '') return <ManekiLoadingPaper />;
+  if (assetsLoading || currentCollateral.token === '')
+    return <ManekiLoadingPaper description="Getting Collateral Assets..." withCircle />;
   return (
     <Paper
       sx={{
