@@ -27,6 +27,11 @@ export const navigation: Navigation[] = [
     title: t`Dashboard`,
     dataCy: 'menuDashboard',
   },
+  {
+    link: ROUTES.leverage,
+    title: t`Leverage`,
+    dataCy: 'menuLeverage',
+  },
   // {
   //   link: ROUTES.staking,
   //   title: t`Stake`,
