@@ -21,7 +21,13 @@ export interface IBorrowAmount {
   stable: BigNumber;
 }
 
-interface LeverageData {
+export interface ITxStatus {
+  status: 'success' | 'error' | 'approve' | '';
+  message: string;
+  hash?: string;
+}
+
+interface ILeverageData {
   collateralAmount: BigNumber;
   setCollateralAmount: (value: BigNumber) => void;
   collateralValue: BigNumber;
@@ -44,6 +50,8 @@ interface LeverageData {
   setBorrowAmount: (value: IBorrowAmount) => void;
   ratio: number[];
   setRatio: (value: number[]) => void;
+  txStatus: ITxStatus;
+  setTxStatus: (value: ITxStatus) => void;
 }
 
 export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -70,6 +78,11 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
   const [leverage, setLeverage] = React.useState<number>(2);
   const [assetsLoading, setAssetsLoading] = React.useState<boolean>(true);
   const [leverageLoading, setLeverageLoading] = React.useState<boolean>(true);
+  const [txStatus, setTxStatus] = React.useState<ITxStatus>({
+    status: '',
+    message: '',
+    hash: '',
+  });
   const { provider, currentAccount } = useWeb3Context();
   const PROTOCOL_DATA_PROVIDER = marketsData.arbitrum_mainnet_v3.addresses
     .LENDING_PROTOCOL_DATA_PROVIDER as string;
@@ -77,6 +90,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
 
   React.useEffect(() => {
     if (!provider || !currentAccount) return;
+    if (!assetsLoading) return;
+
     const getCollateralAssets = async () => {
       const dataProviderContract = new Contract(
         PROTOCOL_DATA_PROVIDER,
@@ -105,8 +120,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
       }
     };
     getCollateralAssets();
-    //eslint-disable-next-line
-  }, [provider, currentAccount, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
+    // eslint-disable-next-line
+  }, [provider, currentAccount, assetsLoading, PROTOCOL_DATA_PROVIDER, PRICE_ORACLE]);
 
   const getAssetsBalance = async (
     collateralAssets: collateralAssetsType[],
@@ -160,6 +175,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setBorrowAmount,
         ratio,
         setRatio,
+        txStatus,
+        setTxStatus,
       }}
     >
       {children}
@@ -167,7 +184,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
   );
 };
 
-export const LeverageContext = React.createContext({} as LeverageData);
+export const LeverageContext = React.createContext({} as ILeverageData);
 
 export const useLeverageContext = () => {
   const LeverageData = React.useContext(LeverageContext);

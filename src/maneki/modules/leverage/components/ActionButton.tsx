@@ -27,7 +27,15 @@ interface IApprovals {
 
 export default function ActionFunction({ amount }: { amount: string }) {
   const { provider, currentAccount } = useWeb3Context();
-  const { currentCollateral, leverage, borrowAssets, borrowAmount } = useLeverageContext();
+  const {
+    currentCollateral,
+    leverage,
+    borrowAssets,
+    borrowAmount,
+    ratio,
+    setTxStatus,
+    setAssetsLoading,
+  } = useLeverageContext();
   const [loading, setLoading] = React.useState(false);
   const [variableAddresses, setVariableAddresses] = React.useState<IBorrowAssets>({
     unstable: '',
@@ -44,29 +52,37 @@ export default function ActionFunction({ amount }: { amount: string }) {
 
   const handleButtonClick = async () => {
     setLoading(true);
-    if (approvals.collateral) await handleApproval();
-    if (approvals.unstable || approvals.stable) await handleVariableApproval();
-    const ratio = [5000, 5000];
+    if (approvals.collateral) await handleCollateralApproval();
+    if (!approvals.collateral && approvals.unstable) await handleUnstableApproval();
+    if (!approvals.unstable && approvals.stable) await handleStableApproval();
+    if (approvals.collateral || approvals.unstable || approvals.stable) {
+      setLoading(false);
+      return;
+    }
+
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(LEVERAGER_V2_ADDR, MANEKI_LEVERAGER_V2_ABI, signer);
     const convertedAmount = manekiParseUnits(amount, currentCollateral.decimals);
     try {
-      const returnValue = await contract.leverageGlp(
+      const promise = await contract.leverageGlp(
         currentCollateral.address,
         convertedAmount,
         [borrowAssets.unstable, borrowAssets.stable],
         ratio,
         leverage
       );
-      await returnValue.wait(1);
-      console.log(returnValue);
-    } catch (e) {
-      console.log(e);
+      await promise.wait(1);
+      setTxStatus({ status: 'success', message: 'Transaction Successful.', hash: promise.hash });
+      setAssetsLoading(true);
+      console.log('Transaction Promise:', promise);
+    } catch (error) {
+      setTxStatus({ status: 'error', message: error.message });
+      console.log('Transaction Error:', error.message);
     }
     setLoading(false);
   };
 
-  const handleApproval = async () => {
+  const handleCollateralApproval = async () => {
     const signer = provider?.getSigner(currentAccount);
     const contract = new Contract(currentCollateral.address, PROXY_TOKEN_ABI, signer);
     const amountBN = BigNumber.from(manekiParseUnits(amount, currentCollateral.decimals));
@@ -74,33 +90,50 @@ export default function ActionFunction({ amount }: { amount: string }) {
       const promise = await contract.approve(LEVERAGER_V2_ADDR, amountBN);
       await promise.wait(1);
       setApprovals((prevState) => ({ ...prevState, collateral: false }));
+      setTxStatus({ status: 'approve', message: 'Approval Successful.', hash: promise.hash });
     } catch (error) {
-      console.log('Approval Error:', error);
+      setTxStatus({ status: 'error', message: error.message });
+      console.log('Approve Collateral Error:', error.message);
     }
   };
 
-  const handleVariableApproval = async () => {
+  const handleUnstableApproval = async () => {
     const signer = provider?.getSigner(currentAccount);
     const unstableContract = new Contract(
       variableAddresses.unstable,
       VARIABLE_DEBT_TOKEN_ABI,
       signer
     );
-    // const stableContract = new Contract(variableAddresses.stable, VARIABLE_DEBT_TOKEN_ABI, signer);
+
     try {
-      const unstablePromise = await unstableContract.approveDelegation(
+      const promise = await unstableContract.approveDelegation(
         LEVERAGER_V2_ADDR,
         borrowAmount.unstable
       );
-      await unstablePromise.wait(1);
-      // const stablePromise = await stableContract.approveDelegation(
-      //   LEVERAGER_V2_ADDR,
-      //   borrowAmount.stable
-      // );
-      // await stablePromise.wait(1);
+      await promise.wait(1);
       setApprovals((prevState) => ({ ...prevState, unstable: false }));
+      setTxStatus({ status: 'approve', message: 'Approval Successful.', hash: promise.hash });
     } catch (error) {
-      console.log('Approval Error:', error);
+      setTxStatus({ status: 'error', message: error.message });
+      console.log('Unstable Variable Approval Error:', error.message);
+    }
+  };
+
+  const handleStableApproval = async () => {
+    const signer = provider?.getSigner(currentAccount);
+    const stableContract = new Contract(variableAddresses.stable, VARIABLE_DEBT_TOKEN_ABI, signer);
+
+    try {
+      const promise = await stableContract.approveDelegation(
+        LEVERAGER_V2_ADDR,
+        borrowAmount.stable
+      );
+      await promise.wait(1);
+      setApprovals((prevState) => ({ ...prevState, stable: false }));
+      setTxStatus({ status: 'approve', message: 'Approval Successful.', hash: promise.hash });
+    } catch (error) {
+      setTxStatus({ status: 'error', message: error.message });
+      console.log('Stable Variable Approval Error:', error.message);
     }
   };
 
@@ -128,7 +161,7 @@ export default function ActionFunction({ amount }: { amount: string }) {
   React.useEffect(() => {
     if (
       (!provider || !currentAccount || currentCollateral.address === '',
-      variableAddresses.unstable === '') // || variableAddresses.stable === ''
+      variableAddresses.unstable === '' || variableAddresses.stable === '')
     )
       return;
 
@@ -138,16 +171,16 @@ export default function ActionFunction({ amount }: { amount: string }) {
       VARIABLE_DEBT_TOKEN_ABI,
       provider
     );
-    // const stableContract = new Contract(
-    //   variableAddresses.stable,
-    //   VARIABLE_DEBT_TOKEN_ABI,
-    //   provider
-    // );
+    const stableContract = new Contract(
+      variableAddresses.stable,
+      VARIABLE_DEBT_TOKEN_ABI,
+      provider
+    );
     const promises = [];
 
     promises.push(collateralContract.allowance(currentAccount, LEVERAGER_V2_ADDR));
     promises.push(unstableContract.borrowAllowance(currentAccount, LEVERAGER_V2_ADDR));
-    // promises.push(stableContract.borrowAllowance(currentAccount, LEVERAGER_V2_ADDR));
+    promises.push(stableContract.borrowAllowance(currentAccount, LEVERAGER_V2_ADDR));
     Promise.all(promises)
       .then((data: BigNumber[]) => {
         const apprv = {
@@ -160,7 +193,7 @@ export default function ActionFunction({ amount }: { amount: string }) {
         );
         data[0].lt(currentAmountBN) ? (apprv.collateral = true) : (apprv.collateral = false);
         data[1].lt(borrowAmount.unstable) ? (apprv.unstable = true) : (apprv.unstable = false);
-        // if (data[2].lt(borrowAmount.stable)) apprv.stable = true;
+        data[2].lt(borrowAmount.stable) ? (apprv.stable = true) : (apprv.stable = false);
         setApprovals(apprv);
         setApprovals({
           collateral: true,
@@ -178,7 +211,13 @@ export default function ActionFunction({ amount }: { amount: string }) {
       onClick={handleButtonClick}
       // disabled={BigNumber.from(manekiParseUnits(amount, currentCollateral.decimals)).lte(0)}
     >
-      {loading ? <CircularProgress size={24} sx={{ color: 'background.default' }} /> : 'Click'}
+      {loading ? (
+        <CircularProgress size={24} sx={{ color: 'background.default' }} />
+      ) : approvals.collateral || approvals.unstable || approvals.stable ? (
+        'Approve'
+      ) : (
+        'Confirm'
+      )}
     </Button>
   );
 }

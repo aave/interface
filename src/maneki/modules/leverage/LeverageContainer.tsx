@@ -2,21 +2,32 @@ import { Trans } from '@lingui/macro';
 import { Paper, Typography } from '@mui/material';
 // import { BigNumber } from 'ethers';
 import React from 'react';
+import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
+import { marketsData } from 'src/ui-config/marketsConfig';
 
 import ActionFunction from './components/ActionButton';
 import ChooseBorrowedAssets from './components/ChooseBorrowedAssets';
 import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
 import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
+import LeverageSnackbar from './components/LeverageSnackbar';
 import SelectCollateralAsset from './components/SelectCollateralAsset';
 
 const LeverageContainer = () => {
+  const { currentAccount, chainId } = useWeb3Context();
   const { assetsLoading, leverage, currentCollateral } = useLeverageContext();
+  const requiredChainId = marketsData.arbitrum_mainnet_v3.chainId;
   const [amount, setAmount] = React.useState<string>('');
+
+  if (!currentAccount)
+    return <ConnectWalletPaper description={'Please connect your wallet to procceed.'} />;
+  if (chainId !== requiredChainId)
+    return <ManekiLoadingPaper description={'Connected to the wrong network.'} switchNetwork />;
   if (assetsLoading || currentCollateral.token === '')
-    return <ManekiLoadingPaper description="Getting Collateral Assets..." withCircle />;
+    return <ManekiLoadingPaper description="Getting Assets..." withCircle />;
   return (
     <Paper
       sx={{
@@ -47,6 +58,7 @@ const LeverageContainer = () => {
       <LeverageSlider />
       <LeverageInfoDisplay amount={amount} />
       <ActionFunction amount={amount} />
+      <LeverageSnackbar />
     </Paper>
   );
 };
