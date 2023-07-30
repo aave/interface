@@ -1,5 +1,5 @@
 // import { ChainId } from '@aave/contract-helpers';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+// import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
 // Enable for premissioned market
