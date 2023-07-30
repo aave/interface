@@ -1,0 +1,42 @@
+# .github/workflows/build-and-deploy.yml
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v3
+
+      # a standard step for GitHub actions on Node
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v3
+        with:
+          # update the Node version to meet your needs
+          node-version: 18
+          cache: npm
+
+      - name: Build
+        run: |
+          yarn
+          npm run build
+          npm run export
+          echo app.mooncake.finance > ./out/CNAME
+          touch out/.nojekyll
+
+      - name: Deploy
+        # https://github.com/JamesIves/github-pages-deploy-action
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: out
