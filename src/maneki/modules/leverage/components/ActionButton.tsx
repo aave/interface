@@ -122,7 +122,6 @@ export default function ActionFunction({ amount }: { amount: string }) {
   const handleStableApproval = async () => {
     const signer = provider?.getSigner(currentAccount);
     const stableContract = new Contract(variableAddresses.stable, VARIABLE_DEBT_TOKEN_ABI, signer);
-
     try {
       const promise = await stableContract.approveDelegation(
         LEVERAGER_V2_ADDR,
@@ -197,7 +196,16 @@ export default function ActionFunction({ amount }: { amount: string }) {
         setApprovals(apprv);
       })
       .catch((error) => console.log('Checking Allowance Error: ', error.message));
-  }, [provider, variableAddresses, currentAccount, currentCollateral, amount]);
+  }, [
+    provider,
+    currentCollateral,
+    amount,
+    leverage,
+    borrowAmount,
+    variableAddresses,
+    currentAccount,
+    LEVERAGER_V2_ADDR,
+  ]);
 
   return (
     <Button
