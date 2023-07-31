@@ -14,7 +14,7 @@ export default function MarketsSglpLeverageButton() {
       href="/leverage"
       underline="none"
     >
-      <Typography variant="subheader2">x2-x12</Typography>
+      <Typography variant="subheader2">2x-12x</Typography>
     </Link>
   );
 }
