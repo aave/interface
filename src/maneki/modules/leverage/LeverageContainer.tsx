@@ -8,9 +8,9 @@ import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { useLeverageContext } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
-import ActionFunction from './components/ActionButton';
 import ChooseBorrowedAssets from './components/ChooseBorrowedAssets';
 import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
+import LeverageActionButton from './components/LeverageActionButton';
 import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
 import LeverageSnackbar from './components/LeverageSnackbar';
@@ -57,7 +57,7 @@ const LeverageContainer = () => {
       </SectionText>
       <LeverageSlider />
       <LeverageInfoDisplay amount={amount} />
-      <ActionFunction amount={amount} />
+      <LeverageActionButton amount={amount} />
       <LeverageSnackbar />
     </Paper>
   );

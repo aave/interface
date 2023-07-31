@@ -2405,6 +2405,10 @@ msgstr "Top 10 addresses"
 msgid "Total Locked"
 msgstr "Total Locked"
 
+#: src/maneki/modules/markets/ClaimEthRewardTopPanel.tsx
+msgid "Total Rewards"
+msgstr "Total Rewards"
+
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Value"
@@ -2415,7 +2419,6 @@ msgid "Total Vested"
 msgstr "Total Vested"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
-#: src/maneki/modules/markets/ClaimEthRewardTopPanel.tsx
 msgid "Total Vests"
 msgstr "Total Vests"
 

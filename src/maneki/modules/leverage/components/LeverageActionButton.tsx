@@ -25,7 +25,7 @@ interface IApprovals {
   stable: boolean;
 }
 
-export default function ActionFunction({ amount }: { amount: string }) {
+export default function LeverageActionButton({ amount }: { amount: string }) {
   const { provider, currentAccount } = useWeb3Context();
   const {
     currentCollateral,
