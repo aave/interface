@@ -67,7 +67,7 @@ export default function ClaimRewardTopPanel() {
               height={24}
             />
             <FormattedNumber
-              value={utils.formatUnits(rewardAmount, 18)}
+              value={utils.formatUnits(rewardAmount, 18 + 12)}
               sx={{ fontWeight: '500', fontSize: '14px' }}
               symbol="ETH"
             />
