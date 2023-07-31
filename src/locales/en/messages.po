@@ -2415,6 +2415,7 @@ msgid "Total Vested"
 msgstr "Total Vested"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
+#: src/maneki/modules/markets/ClaimEthRewardTopPanel.tsx
 msgid "Total Vests"
 msgstr "Total Vests"
 
