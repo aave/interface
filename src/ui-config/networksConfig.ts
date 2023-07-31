@@ -54,6 +54,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
     publicJsonRPCUrl: [
+      'https://eth-sepolia.public.blastapi.io',
       'https://rpc.sepolia.org',
       'https://rpc2.sepolia.org',
       'https://rpc.sepolia.online',
