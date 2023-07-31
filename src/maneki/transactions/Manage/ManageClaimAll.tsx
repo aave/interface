@@ -23,8 +23,8 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
   const { setMainTxState, setTxError } = useModalContext();
   const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
   const [claimables, setClaimables] = useState<ClaimablesType[]>([]);
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+  const MULTI_FEE_ADDR = marketsData.arbitrum_mainnet_v3.addresses.COLLECTOR as string;
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
   useEffect(() => {

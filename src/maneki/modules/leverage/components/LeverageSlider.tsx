@@ -64,7 +64,10 @@ export default function LeverageSlider() {
           fontWeight: '800',
           fontSize: '14px',
         }}
-        onChange={(e, val) => setLeverage(val as number)}
+        onChange={(e, val) => {
+          void e;
+          setLeverage(val as number);
+        }}
       />
     </Box>
   );

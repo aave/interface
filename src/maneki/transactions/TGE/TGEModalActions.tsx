@@ -31,7 +31,7 @@ export const TGEModalActions = ({
   const { provider, currentAccount } = useWeb3Context();
   const { mainTxState, setMainTxState, setTxError } = useModalContext();
   const { setTGELoading } = useTGEContext();
-  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
+  const EARLY_TOKEN_GENERATION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
 
   const handleContribution = async () => {

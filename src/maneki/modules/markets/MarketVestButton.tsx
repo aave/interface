@@ -57,7 +57,7 @@ const MarketVestButton = ({
   setErrorText,
 }: MarketVestButtonProps) => {
   const { provider, currentAccount } = useWeb3Context();
-  const CHEF_INCENTIVES_CONTROLLER_ADDR = marketsData.bsc_testnet_v3.addresses
+  const CHEF_INCENTIVES_CONTROLLER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .CHEF_INCENTIVES_CONTROLLER as string;
   const handleClaimVest = async () => {
     setButtonState('loading');
