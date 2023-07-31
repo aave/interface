@@ -2405,7 +2405,7 @@ msgstr "Top 10 addresses"
 msgid "Total Locked"
 msgstr "Total Locked"
 
-#: src/maneki/modules/markets/ClaimEthRewardTopPanel.tsx
+#: src/maneki/modules/markets/ClaimRewardTopPanel.tsx
 msgid "Total Rewards"
 msgstr "Total Rewards"
 
