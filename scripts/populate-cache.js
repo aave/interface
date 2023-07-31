@@ -66083,6 +66083,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.sepolia]: {
     name: "Ethereum Sepolia",
     publicJsonRPCUrl: [
+      "https://eth-sepolia.public.blastapi.io",
       "https://rpc.sepolia.org",
       "https://rpc2.sepolia.org",
       "https://rpc.sepolia.online",
