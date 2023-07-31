@@ -1,57 +1,70 @@
 import { Box, Typography } from '@mui/material';
-import Image from 'next/image';
+
+import { useLeverageContext } from '../../../hooks/leverage-data-provider/LeverageDataProvider';
+import { LEVERAGE_STABLE_COINS, LEVERAGE_UNSTABLE_COINS } from '../config';
+import LeverageBorrwAsset from './LeverageBorrowAsset';
 
 export default function ChooseBorrowedAssets() {
+  const {
+    currentBorrowedUnstableAsset,
+    currentBorrowedStableAsset,
+    setCurrentBorrowedUnstableAsset,
+    setCurrentBorrowedStableAsset,
+  } = useLeverageContext();
+
   return (
     <Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
         <Typography sx={{ fontSize: '16px', fontWeight: '700px', lineHeight: '1.6' }}>
           Untable Coin
         </Typography>
+
+        {/** Assets List */}
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            border: 'solid 1px black',
-            borderRadius: '15px',
-            p: '5px',
+            gap: '15px',
+            flexWrap: 'wrap',
           }}
         >
-          <Image
-            alt={`token image for Ethereum`}
-            src={'/icons/tokens/eth.svg'}
-            width={32}
-            height={32}
-          />
-          <Typography sx={{ fontSize: '16px', fontWeight: '700px', lineHeight: '1.6' }}>
-            ETH
-          </Typography>
+          {LEVERAGE_UNSTABLE_COINS.map((e) => (
+            <LeverageBorrwAsset
+              handleSelect={() => setCurrentBorrowedUnstableAsset(e)}
+              key={e.symbol}
+              isSelected={
+                currentBorrowedUnstableAsset?.symbol.toUpperCase() == e.symbol.toUpperCase()
+              }
+              isLocked={false}
+              symbol={e.symbol}
+            />
+          ))}
         </Box>
       </Box>
+
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
         <Typography sx={{ fontSize: '16px', fontWeight: '700px', lineHeight: '1.6' }}>
           Stable Coin
         </Typography>
+
+        {/** Assets List */}
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            border: 'solid 1px black',
-            borderRadius: '15px',
-            p: '5px',
+            gap: '15px',
+            flexWrap: 'wrap',
           }}
         >
-          <Image
-            alt={`token image for Ethereum`}
-            src={'/icons/tokens/usdc.svg'}
-            width={32}
-            height={32}
-          />
-          <Typography sx={{ fontSize: '16px', fontWeight: '700px', lineHeight: '1.6' }}>
-            USDC
-          </Typography>
+          {LEVERAGE_STABLE_COINS.map((e) => (
+            <LeverageBorrwAsset
+              handleSelect={() => setCurrentBorrowedStableAsset(e)}
+              key={e.symbol}
+              isSelected={
+                currentBorrowedStableAsset?.symbol.toUpperCase() == e.symbol.toUpperCase()
+              }
+              isLocked={false}
+              symbol={e.symbol}
+            />
+          ))}
         </Box>
       </Box>
     </Box>

@@ -34,7 +34,7 @@ export interface airdropListType {
 const empty = '0x0000000000000000000000000000000000000000000000000000000000000000';
 // DEV change this
 // const MERKLE_DIST_ADDR = '0xe3267CCF277a2C1dB29AB3A7f0583eCD6d2Bb635';
-const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
+const MERKLE_DIST_ADDR = marketsData.arbitrum_mainnet_v3.addresses.MERKLE_DIST as string;
 const padWidth = (str: string, width: number): string => {
   let res = '';
   let currSize = str.length - 3; //0x

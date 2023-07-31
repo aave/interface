@@ -16,7 +16,7 @@ export const ManageClaimExpired = ({ symbol, isWrongNetwork, action }: ManekiMod
   const { provider, currentAccount } = useWeb3Context();
   const { setMainTxState, setTxError } = useModalContext();
   const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+  const MULTI_FEE_ADDR = marketsData.arbitrum_mainnet_v3.addresses.COLLECTOR as string;
 
   useEffect(() => {
     const handleClaimExpired = async () => {

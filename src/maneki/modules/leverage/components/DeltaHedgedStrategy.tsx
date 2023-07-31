@@ -1,7 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 
+import { useLeverageContext } from '../../../hooks/leverage-data-provider/LeverageDataProvider';
+
 export default function DeltaHedgedStrategy() {
+  const { currentBorrowedStableAsset, currentBorrowedUnstableAsset } = useLeverageContext();
   return (
     <Box
       sx={{
@@ -15,9 +18,15 @@ export default function DeltaHedgedStrategy() {
         m: '20px auto',
       }}
     >
-      <TokenBox src="/icons/tokens/eth.svg" token="ETH" />
+      <TokenBox
+        src={`/icons/tokens/${currentBorrowedUnstableAsset?.symbol.toLowerCase()}.svg`}
+        token={currentBorrowedUnstableAsset?.symbol || ' '}
+      />
       <Typography sx={{ fontSize: '20px', fontWeight: '600' }}>50:50</Typography>
-      <TokenBox src="/icons/tokens/usdc.svg" token="USDC" />
+      <TokenBox
+        src={`/icons/tokens/${currentBorrowedStableAsset?.symbol.toLowerCase()}.svg`}
+        token={currentBorrowedStableAsset?.symbol || ' '}
+      />
     </Box>
   );
 }

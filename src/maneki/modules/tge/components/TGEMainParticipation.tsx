@@ -12,7 +12,7 @@ const TGEMainParticipation = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { saleStartDate, saleEndDate, totalRaisedBNB, TGEStatus } = useTGEContext();
-  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
+  const EARLY_TOKEN_GENERATION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
   return (
     <Box

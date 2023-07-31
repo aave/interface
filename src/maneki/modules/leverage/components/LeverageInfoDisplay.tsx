@@ -16,8 +16,15 @@ interface LeverageInfoDisplayProps {
 
 export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps) {
   const { provider } = useWeb3Context();
-  const { leverage, currentCollateral, borrowAssets, borrowAmount, setBorrowAmount } =
-    useLeverageContext();
+  const {
+    leverage,
+    currentCollateral,
+    borrowAssets,
+    borrowAmount,
+    setBorrowAmount,
+    currentBorrowedUnstableAsset,
+    currentBorrowedStableAsset,
+  } = useLeverageContext();
   const [apr, setApr] = React.useState<number>(0);
 
   const LEVERAGER_V2_ADDR = marketsData.arbitrum_mainnet_v3.addresses.LEVERAGER_V2 as string;
@@ -77,7 +84,7 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
             sx={{ fontWeight: '700' }}
             symbolSx={{ fontWeight: '700' }}
             value={utils.formatUnits(borrowAmount.unstable, 18)}
-            symbol="ETH"
+            symbol={currentBorrowedUnstableAsset?.symbol}
           />
         </ValueBox>
         <ValueBox>
@@ -88,7 +95,7 @@ export default function LeverageInfoDisplay({ amount }: LeverageInfoDisplayProps
             sx={{ fontWeight: '700' }}
             symbolSx={{ fontWeight: '700' }}
             value={utils.formatUnits(borrowAmount.stable, 6)}
-            symbol="USDC"
+            symbol={currentBorrowedStableAsset?.symbol}
           />
         </ValueBox>
       </Box>

@@ -26,6 +26,29 @@ export default function SelectCollateralAsset({ amount, setAmount }: SelectColla
     setAnchorEl(null);
     setCurrentCollateral(collateralAsset);
     setAmount('');
+
+    // check locked borrow assets
+    // if (collateralAsset.mandatoryStableCoin) {
+    //   const supportedAssetIdx = LEVERAGE_STABLE_COINS.findIndex(
+    //     (e) => e.symbol == collateralAsset.mandatoryStableCoin
+    //   );
+    //   if (supportedAssetIdx < 0) {
+    //     console.warn('Cant find seleted collateral in supported LEVERAGE_STABLE_COINS');
+    //     return;
+    //   }
+    //   setCurrentBorrowedStableAsset(LEVERAGE_STABLE_COINS[supportedAssetIdx]);
+    // }
+
+    // if (collateralAsset.mandatoryUnstableCoin) {
+    //   const supportedAssetIdx = LEVERAGE_UNSTABLE_COINS.findIndex(
+    //     (e) => e.symbol == collateralAsset.mandatoryStableCoin
+    //   );
+    //   if (supportedAssetIdx < 0) {
+    //     console.warn('Cant find seleted collateral in supported LEVERAGE_UNSTABLE_COINS');
+    //     return;
+    //   }
+    //   setCurrentBorrowedUnstableAsset(LEVERAGE_UNSTABLE_COINS[supportedAssetIdx]);
+    // }
   };
 
   // React.useEffect(() => {
