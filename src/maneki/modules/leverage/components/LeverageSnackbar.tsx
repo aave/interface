@@ -48,14 +48,10 @@ const LeverageSnackbar = () => {
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      // autoHideDuration={6000}
+      autoHideDuration={6000}
       TransitionComponent={SlideTransition}
     >
       <SnackbarContent
-        // style={{
-        //   backgroundColor: status === error ? 'background.'
-        //   borderRadius: '8px',
-        // }}
         sx={{
           borderRadius: '8px',
           backgroundColor:

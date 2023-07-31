@@ -195,11 +195,6 @@ export default function ActionFunction({ amount }: { amount: string }) {
         data[1].lt(borrowAmount.unstable) ? (apprv.unstable = true) : (apprv.unstable = false);
         data[2].lt(borrowAmount.stable) ? (apprv.stable = true) : (apprv.stable = false);
         setApprovals(apprv);
-        setApprovals({
-          collateral: true,
-          unstable: true,
-          stable: true,
-        });
       })
       .catch((error) => console.log('Checking Allowance Error: ', error.message));
   }, [provider, variableAddresses, currentAccount, currentCollateral, amount]);
@@ -209,7 +204,7 @@ export default function ActionFunction({ amount }: { amount: string }) {
       variant={'contained'}
       sx={{ width: '100%', borderRadius: '15px' }}
       onClick={handleButtonClick}
-      // disabled={BigNumber.from(manekiParseUnits(amount, currentCollateral.decimals)).lte(0)}
+      disabled={BigNumber.from(manekiParseUnits(amount, currentCollateral.decimals)).lte(0)}
     >
       {loading ? (
         <CircularProgress size={24} sx={{ color: 'background.default' }} />
