@@ -104,7 +104,11 @@ export function fetchIconSymbolAndName({
   ) {
     return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
   }
-
+  if (
+    underlyingAsset.toLowerCase() === '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'.toLowerCase()
+  ) {
+    return { iconSymbol: 'USDC', name: 'Bridged USDC', symbol: 'USDC.e' };
+  }
   const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
   return {
     iconSymbol: unifiedSymbol,
