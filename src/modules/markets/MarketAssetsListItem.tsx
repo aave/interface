@@ -5,6 +5,7 @@ import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import MarketsSglpLeverageButton from 'src/maneki/components/MarketsSglpLeverageButton';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -46,6 +47,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
         {reserve.symbol === 'renFIL' && <RenFILToolTip />}
+        {reserve.symbol === 'sGLP' && <MarketsSglpLeverageButton />}
       </ListColumn>
 
       <ListColumn>

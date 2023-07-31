@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+import MarketsSglpLeverageButton from 'src/maneki/components/MarketsSglpLeverageButton';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -47,6 +48,7 @@ export const ListMobileItemWrapper = ({
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
+        {symbol === 'sGLP' && <MarketsSglpLeverageButton />}
         {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
