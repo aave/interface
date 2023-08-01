@@ -47,7 +47,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
         {reserve.symbol === 'renFIL' && <RenFILToolTip />}
-        {reserve.symbol === 'sGLP' && <MarketsSglpLeverageButton />}
+        {reserve.symbol === 'GLP' && <MarketsSglpLeverageButton />}
       </ListColumn>
 
       <ListColumn>
