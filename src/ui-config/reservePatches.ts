@@ -109,6 +109,11 @@ export function fetchIconSymbolAndName({
   ) {
     return { iconSymbol: 'USDC', name: 'Bridged USDC', symbol: 'USDC.e' };
   }
+  if (
+    underlyingAsset.toLowerCase() === '0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf'.toLowerCase()
+  ) {
+    return { iconSymbol: 'GLP', name: 'GMX LP Token', symbol: 'GLP' };
+  }
   const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
   return {
     iconSymbol: unifiedSymbol,

@@ -128,7 +128,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
           currentAccount
         )) as collateralAssetsType[];
         setCollateralAssets(assetWithBalances);
-        setCurrentCollateral(assetWithBalances.filter((asset) => asset['token'] === 'sGLP')[0]);
+        setCurrentCollateral(assetWithBalances.filter((asset) => asset['token'] === 'GLP')[0]);
         setAssetsLoading(false);
       } catch (e) {
         console.error(e);

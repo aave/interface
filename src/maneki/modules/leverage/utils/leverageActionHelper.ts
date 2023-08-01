@@ -16,7 +16,8 @@ export function convertReserveTokens(
   const reservesTokensAddress: collateralAssetsType[] = reservesTokens.map(([token, address]) => {
     if (address.toLowerCase() === '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'.toLowerCase())
       token = 'USDC.e';
-
+    if (address.toLowerCase() === '0x5402B5F40310bDED796c7D0F3FF6683f5C0cFfdf'.toLowerCase())
+      token = 'GLP';
     return {
       token,
       address,
