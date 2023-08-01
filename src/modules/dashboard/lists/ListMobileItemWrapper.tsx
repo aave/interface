@@ -48,7 +48,7 @@ export const ListMobileItemWrapper = ({
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
-        {symbol === 'sGLP' && <MarketsSglpLeverageButton />}
+        {symbol === 'GLP' && <MarketsSglpLeverageButton />}
         {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
