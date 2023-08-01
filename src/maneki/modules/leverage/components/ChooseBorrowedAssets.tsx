@@ -13,10 +13,10 @@ export default function ChooseBorrowedAssets() {
   } = useLeverageContext();
 
   return (
-    <Box>
+    <Box sx={{ mb: '12px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
         <Typography sx={{ fontSize: '16px', fontWeight: '700px', lineHeight: '1.6' }}>
-          Untable Coin
+          Unstable Coin
         </Typography>
 
         {/** Assets List */}

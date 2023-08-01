@@ -31,9 +31,7 @@ const LeverageContainer = () => {
   return (
     <Paper
       sx={{
-        maxWidth: '600px',
         m: 'auto',
-        width: '500px',
         padding: '32px 16px',
         borderRadius: '15px',
       }}

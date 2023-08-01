@@ -1237,6 +1237,7 @@ msgstr "Learn more about risks involved"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
+#: src/maneki/modules/leverage/LeverageTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Leverage"
 msgstr "Leverage"

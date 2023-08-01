@@ -50,7 +50,7 @@ const LeverageBorrwAsset = ({
           p: '5px 15px 5px 10px',
           fontSize: '20px',
           borderColor: isSelected ? '#FFA725' : 'black',
-          backgroundColor: 'white',
+          backgroundColor: '#FFA725' + '22',
           cursor: isLocked ? 'auto' : 'pointer',
         }}
       >

@@ -1,14 +1,19 @@
 import React from 'react';
+import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { LeverageDataProvider } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
 import LeverageContainer from 'src/maneki/modules/leverage/LeverageContainer';
+import { LeverageTopPanel } from 'src/maneki/modules/leverage/LeverageTopPanel';
 
 export default function Leverage() {
   return (
     <>
       <LeverageDataProvider>
         <>
-          <LeverageContainer />
+          <LeverageTopPanel />
+          <ContentContainer>
+            <LeverageContainer />
+          </ContentContainer>
         </>
       </LeverageDataProvider>
     </>
