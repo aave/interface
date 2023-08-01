@@ -8,10 +8,13 @@ import { AppHeader } from './AppHeader';
 export function MainLayout({ children }: { children: ReactNode }) {
   const route = useRouter();
   const [tos, setTos] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const manekiTOS = localStorage.getItem('manekiTOS');
     manekiTOS !== 'agreed' ? setTos(false) : setTos(true);
+    setLoading(false);
   }, [route]);
+  if (loading) return <></>;
   if (!tos) return <DisclaimerComponent />;
   else {
     return (
