@@ -40,7 +40,6 @@ export const MarketAssetsListContainer = () => {
           })
         : {}),
     }));
-  console.log(reserves);
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom'].includes(currentNetworkConfig.name);
