@@ -46,7 +46,10 @@ const testData = {
 
 describe(`GHO base testing and e-mode`, () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true, tokens: tokenSet({ aDAI: 500 }) });
+  configEnvWithTenderlyAEthereumV3Fork({
+    v3: true,
+    tokens: tokenSet({ aDAI: 500 }),
+  });
 
   borrow(testData.borrow, skipTestState, true);
   repay(testData.repay, skipTestState, false);
@@ -55,7 +58,7 @@ describe(`GHO base testing and e-mode`, () => {
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
   // GHO not in e-mode list
   // emodeActivating({ turnOn: true, emodeOption: 'Stable-EMode' }, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 10000 }, skipTestState);
-  borrow(testData.borrowMax, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
+  // checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 10000 }, skipTestState);
+  // borrow(testData.borrowMax, skipTestState, true);
+  // checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
 });
