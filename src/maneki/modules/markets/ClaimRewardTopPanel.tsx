@@ -8,11 +8,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import GLP_REWARDS_DISTRIBUTION_ABI from 'src/maneki/abi/GlpRewardsDistributionABI';
-import { ITxStatus } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
+import { useTxStateStore } from 'src/maneki/store/txStates';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
 import ClaimRewardButton from './ClaimRewardButton';
-import ClaimRewardSnackbar from './ClaimRewardSnackbar';
 
 export default function ClaimRewardTopPanel() {
   const GLP_REWARDS_DISTRIBUTION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
@@ -20,14 +19,11 @@ export default function ClaimRewardTopPanel() {
   const { provider, currentAccount, chainId } = useWeb3Context();
   const [rewardAmount, setRewardAmount] = React.useState(BigNumber.from(0));
   const [fetchError, setFetchError] = React.useState(false);
-  const [txStatus, setTxStatus] = React.useState<ITxStatus>({
-    status: '',
-    message: '',
-    hash: '',
-  });
+  const setTxState = useTxStateStore((state) => state.setTxState);
   const [refresh, setRefresh] = React.useState<boolean>(true);
   const REWARD_TOKEN_ADDR = ['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'];
   React.useEffect(() => {
+    if (!provider || !currentAccount) return;
     if (!refresh && !fetchError) return;
     const contract = new Contract(
       GLP_REWARDS_DISTRIBUTION_ADDR,
@@ -42,13 +38,14 @@ export default function ClaimRewardTopPanel() {
       })
       .catch((error) => {
         setFetchError(true);
-        setTxStatus({ status: 'error', message: error.message });
+        setTxState({ status: 'error', message: error.message });
         console.log('Error fetching claim ETH Rewards: ', error);
       });
     setRefresh(false);
   }, [provider, currentAccount, fetchError]);
 
-  if (!currentAccount && chainId !== marketsData.arbitrum_mainnet_v3.chainId) return <></>;
+  if (!provider || !currentAccount || chainId !== marketsData.arbitrum_mainnet_v3.chainId)
+    return <></>;
 
   return (
     <ClaimRewardContainer>
@@ -74,8 +71,7 @@ export default function ClaimRewardTopPanel() {
           </Box>
         )}
       </Box>
-      <ClaimRewardButton {...{ REWARD_TOKEN_ADDR, refresh, setRefresh, fetchError, setTxStatus }} />
-      <ClaimRewardSnackbar {...{ txStatus, setTxStatus }} />
+      <ClaimRewardButton {...{ REWARD_TOKEN_ADDR, refresh, setRefresh, fetchError }} />
     </ClaimRewardContainer>
   );
 }

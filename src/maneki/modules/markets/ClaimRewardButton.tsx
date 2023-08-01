@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import React from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import GLP_REWARDS_DISTRIBUTION_ABI from 'src/maneki/abi/GlpRewardsDistributionABI';
-import { ITxStatus } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
+import { useTxStateStore } from 'src/maneki/store/txStates';
 import { marketsData } from 'src/ui-config/marketsConfig';
 
 interface ClaimRewardTokenProps {
@@ -11,7 +11,6 @@ interface ClaimRewardTokenProps {
   refresh: boolean;
   setRefresh: (value: boolean) => void;
   fetchError: boolean;
-  setTxStatus: (value: ITxStatus) => void;
 }
 
 export default function ClaimRewardButton({
@@ -19,10 +18,10 @@ export default function ClaimRewardButton({
   refresh,
   setRefresh,
   fetchError,
-  setTxStatus,
 }: ClaimRewardTokenProps) {
   const { provider, currentAccount } = useWeb3Context();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const setTxState = useTxStateStore((state) => state.setTxState);
   const GLP_REWARDS_DISTRIBUTION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .GLP_REWARDS_DISTRIBUTION as string;
 
@@ -37,10 +36,11 @@ export default function ClaimRewardButton({
     try {
       const promise = await contract.getReward(REWARD_TOKEN_ADDR);
       promise.wait(1);
-      setTxStatus({ status: 'success', message: 'Claim rewards successful', hash: promise.hash });
+      setTxState({ status: 'success', message: 'Claim rewards successful', hash: promise.hash });
+
       setRefresh(true);
     } catch (error) {
-      setTxStatus({ status: 'error', message: error.message });
+      setTxState({ status: 'error', message: error.message });
       console.log('Error Claiming Rewards: ', error);
     }
     setLoading(false);
@@ -48,6 +48,7 @@ export default function ClaimRewardButton({
 
   React.useEffect(() => {
     if (refresh) setLoading(true);
+    else setLoading(false);
   }, [refresh]);
   return (
     <Button

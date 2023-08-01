@@ -1,22 +1,18 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton, Slide, SlideProps, Snackbar, SnackbarContent } from '@mui/material';
 import React from 'react';
-import { ITxStatus } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
+import { useTxStateStore } from 'src/maneki/store/txStates';
 
 function SlideTransition(props: SlideProps) {
   return <Slide {...props} direction="up" />;
 }
 
-interface ClaimRewardSnackbarProps {
-  txStatus: ITxStatus;
-  setTxStatus: (value: ITxStatus) => void;
-}
-
-export default function ClaimRewardSnackbar({ txStatus, setTxStatus }: ClaimRewardSnackbarProps) {
+export default function ClaimRewardSnackbar() {
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = React.useState('');
   const [message, setMessage] = React.useState('');
-
+  const txState = useTxStateStore((state) => state.txState);
+  const setTxState = useTxStateStore((state) => state.setTxState);
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     void event;
     if (reason === 'clickaway') {
@@ -34,16 +30,16 @@ export default function ClaimRewardSnackbar({ txStatus, setTxStatus }: ClaimRewa
   );
 
   React.useEffect(() => {
-    if (txStatus.status === '') return;
-    setMessage(txStatus.message);
-    setStatus(txStatus.status);
+    if (txState.status === '') return;
+    setMessage(txState.message);
+    setStatus(txState.status);
     setOpen(true);
-    setTxStatus({
+    setTxState({
       status: '',
       message: '',
       hash: '',
     });
-  }, [txStatus]);
+  }, [txState]);
 
   return (
     <Snackbar
