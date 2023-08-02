@@ -9,11 +9,12 @@ export default function MarketsSglpLeverageButton() {
         borderRadius: '12px',
         background: (theme) => theme.palette.gradients.aaveGradient,
         ml: 4,
+        minWidth: '55px',
       }}
       href="/leverage"
       underline="none"
     >
-      <Typography sx={{ fontWeight: 500, fontSize: '14px' }}>2x-12x</Typography>
+      <Typography sx={{ fontWeight: 500, fontSize: '14px', m: 'auto' }}>2-12x</Typography>
     </Link>
   );
 }
