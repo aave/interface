@@ -54,7 +54,7 @@ export default function ClaimRewardButton({
     <Button
       variant="contained"
       sx={{ width: '100%', color: 'background.default', p: '8px 0px' }}
-      onClick={handleClaimReward}
+      onClick={fetchError ? () => setRefresh(true) : handleClaimReward}
     >
       {loading ? (
         <CircularProgress size={24} sx={{ color: 'background.default' }} />
