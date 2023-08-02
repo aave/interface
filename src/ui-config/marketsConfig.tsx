@@ -48,6 +48,7 @@ export type MarketDataType = {
     EARLY_TOKEN_GENERATION?: string;
     LEVERAGER_V2?: string;
     GLP_REWARDS_DISTRIBUTION?: string;
+    ETH_REWARD_TOKEN?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -236,6 +237,7 @@ export const marketsData: {
       EARLY_TOKEN_GENERATION: process.env.NEXT_PUBLIC_MANEKI_EARLY_TOKEN_GENERATION || '',
       LEVERAGER_V2: process.env.NEXT_PUBLIC_MANEKI_LEVERAGER_V2 || '',
       GLP_REWARDS_DISTRIBUTION: process.env.NEXT_PUBLIC_MANEKI_GLP_REWARDS_DISTRIBUTON || '',
+      ETH_REWARD_TOKEN: process.env.NEXT_PUBLIC_MANEKI_ETH_REWARD_TOKEN || '',
     },
   },
   /*

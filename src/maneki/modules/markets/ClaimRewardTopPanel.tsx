@@ -16,12 +16,14 @@ import ClaimRewardButton from './ClaimRewardButton';
 export default function ClaimRewardTopPanel() {
   const GLP_REWARDS_DISTRIBUTION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .GLP_REWARDS_DISTRIBUTION as string;
+  const REWARD_TOKEN_ADDR = marketsData.arbitrum_mainnet_v3.addresses.ETH_REWARD_TOKEN as string;
+
   const { provider, currentAccount, chainId } = useWeb3Context();
   const [rewardAmount, setRewardAmount] = React.useState(BigNumber.from(0));
   const [fetchError, setFetchError] = React.useState(false);
   const setTxState = useTxStateStore((state) => state.setTxState);
   const [refresh, setRefresh] = React.useState<boolean>(true);
-  const REWARD_TOKEN_ADDR = ['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'];
+
   React.useEffect(() => {
     if (!provider || !currentAccount) return;
     if (!refresh && !fetchError) return;
@@ -31,7 +33,7 @@ export default function ClaimRewardTopPanel() {
       provider
     );
 
-    Promise.resolve(contract.unclaimedReward(currentAccount, REWARD_TOKEN_ADDR[0]))
+    Promise.resolve(contract.unclaimedReward(currentAccount, REWARD_TOKEN_ADDR))
       .then((data) => {
         setRewardAmount(data);
         setFetchError(false);
@@ -42,7 +44,7 @@ export default function ClaimRewardTopPanel() {
         console.log('Error fetching claim ETH Rewards: ', error);
       });
     setRefresh(false);
-  }, [provider, currentAccount, fetchError]);
+  }, [provider, currentAccount, fetchError, refresh]);
 
   if (!provider || !currentAccount || chainId !== marketsData.arbitrum_mainnet_v3.chainId)
     return <></>;
@@ -71,7 +73,9 @@ export default function ClaimRewardTopPanel() {
           </Box>
         )}
       </Box>
-      <ClaimRewardButton {...{ REWARD_TOKEN_ADDR, refresh, setRefresh, fetchError }} />
+      <ClaimRewardButton
+        {...{ REWARD_TOKEN_ADDR: [REWARD_TOKEN_ADDR], refresh, setRefresh, fetchError }}
+      />
     </ClaimRewardContainer>
   );
 }
