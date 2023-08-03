@@ -10,7 +10,7 @@ interface BorrowDisabledWarningProps {
 export const BorrowDisabledWarning = ({ symbol, currentMarket }: BorrowDisabledWarningProps) => {
   return (
     <Trans>
-      Borrowing is disabled due to an Aave community decision.{' '}
+      Borrowing is disabled due to an Mooncake Finance community decision.{' '}
       <Link
         href={getFrozenProposalLink(symbol, currentMarket)}
         sx={{ textDecoration: 'underline' }}

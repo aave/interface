@@ -11,9 +11,9 @@ export const RenFILToolTip = () => {
       tooltipContent={
         <Box>
           <Trans>
-            This asset is frozen due to an Aave Protocol Governance decision. On the 20th of
-            December 2022, renFIL will no longer be supported and cannot be bridged back to its
-            native network. It is recommended to withdraw supply positions and repay borrow
+            This asset is frozen due to an Mooncake Finance Protocol Governance decision. On the
+            20th of December 2022, renFIL will no longer be supported and cannot be bridged back to
+            its native network. It is recommended to withdraw supply positions and repay borrow
             positions so that renFIL can be bridged back to FIL before the deadline. After this
             date, it will no longer be possible to convert renFIL to FIL.{' '}
             <Link

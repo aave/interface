@@ -32,7 +32,7 @@ export const FrozenTooltip = ({ symbol, currentMarket }: FrozenTooltipProps) => 
       tooltipContent={
         <Box>
           <Trans>
-            This asset is frozen due to an Aave Protocol Governance decision.{' '}
+            This asset is frozen due to an Mooncake Finance Protocol Governance decision.{' '}
             <Link
               href={getFrozenProposalLink(symbol, currentMarket)}
               sx={{ textDecoration: 'underline' }}

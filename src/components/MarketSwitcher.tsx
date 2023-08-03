@@ -224,7 +224,7 @@ export const MarketSwitcher = () => {
       <Box>
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
           <Trans>
-            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
+            {ENABLE_TESTNET || STAGING_ENV ? 'Select Mooncake Finance Testnet Market' : 'Select Mooncake Finance Market'}
           </Trans>
         </Typography>
       </Box>
@@ -243,9 +243,8 @@ export const MarketSwitcher = () => {
               width: '100%',
               height: '36px',
               background: theme.palette.primary.main,
-              border: `1px solid ${
-                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
-              }`,
+              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
+                }`,
               borderRadius: '6px',
               marginTop: '16px',
               marginBottom: '12px',
@@ -269,13 +268,13 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V3
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
+                      backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }
                     : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
+                      color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                    }
                 }
               >
                 <Trans>Version 3</Trans>
@@ -298,13 +297,13 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V2
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
+                      backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }
                     : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
+                      color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                    }
                 }
               >
                 <Trans>Version 2</Trans>
@@ -325,7 +324,7 @@ export const MarketSwitcher = () => {
               '.MuiListItemIcon-root': { minWidth: 'unset' },
               display:
                 (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
                   ? 'none'
                   : 'flex',
             }}

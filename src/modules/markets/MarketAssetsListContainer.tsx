@@ -47,9 +47,9 @@ export const MarketAssetsListContainer = () => {
       ...reserve,
       ...(reserve.isWrappedBaseAsset
         ? fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
+          symbol: currentNetworkConfig.baseAssetSymbol,
+          underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+        })
         : {}),
     }));
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
@@ -112,8 +112,8 @@ export const MarketAssetsListContainer = () => {
           </Typography>
           <Warning severity="info">
             <Trans>
-              These assets are temporarily frozen or paused by Aave community decisions, meaning
-              that further supply / borrow, or rate swap of these assets are unavailable.
+              These assets are temporarily frozen or paused by Mooncake Finance community decisions,
+              meaning that further supply / borrow, or rate swap of these assets are unavailable.
               Withdrawals and debt repayments are allowed. Follow the{' '}
               <Link
                 onClick={() => {
@@ -125,7 +125,7 @@ export const MarketAssetsListContainer = () => {
                 href="https://governance.aave.com"
                 underline="always"
               >
-                Aave governance forum
+                Mooncake Finance governance forum
               </Link>{' '}
               for further updates.
             </Trans>

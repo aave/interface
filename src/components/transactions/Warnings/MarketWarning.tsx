@@ -8,7 +8,7 @@ const WarningMessage = ({ market }: { market: string }) => {
     return (
       <Trans>
         Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity
-        with Ethereum, which affects the Aave V3 Harmony market.
+        with Ethereum, which affects the Mooncake Finance V3 Harmony market.
       </Trans>
     );
   } else if (market === 'Fantom') {

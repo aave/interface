@@ -68,7 +68,7 @@ export const GovVoteModalContent = ({
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+      currentNetworkConfig.underlyingChainId === governanceConfig.chainId
       ? currentChainId
       : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
@@ -89,9 +89,8 @@ export const GovVoteModalContent = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent(AIP.SHARE_VOTE_ON_LENS)}
-              href={`https://lenster.xyz/?url=${
-                window.location.href
-              }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
+              href={`https://lenster.xyz/?url=${window.location.href
+                }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Mooncake Finance&preview=true`}
               startIcon={
                 <LensIcon
                   color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}

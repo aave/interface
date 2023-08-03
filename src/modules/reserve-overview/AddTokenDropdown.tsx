@@ -163,7 +163,7 @@ export const AddTokenDropdown = ({
           <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
               <Typography variant="secondary12" color="text.secondary">
-                <Trans>Aave aToken</Trans>
+                <Trans>Mooncake Finance aToken</Trans>
               </Typography>
             </Box>
             <MenuItem

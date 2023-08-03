@@ -56,16 +56,17 @@ export const GovernanceTopPanel = () => {
               variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
-              <Trans>Aave Governance</Trans>
+              <Trans>Mooncake Finance Governance</Trans>
             </Typography>
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
-              AAVE token-holders collectively discuss, propose, and vote on upgrades to the
-              protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new
-              proposals or delagate to an address of choice. To learn more check out the Governance
+              Mooncake Finance is a fully decentralized, community governed protocol by the AAVE
+              token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades
+              to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves
+              on new proposals or delagate to an address of choice. To learn more check out the
+              Governance
             </Trans>{' '}
             <Link
               onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}

@@ -20,7 +20,7 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
           }}
           href="https://governance.aave.com/"
         >
-          Aave governance forum
+          Mooncake Finance governance forum
         </a>{' '}
         for updates.
       </Trans>

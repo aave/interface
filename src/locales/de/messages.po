@@ -41,7 +41,7 @@ msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to 
 msgstr ""
 
 #: src/components/transactions/Borrow/ParameterChangewarning.tsx
-msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Mooncake Finance governance forum</1> for updates."
 msgstr ""
 
 #: src/modules/dashboard/lists/SlippageList.tsx
@@ -119,24 +119,24 @@ msgid "AToken supply is not zero"
 msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave Governance"
+msgid "Mooncake Finance Governance"
 msgstr ""
 
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave aToken"
+msgid "Mooncake Finance aToken"
 msgstr ""
 
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
-msgid "Aave debt token"
+msgid "Mooncake Finance debt token"
 msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
+msgid "Mooncake Finance is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "Aave per month"
+msgid "Mooncake Finance per month"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
@@ -535,7 +535,7 @@ msgid "Borrowing is currently unavailable for {0}."
 msgstr ""
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
-msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+msgid "Borrowing is disabled due to an Mooncake Finance community decision. <0>More details</0>"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -890,7 +890,7 @@ msgid "Discount model parameters"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Discount parameters are decided by the Aave community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
+msgid "Discount parameters are decided by the Mooncake Finance community and may be changed over time. Check Governance for updates and vote to participate. <0>Learn more</0>"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
@@ -910,7 +910,7 @@ msgid "Due to internal stETH mechanics required for rebasing support, it is not 
 msgstr ""
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Mooncake Finance V3 Harmony market."
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -934,7 +934,7 @@ msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
-msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
+msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Mooncake Finance Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Mooncake Finance V3 Technical Paper</2>."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
@@ -1458,7 +1458,7 @@ msgid "Minimum GHO borrow amount"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Minimum staked Aave amount"
+msgid "Minimum staked Mooncake Finance amount"
 msgstr ""
 
 #: src/layouts/MoreMenu.tsx
@@ -1760,7 +1760,7 @@ msgid "Read more here."
 msgstr ""
 
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
-msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgid "Read-only mode allows to see address positions in Mooncake Finance, but you won't be able to perform transactions."
 msgstr ""
 
 #: src/layouts/WalletWidget.tsx
@@ -1842,7 +1842,7 @@ msgid "Reserve factor"
 msgstr ""
 
 #: src/components/infoTooltips/ReserveFactorTooltip.tsx
-msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
+msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Mooncake Finance governance to promote ecosystem growth."
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
@@ -2126,7 +2126,7 @@ msgid "State"
 msgstr ""
 
 #: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgid "Static interest rate that is determined by Mooncake Finance Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
@@ -2282,11 +2282,11 @@ msgid "The % of your total borrowing power used. This is based on the amount of 
 msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
-msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgid "The Mooncake Finance Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
-msgid "The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
+msgid "The Mooncake Finance Protocol is programmed to always use the price of 1 GHO = $1. This is different from using market pricing via oracles for other crypto assets. This creates stabilizing arbitrage opportunities when the price of GHO fluctuates."
 msgstr ""
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
@@ -2379,7 +2379,7 @@ msgid "There was some error. Please try changing the parameters or <0><1>copy th
 msgstr ""
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgid "These assets are temporarily frozen or paused by Mooncake Finance community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Mooncake Finance governance forum</0> for further updates."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -2419,19 +2419,19 @@ msgid "This asset has reached its supply cap. Nothing is available to be supplie
 msgstr ""
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
-msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgid "This asset is frozen due to an Mooncake Finance Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
 #: src/components/infoTooltips/RenFILToolTip.tsx
-msgid "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
+msgid "This asset is frozen due to an Mooncake Finance Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
+msgid "This asset is frozen due to an Mooncake Finance community decision. <0>More details</0>"
 msgstr ""
 
 #: src/components/Warnings/BUSDOffBoardingWarning.tsx
-msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
+msgid "This asset is planned to be offboarded due to an Mooncake Finance Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
@@ -2476,7 +2476,7 @@ msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr ""
 
 #: src/components/infoTooltips/ApprovalTooltip.tsx
-msgid "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgid "To continue, you need to grant Mooncake Finance smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -2816,7 +2816,7 @@ msgid "With a voting power of <0/>"
 msgstr ""
 
 #: src/modules/faucet/FaucetTopPanel.tsx
-msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
+msgid "With testnet Faucet you can get free assets to test the Mooncake Finance Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
@@ -3182,4 +3182,3 @@ msgstr ""
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr ""
-

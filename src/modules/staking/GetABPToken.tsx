@@ -24,7 +24,7 @@ export const GetABPToken = () => {
 
   return (
     <>
-      <DarkTooltip title="Get ABP tokens to stake within the Aave Protocol">
+      <DarkTooltip title="Get ABP tokens to stake within the Mooncake Finance Protocol">
         <Button
           variant="outlined"
           size="small"

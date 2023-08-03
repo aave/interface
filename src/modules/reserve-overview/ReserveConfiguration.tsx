@@ -44,7 +44,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         {reserve.isFrozen && reserve.symbol != 'BUSD' ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
-              This asset is frozen due to an Aave community decision.{' '}
+              This asset is frozen due to an Mooncake Finance community decision.{' '}
               <Link
                 href={getFrozenProposalLink(reserve.symbol, currentMarket)}
                 sx={{ textDecoration: 'underline' }}

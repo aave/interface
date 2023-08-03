@@ -283,9 +283,8 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
               )}
               <IconButtonCustom
                 target="_blank"
-                href={`https://lenster.xyz/?url=${
-                  window.location.href
-                }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
+                href={`https://lenster.xyz/?url=${window.location.href
+                  }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Mooncake Finance&preview=true`}
                 size="small"
                 sx={{ ml: 'auto' }}
                 onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_SHARE_LENSTER)}

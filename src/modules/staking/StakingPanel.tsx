@@ -481,7 +481,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           title={<Trans>Claimable AAVE</Trans>}
           value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
           valueUSD={claimableUSD}
-          bottomLineTitle={<Trans>Aave per month</Trans>}
+          bottomLineTitle={<Trans>Mooncake Finance per month</Trans>}
           dataCy={`rewardBox_${stakedToken}`}
           bottomLineComponent={
             <FormattedNumber
@@ -542,9 +542,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             width:
               STAGING_ENV || ENABLE_TESTNET
                 ? {
-                    xs: '100%',
-                    lg: '50%',
-                  }
+                  xs: '100%',
+                  lg: '50%',
+                }
                 : '100%',
             marginX: 'auto',
           }}

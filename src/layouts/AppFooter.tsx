@@ -24,7 +24,7 @@ const FOOTER_ICONS = [
   {
     href: 'https://lenster.xyz/u/aaveaave',
     icon: <LensLogoIcon />,
-    title: 'Aave',
+    title: 'Mooncake Finance',
   },
   {
     href: 'https://twitter.com/aaveaave?s=11&t=ZixFmUt1SIHLEMvx18gUGw',

@@ -11,9 +11,9 @@ type MetaProps = {
 export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
   return (
     <Head>
-      <title>Aave - {title}</title>
+      <title>Mooncake Finance - {title}</title>
       <meta name="description" content={description} key="description" />
-      <meta property="og:title" content={`Aave - ${title}`} key="title" />
+      <meta property="og:title" content={`Mooncake Finance - ${title}`} key="title" />
       <meta property="og:description" content={description} key="ogdescription" />
       {imageUrl && <meta property="og:image" content={imageUrl} key="ogimage" />}
       {imageUrl && <meta name="twitter:image" content={imageUrl} key="twitterimage" />}
@@ -35,7 +35,7 @@ export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
         content="Decentralized Finance, DeFi, lending, borrowing, stablecoins, Ethereum, assets, erc-20, smart contracts, open finance, trustless"
       />
       <link rel="apple-touch-icon" href="/aave_icon180.png" />
-      <meta name="apple-mobile-web-app-title" content={`Aave`} />
+      <meta name="apple-mobile-web-app-title" content={`Mooncake Finance`} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     </Head>
