@@ -2,8 +2,8 @@ import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
+// import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 import { MarketDataType } from '../marketsConfig';
 
 interface Navigation {
@@ -24,29 +24,29 @@ export const navigation: Navigation[] = [
     title: t`Markets`,
     dataCy: 'menuMarkets',
   },
-  {
-    link: ROUTES.staking,
-    title: t`Stake`,
-    dataCy: 'menuStake',
-    isVisible: () =>
-      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-      process.env.NEXT_PUBLIC_ENV === 'prod' &&
-      !ENABLE_TESTNET,
-  },
-  {
-    link: ROUTES.governance,
-    title: t`Governance`,
-    dataCy: 'menuGovernance',
-    isVisible: () =>
-      process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
-      process.env.NEXT_PUBLIC_ENV === 'prod' &&
-      !ENABLE_TESTNET,
-  },
-  {
-    link: ROUTES.faucet,
-    title: t`Faucet`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
-  },
+  // {
+  //   link: ROUTES.staking,
+  //   title: t`Stake`,
+  //   dataCy: 'menuStake',
+  //   isVisible: () =>
+  //     process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+  //     process.env.NEXT_PUBLIC_ENV === 'prod' &&
+  //     !ENABLE_TESTNET,
+  // },
+  // {
+  //   link: ROUTES.governance,
+  //   title: t`Governance`,
+  //   dataCy: 'menuGovernance',
+  //   isVisible: () =>
+  //     process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
+  //     process.env.NEXT_PUBLIC_ENV === 'prod' &&
+  //     !ENABLE_TESTNET,
+  // },
+  // {
+  //   link: ROUTES.faucet,
+  //   title: t`Faucet`,
+  //   isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
+  // },
 ];
 
 interface MoreMenuItem extends Navigation {
@@ -56,13 +56,13 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
-    title: t`FAQ`,
+    link: 'https://docs.mooncake.finance/',
+    title: t`Documentation`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
-    title: t`Developers`,
+    link: 'https://github.com/mooncake.fi/',
+    title: t`Github`,
     icon: <BookOpenIcon />,
   },
 ];

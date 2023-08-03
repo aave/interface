@@ -20,7 +20,7 @@ const {
 const FONT = 'Inter, Arial';
 
 declare module '@mui/material/styles/createPalette' {
-  interface PaletteColor extends ColorPartial {}
+  interface PaletteColor extends ColorPartial { }
 
   interface TypeText {
     muted: string;
@@ -74,10 +74,10 @@ interface TypographyCustomVariants {
 }
 
 declare module '@mui/material/styles' {
-  interface TypographyVariants extends TypographyCustomVariants {}
+  interface TypographyVariants extends TypographyCustomVariants { }
 
   // allow configuration using `createTheme`
-  interface TypographyVariantsOptions extends TypographyCustomVariants {}
+  interface TypographyVariantsOptions extends TypographyCustomVariants { }
 
   interface BreakpointOverrides {
     xsm: true;
@@ -185,7 +185,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
         surface2: getColor('#F9F9FB', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
+        header: getColor('#181822', '#181822'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
