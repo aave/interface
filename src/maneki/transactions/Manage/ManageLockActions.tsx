@@ -23,8 +23,8 @@ export const ManageLockActions = ({ symbol, amount, isWrongNetwork }: ManageLock
   const { mainTxState, setMainTxState, setTxError, approvalTxState, setApprovalTxState } =
     useModalContext();
   const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
-  const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
+  const PAW_TOKEN_ADDR = marketsData.arbitrum_mainnet_v3.addresses.PAW_TOKEN as string;
+  const MULTI_FEE_ADDR = marketsData.arbitrum_mainnet_v3.addresses.COLLECTOR as string;
   const handleApproval = async () => {
     setApprovalTxState({
       loading: true,

@@ -26,6 +26,7 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import ClaimRewardSnackbar from 'src/maneki/modules/markets/ClaimRewardSnackbar';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -88,6 +89,7 @@ export default function MyApp(props: MyAppProps) {
                             <FaucetModal />
                             <AirdropModal />
                             <MigrateV3Modal />
+                            <ClaimRewardSnackbar />
                           </GasStationProvider>
                         </AirdropDataProvider>
                       </AppDataProvider>

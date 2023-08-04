@@ -19,3 +19,12 @@ export const toWeiString = (value: string) => {
   }
   return splited;
 };
+
+export const manekiParseUnits = (value: string, units: number) => {
+  let splited = removeDecimals(value);
+  const decimals = countDecimals(value);
+  for (let i = 0; i < units - decimals; i++) {
+    splited += '0';
+  }
+  return splited;
+};

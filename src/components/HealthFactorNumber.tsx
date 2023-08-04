@@ -10,12 +10,14 @@ interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
   HALIntegrationComponent?: React.ReactNode;
+  isTopPanel?: boolean;
 }
 
 export const HealthFactorNumber = ({
   value,
   onInfoClick,
   HALIntegrationComponent,
+  isTopPanel,
   ...rest
 }: HealthFactorNumberProps) => {
   const { palette } = useTheme();
@@ -49,7 +51,7 @@ export const HealthFactorNumber = ({
           sx={{ color: healthFactorColor, ...rest.sx }}
           visibleDecimals={2}
           compact
-          isTopPanel
+          isTopPanel={isTopPanel}
           {...rest}
         />
       )}

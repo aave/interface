@@ -23,8 +23,8 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
   const { setMainTxState, setTxError } = useModalContext();
   const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
   const [claimables, setClaimables] = useState<ClaimablesType[]>([]);
-  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+  const MULTI_FEE_ADDR = marketsData.arbitrum_mainnet_v3.addresses.COLLECTOR as string;
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
   useEffect(() => {
@@ -100,7 +100,12 @@ export const ManageClaimAll = ({ symbol, isWrongNetwork, action }: ManekiModalCh
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
+      <Image
+        src={'/maneki-logo-center.png'}
+        width={'200px'}
+        height={'200px'}
+        alt="maneki cat in 3d"
+      />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         <Trans>Claiming All Rewards</Trans>
       </Typography>

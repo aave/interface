@@ -334,11 +334,12 @@ msgid "Available to supply"
 msgstr "Available to supply"
 
 #: pages/404.page.tsx
-msgid "Back to Dashboard"
-msgstr "Back to Dashboard"
+msgid "Back to Home Page"
+msgstr "Back to Home Page"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/maneki/modules/leverage/components/SelectCollateralAsset.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -374,10 +375,6 @@ msgstr "Borrow"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
-
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Borrow APY, stable"
-msgstr "Borrow APY, stable"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -457,10 +454,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Buy Crypto With Fiat"
-msgstr "Buy Crypto With Fiat"
-
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Buy Crypto with Fiat"
 msgstr "Buy Crypto with Fiat"
@@ -504,6 +497,10 @@ msgstr "Cant get signer"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
+
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Choose Borrowed Assets"
+msgstr "Choose Borrowed Assets"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
@@ -817,6 +814,10 @@ msgstr "Delegating"
 msgid "Delegation"
 msgstr "Delegation"
 
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Delta Hedged Strategy"
+msgstr "Delta Hedged Strategy"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -824,10 +825,6 @@ msgstr "Delegation"
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Details"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Developers"
-msgstr "Developers"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
@@ -1085,10 +1082,6 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "Guide"
-msgstr "Guide"
-
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Health Factor ({0} v2)"
 msgstr "Health Factor ({0} v2)"
@@ -1244,6 +1237,15 @@ msgstr "Learn more about risks involved"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
+#: src/maneki/modules/leverage/LeverageTopPanel.tsx
+#: src/ui-config/menu-items/index.tsx
+msgid "Leverage"
+msgstr "Leverage"
+
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Leverage: {leverage}x"
+msgstr "Leverage: {leverage}x"
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Links"
@@ -1329,6 +1331,7 @@ msgid "MAX"
 msgstr "MAX"
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
+#: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Manage PAW"
 msgstr "Manage PAW"
@@ -1336,6 +1339,10 @@ msgstr "Manage PAW"
 #: src/maneki/modules/airdrop/AirdropTopPanel.tsx
 msgid "Maneki Airdrops"
 msgstr "Maneki Airdrops"
+
+#: src/maneki/modules/tge/TGETopPanel.tsx
+msgid "Maneki Token Generation Event"
+msgstr "Maneki Token Generation Event"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -1428,10 +1435,6 @@ msgstr "More"
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
 msgstr "NAY"
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -1564,10 +1567,6 @@ msgstr "Overview"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Locks"
 msgstr "PAW Locks"
-
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "PAW Token Generation Event"
-msgstr "PAW Token Generation Event"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Vests"
@@ -1854,6 +1853,10 @@ msgstr "Select"
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
 
+#: src/maneki/modules/leverage/LeverageContainer.tsx
+msgid "Select Collateral Asset"
+msgstr "Select Collateral Asset"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Select language"
@@ -1946,6 +1949,10 @@ msgstr "Spanish"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable"
 msgstr "Stable"
+
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Stable Coin:"
+msgstr "Stable Coin:"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable Interest Type is disabled for this currency"
@@ -2145,12 +2152,9 @@ msgstr "Switch rate"
 
 #: src/maneki/components/SwitchNetworkHeader.tsx
 #: src/maneki/components/SwitchNetworkHeader.tsx
-msgid "Switch to BNB Testnet"
-msgstr "Switch to BNB Testnet"
-
 #: src/maneki/components/SwitchNetworkHeader.tsx
-msgid "Switch to tBNB"
-msgstr "Switch to tBNB"
+msgid "Switch to Arbitrum"
+msgstr "Switch to Arbitrum"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
@@ -2289,8 +2293,8 @@ msgid "This action will reduce your health factor. Please be mindful of the incr
 msgstr "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
 
 #: src/components/AddressBlockedModal.tsx
-msgid "This address is blocked on app.aave.com because it is associated with one or more"
-msgstr "This address is blocked on app.aave.com because it is associated with one or more"
+msgid "This address is blocked because it is associated with one or more"
+msgstr "This address is blocked because it is associated with one or more"
 
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 msgid "This airdrop is distributed to Social Media members."
@@ -2390,10 +2394,6 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 
-#: src/maneki/modules/tge/TGETopPanel.tsx
-msgid "Tokenomics"
-msgstr "Tokenomics"
-
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Tokens"
 msgstr "Tokens"
@@ -2405,6 +2405,10 @@ msgstr "Top 10 addresses"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Locked"
 msgstr "Total Locked"
+
+#: src/maneki/modules/markets/ClaimRewardTopPanel.tsx
+msgid "Total Rewards"
+msgstr "Total Rewards"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
@@ -2512,6 +2516,10 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Unlocked PAW"
 msgstr "Unlocked PAW"
+
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Unstable Coin:"
+msgstr "Unstable Coin:"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
@@ -2678,8 +2686,8 @@ msgid "Wallets are provided by External Providers and by selecting you agree to 
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
 #: pages/404.page.tsx
-msgid "We suggest you go back to the Dashboard."
-msgstr "We suggest you go back to the Dashboard."
+msgid "We suggest you go back to the Home Page."
+msgstr "We suggest you go back to the Home Page."
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
 #: src/maneki/modules/stake/StakeTopPanel.tsx
@@ -2823,6 +2831,10 @@ msgstr "You will exit isolation mode and other tokens can now be used as collate
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action}"
 msgstr "You {action}"
+
+#: src/maneki/modules/leverage/components/LeverageInfoDisplay.tsx
+msgid "Your Borrowed Assets:"
+msgstr "Your Borrowed Assets:"
 
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 msgid "Your Staked PAW"

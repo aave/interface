@@ -24,8 +24,8 @@ export const ManageQuickActions = () => {
   const [amountToStake, setAmountToStake] = React.useState<string>('');
   const [amountToLock, setAmountToLock] = React.useState<string>('');
   const { provider, currentAccount } = useWeb3Context();
-  const PAW_TOKEN_ADDR = marketsData.bsc_testnet_v3.addresses.PAW_TOKEN as string;
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+  const PAW_TOKEN_ADDR = marketsData.arbitrum_mainnet_v3.addresses.PAW_TOKEN as string;
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
   const { openManage } = useModalContext();
 

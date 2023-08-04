@@ -206,7 +206,7 @@ export const useTransactionHandler = ({
                         txHash: hash,
                         loading: false,
                       });
-                      reject();
+                      reject(error);
                     },
                     // TODO: add error callback
                     action: TxAction.APPROVAL,
@@ -222,6 +222,7 @@ export const useTransactionHandler = ({
           });
         } catch (error) {
           if (!mounted.current) return;
+
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);
           setApprovalTxState({

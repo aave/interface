@@ -11,19 +11,20 @@ export const useCryptoBuyAvailable = (
   const [isAvailable, setIsAvailable] = useState(false);
 
   useEffect(() => {
-    (async function () {
-      const transakApiUrl = process.env.NEXT_PUBLIC_TRANSAK_API_URL;
+    // (async function () {
+    //   const transakApiUrl = process.env.NEXT_PUBLIC_TRANSAK_API_URL;
 
-      try {
-        const response = await fetch(
-          `${transakApiUrl}/cryptocoverage/api/v1/public/partner/crypto-currencies?symbol=${cryptoCode}&network=${networkMarketName}`
-        );
+    //   try {
+    //     const response = await fetch(
+    //       `${transakApiUrl}/cryptocoverage/api/v1/public/partner/crypto-currencies?symbol=${cryptoCode}&network=${networkMarketName}`
+    //     );
 
-        setIsAvailable(response.ok);
-      } catch (e) {
-        setIsAvailable(false);
-      }
-    })();
+    //     setIsAvailable(response.ok);
+    //   } catch (e) {
+    //     setIsAvailable(false);
+    //   }
+    // })();
+    setIsAvailable(false);
   }, [cryptoCode, networkMarketName]);
 
   return {

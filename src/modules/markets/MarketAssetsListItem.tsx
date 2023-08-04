@@ -5,6 +5,7 @@ import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import MarketsSglpLeverageButton from 'src/maneki/components/MarketsSglpLeverageButton';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -15,6 +16,13 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 
+const glpStyle = {
+  borderWidth: '4px !important',
+  borderStyle: 'solid',
+  borderRadius: '12px',
+  borderImage: 'linear-gradient(45deg, rgba(255,71,197,1) 26%, rgba(255,107,106,1) 100%) 1',
+};
+
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
@@ -24,7 +32,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       px={6}
       minHeight={76}
       onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket))}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'pointer', ...(reserve.symbol === 'GLP' ? glpStyle : {}) }}
       button
       data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
     >
@@ -46,6 +54,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
         {reserve.symbol === 'renFIL' && <RenFILToolTip />}
+        {reserve.symbol === 'GLP' && <MarketsSglpLeverageButton />}
       </ListColumn>
 
       <ListColumn>

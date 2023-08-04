@@ -1,5 +1,5 @@
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { Typography } from '@mui/material';
+import { SxProps, Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 import { TypographyProps } from '@mui/material/Typography';
 import { TypographyPropsVariantOverrides } from '@mui/material/Typography/Typography';
@@ -51,6 +51,7 @@ export interface FormattedNumberProps extends TypographyProps {
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   roundDown?: boolean;
   isTopPanel?: boolean;
+  symbolSx?: SxProps;
 }
 
 export function FormattedNumber({
@@ -63,6 +64,7 @@ export function FormattedNumber({
   symbolsColor,
   roundDown,
   isTopPanel,
+  symbolSx,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
@@ -145,7 +147,7 @@ export function FormattedNumber({
       {symbol?.toLowerCase() !== 'usd' && typeof symbol !== 'undefined' && (
         <Typography
           component="span"
-          sx={{ ml: 0.5 }}
+          sx={{ ml: 0.5, ...symbolSx }}
           variant={symbolsVariant || rest.variant}
           color={symbolsColor || 'text.secondary'}
         >

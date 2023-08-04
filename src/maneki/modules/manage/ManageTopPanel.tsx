@@ -13,6 +13,10 @@ import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { marketsData } from '../../../ui-config/marketsConfig';
 import { useManageContext } from '../../hooks/manage-data-provider/ManageDataProvider';
 
+export const ManageTemporaryTopPanel = () => {
+  return <TopInfoPanel pageTitle={<Trans>Manage PAW</Trans>} />;
+};
+
 export const ManageTopPanel = () => {
   const {
     stakedPAW,
@@ -36,7 +40,7 @@ export const ManageTopPanel = () => {
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
   // eslint-disable-next-line prettier/prettier
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
 
   React.useEffect(() => {
