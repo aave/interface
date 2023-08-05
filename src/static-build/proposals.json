@@ -11088,7 +11088,7 @@
       "ipfsHash": "0xe9c7824ff7cba1ed5d9c14b1aafb18349bb2cbefab9ef1c7d290a14c2b69b8fc",
       "startTimestamp": 1690981451,
       "creationTimestamp": 1690894559,
-      "expirationTimestamp": 1691213219
+      "expirationTimestamp": 1691213255
     },
     {
       "id": 286,
@@ -11123,7 +11123,7 @@
       "ipfsHash": "0x17a1ed9e14b4fa2dfcddd11503fd86d080b33d266061fe7953b2db0ed3cac920",
       "startTimestamp": 1691007203,
       "creationTimestamp": 1690920323,
-      "expirationTimestamp": 1691238839
+      "expirationTimestamp": 1691238875
     },
     {
       "id": 287,
@@ -11157,8 +11157,47 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xc7c9a8a16f30f2836e49ddb7382629e7bbb3e34d85016bb966e42c5167954a9e",
       "creationTimestamp": 1691161955,
-      "startTimestamp": 1691248547,
-      "expirationTimestamp": 1691478947
+      "startTimestamp": 1691248583,
+      "expirationTimestamp": 1691478983
+    },
+    {
+      "id": 288,
+      "creator": "0x683a4F9915D6216f73d6Df50151725036bD26C02",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x7aa759A57c6b039A93e93683FacD14209EE9A3DD",
+        "0x158a6bC04F0828318821baE797f50B0A1299d45b"
+      ],
+      "signatures": [
+        "execute()",
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x",
+        "0x000000000000000000000000c12ad8b3d242b1eddc1c8319d1d58608e67043ed"
+      ],
+      "withDelegatecalls": [
+        true,
+        true
+      ],
+      "startBlock": 17851744,
+      "endBlock": 17870944,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 17844544,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x4940eb2481c308072d4e2431c167477918e48edf25551c54bdac13d1f78d8497",
+      "creationTimestamp": 1691187467,
+      "startTimestamp": 1691273903,
+      "expirationTimestamp": 1691504303
     }
   ]
 }
