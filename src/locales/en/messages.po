@@ -217,7 +217,6 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -1031,7 +1030,6 @@ msgstr "FAQS"
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr "Failed to load proposal voters. Please refresh the page."
 
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -1041,7 +1039,6 @@ msgstr "Failed to load proposal voters. Please refresh the page."
 msgid "Faucet"
 msgstr "Faucet"
 
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
@@ -3092,10 +3089,6 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
-
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
-msgid "will receive"
-msgstr "will receive"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
