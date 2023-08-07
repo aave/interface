@@ -55,7 +55,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     name: 'Ethereum Sepolia',
     publicJsonRPCUrl: [
       'https://eth-sepolia.public.blastapi.io',
-      'https://eth-sepolia.g.alchemy.com/v2/demo',
+      'https://rpc.sepolia.org',
+      'https://rpc2.sepolia.org',
+      'https://rpc.sepolia.online',
+      'https://www.sepoliarpc.space',
     ],
     // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     // protocolDataUrl: '',

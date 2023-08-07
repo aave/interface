@@ -61,7 +61,7 @@ export const BorrowedPositionsListMobileItem = ({
   const disableBorrow = !isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed;
 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData);
-  const disableSwitch = !isActive || isFrozen || reserve.symbol === 'stETH';
+  const disableSwitch = !isActive || reserve.symbol === 'stETH';
 
   return (
     <ListMobileItemWrapper
