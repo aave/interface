@@ -13,7 +13,6 @@ import DeltaHedgedStrategy from './components/DeltaHedgedStrategy';
 import LeverageActionButton from './components/LeverageActionButton';
 import LeverageInfoDisplay from './components/LeverageInfoDisplay';
 import LeverageSlider from './components/LeverageSlider';
-import LeverageSnackbar from './components/LeverageSnackbar';
 import SelectCollateralAsset from './components/SelectCollateralAsset';
 
 const LeverageContainer = () => {
@@ -56,7 +55,6 @@ const LeverageContainer = () => {
       <LeverageSlider />
       <LeverageInfoDisplay amount={amount} />
       <LeverageActionButton amount={amount} />
-      <LeverageSnackbar />
     </Paper>
   );
 };
