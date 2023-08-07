@@ -53,7 +53,7 @@ export default function ClaimRewardTopPanel() {
     <ClaimRewardContainer>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <Typography sx={{ color: (theme) => theme.palette.text.secondary }} variant="description">
-          <Trans>Total Rewards</Trans>:{' '}
+          <Trans>GLP ETH Reward:</Trans>:{' '}
         </Typography>
         {fetchError ? (
           <NoData />
