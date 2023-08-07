@@ -3823,6 +3823,15 @@
       "ipfsHash": "QmTGbtKuez4UWjs6wozgnuDjuSAg5y9hFZ4MMbN3toWjG2",
       "originalHash": "0x4940eb2481c308072d4e2431c167477918e48edf25551c54bdac13d1f78d8497",
       "id": 288
+    },
+    {
+      "title": "aCRV OTC Deal",
+      "author": "Marc Zeller (@marczeller - Aave Chan Initiative)",
+      "discussions": "https://governance.aave.com/t/arfc-acquire-crv-with-treasury-usdt/14251",
+      "ipfsHash": "QmNZriPXozMFWEZfnVo9gefE2C1B3qkcUsY8LTSMPteKCP",
+      "description": "\n## Simple Summary\n\nThis ARFC proposes the strategic acquisition of CRV tokens using USDT from the Aave DAO treasury (collector contract). The acquisition aims to support the DeFi ecosystem and position Aave DAO strategically in the Curve wars, benefiting GHO secondary liquidity.\n\n## Motivation\n\nRecent events related to the `0x7a16ff8270133f063aab6c9977183d9e72835428` position on Aave V2 have presented the Aave DAO with an opportunity to support the DeFi ecosystem and make a strategic acquisition of CRV tokens. These tokens can be mobilized to incentivize GHO liquidity via locking them to gather Curve voting power and support a GHO-specific Gauge.\n\nA 2M USDT worth of CRV acquisition would send a strong signal of DeFi supporting DeFi, while allowing the Aave DAO to strategically position itself in the Curve wars, benefiting GHO secondary liquidity.\n\nThe treasury balance and the predicted lower costs for service providers for the 2023-2024 budget would allow this strategic acquisition while maintaining a conservative stance with DAO treasury holdings.\n\n## Specification\n\nThe proposal suggests using 2M aUSDT from the Aave DAO treasury to acquire 5M aCRV tokens from `0x7a16ff8270133f063aab6c9977183d9e72835428`\n\nIn terms of implementation, this AIP initiates a transferFrom() on the aCRV token contract to the Aave Collector, leveraging a previous approval() from `0x7a16ff8270133f063aab6c9977183d9e72835428` of 5M aCRV tokens to the Aave DAO treasury (collector contract).\n\nThen, 2M aUSDT are withdrawn from the collector contract and mobilized to repay part of `0x7a16ff8270133f063aab6c9977183d9e72835428` USDT debt.\n\nIn case of lack of approval on aCRV tokens, the proposal will fail.\n\n\n## References\n\n- Implementation: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV2_Eth_CRV_OTC_Deal_20230508/AaveV2_Eth_CRV_OTC_Deal_20230508.sol)\n- Tests: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/AaveV2_Eth_CRV_OTC_Deal_20230508/AaveV2_Eth_CRV_OTC_Deal_20230508.t.sol)\n- [Discussion](https://governance.aave.com/t/arfc-acquire-crv-with-treasury-usdt/14251)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "originalHash": "0x03621fdd5b0f4431c88e43b154b7192c0dd0ab0c0cbecb2d6336c49a2a6bcc54",
+      "id": 289
     }
   ]
 }
