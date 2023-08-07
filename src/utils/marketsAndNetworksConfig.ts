@@ -154,6 +154,7 @@ export const isFeatureEnabled = {
   liquiditySwap: (data: MarketDataType) => data.enabledFeatures?.liquiditySwap,
   collateralRepay: (data: MarketDataType) => data.enabledFeatures?.collateralRepay,
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
+  debtSwitch: (data: MarketDataType) => data.enabledFeatures?.debtSwitch,
 };
 
 const providers: { [network: string]: ethersProviders.Provider } = {};

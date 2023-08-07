@@ -158,6 +158,6 @@ export const calculateHFAfterRepay = ({
 
   return {
     hfEffectOfFromAmount: valueToBigNumber(hfInitialEffectOfFromAmount),
-    hfAfterSwap,
+    hfAfterSwap: hfAfterSwap.isLessThan(0) && !hfAfterSwap.eq(-1) ? 0 : hfAfterSwap,
   };
 };

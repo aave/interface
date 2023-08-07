@@ -47,6 +47,8 @@ export const RESERVE_DETAILS = {
   ADD_TOKEN_TO_WALLET_DROPDOWN: 'View add token to wallet dropdown', //done
   GO_DASHBOARD_EMODE: 'Click Dashboard from E-Mode section', //done
   GRAPH_TIME_PERIOD: 'Graph Time Period Selector',
+  GHO_CALCULATOR_ADD: 'Add stkAAVE to borrow at max discount',
+  GHO_CALCULATOR_AMOUNT_CHANGE: 'Slider amount change',
 };
 
 export const YOUR_INFO_RESERVE_DETAILS = {
@@ -92,4 +94,13 @@ export const SETTINGS = {
   TESTNET_MODE: 'Testnet mode toggled: ',
   LANGUAGE: 'Language selector',
   LANGUAGE_SELECTED: 'Language selected',
+};
+
+export const GHO_SUCCESS_MODAL = {
+  GHO_SHARE_TWITTER: 'Click share GHO borrow on Twitter',
+  GHO_SHARE_LENSTER: 'Click share GHO borrow on Lenster',
+  GHO_COPY_IMAGE: 'Click copy image on GHO borrow',
+  GHO_DOWNLOAD_IMAGE: 'Click download image on GHO borrow',
+  GHO_BORROW_VIEW_TX_DETAILS: 'Click view TX details on GHO borrow',
+  GHO_FAIL_COPY_IMAGE: 'Failed to copy image to clipboard',
 };

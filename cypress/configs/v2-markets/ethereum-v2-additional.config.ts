@@ -13,6 +13,7 @@ export default defineConfig({
       folder + '/**/reward.aave-v2.cy.ts',
       folder + '/**/critical-conditions.aave-v2.cy.ts',
       folder + '/**/migration.aave-v2.cy.ts',
+      folder + '/**/switch.aave-v2.cy.ts',
     ],
   },
 });

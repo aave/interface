@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, ContainerProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
@@ -6,6 +6,7 @@ import { PageTitle, PageTitleProps } from './PageTitle';
 interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
   titleComponent?: ReactNode;
+  containerProps?: ContainerProps;
 }
 
 export const TopInfoPanel = ({
@@ -15,6 +16,7 @@ export const TopInfoPanel = ({
   withMigrateButton,
   bridge,
   children,
+  containerProps = {},
 }: TopInfoPanelProps) => {
   return (
     <Box
@@ -25,7 +27,7 @@ export const TopInfoPanel = ({
         color: '#F1F1F3',
       }}
     >
-      <Container sx={{ pb: 0 }}>
+      <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
           {!titleComponent && (
             <PageTitle

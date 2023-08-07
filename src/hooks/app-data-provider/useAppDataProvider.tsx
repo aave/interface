@@ -1,15 +1,23 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   ComputedUserReserve,
+  formatGhoReserveData,
+  formatGhoUserData,
   formatReservesAndIncentives,
+  FormattedGhoReserveData,
+  FormattedGhoUserData,
   FormatUserSummaryAndIncentivesResponse,
+  formatUserSummaryWithDiscount,
+  USD_DECIMALS,
   UserReserveData,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { GHO_SUPPORTED_MARKETS, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -22,6 +30,7 @@ import {
   selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 
 /**
  * removes the marketPrefix from a symbol
@@ -62,6 +71,9 @@ export interface AppDataContextType {
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
+  ghoReserveData: FormattedGhoReserveData;
+  ghoUserData: FormattedGhoUserData;
+  ghoLoadingData: boolean;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -73,23 +85,60 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
+  const { currentMarket } = useProtocolDataContext();
   const [
     reserves,
     baseCurrencyData,
     userReserves,
     userEmodeCategoryId,
     eModes,
+    ghoReserveData,
+    ghoUserData,
+    ghoReserveDataFetched,
     formattedPoolReserves,
-    user,
+    userSummary,
+    displayGho,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
     selectCurrentUserReserves(state),
     selectCurrentUserEmodeCategoryId(state),
     selectEmodes(state),
+    state.ghoReserveData,
+    state.ghoUserData,
+    state.ghoReserveDataFetched,
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
+    state.displayGho,
   ]);
+
+  const formattedGhoReserveData: FormattedGhoReserveData = formatGhoReserveData({
+    ghoReserveData,
+  });
+  const formattedGhoUserData: FormattedGhoUserData = formatGhoUserData({
+    ghoReserveData,
+    ghoUserData,
+    currentTimestamp,
+  });
+
+  let user = userSummary;
+  // Factor discounted GHO interest into cumulative user fields
+  if (
+    GHO_SUPPORTED_MARKETS.includes(currentMarket) &&
+    formattedGhoUserData.userDiscountedGhoInterest > 0
+  ) {
+    const userSummaryWithDiscount = formatUserSummaryWithDiscount({
+      userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
+      user,
+      marketReferenceCurrencyPriceUSD: Number(
+        formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)
+      ),
+    });
+    user = {
+      ...user,
+      ...userSummaryWithDiscount,
+    };
+  }
 
   const proportions = user.userReservesData.reduce(
     (acc, value) => {
@@ -111,15 +160,39 @@ export const AppDataProvider: React.FC = ({ children }) => {
           }
         }
         if (value.variableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-          );
-          if (reserve.vIncentivesData) {
-            reserve.vIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
-              );
-            });
+          // TODO: Export to unified helper function
+          if (displayGho({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+            const borrowRateAfterDiscount = weightedAverageAPY(
+              formattedGhoReserveData.ghoVariableBorrowAPY,
+              formattedGhoUserData.userGhoBorrowBalance,
+              formattedGhoUserData.userGhoAvailableToBorrowAtDiscount,
+              formattedGhoReserveData.ghoBorrowAPYWithMaxDiscount
+            );
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(borrowRateAfterDiscount).multipliedBy(
+                formattedGhoUserData.userGhoBorrowBalance
+              )
+            );
+            if (reserve.vIncentivesData) {
+              reserve.vIncentivesData.forEach((incentive) => {
+                acc.positiveProportion = acc.positiveProportion.plus(
+                  new BigNumber(incentive.incentiveAPR).multipliedBy(
+                    formattedGhoUserData.userGhoBorrowBalance
+                  )
+                );
+              });
+            }
+          } else {
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
+            );
+            if (reserve.vIncentivesData) {
+              reserve.vIncentivesData.forEach((incentive) => {
+                acc.positiveProportion = acc.positiveProportion.plus(
+                  new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
+                );
+              });
+            }
           }
         }
         if (value.stableBorrowsUSD !== '0') {
@@ -166,6 +239,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         eModes,
         user: {
           ...user,
+          totalBorrowsUSD: user.totalBorrowsUSD,
+          totalBorrowsMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
           userEmodeCategoryId,
           isInEmode: userEmodeCategoryId !== 0,
           userReservesData: user.userReservesData.sort((a, b) =>
@@ -179,6 +254,18 @@ export const AppDataProvider: React.FC = ({ children }) => {
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+        // TODO: we should consider removing this from the context and use zustand instead. If we had a selector that would return the formatted gho data, I think that
+        // would work out pretty well. We could even extend that pattern for the other reserves, and migrate towards the global store instead of the app data provider.
+        // ghoLoadingData for now is just propagated through to reduce changes to other components.
+        ghoReserveData: {
+          ...formattedGhoReserveData,
+          aaveFacilitatorRemainingCapacity: Math.max(
+            formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
+            0
+          ),
+        },
+        ghoUserData: formattedGhoUserData,
+        ghoLoadingData: !ghoReserveDataFetched,
       }}
     >
       {children}

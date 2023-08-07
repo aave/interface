@@ -12,6 +12,7 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
+  useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
@@ -29,7 +30,7 @@ interface CustomProps {
   value: string;
 }
 
-const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
+export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -80,6 +81,8 @@ export interface AssetInputProps<T extends Asset = Asset> {
   balanceText?: ReactNode;
   loading?: boolean;
   event?: TrackEventProps;
+  selectOptionHeader?: ReactNode;
+  selectOption?: (asset: T) => ReactNode;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -98,7 +101,10 @@ export const AssetInput = <T extends Asset = Asset>({
   balanceText,
   loading = false,
   event,
+  selectOptionHeader,
+  selectOption,
 }: AssetInputProps<T>) => {
+  const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -204,6 +210,15 @@ export const AssetInput = <T extends Asset = Asset>({
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
+                MenuProps={{
+                  sx: {
+                    maxHeight: '240px',
+                    '.MuiPaper-root': {
+                      border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
+                      boxShadow: '0px 2px 10px 0px #0000001A',
+                    },
+                  },
+                }}
                 sx={{
                   p: 0,
                   '&.AssetInput__select .MuiOutlinedInput-input': {
@@ -239,19 +254,26 @@ export const AssetInput = <T extends Asset = Asset>({
                   );
                 }}
               >
+                {selectOptionHeader ? selectOptionHeader : undefined}
                 {assets.map((asset) => (
                   <MenuItem
                     key={asset.symbol}
                     value={asset.symbol}
                     data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                   >
-                    <TokenIcon
-                      aToken={asset.aToken}
-                      symbol={asset.iconSymbol || asset.symbol}
-                      sx={{ fontSize: '22px', mr: 1 }}
-                    />
-                    <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                    {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                    {selectOption ? (
+                      selectOption(asset)
+                    ) : (
+                      <>
+                        <TokenIcon
+                          aToken={asset.aToken}
+                          symbol={asset.iconSymbol || asset.symbol}
+                          sx={{ fontSize: '22px', mr: 1 }}
+                        />
+                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                      </>
+                    )}
                   </MenuItem>
                 ))}
               </Select>

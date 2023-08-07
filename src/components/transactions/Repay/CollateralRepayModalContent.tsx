@@ -6,8 +6,6 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { Warning } from 'src/components/primitives/Warning';
-import { USDTParaswapWarning } from 'src/components/Warnings/USDTParaswapWarning';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -41,7 +39,7 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value
@@ -177,24 +175,10 @@ export function CollateralRepayModalContent({
     collateralReserveData.priceInUSD
   );
 
-  // calculate impact based on $ difference
   const exactOutputAmount = swapVariant === 'exactIn' ? outputAmount : repayAmount;
   const exactOutputUsd = swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue;
-  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
-  let priceImpact =
-    inputAmountUSD && inputAmountUSD !== '0'
-      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
-      : '0';
-
-  if (priceImpact === '-0.00') {
-    priceImpact = '0.00';
-  }
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
-  const isUSDTEthMainnetV3 =
-    currentChainId === 1 &&
-    !!currentMarketData.v3 &&
-    (tokenToRepayWith.symbol === 'USDT' || poolReserve.symbol === 'USDT');
 
   let blockingError: ErrorType | undefined = undefined;
 
@@ -227,7 +211,7 @@ export function CollateralRepayModalContent({
     return (
       <TxSuccessView
         action={<Trans>Repaid</Trans>}
-        amount={swapVariant === 'exactIn' ? outputAmount : repayAmount}
+        amount={outputAmount}
         symbol={poolReserve.symbol}
       />
     );
@@ -256,7 +240,11 @@ export function CollateralRepayModalContent({
           <ArrowDownIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
+        <PriceImpactTooltip
+          loading={loadingSkeleton}
+          outputAmountUSD={outputAmountUSD}
+          inputAmountUSD={inputAmountUSD}
+        />
       </Box>
       <AssetInput
         value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
@@ -280,12 +268,6 @@ export function CollateralRepayModalContent({
         <Typography variant="helperText" color="error.main">
           <BlockingError />
         </Typography>
-      )}
-
-      {isUSDTEthMainnetV3 && (
-        <Warning severity="warning" sx={{ mt: 2, mb: 0 }}>
-          <USDTParaswapWarning />
-        </Warning>
       )}
 
       <TxModalDetails
@@ -332,7 +314,7 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        blocked={blockingError !== undefined || error !== '' || isUSDTEthMainnetV3}
+        blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
         buildTxFn={buildTxFn}
       />

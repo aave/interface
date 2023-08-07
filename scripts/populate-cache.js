@@ -720,7 +720,7 @@ var require_bn = __commonJS({
         dest.negative = this.negative;
         dest.red = this.red;
       };
-      BN.prototype.clone = function clone() {
+      BN.prototype.clone = function clone2() {
         var r = new BN(null);
         this.copy(r);
         return r;
@@ -2696,7 +2696,7 @@ var require_bn = __commonJS({
       BN.prototype.isEven = function isEven() {
         return (this.words[0] & 1) === 0;
       };
-      BN.prototype.isOdd = function isOdd() {
+      BN.prototype.isOdd = function isOdd2() {
         return (this.words[0] & 1) === 1;
       };
       BN.prototype.andln = function andln(num) {
@@ -6878,7 +6878,7 @@ var require_lib7 = __commonJS({
       }
       return "0x" + chars.join("");
     }
-    var MAX_SAFE_INTEGER = 9007199254740991;
+    var MAX_SAFE_INTEGER2 = 9007199254740991;
     function log10(x) {
       if (Math.log10) {
         return Math.log10(x);
@@ -6894,7 +6894,7 @@ var require_lib7 = __commonJS({
       ibanLookup[String.fromCharCode(65 + i)] = String(10 + i);
     }
     var i;
-    var safeDigits = Math.floor(log10(MAX_SAFE_INTEGER));
+    var safeDigits = Math.floor(log10(MAX_SAFE_INTEGER2));
     function ibanChecksum(address) {
       address = address.toUpperCase();
       address = address.substring(4) + address.substring(0, 2) + "00";
@@ -10836,8 +10836,8 @@ var require_short = __commonJS({
       var y = y2.redSqrt();
       if (y.redSqr().redSub(y2).cmp(this.zero) !== 0)
         throw new Error("invalid point");
-      var isOdd = y.fromRed().isOdd();
-      if (odd && !isOdd || !odd && isOdd)
+      var isOdd2 = y.fromRed().isOdd();
+      if (odd && !isOdd2 || !odd && isOdd2)
         y = y.redNeg();
       return this.point(x, y);
     };
@@ -11560,8 +11560,8 @@ var require_edwards = __commonJS({
       var y = y2.redSqrt();
       if (y.redSqr().redSub(y2).cmp(this.zero) !== 0)
         throw new Error("invalid point");
-      var isOdd = y.fromRed().isOdd();
-      if (odd && !isOdd || !odd && isOdd)
+      var isOdd2 = y.fromRed().isOdd();
+      if (odd && !isOdd2 || !odd && isOdd2)
         y = y.redNeg();
       return this.point(x, y);
     };
@@ -33723,6 +33723,7 @@ var require_types2 = __commonJS({
       ProtocolAction2["migrateV3"] = "migrateV3";
       ProtocolAction2["supplyWithPermit"] = "supplyWithPermit";
       ProtocolAction2["repayWithPermit"] = "repayWithPermit";
+      ProtocolAction2["stakeWithPermit"] = "stakeWithPermit";
       ProtocolAction2["vote"] = "vote";
       ProtocolAction2["approval"] = "approval";
       ProtocolAction2["creditDelegationApproval"] = "creditDelegationApproval";
@@ -33783,8 +33784,8 @@ var require_bignumber2 = __commonJS({
     "use strict";
     (function(globalObject) {
       "use strict";
-      var BigNumber2, isNumeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, mathceil = Math.ceil, mathfloor = Math.floor, bignumberError = "[BigNumber Error] ", tooManyDigits = bignumberError + "Number primitive has more than 15 significant digits: ", BASE = 1e14, LOG_BASE = 14, MAX_SAFE_INTEGER = 9007199254740991, POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], SQRT_BASE = 1e7, MAX = 1e9;
-      function clone(configObject) {
+      var BigNumber2, isNumeric2 = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, mathceil2 = Math.ceil, mathfloor2 = Math.floor, bignumberError2 = "[BigNumber Error] ", tooManyDigits2 = bignumberError2 + "Number primitive has more than 15 significant digits: ", BASE2 = 1e14, LOG_BASE2 = 14, MAX_SAFE_INTEGER2 = 9007199254740991, POWS_TEN2 = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], SQRT_BASE2 = 1e7, MAX2 = 1e9;
+      function clone2(configObject) {
         var div, convertBase, parseNumeric, P = BigNumber3.prototype = { constructor: BigNumber3, toString: null, valueOf: null }, ONE = new BigNumber3(1), DECIMAL_PLACES = 20, ROUNDING_MODE = 4, TO_EXP_NEG = -7, TO_EXP_POS = 21, MIN_EXP = -1e7, MAX_EXP = 1e7, CRYPTO = false, MODULO_MODE = 1, POW_PRECISION = 0, FORMAT = {
           prefix: "",
           groupSize: 3,
@@ -33828,7 +33829,7 @@ var require_bignumber2 = __commonJS({
               }
               str2 = String(v);
             } else {
-              if (!isNumeric.test(str2 = String(v)))
+              if (!isNumeric2.test(str2 = String(v)))
                 return parseNumeric(x, str2, isNum);
               x.s = str2.charCodeAt(0) == 45 ? (str2 = str2.slice(1), -1) : 1;
             }
@@ -33843,7 +33844,7 @@ var require_bignumber2 = __commonJS({
               e = str2.length;
             }
           } else {
-            intCheck(b, 2, ALPHABET.length, "Base");
+            intCheck2(b, 2, ALPHABET.length, "Base");
             if (b == 10 && alphabetHasNormalDecimalDigits) {
               x = new BigNumber3(v);
               return round(x, DECIMAL_PLACES + x.e + 1, ROUNDING_MODE);
@@ -33854,7 +33855,7 @@ var require_bignumber2 = __commonJS({
                 return parseNumeric(x, str2, isNum, b);
               x.s = 1 / v < 0 ? (str2 = str2.slice(1), -1) : 1;
               if (BigNumber3.DEBUG && str2.replace(/^0\.0*|\./, "").length > 15) {
-                throw Error(tooManyDigits + v);
+                throw Error(tooManyDigits2 + v);
               }
             } else {
               x.s = str2.charCodeAt(0) === 45 ? (str2 = str2.slice(1), -1) : 1;
@@ -33892,8 +33893,8 @@ var require_bignumber2 = __commonJS({
             ;
           if (str2 = str2.slice(i, ++len)) {
             len -= i;
-            if (isNum && BigNumber3.DEBUG && len > 15 && (v > MAX_SAFE_INTEGER || v !== mathfloor(v))) {
-              throw Error(tooManyDigits + x.s * v);
+            if (isNum && BigNumber3.DEBUG && len > 15 && (v > MAX_SAFE_INTEGER2 || v !== mathfloor2(v))) {
+              throw Error(tooManyDigits2 + x.s * v);
             }
             if ((e = e - i - 1) > MAX_EXP) {
               x.c = x.e = null;
@@ -33902,16 +33903,16 @@ var require_bignumber2 = __commonJS({
             } else {
               x.e = e;
               x.c = [];
-              i = (e + 1) % LOG_BASE;
+              i = (e + 1) % LOG_BASE2;
               if (e < 0)
-                i += LOG_BASE;
+                i += LOG_BASE2;
               if (i < len) {
                 if (i)
                   x.c.push(+str2.slice(0, i));
-                for (len -= LOG_BASE; i < len; ) {
-                  x.c.push(+str2.slice(i, i += LOG_BASE));
+                for (len -= LOG_BASE2; i < len; ) {
+                  x.c.push(+str2.slice(i, i += LOG_BASE2));
                 }
-                i = LOG_BASE - (str2 = str2.slice(i)).length;
+                i = LOG_BASE2 - (str2 = str2.slice(i)).length;
               } else {
                 i -= len;
               }
@@ -33923,7 +33924,7 @@ var require_bignumber2 = __commonJS({
             x.c = [x.e = 0];
           }
         }
-        BigNumber3.clone = clone;
+        BigNumber3.clone = clone2;
         BigNumber3.ROUND_UP = 0;
         BigNumber3.ROUND_DOWN = 1;
         BigNumber3.ROUND_CEIL = 2;
@@ -33940,39 +33941,39 @@ var require_bignumber2 = __commonJS({
             if (typeof obj == "object") {
               if (obj.hasOwnProperty(p = "DECIMAL_PLACES")) {
                 v = obj[p];
-                intCheck(v, 0, MAX, p);
+                intCheck2(v, 0, MAX2, p);
                 DECIMAL_PLACES = v;
               }
               if (obj.hasOwnProperty(p = "ROUNDING_MODE")) {
                 v = obj[p];
-                intCheck(v, 0, 8, p);
+                intCheck2(v, 0, 8, p);
                 ROUNDING_MODE = v;
               }
               if (obj.hasOwnProperty(p = "EXPONENTIAL_AT")) {
                 v = obj[p];
                 if (v && v.pop) {
-                  intCheck(v[0], -MAX, 0, p);
-                  intCheck(v[1], 0, MAX, p);
+                  intCheck2(v[0], -MAX2, 0, p);
+                  intCheck2(v[1], 0, MAX2, p);
                   TO_EXP_NEG = v[0];
                   TO_EXP_POS = v[1];
                 } else {
-                  intCheck(v, -MAX, MAX, p);
+                  intCheck2(v, -MAX2, MAX2, p);
                   TO_EXP_NEG = -(TO_EXP_POS = v < 0 ? -v : v);
                 }
               }
               if (obj.hasOwnProperty(p = "RANGE")) {
                 v = obj[p];
                 if (v && v.pop) {
-                  intCheck(v[0], -MAX, -1, p);
-                  intCheck(v[1], 1, MAX, p);
+                  intCheck2(v[0], -MAX2, -1, p);
+                  intCheck2(v[1], 1, MAX2, p);
                   MIN_EXP = v[0];
                   MAX_EXP = v[1];
                 } else {
-                  intCheck(v, -MAX, MAX, p);
+                  intCheck2(v, -MAX2, MAX2, p);
                   if (v) {
                     MIN_EXP = -(MAX_EXP = v < 0 ? -v : v);
                   } else {
-                    throw Error(bignumberError + p + " cannot be zero: " + v);
+                    throw Error(bignumberError2 + p + " cannot be zero: " + v);
                   }
                 }
               }
@@ -33984,23 +33985,23 @@ var require_bignumber2 = __commonJS({
                       CRYPTO = v;
                     } else {
                       CRYPTO = !v;
-                      throw Error(bignumberError + "crypto unavailable");
+                      throw Error(bignumberError2 + "crypto unavailable");
                     }
                   } else {
                     CRYPTO = v;
                   }
                 } else {
-                  throw Error(bignumberError + p + " not true or false: " + v);
+                  throw Error(bignumberError2 + p + " not true or false: " + v);
                 }
               }
               if (obj.hasOwnProperty(p = "MODULO_MODE")) {
                 v = obj[p];
-                intCheck(v, 0, 9, p);
+                intCheck2(v, 0, 9, p);
                 MODULO_MODE = v;
               }
               if (obj.hasOwnProperty(p = "POW_PRECISION")) {
                 v = obj[p];
-                intCheck(v, 0, MAX, p);
+                intCheck2(v, 0, MAX2, p);
                 POW_PRECISION = v;
               }
               if (obj.hasOwnProperty(p = "FORMAT")) {
@@ -34008,7 +34009,7 @@ var require_bignumber2 = __commonJS({
                 if (typeof v == "object")
                   FORMAT = v;
                 else
-                  throw Error(bignumberError + p + " not an object: " + v);
+                  throw Error(bignumberError2 + p + " not an object: " + v);
               }
               if (obj.hasOwnProperty(p = "ALPHABET")) {
                 v = obj[p];
@@ -34016,11 +34017,11 @@ var require_bignumber2 = __commonJS({
                   alphabetHasNormalDecimalDigits = v.slice(0, 10) == "0123456789";
                   ALPHABET = v;
                 } else {
-                  throw Error(bignumberError + p + " invalid: " + v);
+                  throw Error(bignumberError2 + p + " invalid: " + v);
                 }
               }
             } else {
-              throw Error(bignumberError + "Object expected: " + obj);
+              throw Error(bignumberError2 + "Object expected: " + obj);
             }
           }
           return {
@@ -34043,19 +34044,19 @@ var require_bignumber2 = __commonJS({
           var i, n, c = v.c, e = v.e, s = v.s;
           out:
             if ({}.toString.call(c) == "[object Array]") {
-              if ((s === 1 || s === -1) && e >= -MAX && e <= MAX && e === mathfloor(e)) {
+              if ((s === 1 || s === -1) && e >= -MAX2 && e <= MAX2 && e === mathfloor2(e)) {
                 if (c[0] === 0) {
                   if (e === 0 && c.length === 1)
                     return true;
                   break out;
                 }
-                i = (e + 1) % LOG_BASE;
+                i = (e + 1) % LOG_BASE2;
                 if (i < 1)
-                  i += LOG_BASE;
+                  i += LOG_BASE2;
                 if (String(c[0]).length == i) {
                   for (i = 0; i < c.length; i++) {
                     n = c[i];
-                    if (n < 0 || n >= BASE || n !== mathfloor(n))
+                    if (n < 0 || n >= BASE2 || n !== mathfloor2(n))
                       break out;
                   }
                   if (n !== 0)
@@ -34065,7 +34066,7 @@ var require_bignumber2 = __commonJS({
             } else if (c === null && e === null && (s === null || s === 1 || s === -1)) {
               return true;
             }
-          throw Error(bignumberError + "Invalid BigNumber: " + v);
+          throw Error(bignumberError2 + "Invalid BigNumber: " + v);
         };
         BigNumber3.maximum = BigNumber3.max = function() {
           return maxOrMin(arguments, P.lt);
@@ -34076,7 +34077,7 @@ var require_bignumber2 = __commonJS({
         BigNumber3.random = function() {
           var pow2_53 = 9007199254740992;
           var random53bitInt = Math.random() * pow2_53 & 2097151 ? function() {
-            return mathfloor(Math.random() * pow2_53);
+            return mathfloor2(Math.random() * pow2_53);
           } : function() {
             return (Math.random() * 1073741824 | 0) * 8388608 + (Math.random() * 8388608 | 0);
           };
@@ -34085,8 +34086,8 @@ var require_bignumber2 = __commonJS({
             if (dp == null)
               dp = DECIMAL_PLACES;
             else
-              intCheck(dp, 0, MAX);
-            k = mathceil(dp / LOG_BASE);
+              intCheck2(dp, 0, MAX2);
+            k = mathceil2(dp / LOG_BASE2);
             if (CRYPTO) {
               if (crypto.getRandomValues) {
                 a = crypto.getRandomValues(new Uint32Array(k *= 2));
@@ -34116,7 +34117,7 @@ var require_bignumber2 = __commonJS({
                 i = k / 7;
               } else {
                 CRYPTO = false;
-                throw Error(bignumberError + "crypto unavailable");
+                throw Error(bignumberError2 + "crypto unavailable");
               }
             }
             if (!CRYPTO) {
@@ -34127,22 +34128,22 @@ var require_bignumber2 = __commonJS({
               }
             }
             k = c[--i];
-            dp %= LOG_BASE;
+            dp %= LOG_BASE2;
             if (k && dp) {
-              v = POWS_TEN[LOG_BASE - dp];
-              c[i] = mathfloor(k / v) * v;
+              v = POWS_TEN2[LOG_BASE2 - dp];
+              c[i] = mathfloor2(k / v) * v;
             }
             for (; c[i] === 0; c.pop(), i--)
               ;
             if (i < 0) {
               c = [e = 0];
             } else {
-              for (e = -1; c[0] === 0; c.splice(0, 1), e -= LOG_BASE)
+              for (e = -1; c[0] === 0; c.splice(0, 1), e -= LOG_BASE2)
                 ;
               for (i = 1, v = c[0]; v >= 10; v /= 10, i++)
                 ;
-              if (i < LOG_BASE)
-                e -= LOG_BASE - i;
+              if (i < LOG_BASE2)
+                e -= LOG_BASE2 - i;
             }
             rand.e = e;
             rand.c = c;
@@ -34184,7 +34185,7 @@ var require_bignumber2 = __commonJS({
               x = y.pow(str2.length - i);
               POW_PRECISION = k;
               y.c = toBaseOut(
-                toFixedPoint(coeffToString(x.c), x.e, "0"),
+                toFixedPoint2(coeffToString2(x.c), x.e, "0"),
                 10,
                 baseOut,
                 decimal
@@ -34214,7 +34215,7 @@ var require_bignumber2 = __commonJS({
             r = r || d < 0 || xc[d + 1] != null;
             r = rm < 4 ? (i != null || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : i > k || i == k && (rm == 4 || r || rm == 6 && xc[d - 1] & 1 || rm == (x.s < 0 ? 8 : 7));
             if (d < 1 || !xc[0]) {
-              str2 = r ? toFixedPoint(alphabet.charAt(1), -dp, alphabet.charAt(0)) : alphabet.charAt(0);
+              str2 = r ? toFixedPoint2(alphabet.charAt(1), -dp, alphabet.charAt(0)) : alphabet.charAt(0);
             } else {
               xc.length = d;
               if (r) {
@@ -34230,27 +34231,27 @@ var require_bignumber2 = __commonJS({
                 ;
               for (i = 0, str2 = ""; i <= k; str2 += alphabet.charAt(xc[i++]))
                 ;
-              str2 = toFixedPoint(str2, e, alphabet.charAt(0));
+              str2 = toFixedPoint2(str2, e, alphabet.charAt(0));
             }
             return str2;
           };
         }();
         div = function() {
           function multiply(x, k, base) {
-            var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE, khi = k / SQRT_BASE | 0;
+            var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE2, khi = k / SQRT_BASE2 | 0;
             for (x = x.slice(); i--; ) {
-              xlo = x[i] % SQRT_BASE;
-              xhi = x[i] / SQRT_BASE | 0;
+              xlo = x[i] % SQRT_BASE2;
+              xhi = x[i] / SQRT_BASE2 | 0;
               m = khi * xlo + xhi * klo;
-              temp = klo * xlo + m % SQRT_BASE * SQRT_BASE + carry;
-              carry = (temp / base | 0) + (m / SQRT_BASE | 0) + khi * xhi;
+              temp = klo * xlo + m % SQRT_BASE2 * SQRT_BASE2 + carry;
+              carry = (temp / base | 0) + (m / SQRT_BASE2 | 0) + khi * xhi;
               x[i] = temp % base;
             }
             if (carry)
               x = [carry].concat(x);
             return x;
           }
-          function compare2(a, b, aL, bL) {
+          function compare3(a, b, aL, bL) {
             var i, cmp;
             if (aL != bL) {
               cmp = aL > bL ? 1 : -1;
@@ -34290,9 +34291,9 @@ var require_bignumber2 = __commonJS({
             e = x.e - y.e;
             s = dp + e + 1;
             if (!base) {
-              base = BASE;
-              e = bitFloor(x.e / LOG_BASE) - bitFloor(y.e / LOG_BASE);
-              s = s / LOG_BASE | 0;
+              base = BASE2;
+              e = bitFloor2(x.e / LOG_BASE2) - bitFloor2(y.e / LOG_BASE2);
+              s = s / LOG_BASE2 | 0;
             }
             for (i = 0; yc[i] == (xc[i] || 0); i++)
               ;
@@ -34306,7 +34307,7 @@ var require_bignumber2 = __commonJS({
               yL = yc.length;
               i = 0;
               s += 2;
-              n = mathfloor(base / (yc[0] + 1));
+              n = mathfloor2(base / (yc[0] + 1));
               if (n > 1) {
                 yc = multiply(yc, n, base);
                 xc = multiply(xc, n, base);
@@ -34325,19 +34326,19 @@ var require_bignumber2 = __commonJS({
                 yc0++;
               do {
                 n = 0;
-                cmp = compare2(yc, rem, yL, remL);
+                cmp = compare3(yc, rem, yL, remL);
                 if (cmp < 0) {
                   rem0 = rem[0];
                   if (yL != remL)
                     rem0 = rem0 * base + (rem[1] || 0);
-                  n = mathfloor(rem0 / yc0);
+                  n = mathfloor2(rem0 / yc0);
                   if (n > 1) {
                     if (n >= base)
                       n = base - 1;
                     prod = multiply(yc, n, base);
                     prodL = prod.length;
                     remL = rem.length;
-                    while (compare2(prod, rem, prodL, remL) == 1) {
+                    while (compare3(prod, rem, prodL, remL) == 1) {
                       n--;
                       subtract(prod, yL < prodL ? yz : yc, prodL, base);
                       prodL = prod.length;
@@ -34355,7 +34356,7 @@ var require_bignumber2 = __commonJS({
                   subtract(rem, prod, remL, base);
                   remL = rem.length;
                   if (cmp == -1) {
-                    while (compare2(yc, rem, yL, remL) < 1) {
+                    while (compare3(yc, rem, yL, remL) < 1) {
                       n++;
                       subtract(rem, yL < remL ? yz : yc, remL, base);
                       remL = rem.length;
@@ -34377,10 +34378,10 @@ var require_bignumber2 = __commonJS({
               if (!qc[0])
                 qc.splice(0, 1);
             }
-            if (base == BASE) {
+            if (base == BASE2) {
               for (i = 1, s = qc[0]; s >= 10; s /= 10, i++)
                 ;
-              round(q, dp + (q.e = i + e * LOG_BASE - 1) + 1, rm, more);
+              round(q, dp + (q.e = i + e * LOG_BASE2 - 1) + 1, rm, more);
             } else {
               q.e = e;
               q.r = +more;
@@ -34393,26 +34394,26 @@ var require_bignumber2 = __commonJS({
           if (rm == null)
             rm = ROUNDING_MODE;
           else
-            intCheck(rm, 0, 8);
+            intCheck2(rm, 0, 8);
           if (!n.c)
             return n.toString();
           c0 = n.c[0];
           ne = n.e;
           if (i == null) {
-            str2 = coeffToString(n.c);
-            str2 = id == 1 || id == 2 && (ne <= TO_EXP_NEG || ne >= TO_EXP_POS) ? toExponential(str2, ne) : toFixedPoint(str2, ne, "0");
+            str2 = coeffToString2(n.c);
+            str2 = id == 1 || id == 2 && (ne <= TO_EXP_NEG || ne >= TO_EXP_POS) ? toExponential2(str2, ne) : toFixedPoint2(str2, ne, "0");
           } else {
             n = round(new BigNumber3(n), i, rm);
             e = n.e;
-            str2 = coeffToString(n.c);
+            str2 = coeffToString2(n.c);
             len = str2.length;
             if (id == 1 || id == 2 && (i <= e || e <= TO_EXP_NEG)) {
               for (; len < i; str2 += "0", len++)
                 ;
-              str2 = toExponential(str2, e);
+              str2 = toExponential2(str2, e);
             } else {
               i -= ne;
-              str2 = toFixedPoint(str2, e, "0");
+              str2 = toFixedPoint2(str2, e, "0");
               if (e + 1 > len) {
                 if (--i > 0)
                   for (str2 += "."; i--; str2 += "0")
@@ -34449,7 +34450,7 @@ var require_bignumber2 = __commonJS({
             ;
           for (j = c[0]; j >= 10; j /= 10, i++)
             ;
-          if ((e = i + e * LOG_BASE - 1) > MAX_EXP) {
+          if ((e = i + e * LOG_BASE2 - 1) > MAX_EXP) {
             n.c = n.e = null;
           } else if (e < MIN_EXP) {
             n.c = [n.e = 0];
@@ -34479,7 +34480,7 @@ var require_bignumber2 = __commonJS({
                   return new BigNumber3(s, base);
               }
               if (BigNumber3.DEBUG) {
-                throw Error(bignumberError + "Not a" + (b ? " base " + b : "") + " number: " + str2);
+                throw Error(bignumberError2 + "Not a" + (b ? " base " + b : "") + " number: " + str2);
               }
               x.s = null;
             }
@@ -34487,27 +34488,27 @@ var require_bignumber2 = __commonJS({
           };
         }();
         function round(x, sd, rm, r) {
-          var d, i, j, k, n, ni, rd, xc = x.c, pows10 = POWS_TEN;
+          var d, i, j, k, n, ni, rd, xc = x.c, pows10 = POWS_TEN2;
           if (xc) {
             out: {
               for (d = 1, k = xc[0]; k >= 10; k /= 10, d++)
                 ;
               i = sd - d;
               if (i < 0) {
-                i += LOG_BASE;
+                i += LOG_BASE2;
                 j = sd;
                 n = xc[ni = 0];
                 rd = n / pows10[d - j - 1] % 10 | 0;
               } else {
-                ni = mathceil((i + 1) / LOG_BASE);
+                ni = mathceil2((i + 1) / LOG_BASE2);
                 if (ni >= xc.length) {
                   if (r) {
                     for (; xc.length <= ni; xc.push(0))
                       ;
                     n = rd = 0;
                     d = 1;
-                    i %= LOG_BASE;
-                    j = i - LOG_BASE + 1;
+                    i %= LOG_BASE2;
+                    j = i - LOG_BASE2 + 1;
                   } else {
                     break out;
                   }
@@ -34515,8 +34516,8 @@ var require_bignumber2 = __commonJS({
                   n = k = xc[ni];
                   for (d = 1; k >= 10; k /= 10, d++)
                     ;
-                  i %= LOG_BASE;
-                  j = i - LOG_BASE + d;
+                  i %= LOG_BASE2;
+                  j = i - LOG_BASE2 + d;
                   rd = j < 0 ? 0 : n / pows10[d - j - 1] % 10 | 0;
                 }
               }
@@ -34530,7 +34531,7 @@ var require_bignumber2 = __commonJS({
                 xc.length = 0;
                 if (r) {
                   sd -= x.e + 1;
-                  xc[0] = pows10[(LOG_BASE - sd % LOG_BASE) % LOG_BASE];
+                  xc[0] = pows10[(LOG_BASE2 - sd % LOG_BASE2) % LOG_BASE2];
                   x.e = -sd || 0;
                 } else {
                   xc[0] = x.e = 0;
@@ -34543,8 +34544,8 @@ var require_bignumber2 = __commonJS({
                 ni--;
               } else {
                 xc.length = ni + 1;
-                k = pows10[LOG_BASE - i];
-                xc[ni] = j > 0 ? mathfloor(n / pows10[d - j] % pows10[j]) * k : 0;
+                k = pows10[LOG_BASE2 - i];
+                xc[ni] = j > 0 ? mathfloor2(n / pows10[d - j] % pows10[j]) * k : 0;
               }
               if (r) {
                 for (; ; ) {
@@ -34556,13 +34557,13 @@ var require_bignumber2 = __commonJS({
                       ;
                     if (i != k) {
                       x.e++;
-                      if (xc[0] == BASE)
+                      if (xc[0] == BASE2)
                         xc[0] = 1;
                     }
                     break;
                   } else {
                     xc[ni] += k;
-                    if (xc[ni] != BASE)
+                    if (xc[ni] != BASE2)
                       break;
                     xc[ni--] = 0;
                     k = 1;
@@ -34584,8 +34585,8 @@ var require_bignumber2 = __commonJS({
           var str2, e = n.e;
           if (e === null)
             return n.toString();
-          str2 = coeffToString(n.c);
-          str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(str2, e) : toFixedPoint(str2, e, "0");
+          str2 = coeffToString2(n.c);
+          str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential2(str2, e) : toFixedPoint2(str2, e, "0");
           return n.s < 0 ? "-" + str2 : str2;
         }
         P.absoluteValue = P.abs = function() {
@@ -34595,21 +34596,21 @@ var require_bignumber2 = __commonJS({
           return x;
         };
         P.comparedTo = function(y, b) {
-          return compare(this, new BigNumber3(y, b));
+          return compare2(this, new BigNumber3(y, b));
         };
         P.decimalPlaces = P.dp = function(dp, rm) {
           var c, n, v, x = this;
           if (dp != null) {
-            intCheck(dp, 0, MAX);
+            intCheck2(dp, 0, MAX2);
             if (rm == null)
               rm = ROUNDING_MODE;
             else
-              intCheck(rm, 0, 8);
+              intCheck2(rm, 0, 8);
             return round(new BigNumber3(x), dp + x.e + 1, rm);
           }
           if (!(c = x.c))
             return null;
-          n = ((v = c.length - 1) - bitFloor(this.e / LOG_BASE)) * LOG_BASE;
+          n = ((v = c.length - 1) - bitFloor2(this.e / LOG_BASE2)) * LOG_BASE2;
           if (v = c[v])
             for (; v % 10 == 0; v /= 10, n--)
               ;
@@ -34627,13 +34628,13 @@ var require_bignumber2 = __commonJS({
           var half, isModExp, i, k, more, nIsBig, nIsNeg, nIsOdd, y, x = this;
           n = new BigNumber3(n);
           if (n.c && !n.isInteger()) {
-            throw Error(bignumberError + "Exponent not an integer: " + valueOf(n));
+            throw Error(bignumberError2 + "Exponent not an integer: " + valueOf(n));
           }
           if (m != null)
             m = new BigNumber3(m);
           nIsBig = n.e > 14;
           if (!x.c || !x.c[0] || x.c[0] == 1 && !x.e && x.c.length == 1 || !n.c || !n.c[0]) {
-            y = new BigNumber3(Math.pow(+valueOf(x), nIsBig ? 2 - isOdd(n) : +valueOf(n)));
+            y = new BigNumber3(Math.pow(+valueOf(x), nIsBig ? n.s * (2 - isOdd2(n)) : +valueOf(n)));
             return m ? y.mod(m) : y;
           }
           nIsNeg = n.s < 0;
@@ -34644,18 +34645,18 @@ var require_bignumber2 = __commonJS({
             if (isModExp)
               x = x.mod(m);
           } else if (n.e > 9 && (x.e > 0 || x.e < -1 || (x.e == 0 ? x.c[0] > 1 || nIsBig && x.c[1] >= 24e7 : x.c[0] < 8e13 || nIsBig && x.c[0] <= 9999975e7))) {
-            k = x.s < 0 && isOdd(n) ? -0 : 0;
+            k = x.s < 0 && isOdd2(n) ? -0 : 0;
             if (x.e > -1)
               k = 1 / k;
             return new BigNumber3(nIsNeg ? 1 / k : k);
           } else if (POW_PRECISION) {
-            k = mathceil(POW_PRECISION / LOG_BASE + 2);
+            k = mathceil2(POW_PRECISION / LOG_BASE2 + 2);
           }
           if (nIsBig) {
             half = new BigNumber3(0.5);
             if (nIsNeg)
               n.s = 1;
-            nIsOdd = isOdd(n);
+            nIsOdd = isOdd2(n);
           } else {
             i = Math.abs(+valueOf(n));
             nIsOdd = i % 2;
@@ -34674,7 +34675,7 @@ var require_bignumber2 = __commonJS({
               }
             }
             if (i) {
-              i = mathfloor(i / 2);
+              i = mathfloor2(i / 2);
               if (i === 0)
                 break;
               nIsOdd = i % 2;
@@ -34682,7 +34683,7 @@ var require_bignumber2 = __commonJS({
               n = n.times(half);
               round(n, n.e + 1, 1);
               if (n.e > 14) {
-                nIsOdd = isOdd(n);
+                nIsOdd = isOdd2(n);
               } else {
                 i = +valueOf(n);
                 if (i === 0)
@@ -34709,29 +34710,29 @@ var require_bignumber2 = __commonJS({
           if (rm == null)
             rm = ROUNDING_MODE;
           else
-            intCheck(rm, 0, 8);
+            intCheck2(rm, 0, 8);
           return round(n, n.e + 1, rm);
         };
         P.isEqualTo = P.eq = function(y, b) {
-          return compare(this, new BigNumber3(y, b)) === 0;
+          return compare2(this, new BigNumber3(y, b)) === 0;
         };
         P.isFinite = function() {
           return !!this.c;
         };
         P.isGreaterThan = P.gt = function(y, b) {
-          return compare(this, new BigNumber3(y, b)) > 0;
+          return compare2(this, new BigNumber3(y, b)) > 0;
         };
         P.isGreaterThanOrEqualTo = P.gte = function(y, b) {
-          return (b = compare(this, new BigNumber3(y, b))) === 1 || b === 0;
+          return (b = compare2(this, new BigNumber3(y, b))) === 1 || b === 0;
         };
         P.isInteger = function() {
-          return !!this.c && bitFloor(this.e / LOG_BASE) > this.c.length - 2;
+          return !!this.c && bitFloor2(this.e / LOG_BASE2) > this.c.length - 2;
         };
         P.isLessThan = P.lt = function(y, b) {
-          return compare(this, new BigNumber3(y, b)) < 0;
+          return compare2(this, new BigNumber3(y, b)) < 0;
         };
         P.isLessThanOrEqualTo = P.lte = function(y, b) {
-          return (b = compare(this, new BigNumber3(y, b))) === -1 || b === 0;
+          return (b = compare2(this, new BigNumber3(y, b))) === -1 || b === 0;
         };
         P.isNaN = function() {
           return !this.s;
@@ -34755,7 +34756,7 @@ var require_bignumber2 = __commonJS({
             y.s = -b;
             return x.plus(y);
           }
-          var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+          var xe = x.e / LOG_BASE2, ye = y.e / LOG_BASE2, xc = x.c, yc = y.c;
           if (!xe || !ye) {
             if (!xc || !yc)
               return xc ? (y.s = -b, y) : new BigNumber3(yc ? x : NaN);
@@ -34766,8 +34767,8 @@ var require_bignumber2 = __commonJS({
               ));
             }
           }
-          xe = bitFloor(xe);
-          ye = bitFloor(ye);
+          xe = bitFloor2(xe);
+          ye = bitFloor2(ye);
           xc = xc.slice();
           if (a = xe - ye) {
             if (xLTy = a < 0) {
@@ -34790,19 +34791,23 @@ var require_bignumber2 = __commonJS({
               }
             }
           }
-          if (xLTy)
-            t = xc, xc = yc, yc = t, y.s = -y.s;
+          if (xLTy) {
+            t = xc;
+            xc = yc;
+            yc = t;
+            y.s = -y.s;
+          }
           b = (j = yc.length) - (i = xc.length);
           if (b > 0)
             for (; b--; xc[i++] = 0)
               ;
-          b = BASE - 1;
+          b = BASE2 - 1;
           for (; j > a; ) {
             if (xc[--j] < yc[j]) {
               for (i = j; i && !xc[--i]; xc[i] = b)
                 ;
               --xc[i];
-              xc[j] += BASE;
+              xc[j] += BASE2;
             }
             xc[j] -= yc[j];
           }
@@ -34853,16 +34858,22 @@ var require_bignumber2 = __commonJS({
             }
             return y;
           }
-          e = bitFloor(x.e / LOG_BASE) + bitFloor(y.e / LOG_BASE);
+          e = bitFloor2(x.e / LOG_BASE2) + bitFloor2(y.e / LOG_BASE2);
           y.s *= x.s;
           xcL = xc.length;
           ycL = yc.length;
-          if (xcL < ycL)
-            zc = xc, xc = yc, yc = zc, i = xcL, xcL = ycL, ycL = i;
+          if (xcL < ycL) {
+            zc = xc;
+            xc = yc;
+            yc = zc;
+            i = xcL;
+            xcL = ycL;
+            ycL = i;
+          }
           for (i = xcL + ycL, zc = []; i--; zc.push(0))
             ;
-          base = BASE;
-          sqrtBase = SQRT_BASE;
+          base = BASE2;
+          sqrtBase = SQRT_BASE2;
           for (i = ycL; --i >= 0; ) {
             c = 0;
             ylo = yc[i] % sqrtBase;
@@ -34899,15 +34910,15 @@ var require_bignumber2 = __commonJS({
             y.s = -b;
             return x.minus(y);
           }
-          var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+          var xe = x.e / LOG_BASE2, ye = y.e / LOG_BASE2, xc = x.c, yc = y.c;
           if (!xe || !ye) {
             if (!xc || !yc)
               return new BigNumber3(a / 0);
             if (!xc[0] || !yc[0])
               return yc[0] ? y : new BigNumber3(xc[0] ? x : a * 0);
           }
-          xe = bitFloor(xe);
-          ye = bitFloor(ye);
+          xe = bitFloor2(xe);
+          ye = bitFloor2(ye);
           xc = xc.slice();
           if (a = xe - ye) {
             if (a > 0) {
@@ -34924,11 +34935,15 @@ var require_bignumber2 = __commonJS({
           }
           a = xc.length;
           b = yc.length;
-          if (a - b < 0)
-            t = yc, yc = xc, xc = t, b = a;
+          if (a - b < 0) {
+            t = yc;
+            yc = xc;
+            xc = t;
+            b = a;
+          }
           for (a = 0; b; ) {
-            a = (xc[--b] = xc[b] + yc[b] + a) / BASE | 0;
-            xc[b] = BASE === xc[b] ? 0 : xc[b] % BASE;
+            a = (xc[--b] = xc[b] + yc[b] + a) / BASE2 | 0;
+            xc[b] = BASE2 === xc[b] ? 0 : xc[b] % BASE2;
           }
           if (a) {
             xc = [a].concat(xc);
@@ -34939,17 +34954,17 @@ var require_bignumber2 = __commonJS({
         P.precision = P.sd = function(sd, rm) {
           var c, n, v, x = this;
           if (sd != null && sd !== !!sd) {
-            intCheck(sd, 1, MAX);
+            intCheck2(sd, 1, MAX2);
             if (rm == null)
               rm = ROUNDING_MODE;
             else
-              intCheck(rm, 0, 8);
+              intCheck2(rm, 0, 8);
             return round(new BigNumber3(x), sd, rm);
           }
           if (!(c = x.c))
             return null;
           v = c.length - 1;
-          n = v * LOG_BASE + 1;
+          n = v * LOG_BASE2 + 1;
           if (v = c[v]) {
             for (; v % 10 == 0; v /= 10, n--)
               ;
@@ -34961,7 +34976,7 @@ var require_bignumber2 = __commonJS({
           return n;
         };
         P.shiftedBy = function(k) {
-          intCheck(k, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
+          intCheck2(k, -MAX_SAFE_INTEGER2, MAX_SAFE_INTEGER2);
           return this.times("1e" + k);
         };
         P.squareRoot = P.sqrt = function() {
@@ -34971,11 +34986,11 @@ var require_bignumber2 = __commonJS({
           }
           s = Math.sqrt(+valueOf(x));
           if (s == 0 || s == 1 / 0) {
-            n = coeffToString(c);
+            n = coeffToString2(c);
             if ((n.length + e) % 2 == 0)
               n += "0";
             s = Math.sqrt(+n);
-            e = bitFloor((e + 1) / 2) - (e < 0 || e % 2);
+            e = bitFloor2((e + 1) / 2) - (e < 0 || e % 2);
             if (s == 1 / 0) {
               n = "5e" + e;
             } else {
@@ -34994,7 +35009,7 @@ var require_bignumber2 = __commonJS({
             for (; ; ) {
               t = r;
               r = half.times(t.plus(div(x, t, dp, 1)));
-              if (coeffToString(t.c).slice(0, s) === (n = coeffToString(r.c)).slice(0, s)) {
+              if (coeffToString2(t.c).slice(0, s) === (n = coeffToString2(r.c)).slice(0, s)) {
                 if (r.e < e)
                   --s;
                 n = n.slice(s - 3, s + 1);
@@ -35023,14 +35038,14 @@ var require_bignumber2 = __commonJS({
         };
         P.toExponential = function(dp, rm) {
           if (dp != null) {
-            intCheck(dp, 0, MAX);
+            intCheck2(dp, 0, MAX2);
             dp++;
           }
           return format(this, dp, rm, 1);
         };
         P.toFixed = function(dp, rm) {
           if (dp != null) {
-            intCheck(dp, 0, MAX);
+            intCheck2(dp, 0, MAX2);
             dp = dp + this.e + 1;
           }
           return format(this, dp, rm);
@@ -35048,13 +35063,17 @@ var require_bignumber2 = __commonJS({
               format2 = FORMAT;
             }
           } else if (typeof format2 != "object") {
-            throw Error(bignumberError + "Argument not an object: " + format2);
+            throw Error(bignumberError2 + "Argument not an object: " + format2);
           }
           str2 = x.toFixed(dp, rm);
           if (x.c) {
             var i, arr = str2.split("."), g1 = +format2.groupSize, g2 = +format2.secondaryGroupSize, groupSeparator = format2.groupSeparator || "", intPart = arr[0], fractionPart = arr[1], isNeg = x.s < 0, intDigits = isNeg ? intPart.slice(1) : intPart, len = intDigits.length;
-            if (g2)
-              i = g1, g1 = g2, g2 = i, len -= i;
+            if (g2) {
+              i = g1;
+              g1 = g2;
+              g2 = i;
+              len -= i;
+            }
             if (g1 > 0 && len > 0) {
               i = len % g1 || g1;
               intPart = intDigits.substr(0, i);
@@ -35077,7 +35096,7 @@ var require_bignumber2 = __commonJS({
           if (md != null) {
             n = new BigNumber3(md);
             if (!n.isInteger() && (n.c || n.s !== 1) || n.lt(ONE)) {
-              throw Error(bignumberError + "Argument " + (n.isInteger() ? "out of range: " : "not an integer: ") + valueOf(n));
+              throw Error(bignumberError2 + "Argument " + (n.isInteger() ? "out of range: " : "not an integer: ") + valueOf(n));
             }
           }
           if (!xc)
@@ -35085,9 +35104,9 @@ var require_bignumber2 = __commonJS({
           d = new BigNumber3(ONE);
           n1 = d0 = new BigNumber3(ONE);
           d1 = n0 = new BigNumber3(ONE);
-          s = coeffToString(xc);
+          s = coeffToString2(xc);
           e = d.e = s.length - x.e - 1;
-          d.c[0] = POWS_TEN[(exp = e % LOG_BASE) < 0 ? LOG_BASE + exp : exp];
+          d.c[0] = POWS_TEN2[(exp = e % LOG_BASE2) < 0 ? LOG_BASE2 + exp : exp];
           md = !md || n.comparedTo(d) > 0 ? e > 0 ? d : n1 : n;
           exp = MAX_EXP;
           MAX_EXP = 1 / 0;
@@ -35121,7 +35140,7 @@ var require_bignumber2 = __commonJS({
         };
         P.toPrecision = function(sd, rm) {
           if (sd != null)
-            intCheck(sd, 1, MAX);
+            intCheck2(sd, 1, MAX2);
           return format(this, sd, rm, 2);
         };
         P.toString = function(b) {
@@ -35136,13 +35155,13 @@ var require_bignumber2 = __commonJS({
             }
           } else {
             if (b == null) {
-              str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(coeffToString(n.c), e) : toFixedPoint(coeffToString(n.c), e, "0");
+              str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential2(coeffToString2(n.c), e) : toFixedPoint2(coeffToString2(n.c), e, "0");
             } else if (b === 10 && alphabetHasNormalDecimalDigits) {
               n = round(new BigNumber3(n), DECIMAL_PLACES + e + 1, ROUNDING_MODE);
-              str2 = toFixedPoint(coeffToString(n.c), n.e, "0");
+              str2 = toFixedPoint2(coeffToString2(n.c), n.e, "0");
             } else {
-              intCheck(b, 2, ALPHABET.length, "Base");
-              str2 = convertBase(toFixedPoint(coeffToString(n.c), e, "0"), 10, b, s, true);
+              intCheck2(b, 2, ALPHABET.length, "Base");
+              str2 = convertBase(toFixedPoint2(coeffToString2(n.c), e, "0"), 10, b, s, true);
             }
             if (s < 0 && n.c[0])
               str2 = "-" + str2;
@@ -35157,15 +35176,15 @@ var require_bignumber2 = __commonJS({
           BigNumber3.set(configObject);
         return BigNumber3;
       }
-      function bitFloor(n) {
+      function bitFloor2(n) {
         var i = n | 0;
         return n > 0 || n === i ? i : i - 1;
       }
-      function coeffToString(a) {
+      function coeffToString2(a) {
         var s, z, i = 1, j = a.length, r = a[0] + "";
         for (; i < j; ) {
           s = a[i++] + "";
-          z = LOG_BASE - s.length;
+          z = LOG_BASE2 - s.length;
           for (; z--; s = "0" + s)
             ;
           r += s;
@@ -35174,7 +35193,7 @@ var require_bignumber2 = __commonJS({
           ;
         return r.slice(0, j + 1 || 1);
       }
-      function compare(x, y) {
+      function compare2(x, y) {
         var a, b, xc = x.c, yc = y.c, i = x.s, j = y.s, k = x.e, l = y.e;
         if (!i || !j)
           return null;
@@ -35196,19 +35215,19 @@ var require_bignumber2 = __commonJS({
             return xc[i] > yc[i] ^ a ? 1 : -1;
         return k == l ? 0 : k > l ^ a ? 1 : -1;
       }
-      function intCheck(n, min, max, name2) {
-        if (n < min || n > max || n !== mathfloor(n)) {
-          throw Error(bignumberError + (name2 || "Argument") + (typeof n == "number" ? n < min || n > max ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
+      function intCheck2(n, min, max, name2) {
+        if (n < min || n > max || n !== mathfloor2(n)) {
+          throw Error(bignumberError2 + (name2 || "Argument") + (typeof n == "number" ? n < min || n > max ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
         }
       }
-      function isOdd(n) {
+      function isOdd2(n) {
         var k = n.c.length - 1;
-        return bitFloor(n.e / LOG_BASE) == k && n.c[k] % 2 != 0;
+        return bitFloor2(n.e / LOG_BASE2) == k && n.c[k] % 2 != 0;
       }
-      function toExponential(str2, e) {
+      function toExponential2(str2, e) {
         return (str2.length > 1 ? str2.charAt(0) + "." + str2.slice(1) : str2) + (e < 0 ? "e" : "e+") + e;
       }
-      function toFixedPoint(str2, e, z) {
+      function toFixedPoint2(str2, e, z) {
         var len, zs;
         if (e < 0) {
           for (zs = z + "."; ++e; zs += z)
@@ -35226,7 +35245,7 @@ var require_bignumber2 = __commonJS({
         }
         return str2;
       }
-      BigNumber2 = clone();
+      BigNumber2 = clone2();
       BigNumber2["default"] = BigNumber2.BigNumber = BigNumber2;
       if (typeof define == "function" && define.amd) {
         define(function() {
@@ -35343,6 +35362,14 @@ var require_utils6 = __commonJS({
         limit: "350000",
         recommended: "350000"
       },
+      [types_1.ProtocolAction.stake]: {
+        limit: "350000",
+        recommended: "350000"
+      },
+      [types_1.ProtocolAction.stakeWithPermit]: {
+        limit: "400000",
+        recommended: "400000"
+      },
       [types_1.ProtocolAction.vote]: {
         limit: "125000",
         recommended: "125000"
@@ -35412,6 +35439,8 @@ var require_utils6 = __commonJS({
         case "0xb66bcbac":
         case "0x35326910":
           return 164;
+        case "0x87a63926":
+          return 68;
         default:
           throw new Error("Unrecognized function selector for Augustus");
       }
@@ -36836,8 +36865,7 @@ var require_methodValidators = __commonJS({
       descriptor.value = function() {
         if (
           // @ts-expect-error todo: check why this ignore is needed
-          !ethers_1.utils.isAddress(this.stakingContractAddress) || // @ts-expect-error todo: check why this ignore is needed
-          !ethers_1.utils.isAddress(this.stakingHelperContractAddress)
+          !ethers_1.utils.isAddress(this.stakingContractAddress)
         ) {
           console.error(`[StakingValidator] You need to pass valid addresses`);
           return [];
@@ -41332,6 +41360,16 @@ var require_paraswap_liquiditySwapAdapter_contract = __commonJS({
           return 68;
         case "0x46c67b6d":
           return 68;
+        case "0xb22f4db8":
+          return 68;
+        case "0x19fc5be0":
+          return 68;
+        case "0x3865bde6":
+          return 68;
+        case "0x58f15100":
+          return 68;
+        case "0xa6866da9":
+          return 68;
         default:
           throw new Error("Unrecognized function selector for Augustus");
       }
@@ -43850,54 +43888,110 @@ var require_v3_faucet_contract = __commonJS({
   }
 });
 
-// node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js
-var require_IAaveStakingHelper_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/staking-contract/typechain/IAaveStakingHelper__factory.js"(exports2) {
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
+var require_IERC202612_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IAaveStakingHelper__factory = void 0;
+    exports2.IERC202612__factory = void 0;
     var ethers_1 = require_lib31();
-    var IAaveStakingHelper__factory = class {
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IAaveStakingHelper__factory = IAaveStakingHelper__factory;
     var _abi = [
       {
         inputs: [
           {
             internalType: "address",
-            name: "user",
+            name: "owner",
             type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-          },
-          {
-            internalType: "uint8",
-            name: "v",
-            type: "uint8"
-          },
-          {
-            internalType: "bytes32",
-            name: "r",
-            type: "bytes32"
-          },
-          {
-            internalType: "bytes32",
-            name: "s",
-            type: "bytes32"
           }
         ],
-        name: "stake",
-        outputs: [],
-        stateMutability: "nonpayable",
+        name: "_nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        name: "nonces",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
         type: "function"
       }
     ];
+    var IERC202612__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IERC202612__factory = IERC202612__factory;
+    IERC202612__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
+var require_erc20_2612 = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ERC20_2612Service = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IERC202612__factory_1 = require_IERC202612_factory();
+    var ERC20_2612Service = class extends BaseService_1.default {
+      constructor(provider) {
+        super(provider, IERC202612__factory_1.IERC202612__factory);
+        this.getNonce = this.getNonce.bind(this);
+      }
+      getNonce(_0) {
+        return __async(this, arguments, function* ({ token, owner }) {
+          const tokenContract = this.getContractInstance(token);
+          let nonce;
+          try {
+            nonce = yield tokenContract.nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+          }
+          try {
+            nonce = yield tokenContract._nonces(owner);
+            return nonce.toNumber();
+          } catch (_) {
+            console.log(`Token ${token} does not implement nonces or _nonces method`);
+          }
+          return null;
+        });
+      }
+    };
+    tslib_1.__decorate([
+      methodValidators_1.ERC20Validator,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [Object]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], ERC20_2612Service.prototype, "getNonce", null);
+    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -44733,21 +44827,17 @@ var require_staking_contract = __commonJS({
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
+    var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
-    var IAaveStakingHelper__factory_1 = require_IAaveStakingHelper_factory();
     var IStakedAaveV3__factory_1 = require_IStakedAaveV3_factory();
     var StakingService = class extends BaseService_1.default {
       constructor(provider, stakingServiceConfig) {
-        var _a7;
         super(provider, IStakedAaveV3__factory_1.IStakedAaveV3__factory);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
+        this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.stakingContractAddress = stakingServiceConfig.TOKEN_STAKING_ADDRESS;
-        this.stakingHelperContractAddress = (_a7 = stakingServiceConfig.STAKING_HELPER_ADDRESS) !== null && _a7 !== void 0 ? _a7 : "";
-        if (this.stakingHelperContractAddress !== "") {
-          this.stakingHelperContract = IAaveStakingHelper__factory_1.IAaveStakingHelper__factory.connect(this.stakingHelperContractAddress, provider);
-        }
       }
-      signStaking(user, amount, nonce) {
+      signStaking(user, amount, deadline) {
         return __async(this, null, function* () {
           const { getTokenData } = this.erc20Service;
           const stakingContract = this.getContractInstance(this.stakingContractAddress);
@@ -44755,6 +44845,13 @@ var require_staking_contract = __commonJS({
           const { name: name2, decimals } = yield getTokenData(stakedToken);
           const convertedAmount = (0, utils_1.valueToWei)(amount, decimals);
           const { chainId } = yield this.provider.getNetwork();
+          const nonce = yield this.erc20_2612Service.getNonce({
+            token: stakedToken,
+            owner: user
+          });
+          if (nonce === null) {
+            return "";
+          }
           const typeData = {
             types: {
               EIP712Domain: [
@@ -44780,16 +44877,16 @@ var require_staking_contract = __commonJS({
             },
             message: {
               owner: user,
-              spender: this.stakingHelperContractAddress,
+              spender: this.stakingContractAddress,
               value: convertedAmount,
               nonce,
-              deadline: ethers_1.constants.MaxUint256.toString()
+              deadline
             }
           };
           return JSON.stringify(typeData);
         });
       }
-      stakeWithPermit(user, amount, signature) {
+      stakeWithPermit(user, amount, signature, deadline) {
         return __async(this, null, function* () {
           const txs = [];
           const { decimalsOf } = this.erc20Service;
@@ -44800,14 +44897,14 @@ var require_staking_contract = __commonJS({
           const sig = ethers_1.utils.splitSignature(signature);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return this.stakingHelperContract.populateTransaction.stake(user, convertedAmount, sig.v, sig.r, sig.s);
+              return stakingContract.populateTransaction.stakeWithPermit(user, convertedAmount, deadline, sig.v, sig.r, sig.s);
             }),
             from: user
           });
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.STAKE_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.stakeWithPermit)
           });
           return txs;
         });
@@ -44957,7 +45054,6 @@ var require_staking_contract = __commonJS({
       methodValidators_1.SignStakingValidator,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
-      tslib_1.__param(2, (0, paramValidators_1.is0OrPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
       tslib_1.__metadata("design:paramtypes", [String, String, String]),
       tslib_1.__metadata("design:returntype", Promise)
@@ -44967,7 +45063,7 @@ var require_staking_contract = __commonJS({
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
       tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
       tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [String, String, Object]),
+      tslib_1.__metadata("design:paramtypes", [String, String, Object, String]),
       tslib_1.__metadata("design:returntype", Promise)
     ], StakingService.prototype, "stakeWithPermit", null);
     tslib_1.__decorate([
@@ -47122,113 +47218,6 @@ var require_governance_power_delegation_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], GovernancePowerDelegationTokenService.prototype, "getNonce", null);
     exports2.GovernancePowerDelegationTokenService = GovernancePowerDelegationTokenService;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js
-var require_IERC202612_factory = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/typechain/IERC202612__factory.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.IERC202612__factory = void 0;
-    var ethers_1 = require_lib31();
-    var _abi = [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "_nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address"
-          }
-        ],
-        name: "nonces",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ];
-    var IERC202612__factory = class {
-      static createInterface() {
-        return new ethers_1.utils.Interface(_abi);
-      }
-      static connect(address, signerOrProvider) {
-        return new ethers_1.Contract(address, _abi, signerOrProvider);
-      }
-    };
-    exports2.IERC202612__factory = IERC202612__factory;
-    IERC202612__factory.abi = _abi;
-  }
-});
-
-// node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js
-var require_erc20_2612 = __commonJS({
-  "node_modules/@aave/contract-helpers/dist/cjs/erc20-2612/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.ERC20_2612Service = void 0;
-    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
-    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
-    var methodValidators_1 = require_methodValidators();
-    var paramValidators_1 = require_paramValidators();
-    var IERC202612__factory_1 = require_IERC202612_factory();
-    var ERC20_2612Service = class extends BaseService_1.default {
-      constructor(provider) {
-        super(provider, IERC202612__factory_1.IERC202612__factory);
-        this.getNonce = this.getNonce.bind(this);
-      }
-      getNonce(_0) {
-        return __async(this, arguments, function* ({ token, owner }) {
-          const tokenContract = this.getContractInstance(token);
-          let nonce;
-          try {
-            nonce = yield tokenContract.nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-          }
-          try {
-            nonce = yield tokenContract._nonces(owner);
-            return nonce.toNumber();
-          } catch (_) {
-            console.log(`Token ${token} does not implement nonces or _nonces method`);
-          }
-          return null;
-        });
-      }
-    };
-    tslib_1.__decorate([
-      methodValidators_1.ERC20Validator,
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("token")),
-      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("owner")),
-      tslib_1.__metadata("design:type", Function),
-      tslib_1.__metadata("design:paramtypes", [Object]),
-      tslib_1.__metadata("design:returntype", Promise)
-    ], ERC20_2612Service.prototype, "getNonce", null);
-    exports2.ERC20_2612Service = ERC20_2612Service;
   }
 });
 
@@ -49958,6 +49947,12 @@ var require_v3_pool_contract = __commonJS({
           encoderAddress: this.l2EncoderAddress
         });
       }
+      getReserveData(reserve) {
+        return __async(this, null, function* () {
+          const lendingPoolContract = this.getContractInstance(this.poolAddress);
+          return lendingPoolContract.getReserveData(reserve);
+        });
+      }
       deposit(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
@@ -50734,6 +50729,13 @@ var require_v3_pool_contract = __commonJS({
     };
     tslib_1.__decorate([
       methodValidators_1.LPValidatorV3,
+      tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
+      tslib_1.__metadata("design:type", Function),
+      tslib_1.__metadata("design:paramtypes", [String]),
+      tslib_1.__metadata("design:returntype", Promise)
+    ], Pool.prototype, "getReserveData", null);
+    tslib_1.__decorate([
+      methodValidators_1.LPValidatorV3,
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("user")),
       tslib_1.__param(0, (0, paramValidators_1.isEthAddress)("reserve")),
       tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)("amount")),
@@ -51091,6 +51093,201 @@ var require_v3_pool_contract_bundle = __commonJS({
       }
     };
     exports2.PoolBundle = PoolBundle;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js
+var require_IUiGhoDataProvider_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/typechain/IUiGhoDataProvider__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IUiGhoDataProvider__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [],
+        name: "getGhoReserveData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "ghoBaseVariableBorrowRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountedPerToken",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoDiscountRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDebtTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ghoMinDiscountTokenBalanceForDiscount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint40",
+                name: "ghoReserveLastUpdateTimestamp",
+                type: "uint40"
+              },
+              {
+                internalType: "uint128",
+                name: "ghoCurrentBorrowIndex",
+                type: "uint128"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketLevel",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "aaveFacilitatorBucketMaxCapacity",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoReserveData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "getGhoUserData",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "userGhoDiscountPercent",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userDiscountTokenBalance",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userPreviousGhoBorrowIndex",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "userGhoScaledBorrowBalance",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct IUiGhoDataProvider.GhoUserData",
+            name: "",
+            type: "tuple"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var IUiGhoDataProvider__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.IUiGhoDataProvider__factory = IUiGhoDataProvider__factory;
+    IUiGhoDataProvider__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js
+var require_GhoService = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/GhoService.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var utils_1 = require_utils5();
+    var IUiGhoDataProvider__factory_1 = require_IUiGhoDataProvider_factory();
+    var GhoService = class {
+      constructor({ provider, uiGhoDataProviderAddress }) {
+        if (!(0, utils_1.isAddress)(uiGhoDataProviderAddress)) {
+          throw new Error("UiGhoDataProvider contract address is not valid");
+        }
+        this.ghoDataProviderService = IUiGhoDataProvider__factory_1.IUiGhoDataProvider__factory.connect(uiGhoDataProviderAddress, provider);
+      }
+      /**
+       * Fetches Gho reserve, discount, facilitator data
+       * @returns - instance of GhoReserveData with reserve, discount, facilitator data
+       */
+      getGhoReserveData() {
+        return __async(this, null, function* () {
+          const ghoReserveData = yield this.ghoDataProviderService.getGhoReserveData();
+          return {
+            ghoBaseVariableBorrowRate: ghoReserveData.ghoBaseVariableBorrowRate.toString(),
+            ghoDiscountedPerToken: ghoReserveData.ghoDiscountedPerToken.toString(),
+            ghoDiscountRate: ghoReserveData.ghoDiscountRate.toString(),
+            aaveFacilitatorBucketMaxCapacity: ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString(),
+            aaveFacilitatorBucketLevel: ghoReserveData.aaveFacilitatorBucketLevel.toString(),
+            ghoMinDebtTokenBalanceForDiscount: ghoReserveData.ghoMinDebtTokenBalanceForDiscount.toString(),
+            ghoMinDiscountTokenBalanceForDiscount: ghoReserveData.ghoMinDiscountTokenBalanceForDiscount.toString(),
+            ghoCurrentBorrowIndex: ghoReserveData.ghoCurrentBorrowIndex.toString(),
+            ghoReserveLastUpdateTimestamp: ghoReserveData.ghoReserveLastUpdateTimestamp.toString()
+          };
+        });
+      }
+      /**
+       * Fetches Gho user data for UI display
+       * @param userAddress - Address of user to fetch ghoDiscountRate, ghoDiscountTokenBalance, and gho balance indeces
+       * @returns - instance of GhoUserData
+       */
+      getGhoUserData(userAddress) {
+        return __async(this, null, function* () {
+          if (!(0, utils_1.isAddress)(userAddress)) {
+            throw new Error("user address is not valid");
+          }
+          const ghoUserData = yield this.ghoDataProviderService.getGhoUserData(userAddress);
+          return {
+            userGhoDiscountPercent: ghoUserData.userGhoDiscountPercent.toString(),
+            userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance.toString(),
+            userGhoScaledBorrowBalance: ghoUserData.userGhoScaledBorrowBalance.toString(),
+            userPreviousGhoBorrowIndex: ghoUserData.userPreviousGhoBorrowIndex.toString()
+          };
+        });
+      }
+    };
+    exports2.GhoService = GhoService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/gho/index.js
+var require_gho = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/gho/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GhoService = void 0;
+    var GhoService_1 = require_GhoService();
+    Object.defineProperty(exports2, "GhoService", { enumerable: true, get: function() {
+      return GhoService_1.GhoService;
+    } });
   }
 });
 
@@ -51529,6 +51726,479 @@ var require_v3_migration_contract = __commonJS({
       tslib_1.__metadata("design:returntype", Promise)
     ], V3MigrationHelperService.prototype, "migrate", null);
     exports2.V3MigrationHelperService = V3MigrationHelperService;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/typechain/ParaSwapDebtSwitchAdapter__factory.js
+var require_ParaSwapDebtSwitchAdapter_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/typechain/ParaSwapDebtSwitchAdapter__factory.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ParaSwapDebtSwapAdapter__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "addressesProvider",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "pool",
+            type: "address"
+          },
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "augustusRegistry",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amountSold",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Bought",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "previousOwner",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "OwnershipTransferred",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "fromAmount",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Swapped",
+        type: "event"
+      },
+      {
+        inputs: [],
+        name: "ADDRESSES_PROVIDER",
+        outputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "AUGUSTUS_REGISTRY",
+        outputs: [
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "MAX_SLIPPAGE_PERCENT",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "ORACLE",
+        outputs: [
+          {
+            internalType: "contract IPriceOracleGetter",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "POOL",
+        outputs: [
+          {
+            internalType: "contract IPool",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "REFERRER",
+        outputs: [
+          {
+            internalType: "uint16",
+            name: "",
+            type: "uint16"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "cacheReserves",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "assets",
+            type: "address[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "amounts",
+            type: "uint256[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "",
+            type: "uint256[]"
+          },
+          {
+            internalType: "address",
+            name: "initiator",
+            type: "address"
+          },
+          {
+            internalType: "bytes",
+            name: "params",
+            type: "bytes"
+          }
+        ],
+        name: "executeOperation",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "owner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "reserve",
+            type: "address"
+          }
+        ],
+        name: "renewAllowance",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "renounceOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IERC20",
+            name: "token",
+            type: "address"
+          }
+        ],
+        name: "rescueTokens",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "debtAsset",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "debtRepayAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "debtRateMode",
+                type: "uint256"
+              },
+              {
+                internalType: "address",
+                name: "newDebtAsset",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "maxNewDebtAmount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "offset",
+                type: "uint256"
+              },
+              {
+                internalType: "bytes",
+                name: "paraswapData",
+                type: "bytes"
+              }
+            ],
+            internalType: "struct ParaSwapDebtSwapAdapter.DebtSwapParams",
+            name: "debtSwapParams",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "contract ICreditDelegationToken",
+                name: "debtToken",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "value",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "deadline",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct ParaSwapDebtSwapAdapter.CreditDelegationInput",
+            name: "creditDelegationPermit",
+            type: "tuple"
+          }
+        ],
+        name: "swapDebt",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
+    var _bytecode = "0x6101006040523480156200001257600080fd5b5060405162003410380380620034108339810160408190526200003591620007c5565b838383838383838282600033600080546001600160a01b0319166001600160a01b038316908117825560405192935091600080516020620033f0833981519152908290a350816001600160a01b031663fca513a86040518163ffffffff1660e01b8152600401602060405180830381865afa158015620000b9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000df91906200082d565b6001600160a01b0390811660805291821660a052811660c05260405163fb04e17b60e01b8152600060048201529082169063fb04e17b90602401602060405180830381865afa15801562000137573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200015d919062000854565b15620001b05760405162461bcd60e51b815260206004820152601c60248201527f4e6f7420612076616c696420417567757374757320616464726573730000000060448201526064015b60405180910390fd5b6001600160a01b031660e052505060018055620001cd81620001e5565b620001d7620002f2565b505050505050505062000a40565b6000546001600160a01b03163314620002415760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401620001a7565b6001600160a01b038116620002a85760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b6064820152608401620001a7565b600080546040516001600160a01b0380851693921691600080516020620033f083398151915291a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b600060c0516001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa15801562000335573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f191682016040526200035f91908101906200088e565b905060005b8151811015620003c857620003b360c0516000198484815181106200038d576200038d62000960565b60200260200101516001600160a01b0316620003cc60201b62000cf6179092919060201c565b80620003bf8162000976565b91505062000364565b5050565b8015806200044a5750604051636eb1769f60e11b81523060048201526001600160a01b03838116602483015284169063dd62ed3e90604401602060405180830381865afa15801562000422573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620004489190620009a0565b155b620004be5760405162461bcd60e51b815260206004820152603660248201527f5361666545524332303a20617070726f76652066726f6d206e6f6e2d7a65726f60448201527f20746f206e6f6e2d7a65726f20616c6c6f77616e6365000000000000000000006064820152608401620001a7565b604080516001600160a01b038416602482015260448082018490528251808303909101815260649091019091526020810180516001600160e01b0390811663095ea7b360e01b17909152620005169185916200051b16565b505050565b600062000577826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c6564815250856001600160a01b0316620005f960201b62000e32179092919060201c565b80519091501562000516578080602001905181019062000598919062000854565b620005165760405162461bcd60e51b815260206004820152602a60248201527f5361666545524332303a204552433230206f7065726174696f6e20646964206e6044820152691bdd081cdd58d8d9595960b21b6064820152608401620001a7565b60606200060a848460008562000612565b949350505050565b606082471015620006755760405162461bcd60e51b815260206004820152602660248201527f416464726573733a20696e73756666696369656e742062616c616e636520666f6044820152651c8818d85b1b60d21b6064820152608401620001a7565b600080866001600160a01b03168587604051620006939190620009ed565b60006040518083038185875af1925050503d8060008114620006d2576040519150601f19603f3d011682016040523d82523d6000602084013e620006d7565b606091505b509092509050620006eb87838387620006f6565b979650505050505050565b60608315620007675782516200075f576001600160a01b0385163b6200075f5760405162461bcd60e51b815260206004820152601d60248201527f416464726573733a2063616c6c20746f206e6f6e2d636f6e74726163740000006044820152606401620001a7565b50816200060a565b6200060a83838151156200077e5781518083602001fd5b8060405162461bcd60e51b8152600401620001a7919062000a0b565b6001600160a01b0381168114620007b057600080fd5b50565b8051620007c0816200079a565b919050565b60008060008060808587031215620007dc57600080fd5b8451620007e9816200079a565b6020860151909450620007fc816200079a565b60408601519093506200080f816200079a565b606086015190925062000822816200079a565b939692955090935050565b6000602082840312156200084057600080fd5b81516200084d816200079a565b9392505050565b6000602082840312156200086757600080fd5b815180151581146200084d57600080fd5b634e487b7160e01b600052604160045260246000fd5b60006020808385031215620008a257600080fd5b82516001600160401b0380821115620008ba57600080fd5b818501915085601f830112620008cf57600080fd5b815181811115620008e457620008e462000878565b8060051b604051601f19603f830116810181811085821117156200090c576200090c62000878565b6040529182528482019250838101850191888311156200092b57600080fd5b938501935b8285101562000954576200094485620007b3565b8452938501939285019262000930565b98975050505050505050565b634e487b7160e01b600052603260045260246000fd5b60006000198214156200099957634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215620009b357600080fd5b5051919050565b60005b83811015620009d7578181015183820152602001620009bd565b83811115620009e7576000848401525b50505050565b6000825162000a01818460208701620009ba565b9190910192915050565b602081526000825180602084015262000a2c816040850160208701620009ba565b601f01601f19169190910160400192915050565b60805160a05160c05160e05161291b62000ad56000396000818161019d01526113b20152600081816101e70152818161033f015281816103740152818161071801528181610834015281816108f8015281816109ee01528181610a8501528181610afc01528181610f0001528181610fd401526110a6015260006101080152600081816101760152611c05015261291b6000f3fe608060405234801561001057600080fd5b50600436106100e95760003560e01c8063715018a61161008c5780638da5cb5b116100665780638da5cb5b14610209578063920f5c841461021a578063c05603741461023d578063f2fde38b1461025957600080fd5b8063715018a6146101d257806371f893ea146101da5780637535d246146101e257600080fd5b806332e4b286116100c857806332e4b2861461015a57806338013f02146101715780633a82986714610198578063636aa619146101bf57600080fd5b8062ae3bf8146100ee5780630542975c146101035780630a03635114610147575b600080fd5b6101016100fc366004611d34565b61026c565b005b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b610101610155366004611d34565b610330565b610163610bb881565b60405190815260200161013e565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6101016101cd366004611f13565b61039b565b610101610976565b6101016109ea565b61012a7f000000000000000000000000000000000000000000000000000000000000000081565b6000546001600160a01b031661012a565b61022d61022836600461202a565b610aef565b604051901515815260200161013e565b61024661173081565b60405161ffff909116815260200161013e565b610101610267366004611d34565b610c0c565b6000546001600160a01b0316331461029f5760405162461bcd60e51b81526004016102969061212f565b60405180910390fd5b61032d6102b46000546001600160a01b031690565b6040516370a0823160e01b81523060048201526001600160a01b038416906370a0823190602401602060405180830381865afa1580156102f8573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061031c9190612164565b6001600160a01b0384169190610e49565b50565b6103656001600160a01b0382167f00000000000000000000000000000000000000000000000000000000000000006000610cf6565b61032d6001600160a01b0382167f0000000000000000000000000000000000000000000000000000000000000000600019610cf6565b60608201516040516370a0823160e01b81523060048201526000916001600160a01b0316906370a0823190602401602060405180830381865afa1580156103e6573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061040a9190612164565b905081604001516000146104b657815160208301516040808501516060860151608087015160a0880151935163016a5aab60e31b81523360048201523060248201526044810195909552606485019290925260ff16608484015260a483015260c48201526001600160a01b0390911690630b52d5589060e401600060405180830381600087803b15801561049d57600080fd5b505af11580156104b1573d6000803e3d6000fd5b505050505b600019836020015114156105c1576000806104d48560000151610eda565b915091508460400151600214610551576040516370a0823160e01b81523360048201526001600160a01b038216906370a0823190602401602060405180830381865afa158015610528573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061054c9190612164565b6105b9565b6040516370a0823160e01b81523360048201526001600160a01b038316906370a0823190602401602060405180830381865afa158015610595573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105b99190612164565b602086015250505b6040805160c0808201835285516001600160a01b0316825260208087015181840152868401518385015290860151606083015260a0808701516080840152339083015291519091600091610617918491016121d5565b60408051601f1981840301815260018084528383019092529250600091906020808301908036833701905050905085606001518160008151811061065d5761065d61223b565b6001600160a01b0392909216602092830291909101909101526040805160018082528183019092526000918160200160208202803683370190505090508660800151816000815181106106b2576106b261223b565b60209081029190910101526040805160018082528183019092526000918160200160208202803683370190505090506002816000815181106106f6576106f661223b565b602090810291909101015260405163ab9c4b5d60e01b81526001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000169063ab9c4b5d9061075b90309087908790879033908c906117309060040161228c565b600060405180830381600087803b15801561077557600080fd5b505af1158015610789573d6000803e3d6000fd5b5050505060608801516040516370a0823160e01b81523060048201526000916001600160a01b0316906370a0823190602401602060405180830381865afa1580156107d8573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107fc9190612164565b9050600061080a888361235e565b9050801561096a5760608a0151604051636eb1769f60e11b81523060048201526001600160a01b037f000000000000000000000000000000000000000000000000000000000000000081166024830152600092169063dd62ed3e90604401602060405180830381865afa158015610885573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108a99190612164565b9050818110156108c0576108c08b60600151610330565b60608b015160405163573ade8160e01b81526001600160a01b03918216600482015260248101849052600260448201523360648201527f00000000000000000000000000000000000000000000000000000000000000009091169063573ade81906084016020604051808303816000875af1158015610943573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109679190612164565b50505b50505050505050505050565b6000546001600160a01b031633146109a05760405162461bcd60e51b81526004016102969061212f565b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663d1946dbc6040518163ffffffff1660e01b8152600401600060405180830381865afa158015610a4a573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052610a729190810190612380565b905060005b8151811015610aeb57610ad97f0000000000000000000000000000000000000000000000000000000000000000600019848481518110610ab957610ab961223b565b60200260200101516001600160a01b0316610cf69092919063ffffffff16565b80610ae381612426565b915050610a77565b5050565b6000336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610b5f5760405162461bcd60e51b815260206004820152601360248201527210d05313115497d35554d517d09157d413d3d3606a1b6044820152606401610296565b6001600160a01b0384163014610bb05760405162461bcd60e51b8152602060048201526016602482015275494e49544941544f525f4d5553545f42455f5448495360501b6044820152606401610296565b610bfc83838c8c6000818110610bc857610bc861223b565b9050602002016020810190610bdd9190611d34565b8b8b6000818110610bf057610bf061223b565b90506020020135610f86565b5060019998505050505050505050565b6000546001600160a01b03163314610c365760405162461bcd60e51b81526004016102969061212f565b6001600160a01b038116610c9b5760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b6064820152608401610296565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b801580610d705750604051636eb1769f60e11b81523060048201526001600160a01b03838116602483015284169063dd62ed3e90604401602060405180830381865afa158015610d4a573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d6e9190612164565b155b610ddb5760405162461bcd60e51b815260206004820152603660248201527f5361666545524332303a20617070726f76652066726f6d206e6f6e2d7a65726f60448201527520746f206e6f6e2d7a65726f20616c6c6f77616e636560501b6064820152608401610296565b604080516001600160a01b038416602482015260448082018490528251808303909101815260649091019091526020810180516001600160e01b031663095ea7b360e01b179052610e2d90849061111e565b505050565b6060610e4184846000856111f0565b949350505050565b60405163a9059cbb60e01b8082526001600160a01b0384166004830152602482018390529060008060448382895af1610e86573d6000803e3d6000fd5b50610e90846112cb565b610ed45760405162461bcd60e51b815260206004820152601560248201527423a83b191d103330b4b632b2103a3930b739b332b960591b6044820152606401610296565b50505050565b6040516335ea6a7560e01b81526001600160a01b038281166004830152600091829182917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610f4a573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f6e91906124ca565b90508061014001518161012001519250925050915091565b6000610f94848601866125ed565b9050610fb481608001518260600151858460000151868660200151611374565b508051604051636eb1769f60e11b81523060048201526001600160a01b037f000000000000000000000000000000000000000000000000000000000000000081166024830152600092169063dd62ed3e90604401602060405180830381865afa158015611025573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906110499190612164565b9050816020015181101561106257815161106290610330565b8151602083015160408085015160a0860151915163573ade8160e01b81526001600160a01b03948516600482015260248101939093526044830152821660648201527f00000000000000000000000000000000000000000000000000000000000000009091169063573ade81906084016020604051808303816000875af11580156110f1573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906111159190612164565b50505050505050565b6000611173826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c6564815250856001600160a01b0316610e329092919063ffffffff16565b805190915015610e2d578080602001905181019061119191906126a4565b610e2d5760405162461bcd60e51b815260206004820152602a60248201527f5361666545524332303a204552433230206f7065726174696f6e20646964206e6044820152691bdd081cdd58d8d9595960b21b6064820152608401610296565b6060824710156112515760405162461bcd60e51b815260206004820152602660248201527f416464726573733a20696e73756666696369656e742062616c616e636520666f6044820152651c8818d85b1b60d21b6064820152608401610296565b600080866001600160a01b0316858760405161126d91906126c6565b60006040518083038185875af1925050503d80600081146112aa576040519150601f19603f3d011682016040523d82523d6000602084013e6112af565b606091505b50915091506112c087838387611aac565b979650505050505050565b60006112f1565b62461bcd60e51b60005260206004528060245250806044525060646000fd5b3d801561133057602081146113615761132b7f475076323a206d616c666f726d6564207472616e7366657220726573756c7400601f6112d2565b61136e565b823b611358576113587311d41d8c8e881b9bdd08184818dbdb9d1c9858dd60621b60146112d2565b6001915061136e565b3d6000803e600051151591505b50919050565b60008060008780602001905181019061138d91906126e2565b60405163fb04e17b60e01b81526001600160a01b0380831660048301529294509092507f00000000000000000000000000000000000000000000000000000000000000009091169063fb04e17b90602401602060405180830381865afa1580156113fb573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061141f91906126a4565b61145e5760405162461bcd60e51b815260206004820152601060248201526f494e56414c49445f415547555354555360801b6044820152606401610296565b600061146988611b22565b60ff169050600061147988611b22565b60ff16905060006114898a611be3565b905060006114968a611be3565b905060006114ee6114ab612710610bb8611c72565b6114e86114c36114bc88600a612854565b8790611c82565b6114e26114db6114d48b600a612854565b8890611c82565b8e90611c82565b90611cac565b90611cbf565b9050808a111561154c5760405162461bcd60e51b815260206004820152602360248201527f6d6178416d6f756e74546f5377617020657863656564206d617820736c69707060448201526261676560e81b6064820152608401610296565b50506040516370a0823160e01b8152306004820152600093506001600160a01b038b1692506370a082319150602401602060405180830381865afa158015611598573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115bc9190612164565b90508581101561160e5760405162461bcd60e51b815260206004820181905260248201527f494e53554646494349454e545f42414c414e43455f4245464f52455f535741506044820152606401610296565b6040516370a0823160e01b81523060048201526000906001600160a01b038916906370a0823190602401602060405180830381865afa158015611655573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906116799190612164565b90506000836001600160a01b031663d2c4b5986040518163ffffffff1660e01b8152600401602060405180830381865afa1580156116bb573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906116df9190612860565b60405163095ea7b360e01b81526001600160a01b03808316600483015260006024830152919250908b169063095ea7b3906044016020604051808303816000875af1158015611732573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061175691906126a4565b5060405163095ea7b360e01b81526001600160a01b038281166004830152602482018a90528b169063095ea7b3906044016020604051808303816000875af11580156117a6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906117ca91906126a4565b508b156118435760048c101580156117ee575084516117ea906020611ce5565b8c11155b61183a5760405162461bcd60e51b815260206004820152601d60248201527f544f5f414d4f554e545f4f46465345545f4f55545f4f465f52414e47450000006044820152606401610296565b8660208d018601525b6000846001600160a01b03168660405161185d91906126c6565b6000604051808303816000865af19150503d806000811461189a576040519150601f19603f3d011682016040523d82523d6000602084013e61189f565b606091505b50509050806118b2573d6000803e3d6000fd5b6040516370a0823160e01b81523060048201526000906001600160a01b038d16906370a0823190602401602060405180830381865afa1580156118f9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061191d9190612164565b9050611929818661235e565b97508988111561197b5760405162461bcd60e51b815260206004820152601860248201527f57524f4e475f42414c414e43455f41465445525f5357415000000000000000006044820152606401610296565b6040516370a0823160e01b81523060048201526000906119f29086906001600160a01b038f16906370a0823190602401602060405180830381865afa1580156119c8573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906119ec9190612164565b90611ce5565b905089811015611a445760405162461bcd60e51b815260206004820152601c60248201527f494e53554646494349454e545f414d4f554e545f5245434549564544000000006044820152606401610296565b8b6001600160a01b03168d6001600160a01b03167fbf77fd13a39d14dc0da779342c14105c38d9a5d0c60f2caa22f5fd1d5525416d8b84604051611a92929190918252602082015260400190565b60405180910390a350505050505050509695505050505050565b60608315611b18578251611b11576001600160a01b0385163b611b115760405162461bcd60e51b815260206004820152601d60248201527f416464726573733a2063616c6c20746f206e6f6e2d636f6e74726163740000006044820152606401610296565b5081610e41565b610e418383611cf5565b600080826001600160a01b031663313ce5676040518163ffffffff1660e01b8152600401602060405180830381865afa158015611b63573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611b87919061287d565b9050604d8160ff161115611bdd5760405162461bcd60e51b815260206004820152601a60248201527f544f4f5f4d414e595f444543494d414c535f4f4e5f544f4b454e0000000000006044820152606401610296565b92915050565b60405163b3596f0760e01b81526001600160a01b0382811660048301526000917f00000000000000000000000000000000000000000000000000000000000000009091169063b3596f0790602401602060405180830381865afa158015611c4e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611bdd9190612164565b80820182811015611bdd57600080fd5b6000821580611ca357505081810281838281611ca057611ca061289a565b04145b611bdd57600080fd5b6000611cb882846128b0565b9392505050565b600081156113881983900484111517611cd757600080fd5b506127109102611388010490565b80820382811115611bdd57600080fd5b815115611d055781518083602001fd5b8060405162461bcd60e51b815260040161029691906128d2565b6001600160a01b038116811461032d57600080fd5b600060208284031215611d4657600080fd5b8135611cb881611d1f565b8035611d5c81611d1f565b919050565b634e487b7160e01b600052604160045260246000fd5b60405160c0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b60405290565b60405160e0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b6040516101e0810167ffffffffffffffff81118282101715611d9a57611d9a611d61565b604051601f8201601f1916810167ffffffffffffffff81118282101715611e1057611e10611d61565b604052919050565b600067ffffffffffffffff821115611e3257611e32611d61565b50601f01601f191660200190565b600082601f830112611e5157600080fd5b8135611e64611e5f82611e18565b611de7565b818152846020838601011115611e7957600080fd5b816020850160208301376000918101602001919091529392505050565b60ff8116811461032d57600080fd5b600060c08284031215611eb757600080fd5b611ebf611d77565b90508135611ecc81611d1f565b8082525060208201356020820152604082013560408201526060820135611ef281611e96565b806060830152506080820135608082015260a082013560a082015292915050565b60008060e08385031215611f2657600080fd5b823567ffffffffffffffff80821115611f3e57600080fd5b9084019060e08287031215611f5257600080fd5b611f5a611da0565b611f6383611d51565b81526020830135602082015260408301356040820152611f8560608401611d51565b60608201526080830135608082015260a083013560a082015260c083013582811115611fb057600080fd5b611fbc88828601611e40565b60c083015250809450505050611fd58460208501611ea5565b90509250929050565b60008083601f840112611ff057600080fd5b50813567ffffffffffffffff81111561200857600080fd5b6020830191508360208260051b850101111561202357600080fd5b9250929050565b600080600080600080600080600060a08a8c03121561204857600080fd5b893567ffffffffffffffff8082111561206057600080fd5b61206c8d838e01611fde565b909b50995060208c013591508082111561208557600080fd5b6120918d838e01611fde565b909950975060408c01359150808211156120aa57600080fd5b6120b68d838e01611fde565b909750955060608c013591506120cb82611d1f565b90935060808b013590808211156120e157600080fd5b818c0191508c601f8301126120f557600080fd5b81358181111561210457600080fd5b8d602082850101111561211657600080fd5b6020830194508093505050509295985092959850929598565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b60006020828403121561217657600080fd5b5051919050565b60005b83811015612198578181015183820152602001612180565b83811115610ed45750506000910152565b600081518084526121c181602086016020860161217d565b601f01601f19169290920160200192915050565b60208152600060018060a01b038084511660208401526020840151604084015260408401516060840152606084015160c0608085015261221860e08501826121a9565b9050608085015160a08501528160a08601511660c0850152809250505092915050565b634e487b7160e01b600052603260045260246000fd5b600081518084526020808501945080840160005b8381101561228157815187529582019590820190600101612265565b509495945050505050565b6001600160a01b03888116825260e0602080840182905289519184018290526000928a820192909190610100860190855b818110156122db5785518516835294830194918301916001016122bd565b505085810360408701526122ef818c612251565b935050505082810360608401526123068188612251565b6001600160a01b0387166080850152905082810360a084015261232981866121a9565b91505061233c60c083018461ffff169052565b98975050505050505050565b634e487b7160e01b600052601160045260246000fd5b60008282101561237057612370612348565b500390565b8051611d5c81611d1f565b6000602080838503121561239357600080fd5b825167ffffffffffffffff808211156123ab57600080fd5b818501915085601f8301126123bf57600080fd5b8151818111156123d1576123d1611d61565b8060051b91506123e2848301611de7565b81815291830184019184810190888411156123fc57600080fd5b938501935b8385101561233c578451925061241683611d1f565b8282529385019390850190612401565b600060001982141561243a5761243a612348565b5060010190565b60006020828403121561245357600080fd5b6040516020810181811067ffffffffffffffff8211171561247657612476611d61565b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114611d5c57600080fd5b805164ffffffffff81168114611d5c57600080fd5b805161ffff81168114611d5c57600080fd5b60006101e082840312156124dd57600080fd5b6124e5611dc3565b6124ef8484612441565b81526124fd60208401612483565b602082015261250e60408401612483565b604082015261251f60608401612483565b606082015261253060808401612483565b608082015261254160a08401612483565b60a082015261255260c084016124a3565b60c082015261256360e084016124b8565b60e0820152610100612576818501612375565b90820152610120612588848201612375565b9082015261014061259a848201612375565b908201526101606125ac848201612375565b908201526101806125be848201612483565b908201526101a06125d0848201612483565b908201526101c06125e2848201612483565b908201529392505050565b6000602082840312156125ff57600080fd5b813567ffffffffffffffff8082111561261757600080fd5b9083019060c0828603121561262b57600080fd5b612633611d77565b823561263e81611d1f565b80825250602083013560208201526040830135604082015260608301358281111561266857600080fd5b61267487828601611e40565b6060830152506080830135608082015260a0830135925061269483611d1f565b60a0810192909252509392505050565b6000602082840312156126b657600080fd5b81518015158114611cb857600080fd5b600082516126d881846020870161217d565b9190910192915050565b600080604083850312156126f557600080fd5b825167ffffffffffffffff81111561270c57600080fd5b8301601f8101851361271d57600080fd5b805161272b611e5f82611e18565b81815286602083850101111561274057600080fd5b61275182602083016020860161217d565b809450505050602083015161276581611d1f565b809150509250929050565b600181815b808511156127ab57816000190482111561279157612791612348565b8085161561279e57918102915b93841c9390800290612775565b509250929050565b6000826127c257506001611bdd565b816127cf57506000611bdd565b81600181146127e557600281146127ef5761280b565b6001915050611bdd565b60ff84111561280057612800612348565b50506001821b611bdd565b5060208310610133831016604e8410600b841016171561282e575081810a611bdd565b6128388383612770565b806000190482111561284c5761284c612348565b029392505050565b6000611cb883836127b3565b60006020828403121561287257600080fd5b8151611cb881611d1f565b60006020828403121561288f57600080fd5b8151611cb881611e96565b634e487b7160e01b600052601260045260246000fd5b6000826128cd57634e487b7160e01b600052601260045260246000fd5b500490565b602081526000611cb860208301846121a956fea264697066735822122083916c2e867ffe5cc5586626cf69491670775747aa658d7b03240abbbe94052f64736f6c634300080a00338be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0";
+    var isSuperArgs = (xs) => xs.length > 1;
+    var ParaSwapDebtSwapAdapter__factory = class extends ethers_1.ContractFactory {
+      constructor(...args) {
+        if (isSuperArgs(args)) {
+          super(...args);
+        } else {
+          super(_abi, _bytecode, args[0]);
+        }
+      }
+      deploy(addressesProvider, pool, augustusRegistry, owner, overrides) {
+        return super.deploy(addressesProvider, pool, augustusRegistry, owner, overrides || {});
+      }
+      getDeployTransaction(addressesProvider, pool, augustusRegistry, owner, overrides) {
+        return super.getDeployTransaction(addressesProvider, pool, augustusRegistry, owner, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports2.ParaSwapDebtSwapAdapter__factory = ParaSwapDebtSwapAdapter__factory;
+    ParaSwapDebtSwapAdapter__factory.bytecode = _bytecode;
+    ParaSwapDebtSwapAdapter__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/index.js
+var require_paraswap_debtSwitch_contract = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-debtSwitch-contract/index.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.DebtSwitchAdapterService = void 0;
+    var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
+    var ethers_1 = require_lib31();
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
+    var utils_1 = require_utils6();
+    var ParaSwapDebtSwitchAdapter__factory_1 = require_ParaSwapDebtSwitchAdapter_factory();
+    var DebtSwitchAdapterService = class extends BaseService_1.default {
+      constructor(provider, debtSwitchAddress) {
+        super(provider, ParaSwapDebtSwitchAdapter__factory_1.ParaSwapDebtSwapAdapter__factory);
+        this.debtSwitchAddress = debtSwitchAddress !== null && debtSwitchAddress !== void 0 ? debtSwitchAddress : "";
+        this.contractInterface = ParaSwapDebtSwitchAdapter__factory_1.ParaSwapDebtSwapAdapter__factory.createInterface();
+        this.debtSwitch = this.debtSwitch.bind(this);
+      }
+      debtSwitch({ user, debtAssetUnderlying, debtRepayAmount, debtRateMode, newAssetDebtToken, newAssetUnderlying, maxNewDebtAmount, repayAll, txCalldata, augustus, deadline, sigV, sigR, sigS, signedAmount }) {
+        const callDataEncoded = ethers_1.utils.defaultAbiCoder.encode(["bytes", "address"], [txCalldata, augustus]);
+        const txParamsStruct = {
+          debtAsset: debtAssetUnderlying,
+          debtRepayAmount,
+          debtRateMode,
+          newDebtAsset: newAssetUnderlying,
+          maxNewDebtAmount,
+          offset: repayAll ? (0, utils_1.augustusToAmountOffsetFromCalldata)(txCalldata) : 0,
+          paraswapData: callDataEncoded
+        };
+        const creditDelParamsStruct = {
+          debtToken: newAssetDebtToken,
+          value: signedAmount,
+          deadline,
+          v: sigV,
+          r: sigR,
+          s: sigS
+        };
+        const actionTx = {};
+        const txData = this.contractInterface.encodeFunctionData("swapDebt", [
+          txParamsStruct,
+          creditDelParamsStruct
+        ]);
+        actionTx.to = this.debtSwitchAddress;
+        actionTx.data = txData;
+        actionTx.from = user;
+        return actionTx;
+      }
+    };
+    exports2.DebtSwitchAdapterService = DebtSwitchAdapterService;
   }
 });
 
@@ -53722,7 +54392,7 @@ var require_lib33 = __commonJS({
     function isBlob(obj) {
       return typeof obj === "object" && typeof obj.arrayBuffer === "function" && typeof obj.type === "string" && typeof obj.stream === "function" && typeof obj.constructor === "function" && typeof obj.constructor.name === "string" && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
     }
-    function clone(instance) {
+    function clone2(instance) {
       let p1, p2;
       let body = instance.body;
       if (instance.bodyUsed) {
@@ -54144,7 +54814,7 @@ var require_lib33 = __commonJS({
        * @return  Response
        */
       clone() {
-        return new _Response(clone(this), {
+        return new _Response(clone2(this), {
           url: this.url,
           status: this.status,
           statusText: this.statusText,
@@ -54207,7 +54877,7 @@ var require_lib33 = __commonJS({
         if ((init.body != null || isRequest(input) && input.body !== null) && (method === "GET" || method === "HEAD")) {
           throw new TypeError("Request with GET/HEAD method cannot have body");
         }
-        let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
+        let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone2(input) : null;
         Body.call(this, inputBody, {
           timeout: init.timeout || input.timeout || 0,
           size: init.size || input.size || 0
@@ -54632,8 +55302,10 @@ var require_cjs = __commonJS({
     tslib_1.__exportStar(require_v3_pool_contract_bundle(), exports2);
     tslib_1.__exportStar(require_synthetix_contract(), exports2);
     tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_gho(), exports2);
     tslib_1.__exportStar(require_v3_migration_contract(), exports2);
     tslib_1.__exportStar(require_erc20_2612(), exports2);
+    tslib_1.__exportStar(require_paraswap_debtSwitch_contract(), exports2);
     tslib_1.__exportStar(require_types2(), exports2);
     tslib_1.__exportStar(require_ipfs(), exports2);
     tslib_1.__exportStar(require_utils6(), exports2);
@@ -54658,7 +55330,7 @@ var require_lodash = __commonJS({
       var DEFAULT_TRUNC_LENGTH = 30, DEFAULT_TRUNC_OMISSION = "...";
       var HOT_COUNT = 800, HOT_SPAN = 16;
       var LAZY_FILTER_FLAG = 1, LAZY_MAP_FLAG = 2, LAZY_WHILE_FLAG = 3;
-      var INFINITY = 1 / 0, MAX_SAFE_INTEGER = 9007199254740991, MAX_INTEGER = 17976931348623157e292, NAN = 0 / 0;
+      var INFINITY = 1 / 0, MAX_SAFE_INTEGER2 = 9007199254740991, MAX_INTEGER = 17976931348623157e292, NAN = 0 / 0;
       var MAX_ARRAY_LENGTH = 4294967295, MAX_ARRAY_INDEX = MAX_ARRAY_LENGTH - 1, HALF_MAX_ARRAY_LENGTH = MAX_ARRAY_LENGTH >>> 1;
       var wrapFlags = [
         ["ary", WRAP_ARY_FLAG],
@@ -56367,7 +57039,7 @@ var require_lodash = __commonJS({
         }
         function baseRepeat(string, n) {
           var result2 = "";
-          if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
+          if (!string || n < 1 || n > MAX_SAFE_INTEGER2) {
             return result2;
           }
           do {
@@ -57536,7 +58208,7 @@ var require_lodash = __commonJS({
         }
         function isIndex(value, length) {
           var type = typeof value;
-          length = length == null ? MAX_SAFE_INTEGER : length;
+          length = length == null ? MAX_SAFE_INTEGER2 : length;
           return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
         }
         function isIterateeCall(value, index, object) {
@@ -58215,15 +58887,15 @@ var require_lodash = __commonJS({
         function wrapperPlant(value) {
           var result2, parent2 = this;
           while (parent2 instanceof baseLodash) {
-            var clone2 = wrapperClone(parent2);
-            clone2.__index__ = 0;
-            clone2.__values__ = undefined2;
+            var clone3 = wrapperClone(parent2);
+            clone3.__index__ = 0;
+            clone3.__values__ = undefined2;
             if (result2) {
-              previous.__wrapped__ = clone2;
+              previous.__wrapped__ = clone3;
             } else {
-              result2 = clone2;
+              result2 = clone3;
             }
-            var previous = clone2;
+            var previous = clone3;
             parent2 = parent2.__wrapped__;
           }
           previous.__wrapped__ = value;
@@ -58658,7 +59330,7 @@ var require_lodash = __commonJS({
           var value = arguments[0];
           return isArray(value) ? value : [value];
         }
-        function clone(value) {
+        function clone2(value) {
           return baseClone(value, CLONE_SYMBOLS_FLAG);
         }
         function cloneWith(value, customizer) {
@@ -58753,7 +59425,7 @@ var require_lodash = __commonJS({
           return typeof value == "number" && value == toInteger(value);
         }
         function isLength(value) {
-          return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+          return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER2;
         }
         function isObject(value) {
           var type = typeof value;
@@ -58801,7 +59473,7 @@ var require_lodash = __commonJS({
         }
         var isRegExp = nodeIsRegExp ? baseUnary(nodeIsRegExp) : baseIsRegExp;
         function isSafeInteger(value) {
-          return isInteger(value) && value >= -MAX_SAFE_INTEGER && value <= MAX_SAFE_INTEGER;
+          return isInteger(value) && value >= -MAX_SAFE_INTEGER2 && value <= MAX_SAFE_INTEGER2;
         }
         var isSet = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
         function isString(value) {
@@ -58877,7 +59549,7 @@ var require_lodash = __commonJS({
           return copyObject(value, keysIn(value));
         }
         function toSafeInteger(value) {
-          return value ? baseClamp(toInteger(value), -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER) : value === 0 ? value : 0;
+          return value ? baseClamp(toInteger(value), -MAX_SAFE_INTEGER2, MAX_SAFE_INTEGER2) : value === 0 ? value : 0;
         }
         function toString(value) {
           return value == null ? "" : baseToString(value);
@@ -59569,7 +60241,7 @@ var require_lodash = __commonJS({
         }
         function times(n, iteratee2) {
           n = toInteger(n);
-          if (n < 1 || n > MAX_SAFE_INTEGER) {
+          if (n < 1 || n > MAX_SAFE_INTEGER2) {
             return [];
           }
           var index = MAX_ARRAY_LENGTH, length = nativeMin(n, MAX_ARRAY_LENGTH);
@@ -59790,7 +60462,7 @@ var require_lodash = __commonJS({
         lodash2.capitalize = capitalize;
         lodash2.ceil = ceil;
         lodash2.clamp = clamp;
-        lodash2.clone = clone;
+        lodash2.clone = clone2;
         lodash2.cloneDeep = cloneDeep;
         lodash2.cloneDeepWith = cloneDeepWith;
         lodash2.cloneWith = cloneWith;
@@ -63728,6 +64400,7 @@ __export(AaveV2Ethereum_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER,
   CHAIN_ID: () => CHAIN_ID,
   COLLECTOR: () => COLLECTOR,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN,
   EMISSION_MANAGER: () => EMISSION_MANAGER,
@@ -63764,6 +64437,7 @@ var POOL_ADDRESSES_PROVIDER_REGISTRY = "0x52D306e36E3B6B02c153d0266ff0f85d18BCD4
 var WETH_GATEWAY = "0xEFFC18fC3b7eb8E676dac549E0c693ad50D1Ce31";
 var REPAY_WITH_COLLATERAL_ADAPTER = "0x80Aca0C645fEdABaa20fd2Bf0Daf57885A309FE6";
 var SWAP_COLLATERAL_ADAPTER = "0x135896DE8421be2ec868E0b811006171D9df802A";
+var DEBT_SWAP_ADAPTER = "0x97742240d6eBE32198B315d30C73c3D2FFC9cE21";
 var LISTING_ENGINE = "0x9eCed0293e7B73CFf4a2b4F9C82aAc8346158bd9";
 var RATES_FACTORY = "0xbD37610BBB1ddc2a22797F7e3f531B59902b7bA7";
 var MIGRATION_HELPER = "0xB748952c7BC638F31775245964707Bcc5DDFabFC";
@@ -63904,6 +64578,7 @@ __export(AaveV2Polygon_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER5,
   CHAIN_ID: () => CHAIN_ID5,
   COLLECTOR: () => COLLECTOR5,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER2,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER5,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN5,
   EMISSION_MANAGER: () => EMISSION_MANAGER5,
@@ -63946,6 +64621,7 @@ var MIGRATION_HELPER3 = "0x3db487975aB1728DB5787b798866c2021B24ec52";
 var WALLET_BALANCE_PROVIDER5 = "0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e";
 var UI_POOL_DATA_PROVIDER5 = "0x204f2Eb81D996729829debC819f7992DCEEfE7b1";
 var UI_INCENTIVE_DATA_PROVIDER5 = "0x645654D59A5226CBab969b1f5431aA47CBf64ab8";
+var DEBT_SWAP_ADAPTER2 = "0xe9E52021f4e11DEAD8661812A0A6c8627abA2a54";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV2Fuji.js
 var AaveV2Fuji_exports = {};
@@ -63994,6 +64670,7 @@ __export(AaveV2Avalanche_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER7,
   CHAIN_ID: () => CHAIN_ID7,
   COLLECTOR: () => COLLECTOR7,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER3,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER7,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN7,
   EMISSION_MANAGER: () => EMISSION_MANAGER7,
@@ -64032,6 +64709,7 @@ var POOL_ADDRESSES_PROVIDER_REGISTRY7 = "0x4235E22d9C3f28DCDA82b58276cb6370B0126
 var WETH_GATEWAY7 = "0xC27d4dBefc2C0CE57916a699971b58a3BD9C7d5b";
 var SWAP_COLLATERAL_ADAPTER3 = "0x2EcF2a2e74B19Aab2a62312167aFF4B78E93B6C5";
 var REPAY_WITH_COLLATERAL_ADAPTER3 = "0x935b362EE3E1f342cc48118C528AAbee5118F6e6";
+var DEBT_SWAP_ADAPTER3 = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
 var LISTING_ENGINE4 = "0x7902F3c60f05b5A6b7e4Ce0Cac11Cb17bC8e607c";
 var RATES_FACTORY4 = "0x6e66E50870A93691C1b953788A3219e01fDdeDD7";
 var MIGRATION_HELPER4 = "0xf50a080aC535e531EC33cC05b227E910De2fb1fA";
@@ -64056,6 +64734,7 @@ __export(AaveV3Ethereum_exports, {
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1,
   DELEGATION_AWARE_A_TOKEN_IMPL_REV_1: () => DELEGATION_AWARE_A_TOKEN_IMPL_REV_1,
   EMISSION_MANAGER: () => EMISSION_MANAGER8,
+  GHO_TOKEN: () => GHO_TOKEN,
   LISTING_ENGINE: () => LISTING_ENGINE5,
   ORACLE: () => ORACLE8,
   POOL: () => POOL8,
@@ -64067,6 +64746,7 @@ __export(AaveV3Ethereum_exports, {
   REPAY_WITH_COLLATERAL_ADAPTER: () => REPAY_WITH_COLLATERAL_ADAPTER4,
   STATIC_A_TOKEN_FACTORY: () => STATIC_A_TOKEN_FACTORY,
   SWAP_COLLATERAL_ADAPTER: () => SWAP_COLLATERAL_ADAPTER4,
+  UI_GHO_DATA_PROVIDER: () => UI_GHO_DATA_PROVIDER,
   UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER8,
   UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER8,
   WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER8,
@@ -64090,15 +64770,17 @@ var EMISSION_MANAGER8 = "0x223d844fc4B006D67c0cDbd39371A9F73f69d974";
 var POOL_ADDRESSES_PROVIDER_REGISTRY8 = "0xbaA999AC55EAce41CcAE355c77809e68Bb345170";
 var WETH_GATEWAY8 = "0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C";
 var RATES_FACTORY5 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
-var REPAY_WITH_COLLATERAL_ADAPTER4 = "0x1809f186D680f239420B56948C58F8DbbCdf1E18";
-var SWAP_COLLATERAL_ADAPTER4 = "0x872fBcb1B582e8Cd0D0DD4327fBFa0B4C2730995";
+var REPAY_WITH_COLLATERAL_ADAPTER4 = "0x02e7B8511831B1b02d9018215a0f8f500Ea5c6B3";
+var SWAP_COLLATERAL_ADAPTER4 = "0xADC0A53095A0af87F3aa29FE0715B5c28016364e";
 var LISTING_ENGINE5 = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
 var WALLET_BALANCE_PROVIDER8 = "0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2";
 var UI_POOL_DATA_PROVIDER8 = "0x91c0eA31b49B69Ea18607702c5d9aC360bf3dE7d";
 var UI_INCENTIVE_DATA_PROVIDER8 = "0x162A7AC02f547ad796CA549f757e2b8d1D9b10a6";
 var DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = "0x21714092D90c7265F52fdfDae068EC11a23C6248";
-var STATIC_A_TOKEN_FACTORY = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+var STATIC_A_TOKEN_FACTORY = "0x17D0D723a6741C8E154594a8850D29D58Bcc9218";
 var CAPS_PLUS_RISK_STEWARD = "0x82dcCF206Ae2Ab46E2099e663F70DeE77caE7778";
+var GHO_TOKEN = "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f";
+var UI_GHO_DATA_PROVIDER = "0x379c1EDD1A41218bdbFf960a9d5AD2818Bf61aE8";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.js
 var AaveV3Sepolia_exports = {};
@@ -64244,6 +64926,7 @@ __export(AaveV3Polygon_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD2,
   CHAIN_ID: () => CHAIN_ID12,
   COLLECTOR: () => COLLECTOR12,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER4,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_2,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER12,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2,
@@ -64283,14 +64966,15 @@ var EMISSION_MANAGER12 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var POOL_ADDRESSES_PROVIDER_REGISTRY9 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var WETH_GATEWAY12 = "0x1e4b7A6b903680eab0c5dAbcb8fD429cD2a9598c";
 var RATES_FACTORY6 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
-var REPAY_WITH_COLLATERAL_ADAPTER5 = "0x10D2fA27166d94894d850a9a851EE06870F14b09";
-var SWAP_COLLATERAL_ADAPTER5 = "0x6a4b2b595d369c963493Fc704CF48e42FAd8260b";
+var REPAY_WITH_COLLATERAL_ADAPTER5 = "0xE3090207A2de94A856EA10a7e1Bd36dD6145712B";
+var SWAP_COLLATERAL_ADAPTER5 = "0xC4aff49fCeD8ac1D818a6DCAB063f9f97E66ec5E";
 var LISTING_ENGINE6 = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
 var WALLET_BALANCE_PROVIDER12 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var UI_POOL_DATA_PROVIDER12 = "0xC69728f11E9E6127733751c8410432913123acf1";
 var UI_INCENTIVE_DATA_PROVIDER12 = "0x874313A46e4957D29FAAC43BF5Eb2B144894f557";
-var STATIC_A_TOKEN_FACTORY2 = "0xFcd9720b0Ea09c70E53727E08Bc131d77800B112";
+var STATIC_A_TOKEN_FACTORY2 = "0x2B218C73f63820CE86655d16A79C333E24fEB0BE";
 var CAPS_PLUS_RISK_STEWARD2 = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
+var DEBT_SWAP_ADAPTER4 = "0x2a6C8D620371AEc6bCA1d18AAaF96efE11Eb3d6c";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fuji.js
 var AaveV3Fuji_exports = {};
@@ -64346,6 +65030,7 @@ __export(AaveV3Avalanche_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD3,
   CHAIN_ID: () => CHAIN_ID14,
   COLLECTOR: () => COLLECTOR14,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER5,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_22,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER14,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_22,
@@ -64387,15 +65072,16 @@ var EMISSION_MANAGER14 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var POOL_ADDRESSES_PROVIDER_REGISTRY10 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var WETH_GATEWAY14 = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
 var RATES_FACTORY7 = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
-var REPAY_WITH_COLLATERAL_ADAPTER6 = "0x4fB0Ba43a5415f312cf5FA10d16Ff6dbA697d9aA";
-var SWAP_COLLATERAL_ADAPTER6 = "0x00e39085C877328619FDB2a47d995c516a5fA869";
+var REPAY_WITH_COLLATERAL_ADAPTER6 = "0x49F5B996814fEd1dd39285B92A59CFb2dfd8D4f9";
+var DEBT_SWAP_ADAPTER5 = "0x4C0633Bf70fB2bB984A9eEC5d9052BdEA451C70A";
+var SWAP_COLLATERAL_ADAPTER6 = "0x2Cf641F7C0eac2788A7924B82d6Ca8EB7bAa4E3A";
 var LISTING_ENGINE7 = "0x49581e5575F49263f556b91daf8fb41D7854D94B";
 var WALLET_BALANCE_PROVIDER14 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var UI_POOL_DATA_PROVIDER14 = "0xF71DBe0FAEF1473ffC607d4c555dfF0aEaDb878d";
 var UI_INCENTIVE_DATA_PROVIDER14 = "0x265d414f80b0fca9505710e6F16dB4b67555D365";
 var PROOF_OF_RESERVE2 = "0xab22988D93d5F942fC6B6c6Ea285744809D1d9Cc";
 var PROOF_OF_RESERVE_AGGREGATOR2 = "0x80f2c02224a2E548FC67c0bF705eBFA825dd5439";
-var STATIC_A_TOKEN_FACTORY3 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+var STATIC_A_TOKEN_FACTORY3 = "0xbD37610BBB1ddc2a22797F7e3f531B59902b7bA7";
 var CAPS_PLUS_RISK_STEWARD3 = "0xD2C92b5A793e196aB11dBefBe3Af6BddeD6c3DD5";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js
@@ -64407,6 +65093,7 @@ __export(AaveV3Arbitrum_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD4,
   CHAIN_ID: () => CHAIN_ID15,
   COLLECTOR: () => COLLECTOR15,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER6,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_23,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER15,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_23,
@@ -64446,15 +65133,16 @@ var CHAIN_ID15 = 42161;
 var EMISSION_MANAGER15 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var POOL_ADDRESSES_PROVIDER_REGISTRY11 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var WETH_GATEWAY15 = "0xB5Ee21786D28c5Ba61661550879475976B707099";
-var SWAP_COLLATERAL_ADAPTER7 = "0xb20bd14259089e63d1f49d8d887ABA783Ce5dAc2";
+var SWAP_COLLATERAL_ADAPTER7 = "0xF3C3F14dd7BDb7E03e6EBc3bc5Ffc6D66De12251";
+var DEBT_SWAP_ADAPTER6 = "0xCf85FF1c37c594a10195F7A9Ab85CBb0a03f69dE";
 var RATES_FACTORY8 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
-var REPAY_WITH_COLLATERAL_ADAPTER7 = "0xB0526BFb4047aE1147DC7caAF3F1653904C2D568";
+var REPAY_WITH_COLLATERAL_ADAPTER7 = "0x28201C152DC5B69A86FA54FCfd21bcA4C0eff3BA";
 var LISTING_ENGINE8 = "0x0EfdfC1A940DE4E7E6acC9Bb801481f81B17fd20";
 var WALLET_BALANCE_PROVIDER15 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var UI_POOL_DATA_PROVIDER15 = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
 var UI_INCENTIVE_DATA_PROVIDER15 = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
 var L2_ENCODER = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
-var STATIC_A_TOKEN_FACTORY4 = "0x90b1255a76e847cC92d41C295DeD5Bf2D4F24B3d";
+var STATIC_A_TOKEN_FACTORY4 = "0xD9419920a9768d6EdaBbe5b93cB4B5B9F3019823";
 var CAPS_PLUS_RISK_STEWARD4 = "0xADf86b537eF08591c2777E144322E8b0Ca7E82a7";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.js
@@ -64652,6 +65340,7 @@ __export(AaveV3Optimism_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD5,
   CHAIN_ID: () => CHAIN_ID20,
   COLLECTOR: () => COLLECTOR20,
+  DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER7,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_24,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER20,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_24,
@@ -64691,15 +65380,16 @@ var CHAIN_ID20 = 10;
 var EMISSION_MANAGER20 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var POOL_ADDRESSES_PROVIDER_REGISTRY14 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var WETH_GATEWAY20 = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
-var SWAP_COLLATERAL_ADAPTER9 = "0xBC2Ff189e0349Ca73D9b78c172FC2B40025abE2a";
+var SWAP_COLLATERAL_ADAPTER9 = "0x830C5A67a0C95D69dA5fb7801Ac1773c6fB53857";
+var DEBT_SWAP_ADAPTER7 = "0xb77fc84a549ecc0b410d6fa15159C2df207545a3";
 var RATES_FACTORY9 = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
-var REPAY_WITH_COLLATERAL_ADAPTER9 = "0x66d340EB9D3dCe0f78e813E2F991B7CE54a1a28c";
+var REPAY_WITH_COLLATERAL_ADAPTER9 = "0xa12734e64417f61f8442E7D5132EdBFdbDDeF0fa";
 var LISTING_ENGINE9 = "0x7A9A9c14B35E58ffa1cC84aB421acE0FdcD289E3";
 var WALLET_BALANCE_PROVIDER20 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var UI_POOL_DATA_PROVIDER20 = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
 var UI_INCENTIVE_DATA_PROVIDER20 = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
 var L2_ENCODER3 = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
-var STATIC_A_TOKEN_FACTORY5 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+var STATIC_A_TOKEN_FACTORY5 = "0xD9419920a9768d6EdaBbe5b93cB4B5B9F3019823";
 var CAPS_PLUS_RISK_STEWARD5 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
 
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3OptimismGoerli.js
@@ -64858,7 +65548,8 @@ var marketsData = {
       staking: true,
       liquiditySwap: true,
       collateralRepay: true,
-      incentives: true
+      incentives: true,
+      debtSwitch: false
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3",
     addresses: {
@@ -64870,7 +65561,9 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Ethereum_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Ethereum_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR
+      COLLECTOR: AaveV3Ethereum_exports.COLLECTOR,
+      GHO_TOKEN_ADDRESS: AaveV3Ethereum_exports.GHO_TOKEN,
+      GHO_UI_DATA_PROVIDER: AaveV3Ethereum_exports.UI_GHO_DATA_PROVIDER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -64885,7 +65578,8 @@ var marketsData = {
       staking: true,
       liquiditySwap: true,
       collateralRepay: true,
-      incentives: true
+      incentives: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
@@ -64898,7 +65592,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Ethereum_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Ethereum_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Ethereum_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Ethereum_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Ethereum_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Ethereum_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -64948,7 +65643,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic",
     addresses: {
@@ -64961,7 +65657,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Polygon_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Polygon_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Polygon_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Polygon_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Polygon_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Polygon_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -64974,7 +65671,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche",
     addresses: {
@@ -64987,7 +65685,8 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: AaveV2Avalanche_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Avalanche_exports.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV2Avalanche_exports.COLLECTOR,
-      V3_MIGRATOR: AaveV2Avalanche_exports.MIGRATION_HELPER
+      V3_MIGRATOR: AaveV2Avalanche_exports.MIGRATION_HELPER,
+      DEBT_SWITCH_ADAPTER: AaveV2Avalanche_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -65037,7 +65736,8 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
       liquiditySwap: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
     addresses: {
@@ -65050,7 +65750,8 @@ var marketsData = {
       L2_ENCODER: AaveV3Arbitrum_exports.L2_ENCODER,
       COLLECTOR: AaveV3Arbitrum_exports.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.REPAY_WITH_COLLATERAL_ADAPTER
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum_exports.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Arbitrum_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -65084,7 +65785,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche",
     addresses: {
@@ -65096,7 +65798,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Avalanche_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Avalanche_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Avalanche_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Avalanche_exports.COLLECTOR
+      COLLECTOR: AaveV3Avalanche_exports.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: AaveV3Avalanche_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -65231,7 +65934,8 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
       collateralRepay: true,
-      liquiditySwap: true
+      liquiditySwap: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism",
     addresses: {
@@ -65244,7 +65948,8 @@ var marketsData = {
       L2_ENCODER: AaveV3Optimism_exports.L2_ENCODER,
       COLLECTOR: AaveV3Optimism_exports.COLLECTOR,
       SWAP_COLLATERAL_ADAPTER: AaveV3Optimism_exports.SWAP_COLLATERAL_ADAPTER,
-      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism_exports.REPAY_WITH_COLLATERAL_ADAPTER
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism_exports.REPAY_WITH_COLLATERAL_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Optimism_exports.DEBT_SWAP_ADAPTER
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -65254,7 +65959,8 @@ var marketsData = {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
-      collateralRepay: true
+      collateralRepay: true,
+      debtSwitch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon",
     addresses: {
@@ -65266,7 +65972,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Polygon_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Polygon_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon_exports.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Polygon_exports.COLLECTOR
+      COLLECTOR: AaveV3Polygon_exports.COLLECTOR,
+      DEBT_SWITCH_ADAPTER: AaveV3Polygon_exports.DEBT_SWAP_ADAPTER
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -65376,6 +66083,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.sepolia]: {
     name: "Ethereum Sepolia",
     publicJsonRPCUrl: [
+      "https://eth-sepolia.public.blastapi.io",
       "https://rpc.sepolia.org",
       "https://rpc2.sepolia.org",
       "https://rpc.sepolia.online",
@@ -66238,7 +66946,7 @@ function fetchFromIpfs(hash, gateway) {
     const ipfsResponse = yield (0, import_isomorphic_unfetch.default)(getLink(ipfsHash, gateway));
     if (!ipfsResponse.ok)
       throw Error("Fetch not working");
-    const clone = yield ipfsResponse.clone();
+    const clone2 = yield ipfsResponse.clone();
     try {
       const response = yield ipfsResponse.json();
       const { content, data } = (0, import_gray_matter.default)(response.description);
@@ -66247,7 +66955,7 @@ function fetchFromIpfs(hash, gateway) {
         description: content
       }), data);
     } catch (e) {
-      const text = yield clone.text();
+      const text = yield clone2.text();
       const { content, data } = (0, import_gray_matter.default)(text);
       MEMORIZE[ipfsHash] = __spreadProps(__spreadValues({}, data), {
         ipfsHash,
@@ -66298,7 +67006,1466 @@ var import_path3 = require("path");
 
 // src/modules/governance/utils/formatProposal.ts
 var import_contract_helpers6 = __toESM(require_cjs());
-var import_bignumber = __toESM(require_bignumber2());
+
+// node_modules/bignumber.js/bignumber.mjs
+var isNumeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i;
+var mathceil = Math.ceil;
+var mathfloor = Math.floor;
+var bignumberError = "[BigNumber Error] ";
+var tooManyDigits = bignumberError + "Number primitive has more than 15 significant digits: ";
+var BASE = 1e14;
+var LOG_BASE = 14;
+var MAX_SAFE_INTEGER = 9007199254740991;
+var POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13];
+var SQRT_BASE = 1e7;
+var MAX = 1e9;
+function clone(configObject) {
+  var div, convertBase, parseNumeric, P = BigNumber2.prototype = { constructor: BigNumber2, toString: null, valueOf: null }, ONE = new BigNumber2(1), DECIMAL_PLACES = 20, ROUNDING_MODE = 4, TO_EXP_NEG = -7, TO_EXP_POS = 21, MIN_EXP = -1e7, MAX_EXP = 1e7, CRYPTO = false, MODULO_MODE = 1, POW_PRECISION = 0, FORMAT = {
+    prefix: "",
+    groupSize: 3,
+    secondaryGroupSize: 0,
+    groupSeparator: ",",
+    decimalSeparator: ".",
+    fractionGroupSize: 0,
+    fractionGroupSeparator: "\xA0",
+    // non-breaking space
+    suffix: ""
+  }, ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz", alphabetHasNormalDecimalDigits = true;
+  function BigNumber2(v, b) {
+    var alphabet, c, caseChanged, e, i, isNum, len, str2, x = this;
+    if (!(x instanceof BigNumber2))
+      return new BigNumber2(v, b);
+    if (b == null) {
+      if (v && v._isBigNumber === true) {
+        x.s = v.s;
+        if (!v.c || v.e > MAX_EXP) {
+          x.c = x.e = null;
+        } else if (v.e < MIN_EXP) {
+          x.c = [x.e = 0];
+        } else {
+          x.e = v.e;
+          x.c = v.c.slice();
+        }
+        return;
+      }
+      if ((isNum = typeof v == "number") && v * 0 == 0) {
+        x.s = 1 / v < 0 ? (v = -v, -1) : 1;
+        if (v === ~~v) {
+          for (e = 0, i = v; i >= 10; i /= 10, e++)
+            ;
+          if (e > MAX_EXP) {
+            x.c = x.e = null;
+          } else {
+            x.e = e;
+            x.c = [v];
+          }
+          return;
+        }
+        str2 = String(v);
+      } else {
+        if (!isNumeric.test(str2 = String(v)))
+          return parseNumeric(x, str2, isNum);
+        x.s = str2.charCodeAt(0) == 45 ? (str2 = str2.slice(1), -1) : 1;
+      }
+      if ((e = str2.indexOf(".")) > -1)
+        str2 = str2.replace(".", "");
+      if ((i = str2.search(/e/i)) > 0) {
+        if (e < 0)
+          e = i;
+        e += +str2.slice(i + 1);
+        str2 = str2.substring(0, i);
+      } else if (e < 0) {
+        e = str2.length;
+      }
+    } else {
+      intCheck(b, 2, ALPHABET.length, "Base");
+      if (b == 10 && alphabetHasNormalDecimalDigits) {
+        x = new BigNumber2(v);
+        return round(x, DECIMAL_PLACES + x.e + 1, ROUNDING_MODE);
+      }
+      str2 = String(v);
+      if (isNum = typeof v == "number") {
+        if (v * 0 != 0)
+          return parseNumeric(x, str2, isNum, b);
+        x.s = 1 / v < 0 ? (str2 = str2.slice(1), -1) : 1;
+        if (BigNumber2.DEBUG && str2.replace(/^0\.0*|\./, "").length > 15) {
+          throw Error(tooManyDigits + v);
+        }
+      } else {
+        x.s = str2.charCodeAt(0) === 45 ? (str2 = str2.slice(1), -1) : 1;
+      }
+      alphabet = ALPHABET.slice(0, b);
+      e = i = 0;
+      for (len = str2.length; i < len; i++) {
+        if (alphabet.indexOf(c = str2.charAt(i)) < 0) {
+          if (c == ".") {
+            if (i > e) {
+              e = len;
+              continue;
+            }
+          } else if (!caseChanged) {
+            if (str2 == str2.toUpperCase() && (str2 = str2.toLowerCase()) || str2 == str2.toLowerCase() && (str2 = str2.toUpperCase())) {
+              caseChanged = true;
+              i = -1;
+              e = 0;
+              continue;
+            }
+          }
+          return parseNumeric(x, String(v), isNum, b);
+        }
+      }
+      isNum = false;
+      str2 = convertBase(str2, b, 10, x.s);
+      if ((e = str2.indexOf(".")) > -1)
+        str2 = str2.replace(".", "");
+      else
+        e = str2.length;
+    }
+    for (i = 0; str2.charCodeAt(i) === 48; i++)
+      ;
+    for (len = str2.length; str2.charCodeAt(--len) === 48; )
+      ;
+    if (str2 = str2.slice(i, ++len)) {
+      len -= i;
+      if (isNum && BigNumber2.DEBUG && len > 15 && (v > MAX_SAFE_INTEGER || v !== mathfloor(v))) {
+        throw Error(tooManyDigits + x.s * v);
+      }
+      if ((e = e - i - 1) > MAX_EXP) {
+        x.c = x.e = null;
+      } else if (e < MIN_EXP) {
+        x.c = [x.e = 0];
+      } else {
+        x.e = e;
+        x.c = [];
+        i = (e + 1) % LOG_BASE;
+        if (e < 0)
+          i += LOG_BASE;
+        if (i < len) {
+          if (i)
+            x.c.push(+str2.slice(0, i));
+          for (len -= LOG_BASE; i < len; ) {
+            x.c.push(+str2.slice(i, i += LOG_BASE));
+          }
+          i = LOG_BASE - (str2 = str2.slice(i)).length;
+        } else {
+          i -= len;
+        }
+        for (; i--; str2 += "0")
+          ;
+        x.c.push(+str2);
+      }
+    } else {
+      x.c = [x.e = 0];
+    }
+  }
+  BigNumber2.clone = clone;
+  BigNumber2.ROUND_UP = 0;
+  BigNumber2.ROUND_DOWN = 1;
+  BigNumber2.ROUND_CEIL = 2;
+  BigNumber2.ROUND_FLOOR = 3;
+  BigNumber2.ROUND_HALF_UP = 4;
+  BigNumber2.ROUND_HALF_DOWN = 5;
+  BigNumber2.ROUND_HALF_EVEN = 6;
+  BigNumber2.ROUND_HALF_CEIL = 7;
+  BigNumber2.ROUND_HALF_FLOOR = 8;
+  BigNumber2.EUCLID = 9;
+  BigNumber2.config = BigNumber2.set = function(obj) {
+    var p, v;
+    if (obj != null) {
+      if (typeof obj == "object") {
+        if (obj.hasOwnProperty(p = "DECIMAL_PLACES")) {
+          v = obj[p];
+          intCheck(v, 0, MAX, p);
+          DECIMAL_PLACES = v;
+        }
+        if (obj.hasOwnProperty(p = "ROUNDING_MODE")) {
+          v = obj[p];
+          intCheck(v, 0, 8, p);
+          ROUNDING_MODE = v;
+        }
+        if (obj.hasOwnProperty(p = "EXPONENTIAL_AT")) {
+          v = obj[p];
+          if (v && v.pop) {
+            intCheck(v[0], -MAX, 0, p);
+            intCheck(v[1], 0, MAX, p);
+            TO_EXP_NEG = v[0];
+            TO_EXP_POS = v[1];
+          } else {
+            intCheck(v, -MAX, MAX, p);
+            TO_EXP_NEG = -(TO_EXP_POS = v < 0 ? -v : v);
+          }
+        }
+        if (obj.hasOwnProperty(p = "RANGE")) {
+          v = obj[p];
+          if (v && v.pop) {
+            intCheck(v[0], -MAX, -1, p);
+            intCheck(v[1], 1, MAX, p);
+            MIN_EXP = v[0];
+            MAX_EXP = v[1];
+          } else {
+            intCheck(v, -MAX, MAX, p);
+            if (v) {
+              MIN_EXP = -(MAX_EXP = v < 0 ? -v : v);
+            } else {
+              throw Error(bignumberError + p + " cannot be zero: " + v);
+            }
+          }
+        }
+        if (obj.hasOwnProperty(p = "CRYPTO")) {
+          v = obj[p];
+          if (v === !!v) {
+            if (v) {
+              if (typeof crypto != "undefined" && crypto && (crypto.getRandomValues || crypto.randomBytes)) {
+                CRYPTO = v;
+              } else {
+                CRYPTO = !v;
+                throw Error(bignumberError + "crypto unavailable");
+              }
+            } else {
+              CRYPTO = v;
+            }
+          } else {
+            throw Error(bignumberError + p + " not true or false: " + v);
+          }
+        }
+        if (obj.hasOwnProperty(p = "MODULO_MODE")) {
+          v = obj[p];
+          intCheck(v, 0, 9, p);
+          MODULO_MODE = v;
+        }
+        if (obj.hasOwnProperty(p = "POW_PRECISION")) {
+          v = obj[p];
+          intCheck(v, 0, MAX, p);
+          POW_PRECISION = v;
+        }
+        if (obj.hasOwnProperty(p = "FORMAT")) {
+          v = obj[p];
+          if (typeof v == "object")
+            FORMAT = v;
+          else
+            throw Error(bignumberError + p + " not an object: " + v);
+        }
+        if (obj.hasOwnProperty(p = "ALPHABET")) {
+          v = obj[p];
+          if (typeof v == "string" && !/^.?$|[+\-.\s]|(.).*\1/.test(v)) {
+            alphabetHasNormalDecimalDigits = v.slice(0, 10) == "0123456789";
+            ALPHABET = v;
+          } else {
+            throw Error(bignumberError + p + " invalid: " + v);
+          }
+        }
+      } else {
+        throw Error(bignumberError + "Object expected: " + obj);
+      }
+    }
+    return {
+      DECIMAL_PLACES,
+      ROUNDING_MODE,
+      EXPONENTIAL_AT: [TO_EXP_NEG, TO_EXP_POS],
+      RANGE: [MIN_EXP, MAX_EXP],
+      CRYPTO,
+      MODULO_MODE,
+      POW_PRECISION,
+      FORMAT,
+      ALPHABET
+    };
+  };
+  BigNumber2.isBigNumber = function(v) {
+    if (!v || v._isBigNumber !== true)
+      return false;
+    if (!BigNumber2.DEBUG)
+      return true;
+    var i, n, c = v.c, e = v.e, s = v.s;
+    out:
+      if ({}.toString.call(c) == "[object Array]") {
+        if ((s === 1 || s === -1) && e >= -MAX && e <= MAX && e === mathfloor(e)) {
+          if (c[0] === 0) {
+            if (e === 0 && c.length === 1)
+              return true;
+            break out;
+          }
+          i = (e + 1) % LOG_BASE;
+          if (i < 1)
+            i += LOG_BASE;
+          if (String(c[0]).length == i) {
+            for (i = 0; i < c.length; i++) {
+              n = c[i];
+              if (n < 0 || n >= BASE || n !== mathfloor(n))
+                break out;
+            }
+            if (n !== 0)
+              return true;
+          }
+        }
+      } else if (c === null && e === null && (s === null || s === 1 || s === -1)) {
+        return true;
+      }
+    throw Error(bignumberError + "Invalid BigNumber: " + v);
+  };
+  BigNumber2.maximum = BigNumber2.max = function() {
+    return maxOrMin(arguments, P.lt);
+  };
+  BigNumber2.minimum = BigNumber2.min = function() {
+    return maxOrMin(arguments, P.gt);
+  };
+  BigNumber2.random = function() {
+    var pow2_53 = 9007199254740992;
+    var random53bitInt = Math.random() * pow2_53 & 2097151 ? function() {
+      return mathfloor(Math.random() * pow2_53);
+    } : function() {
+      return (Math.random() * 1073741824 | 0) * 8388608 + (Math.random() * 8388608 | 0);
+    };
+    return function(dp) {
+      var a, b, e, k, v, i = 0, c = [], rand = new BigNumber2(ONE);
+      if (dp == null)
+        dp = DECIMAL_PLACES;
+      else
+        intCheck(dp, 0, MAX);
+      k = mathceil(dp / LOG_BASE);
+      if (CRYPTO) {
+        if (crypto.getRandomValues) {
+          a = crypto.getRandomValues(new Uint32Array(k *= 2));
+          for (; i < k; ) {
+            v = a[i] * 131072 + (a[i + 1] >>> 11);
+            if (v >= 9e15) {
+              b = crypto.getRandomValues(new Uint32Array(2));
+              a[i] = b[0];
+              a[i + 1] = b[1];
+            } else {
+              c.push(v % 1e14);
+              i += 2;
+            }
+          }
+          i = k / 2;
+        } else if (crypto.randomBytes) {
+          a = crypto.randomBytes(k *= 7);
+          for (; i < k; ) {
+            v = (a[i] & 31) * 281474976710656 + a[i + 1] * 1099511627776 + a[i + 2] * 4294967296 + a[i + 3] * 16777216 + (a[i + 4] << 16) + (a[i + 5] << 8) + a[i + 6];
+            if (v >= 9e15) {
+              crypto.randomBytes(7).copy(a, i);
+            } else {
+              c.push(v % 1e14);
+              i += 7;
+            }
+          }
+          i = k / 7;
+        } else {
+          CRYPTO = false;
+          throw Error(bignumberError + "crypto unavailable");
+        }
+      }
+      if (!CRYPTO) {
+        for (; i < k; ) {
+          v = random53bitInt();
+          if (v < 9e15)
+            c[i++] = v % 1e14;
+        }
+      }
+      k = c[--i];
+      dp %= LOG_BASE;
+      if (k && dp) {
+        v = POWS_TEN[LOG_BASE - dp];
+        c[i] = mathfloor(k / v) * v;
+      }
+      for (; c[i] === 0; c.pop(), i--)
+        ;
+      if (i < 0) {
+        c = [e = 0];
+      } else {
+        for (e = -1; c[0] === 0; c.splice(0, 1), e -= LOG_BASE)
+          ;
+        for (i = 1, v = c[0]; v >= 10; v /= 10, i++)
+          ;
+        if (i < LOG_BASE)
+          e -= LOG_BASE - i;
+      }
+      rand.e = e;
+      rand.c = c;
+      return rand;
+    };
+  }();
+  BigNumber2.sum = function() {
+    var i = 1, args = arguments, sum = new BigNumber2(args[0]);
+    for (; i < args.length; )
+      sum = sum.plus(args[i++]);
+    return sum;
+  };
+  convertBase = function() {
+    var decimal = "0123456789";
+    function toBaseOut(str2, baseIn, baseOut, alphabet) {
+      var j, arr = [0], arrL, i = 0, len = str2.length;
+      for (; i < len; ) {
+        for (arrL = arr.length; arrL--; arr[arrL] *= baseIn)
+          ;
+        arr[0] += alphabet.indexOf(str2.charAt(i++));
+        for (j = 0; j < arr.length; j++) {
+          if (arr[j] > baseOut - 1) {
+            if (arr[j + 1] == null)
+              arr[j + 1] = 0;
+            arr[j + 1] += arr[j] / baseOut | 0;
+            arr[j] %= baseOut;
+          }
+        }
+      }
+      return arr.reverse();
+    }
+    return function(str2, baseIn, baseOut, sign, callerIsToString) {
+      var alphabet, d, e, k, r, x, xc, y, i = str2.indexOf("."), dp = DECIMAL_PLACES, rm = ROUNDING_MODE;
+      if (i >= 0) {
+        k = POW_PRECISION;
+        POW_PRECISION = 0;
+        str2 = str2.replace(".", "");
+        y = new BigNumber2(baseIn);
+        x = y.pow(str2.length - i);
+        POW_PRECISION = k;
+        y.c = toBaseOut(
+          toFixedPoint(coeffToString(x.c), x.e, "0"),
+          10,
+          baseOut,
+          decimal
+        );
+        y.e = y.c.length;
+      }
+      xc = toBaseOut(str2, baseIn, baseOut, callerIsToString ? (alphabet = ALPHABET, decimal) : (alphabet = decimal, ALPHABET));
+      e = k = xc.length;
+      for (; xc[--k] == 0; xc.pop())
+        ;
+      if (!xc[0])
+        return alphabet.charAt(0);
+      if (i < 0) {
+        --e;
+      } else {
+        x.c = xc;
+        x.e = e;
+        x.s = sign;
+        x = div(x, y, dp, rm, baseOut);
+        xc = x.c;
+        r = x.r;
+        e = x.e;
+      }
+      d = e + dp + 1;
+      i = xc[d];
+      k = baseOut / 2;
+      r = r || d < 0 || xc[d + 1] != null;
+      r = rm < 4 ? (i != null || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : i > k || i == k && (rm == 4 || r || rm == 6 && xc[d - 1] & 1 || rm == (x.s < 0 ? 8 : 7));
+      if (d < 1 || !xc[0]) {
+        str2 = r ? toFixedPoint(alphabet.charAt(1), -dp, alphabet.charAt(0)) : alphabet.charAt(0);
+      } else {
+        xc.length = d;
+        if (r) {
+          for (--baseOut; ++xc[--d] > baseOut; ) {
+            xc[d] = 0;
+            if (!d) {
+              ++e;
+              xc = [1].concat(xc);
+            }
+          }
+        }
+        for (k = xc.length; !xc[--k]; )
+          ;
+        for (i = 0, str2 = ""; i <= k; str2 += alphabet.charAt(xc[i++]))
+          ;
+        str2 = toFixedPoint(str2, e, alphabet.charAt(0));
+      }
+      return str2;
+    };
+  }();
+  div = function() {
+    function multiply(x, k, base) {
+      var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE, khi = k / SQRT_BASE | 0;
+      for (x = x.slice(); i--; ) {
+        xlo = x[i] % SQRT_BASE;
+        xhi = x[i] / SQRT_BASE | 0;
+        m = khi * xlo + xhi * klo;
+        temp = klo * xlo + m % SQRT_BASE * SQRT_BASE + carry;
+        carry = (temp / base | 0) + (m / SQRT_BASE | 0) + khi * xhi;
+        x[i] = temp % base;
+      }
+      if (carry)
+        x = [carry].concat(x);
+      return x;
+    }
+    function compare2(a, b, aL, bL) {
+      var i, cmp;
+      if (aL != bL) {
+        cmp = aL > bL ? 1 : -1;
+      } else {
+        for (i = cmp = 0; i < aL; i++) {
+          if (a[i] != b[i]) {
+            cmp = a[i] > b[i] ? 1 : -1;
+            break;
+          }
+        }
+      }
+      return cmp;
+    }
+    function subtract(a, b, aL, base) {
+      var i = 0;
+      for (; aL--; ) {
+        a[aL] -= i;
+        i = a[aL] < b[aL] ? 1 : 0;
+        a[aL] = i * base + a[aL] - b[aL];
+      }
+      for (; !a[0] && a.length > 1; a.splice(0, 1))
+        ;
+    }
+    return function(x, y, dp, rm, base) {
+      var cmp, e, i, more, n, prod, prodL, q, qc, rem, remL, rem0, xi, xL, yc0, yL, yz, s = x.s == y.s ? 1 : -1, xc = x.c, yc = y.c;
+      if (!xc || !xc[0] || !yc || !yc[0]) {
+        return new BigNumber2(
+          // Return NaN if either NaN, or both Infinity or 0.
+          !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : (
+            // Return ±0 if x is ±0 or y is ±Infinity, or return ±Infinity as y is ±0.
+            xc && xc[0] == 0 || !yc ? s * 0 : s / 0
+          )
+        );
+      }
+      q = new BigNumber2(s);
+      qc = q.c = [];
+      e = x.e - y.e;
+      s = dp + e + 1;
+      if (!base) {
+        base = BASE;
+        e = bitFloor(x.e / LOG_BASE) - bitFloor(y.e / LOG_BASE);
+        s = s / LOG_BASE | 0;
+      }
+      for (i = 0; yc[i] == (xc[i] || 0); i++)
+        ;
+      if (yc[i] > (xc[i] || 0))
+        e--;
+      if (s < 0) {
+        qc.push(1);
+        more = true;
+      } else {
+        xL = xc.length;
+        yL = yc.length;
+        i = 0;
+        s += 2;
+        n = mathfloor(base / (yc[0] + 1));
+        if (n > 1) {
+          yc = multiply(yc, n, base);
+          xc = multiply(xc, n, base);
+          yL = yc.length;
+          xL = xc.length;
+        }
+        xi = yL;
+        rem = xc.slice(0, yL);
+        remL = rem.length;
+        for (; remL < yL; rem[remL++] = 0)
+          ;
+        yz = yc.slice();
+        yz = [0].concat(yz);
+        yc0 = yc[0];
+        if (yc[1] >= base / 2)
+          yc0++;
+        do {
+          n = 0;
+          cmp = compare2(yc, rem, yL, remL);
+          if (cmp < 0) {
+            rem0 = rem[0];
+            if (yL != remL)
+              rem0 = rem0 * base + (rem[1] || 0);
+            n = mathfloor(rem0 / yc0);
+            if (n > 1) {
+              if (n >= base)
+                n = base - 1;
+              prod = multiply(yc, n, base);
+              prodL = prod.length;
+              remL = rem.length;
+              while (compare2(prod, rem, prodL, remL) == 1) {
+                n--;
+                subtract(prod, yL < prodL ? yz : yc, prodL, base);
+                prodL = prod.length;
+                cmp = 1;
+              }
+            } else {
+              if (n == 0) {
+                cmp = n = 1;
+              }
+              prod = yc.slice();
+              prodL = prod.length;
+            }
+            if (prodL < remL)
+              prod = [0].concat(prod);
+            subtract(rem, prod, remL, base);
+            remL = rem.length;
+            if (cmp == -1) {
+              while (compare2(yc, rem, yL, remL) < 1) {
+                n++;
+                subtract(rem, yL < remL ? yz : yc, remL, base);
+                remL = rem.length;
+              }
+            }
+          } else if (cmp === 0) {
+            n++;
+            rem = [0];
+          }
+          qc[i++] = n;
+          if (rem[0]) {
+            rem[remL++] = xc[xi] || 0;
+          } else {
+            rem = [xc[xi]];
+            remL = 1;
+          }
+        } while ((xi++ < xL || rem[0] != null) && s--);
+        more = rem[0] != null;
+        if (!qc[0])
+          qc.splice(0, 1);
+      }
+      if (base == BASE) {
+        for (i = 1, s = qc[0]; s >= 10; s /= 10, i++)
+          ;
+        round(q, dp + (q.e = i + e * LOG_BASE - 1) + 1, rm, more);
+      } else {
+        q.e = e;
+        q.r = +more;
+      }
+      return q;
+    };
+  }();
+  function format(n, i, rm, id) {
+    var c0, e, ne, len, str2;
+    if (rm == null)
+      rm = ROUNDING_MODE;
+    else
+      intCheck(rm, 0, 8);
+    if (!n.c)
+      return n.toString();
+    c0 = n.c[0];
+    ne = n.e;
+    if (i == null) {
+      str2 = coeffToString(n.c);
+      str2 = id == 1 || id == 2 && (ne <= TO_EXP_NEG || ne >= TO_EXP_POS) ? toExponential(str2, ne) : toFixedPoint(str2, ne, "0");
+    } else {
+      n = round(new BigNumber2(n), i, rm);
+      e = n.e;
+      str2 = coeffToString(n.c);
+      len = str2.length;
+      if (id == 1 || id == 2 && (i <= e || e <= TO_EXP_NEG)) {
+        for (; len < i; str2 += "0", len++)
+          ;
+        str2 = toExponential(str2, e);
+      } else {
+        i -= ne;
+        str2 = toFixedPoint(str2, e, "0");
+        if (e + 1 > len) {
+          if (--i > 0)
+            for (str2 += "."; i--; str2 += "0")
+              ;
+        } else {
+          i += e - len;
+          if (i > 0) {
+            if (e + 1 == len)
+              str2 += ".";
+            for (; i--; str2 += "0")
+              ;
+          }
+        }
+      }
+    }
+    return n.s < 0 && c0 ? "-" + str2 : str2;
+  }
+  function maxOrMin(args, method) {
+    var n, i = 1, m = new BigNumber2(args[0]);
+    for (; i < args.length; i++) {
+      n = new BigNumber2(args[i]);
+      if (!n.s) {
+        m = n;
+        break;
+      } else if (method.call(m, n)) {
+        m = n;
+      }
+    }
+    return m;
+  }
+  function normalise(n, c, e) {
+    var i = 1, j = c.length;
+    for (; !c[--j]; c.pop())
+      ;
+    for (j = c[0]; j >= 10; j /= 10, i++)
+      ;
+    if ((e = i + e * LOG_BASE - 1) > MAX_EXP) {
+      n.c = n.e = null;
+    } else if (e < MIN_EXP) {
+      n.c = [n.e = 0];
+    } else {
+      n.e = e;
+      n.c = c;
+    }
+    return n;
+  }
+  parseNumeric = function() {
+    var basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i, dotAfter = /^([^.]+)\.$/, dotBefore = /^\.([^.]+)$/, isInfinityOrNaN = /^-?(Infinity|NaN)$/, whitespaceOrPlus = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
+    return function(x, str2, isNum, b) {
+      var base, s = isNum ? str2 : str2.replace(whitespaceOrPlus, "");
+      if (isInfinityOrNaN.test(s)) {
+        x.s = isNaN(s) ? null : s < 0 ? -1 : 1;
+      } else {
+        if (!isNum) {
+          s = s.replace(basePrefix, function(m, p1, p2) {
+            base = (p2 = p2.toLowerCase()) == "x" ? 16 : p2 == "b" ? 2 : 8;
+            return !b || b == base ? p1 : m;
+          });
+          if (b) {
+            base = b;
+            s = s.replace(dotAfter, "$1").replace(dotBefore, "0.$1");
+          }
+          if (str2 != s)
+            return new BigNumber2(s, base);
+        }
+        if (BigNumber2.DEBUG) {
+          throw Error(bignumberError + "Not a" + (b ? " base " + b : "") + " number: " + str2);
+        }
+        x.s = null;
+      }
+      x.c = x.e = null;
+    };
+  }();
+  function round(x, sd, rm, r) {
+    var d, i, j, k, n, ni, rd, xc = x.c, pows10 = POWS_TEN;
+    if (xc) {
+      out: {
+        for (d = 1, k = xc[0]; k >= 10; k /= 10, d++)
+          ;
+        i = sd - d;
+        if (i < 0) {
+          i += LOG_BASE;
+          j = sd;
+          n = xc[ni = 0];
+          rd = n / pows10[d - j - 1] % 10 | 0;
+        } else {
+          ni = mathceil((i + 1) / LOG_BASE);
+          if (ni >= xc.length) {
+            if (r) {
+              for (; xc.length <= ni; xc.push(0))
+                ;
+              n = rd = 0;
+              d = 1;
+              i %= LOG_BASE;
+              j = i - LOG_BASE + 1;
+            } else {
+              break out;
+            }
+          } else {
+            n = k = xc[ni];
+            for (d = 1; k >= 10; k /= 10, d++)
+              ;
+            i %= LOG_BASE;
+            j = i - LOG_BASE + d;
+            rd = j < 0 ? 0 : n / pows10[d - j - 1] % 10 | 0;
+          }
+        }
+        r = r || sd < 0 || // Are there any non-zero digits after the rounding digit?
+        // The expression  n % pows10[d - j - 1]  returns all digits of n to the right
+        // of the digit at j, e.g. if n is 908714 and j is 2, the expression gives 714.
+        xc[ni + 1] != null || (j < 0 ? n : n % pows10[d - j - 1]);
+        r = rm < 4 ? (rd || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : rd > 5 || rd == 5 && (rm == 4 || r || rm == 6 && // Check whether the digit to the left of the rounding digit is odd.
+        (i > 0 ? j > 0 ? n / pows10[d - j] : 0 : xc[ni - 1]) % 10 & 1 || rm == (x.s < 0 ? 8 : 7));
+        if (sd < 1 || !xc[0]) {
+          xc.length = 0;
+          if (r) {
+            sd -= x.e + 1;
+            xc[0] = pows10[(LOG_BASE - sd % LOG_BASE) % LOG_BASE];
+            x.e = -sd || 0;
+          } else {
+            xc[0] = x.e = 0;
+          }
+          return x;
+        }
+        if (i == 0) {
+          xc.length = ni;
+          k = 1;
+          ni--;
+        } else {
+          xc.length = ni + 1;
+          k = pows10[LOG_BASE - i];
+          xc[ni] = j > 0 ? mathfloor(n / pows10[d - j] % pows10[j]) * k : 0;
+        }
+        if (r) {
+          for (; ; ) {
+            if (ni == 0) {
+              for (i = 1, j = xc[0]; j >= 10; j /= 10, i++)
+                ;
+              j = xc[0] += k;
+              for (k = 1; j >= 10; j /= 10, k++)
+                ;
+              if (i != k) {
+                x.e++;
+                if (xc[0] == BASE)
+                  xc[0] = 1;
+              }
+              break;
+            } else {
+              xc[ni] += k;
+              if (xc[ni] != BASE)
+                break;
+              xc[ni--] = 0;
+              k = 1;
+            }
+          }
+        }
+        for (i = xc.length; xc[--i] === 0; xc.pop())
+          ;
+      }
+      if (x.e > MAX_EXP) {
+        x.c = x.e = null;
+      } else if (x.e < MIN_EXP) {
+        x.c = [x.e = 0];
+      }
+    }
+    return x;
+  }
+  function valueOf(n) {
+    var str2, e = n.e;
+    if (e === null)
+      return n.toString();
+    str2 = coeffToString(n.c);
+    str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(str2, e) : toFixedPoint(str2, e, "0");
+    return n.s < 0 ? "-" + str2 : str2;
+  }
+  P.absoluteValue = P.abs = function() {
+    var x = new BigNumber2(this);
+    if (x.s < 0)
+      x.s = 1;
+    return x;
+  };
+  P.comparedTo = function(y, b) {
+    return compare(this, new BigNumber2(y, b));
+  };
+  P.decimalPlaces = P.dp = function(dp, rm) {
+    var c, n, v, x = this;
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      if (rm == null)
+        rm = ROUNDING_MODE;
+      else
+        intCheck(rm, 0, 8);
+      return round(new BigNumber2(x), dp + x.e + 1, rm);
+    }
+    if (!(c = x.c))
+      return null;
+    n = ((v = c.length - 1) - bitFloor(this.e / LOG_BASE)) * LOG_BASE;
+    if (v = c[v])
+      for (; v % 10 == 0; v /= 10, n--)
+        ;
+    if (n < 0)
+      n = 0;
+    return n;
+  };
+  P.dividedBy = P.div = function(y, b) {
+    return div(this, new BigNumber2(y, b), DECIMAL_PLACES, ROUNDING_MODE);
+  };
+  P.dividedToIntegerBy = P.idiv = function(y, b) {
+    return div(this, new BigNumber2(y, b), 0, 1);
+  };
+  P.exponentiatedBy = P.pow = function(n, m) {
+    var half, isModExp, i, k, more, nIsBig, nIsNeg, nIsOdd, y, x = this;
+    n = new BigNumber2(n);
+    if (n.c && !n.isInteger()) {
+      throw Error(bignumberError + "Exponent not an integer: " + valueOf(n));
+    }
+    if (m != null)
+      m = new BigNumber2(m);
+    nIsBig = n.e > 14;
+    if (!x.c || !x.c[0] || x.c[0] == 1 && !x.e && x.c.length == 1 || !n.c || !n.c[0]) {
+      y = new BigNumber2(Math.pow(+valueOf(x), nIsBig ? n.s * (2 - isOdd(n)) : +valueOf(n)));
+      return m ? y.mod(m) : y;
+    }
+    nIsNeg = n.s < 0;
+    if (m) {
+      if (m.c ? !m.c[0] : !m.s)
+        return new BigNumber2(NaN);
+      isModExp = !nIsNeg && x.isInteger() && m.isInteger();
+      if (isModExp)
+        x = x.mod(m);
+    } else if (n.e > 9 && (x.e > 0 || x.e < -1 || (x.e == 0 ? x.c[0] > 1 || nIsBig && x.c[1] >= 24e7 : x.c[0] < 8e13 || nIsBig && x.c[0] <= 9999975e7))) {
+      k = x.s < 0 && isOdd(n) ? -0 : 0;
+      if (x.e > -1)
+        k = 1 / k;
+      return new BigNumber2(nIsNeg ? 1 / k : k);
+    } else if (POW_PRECISION) {
+      k = mathceil(POW_PRECISION / LOG_BASE + 2);
+    }
+    if (nIsBig) {
+      half = new BigNumber2(0.5);
+      if (nIsNeg)
+        n.s = 1;
+      nIsOdd = isOdd(n);
+    } else {
+      i = Math.abs(+valueOf(n));
+      nIsOdd = i % 2;
+    }
+    y = new BigNumber2(ONE);
+    for (; ; ) {
+      if (nIsOdd) {
+        y = y.times(x);
+        if (!y.c)
+          break;
+        if (k) {
+          if (y.c.length > k)
+            y.c.length = k;
+        } else if (isModExp) {
+          y = y.mod(m);
+        }
+      }
+      if (i) {
+        i = mathfloor(i / 2);
+        if (i === 0)
+          break;
+        nIsOdd = i % 2;
+      } else {
+        n = n.times(half);
+        round(n, n.e + 1, 1);
+        if (n.e > 14) {
+          nIsOdd = isOdd(n);
+        } else {
+          i = +valueOf(n);
+          if (i === 0)
+            break;
+          nIsOdd = i % 2;
+        }
+      }
+      x = x.times(x);
+      if (k) {
+        if (x.c && x.c.length > k)
+          x.c.length = k;
+      } else if (isModExp) {
+        x = x.mod(m);
+      }
+    }
+    if (isModExp)
+      return y;
+    if (nIsNeg)
+      y = ONE.div(y);
+    return m ? y.mod(m) : k ? round(y, POW_PRECISION, ROUNDING_MODE, more) : y;
+  };
+  P.integerValue = function(rm) {
+    var n = new BigNumber2(this);
+    if (rm == null)
+      rm = ROUNDING_MODE;
+    else
+      intCheck(rm, 0, 8);
+    return round(n, n.e + 1, rm);
+  };
+  P.isEqualTo = P.eq = function(y, b) {
+    return compare(this, new BigNumber2(y, b)) === 0;
+  };
+  P.isFinite = function() {
+    return !!this.c;
+  };
+  P.isGreaterThan = P.gt = function(y, b) {
+    return compare(this, new BigNumber2(y, b)) > 0;
+  };
+  P.isGreaterThanOrEqualTo = P.gte = function(y, b) {
+    return (b = compare(this, new BigNumber2(y, b))) === 1 || b === 0;
+  };
+  P.isInteger = function() {
+    return !!this.c && bitFloor(this.e / LOG_BASE) > this.c.length - 2;
+  };
+  P.isLessThan = P.lt = function(y, b) {
+    return compare(this, new BigNumber2(y, b)) < 0;
+  };
+  P.isLessThanOrEqualTo = P.lte = function(y, b) {
+    return (b = compare(this, new BigNumber2(y, b))) === -1 || b === 0;
+  };
+  P.isNaN = function() {
+    return !this.s;
+  };
+  P.isNegative = function() {
+    return this.s < 0;
+  };
+  P.isPositive = function() {
+    return this.s > 0;
+  };
+  P.isZero = function() {
+    return !!this.c && this.c[0] == 0;
+  };
+  P.minus = function(y, b) {
+    var i, j, t, xLTy, x = this, a = x.s;
+    y = new BigNumber2(y, b);
+    b = y.s;
+    if (!a || !b)
+      return new BigNumber2(NaN);
+    if (a != b) {
+      y.s = -b;
+      return x.plus(y);
+    }
+    var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+    if (!xe || !ye) {
+      if (!xc || !yc)
+        return xc ? (y.s = -b, y) : new BigNumber2(yc ? x : NaN);
+      if (!xc[0] || !yc[0]) {
+        return yc[0] ? (y.s = -b, y) : new BigNumber2(xc[0] ? x : (
+          // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
+          ROUNDING_MODE == 3 ? -0 : 0
+        ));
+      }
+    }
+    xe = bitFloor(xe);
+    ye = bitFloor(ye);
+    xc = xc.slice();
+    if (a = xe - ye) {
+      if (xLTy = a < 0) {
+        a = -a;
+        t = xc;
+      } else {
+        ye = xe;
+        t = yc;
+      }
+      t.reverse();
+      for (b = a; b--; t.push(0))
+        ;
+      t.reverse();
+    } else {
+      j = (xLTy = (a = xc.length) < (b = yc.length)) ? a : b;
+      for (a = b = 0; b < j; b++) {
+        if (xc[b] != yc[b]) {
+          xLTy = xc[b] < yc[b];
+          break;
+        }
+      }
+    }
+    if (xLTy)
+      t = xc, xc = yc, yc = t, y.s = -y.s;
+    b = (j = yc.length) - (i = xc.length);
+    if (b > 0)
+      for (; b--; xc[i++] = 0)
+        ;
+    b = BASE - 1;
+    for (; j > a; ) {
+      if (xc[--j] < yc[j]) {
+        for (i = j; i && !xc[--i]; xc[i] = b)
+          ;
+        --xc[i];
+        xc[j] += BASE;
+      }
+      xc[j] -= yc[j];
+    }
+    for (; xc[0] == 0; xc.splice(0, 1), --ye)
+      ;
+    if (!xc[0]) {
+      y.s = ROUNDING_MODE == 3 ? -1 : 1;
+      y.c = [y.e = 0];
+      return y;
+    }
+    return normalise(y, xc, ye);
+  };
+  P.modulo = P.mod = function(y, b) {
+    var q, s, x = this;
+    y = new BigNumber2(y, b);
+    if (!x.c || !y.s || y.c && !y.c[0]) {
+      return new BigNumber2(NaN);
+    } else if (!y.c || x.c && !x.c[0]) {
+      return new BigNumber2(x);
+    }
+    if (MODULO_MODE == 9) {
+      s = y.s;
+      y.s = 1;
+      q = div(x, y, 0, 3);
+      y.s = s;
+      q.s *= s;
+    } else {
+      q = div(x, y, 0, MODULO_MODE);
+    }
+    y = x.minus(q.times(y));
+    if (!y.c[0] && MODULO_MODE == 1)
+      y.s = x.s;
+    return y;
+  };
+  P.multipliedBy = P.times = function(y, b) {
+    var c, e, i, j, k, m, xcL, xlo, xhi, ycL, ylo, yhi, zc, base, sqrtBase, x = this, xc = x.c, yc = (y = new BigNumber2(y, b)).c;
+    if (!xc || !yc || !xc[0] || !yc[0]) {
+      if (!x.s || !y.s || xc && !xc[0] && !yc || yc && !yc[0] && !xc) {
+        y.c = y.e = y.s = null;
+      } else {
+        y.s *= x.s;
+        if (!xc || !yc) {
+          y.c = y.e = null;
+        } else {
+          y.c = [0];
+          y.e = 0;
+        }
+      }
+      return y;
+    }
+    e = bitFloor(x.e / LOG_BASE) + bitFloor(y.e / LOG_BASE);
+    y.s *= x.s;
+    xcL = xc.length;
+    ycL = yc.length;
+    if (xcL < ycL)
+      zc = xc, xc = yc, yc = zc, i = xcL, xcL = ycL, ycL = i;
+    for (i = xcL + ycL, zc = []; i--; zc.push(0))
+      ;
+    base = BASE;
+    sqrtBase = SQRT_BASE;
+    for (i = ycL; --i >= 0; ) {
+      c = 0;
+      ylo = yc[i] % sqrtBase;
+      yhi = yc[i] / sqrtBase | 0;
+      for (k = xcL, j = i + k; j > i; ) {
+        xlo = xc[--k] % sqrtBase;
+        xhi = xc[k] / sqrtBase | 0;
+        m = yhi * xlo + xhi * ylo;
+        xlo = ylo * xlo + m % sqrtBase * sqrtBase + zc[j] + c;
+        c = (xlo / base | 0) + (m / sqrtBase | 0) + yhi * xhi;
+        zc[j--] = xlo % base;
+      }
+      zc[j] = c;
+    }
+    if (c) {
+      ++e;
+    } else {
+      zc.splice(0, 1);
+    }
+    return normalise(y, zc, e);
+  };
+  P.negated = function() {
+    var x = new BigNumber2(this);
+    x.s = -x.s || null;
+    return x;
+  };
+  P.plus = function(y, b) {
+    var t, x = this, a = x.s;
+    y = new BigNumber2(y, b);
+    b = y.s;
+    if (!a || !b)
+      return new BigNumber2(NaN);
+    if (a != b) {
+      y.s = -b;
+      return x.minus(y);
+    }
+    var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+    if (!xe || !ye) {
+      if (!xc || !yc)
+        return new BigNumber2(a / 0);
+      if (!xc[0] || !yc[0])
+        return yc[0] ? y : new BigNumber2(xc[0] ? x : a * 0);
+    }
+    xe = bitFloor(xe);
+    ye = bitFloor(ye);
+    xc = xc.slice();
+    if (a = xe - ye) {
+      if (a > 0) {
+        ye = xe;
+        t = yc;
+      } else {
+        a = -a;
+        t = xc;
+      }
+      t.reverse();
+      for (; a--; t.push(0))
+        ;
+      t.reverse();
+    }
+    a = xc.length;
+    b = yc.length;
+    if (a - b < 0)
+      t = yc, yc = xc, xc = t, b = a;
+    for (a = 0; b; ) {
+      a = (xc[--b] = xc[b] + yc[b] + a) / BASE | 0;
+      xc[b] = BASE === xc[b] ? 0 : xc[b] % BASE;
+    }
+    if (a) {
+      xc = [a].concat(xc);
+      ++ye;
+    }
+    return normalise(y, xc, ye);
+  };
+  P.precision = P.sd = function(sd, rm) {
+    var c, n, v, x = this;
+    if (sd != null && sd !== !!sd) {
+      intCheck(sd, 1, MAX);
+      if (rm == null)
+        rm = ROUNDING_MODE;
+      else
+        intCheck(rm, 0, 8);
+      return round(new BigNumber2(x), sd, rm);
+    }
+    if (!(c = x.c))
+      return null;
+    v = c.length - 1;
+    n = v * LOG_BASE + 1;
+    if (v = c[v]) {
+      for (; v % 10 == 0; v /= 10, n--)
+        ;
+      for (v = c[0]; v >= 10; v /= 10, n++)
+        ;
+    }
+    if (sd && x.e + 1 > n)
+      n = x.e + 1;
+    return n;
+  };
+  P.shiftedBy = function(k) {
+    intCheck(k, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
+    return this.times("1e" + k);
+  };
+  P.squareRoot = P.sqrt = function() {
+    var m, n, r, rep, t, x = this, c = x.c, s = x.s, e = x.e, dp = DECIMAL_PLACES + 4, half = new BigNumber2("0.5");
+    if (s !== 1 || !c || !c[0]) {
+      return new BigNumber2(!s || s < 0 && (!c || c[0]) ? NaN : c ? x : 1 / 0);
+    }
+    s = Math.sqrt(+valueOf(x));
+    if (s == 0 || s == 1 / 0) {
+      n = coeffToString(c);
+      if ((n.length + e) % 2 == 0)
+        n += "0";
+      s = Math.sqrt(+n);
+      e = bitFloor((e + 1) / 2) - (e < 0 || e % 2);
+      if (s == 1 / 0) {
+        n = "5e" + e;
+      } else {
+        n = s.toExponential();
+        n = n.slice(0, n.indexOf("e") + 1) + e;
+      }
+      r = new BigNumber2(n);
+    } else {
+      r = new BigNumber2(s + "");
+    }
+    if (r.c[0]) {
+      e = r.e;
+      s = e + dp;
+      if (s < 3)
+        s = 0;
+      for (; ; ) {
+        t = r;
+        r = half.times(t.plus(div(x, t, dp, 1)));
+        if (coeffToString(t.c).slice(0, s) === (n = coeffToString(r.c)).slice(0, s)) {
+          if (r.e < e)
+            --s;
+          n = n.slice(s - 3, s + 1);
+          if (n == "9999" || !rep && n == "4999") {
+            if (!rep) {
+              round(t, t.e + DECIMAL_PLACES + 2, 0);
+              if (t.times(t).eq(x)) {
+                r = t;
+                break;
+              }
+            }
+            dp += 4;
+            s += 4;
+            rep = 1;
+          } else {
+            if (!+n || !+n.slice(1) && n.charAt(0) == "5") {
+              round(r, r.e + DECIMAL_PLACES + 2, 1);
+              m = !r.times(r).eq(x);
+            }
+            break;
+          }
+        }
+      }
+    }
+    return round(r, r.e + DECIMAL_PLACES + 1, ROUNDING_MODE, m);
+  };
+  P.toExponential = function(dp, rm) {
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      dp++;
+    }
+    return format(this, dp, rm, 1);
+  };
+  P.toFixed = function(dp, rm) {
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      dp = dp + this.e + 1;
+    }
+    return format(this, dp, rm);
+  };
+  P.toFormat = function(dp, rm, format2) {
+    var str2, x = this;
+    if (format2 == null) {
+      if (dp != null && rm && typeof rm == "object") {
+        format2 = rm;
+        rm = null;
+      } else if (dp && typeof dp == "object") {
+        format2 = dp;
+        dp = rm = null;
+      } else {
+        format2 = FORMAT;
+      }
+    } else if (typeof format2 != "object") {
+      throw Error(bignumberError + "Argument not an object: " + format2);
+    }
+    str2 = x.toFixed(dp, rm);
+    if (x.c) {
+      var i, arr = str2.split("."), g1 = +format2.groupSize, g2 = +format2.secondaryGroupSize, groupSeparator = format2.groupSeparator || "", intPart = arr[0], fractionPart = arr[1], isNeg = x.s < 0, intDigits = isNeg ? intPart.slice(1) : intPart, len = intDigits.length;
+      if (g2)
+        i = g1, g1 = g2, g2 = i, len -= i;
+      if (g1 > 0 && len > 0) {
+        i = len % g1 || g1;
+        intPart = intDigits.substr(0, i);
+        for (; i < len; i += g1)
+          intPart += groupSeparator + intDigits.substr(i, g1);
+        if (g2 > 0)
+          intPart += groupSeparator + intDigits.slice(i);
+        if (isNeg)
+          intPart = "-" + intPart;
+      }
+      str2 = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(
+        new RegExp("\\d{" + g2 + "}\\B", "g"),
+        "$&" + (format2.fractionGroupSeparator || "")
+      ) : fractionPart) : intPart;
+    }
+    return (format2.prefix || "") + str2 + (format2.suffix || "");
+  };
+  P.toFraction = function(md) {
+    var d, d0, d1, d2, e, exp, n, n0, n1, q, r, s, x = this, xc = x.c;
+    if (md != null) {
+      n = new BigNumber2(md);
+      if (!n.isInteger() && (n.c || n.s !== 1) || n.lt(ONE)) {
+        throw Error(bignumberError + "Argument " + (n.isInteger() ? "out of range: " : "not an integer: ") + valueOf(n));
+      }
+    }
+    if (!xc)
+      return new BigNumber2(x);
+    d = new BigNumber2(ONE);
+    n1 = d0 = new BigNumber2(ONE);
+    d1 = n0 = new BigNumber2(ONE);
+    s = coeffToString(xc);
+    e = d.e = s.length - x.e - 1;
+    d.c[0] = POWS_TEN[(exp = e % LOG_BASE) < 0 ? LOG_BASE + exp : exp];
+    md = !md || n.comparedTo(d) > 0 ? e > 0 ? d : n1 : n;
+    exp = MAX_EXP;
+    MAX_EXP = 1 / 0;
+    n = new BigNumber2(s);
+    n0.c[0] = 0;
+    for (; ; ) {
+      q = div(n, d, 0, 1);
+      d2 = d0.plus(q.times(d1));
+      if (d2.comparedTo(md) == 1)
+        break;
+      d0 = d1;
+      d1 = d2;
+      n1 = n0.plus(q.times(d2 = n1));
+      n0 = d2;
+      d = n.minus(q.times(d2 = d));
+      n = d2;
+    }
+    d2 = div(md.minus(d0), d1, 0, 1);
+    n0 = n0.plus(d2.times(n1));
+    d0 = d0.plus(d2.times(d1));
+    n0.s = n1.s = x.s;
+    e = e * 2;
+    r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(
+      div(n0, d0, e, ROUNDING_MODE).minus(x).abs()
+    ) < 1 ? [n1, d1] : [n0, d0];
+    MAX_EXP = exp;
+    return r;
+  };
+  P.toNumber = function() {
+    return +valueOf(this);
+  };
+  P.toPrecision = function(sd, rm) {
+    if (sd != null)
+      intCheck(sd, 1, MAX);
+    return format(this, sd, rm, 2);
+  };
+  P.toString = function(b) {
+    var str2, n = this, s = n.s, e = n.e;
+    if (e === null) {
+      if (s) {
+        str2 = "Infinity";
+        if (s < 0)
+          str2 = "-" + str2;
+      } else {
+        str2 = "NaN";
+      }
+    } else {
+      if (b == null) {
+        str2 = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(coeffToString(n.c), e) : toFixedPoint(coeffToString(n.c), e, "0");
+      } else if (b === 10 && alphabetHasNormalDecimalDigits) {
+        n = round(new BigNumber2(n), DECIMAL_PLACES + e + 1, ROUNDING_MODE);
+        str2 = toFixedPoint(coeffToString(n.c), n.e, "0");
+      } else {
+        intCheck(b, 2, ALPHABET.length, "Base");
+        str2 = convertBase(toFixedPoint(coeffToString(n.c), e, "0"), 10, b, s, true);
+      }
+      if (s < 0 && n.c[0])
+        str2 = "-" + str2;
+    }
+    return str2;
+  };
+  P.valueOf = P.toJSON = function() {
+    return valueOf(this);
+  };
+  P._isBigNumber = true;
+  P[Symbol.toStringTag] = "BigNumber";
+  P[Symbol.for("nodejs.util.inspect.custom")] = P.valueOf;
+  if (configObject != null)
+    BigNumber2.set(configObject);
+  return BigNumber2;
+}
+function bitFloor(n) {
+  var i = n | 0;
+  return n > 0 || n === i ? i : i - 1;
+}
+function coeffToString(a) {
+  var s, z, i = 1, j = a.length, r = a[0] + "";
+  for (; i < j; ) {
+    s = a[i++] + "";
+    z = LOG_BASE - s.length;
+    for (; z--; s = "0" + s)
+      ;
+    r += s;
+  }
+  for (j = r.length; r.charCodeAt(--j) === 48; )
+    ;
+  return r.slice(0, j + 1 || 1);
+}
+function compare(x, y) {
+  var a, b, xc = x.c, yc = y.c, i = x.s, j = y.s, k = x.e, l = y.e;
+  if (!i || !j)
+    return null;
+  a = xc && !xc[0];
+  b = yc && !yc[0];
+  if (a || b)
+    return a ? b ? 0 : -j : i;
+  if (i != j)
+    return i;
+  a = i < 0;
+  b = k == l;
+  if (!xc || !yc)
+    return b ? 0 : !xc ^ a ? 1 : -1;
+  if (!b)
+    return k > l ^ a ? 1 : -1;
+  j = (k = xc.length) < (l = yc.length) ? k : l;
+  for (i = 0; i < j; i++)
+    if (xc[i] != yc[i])
+      return xc[i] > yc[i] ^ a ? 1 : -1;
+  return k == l ? 0 : k > l ^ a ? 1 : -1;
+}
+function intCheck(n, min, max, name2) {
+  if (n < min || n > max || n !== mathfloor(n)) {
+    throw Error(bignumberError + (name2 || "Argument") + (typeof n == "number" ? n < min || n > max ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
+  }
+}
+function isOdd(n) {
+  var k = n.c.length - 1;
+  return bitFloor(n.e / LOG_BASE) == k && n.c[k] % 2 != 0;
+}
+function toExponential(str2, e) {
+  return (str2.length > 1 ? str2.charAt(0) + "." + str2.slice(1) : str2) + (e < 0 ? "e" : "e+") + e;
+}
+function toFixedPoint(str2, e, z) {
+  var len, zs;
+  if (e < 0) {
+    for (zs = z + "."; ++e; zs += z)
+      ;
+    str2 = zs + str2;
+  } else {
+    len = str2.length;
+    if (++e > len) {
+      for (zs = z, e -= len; --e; zs += z)
+        ;
+      str2 += zs;
+    } else if (e < len) {
+      str2 = str2.slice(0, e) + "." + str2.slice(e);
+    }
+  }
+  return str2;
+}
+var BigNumber = clone();
+
+// src/modules/governance/utils/formatProposal.ts
 var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {

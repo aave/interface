@@ -16,6 +16,7 @@ import { TransactionEventHandler } from 'src/components/TransactionEventHandler'
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
 import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
+import { DebtSwitchModal } from 'src/components/transactions/DebtSwitch/DebtSwitchModal';
 import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
@@ -102,6 +103,7 @@ export default function MyApp(props: MyAppProps) {
                               <RepayModal />
                               <CollateralChangeModal />
                               <RateSwitchModal />
+                              <DebtSwitchModal />
                               <ClaimRewardsModal />
                               <EmodeModal />
                               <SwapModal />

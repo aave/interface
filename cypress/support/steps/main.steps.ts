@@ -411,14 +411,20 @@ export const swap = (
   {
     fromAsset,
     toAsset,
+    isBorrowed = false,
+    isVariableBorrowedAPY = true,
     isCollateralFromAsset,
+    changeApprove = false,
     amount,
     hasApproval = true,
     isMaxAmount = false,
   }: {
     fromAsset: { shortName: string; fullName: string };
     toAsset: { shortName: string; fullName: string };
-    isCollateralFromAsset: boolean;
+    isBorrowed?: boolean;
+    isVariableBorrowedAPY?: boolean;
+    isCollateralFromAsset?: boolean;
+    changeApprove?: boolean;
     amount: number;
     hasApproval: boolean;
     isMaxAmount?: boolean;
@@ -429,33 +435,44 @@ export const swap = (
   const _shortNameFrom = fromAsset.shortName;
   const _shortNameTo = toAsset.shortName;
   const _actionName = 'Switch';
+  const _switchType = isBorrowed ? 'Borrowed' : 'Supplied';
+  const _apySwitchType = isVariableBorrowedAPY ? 'Variable' : 'Stable';
 
-  describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
+  describe(`Switch ${_switchType} ${_apySwitchType} ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it(`Open Swap modal for ${_shortNameFrom}`, () => {
-      cy.doSwitchToDashboardSupplyView();
-      cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
+    it(`Open Switch modal for ${_shortNameFrom}`, () => {
+      isBorrowed ? cy.doSwitchToDashboardBorrowView() : cy.doSwitchToDashboardSupplyView();
+      (isBorrowed
+        ? cy.getDashBoardBorrowedRow(_shortNameFrom, _apySwitchType)
+        : cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
+      )
         .find(`[data-cy=swapButton]`)
         .click();
-      cy.get(`[data-cy=Modal] h2:contains("Switch ${_shortNameFrom}")`).should('be.visible');
+      cy.get(
+        `[data-cy=Modal] h2:contains(${
+          isBorrowed ? 'Switch borrow position' : `Switch ${_shortNameFrom}`
+        })`
+      ).should('be.visible');
     });
-    it('Choose swapping options: swap to asset', () => {
+    it(`Choose Switching ${_switchType} options: swap to asset`, () => {
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find('[data-cy=assetSelect]').click();
       cy.get(`[data-cy="assetsSelectOption_${_shortNameTo.toUpperCase()}"]`, { timeout: 10000 })
         .should('be.visible')
-        .click();
+        .click({ force: true });
       cy.get(`[data-cy="assetsSelectedOption_${_shortNameTo.toUpperCase()}"]`, {
         timeout: 10000,
       }).should('be.visible', { timeout: 10000 });
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       cy.setAmount(amount, isMaxAmount);
-      cy.get('[data-cy=Modal]')
-        .find('[data-cy=approveButtonChange]')
-        .click()
-        .get('[data-cy=approveOption_Transaction]')
-        .click();
+      if (!changeApprove) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
       cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
@@ -617,7 +634,6 @@ export const emodeActivating = (
     turnOn,
     multipleEmodes,
     emodeOption,
-    emodeName = 'Stablecoins',
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
@@ -659,7 +675,10 @@ export const emodeActivating = (
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
-      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? emodeName : 'Disabled');
+      cy.get(`[data-cy="emode-open"]`).should(
+        'have.text',
+        turnOn ? `${emodeOption ? emodeOption : 'Stablecoins'}` : 'Disabled'
+      );
     });
   });
 };

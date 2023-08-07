@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -7,10 +8,25 @@ import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
 interface PriceImpactTooltipProps extends TextWithTooltipProps {
   loading: boolean;
-  priceImpact: string;
+  outputAmountUSD: string;
+  inputAmountUSD: string;
 }
 
-export const PriceImpactTooltip = ({ loading, priceImpact, ...rest }: PriceImpactTooltipProps) => {
+export const PriceImpactTooltip = ({
+  loading,
+  outputAmountUSD,
+  inputAmountUSD,
+  ...rest
+}: PriceImpactTooltipProps) => {
+  const priceDifference: BigNumber = new BigNumber(outputAmountUSD).minus(inputAmountUSD);
+  let priceImpact =
+    inputAmountUSD && inputAmountUSD !== '0'
+      ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
+      : '0';
+  if (priceImpact === '-0.00') {
+    priceImpact = '0.00';
+  }
+
   return (
     <TextWithTooltip
       variant="secondary12"

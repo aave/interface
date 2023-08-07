@@ -1,0 +1,10 @@
+{
+  "fullName": "GHO",
+  "shortName": "GHO",
+  "collateral": false,
+  "wrapped": false,
+  "apy": {
+    "min": 1.06,
+    "max": 1.51
+  }
+}
