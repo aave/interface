@@ -1051,8 +1051,8 @@ msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
 
 #: src/maneki/modules/markets/ClaimRewardTopPanel.tsx
-msgid "GLP ETH Reward:"
-msgstr "GLP ETH Reward:"
+msgid "GLP ETH Reward"
+msgstr "GLP ETH Reward"
 
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx

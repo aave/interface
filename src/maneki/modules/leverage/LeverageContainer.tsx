@@ -40,7 +40,6 @@ const LeverageContainer = () => {
       </SectionText>
       <SelectCollateralAsset {...{ amount, setAmount }} />
       <SectionText>
-        {/* START HERE */}
         <Trans>Choose Borrowed Assets</Trans>
       </SectionText>
       <ChooseBorrowedAssets />
@@ -48,7 +47,6 @@ const LeverageContainer = () => {
         <Trans>Delta Hedged Strategy</Trans>
       </SectionText>
       <DeltaHedgedStrategy />
-      {/* END HERE */}
       <SectionText>
         <Trans>Leverage: {leverage}x</Trans>
       </SectionText>
