@@ -86,7 +86,7 @@ const MESSAGE_MAP: { [key: string]: string } = {
 const MESSAGE_REGEX_MAP: Array<{ regex: RegExp; message: string }> = [
   {
     regex: /^Amount \d+ is too small to proceed$/,
-    message: 'Repay amount is too small. Please try larger amount.',
+    message: 'Amount is too small. Please try larger amount.',
   },
 ];
 
