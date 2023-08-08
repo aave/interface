@@ -6,6 +6,7 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -18,6 +19,11 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  let showStableBorrowRate = Number(reserve.totalStableDebtUSD) > 0;
+  if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
+    showStableBorrowRate = false;
+  }
 
   return (
     <ListMobileItemWrapper
@@ -118,7 +124,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <IncentivesCard
             align="flex-end"
-            value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
+            value={showStableBorrowRate ? reserve.stableBorrowAPY : '-1'}
             incentives={reserve.sIncentivesData || []}
             symbol={reserve.symbol}
             variant="secondary14"

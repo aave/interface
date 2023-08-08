@@ -7,6 +7,7 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -22,6 +23,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  let showStableBorrowRate = Number(reserve.totalStableDebtUSD) > 0;
+  if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
+    showStableBorrowRate = false;
+  }
 
   return (
     <ListItem
@@ -102,7 +108,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
+          value={showStableBorrowRate ? reserve.stableBorrowAPY : '-1'}
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
