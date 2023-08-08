@@ -34,6 +34,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
     borrowAmount,
     ratio,
     setTxStatus,
+    assetsLoading,
     setAssetsLoading,
     setTotalTxSteps,
   } = useLeverageContext();
@@ -54,14 +55,12 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
 
   const handleButtonClick = async () => {
     setLoading(true);
-    if (approvals.collateral) await handleCollateralApproval();
-    if (!approvals.collateral && approvals.unstable) await handleUnstableApproval();
-    if (!approvals.unstable && approvals.stable) await handleStableApproval();
+    if (await handleCollateralApproval())
+      if (await handleUnstableApproval()) await handleStableApproval();
     if (approvals.collateral || approvals.unstable || approvals.stable) {
       setLoading(false);
       return;
     }
-
     setTxStatus({ status: 'confirm', message: 'Confirm wallet transaction to complete deposit.' });
     const signer = provider?.getSigner(currentAccount as string);
     const contract = new Contract(LEVERAGER_V2_ADDR, MANEKI_LEVERAGER_V2_ABI, signer);
@@ -87,6 +86,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
   };
 
   const handleCollateralApproval = async () => {
+    if (!approvals.collateral) return true;
     setTxStatus({ status: 'confirm', message: 'Confirm wallet transaction to complete deposit.' });
     const signer = provider?.getSigner(currentAccount);
     const contract = new Contract(currentCollateral.address, PROXY_TOKEN_ABI, signer);
@@ -106,6 +106,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
   };
 
   const handleUnstableApproval = async () => {
+    if (!approvals.unstable) return true;
     setTxStatus({ status: 'confirm', message: 'Confirm wallet transaction to complete deposit.' });
     const signer = provider?.getSigner(currentAccount);
     const unstableContract = new Contract(
@@ -131,6 +132,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
   };
 
   const handleStableApproval = async () => {
+    if (!approvals.stable) return true;
     setTxStatus({ status: 'confirm', message: 'Confirm wallet transaction to complete deposit.' });
     const signer = provider?.getSigner(currentAccount);
     const stableContract = new Contract(variableAddresses.stable, VARIABLE_DEBT_TOKEN_ABI, signer);
@@ -152,6 +154,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
   };
 
   React.useEffect(() => {
+    if (assetsLoading) return;
     const contract = new Contract(
       PROTOCOL_DATA_PROVIDER_ADDR,
       LENDING_PROTOCOL_DATA_PROVIDER_ABI,
@@ -170,9 +173,10 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
         });
       })
       .catch((e) => console.log(e));
-  }, [provider, borrowAssets, PROTOCOL_DATA_PROVIDER_ADDR]);
+  }, [provider, borrowAssets, PROTOCOL_DATA_PROVIDER_ADDR, assetsLoading]);
 
   React.useEffect(() => {
+    if (assetsLoading) return;
     if (
       (!provider || !currentAccount || currentCollateral.address === '',
       variableAddresses.unstable === '' || variableAddresses.stable === '')
@@ -224,6 +228,7 @@ export default function LeverageActionButton({ amount }: { amount: string }) {
     currentAccount,
     LEVERAGER_V2_ADDR,
     setTotalTxSteps,
+    assetsLoading,
   ]);
 
   return (
