@@ -7,9 +7,9 @@ on:
         type: string
         description: IPFS hash to pin and use in release description
         required: true
-      IPFS_HASH:
-        type: string
-        required: true
+      # IPFS_HASH:
+      #   type: string
+      #   required: true
 
 jobs:
   production:
