@@ -1,4 +1,4 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
@@ -113,6 +113,11 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     setCooldownCheck(!cooldownCheck);
   };
   const amountToCooldown = formatEther(userStakeData?.stakeTokenRedeemableAmount || 0);
+
+  const amountInUsd =
+    Number(amountToCooldown) *
+    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) *
+      Number(normalize(stakeGeneralResult?.ethPriceUsd || 1, 8)));
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
@@ -290,6 +295,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
         amountToCooldown={amountToCooldown}
+        amountToCooldownUSD={amountInUsd.toString()}
       />
     </>
   );

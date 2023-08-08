@@ -22,6 +22,7 @@ export const TransactionEventHandler = () => {
           trackEvent(GENERAL.TRANSACTION, {
             transactionType: tx.action,
             tokenAmount: tx.amount,
+            tokenAmountUSD: tx.amountUSD,
             assetName: tx.assetName,
             asset: tx.asset,
             market: tx.market,

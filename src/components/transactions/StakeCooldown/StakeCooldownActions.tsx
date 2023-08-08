@@ -12,6 +12,7 @@ export interface StakeCooldownActionsProps extends BoxProps {
   blocked: boolean;
   selectedToken: string;
   amountToCooldown: string;
+  amountToCooldownUSD: string;
 }
 
 export const StakeCooldownActions = ({
@@ -20,6 +21,7 @@ export const StakeCooldownActions = ({
   blocked,
   selectedToken,
   amountToCooldown,
+  amountToCooldownUSD,
   ...props
 }: StakeCooldownActionsProps) => {
   const cooldown = useRootStore((state) => state.cooldown);
@@ -34,6 +36,7 @@ export const StakeCooldownActions = ({
     protocolAction: ProtocolAction.stakeCooldown,
     eventTxInfo: {
       amount: amountToCooldown,
+      amountUSD: amountToCooldownUSD,
       assetName: selectedToken,
     },
   });

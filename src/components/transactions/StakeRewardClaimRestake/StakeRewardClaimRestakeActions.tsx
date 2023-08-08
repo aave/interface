@@ -8,6 +8,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeRewardClaimRestakeActionProps extends BoxProps {
   amountToClaim: string;
+  amountToClaimUSD: string;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
@@ -17,6 +18,7 @@ export interface StakeRewardClaimRestakeActionProps extends BoxProps {
 
 export const StakeRewardClaimRestakeActions = ({
   amountToClaim,
+  amountToClaimUSD,
   isWrongNetwork,
   sx,
   symbol,
@@ -37,6 +39,7 @@ export const StakeRewardClaimRestakeActions = ({
     protocolAction: ProtocolAction.claimRewardsAndStake,
     eventTxInfo: {
       amount: amountToClaim,
+      amountUSD: amountToClaimUSD,
       assetName: selectedToken,
     },
     skip: !amountToClaim || parseFloat(amountToClaim) === 0 || blocked,

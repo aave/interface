@@ -1,4 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -9,6 +10,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface WithdrawActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
+  inputAmount: string;
   amountToWithdraw: string;
   poolAddress: string;
   isWrongNetwork: boolean;
@@ -24,6 +26,7 @@ export const WithdrawActions = ({
   symbol,
   blocked,
   sx,
+  inputAmount,
 }: WithdrawActionsProps) => {
   const withdraw = useRootStore((state) => state.withdraw);
 
@@ -39,7 +42,8 @@ export const WithdrawActions = ({
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
       eventTxInfo: {
-        amount: amountToWithdraw,
+        amount: inputAmount,
+        amountUSD: valueToBigNumber(inputAmount).multipliedBy(poolReserve.priceInUSD).toString(10),
         assetName: poolReserve.name,
         asset: poolReserve.underlyingAsset,
       },
