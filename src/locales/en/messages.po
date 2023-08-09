@@ -1050,6 +1050,10 @@ msgstr "Frozen assets"
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
 
+#: src/maneki/modules/markets/ClaimRewardTopPanel.tsx
+msgid "GLP ETH Reward"
+msgstr "GLP ETH Reward"
+
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
@@ -2405,10 +2409,6 @@ msgstr "Top 10 addresses"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Locked"
 msgstr "Total Locked"
-
-#: src/maneki/modules/markets/ClaimRewardTopPanel.tsx
-msgid "Total Rewards"
-msgstr "Total Rewards"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx

@@ -89,7 +89,7 @@ const moreMenuItems: MoreMenuItem[] = [
   //   icon: <BookOpenIcon />,
   // },
   {
-    link: 'https://discord.gg/kecSAkkF',
+    link: 'https://discord.gg/M5dpDrUekC',
     title: t`Discord`,
     icon: <DiscordIcon />,
   },

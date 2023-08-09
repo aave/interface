@@ -29,7 +29,7 @@ export interface IleverageBorrowAsset {
 }
 
 export interface ITxStatus {
-  status: 'success' | 'error' | 'approve' | '';
+  status: 'success' | 'error' | 'approve' | 'pending' | 'confirm' | '';
   message: string;
   hash?: string;
 }
@@ -63,6 +63,8 @@ interface ILeverageData {
   setRatio: (value: number[]) => void;
   txStatus: ITxStatus;
   setTxStatus: (value: ITxStatus) => void;
+  totalTxSteps: number;
+  setTotalTxSteps: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -98,6 +100,7 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
     message: '',
     hash: '',
   });
+  const [totalTxSteps, setTotalTxSteps] = React.useState(4);
   const { provider, currentAccount } = useWeb3Context();
   const PROTOCOL_DATA_PROVIDER = marketsData.arbitrum_mainnet_v3.addresses
     .LENDING_PROTOCOL_DATA_PROVIDER as string;
@@ -218,6 +221,8 @@ export const LeverageDataProvider: React.FC<{ children: ReactElement }> = ({ chi
         setRatio,
         txStatus,
         setTxStatus,
+        totalTxSteps,
+        setTotalTxSteps,
       }}
     >
       {children}
