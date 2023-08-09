@@ -47,8 +47,7 @@ const testData = {
   },
 };
 
-//skip due froze all e-mode assets
-describe.skip('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
+describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
   describe('Prepare min health factor state, with stable coins', () => {

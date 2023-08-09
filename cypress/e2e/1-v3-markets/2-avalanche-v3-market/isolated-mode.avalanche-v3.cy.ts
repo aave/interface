@@ -77,8 +77,8 @@ const testData = {
     assets.avalancheV3Market.USDC,
   ],
 };
-//limit
-describe.skip('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
+
+describe('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
   describe('Get isolated asset', () => {
