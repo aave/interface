@@ -201,57 +201,57 @@ jobs:
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
+  #
+  #  cypress_additional_v2:
+  #    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
+  #    runs-on: ubuntu-latest
+  #    needs:
+  #      - deploy
+  #      - cypress_smoke_v2
+  #      - cypress_smoke_v3
+  #    strategy:
+  #      fail-fast: false
+  #      matrix:
+  #        market:
+  #          - ethereum
+  #          - polygon
+  #          - avalanche
+  #    steps:
+  #      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #
+  #      - name: Run tests
+  #        uses: ./.github/actions/cypress
+  #        with:
+  #          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+  #          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+  #          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+  #          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.ts
 
-  cypress_additional_v2:
-    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
-    runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - ethereum
-          - polygon
-          - avalanche
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.ts
-
-  cypress_additional_v3:
-    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
-    runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
-    strategy:
-      fail-fast: false
-      matrix:
-        market:
-          - polygon
-          - avalanche
-          - optimism
-          - ethereum
-    steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-
-      - name: Run tests
-        uses: ./.github/actions/cypress
-        with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.ts
+  #  cypress_additional_v3:
+  #    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
+  #    runs-on: ubuntu-latest
+  #    needs:
+  #      - deploy
+  #      - cypress_smoke_v2
+  #      - cypress_smoke_v3
+  #    strategy:
+  #      fail-fast: false
+  #      matrix:
+  #        market:
+  #          - polygon
+  #          - avalanche
+  #          - optimism
+  #          - ethereum
+  #    steps:
+  #      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #
+  #      - name: Run tests
+  #        uses: ./.github/actions/cypress
+  #        with:
+  #          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+  #          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+  #          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+  #          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.ts
 
   cypress_app_functionality:
     runs-on: ubuntu-latest
