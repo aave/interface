@@ -1,23 +1,32 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
-import { AssetInput } from '../AssetInput';
+import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsNumberLine,
+  DetailsSwitchWithdraw,
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
@@ -37,16 +46,65 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  switchWithdraw,
+  setSwitchWithdraw,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  switchWithdraw: boolean;
+  setSwitchWithdraw: (switchWithdraw: boolean) => void;
+}) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
-  const { user } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentAccount } = useWeb3Context();
+  const { user, reserves } = useAppDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
   const [withdrawMax, setWithdrawMax] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>('');
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const [maxSlippage, setMaxSlippage] = useState('0.1');
+
+  const swapTargets = reserves
+    .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
+    .map((reserve) => ({
+      address: reserve.underlyingAsset,
+      symbol: reserve.symbol,
+      iconSymbol: reserve.iconSymbol,
+    }));
+
+  const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
+
+  const isMaxSelected = _amount === '-1';
+
+  const swapTarget = user.userReservesData.find(
+    (r) => r.underlyingAsset === targetReserve.address
+  ) as ComputedUserReserveData;
+
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    error,
+    loading: routeLoading,
+    buildTxFn,
+  } = useCollateralSwap({
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+    userAddress: currentAccount,
+    swapIn: { ...poolReserve, amount: amountRef.current },
+    swapOut: { ...swapTarget.reserve, amount: '0' },
+    max: isMaxSelected,
+    skip: withdrawTxState.loading || false,
+    maxSlippage: Number(maxSlippage),
+  });
+
+  // to be used in actions, didn't delete to remember the names, will change in future.
+  console.log(inputAmount);
+  console.log(buildTxFn);
+
+  const loadingSkeleton = routeLoading && outputAmountUSD === '0';
 
   // calculations
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
@@ -75,7 +133,6 @@ export const WithdrawModalContent = ({
     );
   }
 
-  const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
 
   const handleChange = (value: string) => {
@@ -215,6 +272,42 @@ export const WithdrawModalContent = ({
         }
       />
 
+      {switchWithdraw && (
+        <>
+          <Box
+            sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}
+          >
+            <SvgIcon sx={{ fontSize: '18px !important' }}>
+              <SwitchVerticalIcon />
+            </SvgIcon>
+
+            <PriceImpactTooltip
+              loading={loadingSkeleton}
+              outputAmountUSD={outputAmountUSD}
+              inputAmountUSD={inputAmountUSD}
+            />
+          </Box>
+
+          <AssetInput
+            value={outputAmount}
+            onSelect={setTargetReserve}
+            usdValue={outputAmountUSD}
+            symbol={targetReserve.symbol}
+            assets={swapTargets}
+            inputTitle={<Trans>Switch to</Trans>}
+            balanceText={<Trans>Supply balance</Trans>}
+            disableInput
+            loading={loadingSkeleton}
+          />
+
+          {error && !loadingSkeleton && (
+            <Typography variant="helperText" color="error.main">
+              {error}
+            </Typography>
+          )}
+        </>
+      )}
+
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           <BlockingError />
@@ -231,7 +324,20 @@ export const WithdrawModalContent = ({
         />
       )}
 
-      <TxModalDetails gasLimit={gasLimit}>
+      <DetailsSwitchWithdraw
+        switchWithdraw={switchWithdraw}
+        setSwitchWithdraw={setSwitchWithdraw}
+        label="Withdraw and switch to other asset"
+      />
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        slippageSelector={
+          switchWithdraw && (
+            <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          )
+        }
+      >
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(amount || '0').toString(10)}

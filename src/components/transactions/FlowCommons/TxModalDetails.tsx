@@ -358,3 +358,33 @@ export const DetailsUnwrapSwitch = ({
     </Row>
   );
 };
+
+interface DetailsSwitchWithdrawProps {
+  switchWithdraw: boolean;
+  setSwitchWithdraw: (value: boolean) => void;
+  label: ReactNode;
+}
+
+export const DetailsSwitchWithdraw = ({
+  switchWithdraw,
+  setSwitchWithdraw,
+  label,
+}: DetailsSwitchWithdrawProps) => {
+  return (
+    <Row captionVariant="description" sx={{ mt: 5 }}>
+      <FormControlLabel
+        sx={{ mx: 0 }}
+        control={
+          <Switch
+            disableRipple
+            checked={switchWithdraw}
+            onClick={() => setSwitchWithdraw(!switchWithdraw)}
+            data-cy={'wrappedSwitcher'}
+          />
+        }
+        labelPlacement="end"
+        label={label}
+      />
+    </Row>
+  );
+};

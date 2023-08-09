@@ -12,6 +12,7 @@ export const WithdrawModal = () => {
     underlyingAsset: string;
   }>;
   const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
+  const [switchWithdraw, setSwitchWithdraw] = useState(false);
 
   return (
     <BasicModal open={type === ModalType.Withdraw} setOpen={close}>
@@ -24,6 +25,8 @@ export const WithdrawModal = () => {
         {(params) => (
           <WithdrawModalContent
             {...params}
+            switchWithdraw={switchWithdraw}
+            setSwitchWithdraw={setSwitchWithdraw}
             unwrap={withdrawUnWrapped}
             setUnwrap={setWithdrawUnWrapped}
           />
