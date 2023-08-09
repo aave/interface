@@ -18,7 +18,7 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         pb: 1,
         position: 'sticky',
         top: 0,
-        zIndex: 100,
+        zIndex: 1,
         bgcolor: 'background.paper',
         borderBottom: '1px solid',
         borderColor: 'divider',
