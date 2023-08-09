@@ -11218,7 +11218,7 @@
       "startBlock": 17871434,
       "endBlock": 17890634,
       "executionTime": 0,
-      "forVotes": "233841754455265662011855",
+      "forVotes": "233841868355265662011855",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11232,7 +11232,7 @@
       "ipfsHash": "0x03621fdd5b0f4431c88e43b154b7192c0dd0ab0c0cbecb2d6336c49a2a6bcc54",
       "startTimestamp": 1691512583,
       "creationTimestamp": 1691425583,
-      "expirationTimestamp": 1691743391
+      "expirationTimestamp": 1691743463
     },
     {
       "id": 290,
@@ -11266,8 +11266,43 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xcf4879103e3d98e72aac58a16f5eae53e9336b419379fc577003f99606588bb3",
       "creationTimestamp": 1691512031,
-      "startTimestamp": 1691598839,
-      "expirationTimestamp": 1691829239
+      "startTimestamp": 1691598911,
+      "expirationTimestamp": 1691829311
+    },
+    {
+      "id": 291,
+      "creator": "0x329c54289Ff5D6B7b7daE13592C6B1EDA1543eD4",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x40c3aECDEDa52375eACccD4F89420FFaa1607e3c"
+      ],
+      "signatures": [
+        "execute()"
+      ],
+      "calldatas": [
+        "0x"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 17883233,
+      "endBlock": 17902433,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 17876033,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0xe9c7824ff7cba1ed5d9c14b1aafb18349bb2cbefab9ef1c7d290a14c2b69b8fc",
+      "creationTimestamp": 1691568239,
+      "startTimestamp": 1691654651,
+      "expirationTimestamp": 1691885051
     }
   ]
 }
