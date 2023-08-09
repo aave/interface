@@ -26,12 +26,12 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsNumberLine,
-  DetailsSwitchWithdraw,
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { WithdrawActions } from './WithdrawActions';
+import { WithdrawType, WithdrawTypeSelector } from './WithdrawTypeSelector';
 
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -46,13 +46,9 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
-  switchWithdraw,
-  setSwitchWithdraw,
 }: ModalWrapperProps & {
   unwrap: boolean;
   setUnwrap: (unwrap: boolean) => void;
-  switchWithdraw: boolean;
-  setSwitchWithdraw: (switchWithdraw: boolean) => void;
 }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
@@ -75,6 +71,7 @@ export const WithdrawModalContent = ({
     }));
 
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
+  const [withdrawType, setWithdrawType] = useState(WithdrawType.WITHDRAW);
 
   const isMaxSelected = _amount === '-1';
 
@@ -243,8 +240,11 @@ export const WithdrawModalContent = ({
       />
     );
 
+  const switchWithdraw = withdrawType === WithdrawType.WITHDRAWSWAP;
+
   return (
     <>
+      <WithdrawTypeSelector withdrawType={withdrawType} setWithdrawType={setWithdrawType} />
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -323,12 +323,6 @@ export const WithdrawModalContent = ({
           }
         />
       )}
-
-      <DetailsSwitchWithdraw
-        switchWithdraw={switchWithdraw}
-        setSwitchWithdraw={setSwitchWithdraw}
-        label="Withdraw and switch to other asset"
-      />
 
       <TxModalDetails
         gasLimit={gasLimit}

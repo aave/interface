@@ -67,6 +67,10 @@ export const REPAY_MODAL = {
   SWITCH_REPAY_TYPE: 'Change repay type',
 };
 
+export const WITHDRAW_MODAL = {
+  SWITCH_WITHDRAW_TYPE: 'Change withdraw type',
+};
+
 export const STAKE = {
   STAKE_TOKEN: 'Stake Action',
 };
