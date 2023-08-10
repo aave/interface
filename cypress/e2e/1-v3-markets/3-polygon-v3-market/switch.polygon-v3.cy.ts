@@ -19,7 +19,7 @@ const testData = {
   },
   swap: {
     fromAsset: assets.polygonV3Market.DAI,
-    toAsset: assets.polygonV3Market.USDC,
+    toAsset: assets.polygonV3Market.WBTC,
     isBorrowed: true,
     isVariableBorrowedAPY: false,
     amount: 200,
@@ -30,7 +30,7 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.USDC.shortName,
+        assetName: assets.polygonV3Market.WBTC.shortName,
         apyType: constants.borrowAPYType.variable,
       },
     ],
