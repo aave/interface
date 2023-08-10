@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-07-24 18:05\n"
+"PO-Revision-Date: 2023-08-04 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -133,7 +133,7 @@ msgstr "Token de deuda de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
-msgstr "Aave es un protocolo totalmente descentralizado, gobernado por la comunidad de poseedores de tokens AAVE. Los poseedores de tokens AAVE discuten, proponen y votan colectivamente sobre las actualizaciones del protocolo. Los poseedores de tokens AAVE (solo en la red Ethereum) pueden votar ellos mismos sobre nuevas propuestas o delegarse a una dirección de su elección. Para aprender más, consulta el Gobierno"
+msgstr "Aave es un protocolo totalmente descentralizado, gobernado por la comunidad de poseedores de tokens AAVE. Los poseedores de tokens AAVE discuten, proponen y votan colectivamente sobre las actualizaciones del protocolo. Los poseedores de tokens AAVE (solo en la red Ethereum) pueden votar ellos mismos sobre nuevas propuestas o delegarse a una dirección de su elección. Para aprender más, consulta la"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1626,7 +1626,7 @@ msgstr "Por favor ten siempre en cuenta tu <0>factor de salud (HF)</0> cuando mi
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
-msgstr "Por favor conecta una billetera para ver tu información personal aquí."
+msgstr "Por favor conecta una cartera para ver tu información personal aquí."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."

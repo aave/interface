@@ -33,7 +33,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
     !reserve.isActive || !reserve.borrowingEnabled || reserve.isFrozen || borrowCap.isMaxed;
 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
-  const disableSwitch = !reserve.isActive || reserve.isFrozen || reserve.symbol == 'stETH';
+  const disableSwitch = !reserve.isActive || reserve.symbol == 'stETH';
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
