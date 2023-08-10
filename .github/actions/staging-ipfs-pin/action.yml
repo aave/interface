@@ -1,9 +1,6 @@
 name: Pin to staging cluster
 description: Upload build to ipfs node
 inputs:
-  DOMAIN:
-    description: Domain to unpin
-    required: true
   IPFS_STAGING_SERVER_PORT:
     description: ''
     required: true

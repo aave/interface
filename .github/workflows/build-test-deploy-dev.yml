@@ -5,14 +5,14 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
+  pull_request:
     branches: ['main']
 
 jobs:
   build:
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'push' && github.event_name == 'pull_request') ||
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
     steps:
@@ -39,7 +39,7 @@ jobs:
   build_staging:
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'push' && github.ref == 'refs/heads/main'
+      github.event_name == 'push' && github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
@@ -116,9 +116,6 @@ jobs:
           path: .next
 
       - uses: ./.github/actions/analyze-comment
-        if: github.event_name != 'pull_request'
-
-      - uses: ./.github/actions/analyze-comment
         if: github.event_name == 'pull_request'
         with:
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
@@ -128,7 +125,7 @@ jobs:
     needs:
       - build
     outputs:
-      pinata_hash: '${{ steps.pinata.outputs.hash }}'
+      IPFS_HASH: ${{ steps.ipfs-hash.outputs.hash }}
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -138,15 +135,14 @@ jobs:
           name: out
           path: out
 
-      - name: pinata
-        id: pinata
-        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+      - name: private-ipfs
+        id: private-ipfs
+        uses: ./.github/actions/staging-ipfs-pin
         with:
-          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
-          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
-          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
-          BUILD_LOCATION: './out'
-          CID_VERSION: 1
+          IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
+          IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
+          IPFS_SSH_KEY: '${{ secrets.IPFS_SSH_KEY }}'
+          BUILD_PATH: 'out_staging'
 
   cypress_full_v2:
     runs-on: ubuntu-latest
@@ -276,31 +272,3 @@ jobs:
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
 
-  update_domains:
-    if: |
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/main' &&
-      !contains(github.event.head_commit.message, '[skip cypress]')
-    needs:
-      - deploy
-      - build_staging
-      - cypress_full_v2
-      - cypress_full_v3
-      - cypress_app_functionality
-    uses: ./.github/workflows/update-prod-staging.yml
-    with:
-      PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
-    secrets: inherit
-
-  update_domains_no_cypress:
-    if: |
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/main' &&
-      contains(github.event.head_commit.message, '[skip cypress]')
-    needs:
-      - deploy
-      - build_staging
-    uses: ./.github/workflows/update-prod-staging.yml
-    with:
-      PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
-    secrets: inherit

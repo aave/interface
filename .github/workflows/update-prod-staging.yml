@@ -7,14 +7,10 @@ on:
         type: string
         description: IPFS hash to pin and use in release description
         required: true
-      # IPFS_HASH:
-      #   type: string
-      #   required: true
 
 jobs:
   production:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     environment:
       name: Production
       url: 'https://app.aave.com'
@@ -27,7 +23,7 @@ jobs:
           name: out
           path: out
 
-      - name: Pin to self-hosted cluster
+      - name: Pin to sefl-hosted cluster
         uses: ./.github/actions/production-ipfs-pin
         with:
           DOMAIN: app.aave.com
@@ -69,9 +65,6 @@ jobs:
 
   staging:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
-    outputs:
-      IPFS_HASH: ${{ steps.ipfs-hash.outputs.hash }}
     environment:
       name: Staging
       url: 'https://staging.aave.com'
@@ -84,20 +77,30 @@ jobs:
           name: out_staging
           path: out_staging
 
-      - name: Pin to self-hosted node
-        uses: ./.github/actions/staging-ipfs-pin
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        with:
+          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
+          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
+          PIN_ALIAS: 'app-aave-staging'
+          BUILD_LOCATION: './out_staging'
+          CID_VERSION: 1
 
+      - name: Pin to sefl-hosted cluster
+        uses: ./.github/actions/production-ipfs-pin
         continue-on-error: true
         with:
           DOMAIN: staging.aave.com
-          IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
-          IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
-          IPFS_SSH_KEY: '${{ secrets.IPFS_SSH_KEY }}'
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           BUILD_PATH: 'out_staging'
+          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
       - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
           CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
-          HASH: '${{ inputs.IPFS_HASH }}'
+          HASH: '${{ steps.pinata.outputs.hash }}'
           CF_DEPLOYMENT_DOMAIN: staging.aave.com
