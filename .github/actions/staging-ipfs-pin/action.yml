@@ -21,7 +21,7 @@ runs:
       shell: bash
       run: |
         echo "Prepare env and Compress build"
-        echo "${{ secrets.IPFS_SSH_KEY }}" | base64 --decode | jq > /mnt/data/tmp/key
+        echo "${{ inputs.IPFS_SSH_KEY }}" | base64 --decode | jq > /mnt/data/tmp/key
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
         echo "Upload build to IPFS server"
