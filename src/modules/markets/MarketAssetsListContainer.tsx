@@ -55,13 +55,7 @@ export const MarketAssetsListContainer = () => {
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
-  const unfrozenReserves = filteredData
-    .filter((r) => !r.isFrozen && !r.isPaused)
-    .sort((a, b) => {
-      const numA = parseFloat(a.totalLiquidityUSD);
-      const numB = parseFloat(b.totalLiquidityUSD);
-      return numB - numA;
-    });
+  const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
 
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
