@@ -14,7 +14,7 @@ const testData = {
   swap: [
     {
       fromAsset: assets.aaveMarket.ETH,
-      toAsset: assets.aaveMarket.DAI,
+      toAsset: assets.aaveMarket.USDC,
       isCollateralFromAsset: true,
       amount: 0.1,
       hasApproval: false,
@@ -24,8 +24,8 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.aaveMarket.DAI.shortName,
-        wrapped: assets.aaveMarket.DAI.wrapped,
+        assetName: assets.aaveMarket.USDC.shortName,
+        wrapped: assets.aaveMarket.USDC.wrapped,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },

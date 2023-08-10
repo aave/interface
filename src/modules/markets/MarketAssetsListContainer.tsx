@@ -56,6 +56,7 @@ export const MarketAssetsListContainer = () => {
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
+
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
   // Determine if to show GHO market list item
