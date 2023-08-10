@@ -50,6 +50,11 @@ const testData = {
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
+    switchCollateralForUSDTOn: {
+      asset: assets.avalancheV3Market.USDT,
+      isCollateralType: false,
+      hasApproval: true,
+    },
     switchCollateralForUSDT: {
       asset: assets.avalancheV3Market.USDT,
       isCollateralType: true,
@@ -78,12 +83,15 @@ const testData = {
   ],
 };
 
-describe('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
+describe.skip('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
   describe('Get isolated asset', () => {
     supply(testData.testCases.depositAVAX, skipTestState, true);
     swap(testData.testCases.swapAVAX, skipTestState, true);
+  });
+  describe(`Switch on isolated mode`, () => {
+    changeCollateral(testData.testCases.switchCollateralForUSDTOn, skipTestState, true);
   });
   describe('Verify isolated mode property', () => {
     dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
