@@ -341,7 +341,7 @@ const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          // partnerAddress: FEE_CLAIMER_ADDRESS,
         },
         { ignoreChecks: true }
       );
@@ -413,7 +413,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partner: 'aave',
-          partnerAddress: FEE_CLAIMER_ADDRESS,
+          // partnerAddress: FEE_CLAIMER_ADDRESS,
           srcDecimals,
           destDecimals,
         },
