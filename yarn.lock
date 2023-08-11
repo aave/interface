@@ -2799,10 +2799,10 @@
   resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-1.1.0.tgz#5ec7415be69dc657a9d82b0fde4e20f632cca1b6"
   integrity sha512-ecnX8ezlhYWFwolZxYEz+K+RfLr8xaxQqiJKlxJ8Yf00tXTGxDGn6/Acy00t4+9Kv0apewd7++J33eJt9yNfwg==
 
-"@paraswap/sdk@6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.2.1.tgz#cbac091ae1a8f080edd64234465ef127fdbd21f6"
-  integrity sha512-PW0pw676Oyy6129gqLKU/o7JNFVurCnA6AJ3NAKmZ6zAbPrYLWJV+zl/pWqja5MZkst2QzbDhd40gGjIeEKaPg==
+"@paraswap/sdk@6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.2.2.tgz#c34eef61ab4cb8e0ad284f2259a25b9a61b4bb9a"
+  integrity sha512-W0sAIf/T4zAmI7Yp4TcAuQr68NtaopeuYOWop20piAGoko4K9eLY4DYwWgkXf9fw9bAeeGofwP+GYJJC8Q24xg==
   dependencies:
     "@paraswap/core" "1.1.0"
     bignumber.js "^9.0.2"
