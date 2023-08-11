@@ -58,7 +58,7 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
               compact={false}
             />
             <Typography variant="description" component="span" color="text.secondary">
-              AAVE
+              MCAKE
             </Typography>
           </Box>
         )}

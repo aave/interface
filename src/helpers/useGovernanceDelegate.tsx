@@ -273,7 +273,7 @@ export const useGovernanceDelegate = (
           txs = await delegate({
             delegatee,
             governanceToken:
-              delegationTokenType === DelegationTokenType.AAVE
+              delegationTokenType === DelegationTokenType.MCAKEE
                 ? governanceConfig.aaveTokenAddress
                 : governanceConfig.stkAaveTokenAddress,
           });
@@ -282,7 +282,7 @@ export const useGovernanceDelegate = (
             delegatee,
             delegationType,
             governanceToken:
-              delegationTokenType === DelegationTokenType.AAVE
+              delegationTokenType === DelegationTokenType.MCAKEE
                 ? governanceConfig.aaveTokenAddress
                 : governanceConfig.stkAaveTokenAddress,
           });

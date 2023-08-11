@@ -114,9 +114,9 @@ export const SupplyModalContent = React.memo(
 
     const liquidationThresholdAfter = user
       ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-          .multipliedBy(user.currentLiquidationThreshold)
-          .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-          .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
       : '-1';
 
     const isMaxSelected = amount === maxAmountToSupply;
@@ -197,7 +197,7 @@ export const SupplyModalContent = React.memo(
           </Warning>
         )}
         {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-          poolReserve.symbol === 'AAVE' &&
+          poolReserve.symbol === 'MCAKE' &&
           isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
         {poolReserve.symbol === 'SNX' && maxAmountToSupply !== '0' && <SNXWarning />}
 

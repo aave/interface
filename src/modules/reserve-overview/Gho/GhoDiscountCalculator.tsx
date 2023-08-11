@@ -255,7 +255,7 @@ export const GhoDiscountCalculator = () => {
         </Box>
         <Box sx={{ width: '100%' }}>
           <CalculatorInput
-            title="Staked AAVE amount"
+            title="Staked MCAKE amount"
             value={stkAave}
             disabled={ghoLoadingData}
             tokenSymbol="stkAAVE"
@@ -295,7 +295,7 @@ export const GhoDiscountCalculator = () => {
         </Box>
         <Box sx={{ width: '100%' }}>
           <CalculatorInput
-            title="Staked AAVE amount"
+            title="Staked MCAKE amount"
             value={stkAave}
             disabled={ghoLoadingData}
             tokenSymbol="stkAAVE"
@@ -316,7 +316,7 @@ export const GhoDiscountCalculator = () => {
       </Typography>
       <Typography variant="caption" color="text.secondary" mb={6}>
         <Trans>
-          Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO
+          Users who stake MCAKE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO
           borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the
           calculator below to see GHO borrow rate with the discount applied.
         </Trans>

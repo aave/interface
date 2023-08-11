@@ -19,7 +19,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   const { data: stakeGeneralResult } = useGeneralStakeUiData();
   let stakingAPY = '';
 
-  if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
+  if (stakedToken == 'MCAKE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';
   if (stakedToken == 'ABPT') stakingAPY = stakeGeneralResult?.bpt.stakeApy || '0';
   return (
     <Box

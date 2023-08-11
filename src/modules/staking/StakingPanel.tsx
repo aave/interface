@@ -478,7 +478,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </StakeActionBox>
 
         <StakeActionBox
-          title={<Trans>Claimable AAVE</Trans>}
+          title={<Trans>Claimable MCAKE</Trans>}
           value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
           valueUSD={claimableUSD}
           bottomLineTitle={<Trans>Mooncake Finance per month</Trans>}
@@ -512,7 +512,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             >
               <Trans>Claim</Trans>
             </Button>
-            {stakedToken === 'AAVE' && (
+            {stakedToken === 'MCAKE' && (
               <Button
                 variant="contained"
                 onClick={onStakeRewardClaimRestakeAction}

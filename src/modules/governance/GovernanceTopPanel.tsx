@@ -62,9 +62,9 @@ export const GovernanceTopPanel = () => {
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              Mooncake Finance is a fully decentralized, community governed protocol by the AAVE
-              token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades
-              to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves
+              Mooncake Finance is a fully decentralized, community governed protocol by the MCAKE
+              token-holders. MCAKE token-holders collectively discuss, propose, and vote on upgrades
+              to the protocol. MCAKE token-holders (Ethereum network only) can either vote themselves
               on new proposals or delagate to an address of choice. To learn more check out the
               Governance
             </Trans>{' '}

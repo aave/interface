@@ -26,7 +26,7 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   '1DAI': 'DAI',
   '1USDC': 'USDC',
   '1USDT': 'USDT',
-  '1AAVE': 'AAVE',
+  '1AAVE': 'MCAKE',
   '1ETH': 'ETH',
   '1WBTC': 'WBTC',
   // avalanche
@@ -34,7 +34,7 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'LINK.e': 'LINK',
   'WBTC.e': 'WBTC',
   'WETH.e': 'WETH',
-  'AAVE.e': 'AAVE',
+  'MCAKE.e': 'MCAKE',
   'USDT.e': 'USDT',
   'USDC.e': 'USDC',
   'BTC.b': 'BTC',

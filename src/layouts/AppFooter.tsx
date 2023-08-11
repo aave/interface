@@ -22,12 +22,7 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://lenster.xyz/u/aaveaave',
-    icon: <LensLogoIcon />,
-    title: 'Mooncake Finance',
-  },
-  {
-    href: 'https://twitter.com/aaveaave?s=11&t=ZixFmUt1SIHLEMvx18gUGw',
+    href: 'https://twitter.com/mooncakefi?s=11&t=ZixFmUt1SIHLEMvx18gUGw',
     icon: <Twitter />,
     title: 'Lens',
   },
@@ -44,41 +39,21 @@ const FOOTER_ICONS = [
 ];
 
 export function AppFooter() {
-  const [setAnalyticsConfigOpen] = useRootStore((store) => [store.setAnalyticsConfigOpen]);
   const FOOTER_LINKS = [
     {
-      href: 'https://aave.com/term-of-use/',
-      label: <Trans>Terms</Trans>,
-      key: 'Terms',
+      href: 'https://github.com/MooncakeFi',
+      label: <Trans>Github</Trans>,
+      key: 'Github',
     },
     {
-      href: 'https://aave.com/privacy-policy/',
-      label: <Trans>Privacy</Trans>,
-      key: 'Privacy',
-    },
-    {
-      href: 'https://docs.aave.com/hub/',
-      label: <Trans>Docs</Trans>,
+      href: 'https://docs.mooncake.fi',
+      label: <Trans>Documentation</Trans>,
       key: 'Docs',
     },
     {
-      href: 'https://docs.aave.com/faq/',
-      label: <Trans>FAQS</Trans>,
-      key: 'FAQS',
-    },
-    {
-      href: 'https://discord.com/invite/7kHKnkDEUf',
-      label: <Trans>Send feedback</Trans>,
-      key: 'Send feedback',
-    },
-    {
-      href: '',
-      label: <Trans>Manage analytics</Trans>,
-      key: 'Manage analytics',
-      onClick: (event: React.MouseEvent) => {
-        event.preventDefault();
-        setAnalyticsConfigOpen(true);
-      },
+      href: 'https://twitter.com/mooncakefi',
+      label: <Trans>Twitter</Trans>,
+      key: 'Twitter',
     },
   ];
 

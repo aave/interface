@@ -43,10 +43,10 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              AAVE holders (Ethereum network only) can stake their AAVE in the Safety Module to add
-              more security to the protocol and earn Safety Incentives. In the case of a shortfall
-              event, up to 30% of your stake can be slashed to cover the deficit, providing an
-              additional layer of protection for the protocol.
+              MCAKE holders (Ethereum network only) can stake their MCAKE in the Safety Module to
+              add more security to the protocol and earn Safety Incentives. In the case of a
+              shortfall event, up to 30% of your stake can be slashed to cover the deficit,
+              providing an additional layer of protection for the protocol.
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
@@ -83,7 +83,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         {/** TBD value */}
         <FormattedNumber
           value={stkEmission || 0}
-          symbol="AAVE"
+          symbol="MCAKE"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="#A5A8B6"

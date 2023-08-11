@@ -43,7 +43,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token
-  const rewardsSymbol = 'AAVE';
+  const rewardsSymbol = 'MCAKE';
 
   const maxAmountToClaim = normalize(
     stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',

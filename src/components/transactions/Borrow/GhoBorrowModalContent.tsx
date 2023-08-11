@@ -182,7 +182,7 @@ export const GhoBorrowModalContent = ({
 
   const futureDiscountedAmount =
     ghoUserData.userGhoBorrowBalance + Number(amount) >=
-    ghoReserveData.ghoMinDebtTokenBalanceForDiscount
+      ghoReserveData.ghoMinDebtTokenBalanceForDiscount
       ? ghoUserData.userGhoAvailableToBorrowAtDiscount
       : 0;
   const futureBorrowAPY = weightedAverageAPY(
@@ -316,7 +316,7 @@ export const GhoBorrowModalContent = ({
                 visibleDecimals={2}
                 value={userStakedAaveBalance}
               />{' '}
-              staking AAVE
+              staking MCAKE
             </Trans>
           </Typography>
         )}

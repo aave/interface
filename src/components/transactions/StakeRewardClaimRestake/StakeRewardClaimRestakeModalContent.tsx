@@ -44,7 +44,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token
-  const rewardsSymbol = 'AAVE';
+  const rewardsSymbol = 'MCAKE';
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
@@ -105,7 +105,7 @@ export const StakeRewardClaimRestakeModalContent = ({
 
   return (
     <>
-      <TxModalTitle title="Restake AAVE rewards" />
+      <TxModalTitle title="Restake MCAKE rewards" />
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}

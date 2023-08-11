@@ -63,7 +63,7 @@ export const GhoIncentivesCard = ({
                 <FormattedNumber variant="subheader2" value={stkAaveAmount} visibleDecimals={2} />{' '}
               </>
             ) : null}
-            AAVE in Safety Module.
+            MCAKE in Safety Module.
           </Trans>{' '}
           <Link
             onClick={onMoreDetailsClick}

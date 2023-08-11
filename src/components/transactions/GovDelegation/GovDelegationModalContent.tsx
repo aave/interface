@@ -80,7 +80,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     {
       address: governanceConfig.stkAaveTokenAddress,
       symbol: 'stkAAVE',
-      name: 'Staked AAVE',
+      name: 'Staked MCAKE',
       amount: stkAave,
       votingDelegatee: powers?.stkAaveVotingDelegatee,
       propositionDelegatee: powers?.stkAavePropositionDelegatee,
@@ -88,12 +88,12 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     },
     {
       address: governanceConfig.aaveTokenAddress,
-      symbol: 'AAVE',
-      name: 'AAVE',
+      symbol: 'MCAKE',
+      name: 'MCAKE',
       amount: aave,
       votingDelegatee: powers?.aaveVotingDelegatee,
       propositionDelegatee: powers?.aavePropositionDelegatee,
-      type: DelegationTokenType.AAVE,
+      type: DelegationTokenType.MCAKE,
     },
   ];
 
@@ -123,7 +123,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+      currentNetworkConfig.underlyingChainId === governanceConfig.chainId
       ? currentChainId
       : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
@@ -146,16 +146,16 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         ((powers.aaveVotingDelegatee === '' && powers.stkAaveVotingDelegatee === '') ||
           (powers.aavePropositionDelegatee === '' &&
             powers.stkAavePropositionDelegatee === ''))) || (
-        <>
-          <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
-            <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
-          </Typography>
-          <DelegationTypeSelector
-            delegationType={delegationType}
-            setDelegationType={setDelegationType}
-          />
-        </>
-      )}
+          <>
+            <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
+              <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
+            </Typography>
+            <DelegationTypeSelector
+              delegationType={delegationType}
+              setDelegationType={setDelegationType}
+            />
+          </>
+        )}
 
       {isRevokeModal ? (
         <Typography variant="description" color="text.secondary" sx={{ mt: 6, mb: 2 }}>
@@ -177,9 +177,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         >
           <Trans>
             Choose how much voting/proposition power to give to someone else by delegating some of
-            your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate
-            will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes,
-            your delegate&apos;s voting/proposition power will be automatically adjusted.
+            your MCAKE or stkAAVE balance. Your tokens will remain in your account, but your
+            delegate will be able to vote or propose on your behalf. If your MCAKE or stkAAVE
+            balance changes, your delegate&apos;s voting/proposition power will be automatically
+            adjusted.
           </Trans>
         </TextWithTooltip>
       )}

@@ -25,7 +25,7 @@ export interface GovernanceConfig {
 
 export const governanceConfig: GovernanceConfig = {
   chainId: ChainId.mainnet,
-  votingAssetName: 'AAVE + stkAAVE',
+  votingAssetName: 'MCAKE + stkAAVE',
   averageNetworkBlockTime: 13.5,
   queryGovernanceDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/governance-v2',
   wsGovernanceDataUrl: 'wss://api.thegraph.com/subgraphs/name/aave/governance-v2',

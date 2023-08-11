@@ -32,7 +32,6 @@ export const createProtocolDataSlice: StateCreator<
   const initialMarket = availableMarkets[0];
   const initialMarketData = marketsData[initialMarket];
 
-  console.log(initialMarket, availableMarkets);
   return {
     currentMarket: initialMarket,
     currentMarketData: marketsData[initialMarket],
