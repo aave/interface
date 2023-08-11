@@ -44,7 +44,7 @@
     "@lingui/react": "^3.14.0",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.9",
-    "@paraswap/sdk": "6.2.1",
+    "@paraswap/sdk": "6.2.2",
     "@tanstack/react-query": "^4.28.0",
     "@visx/axis": "^2.14.0",
     "@visx/curve": "^2.1.0",
