@@ -150,11 +150,12 @@ export const BorrowAssetsList = () => {
       ? tokensToBorrow
       : tokensToBorrow.filter(
           ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
-            (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
-            displayGho({
-              symbol,
-              currentMarket,
-            })
+            availableBorrowsInUSD !== '0.00' &&
+            (totalLiquidityUSD !== '0' ||
+              displayGho({
+                symbol,
+                currentMarket,
+              }))
         );
 
   const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
@@ -269,7 +270,7 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && reserves.length && <RenderHeader />}
+        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
         {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
           <AssetCapsProvider asset={ghoReserve.reserve}>
             <GhoBorrowAssetsListItem {...ghoReserve} />
