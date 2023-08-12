@@ -22,7 +22,7 @@ const FOOTER_ICONS = [
   {
     href: 'https://twitter.com/mooncakefi?s=11&t=ZixFmUt1SIHLEMvx18gUGw',
     icon: <Twitter />,
-    title: 'Lens',
+    title: 'Twitter',
   },
   {
     href: 'https://discord.com/invite/aave',
