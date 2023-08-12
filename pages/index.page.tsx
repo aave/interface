@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -12,7 +13,6 @@ import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
-import Script from 'next/script';
 
 export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
@@ -28,7 +28,6 @@ export default function Home() {
 
   return (
     <>
-
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-8XV0L3H2X6" />
       <Script id="google-analytics">
         {`window.dataLayer = window.dataLayer || [];
@@ -36,7 +35,7 @@ export default function Home() {
               gtag('js', new Date());
               gtag('config', 'G-8XV0L3H2X6');`}
       </Script>
-      
+
       <DashboardTopPanel />
 
       <ContentContainer>
