@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -27,6 +28,14 @@ export default function Home() {
 
   return (
     <>
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-8XV0L3H2X6" />
+      <Script id="google-analytics">
+        {`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-8XV0L3H2X6');`}
+      </Script>
+
       <DashboardTopPanel />
 
       <ContentContainer>

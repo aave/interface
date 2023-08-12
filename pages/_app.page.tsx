@@ -80,9 +80,9 @@ export default function MyApp(props: MyAppProps) {
       <Meta
         title={'Open Source Liquidity Protocol'}
         description={
-          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+          'Mooncake is an Open Source Protocol built on Linea to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
         }
-        imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
+        imageUrl="https://i.imgur.com/JYST089.png"
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
