@@ -25,12 +25,12 @@ const FOOTER_ICONS = [
     title: 'Twitter',
   },
   {
-    href: 'https://discord.com/invite/aave',
+    href: 'https://discord.gg/fCcv8K6Uqy',
     icon: <DiscordIcon />,
     title: 'Discord',
   },
   {
-    href: 'https://github.com/aave',
+    href: 'https://github.com/MooncakeFi',
     icon: <GitHub />,
     title: 'Github',
   },
