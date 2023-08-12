@@ -83,7 +83,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://lineascan.build',
     // usdMarket: true,
-    isTestnet: true,
+    isTestnet: false,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
 } as const;

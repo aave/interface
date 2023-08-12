@@ -1,15 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
-import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
-import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -56,9 +53,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </Typography>
           </Box>
         </Box>
-        {reserve.symbol === 'AMPL' && <AMPLToolTip />}
-        {reserve.symbol === 'renFIL' && <RenFILToolTip />}
-        {reserve.symbol === 'BUSD' && <BUSDOffBoardingTooltip />}
       </ListColumn>
 
       <ListColumn>

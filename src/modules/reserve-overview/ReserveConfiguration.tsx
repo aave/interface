@@ -1,13 +1,10 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';
-import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
-import { BUSDOffBoardingWarning } from 'src/components/Warnings/BUSDOffBoardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -41,30 +38,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   return (
     <>
       <Box>
-        {reserve.isFrozen && reserve.symbol != 'BUSD' ? (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-            <Trans>
-              This asset is frozen due to an Mooncake Finance community decision.{' '}
-              <Link
-                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
-                sx={{ textDecoration: 'underline' }}
-              >
-                <Trans>More details</Trans>
-              </Link>
-            </Trans>
-          </Warning>
-        ) : reserve.symbol === 'BUSD' ? (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-            <BUSDOffBoardingWarning />
-          </Warning>
-        ) : (
-          reserve.symbol == 'AMPL' && (
-            <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
-              <AMPLWarning />
-            </Warning>
-          )
-        )}
-
         {reserve.isPaused ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
