@@ -113,19 +113,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <Typography variant="subheader1" sx={{ color: 'common.white' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
-              {market.v3 && (
-                <Box
-                  sx={{
-                    color: '#fff',
-                    px: 2,
-                    mx: 2,
-                    borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
-                  }}
-                >
-                  <Typography variant="subheader2">Version 3</Typography>
-                </Box>
-              )}
             </Box>
           </Box>
 

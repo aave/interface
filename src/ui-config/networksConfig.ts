@@ -70,7 +70,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/linea.svg',
   },
   [59144]: {
     name: 'Linea',
@@ -84,6 +84,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://lineascan.build',
     // usdMarket: true,
     isTestnet: false,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/linea.svg',
   },
 } as const;

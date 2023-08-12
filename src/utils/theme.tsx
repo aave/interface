@@ -201,7 +201,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         standardInputLine: getColor('#383D511F', '#EBEBEF6B'),
       },
       gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+        aaveGradient: 'linear-gradient(248.86deg, #bc8749 10.51%, #bc8749 93.41%)',
         newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
       },
     },

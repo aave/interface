@@ -156,29 +156,6 @@ export const MarketSwitcher = () => {
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
-                {market.v3 ? (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">V3</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      color: '#A5A8B6',
-                      px: 2,
-                      borderRadius: '12px',
-                      backgroundColor: '#383D51',
-                    }}
-                  >
-                    <Typography variant="subheader2">V2</Typography>
-                  </Box>
-                )}
               </Box>
             </Box>
           );
