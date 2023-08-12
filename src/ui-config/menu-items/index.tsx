@@ -56,12 +56,12 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.mooncake.finance/',
+    link: 'https://docs.mooncake.fi/',
     title: t`Documentation`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://github.com/mooncake.fi/',
+    link: 'https://github.com/mooncakefi/',
     title: t`Github`,
     icon: <BookOpenIcon />,
   },
