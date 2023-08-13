@@ -86,4 +86,18 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: false,
     networkLogoPath: '/icons/networks/linea.svg',
   },
+  [8453]: {
+    name: 'Base',
+    publicJsonRPCUrl: ['https://mainnet.base.org'],
+    // publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://basescan.org',
+    // usdMarket: true,
+    isTestnet: false,
+    networkLogoPath: '/icons/networks/base.svg',
+  },
 } as const;

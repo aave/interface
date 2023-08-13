@@ -65,6 +65,7 @@ export enum CustomMarket {
   // proto_sepolia_v3 = 'proto_sepolia_v3',
   // // v3 mainnets
   proto_linea_v3 = 'proto_linea_v3',
+  proto_base_v3 = 'proto_base_v3',
   // proto_optimism_v3 = 'proto_optimism_v3',
   // proto_fantom_v3 = 'proto_fantom_v3',
   // proto_harmony_v3 = 'proto_harmony_v3',
@@ -102,6 +103,23 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xce24f56B2B166dbBa3eb8e4bf951F070Bc06c89a',
       UI_POOL_DATA_PROVIDER: '0xE4A859469a37ac16DcF5E63DEeEeDdA3366E10e7',
       UI_INCENTIVE_DATA_PROVIDER: '0xB6F5238dCFF64b419FF8572D62B7C74189f620Ae',
+    },
+  },
+  [CustomMarket.proto_base_v3]: {
+    marketTitle: 'Base',
+    chainId: 8453,
+    v3: true,
+    enabledFeatures: {
+      incentives: true,
+    },
+    // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x593C2d762B1CDe79101D946Ca7816eeaF17Ad744',
+      LENDING_POOL: '0x6aBEa1a2B47f09C779Cb3D52B85097cB2BFaBcb0',
+      WETH_GATEWAY: '0xB6F5238dCFF64b419FF8572D62B7C74189f620Ae',
+      WALLET_BALANCE_PROVIDER: '0x2783Ba7CEb2313CbDbb817bBEa4Bc11949DA7638',
+      UI_POOL_DATA_PROVIDER: '0x5c42Fbc573385c3fA6509CDE38411B08b2894302',
+      UI_INCENTIVE_DATA_PROVIDER: '0xE4A859469a37ac16DcF5E63DEeEeDdA3366E10e7',
     },
   },
 } as const;
