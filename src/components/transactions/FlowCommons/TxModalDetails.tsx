@@ -1,7 +1,16 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  Skeleton,
+  SvgIcon,
+  Switch,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import {
@@ -134,6 +143,8 @@ export const DetailsNumberLineWithSub = ({
   tokenIcon,
   loading = false,
 }: DetailsNumberLineWithSubProps) => {
+  const { breakpoints } = useTheme();
+  const xsm = useMediaQuery(breakpoints.down('xsm'));
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -152,7 +163,12 @@ export const DetailsNumberLineWithSub = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {value && (
                 <>
-                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  <FormattedNumber
+                    value={value}
+                    variant="secondary14"
+                    visibleDecimals={xsm ? 3 : 6}
+                    color={color}
+                  />
                   {!hideSymbolSuffix && (
                     <Typography ml={1} variant="secondary14">
                       {symbol}
@@ -162,7 +178,12 @@ export const DetailsNumberLineWithSub = ({
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+              <FormattedNumber
+                value={futureValue}
+                variant="secondary14"
+                visibleDecimals={xsm ? 3 : 6}
+                color={color}
+              />
               {!hideSymbolSuffix && (
                 <Typography ml={1} variant="secondary14">
                   {symbol}
