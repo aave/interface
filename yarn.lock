@@ -10619,10 +10619,10 @@ react-markdown@^8.0.3:
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
 
-react-number-format@^4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.9.1.tgz#62b3450b43c911f9227e770a8ea9fa606696e52e"
-  integrity sha512-v49XqXv7SpwYZKGkghNJjoDUr6lIUozlPLrObcxre7GfcLx7qD4TCvArn3GozN/Y4FVbLyEYCwJoBCiChdBh5A==
+react-number-format@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-5.3.0.tgz#46dfb9e96d7d85401ca62f399dff6769f4a56861"
+  integrity sha512-3h5kuO5x9HpifEgCzvw6kDljzjsI3OhgnT/BRzZbzdbHVb755eVzJuNnRUZr3h/ATu3Sct9O+XrYc9HrAj/6bQ==
   dependencies:
     prop-types "^15.7.2"
 
