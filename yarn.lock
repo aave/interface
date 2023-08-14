@@ -1328,10 +1328,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^1.29.0":
-  version "1.29.0"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-1.29.0.tgz#f0db5ff4bb7249f8fde2a51c7f3b23429f02c828"
-  integrity sha512-9PydYR72Ma5vp93MMPBQOfCDghbAqfxXu+1QkIIcooGNEUkFqjZP9eWpdYFqa71ph613fy8nzQbgLbxZAv6kZg==
+"@bgd-labs/aave-address-book@1.31.7-2a877d72325c3805fed25309aa98b64f408235e6.0":
+  version "1.31.7-2a877d72325c3805fed25309aa98b64f408235e6.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-1.31.7-2a877d72325c3805fed25309aa98b64f408235e6.0.tgz#95dc07003bb1d5e96c515e404d85922581c9df3b"
+  integrity sha512-2690ERNmR1a0oT7ZAz7F05ncVBjzuiWMRRq9qQcAKZuCcI7xQlQT+y1ydkMtYsY2a26Zk/b7j5jSyK8XqivFEQ==
 
 "@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"
