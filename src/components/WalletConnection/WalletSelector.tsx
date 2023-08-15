@@ -115,20 +115,21 @@ export const WalletSelector = () => {
   const mainnetProvider = getENSProvider();
   const [unsTlds, setUnsTlds] = useState<string[]>([]);
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
-  let blockingError: ErrorType | undefined = undefined;
-  if (error) {
-    if (error instanceof UnsupportedChainIdError) {
-      blockingError = ErrorType.UNSUPORTED_CHAIN;
-    } else if (error instanceof UserRejectedRequestError) {
-      blockingError = ErrorType.USER_REJECTED_REQUEST;
-    } else if (error instanceof NoEthereumProviderError) {
-      blockingError = ErrorType.NO_WALLET_DETECTED;
-    } else {
-      blockingError = ErrorType.UNDETERMINED_ERROR;
+  useEffect(() => {
+    if (error) {
+      if (error instanceof UnsupportedChainIdError) {
+        setBlockingError(ErrorType.UNSUPORTED_CHAIN);
+      } else if (error instanceof UserRejectedRequestError) {
+        setBlockingError(ErrorType.USER_REJECTED_REQUEST);
+      } else if (error instanceof NoEthereumProviderError) {
+        setBlockingError(ErrorType.NO_WALLET_DETECTED);
+      } else {
+        setBlockingError(ErrorType.UNDETERMINED_ERROR);
+      }
     }
-    // TODO: add other errors
-  }
+  }, [error]);
 
   // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
   useEffect(() => {
@@ -203,7 +204,7 @@ export const WalletSelector = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <TxModalTitle title="Connect a wallet" />
-      {error && <Warning severity="error">{handleBlocking()}</Warning>}
+      {blockingError && <Warning severity="error">{handleBlocking()}</Warning>}
       <WalletRow
         key="browser_wallet"
         walletName="Browser wallet"
