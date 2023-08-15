@@ -31,7 +31,7 @@ jobs:
           yarn
           NEXT_PUBLIC_MIXPANEL=7bd565d3173ee8e9ecca0a5ba13c219c npm run build
           npm run export
-          echo app.mooncake.finance > ./out/CNAME
+          echo mooncake.fi > ./out/CNAME
           touch out/.nojekyll
 
       - name: Deploy
