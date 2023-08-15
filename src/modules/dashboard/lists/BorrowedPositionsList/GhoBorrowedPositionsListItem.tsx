@@ -13,6 +13,7 @@ import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import {
@@ -30,10 +31,13 @@ export const GhoBorrowedPositionsListItem = ({
   reserve,
   borrowRateMode,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
-  const { openBorrow, openRepay } = useModalContext();
-  const { currentMarket } = useProtocolDataContext();
+  const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
+  const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
-  const { ghoUserDataFetched, ghoUserQualifiesForDiscount } = useRootStore();
+  const [ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore((store) => [
+    store.ghoUserDataFetched,
+    store.ghoUserQualifiesForDiscount,
+  ]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -73,6 +77,8 @@ export const GhoBorrowedPositionsListItem = ({
       isFrozen ||
       availableBorrows <= 0 ||
       ghoReserveData.aaveFacilitatorRemainingCapacity < 0.000001,
+    showSwitchButton: isFeatureEnabled.debtSwitch(currentMarketData) || false,
+    disableSwitch: !isActive || isFrozen,
     onRepayClick: () =>
       openRepay(
         reserve.underlyingAsset,
@@ -84,6 +90,7 @@ export const GhoBorrowedPositionsListItem = ({
       ),
     onBorrowClick: () =>
       openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard'),
+    onSwitchClick: () => openDebtSwitch(reserve.underlyingAsset, borrowRateMode),
   };
 
   if (downToXSM) {
@@ -104,8 +111,11 @@ interface GhoBorrowedPositionsListItemProps {
   currentMarket: CustomMarket;
   userDiscountTokenBalance: number;
   borrowDisabled: boolean;
+  showSwitchButton: boolean;
+  disableSwitch: boolean;
   onRepayClick: () => void;
   onBorrowClick: () => void;
+  onSwitchClick: () => void;
 }
 
 const GhoBorrowedPositionsListItemDesktop = ({
@@ -121,6 +131,9 @@ const GhoBorrowedPositionsListItemDesktop = ({
   borrowDisabled,
   onRepayClick,
   onBorrowClick,
+  onSwitchClick,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isActive, isFrozen, underlyingAsset } = reserve;
 
@@ -170,9 +183,20 @@ const GhoBorrowedPositionsListItemDesktop = ({
         <Button disabled={!isActive} variant="contained" onClick={onRepayClick}>
           <Trans>Repay</Trans>
         </Button>
-        <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick}>
-          <Trans>Borrow</Trans>
-        </Button>
+        {showSwitchButton ? (
+          <Button
+            disabled={disableSwitch}
+            variant="outlined"
+            onClick={onSwitchClick}
+            data-cy={`swapButton`}
+          >
+            <Trans>Switch</Trans>
+          </Button>
+        ) : (
+          <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick}>
+            <Trans>Borrow</Trans>
+          </Button>
+        )}
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -189,6 +213,9 @@ const GhoBorrowedPositionsListItemMobile = ({
   borrowDisabled,
   onRepayClick,
   onBorrowClick,
+  onSwitchClick,
+  showSwitchButton,
+  disableSwitch,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name, isActive } = reserve;
 
@@ -238,9 +265,15 @@ const GhoBorrowedPositionsListItemMobile = ({
         >
           <Trans>Repay</Trans>
         </Button>
-        <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick} fullWidth>
-          <Trans>Borrow</Trans>
-        </Button>
+        {showSwitchButton ? (
+          <Button disabled={disableSwitch} variant="outlined" fullWidth onClick={onSwitchClick}>
+            <Trans>Switch</Trans>
+          </Button>
+        ) : (
+          <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick} fullWidth>
+            <Trans>Borrow</Trans>
+          </Button>
+        )}
       </Box>
     </ListMobileItemWrapper>
   );

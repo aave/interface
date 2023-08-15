@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { PopperComponent } from '../ContentWithTooltip';
@@ -19,6 +19,8 @@ export interface GhoIncentivesCardProps {
   onMoreDetailsClick?: () => void;
   withTokenIcon?: boolean;
   forceShowTooltip?: boolean;
+  variant?: TypographyProps['variant'];
+  color?: TypographyProps['color'];
 }
 
 export const GhoIncentivesCard = ({
@@ -31,6 +33,8 @@ export const GhoIncentivesCard = ({
   onMoreDetailsClick,
   withTokenIcon = false,
   forceShowTooltip = false,
+  variant = 'secondary14',
+  color = undefined,
 }: GhoIncentivesCardProps) => {
   const { ghoReserveData } = useAppDataContext();
   const stkAaveAmount = Number(stkAaveBalance);
@@ -107,13 +111,20 @@ export const GhoIncentivesCard = ({
             {withTokenIcon && <TokenIcon symbol="stkAAVE" sx={{ height: 14, width: 14, mr: 1 }} />}
             {useApyRange ? (
               <GhoBorrowApyRange
-                percentVariant="secondary14"
-                hyphenVariant="secondary14"
+                percentVariant={variant}
+                hyphenVariant={variant}
                 minVal={Math.min(...rangeValues)}
                 maxVal={Math.max(...rangeValues)}
+                color={color}
               />
             ) : (
-              <FormattedNumber value={value} percent variant="secondary14" data-cy={'apy'} />
+              <FormattedNumber
+                value={value}
+                percent
+                variant={variant}
+                color={color}
+                data-cy={'apy'}
+              />
             )}
           </Box>
         </Tooltip>

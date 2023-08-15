@@ -272,7 +272,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setArgs({ underlyingAsset });
         },
         openDebtSwitch: (underlyingAsset, currentRateMode) => {
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Debt Switch' });
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Debt Switch',
+            asset: underlyingAsset,
+          });
           setType(ModalType.DebtSwitch);
           setArgs({ underlyingAsset, currentRateMode });
         },
