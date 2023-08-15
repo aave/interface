@@ -347,6 +347,7 @@ msgstr "Assets to supply"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
@@ -361,6 +362,7 @@ msgstr "Author"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1150,6 +1152,7 @@ msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -1795,6 +1798,7 @@ msgstr "Reload the page"
 msgid "Remaining debt"
 msgstr "Remaining debt"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
 msgstr "Remaining supply"
@@ -2164,7 +2168,8 @@ msgstr "Supply apy"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -2233,7 +2238,7 @@ msgstr "Switch rate"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 msgid "Switch to"
 msgstr "Switch to"
 
@@ -2383,6 +2388,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
@@ -2829,6 +2835,8 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 msgid "Withdraw"
 msgstr "Withdraw"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 msgid "Withdraw and Switch"
 msgstr "Withdraw and Switch"
@@ -2837,6 +2845,11 @@ msgstr "Withdraw and Switch"
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
+msgid "Withdrawing and Switching"
+msgstr "Withdrawing and Switching"
+
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
@@ -2879,6 +2892,7 @@ msgstr "You can not switch usage as collateral mode for this currency, because i
 msgid "You can not use this currency as collateral"
 msgstr "You can not use this currency as collateral"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "You can not withdraw this amount because it will cause collateral call"
@@ -3108,6 +3122,7 @@ msgstr "tokens, please go to the"
 msgid "will receive"
 msgstr "will receive"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"

@@ -55,6 +55,7 @@ export type MarketDataType = {
     SWAP_COLLATERAL_ADAPTER?: string;
     REPAY_WITH_COLLATERAL_ADAPTER?: string;
     DEBT_SWITCH_ADAPTER?: string;
+    WITHDRAW_AND_SWAP_ADAPTER?: string;
     FAUCET?: string;
     PERMISSION_MANAGER?: string;
     WALLET_BALANCE_PROVIDER: string;
@@ -136,6 +137,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
+      WITHDRAW_AND_SWAP_ADAPTER: '0x769e6647aDE75cb48afcDC3D0be9Db9AA663711f',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
