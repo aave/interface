@@ -1,8 +1,7 @@
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
-import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 
-// import { AirdropContainer } from '../src/maneki/modules/airdrop/AirdropContainer';
+import { AirdropContainer } from '../src/maneki/modules/airdrop/AirdropContainer';
 import { AirdropTopPanel } from '../src/maneki/modules/airdrop/AirdropTopPanel';
 
 export default function Airdrops() {
@@ -10,8 +9,7 @@ export default function Airdrops() {
     <>
       <AirdropTopPanel />
       <ContentContainer>
-        <ManekiLoadingPaper description="Coming Soon..." />
-        {/* <AirdropContainer /> */}
+        <AirdropContainer />
       </ContentContainer>
     </>
   );

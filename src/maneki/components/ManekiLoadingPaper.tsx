@@ -31,12 +31,7 @@ export default function ManekiLoadingPaper({
         ...sx,
       }}
     >
-      <Image
-        src={'/maneki-logo-center.png'}
-        width={'200px'}
-        height={'200px'}
-        alt="maneki cat in 3d"
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
 
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         {description}

@@ -14,7 +14,7 @@ import {
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
-  // UiIncentiveDataProvider,
+  UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
@@ -145,12 +145,12 @@ export const createPoolSlice: StateCreator<
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
-      // const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
-      //   uiIncentiveDataProviderAddress:
-      //     currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
-      //   provider: get().jsonRpcProvider(),
-      //   chainId: currentChainId,
-      // });
+      const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress:
+          currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
+        provider: get().jsonRpcProvider(),
+        chainId: currentChainId,
+      });
       const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
       const promises: Promise<void>[] = [];
       try {
@@ -181,29 +181,29 @@ export const createPoolSlice: StateCreator<
             })
         );
 
-        // promises.push(
-        //   uiIncentiveDataProviderContract
-        //     .getReservesIncentivesDataHumanized({
-        //       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-        //     })
-        //     .then((reserveIncentivesResponse) =>
-        //       set((state) =>
-        //         produce(state, (draft) => {
-        //           if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-        //           if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-        //             draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-        //               reserveIncentives: reserveIncentivesResponse,
-        //             });
-        //           } else {
-        //             draft.data
-        //               .get(currentChainId)!
-        //               .get(lendingPoolAddressProvider)!.reserveIncentives =
-        //               reserveIncentivesResponse;
-        //           }
-        //         })
-        //       )
-        //     )
-        // );
+        promises.push(
+          uiIncentiveDataProviderContract
+            .getReservesIncentivesDataHumanized({
+              lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+            })
+            .then((reserveIncentivesResponse) =>
+              set((state) =>
+                produce(state, (draft) => {
+                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                      reserveIncentives: reserveIncentivesResponse,
+                    });
+                  } else {
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.reserveIncentives =
+                      reserveIncentivesResponse;
+                  }
+                })
+              )
+            )
+        );
         if (account) {
           promises.push(
             poolDataProviderContract

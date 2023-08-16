@@ -29,9 +29,9 @@ export type buttonStateType =
   | 'claimError';
 
 const ClaimAllVestTopPanel = () => {
-  const LENDING_PROTOCOL_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const LENDING_PROTOCOL_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .LENDING_PROTOCOL_DATA_PROVIDER as string;
-  const CHEF_INCENTIVES_CONTROLLER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const CHEF_INCENTIVES_CONTROLLER_ADDR = marketsData.bsc_testnet_v3.addresses
     .CHEF_INCENTIVES_CONTROLLER as string;
   const { provider, currentAccount } = useWeb3Context();
 

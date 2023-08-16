@@ -1,25 +1,19 @@
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
-import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import { ManageModal } from 'src/maneki/transactions/Manage/ManageModal';
 
 import { ManageDataProvider } from '../src/maneki/hooks/manage-data-provider/ManageDataProvider';
-// import { ManagePawContainer } from '../src/maneki/modules/manage/ManageContainer';
-import {
-  ManageTemporaryTopPanel,
-  // ManageTopPanel,
-} from '../src/maneki/modules/manage/ManageTopPanel';
+import { ManagePawContainer } from '../src/maneki/modules/manage/ManageContainer';
+import { ManageTopPanel } from '../src/maneki/modules/manage/ManageTopPanel';
 
 export default function ManagePaw() {
   return (
     <>
       <ManageDataProvider>
         <>
-          {/* <ManageTopPanel /> */}
-          <ManageTemporaryTopPanel />
+          <ManageTopPanel />
           <ContentContainer>
-            <ManekiLoadingPaper description="Coming Soon..." />
-            {/* <ManagePawContainer /> */}
+            <ManagePawContainer />
           </ContentContainer>
           <ManageModal />
         </>

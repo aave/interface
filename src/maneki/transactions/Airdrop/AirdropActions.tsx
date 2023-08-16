@@ -32,7 +32,7 @@ export const AirdropActions = ({
   const airdropCtx = useAirdropContext();
   const [merkleDistContract, setMerkleDistContract] = useState<Contract | null>(null);
 
-  const MERKLE_DIST_ADDR = marketsData.arbitrum_mainnet_v3.addresses.MERKLE_DIST as string;
+  const MERKLE_DIST_ADDR = marketsData.bsc_testnet_v3.addresses.MERKLE_DIST as string;
 
   // claim action
   const claimAction = async () => {

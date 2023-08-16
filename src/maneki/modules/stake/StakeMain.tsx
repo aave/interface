@@ -19,8 +19,8 @@ export const StakeMain = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const { provider, currentAccount } = useWeb3Context();
 
-  const LP_PAIR_ADDR = marketsData.arbitrum_mainnet_v3.addresses.LP_TOKEN as string;
-  const MASTER_CHEF_ADDR = marketsData.arbitrum_mainnet_v3.addresses.MASTER_CHEF as string;
+  const LP_PAIR_ADDR = marketsData.bsc_testnet_v3.addresses.LP_TOKEN as string;
+  const MASTER_CHEF_ADDR = marketsData.bsc_testnet_v3.addresses.MASTER_CHEF as string;
 
   // handle stake action
   const handleStake = () => {
@@ -31,9 +31,7 @@ export const StakeMain = () => {
     const promises = [];
 
     // add contract call into promise arr
-    promises.push(
-      contract.deposit(marketsData.arbitrum_mainnet_v3.addresses.LP_TOKEN, amountToStake)
-    ); // stake action
+    promises.push(contract.deposit(marketsData.bsc_testnet_v3.addresses.LP_TOKEN, amountToStake)); // stake action
 
     // call promise all nad handle sucess error
     Promise.all(promises)
