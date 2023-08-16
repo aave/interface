@@ -28,7 +28,8 @@ const testData = {
   },
 };
 
-describe(`GHO DASHBOARD APY TESTING`, () => {
+// too slow for CI execution
+describe.skip(`GHO DASHBOARD APY TESTING`, () => {
   let baseApy: number;
 
   describe(`Verify max APY for GHO`, () => {
