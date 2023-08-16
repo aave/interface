@@ -616,19 +616,6 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
-      console.log({
-        fromAsset: poolReserve.underlyingAsset,
-        toAsset: targetReserve.underlyingAsset,
-        swapAll: isMaxSelected,
-        fromAToken: poolReserve.aTokenAddress,
-        fromAmount: amountToSwap,
-        minToAmount: amountToReceive,
-        user,
-        flash: useFlashLoan,
-        augustus,
-        swapCallData,
-        permitSignature,
-      });
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
@@ -681,18 +668,6 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
-
-      console.log({
-        assetToSwapFrom: poolReserve.underlyingAsset,
-        assetToSwapTo: targetReserve.underlyingAsset,
-        swapAll: isMaxSelected,
-        amountToSwap: amountToSwap,
-        minAmountToReceive: amountToReceive,
-        user,
-        augustus,
-        swapCallData: txCalldata,
-        permitParams: signatureDeconstruct,
-      });
 
       return withdrawAndSwapService.withdrawAndSwap({
         assetToSwapFrom: poolReserve.underlyingAsset,

@@ -123,7 +123,6 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
-      debtSwitch: false,
       withdrawAndSwap: true,
       debtSwitch: true,
     },
