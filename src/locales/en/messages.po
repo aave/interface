@@ -1782,8 +1782,11 @@ msgstr "Read-only mode."
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
 
-#: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+msgid "Receive (est.)"
+msgstr "Receive (est.)"
+
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
 

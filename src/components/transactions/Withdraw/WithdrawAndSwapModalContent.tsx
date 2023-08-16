@@ -266,7 +266,7 @@ export const WithdrawAndSwapModalContent = ({
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
-        inputTitle={<Trans>Received</Trans>}
+        inputTitle={<Trans>Receive (est.)</Trans>}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}
