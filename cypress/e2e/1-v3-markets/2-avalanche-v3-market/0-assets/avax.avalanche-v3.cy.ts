@@ -105,8 +105,8 @@ const testData = {
     ],
   },
 };
-//skip due borrow is full
-describe.skip('AVAX INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+
+describe('AVAX INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 

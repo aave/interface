@@ -33,6 +33,10 @@ export class TenderlyFork {
     this._chainID = 3030;
   }
 
+  private checkForkInitialized() {
+    if (!this.fork_id) throw new Error('Fork not initialized!');
+  }
+
   async init() {
     const response = await tenderly.post(
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork`,
@@ -45,20 +49,12 @@ export class TenderlyFork {
   }
 
   get_rpc_url() {
-    if (!this.fork_id) throw new Error('Fork not initialized!');
+    this.checkForkInitialized();
     return `https://rpc.tenderly.co/fork/${this.fork_id}`;
   }
 
-  async add_balance(address: string, amount: number) {
-    if (!this.fork_id) throw new Error('Fork not initialized!');
-    return tenderly.post(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork/${this.fork_id}/balance`,
-      { accounts: [address], amount: amount }
-    );
-  }
-
   async add_balance_rpc(address: string) {
-    if (!this.fork_id) throw new Error('Fork not initialized!');
+    this.checkForkInitialized();
     return axios({
       url: this.get_rpc_url(),
       method: 'post',

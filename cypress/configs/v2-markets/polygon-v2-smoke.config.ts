@@ -9,7 +9,7 @@ export default defineConfig({
   e2e: {
     specPattern: [
       folder + '0-assets/matic.polygon-v2.cy.ts',
-      folder + '0-assets/usdt.polygon-v2.cy.ts',
+      folder + '0-assets/dai.polygon-v2.cy.ts',
     ],
   },
 });

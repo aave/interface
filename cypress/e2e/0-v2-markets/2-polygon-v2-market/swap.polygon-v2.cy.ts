@@ -40,7 +40,7 @@ const testData = {
   },
 };
 
-describe.skip('SWAP, POLYGON V2 MARKET, INTEGRATION SPEC', () => {
+describe('SWAP, POLYGON V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

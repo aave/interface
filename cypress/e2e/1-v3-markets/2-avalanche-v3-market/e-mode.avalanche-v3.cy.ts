@@ -47,8 +47,7 @@ const testData = {
   },
 };
 
-//skip due froze all e-mode assets
-describe.skip('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
+describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
   describe('Prepare min health factor state, with stable coins', () => {
@@ -60,7 +59,7 @@ describe.skip('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
     emodeActivating(
-      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoins' },
       skipTestState,
       true
     );
@@ -74,7 +73,7 @@ describe.skip('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
   });
   describe('Turn off E-mode blocked with low health factor', () => {
     emodeActivating(
-      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoins' },
       skipTestState,
       true
     );

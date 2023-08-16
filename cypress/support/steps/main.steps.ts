@@ -458,6 +458,7 @@ export const swap = (
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find('[data-cy=assetSelect]').click();
       cy.get(`[data-cy="assetsSelectOption_${_shortNameTo.toUpperCase()}"]`, { timeout: 10000 })
+        .scrollIntoView()
         .should('be.visible')
         .click({ force: true });
       cy.get(`[data-cy="assetsSelectedOption_${_shortNameTo.toUpperCase()}"]`, {

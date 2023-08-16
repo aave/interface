@@ -94,8 +94,7 @@ const testData = {
   },
 };
 
-//while dai is frozen
-describe.skip('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+describe('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 
