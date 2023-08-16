@@ -125,6 +125,7 @@ export const marketsData: {
       incentives: true,
       debtSwitch: false,
       withdrawAndSwap: true,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -140,6 +141,7 @@ export const marketsData: {
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
       WITHDRAW_AND_SWAP_ADAPTER: '0xd5d2e138531fef36288ff9448c6890ff67f651eb',
+      DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

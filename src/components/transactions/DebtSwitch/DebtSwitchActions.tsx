@@ -92,7 +92,7 @@ export const DebtSwitchActions = ({
     setApprovalTxState,
   } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
@@ -202,6 +202,7 @@ export const DebtSwitchActions = ({
       });
 
       queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      refetchGhoData && refetchGhoData();
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();
     } catch (error) {

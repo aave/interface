@@ -116,6 +116,10 @@ The integration test suite runs against [Tenderly](https://tenderly.co/) forks o
 TENDERLY_KEY=<your access key>
 TENDERLY_ACCOUNT=<your account/organization name>
 TENDERLY_PROJECT=<your project name>
+
+NEXT_PUBLIC_FORK_BASE_CHAIN_ID=1
+NEXT_PUBLIC_FORK_CHAIN_ID=1 
+NEXT_PUBLIC_FORK_URL_RPC=<your rpc url>
 ```
 
 For running the integration test suite, you’ll need to have the application running locally in a separate terminal. You may choose to either run it in development mode via `yarn dev` or against a static production build via `yarn build:static` & `yarn serve:static`. The caveat to running in development mode is that it will be more resource-intensive, since the application will be built on the fly.
