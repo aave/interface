@@ -1,5 +1,5 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
-import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
@@ -57,7 +57,9 @@ export const WithdrawAndSwapModalContent = ({
       iconSymbol: reserve.iconSymbol,
     }));
 
-  const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
+  const [targetReserve, setTargetReserve] = useState<Asset>(
+    swapTargets.find((reserve) => reserve.symbol === 'GHO') || reserves[0]
+  );
 
   const isMaxSelected = _amount === '-1';
 
@@ -220,6 +222,7 @@ export const WithdrawAndSwapModalContent = ({
   return (
     <>
       <AssetInput
+        inputTitle={<Trans>Withdraw</Trans>}
         value={amount}
         onChange={handleChange}
         symbol={symbol}
@@ -247,7 +250,7 @@ export const WithdrawAndSwapModalContent = ({
 
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
         <SvgIcon sx={{ fontSize: '18px !important' }}>
-          <SwitchVerticalIcon />
+          <ArrowDownIcon />
         </SvgIcon>
 
         <PriceImpactTooltip
@@ -263,7 +266,7 @@ export const WithdrawAndSwapModalContent = ({
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
-        inputTitle={<Trans>Switch to</Trans>}
+        inputTitle={<Trans>Received</Trans>}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
         loading={loadingSkeleton}

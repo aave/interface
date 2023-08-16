@@ -23,10 +23,6 @@ export function WithdrawTypeSelector({
   if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (
     <Box sx={{ mb: 6 }}>
-      <Typography mb={1} color="text.secondary">
-        <Trans>Action</Trans>
-      </Typography>
-
       <StyledTxModalToggleGroup
         color="primary"
         value={withdrawType}
@@ -53,7 +49,7 @@ export function WithdrawTypeSelector({
           }
         >
           <Typography variant="buttonM">
-            <Trans>Withdraw and Switch</Trans>
+            <Trans>Withdraw & Switch</Trans>
           </Typography>
         </StyledTxModalToggleButton>
       </StyledTxModalToggleGroup>

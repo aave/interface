@@ -142,10 +142,6 @@ msgstr "About GHO"
 msgid "Account"
 msgstr "Account"
 
-#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
-msgid "Action"
-msgstr "Action"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
 msgstr "Action cannot be performed because the reserve is frozen"
@@ -1787,6 +1783,7 @@ msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 msgid "Received"
 msgstr "Received"
 
@@ -2252,7 +2249,6 @@ msgstr "Switch rate"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 msgid "Switch to"
 msgstr "Switch to"
 
@@ -2844,6 +2840,7 @@ msgstr "With a voting power of <0/>"
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2853,9 +2850,12 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 msgid "Withdraw"
 msgstr "Withdraw"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
+msgid "Withdraw & Switch"
+msgstr "Withdraw & Switch"
+
+#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
 msgid "Withdraw and Switch"
 msgstr "Withdraw and Switch"
 
