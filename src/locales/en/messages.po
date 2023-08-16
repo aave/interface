@@ -1244,6 +1244,10 @@ msgstr "Learn more about risks involved"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Leverage"
+msgstr "Leverage"
+
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
 msgstr "Links"
@@ -1336,6 +1340,10 @@ msgstr "Manage PAW"
 #: src/maneki/modules/airdrop/AirdropTopPanel.tsx
 msgid "Maneki Airdrops"
 msgstr "Maneki Airdrops"
+
+#: src/maneki/modules/leverage/LeverageTopPanel.tsx
+msgid "Maneki Leverages"
+msgstr "Maneki Leverages"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
