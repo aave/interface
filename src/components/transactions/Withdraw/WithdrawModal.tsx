@@ -1,7 +1,11 @@
 import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { getGhoReserve } from 'src/utils/ghoUtilities';
+import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -10,11 +14,19 @@ import { WithdrawModalContent } from './WithdrawModalContent';
 import { WithdrawType, WithdrawTypeSelector } from './WithdrawTypeSelector';
 
 export const WithdrawModal = () => {
-  const { type, close, args } = useModalContext() as ModalContextType<{
+  const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
   const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
   const [withdrawType, setWithdrawType] = useState(WithdrawType.WITHDRAW);
+  const { currentMarketData } = useProtocolDataContext();
+  const { reserves } = useAppDataContext();
+
+  const ghoReserve = getGhoReserve(reserves);
+
+  const isWithdrawAndSwapPossible =
+    isFeatureEnabled.withdrawAndSwap(currentMarketData) &&
+    args.underlyingAsset !== ghoReserve?.underlyingAsset;
 
   return (
     <BasicModal open={type === ModalType.Withdraw} setOpen={close}>
@@ -26,7 +38,9 @@ export const WithdrawModal = () => {
       >
         {(params) => (
           <>
-            <WithdrawTypeSelector withdrawType={withdrawType} setWithdrawType={setWithdrawType} />
+            {isWithdrawAndSwapPossible && !mainTxState.txHash && (
+              <WithdrawTypeSelector withdrawType={withdrawType} setWithdrawType={setWithdrawType} />
+            )}
             {withdrawType === WithdrawType.WITHDRAW && (
               <WithdrawModalContent
                 {...params}
@@ -36,11 +50,7 @@ export const WithdrawModal = () => {
             )}
             {withdrawType === WithdrawType.WITHDRAWSWAP && (
               <>
-                <WithdrawAndSwapModalContent
-                  {...params}
-                  unwrap={withdrawUnWrapped}
-                  setUnwrap={setWithdrawUnWrapped}
-                />
+                <WithdrawAndSwapModalContent {...params} />
               </>
             )}
           </>

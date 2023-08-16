@@ -1,4 +1,4 @@
-import { ERC20Service } from '@aave/contract-helpers';
+import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -14,6 +14,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVAL_GAS_LIMIT } from '../utils';
 
 interface WithdrawAndSwapProps extends BoxProps {
   amountToSwap: string;
@@ -45,7 +46,6 @@ interface SignedParams {
 
 export const WithdrawAndSwapActions = ({
   amountToSwap,
-  amountToReceive,
   isWrongNetwork,
   sx,
   poolReserve,
@@ -85,9 +85,6 @@ export const WithdrawAndSwapActions = ({
     setApprovalTxState,
   } = useModalContext();
 
-  console.log(setGasLimit);
-  console.log(amountToReceive);
-
   const { sendTx, signTxData } = useWeb3Context();
 
   const [approvedAmount, setApprovedAmount] = useState<number>(0);
@@ -107,12 +104,13 @@ export const WithdrawAndSwapActions = ({
         poolReserve,
         targetReserve,
         isMaxSelected,
-        amountToSwap: parseUnits(route.inputAmount, targetReserve.decimals).toString(),
-        amountToReceive: parseUnits(route.outputAmount, poolReserve.decimals).toString(),
+        amountToSwap: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
+        amountToReceive: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
         augustus: route.augustus,
         txCalldata: route.swapCallData,
         signatureParams,
       });
+      console.log(tx);
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
       setMainTxState({
@@ -121,6 +119,7 @@ export const WithdrawAndSwapActions = ({
         success: true,
       });
     } catch (error) {
+      console.log(error);
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
       setMainTxState({
@@ -145,6 +144,7 @@ export const WithdrawAndSwapActions = ({
           ...approvalData,
           deadline,
         });
+        setApprovalTxState({ ...approvalTxState, loading: true });
         const response = await signTxData(signatureRequest);
         setSignatureParams({ signature: response, deadline, amount: amountToApprove });
         setApprovalTxState({
@@ -202,6 +202,15 @@ export const WithdrawAndSwapActions = ({
   useEffect(() => {
     fetchApprovedAmount(poolReserve.aTokenAddress);
   }, [fetchApprovedAmount, poolReserve.aTokenAddress]);
+
+  useEffect(() => {
+    let switchGasLimit = 0;
+    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwap].recommended);
+    if (requiresApproval && !approvalTxState.success) {
+      switchGasLimit += Number(APPROVAL_GAS_LIMIT);
+    }
+    setGasLimit(switchGasLimit.toString());
+  }, [requiresApproval, approvalTxState, setGasLimit]);
 
   return (
     <TxActionsWrapper

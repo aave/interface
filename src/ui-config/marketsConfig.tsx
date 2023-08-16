@@ -43,6 +43,7 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
     debtSwitch?: boolean;
+    withdrawAndSwap?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -123,6 +124,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
       debtSwitch: false,
+      withdrawAndSwap: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -137,7 +139,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
-      WITHDRAW_AND_SWAP_ADAPTER: '0x769e6647aDE75cb48afcDC3D0be9Db9AA663711f',
+      WITHDRAW_AND_SWAP_ADAPTER: '0xd5d2e138531fef36288ff9448c6890ff67f651eb',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

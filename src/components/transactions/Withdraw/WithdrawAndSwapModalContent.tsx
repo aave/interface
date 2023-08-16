@@ -22,12 +22,7 @@ import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import {
-  DetailsHFLine,
-  DetailsNumberLine,
-  DetailsUnwrapSwitch,
-  TxModalDetails,
-} from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { WithdrawAndSwapActions } from './WithdrawAndSwapActions';
 
@@ -40,14 +35,9 @@ export enum ErrorType {
 export const WithdrawAndSwapModalContent = ({
   poolReserve,
   userReserve,
-  unwrap: withdrawUnWrapped,
-  setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps & {
-  unwrap: boolean;
-  setUnwrap: (unwrap: boolean) => void;
-}) => {
+}: ModalWrapperProps) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const { user, reserves } = useAppDataContext();
@@ -222,9 +212,7 @@ export const WithdrawAndSwapModalContent = ({
         action={<Trans>withdrew</Trans>}
         amount={amountRef.current}
         symbol={
-          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-            ? currentNetworkConfig.baseAssetSymbol
-            : poolReserve.symbol
+          poolReserve.isWrappedBaseAsset ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol
         }
       />
     );
@@ -239,10 +227,9 @@ export const WithdrawAndSwapModalContent = ({
           {
             balance: maxAmountToWithdraw.toString(10),
             symbol: symbol,
-            iconSymbol:
-              withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-                ? currentNetworkConfig.baseAssetSymbol
-                : poolReserve.iconSymbol,
+            iconSymbol: poolReserve.isWrappedBaseAsset
+              ? currentNetworkConfig.baseAssetSymbol
+              : poolReserve.iconSymbol,
           },
         ]}
         usdValue={usdValue.toString(10)}
@@ -292,16 +279,6 @@ export const WithdrawAndSwapModalContent = ({
         <Typography variant="helperText" color="error.main">
           <BlockingError />
         </Typography>
-      )}
-
-      {poolReserve.isWrappedBaseAsset && (
-        <DetailsUnwrapSwitch
-          unwrapped={withdrawUnWrapped}
-          setUnWrapped={setWithdrawUnWrapped}
-          label={
-            <Typography>{`Unwrap ${poolReserve.symbol} (to withdraw ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
-          }
-        />
       )}
 
       <TxModalDetails
