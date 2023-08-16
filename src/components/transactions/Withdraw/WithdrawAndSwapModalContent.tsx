@@ -350,7 +350,7 @@ export const WithdrawAndSwapModalContent = ({
         targetReserve={swapTarget.reserve}
         amountToSwap={inputAmount}
         amountToReceive={outputAmount}
-        isMaxSelected={isMaxSelected}
+        isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
         buildTxFn={buildTxFn}
