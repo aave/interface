@@ -11510,7 +11510,7 @@
       "startBlock": 17923213,
       "endBlock": 17942413,
       "executionTime": 0,
-      "forVotes": "410906413687943426744126",
+      "forVotes": "411912915468334652240227",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11524,7 +11524,7 @@
       "ipfsHash": "0x1c51cac5e659d29de16da2c0a97ec51a928bb2d9f3d7aba6a53335436e535086",
       "startTimestamp": 1692138395,
       "creationTimestamp": 1692051419,
-      "expirationTimestamp": 1692369335
+      "expirationTimestamp": 1692369407
     },
     {
       "id": 298,
@@ -11571,7 +11571,7 @@
       "ipfsHash": "0xfbaba5271467e6fa8343d12babeae77a0249e4a9d5e04788d6707d25efa1e60c",
       "startTimestamp": 1692207347,
       "creationTimestamp": 1692120347,
-      "expirationTimestamp": 1692437759
+      "expirationTimestamp": 1692437831
     },
     {
       "id": 299,
@@ -11597,16 +11597,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 17922301,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xc2119e7315dea1f6b1fd83f76de9db2221a0fa73d58694b34717b07d0b9993c5",
+      "startTimestamp": 1692214439,
       "creationTimestamp": 1692127403,
-      "startTimestamp": 1692214391,
-      "expirationTimestamp": 1692444791
+      "expirationTimestamp": 1692444863
     },
     {
       "id": 300,
@@ -11640,8 +11640,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xe489f78a8a937c83a32ae6a7c7cdd8119c3e8d0b2f59d7f8336152b32361127a",
       "creationTimestamp": 1692134639,
-      "startTimestamp": 1692221579,
-      "expirationTimestamp": 1692451979
+      "startTimestamp": 1692221651,
+      "expirationTimestamp": 1692452051
     },
     {
       "id": 301,
@@ -11675,8 +11675,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xcf4879103e3d98e72aac58a16f5eae53e9336b419379fc577003f99606588bb3",
       "creationTimestamp": 1692134855,
-      "startTimestamp": 1692221795,
-      "expirationTimestamp": 1692452195
+      "startTimestamp": 1692221867,
+      "expirationTimestamp": 1692452267
     }
   ]
 }
