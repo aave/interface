@@ -631,7 +631,7 @@ export const createPoolSlice: StateCreator<
         permitSignature,
       });
     },
-    withdrawAndSwap: async ({
+    withdrawAndSwap: ({
       poolReserve,
       targetReserve,
       isMaxSelected,
