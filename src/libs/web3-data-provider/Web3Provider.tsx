@@ -72,9 +72,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, currentChainId] = useRootStore((store) => [
+  const [setAccount, currentChainId, setWalletProvider] = useRootStore((store) => [
     store.setAccount,
     store.currentChainId,
+    store.setWalletProvider,
   ]);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
@@ -425,7 +426,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
-  }, [account]);
+    setWalletProvider(provider);
+  }, [account, provider]);
 
   useEffect(() => {
     setAccountLoading(loading);

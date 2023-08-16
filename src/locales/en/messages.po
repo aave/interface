@@ -2621,6 +2621,10 @@ msgstr "Update: Disruptions reported for WETH, WBTC, WMATIC, and USDT. AIP 230 w
 msgid "Use it to vote for or against active proposals."
 msgstr "Use it to vote for or against active proposals."
 
+#: src/layouts/components/WalletProviderSwitcher.tsx
+msgid "Use wallet provider"
+msgstr "Use wallet provider"
+
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE and stkAAVE balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."

@@ -10,6 +10,7 @@ import { SETTINGS } from 'src/utils/mixPanelEvents';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
+import { WalletProviderSwitcher } from './components/WalletProviderSwitcher';
 
 export const LANG_MAP = {
   en: 'English',
@@ -88,6 +89,7 @@ export function SettingsMenu() {
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
+        <WalletProviderSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>

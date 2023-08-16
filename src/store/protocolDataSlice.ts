@@ -1,4 +1,5 @@
 import { providers, utils } from 'ethers';
+import { walletProviderEnabledId } from 'src/layouts/components/WalletProviderSwitcher';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import {
   availableMarkets,
@@ -36,7 +37,14 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
-    jsonRpcProvider: () => getProvider(get().currentChainId),
+    jsonRpcProvider: () => {
+      const walletProvider = get().walletProvider;
+      const walletProviderEnabled = localStorage.getItem(walletProviderEnabledId) === 'true';
+      if (walletProviderEnabled && walletProvider) {
+        return walletProvider;
+      }
+      return getProvider(get().currentChainId);
+    },
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];

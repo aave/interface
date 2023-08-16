@@ -1,3 +1,4 @@
+import { Web3Provider } from '@ethersproject/providers';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { StateCreator } from 'zustand';
 
@@ -12,6 +13,8 @@ export interface WalletSlice {
   account: string;
   accountLoading: boolean;
   walletType: WalletType | undefined;
+  walletProvider?: Web3Provider;
+  setWalletProvider: (jsonRpc?: Web3Provider) => void;
   setAccount: (account: string | undefined) => void;
   setAccountLoading: (loading: boolean) => void;
   setWalletType: (walletType: WalletType | undefined) => void;
@@ -39,9 +42,13 @@ export const createWalletSlice: StateCreator<
 > = (set, get) => ({
   account: '',
   accountLoading: false,
+  walletProvider: undefined,
   walletType: undefined,
   setWalletType(walletType) {
     set({ walletType });
+  },
+  setWalletProvider(rpcJsonProvider) {
+    set({ walletProvider: rpcJsonProvider });
   },
   setAccount(account) {
     set({ account: account || '', isWalletModalOpen: false });
