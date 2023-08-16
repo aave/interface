@@ -14,7 +14,7 @@ import TGEMarketStat from './TGEMarketStat';
 import TGEPhaseInfo from './TGEPhaseInfo';
 
 export const TGEContainer = () => {
-  const EARLY_TOKEN_GENERATION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
   const { currentAccount, loading: web3Loading, chainId, provider } = useWeb3Context();
   const {

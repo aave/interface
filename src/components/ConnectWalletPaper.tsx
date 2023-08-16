@@ -33,7 +33,7 @@ export const ConnectWalletPaper = ({
       }}
     >
       <Image
-        src="/maneki-logo-center.png"
+        src="/maneki-3d.png"
         width="200px"
         height="200px"
         alt="maneki cat 3d logo"

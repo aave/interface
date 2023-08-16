@@ -2,9 +2,9 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
-import ClaimRewardTopPanel from 'src/maneki/modules/markets/ClaimRewardTopPanel';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import ClaimAllVestTopPanel from 'src/maneki/modules/markets/ClaimAllVestTopPanel';
 
-// import ClaimAllVestTopPanel from 'src/maneki/modules/markets/ClaimAllVestTopPanel';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
 import TotalBorrowIcon from '../../../public/icons/markets/total-borrow-indicator.svg';
 import TotalSupplyIcon from '../../../public/icons/markets/total-supply-indicator.svg';
@@ -15,6 +15,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
+  const { currentAccount, chainId } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -84,8 +85,7 @@ export const MarketsTopPanel = () => {
           isTopPanel
         />
       </TopInfoPanelItem>
-      {/* {currentAccount && chainId === 97 && <ClaimAllVestTopPanel />} */}
-      <ClaimRewardTopPanel />
+      {currentAccount && chainId === 97 && <ClaimAllVestTopPanel />}
     </TopInfoPanel>
   );
 };

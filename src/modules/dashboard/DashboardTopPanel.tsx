@@ -197,7 +197,6 @@ export const DashboardTopPanel = () => {
             loading={loading}
           >
             <HealthFactorNumber
-              isTopPanel={true}
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
               onInfoClick={() => setOpen(true)}

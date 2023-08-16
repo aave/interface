@@ -1,8 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
-const current = { chainId: 42161, chainIdHex: '0xa4b1' };
 
 const handleSwitchNetwork = async () => {
   try {
@@ -10,7 +7,7 @@ const handleSwitchNetwork = async () => {
     // @ts-ignore
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: current.chainIdHex || current.chainId }],
+      params: [{ chainId: '0x61' || 97 }],
     });
   } catch (switchError) {
     // This error code indicates that the chain has not been added to MetaMask.
@@ -22,15 +19,15 @@ const handleSwitchNetwork = async () => {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: current.chainIdHex || current.chainId,
-              rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-              chainName: 'Arbitrum One',
+              chainId: '0x61' || 97,
+              rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+              chainName: 'BNB Smart Chain - Testnet',
               nativeCurrency: {
-                symbol: 'ETH',
-                name: 'Arbitrum',
+                symbol: 'TBNB',
+                name: 'Binance',
                 decimals: 18,
               },
-              blockExplorerUrls: ['https://arbiscan.io/'],
+              blockExplorerUrls: ['https://testnet.bscscan.com'],
             },
           ],
         });
@@ -47,9 +44,6 @@ const handleSwitchNetwork = async () => {
 const SwitchNetworkHeader = () => {
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const { chainId, currentAccount } = useWeb3Context();
-
-  if (!currentAccount || chainId === current.chainId) return <></>;
 
   return (
     <Box
@@ -88,7 +82,7 @@ const SwitchNetworkHeader = () => {
           textDecoration: 'underline',
         }}
       >
-        {downToMD ? <Trans>Switch to Arbitrum</Trans> : <Trans>Switch to Arbitrum</Trans>}
+        {downToMD ? <Trans>Switch to tBNB</Trans> : <Trans>Switch to BNB Testnet</Trans>}
       </Button>
     </Box>
   );
@@ -97,50 +91,9 @@ const SwitchNetworkHeader = () => {
 const SwitchNetworkButton = () => {
   return (
     <Button onClick={handleSwitchNetwork} variant="wallet">
-      <Trans>Switch to Arbitrum</Trans>
+      <Trans>Switch to BNB Testnet</Trans>
     </Button>
   );
 };
 
 export { SwitchNetworkButton, SwitchNetworkHeader };
-
-// For BSC testnet
-// const handleSwitchNetwork = async () => {
-//   try {
-//     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//     // @ts-ignore
-//     await window.ethereum.request({
-//       method: 'wallet_switchEthereumChain',
-//       params: [{ chainId: '0x61' || 97 }],
-//     });
-//   } catch (switchError) {
-//     // This error code indicates that the chain has not been added to MetaMask.
-//     if (switchError.code === 4902) {
-//       try {
-//         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//         // @ts-ignore
-//         await window.ethereum.request({
-//           method: 'wallet_addEthereumChain',
-//           params: [
-//             {
-//               chainId: '0x61' || 97,
-//               rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-//               chainName: 'BNB Smart Chain - Testnet',
-//               nativeCurrency: {
-//                 symbol: 'TBNB',
-//                 name: 'Binance',
-//                 decimals: 18,
-//               },
-//               blockExplorerUrls: ['https://testnet.bscscan.com'],
-//             },
-//           ],
-//         });
-//       } catch (addError) {
-//         // handle "add" error
-//         console.log('Add Error Message: ', addError.message);
-//       }
-//     } else {
-//       console.log('Switch Error Message: ', switchError.message);
-//     }
-//   }
-// };

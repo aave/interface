@@ -16,7 +16,7 @@ export const ManageClaimExpired = ({ symbol, isWrongNetwork, action }: ManekiMod
   const { provider, currentAccount } = useWeb3Context();
   const { setMainTxState, setTxError } = useModalContext();
   const { setTopPanelLoading, setMainActionsLoading, setQuickActionsLoading } = useManageContext();
-  const MULTI_FEE_ADDR = marketsData.arbitrum_mainnet_v3.addresses.COLLECTOR as string;
+  const MULTI_FEE_ADDR = marketsData.bsc_testnet_v3.addresses.COLLECTOR as string;
 
   useEffect(() => {
     const handleClaimExpired = async () => {
@@ -64,12 +64,7 @@ export const ManageClaimExpired = ({ symbol, isWrongNetwork, action }: ManekiMod
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <Image
-        src={'/maneki-logo-center.png'}
-        width={'200px'}
-        height={'200px'}
-        alt="maneki cat in 3d"
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         <Trans>Claiming Expired Locks</Trans>
       </Typography>

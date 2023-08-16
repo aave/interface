@@ -1,5 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, Icon, SvgIcon, Typography } from '@mui/material';
+import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
@@ -31,7 +31,7 @@ export const TextWithTooltip = ({
       {text && <Typography {...rest}>{text}</Typography>}
 
       <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={setOpen}>
-        <Icon
+        <IconButton
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -54,7 +54,7 @@ export const TextWithTooltip = ({
           >
             {icon || <InformationCircleIcon />}
           </SvgIcon>
-        </Icon>
+        </IconButton>
       </ContentWithTooltip>
     </Box>
   );

@@ -31,7 +31,7 @@ export const TGEModalActions = ({
   const { provider, currentAccount } = useWeb3Context();
   const { mainTxState, setMainTxState, setTxError } = useModalContext();
   const { setTGELoading } = useTGEContext();
-  const EARLY_TOKEN_GENERATION_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const EARLY_TOKEN_GENERATION_ADDR = marketsData.bsc_testnet_v3.addresses
     .EARLY_TOKEN_GENERATION as string;
 
   const handleContribution = async () => {
@@ -107,12 +107,7 @@ export const TGEModalActions = ({
     >
       {/* Unused Param */}
       {symbol && isWrongNetwork && action}
-      <Image
-        src={'/maneki-logo-center.png'}
-        width={'200px'}
-        height={'200px'}
-        alt="maneki cat in 3d"
-      />
+      <Image src={'/maneki-3d.png'} width={'200px'} height={'200px'} alt="maneki cat in 3d" />
       <Typography variant="h3" sx={{ m: 6, color: 'text.secondary' }}>
         <Trans>Pending Transaction...</Trans>
       </Typography>

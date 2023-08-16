@@ -1,10 +1,9 @@
 import { MainLayout } from 'src/layouts/MainLayout';
-import ManekiLoadingPaper from 'src/maneki/components/ManekiLoadingPaper';
 import TGEModal from 'src/maneki/transactions/TGE/TGEModal';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 import { TGEDataProvider } from '../src/maneki/hooks/tge-data-provider/TGEDataProvider';
-// import { TGEContainer } from '../src/maneki/modules/tge/TGEContainer';
+import { TGEContainer } from '../src/maneki/modules/tge/TGEContainer';
 import { TGETopPanel } from '../src/maneki/modules/tge/TGETopPanel';
 
 export default function TGE() {
@@ -14,8 +13,7 @@ export default function TGE() {
         <>
           <TGETopPanel />
           <ContentContainer>
-            <ManekiLoadingPaper description="Coming Soon..." />
-            {/* <TGEContainer /> */}
+            <TGEContainer />
           </ContentContainer>
           <TGEModal />
         </>

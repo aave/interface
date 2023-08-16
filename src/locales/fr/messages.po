@@ -176,7 +176,7 @@ msgstr "Montant"
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Amount (PAW)"
-msgstr "Montant (PAW)"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
@@ -184,23 +184,23 @@ msgstr "Le montant doit être supérieur à 0"
 
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Amount to Claim"
-msgstr "Cantidad a reclamar"
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "An Issue was encountered please report it to our Maneki Team."
-msgstr "Un problème a été rencontré, veuillez le signaler à notre équipe Maneki."
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "An Issue was encountered while attempting to <0>claim</0> Vests PAW."
-msgstr "Un problème a été rencontré lors de la tentative de <0>réclamer</0> les gilets PAW."
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "An Issue was encountered while attempting to <0>load</0> total vests PAW."
-msgstr "Un problème a été rencontré lors de la tentative de <0>charger</0> le total des gilets PAW."
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
-msgstr "Une erreur s'est produite lors de la récupération des métadonnées de la proposition à partir d'IPFS."
+msgstr ""
 
 #: src/maneki/transactions/Manage/ManageLockActions.tsx
 #: src/maneki/transactions/Manage/ManageStakeActions.tsx
@@ -535,7 +535,7 @@ msgstr "Réclamez tout"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Claim All Vests"
-msgstr "Réclamer tous les gilets"
+msgstr ""
 
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
 #: src/maneki/transactions/Manage/ManageClaimAll.tsx
@@ -547,7 +547,7 @@ msgstr "Réclamation échouée"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Claim Successful"
-msgstr "Réclamation réussie"
+msgstr ""
 
 #: src/maneki/transactions/Airdrop/AirdropModalContent.tsx
 msgid "Claim airdrop"
@@ -615,11 +615,11 @@ msgstr "Revendiquant {symbol}"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Click on button to <0>refresh and copy</0> error message."
-msgstr "Cliquez sur le bouton pour <0> actualiser et copier </0> le message d'erreur."
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Click on button to <0>refresh</0> and view your new vests balance."
-msgstr "Cliquez sur le bouton pour <0> actualiser </0> et afficher le solde de vos nouveaux gilets."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
@@ -669,11 +669,11 @@ msgstr "Collatéralisation"
 
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
-msgstr "Contrat collecteur"
+msgstr ""
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
-msgstr "Informations sur le collectionneur"
+msgstr ""
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
@@ -682,19 +682,19 @@ msgstr "Connecter le portefeuille"
 
 #: src/maneki/transactions/TGE/TGEModal.tsx
 msgid "Contribute"
-msgstr "Contribuer"
+msgstr ""
 
 #: src/maneki/transactions/TGE/TGEModalActions.tsx
 msgid "Contribute Failed"
-msgstr "Échec de la contribution"
+msgstr ""
 
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribute PAW"
-msgstr "Contribuer PAW"
+msgstr ""
 
 #: src/maneki/modules/tge/components/TGEMainContribution.tsx
 msgid "Contribution Amount"
-msgstr "Montant de la cotisation"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1075,11 +1075,11 @@ msgstr "Gouvernance"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
-msgstr "Grec"
+msgstr ""
 
 #: src/maneki/modules/tge/TGETopPanel.tsx
 msgid "Guide"
-msgstr "Guide"
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Health Factor ({0} v2)"
@@ -1122,7 +1122,7 @@ msgstr "Je comprends comment fonctionnent le temps de recharge ({0}) et le retra
 
 #: pages/500.page.tsx
 msgid "If the error continues to happen,<0/> you may report it to this"
-msgstr "Si l'erreur persiste,<0/> vous pouvez la signaler à ce"
+msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -1138,7 +1138,7 @@ msgstr "Si votre prêt à la valeur dépasse le seuil de liquidation, votre gara
 
 #: src/maneki/modules/tge/TGEPhaseInfo.tsx
 msgid "Important Risks"
-msgstr "Risques importants"
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
@@ -1154,7 +1154,7 @@ msgstr "Paramètres de prêt flash incohérents"
 
 #: src/maneki/modules/tge/TGEMarketStat.tsx
 msgid "Initial Supply / Total Supply"
-msgstr "Approvisionnement initial / Approvisionnement total"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1162,7 +1162,7 @@ msgstr "Les conditions de rééquilibrage des taux d'intérêt n'ont pas été r
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
-msgstr "Stratégie de taux d'intérêt"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -1278,11 +1278,11 @@ msgstr "Chargement"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Loading Error"
-msgstr "Erreur de chargement"
+msgstr ""
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Loading data..."
-msgstr "Chargement des données..."
+msgstr ""
 
 #: src/maneki/transactions/Manage/ManageModal.tsx
 msgid "Lock"
@@ -1298,7 +1298,7 @@ msgstr "Verrouiller {symbole}"
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
 msgid "Locked"
-msgstr "Fermé à clé"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageQuickActions.tsx
 msgid "Locked PAW is subject to a three month lock and will continue to earn fees after the locks expire if you do not withdraw."
@@ -1335,7 +1335,7 @@ msgstr "Marché"
 
 #: src/maneki/modules/tge/TGEMarketStat.tsx
 msgid "Market Cap"
-msgstr "Capitalisation boursière"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1483,7 +1483,7 @@ msgstr "Aucun/Aucune"
 #: src/maneki/modules/airdrop/AirdropContentWrapper.tsx
 #: src/maneki/modules/airdrop/AirdropTable.tsx
 msgid "Not Eligible"
-msgstr "Non Eligible"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
@@ -1526,7 +1526,7 @@ msgstr "Rien fourni pour le moment"
 
 #: src/components/HALLink.tsx
 msgid "Notify"
-msgstr "Notifier"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
@@ -1539,7 +1539,7 @@ msgstr "OK j'ai compris"
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 #: src/maneki/modules/airdrop/AirdropContainer.tsx
 msgid "Ongoing"
-msgstr "En cours"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
@@ -1559,7 +1559,7 @@ msgstr "PAW serrures"
 
 #: src/maneki/modules/tge/TGETopPanel.tsx
 msgid "PAW Token Generation Event"
-msgstr "Événement de génération de jetons PAW"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "PAW Vests"
@@ -1583,7 +1583,7 @@ msgstr "Participer à cette réserve {symbol} donne des récompenses annualisée
 
 #: src/maneki/transactions/TGE/TGEModalActions.tsx
 msgid "Pending Transaction..."
-msgstr "Transaction en attente..."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1592,7 +1592,7 @@ msgstr "En attente..."
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the Fantom market has been frozen."
-msgstr "Selon la communauté, le marché Fantom a été gelé."
+msgstr ""
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -1613,7 +1613,7 @@ msgstr "Veuillez connecter votre portefeuille pour obtenir des ressources testne
 #: src/maneki/modules/manage/ManageContainer.tsx
 #: src/maneki/modules/tge/TGEContainer.tsx
 msgid "Please connect your wallet to manage your PAW."
-msgstr "Veuillez connecter votre portefeuille pour gérer votre PAW."
+msgstr ""
 
 #: pages/v3-migration.page.tsx
 msgid "Please connect your wallet to see migration tool."
@@ -1916,20 +1916,20 @@ msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Something Went Wrong"
-msgstr "Quelque chose s'est mal passé"
+msgstr ""
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
-msgstr "Quelque chose s'est mal passé"
+msgstr ""
 
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
-msgstr "Désolé, une erreur inattendue s'est produite. En attendant, vous pouvez essayer de recharger la page ou revenir plus tard."
+msgstr ""
 
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
-msgstr "Désolé, nous n'avons pas trouvé la page que vous cherchiez."
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -2145,11 +2145,11 @@ msgstr "Taux de commutation"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "TGE"
-msgstr "TGE"
+msgstr ""
 
 #: src/maneki/modules/tge/TGEMarketStat.tsx
 msgid "TGE PAW Price"
-msgstr "TGE PAW Price"
+msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -2375,7 +2375,7 @@ msgstr "Pour demander l'accès à ce marché autorisé, veuillez consulter : <0
 
 #: src/maneki/modules/tge/TGETopPanel.tsx
 msgid "Tokenomics"
-msgstr "Tokenomics"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Tokens"
@@ -2387,7 +2387,7 @@ msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Locked"
-msgstr "Total verrouillé"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 #: src/maneki/modules/manage/ManageMainActions.tsx
@@ -2396,11 +2396,11 @@ msgstr "Valeur totale"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Total Vested"
-msgstr "Total acquis"
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Total Vests"
-msgstr "Total des gilets"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -2442,15 +2442,15 @@ msgstr "Valeur totale"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet"
-msgstr "Portefeuille de suivi"
+msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
-msgstr "Suivre le solde du portefeuille en mode lecture seule"
+msgstr ""
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "Transaction Error"
-msgstr "Erreur de transaction"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -2466,7 +2466,7 @@ msgstr "Type de délégation"
 
 #: src/maneki/modules/tge/TGEPhaseInfo.tsx
 msgid "U.S. residents or citizens are not permitted to participant in the Token Generation Event (TGE). By taking part in the event you certify you are neither a U.S. citizen or resident."
-msgstr "Les résidents ou citoyens américains ne sont pas autorisés à participer à l'événement de génération de jetons (TGE). En participant à l'événement, vous certifiez que vous n'êtes ni citoyen ni résident américain."
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -2554,7 +2554,7 @@ msgstr "VOTER OUI"
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Value (USD)"
-msgstr "Valeur (USD)"
+msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"
@@ -2578,7 +2578,7 @@ msgstr ""
 
 #: src/maneki/modules/manage/ManageTopPanel.tsx
 msgid "Vested"
-msgstr "Acquis"
+msgstr ""
 
 #: src/maneki/modules/manage/ManageMainActions.tsx
 msgid "Vested PAW"
@@ -2675,7 +2675,7 @@ msgstr "Lorsqu'une liquidation survient, les liquidateurs remboursent jusqu'à 5
 
 #: src/maneki/modules/tge/TGEPhaseInfo.tsx
 msgid "Whitelist Phase"
-msgstr "Phase de liste blanche"
+msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -2773,7 +2773,7 @@ msgstr "You have not borrow yet using this currency"
 
 #: src/maneki/modules/markets/ClaimAllVestTopPanel.tsx
 msgid "You have successfully claim your vests PAW, for more details please go to our <0>Manage PAW page</0>."
-msgstr "Vous avez réussi à réclamer vos gilets PAW, pour plus de détails, veuillez vous rendre sur notre page <0>Gérer PAW</0>."
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2793,7 +2793,7 @@ msgstr "Vous quitterez le mode d'isolement et d'autres jetons peuvent désormais
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action}"
-msgstr "You {action}"
+msgstr ""
 
 #: src/maneki/modules/stake/StakeTopPanel.tsx
 msgid "Your Staked PAW"

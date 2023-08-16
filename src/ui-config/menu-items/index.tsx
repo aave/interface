@@ -1,4 +1,4 @@
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -18,6 +18,11 @@ interface Navigation {
 
 export const navigation: Navigation[] = [
   {
+    link: ROUTES.leverage,
+    title: t`Leverage`,
+    dataCy: 'menuLeverage',
+  },
+  {
     link: ROUTES.markets,
     title: t`Markets`,
     dataCy: 'menuMarkets',
@@ -26,11 +31,6 @@ export const navigation: Navigation[] = [
     link: ROUTES.dashboard,
     title: t`Dashboard`,
     dataCy: 'menuDashboard',
-  },
-  {
-    link: ROUTES.leverage,
-    title: t`Leverage`,
-    dataCy: 'menuLeverage',
   },
   // {
   //   link: ROUTES.staking,
@@ -79,32 +79,32 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.maneki.finance/',
+    link: 'https://docs.aave.com/faq/',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
-  // {
-  //   link: 'https://docs.aave.com/portal/',
-  //   title: t`Developers`,
-  //   icon: <BookOpenIcon />,
-  // },
   {
-    link: 'https://discord.gg/M5dpDrUekC',
+    link: 'https://docs.aave.com/portal/',
+    title: t`Developers`,
+    icon: <BookOpenIcon />,
+  },
+  {
+    link: 'https://discord.gg/7kHKnkDEUf',
     title: t`Discord`,
     icon: <DiscordIcon />,
   },
   {
-    link: 'https://github.com/',
+    link: 'https://github.com/aave/interface',
     title: t`Github`,
     icon: <GithubIcon />,
   },
-  // {
-  //   link: 'https://global.transak.com',
-  //   makeLink: (walletAddress) =>
-  //     `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
-  //   title: t`Buy Crypto With Fiat`,
-  //   icon: <CreditCardIcon />,
-  // },
+  {
+    link: 'https://global.transak.com',
+    makeLink: (walletAddress) =>
+      `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
+    title: t`Buy Crypto With Fiat`,
+    icon: <CreditCardIcon />,
+  },
 ];
 
 export const moreMenuExtraItems: MoreMenuItem[] = [];

@@ -1,27 +1,20 @@
-import React from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { LeverageDataProvider } from 'src/maneki/hooks/leverage-data-provider/LeverageDataProvider';
-import LeverageSnackbar from 'src/maneki/modules/leverage/components/LeverageSnackbar';
-import LeverageContainer from 'src/maneki/modules/leverage/LeverageContainer';
-import { LeverageTopPanel } from 'src/maneki/modules/leverage/LeverageTopPanel';
 
-export default function Leverage() {
+import ManekiLoadingPaper from '../src/maneki/components/ManekiLoadingPaper';
+import { LeverageTopPanel } from '../src/maneki/modules/leverage/LeverageTopPanel';
+
+export default function Airdrops() {
   return (
     <>
-      <LeverageDataProvider>
-        <>
-          <LeverageTopPanel />
-          <ContentContainer>
-            <LeverageContainer />
-          </ContentContainer>
-          <LeverageSnackbar />
-        </>
-      </LeverageDataProvider>
+      <LeverageTopPanel />
+      <ContentContainer>
+        <ManekiLoadingPaper description="Coming soon..." />
+      </ContentContainer>
     </>
   );
 }
 
-Leverage.getLayout = function getLayout(page: React.ReactElement) {
+Airdrops.getLayout = function getLayout(page: React.ReactElement) {
   return <MainLayout>{page}</MainLayout>;
 };

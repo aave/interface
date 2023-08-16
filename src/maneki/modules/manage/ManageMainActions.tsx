@@ -56,9 +56,9 @@ export const ManageMainActions = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openManage } = useModalContext();
 
-  const MANEKI_DATA_PROVIDER_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const MANEKI_DATA_PROVIDER_ADDR = marketsData.bsc_testnet_v3.addresses
     .STAKING_DATA_PROVIDER as string;
-  const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.arbitrum_mainnet_v3.addresses
+  const MANEKI_PAW_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses
     .PAW_PRICE_ORACLE as string;
   // const MANEKI_PRICE_ORACLE_ADDR = marketsData.bsc_testnet_v3.addresses.PRICE_ORACLE as string;
   // handle unlock action

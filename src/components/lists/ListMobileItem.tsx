@@ -20,13 +20,6 @@ interface ListMobileItemProps {
   showDebtCeilingTooltips?: boolean;
 }
 
-const glpStyle = {
-  borderWidth: '4px !important',
-  borderStyle: 'solid',
-  borderRadius: '12px',
-  borderImage: 'linear-gradient(45deg, rgba(255,71,197,1) 26%, rgba(255,107,106,1) 100%) 1',
-};
-
 export const ListMobileItem = ({
   children,
   warningComponent,
@@ -43,7 +36,7 @@ export const ListMobileItem = ({
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   return (
-    <Box sx={{ ...(symbol === 'GLP' ? glpStyle : {}) }}>
+    <Box>
       <Divider />
       <Box sx={{ px: 4, pt: 4, pb: 6 }}>
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
