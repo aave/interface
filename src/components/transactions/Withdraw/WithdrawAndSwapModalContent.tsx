@@ -49,13 +49,18 @@ export const WithdrawAndSwapModalContent = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
-  const swapTargets = reserves
+  let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
       iconSymbol: reserve.iconSymbol,
     }));
+
+  swapTargets = [
+    ...swapTargets.filter((r) => r.symbol === 'GHO'),
+    ...swapTargets.filter((r) => r.symbol !== 'GHO'),
+  ];
 
   const [targetReserve, setTargetReserve] = useState<Asset>(
     swapTargets.find((reserve) => reserve.symbol === 'GHO') || reserves[0]
