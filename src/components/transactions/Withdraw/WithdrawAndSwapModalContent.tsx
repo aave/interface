@@ -1,8 +1,7 @@
-import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { Warning } from 'src/components/primitives/Warning';
@@ -16,6 +15,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
+import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -24,7 +24,9 @@ import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { zeroLTVBlockingWithdraw } from '../utils';
+import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwapActions } from './WithdrawAndSwapActions';
+import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -62,9 +64,7 @@ export const WithdrawAndSwapModalContent = ({
     ...swapTargets.filter((r) => r.symbol !== 'GHO'),
   ];
 
-  const [targetReserve, setTargetReserve] = useState<Asset>(
-    swapTargets.find((reserve) => reserve.symbol === 'GHO') || reserves[0]
-  );
+  const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
 
   const isMaxSelected = _amount === '-1';
 
@@ -91,35 +91,27 @@ export const WithdrawAndSwapModalContent = ({
   });
 
   const loadingSkeleton = routeLoading && outputAmountUSD === '0';
-
-  // calculations
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
-  let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
-  let maxCollateralToWithdrawInETH = valueToBigNumber('0');
-  const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
-      ? poolReserve.formattedEModeLiquidationThreshold
-      : poolReserve.formattedReserveLiquidationThreshold;
-  if (
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    poolReserve.reserveLiquidationThreshold !== '0' &&
-    user.totalBorrowsMarketReferenceCurrency !== '0'
-  ) {
-    // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.01
-    const excessHF = valueToBigNumber(user.healthFactor).minus('1.01');
-    if (excessHF.gt('0')) {
-      maxCollateralToWithdrawInETH = excessHF
-        .multipliedBy(user.totalBorrowsMarketReferenceCurrency)
-        .div(reserveLiquidationThreshold);
-    }
-    maxAmountToWithdraw = BigNumber.min(
-      maxAmountToWithdraw,
-      maxCollateralToWithdrawInETH.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    );
-  }
+  const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
 
-  const amount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
+  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
+
+  const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
+
+  const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
+    user,
+    userReserve,
+    poolReserve,
+    withdrawAmount,
+  });
+
+  const { blockingError, errorComponent } = useWithdrawError({
+    assetsBlockingWithdraw,
+    poolReserve,
+    healthFactorAfterWithdraw,
+    withdrawAmount,
+  });
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -130,88 +122,15 @@ export const WithdrawAndSwapModalContent = ({
     }
   };
 
-  // health factor calculations
-  let totalCollateralInETHAfterWithdraw = valueToBigNumber(
-    user.totalCollateralMarketReferenceCurrency
-  );
-  let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
-  let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
-
-  const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
-
-  if (
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    poolReserve.reserveLiquidationThreshold !== '0'
-  ) {
-    const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
-      poolReserve.formattedPriceInMarketReferenceCurrency
-    );
-    totalCollateralInETHAfterWithdraw =
-      totalCollateralInETHAfterWithdraw.minus(amountToWithdrawInEth);
-
-    liquidationThresholdAfterWithdraw = valueToBigNumber(
-      user.totalCollateralMarketReferenceCurrency
-    )
-      .multipliedBy(valueToBigNumber(user.currentLiquidationThreshold))
-      .minus(valueToBigNumber(amountToWithdrawInEth).multipliedBy(reserveLiquidationThreshold))
-      .div(totalCollateralInETHAfterWithdraw)
-      .toFixed(4, BigNumber.ROUND_DOWN);
-
-    healthFactorAfterWithdraw = calculateHealthFactorFromBalancesBigUnits({
-      collateralBalanceMarketReferenceCurrency: totalCollateralInETHAfterWithdraw,
-      borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-      currentLiquidationThreshold: liquidationThresholdAfterWithdraw,
-    });
-  }
   const displayRiskCheckbox =
     healthFactorAfterWithdraw.toNumber() >= 1 &&
     healthFactorAfterWithdraw.toNumber() < 1.5 &&
     userReserve.usageAsCollateralEnabledOnUser;
 
-  let blockingError: ErrorType | undefined = undefined;
-  if (!withdrawTxState.success && !withdrawTxState.txHash) {
-    if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
-      blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
-    } else if (
-      healthFactorAfterWithdraw.lt('1') &&
-      user.totalBorrowsMarketReferenceCurrency !== '0'
-    ) {
-      blockingError = ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT;
-    } else if (
-      !blockingError &&
-      (unborrowedLiquidity.eq('0') || valueToBigNumber(amount).gt(poolReserve.unborrowedLiquidity))
-    ) {
-      blockingError = ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY;
-    }
-  }
-
-  // error render handling
-  const BlockingError: React.FC = () => {
-    switch (blockingError) {
-      case ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT:
-        return (
-          <Trans>You can not withdraw this amount because it will cause collateral call</Trans>
-        );
-      case ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY:
-        return (
-          <Trans>
-            These funds have been borrowed and are not available for withdrawal at this time.
-          </Trans>
-        );
-      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
-        return (
-          <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
-          </Trans>
-        );
-      default:
-        return null;
-    }
-  };
-
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve?.reserve.priceInUSD || 0);
+  const usdValue = valueToBigNumber(withdrawAmount).multipliedBy(
+    userReserve?.reserve.priceInUSD || 0
+  );
 
   if (withdrawTxState.success)
     return (
@@ -228,7 +147,7 @@ export const WithdrawAndSwapModalContent = ({
     <>
       <AssetInput
         inputTitle={<Trans>Withdraw</Trans>}
-        value={amount}
+        value={withdrawAmount}
         onChange={handleChange}
         symbol={symbol}
         assets={[
@@ -285,7 +204,7 @@ export const WithdrawAndSwapModalContent = ({
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
-          <BlockingError />
+          {errorComponent}
         </Typography>
       )}
 
@@ -297,7 +216,7 @@ export const WithdrawAndSwapModalContent = ({
       >
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
-          value={underlyingBalance.minus(amount || '0').toString(10)}
+          value={underlyingBalance.minus(withdrawAmount || '0').toString(10)}
           symbol={
             poolReserve.isWrappedBaseAsset
               ? currentNetworkConfig.baseAssetSymbol

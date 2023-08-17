@@ -343,8 +343,7 @@ msgstr "Assets to supply"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 
@@ -2401,8 +2400,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
@@ -2913,8 +2911,7 @@ msgstr "You can not switch usage as collateral mode for this currency, because i
 msgid "You can not use this currency as collateral"
 msgstr "You can not use this currency as collateral"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "You can not withdraw this amount because it will cause collateral call"
 
