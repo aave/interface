@@ -8,24 +8,26 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 export const HomeTopPanel = () => {
   return (
     <>
-      <TopInfoPanel
-        titleComponent={
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box mb={4}>
-              <img src={'/apple-touch-icon.png'} alt={'moonCakeFi'} width={44} height={44} />
-            </Box>
+      <TopInfoPanel>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box mb={4}>
+            <img src={'/apple-touch-icon.png'} alt={'moonCakeFi'} width={150} height={150} />
+          </Box>
+          <div>
             <PageTitle
               pageTitle={
                 <Box>
-                  <Trans>Welcome to MoonCake!</Trans>
+                  <Trans>The Future is Filled With Mooncakes</Trans>
                 </Box>
               }
             />
-          </Box>
-        }
-      >
-        The future of lending is filled Mooncakes. Introducing Mooncake finance, a decentralized
-        lending protocol deployed on Base and Linea.
+            <div>
+              Introducing Mooncake finance, a decentralized money market deployed on Base and Linea.
+            </div>
+          </div>
+        </Box>
+        {/* <span style={{ maxWidth: 400 }}> */}
+        {/* </span> */}
       </TopInfoPanel>
     </>
   );

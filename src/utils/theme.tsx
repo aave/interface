@@ -185,7 +185,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
         surface2: getColor('#F9F9FB', '#383D51'),
-        header: getColor('#181822', '#181822'),
+        header: getColor('#171920', '#171920'),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),

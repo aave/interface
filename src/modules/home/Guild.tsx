@@ -1,26 +1,51 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 import React from 'react';
+
+import guildPng from './guild.png';
 
 export const Guild = () => {
   return (
-    <Paper
-      sx={(theme) => ({
-        border: `1px solid ${theme.palette.divider}`,
-        padding: 6,
-      })}
-    >
-      <Typography component="div">
-        <Trans>
-          Join our Guild.xyz page to get special access to various channels in our Discord. If you
-          have provided liquidty you are eligible to get special roles in our discord.
-        </Trans>
-      </Typography>
-      <Box mt={8} flexDirection={'row'} display={'flex'} justifyContent={'flex-start'}>
-        <Button variant="contained" href={'https://guild.xyz/mooncakefi'}>
+    <Card>
+      <CardMedia sx={{ height: 140, backgroundPosition: 'top' }} image={guildPng.src} />
+      <CardContent>
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Get Special Access To Our Discord</Trans>
+        </Typography>
+
+        <Typography component="div" mt={2}>
+          <Trans>
+            Join our Guild.xyz page to get special access to various channels in our Discord. If you
+            have provided liquidty you are eligible to get special roles in our discord.
+          </Trans>
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" target="_blank" href={'https://guild.xyz/mooncakefi'}>
           <Trans>Join our Guild</Trans>
         </Button>
-      </Box>
-    </Paper>
+      </CardActions>
+    </Card>
   );
 };
+
+// <Paper
+// sx={(theme) => ({
+//   border: `1px solid ${theme.palette.divider}`,
+//   padding: 6,
+// })}
+// >
+// <img src={guildPng.src} />
+
+// <Typography component="div" mt={2}>
+
+// </Typography>
+// <Box mt={4} flexDirection={'row'} display={'flex'} justifyContent={'flex-start'}>
+
+// </Box>
+// </Paper>

@@ -3,7 +3,7 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 
 import { getMarketHelpData, getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
-import {ROUTES} from "../../components/primitives/Link";
+import { ROUTES } from '../../components/primitives/Link';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { useRootStore } from '../../store/root';
 import { CustomMarket } from '../../ui-config/marketsConfig';
@@ -55,7 +55,7 @@ export const MarketList = (props: IProps) => {
       </Typography>
       <Box mt={8} flexDirection={'row'} display={'flex'} justifyContent={'center'}>
         <Button variant="contained" onClick={() => handleMarketSelect()} href={ROUTES.markets}>
-          <Trans>View Details</Trans>
+          <Trans>Open Market</Trans>
         </Button>
       </Box>
     </Paper>

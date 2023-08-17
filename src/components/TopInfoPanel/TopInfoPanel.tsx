@@ -46,6 +46,7 @@ export const TopInfoPanel = ({
               alignItems: 'flex-start',
               gap: { xs: 3, xsm: 8 },
               flexWrap: 'wrap',
+              // maxWidth: 700,
               width: '100%',
             }}
           >
