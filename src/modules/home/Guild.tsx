@@ -33,19 +33,3 @@ export const Guild = () => {
     </Card>
   );
 };
-
-// <Paper
-// sx={(theme) => ({
-//   border: `1px solid ${theme.palette.divider}`,
-//   padding: 6,
-// })}
-// >
-// <img src={guildPng.src} />
-
-// <Typography component="div" mt={2}>
-
-// </Typography>
-// <Box mt={4} flexDirection={'row'} display={'flex'} justifyContent={'flex-start'}>
-
-// </Box>
-// </Paper>

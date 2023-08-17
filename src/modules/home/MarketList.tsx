@@ -54,8 +54,8 @@ export const MarketList = (props: IProps) => {
         <Trans>{network.desc}</Trans>
       </Typography>
       <Box mt={8} flexDirection={'row'} display={'flex'} justifyContent={'center'}>
-        <Button variant="contained" onClick={() => handleMarketSelect()} href={ROUTES.markets}>
-          <Trans>Open Market</Trans>
+        <Button variant="contained" href={`${ROUTES.markets}?marketName=${marketId}`}>
+          <Trans>View {marketNaming.name} Market</Trans>
         </Button>
       </Box>
     </Paper>
