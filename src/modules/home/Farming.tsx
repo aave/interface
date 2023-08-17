@@ -7,12 +7,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-import guildPng from './banner2.png';
+import farmingPng from './farming.png';
 
 export const Farming = () => {
   return (
     <Card>
-      <CardMedia sx={{ height: 140 }} image={guildPng.src} />
+      <CardMedia sx={{ height: 140 }} image={farmingPng.src} />
       <CardContent>
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Pre-Mine CMOON</Trans>

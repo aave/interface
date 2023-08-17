@@ -47,6 +47,7 @@ export type NetworkConfig = {
     url: string;
   };
   desc: string;
+  themeColor: string;
 };
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
@@ -72,7 +73,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://etherscan.io',
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
     networkLogoPath: '/icons/networks/linea.svg',
-    desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
+    themeColor: 'red',
+    desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   },
 
   [8453]: {
@@ -88,7 +90,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     // usdMarket: true,
     isTestnet: false,
     networkLogoPath: '/icons/networks/base.svg',
-    desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
+    themeColor: '#0052FE',
+    desc: 'Base is a secure, low-cost, builder-friendly Ethereum L2 built by Coinbase.',
   },
   [59144]: {
     name: 'Linea',
@@ -103,6 +106,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     // usdMarket: true,
     isTestnet: false,
     networkLogoPath: '/icons/networks/linea.svg',
-    desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
+    themeColor: '#62DFFF',
+    desc: 'A developer-ready zkEVM rollup for scaling Ethereum dapps built by Consensus.',
   },
 } as const;
