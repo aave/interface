@@ -49,7 +49,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
     borrowAPY:
       item.borrowRateMode === InterestRate.Variable
         ? Number(reserve.variableBorrowAPY)
-        : Number(reserve.stableBorrowAPY),
+        : Number(item.stableBorrowAPY),
     incentives:
       item.borrowRateMode === InterestRate.Variable
         ? reserve.vIncentivesData
