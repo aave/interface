@@ -12,7 +12,7 @@ interface IProps {
 
 export const MarketList = (props: IProps) => {
   const { marketId } = props;
-  const { market, network } = getMarketInfoById(marketId);
+  const { network } = getMarketInfoById(marketId);
 
   return (
     <Paper
@@ -35,7 +35,7 @@ export const MarketList = (props: IProps) => {
           padding={4}
         >
           <Typography component="div" variant="h2" mb={2} mt={2}>
-            <Trans>{market.marketTitle} Market</Trans>
+            <Trans>{network.name} Market</Trans>
           </Typography>
 
           <Typography component="div" mb={6}>
