@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-16 00:14\n"
+"PO-Revision-Date: 2023-08-16 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -451,7 +451,7 @@ msgstr "Tomar prestado"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrow APY"
-msgstr ""
+msgstr "APY préstamo"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -1066,11 +1066,11 @@ msgstr "Filtro"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
 msgid "Fixed"
-msgstr ""
+msgstr "Fijo"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
-msgstr ""
+msgstr "Interés fijo"
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
@@ -2714,7 +2714,7 @@ msgstr "La tasa de interés variable <0>fluctuará</0> según las condiciones de
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Variable rate"
-msgstr ""
+msgstr "Tasa variable"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 2"
