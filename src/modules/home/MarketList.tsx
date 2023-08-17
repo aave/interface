@@ -35,7 +35,7 @@ export const MarketList = (props: IProps) => {
           padding={4}
         >
           <Typography component="div" variant="h2" mb={2} mt={2}>
-            <Trans>{network.name} Market</Trans>
+            {network.name} Market
           </Typography>
 
           <Typography component="div" mb={6}>
