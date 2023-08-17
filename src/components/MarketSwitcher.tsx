@@ -195,7 +195,7 @@ export const MarketSwitcher = () => {
               '.MuiListItemIcon-root': { minWidth: 'unset' },
               display:
                 (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
                   ? 'none'
                   : 'flex',
             }}
