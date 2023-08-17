@@ -17,12 +17,13 @@ export const HomeTopPanel = () => {
             <PageTitle
               pageTitle={
                 <Box>
-                  <Trans>The Future is Filled With Mooncakes</Trans>
+                  <Trans>The Future Is Filled With Mooncakes</Trans>
                 </Box>
               }
             />
-            <div>
+            <div style={{ maxWidth: 700 }}>
               Introducing Mooncake finance, a decentralized money market deployed on Base and Linea.
+              You can lend & borrow assets with the most capital efficiency.
             </div>
           </div>
         </Box>

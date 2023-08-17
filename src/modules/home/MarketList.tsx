@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 
-import { getMarketHelpData, getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
+import { getMarketInfoById, MarketLogo } from '../../components/MarketSwitcher';
 import { ROUTES } from '../../components/primitives/Link';
 import { CustomMarket } from '../../ui-config/marketsConfig';
 
@@ -13,7 +13,6 @@ interface IProps {
 export const MarketList = (props: IProps) => {
   const { marketId } = props;
   const { market, network } = getMarketInfoById(marketId);
-  const marketNaming = getMarketHelpData(market.marketTitle);
 
   return (
     <Paper
@@ -26,11 +25,7 @@ export const MarketList = (props: IProps) => {
     >
       <Box flexDirection={'row'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
         <div style={{ padding: 16, background: network.themeColor, height: '200px' }}>
-          <MarketLogo
-            size={64}
-            logo={network.networkLogoPath}
-            testChainName={marketNaming.testChainName}
-          />
+          <MarketLogo size={64} logo={network.networkLogoPath} />
         </div>
         <Box
           flexDirection={'column'}
@@ -40,9 +35,7 @@ export const MarketList = (props: IProps) => {
           padding={4}
         >
           <Typography component="div" variant="h2" mb={2} mt={2}>
-            <Trans>
-              {marketNaming.name} {market.isFork ? 'Fork' : ''}
-            </Trans>
+            <Trans>{market.marketTitle} Market</Trans>
           </Typography>
 
           <Typography component="div" mb={6}>
