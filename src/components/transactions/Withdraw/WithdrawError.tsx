@@ -48,32 +48,25 @@ export const useWithdrawError = ({
     }
   }
 
-  const BlockingError: React.FC = () => {
-    switch (blockingError) {
-      case ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT:
-        return (
-          <Trans>You can not withdraw this amount because it will cause collateral call</Trans>
-        );
-      case ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY:
-        return (
-          <Trans>
-            These funds have been borrowed and are not available for withdrawal at this time.
-          </Trans>
-        );
-      case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
-        return (
-          <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as
-            collateral to perform this action
-          </Trans>
-        );
-      default:
-        return null;
-    }
+  const errors = {
+    [ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT]: (
+      <Trans>You can not withdraw this amount because it will cause collateral call</Trans>
+    ),
+    [ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY]: (
+      <Trans>
+        These funds have been borrowed and are not available for withdrawal at this time.
+      </Trans>
+    ),
+    [ErrorType.ZERO_LTV_WITHDRAW_BLOCKED]: (
+      <Trans>
+        Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral
+        to perform this action
+      </Trans>
+    ),
   };
 
   return {
     blockingError,
-    errorComponent: BlockingError,
+    errorComponent: blockingError ? errors[blockingError] : null,
   };
 };
