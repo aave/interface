@@ -18,13 +18,14 @@ export const MarketList = (props: IProps) => {
   return (
     <Paper
       style={{ padding: 0 }}
-      sx={(theme) => ({
-        border: `1px solid ${theme.palette.divider}`,
-        // padding: 6,
+      sx={() => ({
+        marginRight: 2,
+        //   // border: `1px solid ${theme.palette.divider}`,
+        //   // padding: 6,
       })}
     >
       <Box flexDirection={'row'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-        <div style={{ padding: 16, background: network.themeColor, height: '150px' }}>
+        <div style={{ padding: 16, background: network.themeColor, height: '200px' }}>
           <MarketLogo
             size={64}
             logo={network.networkLogoPath}
@@ -34,10 +35,9 @@ export const MarketList = (props: IProps) => {
         <Box
           flexDirection={'column'}
           display={'flex'}
+          justifyContent={'space-between'}
           flex={1}
           padding={4}
-        // alignItems={'center'}
-        // justifyContent={'center'}
         >
           <Typography component="div" variant="h2" mb={2} mt={2}>
             <Trans>
@@ -45,13 +45,13 @@ export const MarketList = (props: IProps) => {
             </Trans>
           </Typography>
 
-          <Typography component="div" mb={2}>
+          <Typography component="div" mb={6}>
             <Trans>{network.desc}</Trans>
           </Typography>
 
           <div>
             <Button variant="contained" href={`${ROUTES.markets}?marketName=${marketId}`}>
-              <Trans>View {marketNaming.name} Market</Trans>
+              <Trans>View Market</Trans>
             </Button>
           </div>
         </Box>

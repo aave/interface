@@ -12,19 +12,22 @@ export const HomeContentWrapper = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 32px)' : '100%';
+
+  const marketWidth = isDesktop ? 'calc(25% - 32px)' : '100%';
+
   return (
     <Box>
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',
-          justifyContent: 'space-around',
+          justifyContent: 'flex-start',
           alignItems: 'flex-start',
         }}
       >
         {availableMarkets.map((marketId: CustomMarket, index: number) => {
           return (
-            <Box sx={{ width: paperWidth }} key={marketId} mt={index !== 0 && !isDesktop ? 4 : 0}>
+            <Box sx={{ width: marketWidth }} key={marketId} mt={index !== 0 && !isDesktop ? 4 : 0}>
               <MarketList marketId={marketId} />
             </Box>
           );
