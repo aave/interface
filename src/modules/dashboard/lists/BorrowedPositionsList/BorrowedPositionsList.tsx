@@ -131,31 +131,29 @@ export const BorrowedPositionsList = () => {
     true
   );
 
-  const RenderHeader: React.FC = () => {
-    return (
-      <ListHeaderWrapper>
-        {head.map((col) => (
-          <ListColumn
-            isRow={col.sortKey === 'symbol'}
-            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
-            key={col.sortKey}
+  const RenderHeader = (
+    <ListHeaderWrapper>
+      {head.map((col) => (
+        <ListColumn
+          isRow={col.sortKey === 'symbol'}
+          maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
+          key={col.sortKey}
+        >
+          <ListHeaderTitle
+            sortName={sortName}
+            sortDesc={sortDesc}
+            setSortName={setSortName}
+            setSortDesc={setSortDesc}
+            sortKey={col.sortKey}
+            source="Borrowed Positions Dashboard"
           >
-            <ListHeaderTitle
-              sortName={sortName}
-              sortDesc={sortDesc}
-              setSortName={setSortName}
-              setSortDesc={setSortDesc}
-              sortKey={col.sortKey}
-              source="Borrowed Positions Dashboard"
-            >
-              {col.title}
-            </ListHeaderTitle>
-          </ListColumn>
-        ))}
-        <ListButtonsColumn isColumnHeader />
-      </ListHeaderWrapper>
-    );
-  };
+            {col.title}
+          </ListHeaderTitle>
+        </ListColumn>
+      ))}
+      <ListButtonsColumn isColumnHeader />
+    </ListHeaderWrapper>
+  );
 
   if (loading)
     return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
@@ -215,7 +213,7 @@ export const BorrowedPositionsList = () => {
     >
       {sortedReserves.length ? (
         <>
-          {!downToXSM && <RenderHeader />}
+          {!downToXSM && RenderHeader}
           {sortedReserves.map((item) => (
             <BorrowedPositionsListItemWrapper
               item={item}

@@ -167,31 +167,29 @@ export const BorrowAssetsList = () => {
   );
   const borrowDisabled = !sortedReserves.length && !ghoReserve;
 
-  const RenderHeader: React.FC = () => {
-    return (
-      <ListHeaderWrapper>
-        {head.map((col) => (
-          <ListColumn
-            isRow={col.sortKey === 'symbol'}
-            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
-            key={col.sortKey}
+  const RenderHeader = (
+    <ListHeaderWrapper>
+      {head.map((col) => (
+        <ListColumn
+          isRow={col.sortKey === 'symbol'}
+          maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
+          key={col.sortKey}
+        >
+          <ListHeaderTitle
+            sortName={sortName}
+            sortDesc={sortDesc}
+            setSortName={setSortName}
+            setSortDesc={setSortDesc}
+            sortKey={col.sortKey}
+            source={'Borrow Dashboard'}
           >
-            <ListHeaderTitle
-              sortName={sortName}
-              sortDesc={sortDesc}
-              setSortName={setSortName}
-              setSortDesc={setSortDesc}
-              sortKey={col.sortKey}
-              source={'Borrow Dashboard'}
-            >
-              {col.title}
-            </ListHeaderTitle>
-          </ListColumn>
-        ))}
-        <ListButtonsColumn isColumnHeader />
-      </ListHeaderWrapper>
-    );
-  };
+            {col.title}
+          </ListHeaderTitle>
+        </ListColumn>
+      ))}
+      <ListButtonsColumn isColumnHeader />
+    </ListHeaderWrapper>
+  );
 
   if (loading)
     return (
@@ -270,7 +268,7 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
+        {!downToXSM && !!borrowReserves.length && RenderHeader}
         {ghoReserve && downToXSM && displayGho({ symbol: ghoReserve.symbol, currentMarket }) && (
           <AssetCapsProvider asset={ghoReserve.reserve}>
             <GhoBorrowAssetsListItem {...ghoReserve} />
