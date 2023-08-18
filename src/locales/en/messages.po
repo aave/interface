@@ -213,8 +213,8 @@ msgid "Allows you to decide whether to use a supplied asset as collateral. An as
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
 #: src/components/infoTooltips/APYTypeTooltip.tsx
-msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
-msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
+msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will act as a fixed rate in the short term, but can be re-balanced in response to changes in market conditions."
+msgstr "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will act as a fixed rate in the short term, but can be re-balanced in response to changes in market conditions."
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
@@ -1268,6 +1268,7 @@ msgstr "Language"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/incentives/GhoIncentivesCard.tsx
+#: src/components/infoTooltips/APYTypeTooltip.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
@@ -2068,8 +2069,8 @@ msgid "Stable debt supply is not zero"
 msgstr "Stable debt supply is not zero"
 
 #: src/components/infoTooltips/StableAPYTooltip.tsx
-msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
-msgstr "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
+msgid "Stable interest rate will act as a fixed rate in the short term, but can be re-balanced in response to changes in market conditions."
+msgstr "Stable interest rate will act as a fixed rate in the short term, but can be re-balanced in response to changes in market conditions."
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
