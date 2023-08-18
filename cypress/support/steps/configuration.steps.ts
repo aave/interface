@@ -93,141 +93,58 @@ export const configEnvWithTenderly = ({
   });
 };
 
-export const configEnvWithTenderlyMainnetFork = ({
-  market = `fork_proto_mainnet`,
-  tokens,
-  v3,
-  wallet,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-  wallet?: { address: string; privateKey: string };
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3, wallet });
-};
-
-export const configEnvWithTenderlyPolygonFork = ({
-  market = `fork_proto_polygon`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyAvalancheFork = ({
-  market = `fork_proto_avalanche`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyAvalancheFujiFork = ({
-  market = `proto_fuji_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyOptimismFork = ({
-  market = `fork_proto_optimism_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.optimism, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyFantomFork = ({
-  market = `fork_proto_fantom_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.fantom, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyArbitrumFork = ({
-  market = `fork_proto_arbitrum_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens, unpause: v3 });
-};
-
-export const configEnvWithTenderlyAEthereumV3Fork = ({
-  market = `fork_proto_mainnet_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({
-    chainId: ChainId.mainnet,
-    market,
+const createConfigWithTenderlyFork =
+  (chainId: number, defaultMarket: string) =>
+  ({
+    market = defaultMarket,
     tokens,
-    unpause: v3,
-  });
-};
+    v3,
+    wallet,
+  }: {
+    market?: string;
+    tokens?: { tokenAddress: string }[];
+    v3?: boolean;
+    wallet?: { address: string; privateKey: string };
+  }) =>
+    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet });
 
-export const configEnvWithTenderlyGoerliGhoFork = ({
-  market = `fork_proto_goerli_gho_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({
-    chainId: ChainId.goerli,
-    market,
-    tokens,
-    unpause: v3,
-    enableTestnet: true,
-  });
-};
-
-export const configEnvWithTenderlySepoliaGhoFork = ({
-  market = `fork_proto_sepolia_gho_v3`,
-  tokens,
-  v3,
-}: {
-  market?: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  v3?: boolean;
-}) => {
-  configEnvWithTenderly({
-    chainId: ChainId.sepolia,
-    market,
-    tokens,
-    unpause: v3,
-    enableTestnet: true,
-  });
-};
+export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
+  ChainId.mainnet,
+  'fork_proto_mainnet'
+);
+export const configEnvWithTenderlyPolygonFork = createConfigWithTenderlyFork(
+  ChainId.polygon,
+  'fork_proto_polygon'
+);
+export const configEnvWithTenderlyAvalancheFork = createConfigWithTenderlyFork(
+  ChainId.avalanche,
+  'fork_proto_avalanche'
+);
+export const configEnvWithTenderlyAvalancheFujiFork = createConfigWithTenderlyFork(
+  ChainId.fuji,
+  'proto_fuji_v3'
+);
+export const configEnvWithTenderlyOptimismFork = createConfigWithTenderlyFork(
+  ChainId.optimism,
+  'fork_proto_optimism_v3'
+);
+export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
+  ChainId.fantom,
+  'fork_proto_fantom_v3'
+);
+export const configEnvWithTenderlyArbitrumFork = createConfigWithTenderlyFork(
+  ChainId.arbitrum_one,
+  'fork_proto_arbitrum_v3'
+);
+export const configEnvWithTenderlyAEthereumV3Fork = createConfigWithTenderlyFork(
+  ChainId.mainnet,
+  'fork_proto_mainnet_v3'
+);
+export const configEnvWithTenderlyGoerliGhoFork = createConfigWithTenderlyFork(
+  ChainId.goerli,
+  'fork_proto_goerli_gho_v3'
+);
+export const configEnvWithTenderlySepoliaGhoFork = createConfigWithTenderlyFork(
+  ChainId.sepolia,
+  'fork_proto_sepolia_gho_v3'
+);
