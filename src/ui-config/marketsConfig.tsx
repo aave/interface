@@ -310,9 +310,6 @@ export const marketsData: {
     chainId: ChainId.base,
     enabledFeatures: {
       incentives: true,
-      liquiditySwap: true,
-      collateralRepay: true,
-      debtSwitch: true,
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
