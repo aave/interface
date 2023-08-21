@@ -139,7 +139,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
-      WITHDRAW_AND_SWAP_ADAPTER: '0xd5d2e138531fef36288ff9448c6890ff67f651eb',
+      WITHDRAW_AND_SWAP_ADAPTER: '0x14b5f6dbd74d7a54be5b7aa9543cade6793c0a38',
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
