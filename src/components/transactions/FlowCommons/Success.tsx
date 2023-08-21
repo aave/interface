@@ -2,7 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Alert, Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -20,6 +20,7 @@ export type SuccessTxViewProps = {
   collateral?: boolean;
   rate?: InterestRate;
   addToken?: ERC20TokenType;
+  isSupply?: boolean;
   customAction?: ReactNode;
   customText?: ReactNode;
 };
@@ -40,6 +41,7 @@ export const TxSuccessView = ({
   addToken,
   customAction,
   customText,
+  isSupply,
 }: SuccessTxViewProps) => {
   const { close, mainTxState } = useModalContext();
   const { addERC20Token } = useWeb3Context();
@@ -78,6 +80,22 @@ export const TxSuccessView = ({
         <Typography sx={{ mt: 4 }} variant="h2">
           <Trans>All done!</Trans>
         </Typography>
+
+        {isSupply && (
+          <Alert severity="info">
+            <b>Congrats for providing liquidity!</b>
+            <br />
+            You are now eligible to get exclusive role in our{' '}
+            <Link href="https://discord.com/invite/mahadao" target="_blank">
+              Discord
+            </Link>
+            . Visit out{' '}
+            <Link href="https://docs.mahalend.com/faq/" target="_blank">
+              Guild.xyz
+            </Link>{' '}
+            page to claim the role and learn more.
+          </Alert>
+        )}
 
         <Box
           sx={{
