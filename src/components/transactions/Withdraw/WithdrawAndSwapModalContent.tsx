@@ -72,6 +72,9 @@ export const WithdrawAndSwapModalContent = ({
     (r) => r.underlyingAsset === targetReserve.address
   ) as ComputedUserReserveData;
 
+  const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
+  const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
+
   const {
     inputAmountUSD,
     inputAmount,
@@ -85,15 +88,13 @@ export const WithdrawAndSwapModalContent = ({
     userAddress: currentAccount,
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
-    max: isMaxSelected,
+    max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
     skip: withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
   const loadingSkeleton = routeLoading && outputAmountUSD === '0';
-  const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
-  const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
 
