@@ -28,8 +28,13 @@ export const WithdrawModal = () => {
     isFeatureEnabled.withdrawAndSwap(currentMarketData) &&
     args.underlyingAsset !== ghoReserve?.underlyingAsset;
 
+  const handleClose = () => {
+    setWithdrawType(WithdrawType.WITHDRAW);
+    close();
+  };
+
   return (
-    <BasicModal open={type === ModalType.Withdraw} setOpen={close}>
+    <BasicModal open={type === ModalType.Withdraw} setOpen={handleClose}>
       <ModalWrapper
         title={<Trans>Withdraw</Trans>}
         underlyingAsset={args.underlyingAsset}
