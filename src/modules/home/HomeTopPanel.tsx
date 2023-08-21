@@ -1,18 +1,23 @@
 import { Trans } from '@lingui/macro';
-import { Box } from '@mui/material';
+import {Box, useMediaQuery, useTheme} from '@mui/material';
 import * as React from 'react';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 
 export const HomeTopPanel = () => {
+  const theme = useTheme();
+  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <>
       <TopInfoPanel>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box mb={4}>
-            <img src={'/apple-touch-icon.png'} alt={'moonCakeFi'} width={150} height={150} />
-          </Box>
+          {!downToMD &&
+            <Box mb={4}>
+              <img src={'/apple-touch-icon.png'} alt={'moonCakeFi'} width={150} height={150} />
+            </Box>
+          }
           <div>
             <PageTitle
               pageTitle={

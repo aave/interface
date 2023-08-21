@@ -1,4 +1,5 @@
 import '/public/fonts/inter/inter.css';
+import '/public/fonts/quicksand/quicksand.css';
 import '/src/styles/variables.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';

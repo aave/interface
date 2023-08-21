@@ -17,16 +17,18 @@ export const MarketList = (props: IProps) => {
   return (
     <Paper
       style={{ padding: 0 }}
-      sx={() => ({
-        marginRight: 2,
-        //   // border: `1px solid ${theme.palette.divider}`,
-        //   // padding: 6,
-      })}
     >
       <Box flexDirection={'row'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-        <div style={{ padding: 16, background: network.themeColor, height: '200px' }}>
-          <MarketLogo size={64} logo={network.networkLogoPath} />
-        </div>
+        <Box
+          style={{ background: network.themeColor, height: '200px' }}
+          position={'relative'}
+          p={4}
+          width={116}
+        >
+          <Box position={'absolute'} top={'50%'} sx={{ transform: 'translate(0,-50%)' }}>
+            <MarketLogo size={84} logo={network.networkLogoPath} />
+          </Box>
+        </Box>
         <Box
           flexDirection={'column'}
           display={'flex'}

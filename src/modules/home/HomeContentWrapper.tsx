@@ -11,9 +11,9 @@ export const HomeContentWrapper = () => {
   const { breakpoints } = useTheme();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
-  const paperWidth = isDesktop ? 'calc(50% - 32px)' : '100%';
+  const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
-  const marketWidth = isDesktop ? 'calc(25% - 32px)' : '100%';
+  const marketWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   return (
     <Box>
@@ -21,7 +21,7 @@ export const HomeContentWrapper = () => {
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           alignItems: 'flex-start',
         }}
       >
@@ -36,7 +36,7 @@ export const HomeContentWrapper = () => {
       <Box
         sx={{
           display: isDesktop ? 'flex' : 'block',
-          justifyContent: 'space-around',
+          justifyContent: 'space-between',
           alignItems: 'flex-start',
         }}
         mt={4}

@@ -29,9 +29,6 @@ export const Guild = () => {
         <Button variant="contained" target="_blank" href={'https://guild.xyz/mooncakefi'}>
           <Trans>Join our Guild</Trans>
         </Button>
-        <Button variant="outlined" target="_blank" href={'https://discord.gg/fCcv8K6Uqy'}>
-          <Trans>Join our Discord</Trans>
-        </Button>
       </CardActions>
     </Card>
   );

@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url("Quicksand-Regular.woff") format("woff"),
+  url("Quicksand-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url("Quicksand-Regular.woff") format("woff"),
+  url("Quicksand-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("Quicksand-Regular.woff") format("woff"),
+       url("Quicksand-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("Quicksand-Medium.woff") format("woff"),
+       url("Quicksand-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("Quicksand-Medium.woff") format("woff"),
+       url("Quicksand-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("Quicksand-SemiBold.woff") format("woff"),
+       url("Quicksand-SemiBold.woff") format("woff");
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style:  normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("Quicksand-Bold.woff") format("woff"),
+       url("Quicksand-Bold.woff") format("woff");
+}

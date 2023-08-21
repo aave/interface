@@ -143,6 +143,10 @@ export function AppHeader() {
           )}
         </Box>
 
+        <Box sx={{ display: { md: 'block', lg: 'none' } }}>
+          <img src={'/logoLg.png'} alt={'moonCakeFi'} width={100} height={46} />
+        </Box>
+
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <NavItems />
         </Box>

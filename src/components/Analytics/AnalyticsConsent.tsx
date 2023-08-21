@@ -90,7 +90,7 @@ export default function AnalyticsBanner() {
           background: theme.palette.mode === 'dark' ? '#383D51' : '#F7F7F9',
           color: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
 
-          fontFamily: 'Inter',
+          fontFamily: 'Quicksand',
           fontWeight: '500',
           lineHeight: '24px',
           fontSize: '14px',
