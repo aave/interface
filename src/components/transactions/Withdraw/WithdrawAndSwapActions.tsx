@@ -3,8 +3,10 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,6 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -89,6 +92,7 @@ export const WithdrawAndSwapActions = ({
 
   const [approvedAmount, setApprovedAmount] = useState<number>(0);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
     return approvedAmount <= Number(amountToSwap);
@@ -110,16 +114,19 @@ export const WithdrawAndSwapActions = ({
         txCalldata: route.swapCallData,
         signatureParams,
       });
-      console.log(tx);
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
+      await response.wait(1);
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      refetchGhoData && refetchGhoData();
+      refetchPoolData && refetchPoolData();
+      refetchIncentiveData && refetchIncentiveData();
       setMainTxState({
         txHash: response.hash,
         loading: false,
         success: true,
       });
     } catch (error) {
-      console.log(error);
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
       setMainTxState({
