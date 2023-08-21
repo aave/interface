@@ -21,11 +21,11 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
-import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwapActions } from './WithdrawAndSwapActions';
+import { WithdrawAndSwapTxSuccessView } from './WithdrawAndSwapSuccess';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -134,12 +134,14 @@ export const WithdrawAndSwapModalContent = ({
 
   if (withdrawTxState.success)
     return (
-      <TxSuccessView
-        action={<Trans>withdrew</Trans>}
-        amount={amountRef.current}
+      <WithdrawAndSwapTxSuccessView
+        txHash={withdrawTxState.txHash}
+        amount={inputAmount}
         symbol={
           poolReserve.isWrappedBaseAsset ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol
         }
+        outSymbol={targetReserve.symbol}
+        outAmount={outputAmount}
       />
     );
 

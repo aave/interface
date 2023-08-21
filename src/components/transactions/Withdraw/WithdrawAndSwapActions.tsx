@@ -67,6 +67,7 @@ export const WithdrawAndSwapActions = ({
     estimateGasLimit,
     walletApprovalMethodPreference,
     generateSignatureRequest,
+    addTransaction,
   ] = useRootStore((state) => [
     state.withdrawAndSwap,
     state.currentMarketData,
@@ -76,6 +77,7 @@ export const WithdrawAndSwapActions = ({
     state.estimateGasLimit,
     state.walletApprovalMethodPreference,
     state.generateSignatureRequest,
+    state.addTransaction,
   ]);
   const {
     approvalTxState,
@@ -126,6 +128,16 @@ export const WithdrawAndSwapActions = ({
         loading: false,
         success: true,
       });
+      addTransaction(response.hash, {
+        action: ProtocolAction.withdrawAndSwap,
+        txState: 'success',
+        asset: poolReserve.underlyingAsset,
+        amount: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
+        assetName: poolReserve.name,
+        outAsset: targetReserve.underlyingAsset,
+        outAssetName: targetReserve.name,
+        outAmount: parseUnits(route.outputAmount, targetReserve.decimals).toString(),
+      });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
@@ -169,6 +181,14 @@ export const WithdrawAndSwapActions = ({
           txHash: response.hash,
           loading: false,
           success: true,
+        });
+        addTransaction(response.hash, {
+          action: ProtocolAction.withdrawAndSwap,
+          txState: 'success',
+          asset: poolReserve.aTokenAddress,
+          amount: parseUnits(amountToApprove, poolReserve.decimals).toString(),
+          assetName: `a${poolReserve.symbol}`,
+          spender: currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER,
         });
         setTxError(undefined);
         fetchApprovedAmount(poolReserve.aTokenAddress);

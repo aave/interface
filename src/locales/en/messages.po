@@ -190,7 +190,7 @@ msgid "All Assets"
 msgstr "All Assets"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "All done!"
 msgstr "All done!"
 
@@ -1587,7 +1587,7 @@ msgstr "Nothing supplied yet"
 msgid "Notify"
 msgstr "Notify"
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
@@ -1896,7 +1896,7 @@ msgid "Review tx"
 msgstr "Review tx"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Review tx details"
 msgstr "Review tx details"
 
@@ -2984,6 +2984,10 @@ msgstr "You {action} <0/> {symbol}"
 msgid "You've successfully switched borrow position."
 msgstr "You've successfully switched borrow position."
 
+#: src/components/transactions/Withdraw/WithdrawAndSwapSuccess.tsx
+msgid "You've successfully withdrew & switched tokens."
+msgstr "You've successfully withdrew & switched tokens."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"
@@ -3140,7 +3144,6 @@ msgstr "tokens, please go to the"
 msgid "will receive"
 msgstr "will receive"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"
