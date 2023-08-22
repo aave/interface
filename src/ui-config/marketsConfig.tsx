@@ -10,6 +10,7 @@ import {
   AaveV3Arbitrum,
   // AaveV3ArbitrumGoerli,
   AaveV3Avalanche,
+  AaveV3Base,
   AaveV3Ethereum,
   AaveV3Fantom,
   // AaveV3FantomTestnet,
@@ -94,6 +95,7 @@ export enum CustomMarket {
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   proto_metis_v3 = 'proto_metis_v3',
+  proto_base_v3 = 'proto_base_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -119,7 +121,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
-      debtSwitch: false,
+      debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -134,6 +136,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
+      DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -299,6 +302,30 @@ export const marketsData: {
   //     UI_INCENTIVE_DATA_PROVIDER: AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
   //   },
   // },
+  [CustomMarket.proto_base_v3]: {
+    marketTitle: 'Base',
+    v3: true,
+    chainId: ChainId.base,
+    enabledFeatures: {
+      incentives: true,
+    },
+    // TODO: Need subgraph, currently not supported
+    // subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Base.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Base.POOL,
+      WETH_GATEWAY: AaveV3Base.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Base.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Base.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Base.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: AaveV3Base.L2_ENCODER,
+      COLLECTOR: AaveV3Base.COLLECTOR,
+      // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
+      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
+      // DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+    },
+  },
+
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     v3: true,

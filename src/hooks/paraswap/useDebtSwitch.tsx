@@ -3,9 +3,9 @@ import { OptimalRate } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
+  convertParaswapErrorMessage,
   fetchExactOutRate,
   fetchExactOutTxParams,
-  MESSAGE_MAP,
   SwapData,
   SwapTransactionParams,
   UseSwapProps,
@@ -116,7 +116,7 @@ export const useDebtSwitch = ({
         setOutputAmountUSD(route.destUSD);
       } catch (e) {
         console.error(e);
-        const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
+        const message = convertParaswapErrorMessage(e.message);
         setError(message);
       } finally {
         setLoading(false);

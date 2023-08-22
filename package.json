@@ -32,9 +32,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.18.2",
-    "@aave/math-utils": "1.18.2",
-    "@bgd-labs/aave-address-book": "^1.29.0",
+    "@aave/contract-helpers": "1.18.3",
+    "@aave/math-utils": "1.18.3",
+    "@bgd-labs/aave-address-book": "^1.33.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -44,7 +44,7 @@
     "@lingui/react": "^3.14.0",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.9",
-    "@paraswap/sdk": "6.2.1",
+    "@paraswap/sdk": "6.2.2",
     "@tanstack/react-query": "^4.28.0",
     "@visx/axis": "^2.14.0",
     "@visx/curve": "^2.1.0",

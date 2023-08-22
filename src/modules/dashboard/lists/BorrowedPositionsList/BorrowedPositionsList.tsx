@@ -2,13 +2,11 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -31,9 +29,7 @@ import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
-import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
-import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
-import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
+import { BorrowedPositionsListItemWrapper } from './BorrowedPositionsListItemWrapper';
 
 const head = [
   {
@@ -66,8 +62,7 @@ const head = [
 
 export const BorrowedPositionsList = () => {
   const { user, loading, eModes } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig, currentMarket } = useProtocolDataContext();
-  const [displayGho] = useRootStore((store) => [store.displayGho]);
+  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const theme = useTheme();
@@ -222,23 +217,10 @@ export const BorrowedPositionsList = () => {
         <>
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <Fragment key={item.underlyingAsset + item.borrowRateMode}>
-              <AssetCapsProvider asset={item.reserve}>
-                {displayGho({ symbol: item.reserve.symbol, currentMarket }) ? (
-                  <GhoBorrowedPositionsListItem
-                    {...item}
-                    key={item.underlyingAsset + item.borrowRateMode}
-                  />
-                ) : downToXSM ? (
-                  <BorrowedPositionsListMobileItem
-                    {...item}
-                    key={item.underlyingAsset + item.borrowRateMode}
-                  />
-                ) : (
-                  <BorrowedPositionsListItem {...item} />
-                )}
-              </AssetCapsProvider>
-            </Fragment>
+            <BorrowedPositionsListItemWrapper
+              item={item}
+              key={item.underlyingAsset + item.borrowRateMode}
+            />
           ))}
         </>
       ) : (

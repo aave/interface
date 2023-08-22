@@ -1,7 +1,7 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
-import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
@@ -105,12 +105,14 @@ export const selectCurrentBaseCurrencyData = (state: RootStore) => {
   return selectFormatBaseCurrencyData(selectCurrentUserLendingPoolData(state));
 };
 
-export const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = STABLE_ASSETS.includes(a.iconSymbol.toUpperCase());
-  const bIsStable = STABLE_ASSETS.includes(b.iconSymbol.toUpperCase());
-  if (aIsStable && !bIsStable) return -1;
-  if (!aIsStable && bIsStable) return 1;
-  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
+export const reserveSortFn = (
+  a: { totalLiquidityUSD: string },
+  b: { totalLiquidityUSD: string }
+) => {
+  const numA = parseFloat(a.totalLiquidityUSD);
+  const numB = parseFloat(b.totalLiquidityUSD);
+
+  return numB > numA ? 1 : -1;
 };
 
 // TODO move formatUserSummaryAndIncentives

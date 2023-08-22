@@ -3,21 +3,21 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
+import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
+import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import {
-  // DetailsHFLine,
-  DetailsIncentivesLine,
-  DetailsNumberLine,
-} from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { GhoRange } from './DebtSwitchModalContent';
 
 export type DebtSwitchModalDetailsProps = {
-  // healthFactor: string;
-  // healthFactorAfterSwap: string;
   switchSource: ComputedUserReserveData;
   switchTarget: ComputedUserReserveData;
   toAmount: string;
@@ -27,11 +27,16 @@ export type DebtSwitchModalDetailsProps = {
   sourceBorrowAPY: string;
   targetBorrowAPY: string;
   showAPYTypeChange: boolean;
+  ghoData?: GhoRange;
+  currentMarket: CustomMarket;
 };
+const ArrowRightIcon = (
+  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+    <ArrowNarrowRightIcon />
+  </SvgIcon>
+);
 
 export const DebtSwitchModalDetails = ({
-  // healthFactor,
-  // healthFactorAfterSwap,
   switchSource,
   switchTarget,
   toAmount,
@@ -41,7 +46,10 @@ export const DebtSwitchModalDetails = ({
   sourceBorrowAPY,
   targetBorrowAPY,
   showAPYTypeChange,
+  ghoData,
+  currentMarket,
 }: DebtSwitchModalDetailsProps) => {
+  // if there is an inputAmount + GHO -> re-calculate max
   const sourceAmountAfterSwap = valueToBigNumber(sourceBalance).minus(valueToBigNumber(fromAmount));
 
   const targetAmountAfterSwap = valueToBigNumber(switchTarget.variableBorrows).plus(
@@ -60,23 +68,75 @@ export const DebtSwitchModalDetails = ({
     </>
   );
 
+  let switchToApy = 0;
+  let switchToRange = ghoData?.ghoApyRange;
+  if (switchTarget.reserve.symbol === 'GHO' && ghoData) {
+    switchToApy = weightedAverageAPY(
+      ghoData.ghoVariableBorrowApy,
+      ghoData.userCurrentBorrowBalance + ghoData.inputAmount,
+      ghoData.userGhoAvailableToBorrowAtDiscount,
+      ghoData.ghoBorrowAPYWithMaxDiscount
+    );
+    if (switchToRange) {
+      switchToRange = [switchToRange[0], switchToApy];
+    }
+  }
+
   return (
     <>
-      {/* {healthFactorAfterSwap && (
-        <DetailsHFLine
-          healthFactor={healthFactor}
-          futureHealthFactor={healthFactorAfterSwap}
-          visibleHfChange={true}
-          loading={loading}
-        />
-      )} */}
-      <DetailsNumberLine
-        description={<Trans>Borrow apy</Trans>}
-        value={sourceBorrowAPY}
-        futureValue={targetBorrowAPY}
-        percent
-        loading={loading}
-      />
+      <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {loading ? (
+            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+          ) : (
+            <>
+              {switchSource.reserve.symbol === 'GHO' && ghoData ? (
+                <GhoIncentivesCard
+                  useApyRange={false}
+                  rangeValues={ghoData.ghoApyRange}
+                  variant="main14"
+                  color="text.secondary"
+                  value={ghoData.userCurrentBorrowApy}
+                  data-cy={`apyType`}
+                  stkAaveBalance={ghoData.userDiscountTokenBalance}
+                  ghoRoute={
+                    ROUTES.reserveOverview(switchSource.underlyingAsset ?? '', currentMarket) +
+                    '/#discount'
+                  }
+                  forceShowTooltip
+                  withTokenIcon={ghoData.qualifiesForDiscount}
+                  userQualifiesForDiscount={ghoData.qualifiesForDiscount}
+                />
+              ) : (
+                <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
+              )}
+              {ArrowRightIcon}
+              {switchTarget.reserve.symbol === 'GHO' && ghoData ? (
+                <GhoIncentivesCard
+                  useApyRange={ghoData.qualifiesForDiscount && !ghoData.inputAmount}
+                  rangeValues={ghoData.inputAmount === 0 ? ghoData.ghoApyRange : switchToRange}
+                  variant="main14"
+                  color="text.secondary"
+                  value={
+                    ghoData.inputAmount === 0 ? ghoData.userBorrowApyAfterMaxSwitch : switchToApy
+                  }
+                  data-cy={`apyType`}
+                  stkAaveBalance={ghoData.userDiscountTokenBalance}
+                  ghoRoute={
+                    ROUTES.reserveOverview(switchTarget.underlyingAsset ?? '', currentMarket) +
+                    '/#discount'
+                  }
+                  forceShowTooltip
+                  withTokenIcon={ghoData.qualifiesForDiscount}
+                  userQualifiesForDiscount={ghoData.qualifiesForDiscount}
+                />
+              ) : (
+                <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
+              )}
+            </>
+          )}
+        </Box>
+      </Row>
       {showAPYTypeChange && (
         <Row
           caption={
@@ -109,15 +169,25 @@ export const DebtSwitchModalDetails = ({
                 sx={{ borderRadius: '4px' }}
               />
             ) : (
-              <Typography variant="secondary14">
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Trans>Stable</Trans>
-                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                    <ArrowNarrowRightIcon />
-                  </SvgIcon>
-                  <Trans>Variable</Trans>
-                </Box>
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {switchSource.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Stable</Trans>
+                  </Typography>
+                )}
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                {switchTarget.reserve.symbol === 'GHO' ? (
+                  <FixedAPYTooltip text={<Trans>Fixed</Trans>} typography="secondary14" />
+                ) : (
+                  <Typography variant="secondary14">
+                    <Trans>Variable</Trans>
+                  </Typography>
+                )}
+              </Box>
             )}
           </Box>
         </Row>

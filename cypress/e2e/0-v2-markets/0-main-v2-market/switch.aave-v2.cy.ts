@@ -19,7 +19,7 @@ const testData = {
   },
   swap: {
     fromAsset: assets.aaveMarket.DAI,
-    toAsset: assets.aaveMarket.LUSD,
+    toAsset: assets.aaveMarket.USDC,
     isBorrowed: true,
     isVariableBorrowedAPY: false,
     amount: 200,
@@ -31,7 +31,7 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.aaveMarket.LUSD.shortName,
+        assetName: assets.aaveMarket.USDC.shortName,
         apyType: constants.borrowAPYType.variable,
       },
     ],
