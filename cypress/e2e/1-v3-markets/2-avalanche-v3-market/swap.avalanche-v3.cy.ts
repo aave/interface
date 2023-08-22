@@ -14,7 +14,7 @@ const testData = {
   swap: [
     {
       fromAsset: assets.avalancheV3Market.AVAX,
-      toAsset: assets.avalancheV3Market.DAI,
+      toAsset: assets.avalancheV3Market.USDC,
       isCollateralFromAsset: true,
       amount: 1,
       hasApproval: false,
@@ -24,8 +24,8 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.avalancheV3Market.DAI.shortName,
-        wrapped: assets.avalancheV3Market.DAI.wrapped,
+        assetName: assets.avalancheV3Market.USDC.shortName,
+        wrapped: assets.avalancheV3Market.USDC.wrapped,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
