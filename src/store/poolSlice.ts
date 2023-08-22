@@ -25,7 +25,7 @@ import {
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
-  WithdrawAndSwapAdapterService,
+  WithdrawAndSwitchAdapterService,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -48,7 +48,7 @@ import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/De
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
-import { WithdrawAndSwapActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwapActions';
+import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
@@ -94,7 +94,7 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  withdrawAndSwap: (args: WithdrawAndSwapActionProps) => PopulatedTransaction;
+  withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -631,7 +631,7 @@ export const createPoolSlice: StateCreator<
         permitSignature,
       });
     },
-    withdrawAndSwap: ({
+    withdrawAndSwitch: ({
       poolReserve,
       targetReserve,
       isMaxSelected,
@@ -646,7 +646,7 @@ export const createPoolSlice: StateCreator<
       const provider = get().jsonRpcProvider();
       const currentMarketData = get().currentMarketData;
 
-      const withdrawAndSwapService = new WithdrawAndSwapAdapterService(
+      const withdrawAndSwapService = new WithdrawAndSwitchAdapterService(
         provider,
         currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER
       );
@@ -669,15 +669,15 @@ export const createPoolSlice: StateCreator<
         };
       }
 
-      return withdrawAndSwapService.withdrawAndSwap({
-        assetToSwapFrom: poolReserve.underlyingAsset,
-        assetToSwapTo: targetReserve.underlyingAsset,
-        swapAll: isMaxSelected,
-        amountToSwap: amountToSwap,
+      return withdrawAndSwapService.withdrawAndSwitch({
+        assetToSwitchFrom: poolReserve.underlyingAsset,
+        assetToSwitchTo: targetReserve.underlyingAsset,
+        switchAll: isMaxSelected,
+        amountToSwitch: amountToSwap,
         minAmountToReceive: amountToReceive,
         user,
         augustus,
-        swapCallData: txCalldata,
+        switchCallData: txCalldata,
         permitParams: signatureDeconstruct,
       });
     },

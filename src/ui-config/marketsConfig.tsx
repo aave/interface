@@ -43,7 +43,7 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
     debtSwitch?: boolean;
-    withdrawAndSwap?: boolean;
+    withdrawAndSwitch?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -123,7 +123,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
-      withdrawAndSwap: true,
+      withdrawAndSwitch: true,
       debtSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
@@ -316,7 +316,7 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwap: true,
+      withdrawAndSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
     addresses: {
@@ -367,7 +367,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwap: true,
+      withdrawAndSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche',
     addresses: {
@@ -518,7 +518,7 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
       debtSwitch: true,
-      withdrawAndSwap: true,
+      withdrawAndSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism',
     addresses: {
@@ -545,7 +545,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwap: true,
+      withdrawAndSwitch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon',
     addresses: {

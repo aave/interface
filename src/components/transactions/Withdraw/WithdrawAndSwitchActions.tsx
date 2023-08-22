@@ -19,7 +19,7 @@ import { QueryKeys } from 'src/ui-config/queries';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
 
-interface WithdrawAndSwapProps extends BoxProps {
+interface WithdrawAndSwitchProps extends BoxProps {
   amountToSwap: string;
   amountToReceive: string;
   poolReserve: ComputedReserveData;
@@ -31,9 +31,9 @@ interface WithdrawAndSwapProps extends BoxProps {
   buildTxFn: () => Promise<SwapTransactionParams>;
 }
 
-export interface WithdrawAndSwapActionProps
+export interface WithdrawAndSwitchActionProps
   extends Pick<
-    WithdrawAndSwapProps,
+    WithdrawAndSwitchProps,
     'amountToSwap' | 'amountToReceive' | 'poolReserve' | 'targetReserve' | 'isMaxSelected'
   > {
   augustus: string;
@@ -47,7 +47,7 @@ interface SignedParams {
   amount: string;
 }
 
-export const WithdrawAndSwapActions = ({
+export const WithdrawAndSwitchActions = ({
   amountToSwap,
   isWrongNetwork,
   sx,
@@ -57,9 +57,9 @@ export const WithdrawAndSwapActions = ({
   loading,
   blocked,
   buildTxFn,
-}: WithdrawAndSwapProps) => {
+}: WithdrawAndSwitchProps) => {
   const [
-    withdrawAndSwap,
+    withdrawAndSwitch,
     currentMarketData,
     jsonRpcProvider,
     account,
@@ -69,7 +69,7 @@ export const WithdrawAndSwapActions = ({
     generateSignatureRequest,
     addTransaction,
   ] = useRootStore((state) => [
-    state.withdrawAndSwap,
+    state.withdrawAndSwitch,
     state.currentMarketData,
     state.jsonRpcProvider,
     state.account,
@@ -106,7 +106,7 @@ export const WithdrawAndSwapActions = ({
     try {
       setMainTxState({ ...mainTxState, loading: true });
       const route = await buildTxFn();
-      const tx = withdrawAndSwap({
+      const tx = withdrawAndSwitch({
         poolReserve,
         targetReserve,
         isMaxSelected,
@@ -129,7 +129,7 @@ export const WithdrawAndSwapActions = ({
         success: true,
       });
       addTransaction(response.hash, {
-        action: ProtocolAction.withdrawAndSwap,
+        action: ProtocolAction.withdrawAndSwitch,
         txState: 'success',
         asset: poolReserve.underlyingAsset,
         amount: parseUnits(route.inputAmount, poolReserve.decimals).toString(),
@@ -183,7 +183,7 @@ export const WithdrawAndSwapActions = ({
           success: true,
         });
         addTransaction(response.hash, {
-          action: ProtocolAction.withdrawAndSwap,
+          action: ProtocolAction.withdrawAndSwitch,
           txState: 'success',
           asset: poolReserve.aTokenAddress,
           amount: parseUnits(amountToApprove, poolReserve.decimals).toString(),
@@ -232,7 +232,7 @@ export const WithdrawAndSwapActions = ({
 
   useEffect(() => {
     let switchGasLimit = 0;
-    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwap].recommended);
+    switchGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended);
     if (requiresApproval && !approvalTxState.success) {
       switchGasLimit += Number(APPROVAL_GAS_LIMIT);
     }

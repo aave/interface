@@ -357,7 +357,7 @@ msgstr "Author"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1159,7 +1159,7 @@ msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -1781,7 +1781,7 @@ msgstr "Read-only mode."
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
 msgstr "Receive (est.)"
 
@@ -1809,7 +1809,7 @@ msgstr "Reload the page"
 msgid "Remaining debt"
 msgstr "Remaining debt"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
 msgstr "Remaining supply"
@@ -2179,8 +2179,8 @@ msgstr "Supply apy"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -2841,7 +2841,7 @@ msgstr "With a voting power of <0/>"
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -2855,8 +2855,8 @@ msgstr "Withdraw"
 msgid "Withdraw & Switch"
 msgstr "Withdraw & Switch"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdraw and Switch"
 msgstr "Withdraw and Switch"
 
@@ -2864,11 +2864,11 @@ msgstr "Withdraw and Switch"
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"
 msgstr "Withdrawing and Switching"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
@@ -2984,7 +2984,7 @@ msgstr "You {action} <0/> {symbol}"
 msgid "You've successfully switched borrow position."
 msgstr "You've successfully switched borrow position."
 
-#: src/components/transactions/Withdraw/WithdrawAndSwapSuccess.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
 msgid "You've successfully withdrew & switched tokens."
 msgstr "You've successfully withdrew & switched tokens."
 

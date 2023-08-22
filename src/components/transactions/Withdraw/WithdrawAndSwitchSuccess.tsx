@@ -6,7 +6,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 
-export type WithdrawAndSwapTxSuccessViewProps = {
+export type WithdrawAndSwitchTxSuccessViewProps = {
   txHash?: string;
   amount?: string;
   symbol: string;
@@ -14,13 +14,13 @@ export type WithdrawAndSwapTxSuccessViewProps = {
   outSymbol: string;
 };
 
-export const WithdrawAndSwapTxSuccessView = ({
+export const WithdrawAndSwitchTxSuccessView = ({
   txHash,
   amount,
   symbol,
   outAmount,
   outSymbol,
-}: WithdrawAndSwapTxSuccessViewProps) => {
+}: WithdrawAndSwitchTxSuccessViewProps) => {
   return (
     <BaseSuccessView txHash={txHash}>
       <Box

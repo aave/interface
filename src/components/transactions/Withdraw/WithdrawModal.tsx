@@ -9,7 +9,7 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { WithdrawAndSwapModalContent } from './WithdrawAndSwapModalContent';
+import { WithdrawAndSwitchModalContent } from './WithdrawAndSwitchModalContent';
 import { WithdrawModalContent } from './WithdrawModalContent';
 import { WithdrawType, WithdrawTypeSelector } from './WithdrawTypeSelector';
 
@@ -25,7 +25,7 @@ export const WithdrawModal = () => {
   const ghoReserve = getGhoReserve(reserves);
 
   const isWithdrawAndSwapPossible =
-    isFeatureEnabled.withdrawAndSwap(currentMarketData) &&
+    isFeatureEnabled.withdrawAndSwitch(currentMarketData) &&
     args.underlyingAsset !== ghoReserve?.underlyingAsset;
 
   const handleClose = () => {
@@ -53,9 +53,9 @@ export const WithdrawModal = () => {
                 setUnwrap={setWithdrawUnWrapped}
               />
             )}
-            {withdrawType === WithdrawType.WITHDRAWSWAP && (
+            {withdrawType === WithdrawType.WITHDRAWSWITCH && (
               <>
-                <WithdrawAndSwapModalContent {...params} />
+                <WithdrawAndSwitchModalContent {...params} />
               </>
             )}
           </>

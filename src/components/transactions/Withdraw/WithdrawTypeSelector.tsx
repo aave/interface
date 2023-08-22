@@ -8,7 +8,7 @@ import { WITHDRAW_MODAL } from 'src/utils/mixPanelEvents';
 
 export enum WithdrawType {
   WITHDRAW,
-  WITHDRAWSWAP,
+  WITHDRAWSWITCH,
 }
 export function WithdrawTypeSelector({
   withdrawType,
@@ -42,8 +42,8 @@ export function WithdrawTypeSelector({
         </StyledTxModalToggleButton>
 
         <StyledTxModalToggleButton
-          value={WithdrawType.WITHDRAWSWAP}
-          disabled={withdrawType === WithdrawType.WITHDRAWSWAP}
+          value={WithdrawType.WITHDRAWSWITCH}
+          disabled={withdrawType === WithdrawType.WITHDRAWSWITCH}
           onClick={() =>
             trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw and Switch' })
           }

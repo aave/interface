@@ -24,8 +24,8 @@ import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
-import { WithdrawAndSwapActions } from './WithdrawAndSwapActions';
-import { WithdrawAndSwapTxSuccessView } from './WithdrawAndSwapSuccess';
+import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
+import { WithdrawAndSwitchTxSuccessView } from './WithdrawAndSwitchSuccess';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -34,7 +34,7 @@ export enum ErrorType {
   ZERO_LTV_WITHDRAW_BLOCKED,
 }
 
-export const WithdrawAndSwapModalContent = ({
+export const WithdrawAndSwitchModalContent = ({
   poolReserve,
   userReserve,
   symbol,
@@ -135,7 +135,7 @@ export const WithdrawAndSwapModalContent = ({
 
   if (withdrawTxState.success)
     return (
-      <WithdrawAndSwapTxSuccessView
+      <WithdrawAndSwitchTxSuccessView
         txHash={withdrawTxState.txHash}
         amount={inputAmount}
         symbol={
@@ -272,7 +272,7 @@ export const WithdrawAndSwapModalContent = ({
         </>
       )}
 
-      <WithdrawAndSwapActions
+      <WithdrawAndSwitchActions
         poolReserve={poolReserve}
         targetReserve={swapTarget.reserve}
         amountToSwap={inputAmount}
