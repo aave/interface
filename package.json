@@ -32,8 +32,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.19.1-b45a3ae879f959102573849b6b08aec23814490e.0",
-    "@aave/math-utils": "1.18.2",
+    "@aave/contract-helpers": "1.20.0",
+    "@aave/math-utils": "1.20.0",
     "@bgd-labs/aave-address-book": "^1.30.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
