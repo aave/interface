@@ -22,7 +22,7 @@ import {
   AaveV3Optimism,
   AaveV3OptimismGoerli,
   AaveV3Polygon,
-  AaveV3ScrollAlpha,
+  AaveV3ScrollSepolia,
   AaveV3Sepolia,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
@@ -86,7 +86,7 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
-  proto_scroll_alpha_v3 = 'proto_scroll_alpha_v3',
+  proto_scroll_sepolia_v3 = 'proto_scroll_sepolia_v3',
   proto_sepolia_v3 = 'proto_sepolia_v3',
   // v3 mainnets
   proto_mainnet_v3 = 'proto_mainnet_v3',
@@ -444,23 +444,23 @@ export const marketsData: {
       L2_ENCODER: AaveV3OptimismGoerli.L2_ENCODER,
     },
   },
-  [CustomMarket.proto_scroll_alpha_v3]: {
-    marketTitle: 'Scroll Alpha Görli',
+  [CustomMarket.proto_scroll_sepolia_v3]: {
+    marketTitle: 'Scroll Sepolia',
     v3: true,
-    chainId: ChainId.scroll_alpha,
+    chainId: ChainId.scroll_sepolia,
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3ScrollAlpha.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3ScrollAlpha.POOL,
-      WETH_GATEWAY: AaveV3ScrollAlpha.WETH_GATEWAY,
-      FAUCET: AaveV3ScrollAlpha.FAUCET,
-      WALLET_BALANCE_PROVIDER: AaveV3ScrollAlpha.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3ScrollAlpha.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3ScrollAlpha.UI_INCENTIVE_DATA_PROVIDER,
-      L2_ENCODER: AaveV3ScrollAlpha.L2_ENCODER,
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3ScrollSepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3ScrollSepolia.POOL,
+      WETH_GATEWAY: AaveV3ScrollSepolia.WETH_GATEWAY,
+      FAUCET: AaveV3ScrollSepolia.FAUCET,
+      WALLET_BALANCE_PROVIDER: AaveV3ScrollSepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3ScrollSepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3ScrollSepolia.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: AaveV3ScrollSepolia.L2_ENCODER,
     },
   },
   [CustomMarket.proto_fantom_v3]: {
