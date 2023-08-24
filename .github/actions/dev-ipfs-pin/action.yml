@@ -1,0 +1,50 @@
+name: Pin to staging cluster
+description: Upload build to ipfs node
+inputs:
+  IPFS_STAGING_SERVER_PORT:
+    description: ''
+    required: true
+  IPFS_STAGING_SERVER:
+    description: ''
+    required: true
+  IPFS_STAGING_KEY:
+    description: ''
+    required: true
+  BUILD_PATH:
+    description: path to the build directory
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Prepare env and Compress build to IPFS dev server
+      id: ipfs-hash
+      continue-on-error: false
+      shell: bash
+      run: |
+        echo "${{ inputs.IPFS_STAGING_KEY }}" | base64 --decode | base64 --decode >> /tmp/key && chmod 400 /tmp/key
+        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
+
+    - name: Upload an decompress build to IPFS dev server
+      id: ipfs-scp
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no -i /tmp/key -P \${{ inputs.IPFS_STAGING_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_STAGING_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} 'tar -zxvf app.tar.gz '
+
+    - name: Add build to IPFS dev server
+      id: ipfs-build-add
+      continue-on-error: false
+      shell: bash
+      run: |
+        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/") "
+        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs pin add $IPFS_HASH "
+
+    - name: Clean build and tmp directory
+      id: ipfs-clean
+      continue-on-error: false
+      shell: bash
+      run: |
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" "

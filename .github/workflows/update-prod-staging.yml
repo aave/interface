@@ -23,7 +23,17 @@ jobs:
           name: out
           path: out
 
-      - name: Pin to sefl-hosted cluster
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        with:
+          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
+          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
+          PIN_ALIAS: 'app-aave-staging'
+          BUILD_LOCATION: './out_staging'
+          CID_VERSION: 1
+
+      - name: Pin to self-hosted IPFS
         uses: ./.github/actions/production-ipfs-pin
         with:
           DOMAIN: app.aave.com
@@ -32,6 +42,12 @@ jobs:
           GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           BUILD_PATH: 'out'
           PINATA_HASH: '${{ inputs.PINATA_HASH }}'
+          IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
+          IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
+          IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
+          IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
 
       - name: crust
         uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
@@ -87,7 +103,7 @@ jobs:
           BUILD_LOCATION: './out_staging'
           CID_VERSION: 1
 
-      - name: Pin to sefl-hosted cluster
+      - name: Pin to self-hosted IPFS
         uses: ./.github/actions/production-ipfs-pin
         continue-on-error: true
         with:
@@ -97,6 +113,12 @@ jobs:
           GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           BUILD_PATH: 'out_staging'
           PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
+          IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
+          IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
+          IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
+          IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
 
       - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:

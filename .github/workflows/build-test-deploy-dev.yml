@@ -124,8 +124,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
-    outputs:
-      IPFS_HASH: ${{ steps.ipfs-hash.outputs.hash }}
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -135,14 +133,14 @@ jobs:
           name: out
           path: out
 
-      - name: private-ipfs
-        id: private-ipfs
-        uses: ./.github/actions/staging-ipfs-pin
+      - name: dev-ipfs
+        id: dev-ipfs
+        uses: ./.github/actions/dev-ipfs-pin
         with:
           IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
           IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
-          IPFS_SSH_KEY: '${{ secrets.IPFS_SSH_KEY }}'
-          BUILD_PATH: 'out_staging'
+          IPFS_STAGING_KEY: '${{ secrets.IPFS_STAGING_KEY }}'
+          BUILD_PATH: 'out'
 
   cypress_full_v2:
     runs-on: ubuntu-latest

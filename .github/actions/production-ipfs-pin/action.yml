@@ -19,6 +19,24 @@ inputs:
   PINATA_HASH:
     description: ''
     required: true
+  IPFS_PRIMARY_SERVER_PORT:
+    description: ''
+    required: true
+  IPFS_SECONDARY_SERVER_PORT:
+    description: ''
+    required: true
+  IPFS_PRIMARY_SERVER:
+    description: ''
+    required: true
+  IPFS_SECONDARY_SERVER:
+    description: ''
+    required: true
+  IPFS_PRIMARY_SERVER_KEY:
+    description: ''
+    required: true
+  IPFS_SECONDARY_SERVER_KEY:
+    description: ''
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -59,27 +77,66 @@ runs:
           --replication-min=1 --name='app-aave-${{ github.sha }}' \
           "${IPFS_HASH}"
 
-    - name: ipfs node pin
+    - name: Prepare env and Compress build on IPFS Primary Server
+      id: ipfs-hash
+      continue-on-error: false
+      shell: bash
+      run: |
+        echo "${{ inputs.IPFS_PRIMARY_SERVER_KEY }}" | base64 --decode | base64 --decode >> /tmp/primary_key && chmod 400 /tmp/primary_key 
+        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
+
+    - name: Upload an decompress build to IPFS Primary Server
+      id: ipfs-scp
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no -i /tmp/primary_key -P \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i /tmp/primary_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "tar -zxvf app.tar.gz "
+
+    - name: Add build to IPFS Primary Server
+      continue-on-error: false
+      id: ipfs-build-add
+      shell: bash
+      run: |
+        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" ) "
+        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH "
+
+    - name: Clean build and tmp directory  Primary Server
+      continue-on-error: false
+      id: ipfs-clean
+      shell: bash
+      run: |
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
+
+    - name: Prepare env and Compress build on IPFS Secondary Server
+      continue-on-error: false
       id: ipfs-hash
       shell: bash
       run: |
-        echo "Prepare env and Compress build"
-        echo "${{ secrets.IPFS_SSH_KEY }}" | base64 --decode | jq > /mnt/data/tmp/key
+        echo "${{ inputs.IPFS_SECONDARY_SERVER_KEY }}" | base64 --decode | base64 --decode >> /tmp/secondary_key && chmod 400 /tmp/secondary_key
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
-        echo "Upload build to IPFS server"
+    - name: Upload an decompress build to IPFS Secondary Server
+      id: ipfs-scp
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no -i /tmp/key -P \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER_PORT }} "tar -zxvf app.tar.gz "
 
-        scp -i /mnt/data/tmp/key -P {{ inputs.IPFS_PROD_SERVER_PORT }} ipfs@{{ inputs.IPFS_PROD_SERVER }}:/mnt/data/tmp/
+    - name: Add build to IPFS Secondary Server
+      continue-on-error: false
+      id: ipfs-build-add
+      shell: bash
+      run: |
+        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" ) "
+        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "ipfs pin add $IPFS_HASH "
 
-        echo "Decompress build"
-        ssh -p {{ inputs.IPFS_PROD_SERVER_PORT }} -i /mnt/data/tmp/key ipfs@{{ inputs.IPFS_PROD_SERVER }} 'tar -zxvf  /mnt/data/tmp/app.tar.gz -C /mnt/data/tmp/'
-
-        echo "Add build to IPFS"
-        IPFS_HASH="$(ssh -p {{ inputs.IPFS_PROD_SERVER_PORT }} -i /mnt/data/tmp/key ipfs@{{ inputs.IPFS_PROD_SERVER }} 'ipfs add /mnt/data/tmp/' ${{ inputs.BUILD_PATH }}"
-        echo "{hash}={$IPFS_HASH}" >> $GITHUB_OUTPUT
-
-        echo "Pin build to local IPFS"
-        ssh -p {{ inputs.IPFS_PROD_SERVER_PORT }} -i /mnt/data/tmp/key ipfs@{{ inputs.IPFS_PROD_SERVER }} "ipfs pin add '$IPFS_HASH' "
-
-        echo "Clean build and tmp directory"
-        ssh -p {{ inputs.IPFS_PROD_SERVER_PORT }} -i /mnt/data/tmp/key ipfs@{{ inputs.IPFS_PROD_SERVER }} "rm -rf /mnt/data/tmp/*"
+    - name: Clean build and directory
+      continue-on-error: false
+      id: ipfs-clean
+      shell: bash
+      run: |
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i /tmp/key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
