@@ -11,7 +11,6 @@ import {
   IncentivesController,
   IncentivesControllerV2,
   IncentivesControllerV2Interface,
-  InterestRate,
   LendingPool,
   LendingPoolBundle,
   MAX_UINT_AMOUNT,
@@ -92,13 +91,13 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  repay: (args: RepayActionProps) => PopulatedTransaction;
   repayWithPermit: (
     args: RepayActionProps & {
       signature: SignatureLike;
       deadline: string;
     }
-  ) => Promise<EthereumTransactionTypeExtended[]>;
+  ) => PopulatedTransaction;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -551,38 +550,47 @@ export const createPoolSlice: StateCreator<
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
-      const pool = getCorrectPool();
+      const poolBundle = getCorrectPoolBundle();
       const currentAccount = get().account;
-      if (pool instanceof Pool && repayWithATokens) {
-        return pool.repayWithATokens({
-          user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToRepay,
-          rateMode: debtType as InterestRate,
-          useOptimizedPath: get().useOptimizedPath(),
-        });
+      if (poolBundle instanceof PoolBundle) {
+        if (repayWithATokens) {
+          return poolBundle.repayWithATokensTxBuilder.generateTxData({
+            user: currentAccount,
+            reserve: poolAddress,
+            amount: amountToRepay,
+            useOptimizedPath: get().useOptimizedPath(),
+            rateMode: debtType,
+          });
+        } else {
+          return poolBundle.repayTxBuilder.generateTxData({
+            user: currentAccount,
+            reserve: poolAddress,
+            amount: amountToRepay,
+            useOptimizedPath: get().useOptimizedPath(),
+            interestRateMode: debtType,
+          });
+        }
       } else {
-        return pool.repay({
+        const lendingPool = poolBundle as LendingPoolBundle;
+        return lendingPool.repayTxBuilder.generateTxData({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToRepay,
           interestRateMode: debtType,
-          useOptimizedPath: get().useOptimizedPath(),
         });
       }
     },
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
-      // Better to get rid of direct assert
-      const pool = getCorrectPool() as Pool;
+      const poolBundle = getCorrectPoolBundle() as PoolBundle;
       const currentAccount = get().account;
-      return pool.repayWithPermit({
+      return poolBundle.repayTxBuilder.generateSignedTxData({
         user: currentAccount,
         reserve: poolAddress,
-        amount: amountToRepay, // amountToRepay.toString(),
-        interestRateMode: debtType,
-        signature,
+        amount: amountToRepay,
         useOptimizedPath: get().useOptimizedPath(),
+        interestRateMode: debtType,
         deadline,
+        signature,
       });
     },
     swapCollateral: async ({

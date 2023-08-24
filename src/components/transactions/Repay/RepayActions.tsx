@@ -10,14 +10,17 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { queryClient } from 'pages/_app.page';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -64,9 +67,9 @@ export const RepayActions = ({
     addTransaction,
   } = useRootStore();
   const { signTxData, sendTx } = useWeb3Context();
+  const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
   const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-
   const {
     approvalTxState,
     mainTxState,
@@ -78,45 +81,28 @@ export const RepayActions = ({
     setApprovalTxState,
   } = useModalContext();
 
-  const [requiresApproval, setRequiresApproval] = useState(false);
   const permitAvailable = tryPermit(poolAddress);
+  console.log(permitAvailable);
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const fetchApprovedAmount = useCallback(
-    async (forceApprovalCheck?: boolean) => {
-      // Check approved amount on-chain on first load or if an action triggers a re-check such as an approval being confirmed
-      if (!approvedAmount || forceApprovalCheck) {
-        setLoadingTxns(true);
-        const approvedAmount = await getApprovedAmount({ token: poolAddress });
-        setApprovedAmount(approvedAmount);
-      }
+  const requiresApproval = useMemo(() => {
+    return checkRequiresApproval({
+      approvedAmount: approvedAmount?.amount || '0',
+      amount: amountToRepay,
+      signedAmount: signatureParams ? signatureParams.amount : '0',
+    });
+  }, [amountToRepay, signatureParams, approvedAmount]);
 
-      if (approvedAmount) {
-        const fetchedRequiresApproval = checkRequiresApproval({
-          approvedAmount: approvedAmount.amount,
-          amount: amountToRepay,
-          signedAmount: signatureParams ? signatureParams.amount : '0',
-        });
-        setRequiresApproval(fetchedRequiresApproval);
-        if (fetchedRequiresApproval) setApprovalTxState({});
-      }
-
-      setLoadingTxns(false);
-    },
-    [
-      approvedAmount,
-      setLoadingTxns,
-      getApprovedAmount,
-      poolAddress,
-      amountToRepay,
-      signatureParams,
-      setApprovalTxState,
-    ]
-  );
+  const fetchApprovedAmount = useCallback(async () => {
+    setLoadingTxns(true);
+    const approvedAmountPool = await getApprovedAmount({ token: poolAddress });
+    setApprovedAmount(approvedAmountPool);
+    setLoadingTxns(false);
+  }, [setLoadingTxns, getApprovedAmount, poolAddress]);
 
   const approval = async () => {
     try {
-      if (requiresApproval && approvedAmount) {
+      if (approvedAmount) {
         if (usePermit) {
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generateSignatureRequest({
@@ -150,7 +136,6 @@ export const RepayActions = ({
             amount: MAX_UINT_AMOUNT,
             assetName: symbol,
           });
-          fetchApprovedAmount(true);
         }
       }
     } catch (error) {
@@ -170,10 +155,8 @@ export const RepayActions = ({
       let response: TransactionResponse;
       let action = ProtocolAction.default;
 
-      // determine if approval is signature or transaction
-      // checking user preference is not sufficient because permit may be available but the user has an existing approval
       if (usePermit && signatureParams) {
-        action = ProtocolAction.supplyWithPermit;
+        action = ProtocolAction.repayWithPermit;
         let signedSupplyWithPermitTxData = repayWithPermit({
           amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolReserve,
@@ -188,10 +171,9 @@ export const RepayActions = ({
 
         signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
         response = await sendTx(signedSupplyWithPermitTxData);
-
         await response.wait(1);
       } else {
-        action = ProtocolAction.supply;
+        action = ProtocolAction.repay;
         let supplyTxData = repay({
           amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
@@ -203,16 +185,13 @@ export const RepayActions = ({
         });
         supplyTxData = await estimateGasLimit(supplyTxData);
         response = await sendTx(supplyTxData);
-
         await response.wait(1);
       }
-
       setMainTxState({
         txHash: response.hash,
         loading: false,
         success: true,
       });
-
       addTransaction(response.hash, {
         action,
         txState: 'success',
@@ -237,7 +216,7 @@ export const RepayActions = ({
 
   useEffect(() => {
     fetchApprovedAmount();
-  }, [fetchApprovedAmount, poolAddress]);
+  }, [fetchApprovedAmount]);
 
   useEffect(() => {
     let supplyGasLimit = 0;
@@ -266,7 +245,7 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval([{ amount: amountToRepay, underlyingAsset: poolAddress }])}
+      handleApproval={approval}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       tryPermit={permitAvailable}
