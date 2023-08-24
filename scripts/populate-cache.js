@@ -33664,7 +33664,8 @@ var require_types2 = __commonJS({
       16667e5: "harmony_testnet",
       11155111: "sepolia",
       534353: "scroll_alpha",
-      1088: "metis_andromeda"
+      1088: "metis_andromeda",
+      8453: "base"
     };
     var ChainId6;
     (function(ChainId7) {
@@ -33692,6 +33693,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["sepolia"] = 11155111] = "sepolia";
       ChainId7[ChainId7["scroll_alpha"] = 534353] = "scroll_alpha";
       ChainId7[ChainId7["metis_andromeda"] = 1088] = "metis_andromeda";
+      ChainId7[ChainId7["base"] = 8453] = "base";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
     var eEthereumTxType;
     (function(eEthereumTxType2) {
@@ -42859,14 +42861,14 @@ var require_lendingPool_contract = __commonJS({
     var LendingPool = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, ILendingPool__factory_1.ILendingPool__factory);
-        const { LENDING_POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER10, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER10, WETH_GATEWAY: WETH_GATEWAY23 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        const { LENDING_POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER10, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER10, WETH_GATEWAY: WETH_GATEWAY24 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
         this.lendingPoolAddress = LENDING_POOL !== null && LENDING_POOL !== void 0 ? LENDING_POOL : "";
         this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER !== null && FLASH_LIQUIDATION_ADAPTER !== void 0 ? FLASH_LIQUIDATION_ADAPTER : "";
         this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER10 !== null && SWAP_COLLATERAL_ADAPTER10 !== void 0 ? SWAP_COLLATERAL_ADAPTER10 : "";
         this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER10 !== null && REPAY_WITH_COLLATERAL_ADAPTER10 !== void 0 ? REPAY_WITH_COLLATERAL_ADAPTER10 : "";
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER10);
         this.repayWithCollateralAdapterService = new repayWithCollateralAdapter_contract_1.RepayWithCollateralAdapterService(provider, REPAY_WITH_COLLATERAL_ADAPTER10);
         this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER10);
@@ -43565,12 +43567,12 @@ var require_lendingPool_contract_bundle = __commonJS({
     var LendingPoolBundle = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, ILendingPool__factory_1.ILendingPool__factory);
-        const { LENDING_POOL, WETH_GATEWAY: WETH_GATEWAY23 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        const { LENDING_POOL, WETH_GATEWAY: WETH_GATEWAY24 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
         this.lendingPoolAddress = LENDING_POOL !== null && LENDING_POOL !== void 0 ? LENDING_POOL : "";
-        this.wethGatewayAddress = WETH_GATEWAY23 !== null && WETH_GATEWAY23 !== void 0 ? WETH_GATEWAY23 : "";
+        this.wethGatewayAddress = WETH_GATEWAY24 !== null && WETH_GATEWAY24 !== void 0 ? WETH_GATEWAY24 : "";
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.contractInterface = ILendingPool__factory_1.ILendingPool__factory.createInterface();
         this.depositTxBuilder = {
           getApprovedAmount: (props) => __async(this, null, function* () {
@@ -49930,16 +49932,16 @@ var require_v3_pool_contract = __commonJS({
     var Pool = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, IPool__factory_1.IPool__factory);
-        const { POOL: POOL24, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER10, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER10, WETH_GATEWAY: WETH_GATEWAY23, L2_ENCODER: L2_ENCODER7 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
-        this.poolAddress = POOL24 !== null && POOL24 !== void 0 ? POOL24 : "";
+        const { POOL: POOL25, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER10, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER10, WETH_GATEWAY: WETH_GATEWAY24, L2_ENCODER: L2_ENCODER8 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.poolAddress = POOL25 !== null && POOL25 !== void 0 ? POOL25 : "";
         this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER !== null && FLASH_LIQUIDATION_ADAPTER !== void 0 ? FLASH_LIQUIDATION_ADAPTER : "";
         this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER10 !== null && SWAP_COLLATERAL_ADAPTER10 !== void 0 ? SWAP_COLLATERAL_ADAPTER10 : "";
         this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER10 !== null && REPAY_WITH_COLLATERAL_ADAPTER10 !== void 0 ? REPAY_WITH_COLLATERAL_ADAPTER10 : "";
-        this.l2EncoderAddress = L2_ENCODER7 !== null && L2_ENCODER7 !== void 0 ? L2_ENCODER7 : "";
+        this.l2EncoderAddress = L2_ENCODER8 !== null && L2_ENCODER8 !== void 0 ? L2_ENCODER8 : "";
         this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER10);
         this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER10);
         this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
@@ -50932,15 +50934,15 @@ var require_v3_pool_contract_bundle = __commonJS({
     var PoolBundle = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, IPool__factory_1.IPool__factory);
-        const { POOL: POOL24, WETH_GATEWAY: WETH_GATEWAY23, L2_ENCODER: L2_ENCODER7 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
-        this.poolAddress = POOL24 !== null && POOL24 !== void 0 ? POOL24 : "";
-        this.l2EncoderAddress = L2_ENCODER7 !== null && L2_ENCODER7 !== void 0 ? L2_ENCODER7 : "";
-        this.wethGatewayAddress = WETH_GATEWAY23 !== null && WETH_GATEWAY23 !== void 0 ? WETH_GATEWAY23 : "";
+        const { POOL: POOL25, WETH_GATEWAY: WETH_GATEWAY24, L2_ENCODER: L2_ENCODER8 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.poolAddress = POOL25 !== null && POOL25 !== void 0 ? POOL25 : "";
+        this.l2EncoderAddress = L2_ENCODER8 !== null && L2_ENCODER8 !== void 0 ? L2_ENCODER8 : "";
+        this.wethGatewayAddress = WETH_GATEWAY24 !== null && WETH_GATEWAY24 !== void 0 ? WETH_GATEWAY24 : "";
         this.v3PoolService = new v3_pool_contract_1.Pool(provider, lendingPoolConfig);
         this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
           l2PoolAddress: this.poolAddress,
           encoderAddress: this.l2EncoderAddress
@@ -64394,7 +64396,7 @@ var import_providers2 = __toESM(require_lib30());
 // src/ui-config/marketsConfig.tsx
 var import_contract_helpers2 = __toESM(require_cjs());
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Ethereum.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Ethereum.mjs
 var AaveV2Ethereum_exports = {};
 __export(AaveV2Ethereum_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER,
@@ -64445,7 +64447,7 @@ var UI_POOL_DATA_PROVIDER = "0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A";
 var WALLET_BALANCE_PROVIDER = "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922";
 var WETH_GATEWAY = "0xEFFC18fC3b7eb8E676dac549E0c693ad50D1Ce31";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2EthereumAMM.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2EthereumAMM.mjs
 var AaveV2EthereumAMM_exports = {};
 __export(AaveV2EthereumAMM_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER2,
@@ -64490,7 +64492,7 @@ var UI_POOL_DATA_PROVIDER2 = "0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A";
 var WALLET_BALANCE_PROVIDER2 = "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922";
 var WETH_GATEWAY2 = "0x1C4a4e31231F71Fc34867D034a9E68f6fC798249";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Goerli.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Goerli.mjs
 var AaveV2Goerli_exports = {};
 __export(AaveV2Goerli_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER3,
@@ -64531,7 +64533,7 @@ var UI_POOL_DATA_PROVIDER3 = "0xaaa2872d1F7f5ceb630Cb736BcA34Ff1e121992b";
 var WALLET_BALANCE_PROVIDER3 = "0xf1E4A6E7FA07421FD5139Ba0848290A27e22db7f";
 var WETH_GATEWAY3 = "0x3bd3a20Ac9Ff1dda1D99C0dFCE6D65C4960B3627";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Mumbai.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Mumbai.mjs
 var AaveV2Mumbai_exports = {};
 __export(AaveV2Mumbai_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER4,
@@ -64572,7 +64574,7 @@ var UI_POOL_DATA_PROVIDER4 = "0xb36a91b1deF63B603896290F6a888c774328519A";
 var WALLET_BALANCE_PROVIDER4 = "0xEe7c0172c200e12AFEa3C34837052ec52F3f367A";
 var WETH_GATEWAY4 = "0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Polygon.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Polygon.mjs
 var AaveV2Polygon_exports = {};
 __export(AaveV2Polygon_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER5,
@@ -64623,7 +64625,7 @@ var UI_POOL_DATA_PROVIDER5 = "0x204f2Eb81D996729829debC819f7992DCEEfE7b1";
 var WALLET_BALANCE_PROVIDER5 = "0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e";
 var WETH_GATEWAY5 = "0xAeBF56223F044a73A513FAD7E148A9075227eD9b";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Fuji.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Fuji.mjs
 var AaveV2Fuji_exports = {};
 __export(AaveV2Fuji_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER6,
@@ -64664,7 +64666,7 @@ var UI_POOL_DATA_PROVIDER6 = "0x88b4013f8C50e61ab027Cc253ab9a50663e2dF45";
 var WALLET_BALANCE_PROVIDER6 = "0x3f5A507B33260a3869878B31FB90F04F451d28e3";
 var WETH_GATEWAY6 = "0x1648C14DbB6ccdd5846969cE23DeEC4C66a03335";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Avalanche.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV2Avalanche.mjs
 var AaveV2Avalanche_exports = {};
 __export(AaveV2Avalanche_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER7,
@@ -64719,7 +64721,7 @@ var UI_POOL_DATA_PROVIDER7 = "0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A";
 var WALLET_BALANCE_PROVIDER7 = "0x73e4898a1Bfa9f710B6A6AB516403A6299e01fc6";
 var WETH_GATEWAY7 = "0xC27d4dBefc2C0CE57916a699971b58a3BD9C7d5b";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Ethereum.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Ethereum.mjs
 var AaveV3Ethereum_exports = {};
 __export(AaveV3Ethereum_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER8,
@@ -64784,7 +64786,7 @@ var UI_POOL_DATA_PROVIDER8 = "0x91c0eA31b49B69Ea18607702c5d9aC360bf3dE7d";
 var WALLET_BALANCE_PROVIDER8 = "0xC7be5307ba715ce89b152f3Df0658295b3dbA8E2";
 var WETH_GATEWAY8 = "0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Sepolia.mjs
 var AaveV3Sepolia_exports = {};
 __export(AaveV3Sepolia_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER9,
@@ -64829,7 +64831,7 @@ var UI_POOL_DATA_PROVIDER9 = "0xe38c93180a6CE4173d88793c0671AD1Dd417c7d8";
 var WALLET_BALANCE_PROVIDER9 = "0x4f04218ECC7D2756f84836D2DC267293504cAbCc";
 var WETH_GATEWAY9 = "0xe70cDC67C91d5519DD4682cA162E40480773255a";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Goerli.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Goerli.mjs
 var AaveV3Goerli_exports = {};
 __export(AaveV3Goerli_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER10,
@@ -64874,7 +64876,7 @@ var UI_POOL_DATA_PROVIDER10 = "0xb00A75686293Fea5DA122E8361f6815A0B0AF48E";
 var WALLET_BALANCE_PROVIDER10 = "0xe0bb4593f74B804B9aBd9a2Ec6C71663cEE64E29";
 var WETH_GATEWAY10 = "0x2A498323aCaD2971a8b1936fD7540596dC9BBacD";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Mumbai.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Mumbai.mjs
 var AaveV3Mumbai_exports = {};
 __export(AaveV3Mumbai_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER11,
@@ -64919,7 +64921,7 @@ var UI_POOL_DATA_PROVIDER11 = "0x928d9A76705aA6e4a6650BFb7E7912e413Fe7341";
 var WALLET_BALANCE_PROVIDER11 = "0xdbaeF5FC90a979426E2cE5C3F0125430d0e2023e";
 var WETH_GATEWAY11 = "0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Polygon.mjs
 var AaveV3Polygon_exports = {};
 __export(AaveV3Polygon_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER12,
@@ -64978,7 +64980,7 @@ var UI_POOL_DATA_PROVIDER12 = "0xC69728f11E9E6127733751c8410432913123acf1";
 var WALLET_BALANCE_PROVIDER12 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY12 = "0x1e4b7A6b903680eab0c5dAbcb8fD429cD2a9598c";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fuji.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fuji.mjs
 var AaveV3Fuji_exports = {};
 __export(AaveV3Fuji_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER13,
@@ -65023,7 +65025,7 @@ var UI_POOL_DATA_PROVIDER13 = "0x08D07a855306400c8e499664f7f5247046274C77";
 var WALLET_BALANCE_PROVIDER13 = "0xd2495B9f9F78092858e09e294Ed5c17Dbc5fCfA8";
 var WETH_GATEWAY13 = "0x8f57153F18b7273f9A814b93b31Cb3f9b035e7C2";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Avalanche.mjs
 var AaveV3Avalanche_exports = {};
 __export(AaveV3Avalanche_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER14,
@@ -65086,7 +65088,7 @@ var UI_POOL_DATA_PROVIDER14 = "0xF71DBe0FAEF1473ffC607d4c555dfF0aEaDb878d";
 var WALLET_BALANCE_PROVIDER14 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY14 = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.mjs
 var AaveV3Arbitrum_exports = {};
 __export(AaveV3Arbitrum_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER15,
@@ -65147,7 +65149,7 @@ var UI_POOL_DATA_PROVIDER15 = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
 var WALLET_BALANCE_PROVIDER15 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY15 = "0xB5Ee21786D28c5Ba61661550879475976B707099";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.mjs
 var AaveV3ArbitrumGoerli_exports = {};
 __export(AaveV3ArbitrumGoerli_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER16,
@@ -65194,7 +65196,7 @@ var UI_POOL_DATA_PROVIDER16 = "0x583F04c0C4BDE3D7706e939F3Ea890Be9A20A5CF";
 var WALLET_BALANCE_PROVIDER16 = "0x39fDBFDBF1127F31F485a1228D44010F5130cCAC";
 var WETH_GATEWAY16 = "0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3FantomTestnet.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3FantomTestnet.mjs
 var AaveV3FantomTestnet_exports = {};
 __export(AaveV3FantomTestnet_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER17,
@@ -65239,7 +65241,7 @@ var UI_POOL_DATA_PROVIDER17 = "0x9a00043F98941DD4e02E1c7e78676df64F5e37a6";
 var WALLET_BALANCE_PROVIDER17 = "0x4E2e1F992A2ba1137fB6e1FcfbEdcaC95cA788e5";
 var WETH_GATEWAY17 = "0x87770f04Bbece8092d777860907798138825f303";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fantom.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fantom.mjs
 var AaveV3Fantom_exports = {};
 __export(AaveV3Fantom_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER18,
@@ -65288,7 +65290,7 @@ var UI_POOL_DATA_PROVIDER18 = "0xddf65434502E459C22263BE2ed7cF0f1FaFD44c0";
 var WALLET_BALANCE_PROVIDER18 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY18 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Harmony.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Harmony.mjs
 var AaveV3Harmony_exports = {};
 __export(AaveV3Harmony_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER19,
@@ -65333,7 +65335,7 @@ var UI_POOL_DATA_PROVIDER19 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
 var WALLET_BALANCE_PROVIDER19 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY19 = "0xE387c6053CE8EC9f8C3fa5cE085Af73114a695d3";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.mjs
 var AaveV3Optimism_exports = {};
 __export(AaveV3Optimism_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER20,
@@ -65394,7 +65396,7 @@ var UI_POOL_DATA_PROVIDER20 = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
 var WALLET_BALANCE_PROVIDER20 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
 var WETH_GATEWAY20 = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3OptimismGoerli.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3OptimismGoerli.mjs
 var AaveV3OptimismGoerli_exports = {};
 __export(AaveV3OptimismGoerli_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER21,
@@ -65441,7 +65443,7 @@ var UI_POOL_DATA_PROVIDER21 = "0x9277eFbB991536a98a1aA8b735E9D26d887104C1";
 var WALLET_BALANCE_PROVIDER21 = "0xb463057Eb60E1575e2a69aa17C63CCd2F3161a5f";
 var WETH_GATEWAY21 = "0x6f7f2440006221F893c587b88f01afc42B6F8d2e";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ScrollAlpha.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ScrollAlpha.mjs
 var AaveV3ScrollAlpha_exports = {};
 __export(AaveV3ScrollAlpha_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER22,
@@ -65488,7 +65490,7 @@ var UI_POOL_DATA_PROVIDER22 = "0xDC55BcFC0963608401A4bA6298624E5895f8250a";
 var WALLET_BALANCE_PROVIDER22 = "0x6c68e975764a56e62AF3d1C8209F789779Eb763B";
 var WETH_GATEWAY22 = "0x57ce905CfD7f986A929A26b006f797d181dB706e";
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.js
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Metis.mjs
 var AaveV3Metis_exports = {};
 __export(AaveV3Metis_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER23,
@@ -65538,6 +65540,59 @@ var RATES_FACTORY10 = "0x87Aaba7cf8e1F319d0E3402d68017171201dEcd5";
 var UI_INCENTIVE_DATA_PROVIDER23 = "0x3e7BC5EcE0f22DbB16c3e3EeA288a10A57d68927";
 var UI_POOL_DATA_PROVIDER23 = "0x7dd60bd8507fDC3d300d53427b7AE566701a7320";
 var WALLET_BALANCE_PROVIDER23 = "0x1df710eb1E2FD9C21494aF2BFb1F210a4185885b";
+
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Base.mjs
+var AaveV3Base_exports = {};
+__export(AaveV3Base_exports, {
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER24,
+  ACL_ADMIN: () => ACL_ADMIN17,
+  ACL_MANAGER: () => ACL_MANAGER17,
+  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD7,
+  CHAIN_ID: () => CHAIN_ID24,
+  COLLECTOR: () => COLLECTOR24,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_113,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER24,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_113,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_113,
+  EMISSION_MANAGER: () => EMISSION_MANAGER24,
+  L2_ENCODER: () => L2_ENCODER7,
+  LISTING_ENGINE: () => LISTING_ENGINE11,
+  ORACLE: () => ORACLE24,
+  POOL: () => POOL24,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER24,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY16,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR24,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL17,
+  RATES_FACTORY: () => RATES_FACTORY11,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER24,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER24,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER24,
+  WETH_GATEWAY: () => WETH_GATEWAY23
+});
+var POOL_ADDRESSES_PROVIDER24 = "0xe20fCBdBfFC4Dd138cE8b2E6FBb6CB49777ad64D";
+var POOL24 = "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5";
+var POOL_CONFIGURATOR24 = "0x5731a04B1E775f0fdd454Bf70f3335886e9A96be";
+var ORACLE24 = "0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156";
+var PRICE_ORACLE_SENTINEL17 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER24 = "0x2d8A3C5677189723C4cB8873CfC9C8976FDF38Ac";
+var ACL_MANAGER17 = "0x43955b0899Ab7232E3a454cf84AedD22Ad46FD33";
+var ACL_ADMIN17 = "0xA9F30e6ED4098e9439B2ac8aEA2d3fc26BcEbb45";
+var COLLECTOR24 = "0xBA9424d650A4F5c80a0dA641254d1AcCE2A37057";
+var DEFAULT_INCENTIVES_CONTROLLER24 = "0xf9cc4F0D883F1a1eb2c253bdb46c254Ca51E1F44";
+var DEFAULT_A_TOKEN_IMPL_REV_113 = "0x98F409Fc4A42F34AE3c326c7f48ED01ae8cAeC69";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_113 = "0x2425A746911128c2eAA7bEBDc9Bc452eE52208a1";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_113 = "0xe0b9B4f959fa8B52B7228c8D78875482b8813349";
+var CHAIN_ID24 = 8453;
+var EMISSION_MANAGER24 = "0x6533A273F3aC84Df91DCD654D6EBAbA73687e246";
+var CAPS_PLUS_RISK_STEWARD7 = "0x12DEB4025b79f2B43f6aeF079F9D77C3f9a67bb6";
+var LISTING_ENGINE11 = "0xc7751400F809cdB0C167F87985083C558a0610F7";
+var RATES_FACTORY11 = "0x0D1Fe8eAdb0a3e44C4Cc9D73De8dA50C1E475832";
+var L2_ENCODER7 = "0x39e97c588B2907Fb67F44fea256Ae3BA064207C5";
+var POOL_ADDRESSES_PROVIDER_REGISTRY16 = "0x2f6571d3Eb9a4e350C68C36bCD2afe39530078E2";
+var UI_INCENTIVE_DATA_PROVIDER24 = "0xEdD3b4737C1a0011626631a977b91Cf3E944982d";
+var UI_POOL_DATA_PROVIDER24 = "0x174446a6741300cD2E7C1b1A636Fee99c8F83502";
+var WALLET_BALANCE_PROVIDER24 = "0x5779b29B0a34577d927E8D511B595ef9abbFAE82";
+var WETH_GATEWAY23 = "0x18CD499E3d7ed42FEbA981ac9236A278E4Cdc2ee";
 
 // src/ui-config/marketsConfig.tsx
 var marketsData = {
@@ -65730,6 +65785,29 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: AaveV3Goerli_exports.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Goerli_exports.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Goerli_exports.UI_INCENTIVE_DATA_PROVIDER
+    }
+  },
+  ["proto_base_v3" /* proto_base_v3 */]: {
+    marketTitle: "Base",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.base,
+    enabledFeatures: {
+      incentives: true
+    },
+    // TODO: Need subgraph, currently not supported
+    // subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Base_exports.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Base_exports.POOL,
+      WETH_GATEWAY: AaveV3Base_exports.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Base_exports.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Base_exports.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Base_exports.UI_INCENTIVE_DATA_PROVIDER,
+      L2_ENCODER: AaveV3Base_exports.L2_ENCODER,
+      COLLECTOR: AaveV3Base_exports.COLLECTOR
+      // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
+      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
+      // DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
     }
   },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
@@ -66275,6 +66353,24 @@ var networkConfigs = {
       url: "https://bridge.arbitrum.io"
     },
     ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
+  },
+  [import_contract_helpers3.ChainId.base]: {
+    name: "Base",
+    publicJsonRPCUrl: ["https://mainnet.base.org"],
+    // protocolDataUrl: '',
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://basescan.org",
+    // usdMarket: true,
+    networkLogoPath: "/icons/networks/base.svg",
+    bridge: {
+      icon: "/icons/networks/base.svg",
+      name: "Base Bridge",
+      url: "https://bridge.base.org/"
+    }
+    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: "Harmony",
