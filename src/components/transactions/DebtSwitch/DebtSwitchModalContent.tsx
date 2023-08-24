@@ -22,10 +22,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import {
-  assetCanBeBorrowedByUser,
-  getMaxGhoMintAmount,
-} from 'src/utils/getMaxAmountAvailableToBorrow';
+import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
@@ -151,12 +148,6 @@ export const DebtSwitchModalContent = ({
   let availableBorrowCap = valueToBigNumber(MaxUint256.toString());
   let availableLiquidity: string | number = '0';
   if (displayGho({ symbol: switchTarget.reserve.symbol, currentMarket })) {
-    const maxMintAmount = getMaxGhoMintAmount(user);
-    const maxAmountToBorrow = Math.min(
-      Number(maxMintAmount),
-      ghoReserveData.aaveFacilitatorRemainingCapacity
-    );
-    availableBorrowCap = valueToBigNumber(maxAmountToBorrow.toString());
     availableLiquidity = ghoReserveData.aaveFacilitatorRemainingCapacity.toString();
   } else {
     availableBorrowCap =
