@@ -22,8 +22,8 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
-        echo "${{ inputs.IPFS_STAGING_KEY }}" | base64 --decode  | base64 --decode >> ./key 
-        chmod 400 /tmp/key
+        echo -n "${{ inputs.IPFS_STAGING_KEY }}" | base64 -d >> ./key
+        chmod 400 ./key
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
     - name: Upload an decompress build to IPFS dev server
