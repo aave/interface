@@ -648,7 +648,7 @@ export const createPoolSlice: StateCreator<
 
       const withdrawAndSwapService = new WithdrawAndSwitchAdapterService(
         provider,
-        currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER
+        currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER
       );
 
       let signatureDeconstruct: PermitSignature = {

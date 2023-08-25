@@ -153,7 +153,7 @@ export const WithdrawAndSwitchActions = ({
     const approvalData = {
       user: account,
       token: poolReserve.aTokenAddress,
-      spender: currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER || '',
+      spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
       amount: amountToApprove,
     };
     try {
@@ -188,7 +188,7 @@ export const WithdrawAndSwitchActions = ({
           asset: poolReserve.aTokenAddress,
           amount: parseUnits(amountToApprove, poolReserve.decimals).toString(),
           assetName: `a${poolReserve.symbol}`,
-          spender: currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER,
+          spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER,
         });
         setTxError(undefined);
         fetchApprovedAmount(poolReserve.aTokenAddress);
@@ -213,17 +213,12 @@ export const WithdrawAndSwitchActions = ({
       const approvedTargetAmount = await erc20Service.approvedAmount({
         user: account,
         token: aTokenAddress,
-        spender: currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER || '',
+        spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
       });
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     },
-    [
-      jsonRpcProvider,
-      account,
-      currentMarketData.addresses.WITHDRAW_AND_SWAP_ADAPTER,
-      setLoadingTxns,
-    ]
+    [jsonRpcProvider, account, currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER, setLoadingTxns]
   );
 
   useEffect(() => {
