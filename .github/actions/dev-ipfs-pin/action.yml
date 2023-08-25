@@ -22,7 +22,7 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
-        echo -n "${{ inputs.IPFS_STAGING_KEY }}" | base64 -d | base64 -d >> ./key
+        echo -n "${{ inputs.IPFS_STAGING_KEY }}" | base64 -d >> ./key
         chmod 400 ./key
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
@@ -48,4 +48,4 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
-        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" "
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" 
