@@ -54,7 +54,7 @@ export const GhoBorrowedPositionsListItem = ({
 
   const hasDiscount = ghoUserQualifiesForDiscount();
 
-  const { isActive, isFrozen, borrowingEnabled } = reserve;
+  const { isActive, isFrozen, isPaused, borrowingEnabled } = reserve;
   const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
@@ -75,10 +75,12 @@ export const GhoBorrowedPositionsListItem = ({
       !isActive ||
       !borrowingEnabled ||
       isFrozen ||
+      isPaused ||
       availableBorrows <= 0 ||
       ghoReserveData.aaveFacilitatorRemainingCapacity < 0.000001,
     showSwitchButton: isFeatureEnabled.debtSwitch(currentMarketData) || false,
-    disableSwitch: !isActive || isFrozen,
+    disableSwitch: !isActive || isPaused,
+    disableRepay: !isActive || isPaused,
     onRepayClick: () =>
       openRepay(
         reserve.underlyingAsset,
@@ -113,6 +115,7 @@ interface GhoBorrowedPositionsListItemProps {
   borrowDisabled: boolean;
   showSwitchButton: boolean;
   disableSwitch: boolean;
+  disableRepay: boolean;
   onRepayClick: () => void;
   onBorrowClick: () => void;
   onSwitchClick: () => void;
@@ -134,8 +137,9 @@ const GhoBorrowedPositionsListItemDesktop = ({
   onSwitchClick,
   showSwitchButton,
   disableSwitch,
+  disableRepay,
 }: GhoBorrowedPositionsListItemProps) => {
-  const { symbol, iconSymbol, name, isActive, isFrozen, underlyingAsset } = reserve;
+  const { symbol, iconSymbol, name, isFrozen, underlyingAsset } = reserve;
 
   return (
     <ListItemWrapper
@@ -180,7 +184,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
         </ContentWithTooltip>
       </ListColumn>
       <ListButtonsColumn>
-        <Button disabled={!isActive} variant="contained" onClick={onRepayClick}>
+        <Button disabled={disableRepay} variant="contained" onClick={onRepayClick}>
           <Trans>Repay</Trans>
         </Button>
         {showSwitchButton ? (
@@ -216,8 +220,9 @@ const GhoBorrowedPositionsListItemMobile = ({
   onSwitchClick,
   showSwitchButton,
   disableSwitch,
+  disableRepay,
 }: GhoBorrowedPositionsListItemProps) => {
-  const { symbol, iconSymbol, name, isActive } = reserve;
+  const { symbol, iconSymbol, name } = reserve;
 
   return (
     <ListMobileItemWrapper
@@ -257,7 +262,7 @@ const GhoBorrowedPositionsListItemMobile = ({
       </Row>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive}
+          disabled={disableRepay}
           variant="contained"
           onClick={onRepayClick}
           sx={{ mr: 1.5 }}

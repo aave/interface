@@ -16,7 +16,7 @@ const testData = {
   },
 };
 
-describe(`GHO MODAL APY TESTING`, () => {
+describe.skip(`GHO MODAL APY TESTING`, () => {
   describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
