@@ -11734,10 +11734,10 @@
       "executionTime": 1693121867,
       "forVotes": "446996530963694652164144",
       "againstVotes": "2024921860934954816",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1693553867,
@@ -11802,7 +11802,7 @@
       "startBlock": 17986627,
       "endBlock": 18005827,
       "executionTime": 0,
-      "forVotes": "493406007858804779553734",
+      "forVotes": "547475718200135881408866",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11816,7 +11816,7 @@
       "ipfsHash": "0x26d4b0230da0fde5fde20251a9d2a7dc2e20b26d1549a296e165fdc0bcca4489",
       "startTimestamp": 1692905111,
       "creationTimestamp": 1692818063,
-      "expirationTimestamp": 1693137035
+      "expirationTimestamp": 1693137095
     },
     {
       "id": 306,
@@ -11841,7 +11841,7 @@
       "startBlock": 17987192,
       "endBlock": 18006392,
       "executionTime": 0,
-      "forVotes": "283532579841147187473880",
+      "forVotes": "337602290182478289329012",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11855,7 +11855,7 @@
       "ipfsHash": "0x43564b8533a1941a0ded6928eb7606f46c11b9ee65f5f88141ff3ba51c3ae78f",
       "startTimestamp": 1692911915,
       "creationTimestamp": 1692824867,
-      "expirationTimestamp": 1693143815
+      "expirationTimestamp": 1693143875
     },
     {
       "id": 307,
@@ -11876,7 +11876,7 @@
       "startBlock": 17995763,
       "endBlock": 18014963,
       "executionTime": 0,
-      "forVotes": "100437054644812346880214",
+      "forVotes": "236973255841107766191869",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11890,7 +11890,7 @@
       "ipfsHash": "0x91f514bb1e1b5af580cf858bd9b942b0e5faa780df37eb133988af6ba8f7087a",
       "startTimestamp": 1693015547,
       "creationTimestamp": 1692928439,
-      "expirationTimestamp": 1693246667
+      "expirationTimestamp": 1693246727
     }
   ]
 }
