@@ -133,6 +133,15 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
+      - name: dev-ipfs
+        id: dev-ipfs
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
+          IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
+          IPFS_STAGING_KEY: '${{ secrets.IPFS_STAGING_KEY }}'
+          BUILD_PATH: 'out'
+
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
