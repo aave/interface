@@ -30,15 +30,22 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
   const reserve = item.reserve;
 
   const disableBorrow =
-    !reserve.isActive || !reserve.borrowingEnabled || reserve.isFrozen || borrowCap.isMaxed;
+    !reserve.isActive ||
+    !reserve.borrowingEnabled ||
+    reserve.isFrozen ||
+    reserve.isPaused ||
+    borrowCap.isMaxed;
+
+  const disableRepay = !reserve.isActive || reserve.isPaused;
 
   const showSwitchButton = isFeatureEnabled.debtSwitch(currentMarketData) || false;
-  const disableSwitch = !reserve.isActive || reserve.symbol == 'stETH';
+  const disableSwitch = reserve.isPaused || !reserve.isActive || reserve.symbol == 'stETH';
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
     disableBorrow,
     disableSwitch,
+    disableRepay,
     showSwitchButton,
     totalBorrows:
       item.borrowRateMode === InterestRate.Variable ? item.variableBorrows : item.stableBorrows,
@@ -85,6 +92,7 @@ export const BorrowedPositionsListItem = ({ item }: { item: DashboardReserve }) 
 interface BorrowedPositionsListItemProps extends DashboardReserve {
   disableBorrow: boolean;
   disableSwitch: boolean;
+  disableRepay: boolean;
   showSwitchButton: boolean;
   borrowAPY: number;
   incentives: ReserveIncentiveResponse[] | undefined;
@@ -99,6 +107,7 @@ const BorrowedPositionsListItemDesktop = ({
   borrowRateMode,
   disableBorrow,
   disableSwitch,
+  disableRepay,
   showSwitchButton,
   totalBorrows,
   totalBorrowsUSD,
@@ -111,7 +120,7 @@ const BorrowedPositionsListItemDesktop = ({
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
-  const { isActive, isFrozen, stableBorrowRateEnabled, name } = reserve;
+  const { isActive, isFrozen, isPaused, stableBorrowRateEnabled, name } = reserve;
 
   return (
     <ListItemWrapper
@@ -133,7 +142,7 @@ const BorrowedPositionsListItemDesktop = ({
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
           borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
+          disabled={!stableBorrowRateEnabled || isFrozen || !isActive || isPaused}
           onClick={onOpenRateSwitch}
           stableBorrowAPY={reserve.stableBorrowAPY}
           variableBorrowAPY={reserve.variableBorrowAPY}
@@ -143,7 +152,7 @@ const BorrowedPositionsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <Button disabled={!isActive} variant="contained" onClick={onOpenRepay}>
+        <Button disabled={disableRepay} variant="contained" onClick={onOpenRepay}>
           <Trans>Repay</Trans>
         </Button>
         {showSwitchButton ? (
@@ -175,6 +184,7 @@ const BorrowedPositionsListItemMobile = ({
   disableSwitch,
   borrowAPY,
   incentives,
+  disableRepay,
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -188,6 +198,7 @@ const BorrowedPositionsListItemMobile = ({
     name,
     isActive,
     isFrozen,
+    isPaused,
     stableBorrowRateEnabled,
     variableBorrowAPY,
     stableBorrowAPY,
@@ -231,7 +242,7 @@ const BorrowedPositionsListItemMobile = ({
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
           borrowRateMode={borrowRateMode}
-          disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
+          disabled={!stableBorrowRateEnabled || isFrozen || !isActive || isPaused}
           onClick={onOpenRateSwitch}
           stableBorrowAPY={stableBorrowAPY}
           variableBorrowAPY={variableBorrowAPY}
@@ -242,7 +253,7 @@ const BorrowedPositionsListItemMobile = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive}
+          disabled={disableRepay}
           variant="contained"
           onClick={onOpenRepay}
           sx={{ mr: 1.5 }}
