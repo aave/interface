@@ -284,24 +284,6 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
-  // [CustomMarket.proto_goerli_v3]: {
-  //   marketTitle: 'Ethereum Görli',
-  //   v3: true,
-  //   chainId: ChainId.goerli,
-  //   enabledFeatures: {
-  //     faucet: true,
-  //   },
-  //   // subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-goerli', needs re-deployment
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: AaveV3Goerli.POOL_ADDRESSES_PROVIDER,
-  //     LENDING_POOL: AaveV3Goerli.POOL,
-  //     WETH_GATEWAY: AaveV3Goerli.WETH_GATEWAY,
-  //     FAUCET: AaveV3Goerli.FAUCET,
-  //     WALLET_BALANCE_PROVIDER: AaveV3Goerli.WALLET_BALANCE_PROVIDER,
-  //     UI_POOL_DATA_PROVIDER: AaveV3Goerli.UI_POOL_DATA_PROVIDER,
-  //     UI_INCENTIVE_DATA_PROVIDER: AaveV3Goerli.UI_INCENTIVE_DATA_PROVIDER,
-  //   },
-  // },
   [CustomMarket.proto_base_v3]: {
     marketTitle: 'Base',
     v3: true,
