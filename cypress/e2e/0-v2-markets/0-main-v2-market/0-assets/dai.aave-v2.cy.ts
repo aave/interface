@@ -2,13 +2,7 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  changeBorrowType,
-  repay,
-  supply,
-  withdraw,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
 const testData = {
