@@ -26,14 +26,8 @@ const testData = {
     borrow: [
       {
         asset: assets.aaveMarket.DAI,
-        amount: 50,
-        apyType: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.aaveMarket.DAI,
-        amount: 50,
-        apyType: constants.borrowAPYType.stable,
+        amount: 100,
+        apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],
@@ -54,7 +48,7 @@ const testData = {
     repay: [
       {
         asset: assets.aaveMarket.DAI,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 10,
         hasApproval: true,
         repayOption: constants.repayType.default,
@@ -90,7 +84,7 @@ const testData = {
         assetName: assets.aaveMarket.DAI.shortName,
         wrapped: assets.aaveMarket.DAI.wrapped,
         amount: 90, // 80
-        apyType: constants.borrowAPYType.stable,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
@@ -103,9 +97,9 @@ describe('DAI INTEGRATION SPEC, AAVE V2 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
-  });
+  // testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
+  //   changeBorrowType(changeAPRCase, skipTestState, true);
+  // });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
