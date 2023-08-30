@@ -595,10 +595,6 @@ msgstr "COPY IMAGE"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "Can be executed"
-msgstr "Can be executed"
-
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
@@ -1009,6 +1005,10 @@ msgstr "Executed"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
 msgstr "Expected amount to repay"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expected execution"
+msgstr "Expected execution"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
@@ -2751,6 +2751,10 @@ msgstr "Votes"
 msgid "Voting"
 msgstr "Voting"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Voting ends"
+msgstr "Voting ends"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -3031,10 +3035,6 @@ msgstr "documentation"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "enabled"
 msgstr "enabled"
-
-#: src/modules/governance/FormattedProposalTime.tsx
-msgid "ends"
-msgstr "ends"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx

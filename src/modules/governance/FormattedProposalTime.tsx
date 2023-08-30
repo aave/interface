@@ -50,8 +50,7 @@ export function FormattedProposalTime({
           color="text.secondary"
           sx={{ display: { xs: 'none', md: 'inline' } }}
         >
-          {PROPOSAL_TEXT_MAP[state]}&nbsp;
-          <Trans>ends</Trans>
+          <Trans>Voting ends</Trans>
           &nbsp;
         </Typography>
         {dayjs.unix(expirationTimestamp).fromNow()}
@@ -92,7 +91,7 @@ export function FormattedProposalTime({
         color="text.secondary"
         sx={{ display: { xs: 'none', md: 'inline' } }}
       >
-        {canBeExecuted ? <Trans>Expires</Trans> : <Trans>Can be executed</Trans>}
+        {canBeExecuted ? <Trans>Expires</Trans> : <Trans>Expected execution</Trans>}
         &nbsp;
       </Typography>
       {dayjs.unix(canBeExecuted ? executionTimeWithGracePeriod : executionTime).fromNow()}
