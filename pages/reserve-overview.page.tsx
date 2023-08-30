@@ -25,15 +25,17 @@ export default function ReserveOverview() {
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  useEffect(() => {
-    trackEvent('Page Viewed', {
-      'Page Name': 'Reserve Overview',
-    });
-  }, [trackEvent]);
-
   const reserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
+
+  useEffect(() => {
+    trackEvent('Page Viewed', {
+      'Page Name': 'Reserve Overview',
+      Reserve: reserve.iconSymbol,
+      Asset: underlyingAsset,
+    });
+  }, [trackEvent]);
 
   const isOverview = mode === 'overview';
 
