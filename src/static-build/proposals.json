@@ -11878,10 +11878,10 @@
       "executionTime": 1693349219,
       "forVotes": "636719201517454414539488",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1693781219,
@@ -11911,7 +11911,7 @@
       "startBlock": 18015757,
       "endBlock": 18034957,
       "executionTime": 0,
-      "forVotes": "188851674061490759119097",
+      "forVotes": "208978559355404562473885",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11925,7 +11925,42 @@
       "ipfsHash": "0x8394781ffa2de370698110d5642b102aec2d8f71260d7256625306bf34cf1fcd",
       "startTimestamp": 1693257359,
       "creationTimestamp": 1693170239,
-      "expirationTimestamp": 1693488539
+      "expirationTimestamp": 1693488647
+    },
+    {
+      "id": 309,
+      "creator": "0x329c54289Ff5D6B7b7daE13592C6B1EDA1543eD4",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x5f5C02875a8e9B5A26fbd09040ABCfDeb2AA6711"
+      ],
+      "signatures": [
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x000000000000000000000000134c50556de1a83dd947c9460a58d8d60a289cea"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 18030309,
+      "endBlock": 18049509,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Pending",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 18023109,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0xad315f6890989f8d141365f2d542e2639bdae782d12126532b469a79e9cb21be",
+      "creationTimestamp": 1693346387,
+      "startTimestamp": 1693432871,
+      "expirationTimestamp": 1693663271
     }
   ]
 }
