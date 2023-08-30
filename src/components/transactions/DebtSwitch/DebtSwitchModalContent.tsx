@@ -167,10 +167,10 @@ export const DebtSwitchModalContent = ({
   const poolReserveAmountUSD = Number(amount) * Number(poolReserve.priceInUSD);
   const targetReserveAmountUSD = Number(inputAmount) * Number(targetReserve.priceInUsd);
 
-  const priceImpactDifference: number = targetReserveAmountUSD - poolReserveAmountUSD;
-  const insufficientCollateral =
-    Number(user.availableBorrowsUSD) === 0 ||
-    priceImpactDifference > Number(user.availableBorrowsUSD);
+  // const priceImpactDifference: number = targetReserveAmountUSD - poolReserveAmountUSD;
+  const insufficientCollateral = false;
+  // Number(user.availableBorrowsUSD) === 0 ||
+  // priceImpactDifference > Number(user.availableBorrowsUSD);
 
   let blockingError: ErrorType | undefined = undefined;
   if (BigNumber(inputAmount).gt(availableLiquidityOfTargetReserve)) {
