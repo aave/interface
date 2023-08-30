@@ -37,6 +37,7 @@ import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProv
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { SwitchModal } from 'src/components/transactions/Switch/SwitchModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -110,6 +111,7 @@ export default function MyApp(props: MyAppProps) {
                               <FaucetModal />
                               <MigrateV3Modal />
                               <TransactionEventHandler />
+                              <SwitchModal />
                             </SharedDependenciesProvider>
                           </GasStationProvider>
                         </AppDataProvider>

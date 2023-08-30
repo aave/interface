@@ -8,12 +8,16 @@ import invariant from 'tiny-invariant';
 
 import { governanceConfig } from './governanceConfig';
 import { stakeConfig } from './stakeConfig';
+import { UiPoolService } from 'src/services/UIPoolService';
+import { UiIncentivesService } from 'src/services/UIIncentivesService';
 
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
   governanceWalletBalanceService: WalletBalanceService;
   poolTokensBalanceService: WalletBalanceService;
   uiStakeDataService: UiStakeDataService;
+  uiIncentivesService: UiIncentivesService;
+  uiPoolService: UiPoolService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -55,6 +59,9 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     stakingChainId
   );
 
+  const uiPoolService = new UiPoolService(getProvider);
+  const uiIncentivesService = new UiIncentivesService(getProvider);
+
   return (
     <SharedDependenciesContext.Provider
       value={{
@@ -62,6 +69,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         governanceWalletBalanceService,
         poolTokensBalanceService,
         uiStakeDataService,
+        uiPoolService,
+        uiIncentivesService,
       }}
     >
       {children}

@@ -1,7 +1,8 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
+import { InformationCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Button,
+  IconButton,
   Slide,
   SvgIcon,
   Typography,
@@ -22,6 +23,7 @@ import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
 import WalletWidget from './WalletWidget';
+import { useModalContext } from 'src/hooks/useModal';
 
 interface Props {
   children: React.ReactElement;
@@ -48,6 +50,8 @@ export function AppHeader() {
     state.mobileDrawerOpen,
     state.setMobileDrawerOpen,
   ]);
+
+  const { openSwitch } = useModalContext();
 
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,6 +82,10 @@ export function AppHeader() {
     localStorage.setItem('testnetsEnabled', 'false');
     // Set window.location to trigger a page reload when navigating to the the dashboard
     window.location.href = '/';
+  };
+
+  const handleSwitchClick = () => {
+    openSwitch();
   };
 
   const testnetTooltip = (
@@ -163,6 +171,16 @@ export function AppHeader() {
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
+
+        <Button
+          onClick={handleSwitchClick}
+          variant="surface"
+          sx={{ p: '7px 8px', minWidth: 'unset', mr: 2 }}
+        >
+          <SvgIcon fontSize='small'>
+            <SwitchHorizontalIcon />
+          </SvgIcon>
+        </Button>
 
         {!mobileMenuOpen && (
           <WalletWidget

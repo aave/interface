@@ -27,6 +27,7 @@ export enum ModalType {
   V3Migration,
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
+  Switch,
 }
 
 export interface ModalArgsType {
@@ -99,6 +100,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
+  openSwitch: () => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -299,6 +301,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openV3Migration: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
+        },
+        openSwitch: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
+          setType(ModalType.Switch);
         },
         close: () => {
           setType(undefined);

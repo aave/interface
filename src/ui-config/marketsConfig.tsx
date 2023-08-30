@@ -44,6 +44,7 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
     debtSwitch?: boolean;
+    switch?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
