@@ -231,7 +231,6 @@ export const WithdrawAndSwitchActions = ({
         token: aTokenAddress,
         spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
       });
-      console.log('approved amount', approvedTargetAmount);
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     },
