@@ -73,8 +73,6 @@ export interface PoolSlice {
   refreshPoolV3Data: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
-  isFaucetPermissioned: boolean;
-  setIsFaucetPermissioned: (isPermissioned: boolean) => void;
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   withdraw: (
     args: Omit<LPWithdrawParamsType, 'user'>
@@ -281,7 +279,6 @@ export const createPoolSlice: StateCreator<
       const v3MarketData = selectCurrentChainIdV3MarketData(get());
       get().refreshPoolData(v3MarketData);
     },
-    isFaucetPermissioned: true,
     generateApproval: (args: ApproveType) => {
       const provider = get().jsonRpcProvider();
       const tokenERC20Service = new ERC20Service(provider);
@@ -364,7 +361,6 @@ export const createPoolSlice: StateCreator<
       const debtTokenService = new BaseDebtToken(provider, tokenERC20Service);
       return debtTokenService.generateApproveDelegationTxData({ ...args, user: get().account });
     },
-    setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
       const { jsonRpcProvider, currentMarketData, account: userAddress } = get();
 
