@@ -61,8 +61,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           gasLimit={parseUnits(gasLimit || '0', 'wei')}
           skipLoad={skipLoad}
           disabled={disabled}
+          rightComponent={slippageSelector}
         />
-        {slippageSelector}
       </Box>
     </Box>
   );

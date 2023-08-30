@@ -30,6 +30,9 @@ export const TransactionEventHandler = () => {
             support: tx.support,
             previousState: tx.previousState,
             newState: tx.newState,
+            outAsset: tx.outAsset,
+            outAmount: tx.outAmount,
+            outAssetName: tx.outAssetName,
           });
 
           // update local state

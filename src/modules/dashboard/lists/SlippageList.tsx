@@ -65,7 +65,6 @@ export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippa
         }
         disabled={false}
         data-cy={`slippageButton_${selectedSlippage}`}
-        sx={{ mt: 6 }}
       />
 
       <Menu

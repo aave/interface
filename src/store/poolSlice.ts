@@ -25,6 +25,7 @@ import {
   UiPoolDataProvider,
   UserReserveDataHumanized,
   V3FaucetService,
+  WithdrawAndSwitchAdapterService,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -47,6 +48,7 @@ import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/De
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
@@ -90,6 +92,7 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -622,6 +625,56 @@ export const createPoolSlice: StateCreator<
         augustus,
         swapCallData,
         permitSignature,
+      });
+    },
+    withdrawAndSwitch: ({
+      poolReserve,
+      targetReserve,
+      isMaxSelected,
+      amountToSwap,
+      amountToReceive,
+      augustus,
+      signatureParams,
+      txCalldata,
+    }) => {
+      const user = get().account;
+
+      const provider = get().jsonRpcProvider();
+      const currentMarketData = get().currentMarketData;
+
+      const withdrawAndSwapService = new WithdrawAndSwitchAdapterService(
+        provider,
+        currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER
+      );
+
+      let signatureDeconstruct: PermitSignature = {
+        amount: signatureParams?.amount ?? '0',
+        deadline: signatureParams?.deadline?.toString() ?? '0',
+        v: 0,
+        r: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        s: '0x0000000000000000000000000000000000000000000000000000000000000000',
+      };
+
+      if (signatureParams) {
+        const sig: Signature = splitSignature(signatureParams.signature);
+        signatureDeconstruct = {
+          ...signatureDeconstruct,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
+
+      return withdrawAndSwapService.withdrawAndSwitch({
+        assetToSwitchFrom: poolReserve.underlyingAsset,
+        assetToSwitchTo: targetReserve.underlyingAsset,
+        switchAll: isMaxSelected,
+        amountToSwitch: amountToSwap,
+        minAmountToReceive: amountToReceive,
+        user,
+        augustus,
+        switchCallData: txCalldata,
+        permitParams: signatureDeconstruct,
       });
     },
     setUserEMode: async (categoryId) => {
