@@ -99,7 +99,7 @@ export const WithdrawAndSwitchActions = ({
   const requiresApproval = useMemo(() => {
     if (approvedAmount === undefined || isWrongNetwork) return false;
     else return approvedAmount <= Number(amountToSwap);
-  }, [approvedAmount, amountToSwap]);
+  }, [approvedAmount, amountToSwap, isWrongNetwork]);
 
   const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
