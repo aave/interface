@@ -100,7 +100,13 @@ export const WithdrawAndSwitchActions = ({
   const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
-    if (approvedAmount === undefined || isWrongNetwork) return false;
+    if (
+      approvedAmount === undefined ||
+      approvedAmount === -1 ||
+      amountToSwap === '0' ||
+      isWrongNetwork
+    )
+      return false;
     else return approvedAmount <= Number(amountToSwap);
   }, [approvedAmount, amountToSwap, isWrongNetwork]);
 
@@ -225,6 +231,7 @@ export const WithdrawAndSwitchActions = ({
         token: aTokenAddress,
         spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
       });
+      console.log('approved amount', approvedTargetAmount);
       setApprovedAmount(approvedTargetAmount);
       setLoadingTxns(false);
     },
