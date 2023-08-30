@@ -132,6 +132,10 @@ export const configEnvWithTenderlyFantomFork = createConfigWithTenderlyFork(
   ChainId.fantom,
   'fork_proto_fantom_v3'
 );
+export const configEnvWithTenderlyBaseFork = createConfigWithTenderlyFork(
+  ChainId.base,
+  'fork_proto_base_v3'
+);
 export const configEnvWithTenderlyArbitrumFork = createConfigWithTenderlyFork(
   ChainId.arbitrum_one,
   'fork_proto_arbitrum_v3'
