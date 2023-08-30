@@ -14,7 +14,7 @@ const testData = {
   swap: [
     {
       fromAsset: assets.polygonV3Market.MATIC,
-      toAsset: assets.polygonV3Market.DAI,
+      toAsset: assets.polygonV3Market.USDC,
       isCollateralFromAsset: true,
       amount: 20,
       hasApproval: false,
@@ -24,8 +24,8 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.DAI.shortName,
-        wrapped: assets.polygonV3Market.DAI.wrapped,
+        assetName: assets.polygonV3Market.USDC.shortName,
+        wrapped: assets.polygonV3Market.USDC.wrapped,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },

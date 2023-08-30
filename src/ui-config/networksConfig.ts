@@ -54,6 +54,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
     publicJsonRPCUrl: [
+      'https://eth-sepolia.public.blastapi.io',
       'https://rpc.sepolia.org',
       'https://rpc2.sepolia.org',
       'https://rpc.sepolia.online',
@@ -244,6 +245,24 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
+  [ChainId.base]: {
+    name: 'Base',
+    publicJsonRPCUrl: ['https://mainnet.base.org'],
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://basescan.org',
+    // usdMarket: true,
+    networkLogoPath: '/icons/networks/base.svg',
+    bridge: {
+      icon: '/icons/networks/base.svg',
+      name: 'Base Bridge',
+      url: 'https://bridge.base.org/',
+    },
+    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+  },
   [ChainId.harmony]: {
     name: 'Harmony',
     privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
@@ -312,26 +331,26 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     //   url: 'https://app.optimism.io/bridge',
     // },
   },
-  [ChainId.scroll_alpha]: {
-    name: 'Scroll Alpha',
+  [ChainId.scroll_sepolia]: {
+    name: 'Scroll Sepolia',
     publicJsonRPCUrl: [
-      'https://alpha-rpc.scroll.io/l2',
-      'https://scroll-alphanet.public.blastapi.io',
+      'https://sepolia-rpc.scroll.io',
+      'https://scroll-sepolia.blockpi.network/v1/rpc/public',
     ],
-    publicJsonRPCWSUrl: 'wss://scroll-alphanet.public.blastapi.io',
+    publicJsonRPCWSUrl: 'wss://sepolia-rpc.scroll.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://blockscout.scroll.io',
+    explorerLink: 'https://sepolia.scrollscan.dev',
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/scroll.svg',
     // bridge: {
     //   icon: '/icons/bridge/scroll.svg',
-    //   name: 'Scroll Alpha Bridge',
-    //   url: 'https://scroll.io/alpha/bridge',
+    //   name: 'Scroll Sepolia Bridge',
+    //   url: 'https://scroll.io/bridge',
     // },
   },
   [ChainId.fantom]: {
