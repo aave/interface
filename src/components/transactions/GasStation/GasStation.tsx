@@ -3,7 +3,7 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Box, CircularProgress, Stack } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { Warning } from 'src/components/primitives/Warning';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
@@ -20,6 +20,7 @@ export interface GasStationProps {
   gasLimit: BigNumber;
   skipLoad?: boolean;
   disabled?: boolean;
+  rightComponent?: ReactNode;
 }
 
 export const getGasCosts = (
@@ -36,7 +37,12 @@ export const getGasCosts = (
   return Number(formatUnits(gasLimit.mul(gasPrice), 18)) * parseFloat(baseCurrencyUsd);
 };
 
-export const GasStation: React.FC<GasStationProps> = ({ gasLimit, skipLoad, disabled }) => {
+export const GasStation: React.FC<GasStationProps> = ({
+  gasLimit,
+  skipLoad,
+  disabled,
+  rightComponent,
+}) => {
   const {
     state,
     gasPriceData: { data },
@@ -61,20 +67,23 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, skipLoad, disa
       : undefined;
 
   return (
-    <Stack gap={6}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
-        <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
+    <Stack gap={6} sx={{ width: '100%' }}>
+      <Box sx={{ display: 'flex', mt: 6, justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
 
-        {loadingTxns && !skipLoad ? (
-          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-        ) : totalGasCostsUsd && !disabled ? (
-          <>
-            <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
-            <GasTooltip />
-          </>
-        ) : (
-          '-'
-        )}
+          {loadingTxns && !skipLoad ? (
+            <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+          ) : totalGasCostsUsd && !disabled ? (
+            <>
+              <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+              <GasTooltip />
+            </>
+          ) : (
+            '-'
+          )}
+        </Box>
+        {rightComponent}
       </Box>
       {!disabled && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

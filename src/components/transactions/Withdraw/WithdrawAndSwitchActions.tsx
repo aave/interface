@@ -92,12 +92,13 @@ export const WithdrawAndSwitchActions = ({
 
   const { sendTx, signTxData } = useWeb3Context();
 
-  const [approvedAmount, setApprovedAmount] = useState<number>(0);
+  const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
-    return approvedAmount <= Number(amountToSwap);
+    if (approvedAmount === undefined || isWrongNetwork) return false;
+    else return approvedAmount <= Number(amountToSwap);
   }, [approvedAmount, amountToSwap]);
 
   const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
