@@ -15,6 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -68,6 +69,7 @@ export const WithdrawAndSwitchActions = ({
     walletApprovalMethodPreference,
     generateSignatureRequest,
     addTransaction,
+    trackEvent,
   ] = useRootStore((state) => [
     state.withdrawAndSwitch,
     state.currentMarketData,
@@ -78,6 +80,7 @@ export const WithdrawAndSwitchActions = ({
     state.walletApprovalMethodPreference,
     state.generateSignatureRequest,
     state.addTransaction,
+    state.trackEvent,
   ]);
   const {
     approvalTxState,
@@ -145,6 +148,12 @@ export const WithdrawAndSwitchActions = ({
       setMainTxState({
         txHash: undefined,
         loading: false,
+      });
+      trackEvent(GENERAL.TRANSACTION_ERROR, {
+        transactiontype: ProtocolAction.withdrawAndSwitch,
+        asset: poolReserve.underlyingAsset,
+        assetName: poolReserve.name,
+        error,
       });
     }
   };
