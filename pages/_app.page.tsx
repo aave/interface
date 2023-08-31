@@ -25,6 +25,7 @@ import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwit
 import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
+import { SwitchModal } from 'src/components/transactions/Switch/SwitchModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -37,7 +38,6 @@ import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProv
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { SwitchModal } from 'src/components/transactions/Switch/SwitchModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

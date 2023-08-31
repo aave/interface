@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
@@ -23,7 +24,6 @@ import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
 import WalletWidget from './WalletWidget';
-import { useModalContext } from 'src/hooks/useModal';
 
 interface Props {
   children: React.ReactElement;
@@ -177,7 +177,7 @@ export function AppHeader() {
           variant="surface"
           sx={{ p: '7px 8px', minWidth: 'unset', mr: 2 }}
         >
-          <SvgIcon fontSize='small'>
+          <SvgIcon fontSize="small">
             <SwitchHorizontalIcon />
           </SvgIcon>
         </Button>

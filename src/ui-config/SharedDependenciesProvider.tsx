@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 import { GovernanceService } from 'src/services/GovernanceService';
+import { UiIncentivesService } from 'src/services/UIIncentivesService';
+import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
@@ -8,8 +10,6 @@ import invariant from 'tiny-invariant';
 
 import { governanceConfig } from './governanceConfig';
 import { stakeConfig } from './stakeConfig';
-import { UiPoolService } from 'src/services/UIPoolService';
-import { UiIncentivesService } from 'src/services/UIIncentivesService';
 
 interface SharedDependenciesContext {
   governanceService: GovernanceService;

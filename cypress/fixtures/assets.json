@@ -1025,5 +1025,35 @@
       "collateral": false,
       "wrapped": false
     }
+  },
+  "baseV3Market": {
+    "ETH": {
+      "fullName": "Ethereum",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WETH": {
+      "fullName": "WETH",
+      "shortName": "WETH",
+      "wrapped": true
+    },
+    "aWETH": {
+      "fullName": "aWETH",
+      "shortName": "aWETH",
+      "wrapped": true
+    },
+    "USDbC": {
+      "fullName": "USD Base Coin",
+      "shortName": "USDbC",
+      "collateral": true,
+      "wrapped": true
+    },
+    "aUSDbC": {
+      "fullName": "aUSDbC",
+      "shortName": "aUSDbC",
+      "collateral": true,
+      "wrapped": false
+    }
   }
 }

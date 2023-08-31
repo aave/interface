@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
+import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
+import {
+  availableMarkets,
+  ENABLE_TESTNET,
+  getSupportedChainIds,
+  marketsData,
+  networkConfigs as _networkConfigs,
+  networkConfigs,
+} from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { AssetInput } from '../AssetInput';
-import { useRootStore } from 'src/store/root';
-import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { NetworkSelector } from './NetworkSelector';
-import { ENABLE_TESTNET, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
 export const SwitchModal = () => {
-  const { type, close, args } = useModalContext() as ModalContextType<{
+  const { type, close } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
   const [inputAmount, setInputAmount] = useState(0);
-
-  const networks = ENABLE_TESTNET ? Object.values(networkConfigs).filter(elem => elem.isTestnet) : Object.values(networkConfigs).filter(elem => !elem.isTestnet)
-
-  console.log(networks)
-
-  const { currentChainId } = useRootStore();
-
-  const [selectedNetwork, setSelectedNetwork] = useState(() => networks.find(elem => elem.));
-
-  const { data: reserves, isLoading, error } = usePoolReservesHumanized(selectedMarket);
+  const currentChainId = useRootStore((state) => state.currentChainId);
+  const [selectedNetwork, setSelectedNetwork] = useState(() => _networkConfigs[currentChainId]);
+  const supportedNetworksConfig = getSupportedChainIds().map((chainId) => networkConfigs[chainId]);
 
   return (
     <BasicModal open={type === ModalType.Switch} setOpen={close}>
       <TxModalTitle title="Switch tokens" />
-      <NetworkSelector />
-        networks={networks}
+      <NetworkSelector
+        networks={supportedNetworksConfig}
+        selectedNetwork={selectedNetwork}
+        setSelectedNetwork={setSelectedNetwork}
       />
-      {
-        /*
+      {/*
           <AssetInput
             assets={inputReserves}
             value={inputAmount.toString()}
@@ -49,8 +51,7 @@ export const SwitchModal = () => {
             loading={loading}
             onSelect={() => {}}
           />
-        */
-      }
+        */}
     </BasicModal>
   );
 };

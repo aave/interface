@@ -17,6 +17,7 @@ export const GENERAL = {
   TOKEN_APPROVAL: 'Token Approval',
   ACCEPT_RISK: 'Accept Risk',
   TRANSACTION: 'Transaction',
+  TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
 };
@@ -65,6 +66,10 @@ export const TRANSACTION_HISTORY = {
 // TODO proper events here
 export const REPAY_MODAL = {
   SWITCH_REPAY_TYPE: 'Change repay type',
+};
+
+export const WITHDRAW_MODAL = {
+  SWITCH_WITHDRAW_TYPE: 'Change withdraw type',
 };
 
 export const STAKE = {

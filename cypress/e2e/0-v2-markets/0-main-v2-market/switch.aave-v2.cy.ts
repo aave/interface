@@ -14,14 +14,14 @@ const testData = {
   borrow: {
     asset: assets.aaveMarket.DAI,
     amount: 50,
-    apyType: constants.borrowAPYType.stable,
+    apyType: constants.borrowAPYType.default,
     hasApproval: true,
   },
   swap: {
     fromAsset: assets.aaveMarket.DAI,
     toAsset: assets.aaveMarket.USDC,
     isBorrowed: true,
-    isVariableBorrowedAPY: false,
+    isVariableBorrowedAPY: true,
     amount: 200,
     changeApprove: true,
     hasApproval: false,
