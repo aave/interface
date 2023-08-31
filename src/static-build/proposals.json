@@ -11911,7 +11911,7 @@
       "startBlock": 18015757,
       "endBlock": 18034957,
       "executionTime": 0,
-      "forVotes": "547001456417213059000848",
+      "forVotes": "547428947357685354346000",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -11925,7 +11925,7 @@
       "ipfsHash": "0x8394781ffa2de370698110d5642b102aec2d8f71260d7256625306bf34cf1fcd",
       "startTimestamp": 1693257359,
       "creationTimestamp": 1693170239,
-      "expirationTimestamp": 1693489283
+      "expirationTimestamp": 1693489403
     },
     {
       "id": 309,
@@ -11951,16 +11951,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 18023109,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xad315f6890989f8d141365f2d542e2639bdae782d12126532b469a79e9cb21be",
+      "startTimestamp": 1693433531,
       "creationTimestamp": 1693346387,
-      "startTimestamp": 1693433507,
-      "expirationTimestamp": 1693663907
+      "expirationTimestamp": 1693664027
     },
     {
       "id": 310,
@@ -12006,8 +12006,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x84fd1e6f451b5d727a76cd6b5767e585f053031d20d10a3a91f42ed9a3e3e094",
       "creationTimestamp": 1693399403,
-      "startTimestamp": 1693486067,
-      "expirationTimestamp": 1693716467
+      "startTimestamp": 1693486187,
+      "expirationTimestamp": 1693716587
     },
     {
       "id": 311,
@@ -12041,8 +12041,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xfe8ff21ab3d6e94966053263315c0a827afe24be2bc6aca1158326c767847b9e",
       "creationTimestamp": 1693400123,
-      "startTimestamp": 1693486787,
-      "expirationTimestamp": 1693717187
+      "startTimestamp": 1693486907,
+      "expirationTimestamp": 1693717307
     }
   ]
 }
