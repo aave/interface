@@ -77,6 +77,15 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
+  const [assets, setAssets] = useState([
+    {
+      address: poolReserve.underlyingAsset,
+      symbol: poolReserve.symbol,
+      iconSymbol: poolReserve.iconSymbol,
+      balance: debt,
+    },
+  ]);
+
   const isMaxSelected = amount === '-1';
   const repayAmount = isMaxSelected ? safeAmountToRepayAll.toString() : amount;
   const repayAmountUsdValue = valueToBigNumber(repayAmount)
@@ -222,14 +231,7 @@ export function CollateralRepayModalContent({
         onChange={handleRepayAmountChange}
         usdValue={exactOutputUsd}
         symbol={poolReserve.symbol}
-        assets={[
-          {
-            address: poolReserve.underlyingAsset,
-            symbol: poolReserve.symbol,
-            iconSymbol: poolReserve.iconSymbol,
-            balance: debt,
-          },
-        ]}
+        assets={assets}
         isMaxSelected={isMaxSelected}
         maxValue={debt}
         inputTitle={<Trans>Expected amount to repay</Trans>}

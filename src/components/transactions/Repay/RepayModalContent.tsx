@@ -158,20 +158,20 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
-      const aTokenBalance = valueToBigNumber(underlyingBalance);
-      const maxBalance = BigNumber.max(
-        aTokenBalance,
-        BigNumber.min(aTokenBalance, debt).toString(10)
-      );
-      repayTokens.push({
-        address: poolReserve.aTokenAddress,
-        symbol: `a${poolReserve.symbol}`,
-        iconSymbol: poolReserve.iconSymbol,
-        aToken: true,
-        balance: maxBalance.toString(10),
-      });
-    }
+    // if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+    //   const aTokenBalance = valueToBigNumber(underlyingBalance);
+    //   const maxBalance = BigNumber.max(
+    //     aTokenBalance,
+    //     BigNumber.min(aTokenBalance, debt).toString(10)
+    //   );
+    //   repayTokens.push({
+    //     address: poolReserve.aTokenAddress,
+    //     symbol: `a${poolReserve.symbol}`,
+    //     iconSymbol: poolReserve.iconSymbol,
+    //     aToken: true,
+    //     balance: maxBalance.toString(10),
+    //   });
+    // }
     setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
   }, []);
@@ -240,7 +240,6 @@ export const RepayModalContent = ({
         maxValue={maxAmountToRepay.toString(10)}
         balanceText={<Trans>Wallet balance</Trans>}
       />
-
       {maxRepayWithDustRemaining && (
         <Typography color="warning.main" variant="helperText">
           <Trans>
@@ -250,7 +249,6 @@ export const RepayModalContent = ({
           </Trans>
         </Typography>
       )}
-
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
@@ -270,9 +268,7 @@ export const RepayModalContent = ({
           futureHealthFactor={newHF}
         />
       </TxModalDetails>
-
       {txError && <GasEstimationError txError={txError} />}
-
       <RepayActions
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
