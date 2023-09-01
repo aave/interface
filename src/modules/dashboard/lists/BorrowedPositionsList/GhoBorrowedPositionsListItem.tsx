@@ -55,7 +55,7 @@ export const GhoBorrowedPositionsListItem = ({
   const hasDiscount = ghoUserQualifiesForDiscount();
 
   const { isActive, isFrozen, isPaused, borrowingEnabled } = reserve;
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
+  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity

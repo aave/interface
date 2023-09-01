@@ -1,4 +1,5 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export type BorrowAssetsItem = {
   id: string;
@@ -33,4 +34,5 @@ export type GhoBorrowAssetsItem = {
   isFreezed?: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];
   vIncentivesData?: ReserveIncentiveResponse[];
+  reserve: ComputedReserveData;
 };
