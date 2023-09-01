@@ -29,13 +29,18 @@ export default function ReserveOverview() {
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
+  const [pageEventCalled, setPageEventCalled] = useState(false);
+
   useEffect(() => {
-    trackEvent('Page Viewed', {
-      'Page Name': 'Reserve Overview',
-      Reserve: reserve.iconSymbol,
-      Asset: underlyingAsset,
-    });
-  }, [trackEvent]);
+    if (!pageEventCalled && reserve && reserve.iconSymbol && underlyingAsset) {
+      trackEvent('Page Viewed', {
+        'Page Name': 'Reserve Overview',
+        Reserve: reserve.iconSymbol,
+        Asset: underlyingAsset,
+      });
+      setPageEventCalled(true);
+    }
+  }, [trackEvent, reserve, underlyingAsset, pageEventCalled]);
 
   const isOverview = mode === 'overview';
 
