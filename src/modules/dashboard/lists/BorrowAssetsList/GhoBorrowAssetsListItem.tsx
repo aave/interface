@@ -30,6 +30,7 @@ export const GhoBorrowAssetsListItem = ({
   name,
   underlyingAsset,
   isFreezed,
+  reserve,
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
@@ -38,8 +39,8 @@ export const GhoBorrowAssetsListItem = ({
   const { ghoUserDataFetched } = useRootStore();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  // Available borrows is min of user available borrows and remaining facilitator capacity
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
+
+  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity

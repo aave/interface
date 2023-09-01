@@ -106,8 +106,22 @@ export function getMaxAmountAvailableToBorrow(
  * Calculates the maximum amount of GHO a user can mint
  * @param user
  */
-export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse) {
-  const maxUserAmountToMint = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
+export function getMaxGhoMintAmount(
+  user: FormatUserSummaryAndIncentivesResponse,
+  poolReserve: PoolReserveBorrowSubset
+) {
+  const userAvailableBorrows = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
+
+  console.log('max', userAvailableBorrows.toString());
+
+  const availableBorrowCap =
+    poolReserve.borrowCap === '0'
+      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+      : valueToBigNumber(Number(poolReserve.borrowCap)).minus(
+          valueToBigNumber(poolReserve.totalDebt)
+        );
+
+  const maxAmountUserCanMint = BigNumber.min(userAvailableBorrows, availableBorrowCap);
 
   const shouldAddMargin =
     /**
@@ -115,6 +129,12 @@ export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse
      * That's a simplification that might not be true, but doesn't matter in most cases.
      */
     user.totalBorrowsMarketReferenceCurrency !== '0' ||
+    /**
+     * When borrow cap could be reached and debt accumulates the debt would be surpassed.
+     */
+    (poolReserve.borrowCapUSD &&
+      poolReserve.totalDebt !== '0' &&
+      maxAmountUserCanMint.gte(availableBorrowCap)) ||
     /**
      * When the user would be able to borrow all the remaining ceiling we need to add a margin as existing debt.
      */
@@ -128,8 +148,8 @@ export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse
         .lt(user.availableBorrowsUSD));
 
   const amountWithMargin = shouldAddMargin
-    ? maxUserAmountToMint.multipliedBy('0.99')
-    : maxUserAmountToMint;
+    ? maxAmountUserCanMint.multipliedBy('0.99')
+    : maxAmountUserCanMint;
   return roundToTokenDecimals(amountWithMargin.toString(10), 18);
 }
 

@@ -19,6 +19,7 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
   const { breakpoints } = useTheme();
   const desktopScreens = useMediaQuery(breakpoints.up('sm'));
 
+  console.log(ghoReserveData);
   if (desktopScreens) {
     return <GhoBorrowInfoDesktop reserve={reserve} ghoReserveData={ghoReserveData} />;
   } else {
@@ -37,7 +38,11 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
   return (
     <Stack direction="row">
       <CapsCircularStatus
-        value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
+        value={
+          (ghoReserveData.aaveFacilitatorRemainingCapacity -
+            ghoReserveData.aaveFacilitatorBucketLevel) *
+          100
+        }
         onClick={(open) => {
           if (open) {
             trackEvent(GENERAL.TOOL_TIP, {
@@ -86,7 +91,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
             <Trans>of</Trans>
           </Typography>
           <FormattedNumber
-            value={ghoReserveData.aaveFacilitatorBucketMaxCapacity}
+            value={ghoReserveData.aaveFacilitatorRemainingCapacity}
             variant="main16"
           />
         </Box>
@@ -154,7 +159,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
             >
               <Trans>of</Trans>
             </Typography>
-            <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString()} />
+            <ReserveSubheader value={ghoReserveData.aaveFacilitatorRemainingCapacity.toString()} />
           </Box>
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
@@ -165,7 +170,11 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
       </Stack>
       <Box>
         <CapsCircularStatus
-          value={ghoReserveData.aaveFacilitatorMintedPercent * 100}
+          value={
+            (ghoReserveData.aaveFacilitatorRemainingCapacity -
+              ghoReserveData.aaveFacilitatorBucketLevel) *
+            100
+          }
           onClick={(open) => {
             if (open) {
               trackEvent(GENERAL.TOOL_TIP, {

@@ -17,7 +17,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { GHO_SUPPORTED_MARKETS, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { GHO_SUPPORTED_MARKETS, GHO_SYMBOL, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -121,24 +121,36 @@ export const AppDataProvider: React.FC = ({ children }) => {
     currentTimestamp,
   });
 
+  let ghoBorrowCap = '0';
+  let aaveFacilitatorRemainingCapacity = Math.max(
+    formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
+    0
+  );
   let user = userSummary;
   // Factor discounted GHO interest into cumulative user fields
-  if (
-    GHO_SUPPORTED_MARKETS.includes(currentMarket) &&
-    formattedGhoUserData.userDiscountedGhoInterest > 0
-  ) {
-    const userSummaryWithDiscount = formatUserSummaryWithDiscount({
-      userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
-      user,
-      marketReferenceCurrencyPriceUSD: Number(
-        formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)
-      ),
-    });
-    user = {
-      ...user,
-      ...userSummaryWithDiscount,
-    };
+  if (GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
+    ghoBorrowCap = reserves.find((r) => r.symbol === GHO_SYMBOL)?.borrowCap || '0';
+
+    if (ghoBorrowCap && ghoBorrowCap !== '0') {
+      aaveFacilitatorRemainingCapacity = Number(ghoBorrowCap);
+    }
+
+    if (formattedGhoUserData.userDiscountedGhoInterest > 0) {
+      const userSummaryWithDiscount = formatUserSummaryWithDiscount({
+        userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
+        user,
+        marketReferenceCurrencyPriceUSD: Number(
+          formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)
+        ),
+      });
+      user = {
+        ...user,
+        ...userSummaryWithDiscount,
+      };
+    }
   }
+
+  console.log('gho borrow cap', ghoBorrowCap);
 
   const proportions = user.userReservesData.reduce(
     (acc, value) => {
@@ -259,10 +271,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         // ghoLoadingData for now is just propagated through to reduce changes to other components.
         ghoReserveData: {
           ...formattedGhoReserveData,
-          aaveFacilitatorRemainingCapacity: Math.max(
-            formattedGhoReserveData.aaveFacilitatorRemainingCapacity - 0.000001,
-            0
-          ),
+          aaveFacilitatorRemainingCapacity,
         },
         ghoUserData: formattedGhoUserData,
         ghoLoadingData: !ghoReserveDataFetched,

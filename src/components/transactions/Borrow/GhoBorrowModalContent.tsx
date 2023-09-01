@@ -131,7 +131,7 @@ export const GhoBorrowModalContent = ({
   const discountAvailable = ghoUserQualifiesForDiscount(amount);
 
   // amount calculations
-  let maxAmountToBorrow = getMaxGhoMintAmount(user);
+  let maxAmountToBorrow = getMaxGhoMintAmount(user, poolReserve);
   maxAmountToBorrow = Math.min(
     Number(maxAmountToBorrow),
     ghoReserveData.aaveFacilitatorRemainingCapacity
