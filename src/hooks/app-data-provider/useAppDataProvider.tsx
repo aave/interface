@@ -150,8 +150,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
   }
 
-  console.log('gho borrow cap', ghoBorrowCap);
-
   const proportions = user.userReservesData.reduce(
     (acc, value) => {
       const reserve = formattedPoolReserves.find(

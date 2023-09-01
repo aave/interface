@@ -112,8 +112,6 @@ export function getMaxGhoMintAmount(
 ) {
   const userAvailableBorrows = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
 
-  console.log('max', userAvailableBorrows.toString());
-
   const availableBorrowCap =
     poolReserve.borrowCap === '0'
       ? valueToBigNumber(ethers.constants.MaxUint256.toString())

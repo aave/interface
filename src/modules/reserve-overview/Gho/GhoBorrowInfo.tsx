@@ -19,7 +19,6 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
   const { breakpoints } = useTheme();
   const desktopScreens = useMediaQuery(breakpoints.up('sm'));
 
-  console.log(ghoReserveData);
   if (desktopScreens) {
     return <GhoBorrowInfoDesktop reserve={reserve} ghoReserveData={ghoReserveData} />;
   } else {
@@ -39,8 +38,8 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
     <Stack direction="row">
       <CapsCircularStatus
         value={
-          (ghoReserveData.aaveFacilitatorRemainingCapacity -
-            ghoReserveData.aaveFacilitatorBucketLevel) *
+          (ghoReserveData.aaveFacilitatorBucketLevel /
+            ghoReserveData.aaveFacilitatorRemainingCapacity) *
           100
         }
         onClick={(open) => {
@@ -171,8 +170,8 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
       <Box>
         <CapsCircularStatus
           value={
-            (ghoReserveData.aaveFacilitatorRemainingCapacity -
-              ghoReserveData.aaveFacilitatorBucketLevel) *
+            (ghoReserveData.aaveFacilitatorBucketLevel /
+              ghoReserveData.aaveFacilitatorRemainingCapacity) *
             100
           }
           onClick={(open) => {
