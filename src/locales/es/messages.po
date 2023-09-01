@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 00:15\n"
+"PO-Revision-Date: 2023-08-31 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1785,7 +1785,7 @@ msgstr "Modo de solo lectura. Conéctate a una cartera para realizar transaccion
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
-msgstr ""
+msgstr "Recibir (est.)"
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
@@ -2855,12 +2855,12 @@ msgstr "Retirar"
 
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 msgid "Withdraw & Switch"
-msgstr ""
+msgstr "Retirar y Cambiar"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdraw and Switch"
-msgstr ""
+msgstr "Retirar y Cambiar"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
@@ -2868,7 +2868,7 @@ msgstr "Retirar {symbol}"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"
-msgstr ""
+msgstr "Retirando y Cambiando"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -2988,7 +2988,7 @@ msgstr "Has cambiado con éxito la posición de préstamo."
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
 msgid "You've successfully withdrew & switched tokens."
-msgstr ""
+msgstr "Has retirado y cambiado tokens con éxito."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
