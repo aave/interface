@@ -83,7 +83,7 @@
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
     "react-markdown": "^8.0.3",
-    "react-number-format": "^4.9.1",
+    "react-number-format": "^5.3.1",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "tiny-invariant": "^1.3.1",
