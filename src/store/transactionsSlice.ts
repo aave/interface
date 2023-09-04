@@ -21,6 +21,9 @@ export type TransactionDetails = {
   previousState?: string;
   newState?: string;
   spender?: string;
+  outAsset?: string;
+  outAmount?: string;
+  outAssetName?: string;
 };
 
 export type TransactionEvent = TransactionDetails & {
@@ -42,7 +45,7 @@ export const createTransactionsSlice: StateCreator<
 > = (set, get) => {
   return {
     transactions: [],
-    addTransaction: (txHash: string, transaction: TransactionDetails) => {
+    addTransaction: (txHash, transaction) => {
       const chainId = get().currentChainId;
       const market = get().currentMarket;
       set((state) =>
