@@ -14,6 +14,7 @@ import { RepayModalContent } from './RepayModalContent';
 import { RepayType, RepayTypeSelector } from './RepayTypeSelector';
 
 export const RepayModal = () => {
+  console.log(2);
   const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
     currentRateMode: InterestRate;

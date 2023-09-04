@@ -2,6 +2,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
+  BoxProps,
   ListItemText,
   MenuItem,
   SvgIcon,
@@ -67,11 +68,12 @@ type MarketLogoProps = {
   size: number;
   logo: string;
   testChainName?: string;
+  sx?: BoxProps;
 };
 
-export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) => {
   return (
-    <Box sx={{ mr: 2, width: size, height: size, position: 'relative' }}>
+    <Box sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}>
       <img src={logo} alt="" width="100%" height="100%" />
 
       {testChainName && (

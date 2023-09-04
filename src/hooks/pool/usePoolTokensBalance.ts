@@ -3,6 +3,10 @@ import { useRootStore } from 'src/store/root';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
+export const usePoolsTokensBalance = () => {
+  return useQuery({});
+};
+
 export const usePoolTokensBalance = () => {
   const { poolTokensBalanceService } = useSharedDependencies();
   const currentMarketData = useRootStore((store) => store.currentMarketData);

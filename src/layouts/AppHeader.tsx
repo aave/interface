@@ -2,7 +2,6 @@ import { InformationCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/ou
 import { Trans } from '@lingui/macro';
 import {
   Button,
-  IconButton,
   Slide,
   SvgIcon,
   Typography,
