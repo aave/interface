@@ -11,7 +11,6 @@ export const usePoolsReservesHumanized = <T = ReservesDataHumanized[]>(
   opts?: HookOpts<ReservesDataHumanized[], T>
 ) => {
   const { uiPoolService } = useSharedDependencies();
-  console.log(QueryKeys.POOL_RESERVES_DATA_HUMANIZED);
   return useQuery({
     queryFn: () =>
       Promise.all(marketsData.map((marketData) => uiPoolService.getReservesHumanized(marketData))),
