@@ -88,20 +88,10 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <Button
-          disabled={disableWithdraw}
-          variant="contained"
-          onClick={() => {
-            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
-          }}
-        >
-          <Trans>Withdraw</Trans>
-        </Button>
-
         {isSwapButton ? (
           <Button
             disabled={disableSwap}
-            variant="outlined"
+            variant="contained"
             onClick={() => {
               // track
 
@@ -120,12 +110,21 @@ export const SuppliedPositionsListItem = ({
         ) : (
           <Button
             disabled={disableSupply}
-            variant="outlined"
+            variant="contained"
             onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           >
             <Trans>Supply</Trans>
           </Button>
         )}
+        <Button
+          disabled={disableWithdraw}
+          variant="outlined"
+          onClick={() => {
+            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+          }}
+        >
+          <Trans>Withdraw</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
