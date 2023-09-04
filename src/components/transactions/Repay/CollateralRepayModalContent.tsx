@@ -58,6 +58,7 @@ export function CollateralRepayModalContent({
       iconSymbol: userReserve.reserve.iconSymbol,
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
+
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
   const tokenToRepayWithBalance = tokenToRepayWith.balance || '0';
 
@@ -77,7 +78,7 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  const [assets, setAssets] = useState([
+  const [assets] = useState([
     {
       address: poolReserve.underlyingAsset,
       symbol: poolReserve.symbol,

@@ -45,9 +45,9 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
 
-  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,
     store.displayGho,
   ]);
@@ -59,7 +59,7 @@ export const RepayModalContent = ({
     iconSymbol: poolReserve.iconSymbol,
     balance: tokenBalance,
   });
-  const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
+  const [assets] = useState<RepayAsset[]>([tokenToRepayWith]);
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
@@ -172,7 +172,7 @@ export const RepayModalContent = ({
     //     balance: maxBalance.toString(10),
     //   });
     // }
-    setAssets(repayTokens);
+    // setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
   }, []);
 
