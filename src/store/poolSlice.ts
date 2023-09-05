@@ -11,6 +11,7 @@ import {
   IncentivesController,
   IncentivesControllerV2,
   IncentivesControllerV2Interface,
+  InterestRate,
   LendingPool,
   LendingPoolBundle,
   LendingPoolBundleInterface,
@@ -22,6 +23,7 @@ import {
   PoolBundleInterface,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
+  SavingsDaiTokenWrapperService,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -114,6 +116,14 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
+  getDaiForSavingsDai: (amount: string) => Promise<BigNumber>;
+  getSavingsDaiForDai: (amount: string) => Promise<BigNumber>;
+  supplyDaiAsSavingsDai: (amount: string) => PopulatedTransaction;
+  supplyDaiAsSavingsDaiWithPermit: (
+    amount: string,
+    deadline: string,
+    signature: SignatureLike
+  ) => PopulatedTransaction;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -315,6 +325,56 @@ export const createPoolSlice: StateCreator<
         deadline: args.deadline,
         useOptimizedPath: get().useOptimizedPath(),
         signature,
+      });
+    },
+    getDaiForSavingsDai: (amount: string) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.getTokenInForTokenOut(amount);
+    },
+    getSavingsDaiForDai: (amount: string) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.getTokenOutForTokenIn(amount);
+    },
+    supplyDaiAsSavingsDai: (amount: string) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.supplyToken(amount, get().account, '0');
+    },
+    supplyDaiAsSavingsDaiWithPermit: (
+      amount: string,
+      deadline: string,
+      signature: SignatureLike
+    ) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.supplyTokenWithPermit({
+        amount,
+        onBehalfOf: get().account,
+        deadline,
+        signature,
+        referralCode: '0',
       });
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
@@ -542,48 +602,79 @@ export const createPoolSlice: StateCreator<
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
-      const poolBundle = get().getCorrectPoolBundle();
+      const pool = getCorrectPool();
       const currentAccount = get().account;
-      if (poolBundle instanceof PoolBundle) {
-        if (repayWithATokens) {
-          return poolBundle.repayWithATokensTxBuilder.generateTxData({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToRepay,
-            useOptimizedPath: get().useOptimizedPath(),
-            rateMode: debtType,
-          });
-        } else {
-          return poolBundle.repayTxBuilder.generateTxData({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToRepay,
-            useOptimizedPath: get().useOptimizedPath(),
-            interestRateMode: debtType,
-          });
-        }
+      if (pool instanceof Pool && repayWithATokens) {
+        return pool.repayWithATokens({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToRepay,
+          rateMode: debtType as InterestRate,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
       } else {
-        const lendingPool = poolBundle as LendingPoolBundle;
-        return lendingPool.repayTxBuilder.generateTxData({
+        return pool.repay({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToRepay,
           interestRateMode: debtType,
+          useOptimizedPath: get().useOptimizedPath(),
         });
       }
+      // const poolBundle = get().getCorrectPoolBundle();
+      // const currentAccount = get().account;
+      // if (poolBundle instanceof PoolBundle) {
+      //   if (repayWithATokens) {
+      //     return poolBundle.repayWithATokensTxBuilder.generateTxData({
+      //       user: currentAccount,
+      //       reserve: poolAddress,
+      //       amount: amountToRepay,
+      //       useOptimizedPath: get().useOptimizedPath(),
+      //       rateMode: debtType,
+      //     });
+      //   } else {
+      //     return poolBundle.repayTxBuilder.generateTxData({
+      //       user: currentAccount,
+      //       reserve: poolAddress,
+      //       amount: amountToRepay,
+      //       useOptimizedPath: get().useOptimizedPath(),
+      //       interestRateMode: debtType,
+      //     });
+      //   }
+      // } else {
+      //   const lendingPool = poolBundle as LendingPoolBundle;
+      //   return lendingPool.repayTxBuilder.generateTxData({
+      //     user: currentAccount,
+      //     reserve: poolAddress,
+      //     amount: amountToRepay,
+      //     interestRateMode: debtType,
+      //   });
+      // }
     },
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
-      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      // Better to get rid of direct assert
+      const pool = getCorrectPool() as Pool;
       const currentAccount = get().account;
-      return poolBundle.repayTxBuilder.generateSignedTxData({
+      return pool.repayWithPermit({
         user: currentAccount,
         reserve: poolAddress,
-        amount: amountToRepay,
-        useOptimizedPath: get().useOptimizedPath(),
+        amount: amountToRepay, // amountToRepay.toString(),
         interestRateMode: debtType,
-        deadline,
         signature,
+        useOptimizedPath: get().useOptimizedPath(),
+        deadline,
       });
+      // const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      // const currentAccount = get().account;
+      // return poolBundle.repayTxBuilder.generateSignedTxData({
+      //   user: currentAccount,
+      //   reserve: poolAddress,
+      //   amount: amountToRepay,
+      //   useOptimizedPath: get().useOptimizedPath(),
+      //   interestRateMode: debtType,
+      //   deadline,
+      //   signature,
+      // });
     },
     swapCollateral: async ({
       poolReserve,

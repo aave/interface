@@ -787,6 +787,11 @@ msgstr "Current v2 balance"
 msgid "Current votes"
 msgstr "Current votes"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
+msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
+
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
@@ -1271,10 +1276,12 @@ msgstr "Language"
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -2197,6 +2204,7 @@ msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
@@ -2205,6 +2213,7 @@ msgid "Supplying your"
 msgstr "Supplying your"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 

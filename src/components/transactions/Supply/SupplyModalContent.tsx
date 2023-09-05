@@ -5,8 +5,13 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useMemo, useState } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -14,6 +19,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
+import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -21,7 +27,7 @@ import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
-import { AssetInput } from '../AssetInput';
+import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -37,6 +43,12 @@ import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
+import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
+import { useSavingsDaiWrapper } from './useSavingsDaiWrapper';
+
+interface SupplyAsset extends Asset {
+  balance: string;
+}
 
 export enum ErrorType {
   CAP_REACHED,
@@ -60,6 +72,12 @@ export const SupplyModalContent = React.memo(
     );
 
     // states
+    const [tokenToSupply, setTokenToSupply] = useState<SupplyAsset>({
+      address: poolReserve.underlyingAsset,
+      symbol: poolReserve.symbol,
+      iconSymbol: poolReserve.iconSymbol,
+      balance: tokenBalance,
+    });
     const [amount, setAmount] = useState('');
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
@@ -186,6 +204,26 @@ export const SupplyModalContent = React.memo(
         />
       );
 
+    const assets = [
+      {
+        balance: maxAmountToSupply,
+        symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+        iconSymbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.iconSymbol,
+      },
+    ];
+
+    const wrappedTokenInConfig =
+      wrappedTokenConfig[currentMarketData.chainId][poolReserve.underlyingAsset];
+    if (wrappedTokenInConfig) {
+      assets.push({
+        balance: maxAmountToSupply,
+        symbol: 'DAI', // TODO
+        iconSymbol: 'DAI', // TODO
+      });
+    }
+
+    const supplyingWrappedToken = tokenToSupply.address === wrappedTokenInConfig;
+
     return (
       <>
         {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
@@ -205,16 +243,9 @@ export const SupplyModalContent = React.memo(
           value={amount}
           onChange={handleChange}
           usdValue={amountInUsd.toString(10)}
-          symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
-          assets={[
-            {
-              balance: maxAmountToSupply,
-              symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-              iconSymbol: supplyUnWrapped
-                ? currentNetworkConfig.baseAssetSymbol
-                : poolReserve.iconSymbol,
-            },
-          ]}
+          symbol={tokenToSupply.symbol}
+          assets={assets}
+          onSelect={setTokenToSupply}
           capType={CapType.supplyCap}
           isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
@@ -227,6 +258,10 @@ export const SupplyModalContent = React.memo(
               assetName: poolReserve.name,
             },
           }}
+          exchangeRateComponent={
+            poolReserve.symbol === 'sDAI' &&
+            tokenToSupply.symbol === 'DAI' && <ExchangeRate supplyAmount={amount} />
+          }
         />
 
         <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
@@ -245,8 +280,61 @@ export const SupplyModalContent = React.memo(
 
         {txError && <GasEstimationError txError={txError} />}
 
-        <SupplyActions {...supplyActionsProps} />
+        {supplyingWrappedToken ? (
+          <SupplyWrappedTokenActions
+            tokenIn={wrappedTokenInConfig}
+            amountToSupply={amount}
+            decimals={18}
+            symbol="DAI"
+          />
+        ) : (
+          <SupplyActions {...supplyActionsProps} />
+        )}
       </>
     );
   }
+);
+
+const ExchangeRate = ({ supplyAmount }: { supplyAmount: string }) => {
+  const { loading, tokenOutAmount } = useSavingsDaiWrapper({ supplyAmount, decimals: 18 });
+
+  console.log('tokenOutAmount', tokenOutAmount);
+
+  return (
+    <ContentWithTooltip tooltipContent={ExchangeRateTooltip}>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Typography variant="caption">Supply amount</Typography>
+        <TokenIcon sx={{ fontSize: '16px' }} symbol="sdai" />
+        {loading ? (
+          <Skeleton variant="rectangular" width={80} height={14} />
+        ) : (
+          <>
+            <FormattedNumber
+              value={tokenOutAmount}
+              variant="subheader2"
+              color="text.primary"
+              visibleDecimals={2}
+            />
+            <Typography variant="subheader2" color="text.secondary">
+              sDAI
+            </Typography>
+          </>
+        )}
+      </Stack>
+    </ContentWithTooltip>
+  );
+};
+const ExchangeRateTooltip = (
+  <>
+    <Trans>
+      DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve.
+      Switching incurs no additional costs and no slippage.
+    </Trans>{' '}
+    <Link
+      href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+      underline="always"
+    >
+      <Trans>Learn more</Trans>
+    </Link>
+  </>
 );

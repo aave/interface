@@ -83,6 +83,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   event?: TrackEventProps;
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: T) => ReactNode;
+  exchangeRateComponent?: ReactNode;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -103,6 +104,7 @@ export const AssetInput = <T extends Asset = Asset>({
   event,
   selectOptionHeader,
   selectOption,
+  exchangeRateComponent,
 }: AssetInputProps<T>) => {
   const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -128,13 +130,12 @@ export const AssetInput = <T extends Asset = Asset>({
 
       <Box
         sx={(theme) => ({
-          p: '8px 12px',
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: '6px',
-          mb: 1,
+          overflow: 'hidden',
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>
           {loading ? (
             <Box sx={{ flex: 1 }}>
               <CircularProgress color="inherit" size="16px" />
@@ -281,7 +282,7 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, py: 2, mb: 1 }}>
           {loading ? (
             <Box sx={{ flex: 1 }} />
           ) : (
@@ -327,6 +328,18 @@ export const AssetInput = <T extends Asset = Asset>({
             </>
           )}
         </Box>
+        {exchangeRateComponent && (
+          <Box
+            sx={{
+              background: theme.palette.background.surface,
+              borderTop: `1px solid ${theme.palette.divider}`,
+              px: 3,
+              py: 2,
+            }}
+          >
+            {exchangeRateComponent}
+          </Box>
+        )}
       </Box>
     </Box>
   );

@@ -15,6 +15,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
+import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -51,6 +52,9 @@ export const WithdrawAndSwitchModalContent = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
+  // if the asset can be unwrapped (e.g. sDAI -> DAI) we don't need to use paraswap
+  const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId][poolReserve.underlyingAsset];
+
   let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
     .map((reserve) => ({
@@ -59,6 +63,7 @@ export const WithdrawAndSwitchModalContent = ({
       iconSymbol: reserve.iconSymbol,
     }));
 
+  // TODO: if withdrawing and unwrapping, should we show that asset at the top of the list?
   swapTargets = [
     ...swapTargets.filter((r) => r.symbol === 'GHO'),
     ...swapTargets.filter((r) => r.symbol !== 'GHO'),
@@ -89,7 +94,7 @@ export const WithdrawAndSwitchModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
-    skip: withdrawTxState.loading || false,
+    skip: wrappedTokenOutConfig !== '' || withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
