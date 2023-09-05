@@ -8,6 +8,7 @@ import {
   repay,
   supply,
   withdraw,
+  withdrawAndSwitch,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
@@ -74,13 +75,20 @@ const testData = {
       amount: 1,
       hasApproval: true,
     },
+    withdrawAndSwitch: {
+      fromAsset: assets.arbitrumMarket.DAI,
+      toAsset: assets.arbitrumMarket.USDC,
+      isCollateralFromAsset: true,
+      amount: 5,
+      hasApproval: false,
+    },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.arbitrumMarket.DAI.shortName,
-        amount: 7.0,
+        amount: 2.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
@@ -109,6 +117,7 @@ describe('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
+  withdrawAndSwitch(testData.testCases.withdrawAndSwitch, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
