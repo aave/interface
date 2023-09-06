@@ -17,6 +17,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
+import { useRootStore } from 'src/store/root';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -39,8 +40,20 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarketData, currentMarket } =
+    useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
+  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+    store.poolComputed.minRemainingBaseTokenBalance,
+    store.displayGho,
+  ]);
+  const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
+
+  const [swapVariant, setSwapVariant] = useState<SwapVariant>('exactOut');
+  const [amount, setAmount] = useState('');
+  const [maxSlippage, setMaxSlippage] = useState('0.5');
+
+  const amountRef = useRef<string>('');
 
   // List of tokens eligble to repay with, ordered by USD value
   const repayTokens = user.userReservesData
@@ -59,14 +72,19 @@ export function CollateralRepayModalContent({
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
 
-  const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
+  const [assets, setAssets] = useState([
+    {
+      address: poolReserve.underlyingAsset,
+      symbol: poolReserve.symbol,
+      iconSymbol: poolReserve.iconSymbol,
+      balance: debt,
+    },
+  ]);
+
+  const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>([assets]);
+
   const tokenToRepayWithBalance = tokenToRepayWith.balance || '0';
-
-  const [swapVariant, setSwapVariant] = useState<SwapVariant>('exactOut');
-  const [amount, setAmount] = useState('');
-  const [maxSlippage, setMaxSlippage] = useState('0.5');
-
-  const amountRef = useRef<string>('');
+  const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
   const collateralReserveData = reserves.find(
     (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
@@ -78,14 +96,22 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  const [assets] = useState([
-    {
-      address: poolReserve.underlyingAsset,
-      symbol: poolReserve.symbol,
+  console.log('displayGho', displayGho);
+  if (!displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+    console.log('underlyingBalance', underlyingBalance);
+    const aTokenBalance = valueToBigNumber(underlyingBalance);
+    const maxBalance = BigNumber.max(
+      aTokenBalance,
+      BigNumber.min(aTokenBalance, debt).toString(10)
+    );
+    repayTokens.push({
+      address: poolReserve.aTokenAddress,
+      symbol: `a${poolReserve.symbol}`,
       iconSymbol: poolReserve.iconSymbol,
-      balance: debt,
-    },
-  ]);
+      aToken: true,
+      balance: maxBalance.toString(10),
+    });
+  }
 
   const isMaxSelected = amount === '-1';
   const repayAmount = isMaxSelected ? safeAmountToRepayAll.toString() : amount;
@@ -98,7 +124,9 @@ export function CollateralRepayModalContent({
     .multipliedBy(poolReserve.priceInUSD)
     .multipliedBy(100 + Number(maxSlippage))
     .dividedBy(100)
-    .dividedBy(collateralReserveData.priceInUSD);
+    .dividedBy(
+      collateralReserveData.priceInUSD ? collateralReserveData.priceInUSD : poolReserve.priceInUSD
+    );
 
   const swapIn = { ...collateralReserveData, amount: tokenToRepayWithBalance };
   const swapOut = { ...poolReserve, amount: amountRef.current };
@@ -110,6 +138,8 @@ export function CollateralRepayModalContent({
   const repayAllDebt =
     isMaxSelected &&
     valueToBigNumber(tokenToRepayWithBalance).gte(collateralAmountRequiredToCoverDebt);
+
+  console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
 
   const {
     inputAmountUSD,
@@ -145,8 +175,9 @@ export function CollateralRepayModalContent({
       setAmount('');
       setSwapVariant('exactIn');
     } else {
-      amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
-      setAmount(value);
+      // set default payment to 1 on cleared asset input
+      amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value ? value : '1';
+      setAmount(value ? value : '1');
       setSwapVariant('exactOut');
     }
   };
@@ -225,6 +256,8 @@ export function CollateralRepayModalContent({
         symbol={poolReserve.symbol}
       />
     );
+
+  console.log('amount', amount);
   return (
     <>
       <AssetInput
@@ -251,7 +284,7 @@ export function CollateralRepayModalContent({
       </Box>
       <AssetInput
         value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
-        usdValue={inputAmountUSD}
+        usdValue={inputAmountUSD === '' ? '0' : inputAmountUSD}
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
