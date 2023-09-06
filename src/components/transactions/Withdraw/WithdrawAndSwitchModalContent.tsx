@@ -23,6 +23,7 @@ import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { useDaiForSavingsDaiWrapper } from '../Supply/useSavingsDaiWrapper';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
@@ -55,6 +56,8 @@ export const WithdrawAndSwitchModalContent = ({
   // if the asset can be unwrapped (e.g. sDAI -> DAI) we don't need to use paraswap
   const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId][poolReserve.underlyingAsset];
 
+  console.log(wrappedTokenOutConfig);
+
   let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
     .map((reserve) => ({
@@ -80,6 +83,13 @@ export const WithdrawAndSwitchModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
+  const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
+    withdrawAmount: amountRef.current,
+    decimals: 18,
+  });
+
+  console.log(loadingDaiForSavingsDai, tokenInAmount);
+
   const {
     inputAmountUSD,
     inputAmount,
@@ -94,7 +104,7 @@ export const WithdrawAndSwitchModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
-    skip: wrappedTokenOutConfig !== '' || withdrawTxState.loading || false,
+    skip: wrappedTokenOutConfig !== undefined || withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 

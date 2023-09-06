@@ -19,12 +19,55 @@ export const useSavingsDaiWrapper = ({
       return;
     }
 
-    const getTokenInForTokenOut = async () => {
+    const getTokenOutForTokenIn = async () => {
       const amount = parseUnits(supplyAmount, decimals).toString();
       const tokenOut = await getSavingsDaiForDai(amount);
       const outAmount = formatUnits(tokenOut.toString(), decimals);
       // console.log('out amount', outAmount);
       setTokenOutAmount(outAmount);
+      setLoading(false);
+    };
+
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      getTokenOutForTokenIn();
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+      // setLoading(false);
+    };
+  }, [decimals, getSavingsDaiForDai, supplyAmount]);
+
+  return {
+    loading,
+    tokenOutAmount,
+  };
+};
+
+export const useDaiForSavingsDaiWrapper = ({
+  withdrawAmount,
+  decimals,
+}: {
+  withdrawAmount: string;
+  decimals: number;
+}) => {
+  const getDaiForSavingsDai = useRootStore((state) => state.getDaiForSavingsDai);
+  const [loading, setLoading] = useState(false);
+  const [tokenInAmount, setTokenInAmount] = useState('0');
+
+  useEffect(() => {
+    if (!withdrawAmount || withdrawAmount === '0') {
+      setTokenInAmount('0');
+      return;
+    }
+
+    const getTokenInForTokenOut = async () => {
+      const amount = parseUnits(withdrawAmount, decimals).toString();
+      const tokenOut = await getDaiForSavingsDai(amount);
+      const outAmount = formatUnits(tokenOut.toString(), decimals);
+      // console.log('out amount', outAmount);
+      setTokenInAmount(outAmount);
       setLoading(false);
     };
 
@@ -37,10 +80,10 @@ export const useSavingsDaiWrapper = ({
       clearTimeout(timeout);
       // setLoading(false);
     };
-  }, [decimals, getSavingsDaiForDai, supplyAmount]);
+  }, [decimals, getDaiForSavingsDai, withdrawAmount]);
 
   return {
     loading,
-    tokenOutAmount,
+    tokenInAmount,
   };
 };
