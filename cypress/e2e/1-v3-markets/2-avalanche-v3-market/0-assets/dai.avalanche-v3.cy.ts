@@ -8,6 +8,7 @@ import {
   repay,
   supply,
   withdraw,
+  withdrawAndSwitch,
 } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
@@ -74,13 +75,20 @@ const testData = {
       amount: 1,
       hasApproval: true,
     },
+    withdrawAndSwitch: {
+      fromAsset: assets.avalancheV3Market.DAI,
+      toAsset: assets.avalancheV3Market.USDC,
+      isCollateralFromAsset: true,
+      amount: 5,
+      hasApproval: false,
+    },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.avalancheV3Market.DAI.shortName,
-        amount: 7.0,
+        amount: 2.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
@@ -94,8 +102,7 @@ const testData = {
   },
 };
 
-//while dai is frozen
-describe.skip('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+describe('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 
@@ -110,6 +117,7 @@ describe.skip('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
+  withdrawAndSwitch(testData.testCases.withdrawAndSwitch, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

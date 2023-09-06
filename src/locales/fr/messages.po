@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-16 00:14\n"
+"PO-Revision-Date: 2023-08-31 00:15\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -195,7 +195,7 @@ msgid "All Assets"
 msgstr ""
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "All done!"
 msgstr "Tout est fait !"
 
@@ -222,7 +222,6 @@ msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest r
 msgstr "Vous permet de basculer entre les taux d'intérêt <0>variable</0> et <1>stable</1> où le taux variable peut augmenter et diminuer en fonction du montant de liquidité dans la pool, et le taux stable restera le même pour la durée de votre prêt."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Amount"
@@ -348,7 +347,7 @@ msgstr "Actifs à déposer"
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "Assets with zero LTV ({assetsBlockingWithdraw}) must be withdrawn or disabled as collateral to perform this action"
 msgstr ""
 
@@ -362,6 +361,7 @@ msgstr "Auteur"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
@@ -1039,7 +1039,6 @@ msgstr ""
 msgid "Failed to load proposal voters. Please refresh the page."
 msgstr ""
 
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -1049,7 +1048,6 @@ msgstr ""
 msgid "Faucet"
 msgstr "Faucet"
 
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
@@ -1163,6 +1161,7 @@ msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "Je reconnais les risques encourus."
@@ -1590,7 +1589,7 @@ msgstr "Rien fourni pour le moment"
 msgid "Notify"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Ok, Close"
 msgstr "D'accord, fermer"
 
@@ -1784,6 +1783,10 @@ msgstr ""
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+msgid "Receive (est.)"
+msgstr ""
+
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr ""
@@ -1808,6 +1811,7 @@ msgstr ""
 msgid "Remaining debt"
 msgstr "Dette restante"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
 msgstr "Offre restante"
@@ -1894,7 +1898,7 @@ msgid "Review tx"
 msgstr "Réviser tx"
 
 #: src/components/transactions/Borrow/GhoBorrowSuccessView.tsx
-#: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "Review tx details"
 msgstr "Examiner les détails de la transaction"
 
@@ -2177,6 +2181,8 @@ msgstr "Fournir apy"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -2396,7 +2402,7 @@ msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou <0
 msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
 msgstr ""
 
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "Ces fonds ont été empruntés et ne peuvent pas être retirés pour le moment."
 
@@ -2837,7 +2843,9 @@ msgstr "Avec un pouvoir de vote de <0/>"
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr ""
 
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
+#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -2845,10 +2853,24 @@ msgstr ""
 msgid "Withdraw"
 msgstr "Retirer"
 
+#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
+msgid "Withdraw & Switch"
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+msgid "Withdraw and Switch"
+msgstr ""
+
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Retirer {symbole}"
 
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+msgid "Withdrawing and Switching"
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Le retrait de ce montant réduira votre facteur santé et augmentera le risque de liquidation."
@@ -2891,7 +2913,7 @@ msgstr "Vous ne pouvez pas changer d'utilisation en tant que mode de garantie po
 msgid "You can not use this currency as collateral"
 msgstr "Vous ne pouvez pas utiliser cette devise comme garantie"
 
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "Vous ne pouvez pas retirer ce montant car cela entraînera un appel de garantie"
 
@@ -2962,6 +2984,10 @@ msgstr "Vous {action} <0/> {symbole}"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "You've successfully switched borrow position."
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
+msgid "You've successfully withdrew & switched tokens."
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -3115,10 +3141,6 @@ msgstr "tokens n'est pas la même chose que de les staker . Si vous souhaitez st
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, veuillez vous rendre sur"
-
-#: src/components/transactions/Faucet/CaptchaFaucetModalContent.tsx
-msgid "will receive"
-msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"

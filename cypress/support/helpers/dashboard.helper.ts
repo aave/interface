@@ -129,6 +129,22 @@ export class DashboardHelpers {
     );
   };
 
+  public static waitUntilApyChanges(assetName: string, initialAPY: number) {
+    return cy.waitUntil(
+      () => {
+        return this.getApyBorrowedRate(assetName).then((currentAPY) => {
+          // Возвращает true, если APY изменилось
+          return currentAPY !== initialAPY;
+        });
+      },
+      {
+        errorMsg: `APY value did not change from ${initialAPY}`,
+        timeout: 20000, // Ждем до 20 секунд, например
+        interval: 500, // Проверка каждые 500 мс
+      }
+    );
+  }
+
   public static openBorrowModal(assetName: string) {
     cy.get(`[data-cy='dashboardBorrowListItem_${assetName.toUpperCase()}']`)
       .contains('Borrow')
