@@ -67,7 +67,7 @@ export function AppFooter() {
       key: 'FAQS',
     },
     {
-      href: 'https://discord.com/invite/7kHKnkDEUf',
+      href: 'https://discord.com/invite/aave',
       label: <Trans>Send feedback</Trans>,
       key: 'Send feedback',
     },
