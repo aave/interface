@@ -16,8 +16,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 import { useRootStore } from 'src/store/root';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
