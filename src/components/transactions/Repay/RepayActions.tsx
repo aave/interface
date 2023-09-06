@@ -1,5 +1,4 @@
 import {
-  ApproveType,
   gasLimitRecommendations,
   InterestRate,
   MAX_UINT_AMOUNT,
@@ -11,10 +10,11 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -59,7 +59,6 @@ export const RepayActions = ({
     repay,
     repayWithPermit,
     tryPermit,
-    getApprovedAmount,
     walletApprovalMethodPreference,
     generateSignatureRequest,
     generateApproval,
@@ -68,7 +67,6 @@ export const RepayActions = ({
   } = useRootStore();
   const { signTxData, sendTx } = useWeb3Context();
   const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
-  const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
     approvalTxState,
@@ -81,24 +79,30 @@ export const RepayActions = ({
     setApprovalTxState,
   } = useModalContext();
 
+  const {
+    data: approvedAmount,
+    refetch: fetchApprovedAmount,
+    isFetching: fetchingApprovedAmount,
+  } = usePoolApprovedAmount(poolAddress);
+
   const permitAvailable = tryPermit(poolAddress);
-  console.log(permitAvailable);
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const requiresApproval = useMemo(() => {
-    return checkRequiresApproval({
+  const requiresApproval =
+    fetchingApprovedAmount ||
+    checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
       amount: amountToRepay,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
-  }, [amountToRepay, signatureParams, approvedAmount]);
 
-  const fetchApprovedAmount = useCallback(async () => {
-    setLoadingTxns(true);
-    const approvedAmountPool = await getApprovedAmount({ token: poolAddress });
-    setApprovedAmount(approvedAmountPool);
-    setLoadingTxns(false);
-  }, [setLoadingTxns, getApprovedAmount, poolAddress]);
+  useEffect(() => {
+    if (requiresApproval) {
+      setApprovalTxState({});
+    }
+  }, [requiresApproval, setApprovalTxState]);
+
+  setLoadingTxns(fetchingApprovedAmount);
 
   const approval = async () => {
     try {
@@ -136,6 +140,8 @@ export const RepayActions = ({
             amount: MAX_UINT_AMOUNT,
             assetName: symbol,
           });
+
+          fetchApprovedAmount();
         }
       }
     } catch (error) {

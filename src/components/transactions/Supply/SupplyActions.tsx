@@ -1,18 +1,14 @@
-import {
-  ApproveType,
-  gasLimitRecommendations,
-  MAX_UINT_AMOUNT,
-  ProtocolAction,
-} from '@aave/contract-helpers';
+import { gasLimitRecommendations, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -54,7 +50,6 @@ export const SupplyActions = React.memo(
       tryPermit,
       supply,
       supplyWithPermit,
-      getApprovedAmount,
       generateSignatureRequest,
       generateApproval,
       walletApprovalMethodPreference,
@@ -64,7 +59,6 @@ export const SupplyActions = React.memo(
       state.tryPermit,
       state.supply,
       state.supplyWithPermit,
-      state.getApprovedAmount,
       state.generateSignatureRequest,
       state.generateApproval,
       state.walletApprovalMethodPreference,
@@ -86,47 +80,29 @@ export const SupplyActions = React.memo(
     const { signTxData, sendTx } = useWeb3Context();
 
     const [usePermit, setUsePermit] = useState(false);
-    const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
-    const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-    // callback to fetch approved amount and determine execution path on dependency updates
-    const fetchApprovedAmount = useCallback(
-      async (forceApprovalCheck?: boolean) => {
-        // Check approved amount on-chain on first load or if an action triggers a re-check such as an approval being confirmed
-        if (!approvedAmount || forceApprovalCheck) {
-          setLoadingTxns(true);
-          const approvedAmount = await getApprovedAmount({ token: poolAddress });
-          setApprovedAmount(approvedAmount);
-        }
+    const {
+      data: approvedAmount,
+      refetch: fetchApprovedAmount,
+      isFetching: fetchingApprovedAmount,
+    } = usePoolApprovedAmount(poolAddress);
 
-        if (approvedAmount) {
-          const fetchedRequiresApproval = checkRequiresApproval({
-            approvedAmount: approvedAmount.amount,
-            amount: amountToSupply,
-            signedAmount: signatureParams ? signatureParams.amount : '0',
-          });
-          setRequiresApproval(fetchedRequiresApproval);
-          if (fetchedRequiresApproval) setApprovalTxState({});
-        }
+    const requiresApproval =
+      fetchingApprovedAmount ||
+      checkRequiresApproval({
+        approvedAmount: approvedAmount?.amount || '0',
+        amount: amountToSupply,
+        signedAmount: signatureParams ? signatureParams.amount : '0',
+      });
 
-        setLoadingTxns(false);
-      },
-      [
-        approvedAmount,
-        setLoadingTxns,
-        getApprovedAmount,
-        poolAddress,
-        amountToSupply,
-        signatureParams,
-        setApprovalTxState,
-      ]
-    );
-
-    // Run on first load to decide execution path
     useEffect(() => {
-      fetchApprovedAmount();
-    }, [fetchApprovedAmount]);
+      if (requiresApproval) {
+        setApprovalTxState({});
+      }
+    }, [requiresApproval, setApprovalTxState]);
+
+    setLoadingTxns(fetchingApprovedAmount);
 
     // Update gas estimation
     useEffect(() => {
@@ -186,7 +162,7 @@ export const SupplyActions = React.memo(
               amount: MAX_UINT_AMOUNT,
               assetName: symbol,
             });
-            fetchApprovedAmount(true);
+            fetchApprovedAmount();
           }
         }
       } catch (error) {
