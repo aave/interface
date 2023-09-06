@@ -1,7 +1,7 @@
 import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
-import { configEnvWithTenderlyMainnetFork } from '../../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyBaseFork } from '../../../../support/steps/configuration.steps';
 import {
   borrow,
   changeCollateral,
@@ -18,52 +18,72 @@ import {
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.ammMarket.ETH,
+      asset: assets.baseV3Market.ETH,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.baseV3Market.ETH,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.aaveMarket.ETH,
+        asset: assets.baseV3Market.ETH,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.baseV3Market.ETH,
         isCollateralType: true,
       },
     },
-    borrow: {
-      asset: assets.aaveMarket.ETH,
-      amount: 0.04,
-      apyType: constants.borrowAPYType.variable,
-      hasApproval: false,
-    },
-    repay: {
-      asset: assets.ammMarket.ETH,
-      apyType: constants.apyType.variable,
-      amount: 0.01,
-      hasApproval: true,
-      repayOption: constants.repayType.default,
-    },
+    borrow: [
+      {
+        asset: assets.baseV3Market.ETH,
+        amount: 0.06,
+        apyType: constants.borrowAPYType.default,
+        hasApproval: false,
+      },
+    ],
     withdraw: [
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.baseV3Market.ETH,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.baseV3Market.ETH,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
         forWrapped: true,
+      },
+    ],
+    repay: [
+      {
+        asset: assets.baseV3Market.ETH,
+        apyType: constants.apyType.variable,
+        amount: 0.01,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
+      },
+      {
+        asset: assets.baseV3Market.ETH,
+        apyType: constants.apyType.variable,
+        repayableAsset: assets.baseV3Market.WETH,
+        amount: 0.01,
+        hasApproval: false,
+        repayOption: constants.repayType.default,
+      },
+      {
+        asset: assets.baseV3Market.ETH,
+        apyType: constants.apyType.variable,
+        repayableAsset: assets.baseV3Market.aWETH,
+        amount: 0.01,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
       },
     ],
   },
@@ -71,16 +91,14 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
-        amount: 1.07,
+        assetName: assets.ethereumV3Market.ETH.shortName,
+        amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
+        assetName: assets.ethereumV3Market.ETH.shortName,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
@@ -88,9 +106,9 @@ const testData = {
   },
 };
 
-describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('ETH INTEGRATION SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
+  configEnvWithTenderlyBaseFork({ v3: true });
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {
@@ -98,11 +116,15 @@ describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
     borrowsUnavailable(skipTestState);
     changeCollateral(testData.testCases.collateral.switchOn, skipTestState, false);
   });
-  borrow(testData.testCases.borrow, skipTestState, true);
+  testData.testCases.borrow.forEach((borrowCase) => {
+    borrow(borrowCase, skipTestState, true);
+  });
   changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
-  repay(testData.testCases.repay, skipTestState, false);
   testData.testCases.withdraw.forEach((withdrawCase) => {
     withdraw(withdrawCase, skipTestState, false);
+  });
+  testData.testCases.repay.forEach((repayCase) => {
+    repay(repayCase, skipTestState, false);
   });
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
