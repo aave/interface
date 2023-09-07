@@ -69,6 +69,7 @@ export const RepayActions = ({
     data: approvedAmount,
     refetch: fetchApprovedAmount,
     isFetching: fetchingApprovedAmount,
+    isFetchedAfterMount,
   } = usePoolApprovedAmount(poolAddress);
 
   const permitAvailable = tryPermit(poolAddress);
@@ -101,6 +102,12 @@ export const RepayActions = ({
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
+
+  useEffect(() => {
+    if (!isFetchedAfterMount) {
+      fetchApprovedAmount();
+    }
+  }, [fetchApprovedAmount, isFetchedAfterMount]);
 
   const action = async () => {
     try {
