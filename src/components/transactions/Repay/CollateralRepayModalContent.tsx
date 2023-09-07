@@ -312,14 +312,14 @@ export function CollateralRepayModalContent({
       />
     );
 
-  console.log('---------------------');
-  console.log('swapVariant', swapVariant);
-  console.log('inputAmount', inputAmount);
-  console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
-  console.log('repayTokens', repayTokens);
-  console.log('tokenToRepayWith', tokenToRepayWith);
-  console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
-  console.log('---------------------');
+  // console.log('---------------------');
+  // console.log('swapVariant', swapVariant);
+  // console.log('inputAmount', inputAmount);
+  // console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
+  // console.log('repayTokens', repayTokens);
+  // console.log('tokenToRepayWith', tokenToRepayWith);
+  // console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
+  // console.log('---------------------');
 
   return (
     <>

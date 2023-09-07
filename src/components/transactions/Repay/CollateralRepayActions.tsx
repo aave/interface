@@ -54,8 +54,6 @@ export const CollateralRepayActions = ({
   buildTxFn,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
-  console.log('fromAssetData ------>', fromAssetData);
-
   const [paraswapRepayWithCollateral, currentMarketData] = useRootStore((state) => [
     state.paraswapRepayWithCollateral,
     state.currentMarketData,
