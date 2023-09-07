@@ -27,5 +27,6 @@ export const usePoolApprovedAmount = (token: string) => {
     queryFn: () => approvedAmountService.getPoolApprovedAmount(user, token),
     queryKey: [QueryKeys.POOL_APPROVED_AMOUNT, user, token],
     enabled: !!user,
+    refetchOnMount: 'always',
   });
 };
