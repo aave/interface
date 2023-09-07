@@ -73,7 +73,8 @@ export const SupplyActions = React.memo(
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
-      isFetching: fetchingApprovedAmount,
+      isRefetching: fetchingApprovedAmount,
+      isFetchedAfterMount,
     } = usePoolApprovedAmount(poolAddress);
 
     setLoadingTxns(fetchingApprovedAmount);
@@ -105,6 +106,12 @@ export const SupplyActions = React.memo(
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
     });
+
+    useEffect(() => {
+      if (!isFetchedAfterMount) {
+        fetchApprovedAmount();
+      }
+    }, [fetchApprovedAmount, isFetchedAfterMount]);
 
     // Update gas estimation
     useEffect(() => {

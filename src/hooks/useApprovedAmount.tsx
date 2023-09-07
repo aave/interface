@@ -17,7 +17,9 @@ export const useApprovedAmount = ({
     queryFn: () => approvedAmountService.getApprovedAmount(user, token, spender),
     queryKey: [QueryKeys.APPROVED_AMOUNT, user, token, spender],
     enabled: !!user,
-    refetchOnMount: 'always',
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
@@ -28,6 +30,8 @@ export const usePoolApprovedAmount = (token: string) => {
     queryFn: () => approvedAmountService.getPoolApprovedAmount(user, token),
     queryKey: [QueryKeys.POOL_APPROVED_AMOUNT, user, token],
     enabled: !!user,
-    refetchOnMount: 'always',
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
