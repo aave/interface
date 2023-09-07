@@ -45,9 +45,10 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
 
-  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
+
+  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,
     store.displayGho,
   ]);
@@ -59,7 +60,8 @@ export const RepayModalContent = ({
     iconSymbol: poolReserve.iconSymbol,
     balance: tokenBalance,
   });
-  const [assets] = useState<RepayAsset[]>([tokenToRepayWith]);
+  const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
+
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
@@ -158,21 +160,21 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    // if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
-    //   const aTokenBalance = valueToBigNumber(underlyingBalance);
-    //   const maxBalance = BigNumber.max(
-    //     aTokenBalance,
-    //     BigNumber.min(aTokenBalance, debt).toString(10)
-    //   );
-    //   repayTokens.push({
-    //     address: poolReserve.aTokenAddress,
-    //     symbol: `a${poolReserve.symbol}`,
-    //     iconSymbol: poolReserve.iconSymbol,
-    //     aToken: true,
-    //     balance: maxBalance.toString(10),
-    //   });
-    // }
-    // setAssets(repayTokens);
+    if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+      const aTokenBalance = valueToBigNumber(underlyingBalance);
+      const maxBalance = BigNumber.max(
+        aTokenBalance,
+        BigNumber.min(aTokenBalance, debt).toString(10)
+      );
+      repayTokens.push({
+        address: poolReserve.aTokenAddress,
+        symbol: `a${poolReserve.symbol}`,
+        iconSymbol: poolReserve.iconSymbol,
+        aToken: true,
+        balance: maxBalance.toString(10),
+      });
+    }
+    setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
   }, []);
 

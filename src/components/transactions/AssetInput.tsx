@@ -117,6 +117,9 @@ export const AssetInput = <T extends Asset = Asset>({
       ? assets[0]
       : assets && (assets.find((asset) => asset.symbol === symbol) as T);
 
+  console.log('whats the asset -----', asset);
+  console.log('asset symbol ----', asset.symbol);
+
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
