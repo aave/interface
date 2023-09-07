@@ -78,7 +78,7 @@ export const SupplyActions = React.memo(
     } = usePoolApprovedAmount(poolAddress);
 
     const requiresApproval =
-      fetchingApprovedAmount ||
+      Number(amountToSupply) !== 0 &&
       checkRequiresApproval({
         approvedAmount: approvedAmount?.amount || '0',
         amount: amountToSupply,
