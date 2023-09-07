@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 12:05\n"
+"PO-Revision-Date: 2023-09-06 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2926,8 +2926,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Solo puedes retirar tus activos del Módulo de Seguridad después de que finalice el período de cooldown y la ventana de unstakeo esté activa."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr "Puedes reportar un incidente a nuestro <0>Discord</0> o <1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
