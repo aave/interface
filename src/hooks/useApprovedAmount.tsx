@@ -17,6 +17,7 @@ export const useApprovedAmount = ({
     queryFn: () => approvedAmountService.getApprovedAmount(user, token, spender),
     queryKey: [QueryKeys.APPROVED_AMOUNT, user, token, spender],
     enabled: !!user,
+    refetchOnMount: 'always',
   });
 };
 
