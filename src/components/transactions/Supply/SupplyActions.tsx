@@ -68,7 +68,6 @@ export const SupplyActions = React.memo(
     const permitAvailable = tryPermit(poolAddress);
     const { sendTx } = useWeb3Context();
 
-    const [usePermit, setUsePermit] = useState(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
     const {
@@ -77,6 +76,8 @@ export const SupplyActions = React.memo(
       isFetching: fetchingApprovedAmount,
     } = usePoolApprovedAmount(poolAddress);
 
+    setLoadingTxns(fetchingApprovedAmount);
+
     const requiresApproval =
       Number(amountToSupply) !== 0 &&
       checkRequiresApproval({
@@ -84,6 +85,14 @@ export const SupplyActions = React.memo(
         amount: amountToSupply,
         signedAmount: signatureParams ? signatureParams.amount : '0',
       });
+
+    if (requiresApproval && approvalTxState?.success) {
+      // There was a successful approval tx, but the approval amount is not enough.
+      // Clear the state to prompt for another approval.
+      setApprovalTxState({});
+    }
+
+    const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
     const { approval } = useApprovalTx({
       usePermit,
@@ -96,14 +105,6 @@ export const SupplyActions = React.memo(
       onApprovalTxConfirmed: fetchApprovedAmount,
       onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
     });
-
-    useEffect(() => {
-      if (requiresApproval) {
-        setApprovalTxState({});
-      }
-    }, [requiresApproval, setApprovalTxState]);
-
-    setLoadingTxns(fetchingApprovedAmount);
 
     // Update gas estimation
     useEffect(() => {
@@ -120,12 +121,6 @@ export const SupplyActions = React.memo(
       }
       setGasLimit(supplyGasLimit.toString());
     }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
-
-    useEffect(() => {
-      const preferPermit =
-        permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-      setUsePermit(preferPermit);
-    }, [permitAvailable, walletApprovalMethodPreference]);
 
     const action = async () => {
       try {
@@ -201,7 +196,7 @@ export const SupplyActions = React.memo(
         preparingTransactions={loadingTxns}
         actionText={<Trans>Supply {symbol}</Trans>}
         actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-        handleApproval={() => approval()}
+        handleApproval={approval}
         handleAction={action}
         requiresApproval={requiresApproval}
         tryPermit={permitAvailable}

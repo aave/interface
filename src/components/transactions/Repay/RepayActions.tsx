@@ -1,5 +1,4 @@
 import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/contract-helpers';
-import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
@@ -8,7 +7,7 @@ import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -19,12 +18,6 @@ import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-
-interface SignedParams {
-  signature: SignatureLike;
-  deadline: string;
-  amount: string;
-}
 
 export interface RepayActionProps extends BoxProps {
   amountToRepay: string;
@@ -81,6 +74,8 @@ export const RepayActions = ({
   const permitAvailable = tryPermit(poolAddress);
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
+  setLoadingTxns(fetchingApprovedAmount);
+
   const requiresApproval =
     Number(amountToRepay) !== 0 &&
     checkRequiresApproval({
@@ -88,6 +83,12 @@ export const RepayActions = ({
       amount: amountToRepay,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
+
+  if (requiresApproval && approvalTxState?.success) {
+    // There was a successful approval tx, but the approval amount is not enough.
+    // Clear the state to prompt for another approval.
+    setApprovalTxState({});
+  }
 
   const { approval } = useApprovalTx({
     usePermit,
@@ -100,14 +101,6 @@ export const RepayActions = ({
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
-
-  useEffect(() => {
-    if (requiresApproval) {
-      setApprovalTxState({});
-    }
-  }, [requiresApproval, setApprovalTxState]);
-
-  setLoadingTxns(fetchingApprovedAmount);
 
   const action = async () => {
     try {
