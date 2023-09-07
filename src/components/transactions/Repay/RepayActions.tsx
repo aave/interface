@@ -82,7 +82,7 @@ export const RepayActions = ({
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const requiresApproval =
-    fetchingApprovedAmount ||
+    Number(amountToRepay) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
       amount: amountToRepay,
@@ -174,10 +174,6 @@ export const RepayActions = ({
       });
     }
   };
-
-  useEffect(() => {
-    fetchApprovedAmount();
-  }, [fetchApprovedAmount]);
 
   useEffect(() => {
     let supplyGasLimit = 0;
