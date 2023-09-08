@@ -13,11 +13,13 @@ import {
   IncentivesControllerV2Interface,
   LendingPool,
   LendingPoolBundle,
+  LendingPoolBundleInterface,
   MAX_UINT_AMOUNT,
   PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   PoolBundle,
+  PoolBundleInterface,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
   UiIncentiveDataProvider,
@@ -124,6 +126,7 @@ export interface PoolSlice {
   ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
   estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
+  getCorrectPoolBundle: () => PoolBundleInterface | LendingPoolBundleInterface;
 }
 
 export const createPoolSlice: StateCreator<
@@ -152,24 +155,24 @@ export const createPoolSlice: StateCreator<
       });
     }
   }
-  function getCorrectPoolBundle() {
-    const currentMarketData = get().currentMarketData;
-    const provider = get().jsonRpcProvider();
-    if (currentMarketData.v3) {
-      return new PoolBundle(provider, {
-        POOL: currentMarketData.addresses.LENDING_POOL,
-        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
-      });
-    } else {
-      return new LendingPoolBundle(provider, {
-        LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
-        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-      });
-    }
-  }
   return {
     data: new Map(),
+    getCorrectPoolBundle() {
+      const currentMarketData = get().currentMarketData;
+      const provider = get().jsonRpcProvider();
+      if (currentMarketData.v3) {
+        return new PoolBundle(provider, {
+          POOL: currentMarketData.addresses.LENDING_POOL,
+          WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+          L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+        });
+      } else {
+        return new LendingPoolBundle(provider, {
+          LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
+          WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+        });
+      }
+    },
     refreshPoolData: async (marketData?: MarketDataType) => {
       const account = get().account;
       const currentChainId = get().currentChainId;
@@ -283,7 +286,7 @@ export const createPoolSlice: StateCreator<
       return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
     },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle();
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
         return poolBundle.supplyTxBuilder.generateTxData({
@@ -302,7 +305,7 @@ export const createPoolSlice: StateCreator<
       }
     },
     supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const user = get().account;
       const signature = utils.joinSignature(args.signature);
       return poolBundle.supplyTxBuilder.generateSignedTxData({
@@ -315,7 +318,7 @@ export const createPoolSlice: StateCreator<
       });
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle();
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
         return poolBundle.borrowTxBuilder.generateTxData({
@@ -539,7 +542,7 @@ export const createPoolSlice: StateCreator<
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
-      const poolBundle = getCorrectPoolBundle();
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
         if (repayWithATokens) {
@@ -570,7 +573,7 @@ export const createPoolSlice: StateCreator<
       }
     },
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
-      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const currentAccount = get().account;
       return poolBundle.repayTxBuilder.generateSignedTxData({
         user: currentAccount,
