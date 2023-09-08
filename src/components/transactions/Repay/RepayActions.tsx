@@ -43,14 +43,21 @@ export const RepayActions = ({
   blocked,
   ...props
 }: RepayActionProps) => {
-  const {
+  const [
     repay,
     repayWithPermit,
     tryPermit,
     walletApprovalMethodPreference,
     estimateGasLimit,
     addTransaction,
-  } = useRootStore();
+  ] = useRootStore((store) => [
+    store.repay,
+    store.repayWithPermit,
+    store.tryPermit,
+    store.walletApprovalMethodPreference,
+    store.estimateGasLimit,
+    store.addTransaction,
+  ]);
   const { sendTx } = useWeb3Context();
   const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
