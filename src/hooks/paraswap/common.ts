@@ -14,7 +14,7 @@ import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
-const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
+export const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
 
 export type UseSwapProps = {
   chainId: ChainId;
@@ -133,6 +133,8 @@ export async function fetchExactInTxParams(
     route,
     maxSlippage
   );
+
+  console.log(swapCallData)
 
   return {
     swapCallData,

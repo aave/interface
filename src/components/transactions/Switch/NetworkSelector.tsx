@@ -43,14 +43,12 @@ export const NetworkSelector = ({
         )}
         sx={{
           '&.MuiInputBase-root': {
-            paddingRight: '4px',
             border: 0,
             '.MuiSelect-select': {
-              paddingRight: '20px',
               display: 'flex',
               backgroundColor: 'transparent',
               border: 0,
-            },
+            }
           },
           '& .MuiOutlinedInput-notchedOutline': {
             border: 'none',

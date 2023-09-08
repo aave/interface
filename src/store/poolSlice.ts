@@ -56,6 +56,7 @@ import { StateCreator } from 'zustand';
 
 import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 // TODO: what is the better name for this type?
 export type PoolReserve = {
@@ -125,7 +126,7 @@ export interface PoolSlice {
     }
   ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
-  estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
+  estimateGasLimit: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -795,8 +796,8 @@ export const createPoolSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    estimateGasLimit: async (tx: PopulatedTransaction) => {
-      const provider = get().jsonRpcProvider();
+    estimateGasLimit: async (tx: PopulatedTransaction, chainId?: number) => {
+      const provider = chainId ? getProvider(chainId) : get().jsonRpcProvider();
       const defaultGasLimit: BigNumber = tx.gasLimit ? tx.gasLimit : BigNumber.from('0');
       delete tx.gasLimit;
       let estimatedGas = await provider.estimateGas(tx);

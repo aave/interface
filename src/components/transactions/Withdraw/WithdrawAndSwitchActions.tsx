@@ -126,7 +126,9 @@ export const WithdrawAndSwitchActions = ({
         txCalldata: route.swapCallData,
         signatureParams,
       });
+      console.log(tx)
       const txDataWithGasEstimation = await estimateGasLimit(tx);
+      console.log(txDataWithGasEstimation)
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
