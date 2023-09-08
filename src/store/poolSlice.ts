@@ -91,9 +91,8 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayActionProps) => PopulatedTransaction;
-
+  withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repayWithPermit: (
     args: RepayActionProps & {
       signature: SignatureLike;
@@ -113,7 +112,6 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
-  getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -315,15 +313,6 @@ export const createPoolSlice: StateCreator<
         useOptimizedPath: get().useOptimizedPath(),
         signature,
       });
-    },
-    getApprovedAmount: async (args: { token: string }) => {
-      const poolBundle = getCorrectPoolBundle();
-      const user = get().account;
-      if (poolBundle instanceof PoolBundle) {
-        return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
-      } else {
-        return poolBundle.depositTxBuilder.getApprovedAmount({ user, token: args.token });
-      }
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle();

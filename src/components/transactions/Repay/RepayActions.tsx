@@ -1,20 +1,14 @@
-import {
-  ApproveType,
-  gasLimitRecommendations,
-  InterestRate,
-  MAX_UINT_AMOUNT,
-  ProtocolAction,
-} from '@aave/contract-helpers';
-import { SignatureLike } from '@ethersproject/bytes';
+import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
+import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -24,12 +18,6 @@ import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-
-interface SignedParams {
-  signature: SignatureLike;
-  deadline: string;
-  amount: string;
-}
 
 export interface RepayActionProps extends BoxProps {
   amountToRepay: string;
@@ -55,20 +43,23 @@ export const RepayActions = ({
   blocked,
   ...props
 }: RepayActionProps) => {
-  const {
+  const [
     repay,
     repayWithPermit,
     tryPermit,
-    getApprovedAmount,
     walletApprovalMethodPreference,
-    generateSignatureRequest,
-    generateApproval,
     estimateGasLimit,
     addTransaction,
-  } = useRootStore();
-  const { signTxData, sendTx } = useWeb3Context();
+  ] = useRootStore((store) => [
+    store.repay,
+    store.repayWithPermit,
+    store.tryPermit,
+    store.walletApprovalMethodPreference,
+    store.estimateGasLimit,
+    store.addTransaction,
+  ]);
+  const { sendTx } = useWeb3Context();
   const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
-  const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const {
     approvalTxState,
@@ -81,72 +72,49 @@ export const RepayActions = ({
     setApprovalTxState,
   } = useModalContext();
 
+  const {
+    data: approvedAmount,
+    refetch: fetchApprovedAmount,
+    isFetching: fetchingApprovedAmount,
+    isFetchedAfterMount,
+  } = usePoolApprovedAmount(poolAddress);
+
   const permitAvailable = tryPermit(poolAddress);
-  console.log(permitAvailable);
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const requiresApproval = useMemo(() => {
-    return checkRequiresApproval({
+  setLoadingTxns(fetchingApprovedAmount);
+
+  const requiresApproval =
+    Number(amountToRepay) !== 0 &&
+    checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
       amount: amountToRepay,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
-  }, [amountToRepay, signatureParams, approvedAmount]);
 
-  const fetchApprovedAmount = useCallback(async () => {
-    setLoadingTxns(true);
-    const approvedAmountPool = await getApprovedAmount({ token: poolAddress });
-    setApprovedAmount(approvedAmountPool);
-    setLoadingTxns(false);
-  }, [setLoadingTxns, getApprovedAmount, poolAddress]);
+  if (requiresApproval && approvalTxState?.success) {
+    // There was a successful approval tx, but the approval amount is not enough.
+    // Clear the state to prompt for another approval.
+    setApprovalTxState({});
+  }
 
-  const approval = async () => {
-    try {
-      if (approvedAmount) {
-        if (usePermit) {
-          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const signatureRequest = await generateSignatureRequest({
-            ...approvedAmount,
-            deadline,
-            amount: parseUnits(amountToRepay, poolReserve.decimals).toString(),
-          });
+  const { approval } = useApprovalTx({
+    usePermit,
+    approvedAmount,
+    requiresApproval,
+    assetAddress: poolAddress,
+    symbol,
+    decimals: poolReserve.decimals,
+    signatureAmount: amountToRepay,
+    onApprovalTxConfirmed: fetchApprovedAmount,
+    onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+  });
 
-          const response = await signTxData(signatureRequest);
-          setSignatureParams({ signature: response, deadline, amount: amountToRepay });
-          setApprovalTxState({
-            txHash: MOCK_SIGNED_HASH,
-            loading: false,
-            success: true,
-          });
-        } else {
-          let approveTxData = generateApproval(approvedAmount);
-          setApprovalTxState({ ...approvalTxState, loading: true });
-          approveTxData = await estimateGasLimit(approveTxData);
-          const response = await sendTx(approveTxData);
-          await response.wait(1);
-          setApprovalTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
-          addTransaction(response.hash, {
-            action: ProtocolAction.approval,
-            txState: 'success',
-            asset: poolAddress,
-            amount: MAX_UINT_AMOUNT,
-            assetName: symbol,
-          });
-        }
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
+  useEffect(() => {
+    if (!isFetchedAfterMount) {
+      fetchApprovedAmount();
     }
-  };
+  }, [fetchApprovedAmount, isFetchedAfterMount]);
 
   const action = async () => {
     try {
@@ -215,10 +183,6 @@ export const RepayActions = ({
   };
 
   useEffect(() => {
-    fetchApprovedAmount();
-  }, [fetchApprovedAmount]);
-
-  useEffect(() => {
     let supplyGasLimit = 0;
     if (usePermit) {
       supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supplyWithPermit].recommended);
@@ -234,7 +198,7 @@ export const RepayActions = ({
   return (
     <TxActionsWrapper
       blocked={blocked}
-      preparingTransactions={loadingTxns}
+      preparingTransactions={loadingTxns || !approvedAmount}
       symbol={poolReserve.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}

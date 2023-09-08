@@ -337,6 +337,99 @@ export const withdraw = (
 };
 
 /**
+ * This full step to swap assets from Dashboard view
+ * @example
+ *```
+ * // Withdraw and switch from ETH to USDC
+ * // apyType options: Variable, Stable
+ * withdrawAndSwitch({
+ *   fromAsset:{shortName:'ETH', fullName:'Ethereum'},
+ *   toAsset:{shortName:'USDC', fullName:'USDC'},
+ *   isCollateralFromAsset: false,
+ *   amount: 1.137,
+ *   hasApproval: true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
+export const withdrawAndSwitch = (
+  {
+    fromAsset,
+    toAsset,
+    isBorrowed = false,
+    isVariableBorrowedAPY = true,
+    isCollateralFromAsset,
+    changeApprove = false,
+    amount,
+    hasApproval = true,
+    isMaxAmount = false,
+  }: {
+    fromAsset: { shortName: string; fullName: string };
+    toAsset: { shortName: string; fullName: string };
+    isBorrowed?: boolean;
+    isVariableBorrowedAPY?: boolean;
+    isCollateralFromAsset?: boolean;
+    changeApprove?: boolean;
+    amount: number;
+    hasApproval: boolean;
+    isMaxAmount?: boolean;
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  const _shortNameFrom = fromAsset.shortName;
+  const _shortNameTo = toAsset.shortName;
+  const _actionName = 'Switch';
+  const _switchType = isBorrowed ? 'Borrowed' : 'Supplied';
+  const _apySwitchType = isVariableBorrowedAPY ? 'Variable' : 'Stable';
+
+  describe(`Withdraw and Switch for ${_switchType} ${_apySwitchType} ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    it(`Open Withdraw and Switch modal for ${_shortNameFrom}`, () => {
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
+        .find(`button:contains("Withdraw")`)
+        .click();
+
+      cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortNameFrom}")`).should('be.visible');
+
+      cy.get('[data-cy=Modal] button')
+        .contains('Withdraw & Switch')
+        .click({ force: true })
+        .should('not.be.disabled');
+    });
+    it(`Choose Switching ${_switchType} options: swap to asset`, () => {
+      cy.get('[data-cy=Modal]').as('Modal');
+      cy.get('@Modal').find('[data-cy=assetSelect]').click();
+      cy.get(`[data-cy="assetsSelectOption_${_shortNameTo.toUpperCase()}"]`, { timeout: 10000 })
+        .scrollIntoView()
+        .should('be.visible')
+        .click({ force: true });
+      cy.get(`[data-cy="assetsSelectedOption_${_shortNameTo.toUpperCase()}"]`, {
+        timeout: 10000,
+      }).should('be.visible', { timeout: 10000 });
+    });
+    it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
+      cy.setAmount(amount, isMaxAmount);
+      cy.get(`[data-cy="slippageButton_0.1"]`).click();
+      cy.get('li[role="menuitem"][value="1"]').click();
+      if (!changeApprove) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
+      cy.wait(2000);
+      cy.doConfirm(hasApproval, _actionName);
+    });
+    doCloseModal();
+  });
+};
+
+/**
  * This full step to change borrow apy from Dashboard view
  * @example
  *```
