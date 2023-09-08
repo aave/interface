@@ -1,5 +1,9 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { valueToBigNumber, calculateHealthFactorFromBalancesBigUnits } from '@aave/math-utils';
+import {
+  BigNumberValue,
+  calculateHealthFactorFromBalancesBigUnits,
+  valueToBigNumber,
+} from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
@@ -16,8 +20,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 import { useRootStore } from 'src/store/root';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -31,7 +35,11 @@ import { ErrorType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
 import { RepayActions } from './RepayActions';
-import { e } from '@bgd-labs/aave-address-book/dist/AaveGovernanceV2-733323cd';
+
+interface RepayAsset extends Asset {
+  balance: string;
+  balanceUSD: string;
+}
 
 export function CollateralRepayModalContent({
   poolReserve,
@@ -46,10 +54,7 @@ export function CollateralRepayModalContent({
   const { currentChainId, currentNetworkConfig, currentMarketData, currentMarket } =
     useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
-    store.poolComputed.minRemainingBaseTokenBalance,
-    store.displayGho,
-  ]);
+  const [displayGho] = useRootStore((store) => [store.displayGho]);
   const [repayMaxAToken, setRepayMaxAToken] = useState('');
   const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
 
@@ -58,9 +63,9 @@ export function CollateralRepayModalContent({
   const [maxSlippage, setMaxSlippage] = useState('0.5');
 
   const amountRef = useRef<string>('');
-
+  // const repayTokens: RepayAsset[] = [];
   // List of tokens eligble to repay with, ordered by USD value
-  const repayTokens = user.userReservesData
+  const repayTokens: RepayAsset[] = user.userReservesData
     .filter(
       (userReserve) =>
         userReserve.underlyingBalance !== '0' &&
@@ -76,7 +81,7 @@ export function CollateralRepayModalContent({
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
 
-  const [assets, setAssets] = useState([
+  const [assets] = useState([
     {
       address: poolReserve.underlyingAsset,
       symbol: poolReserve.symbol,
@@ -85,24 +90,7 @@ export function CollateralRepayModalContent({
     },
   ]);
 
-  const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
-
-  //   {
-  //     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  //     "balance": "18003.95145365947216358",
-  //     "balanceUSD": "29531701.5299230955951986382",
-  //     "symbol": "WETH",
-  //     "iconSymbol": "WETH"
-  // }
-
-  // NOTE Crashes undefined in asset.symbol when clicking Collateral Tab
-  // const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
-  //   address: poolReserve.underlyingAsset,
-  //   symbol: poolReserve.symbol,
-  //   iconSymbol: poolReserve.iconSymbol,
-  //   balance: tokenBalance,
-  // });
-
+  const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>(repayTokens[0]);
   const tokenToRepayWithBalance = tokenToRepayWith.balance || '0';
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
@@ -116,7 +104,7 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  if (!displayGho({ symbol: poolReserve.symbol, currentMarket })) {
+  if (currentMarketData.v3 && !displayGho({ symbol: poolReserve.symbol, currentMarket })) {
     const aTokenBalance = valueToBigNumber(underlyingBalance);
     const maxBalance = BigNumber.max(
       aTokenBalance,
@@ -126,8 +114,8 @@ export function CollateralRepayModalContent({
       address: poolReserve.aTokenAddress,
       symbol: `a${poolReserve.symbol}`,
       iconSymbol: poolReserve.iconSymbol,
-      aToken: true,
       balance: maxBalance.toString(10),
+      balanceUSD: maxBalance.toString(10),
     });
   }
 
@@ -186,18 +174,15 @@ export function CollateralRepayModalContent({
       maxSelected &&
       valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
     ) {
-      // The selected collateral amount is not enough to pay the full debt. We'll try to do a swap using the exact amount of collateral.
-      // The amount won't be known until we fetch the swap data, so we'll clear it out. Once the swap data is fetched, we'll set the amount.
-
       if (repayWithATokens) {
         const maxAmountRepayATokens = BigNumber.min(underlyingBalance, debt).toString(10);
-
         amountRef.current = maxAmountRepayATokens;
         setAmount(value);
         setRepayMaxAToken(maxAmountRepayATokens);
       } else {
+        // The selected collateral amount is not enough to pay the full debt. We'll try to do a swap using the exact amount of collateral.
+        // The amount won't be known until we fetch the swap data, so we'll clear it out. Once the swap data is fetched, we'll set the amount.
         amountRef.current = '';
-
         setAmount('');
       }
       setSwapVariant('exactIn');
@@ -236,34 +221,34 @@ export function CollateralRepayModalContent({
         : calculatedHealthFactor.toString(10);
   }
 
+  let hfAfterSwapFn: number | BigNumber = 0;
+  let shouldUseFlashloan = false;
+  // if (!repayWithATokens) {
+  const repayWithUserReserve = userReserves.find(
+    (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
+  );
+
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
-  let hfAfterSwapFn = 0;
-  let shouldUseFlashloan = false;
-  if (!repayWithATokens) {
-    const repayWithUserReserve = userReserves.find(
-      (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
-    );
+  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
+    amountToReceiveAfterSwap: outputAmount,
+    amountToSwap: inputAmount,
+    // Since its the aToken reserve already we can use the poolReserve
+    fromAssetData: repayWithATokens ? poolReserve : collateralReserveData,
+    user,
+    toAssetData: poolReserve,
+    repayWithUserReserve,
+    debt,
+  });
 
-    const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
-      amountToReceiveAfterSwap: outputAmount,
-      amountToSwap: inputAmount,
-      fromAssetData: collateralReserveData,
-      user,
-      toAssetData: poolReserve,
-      repayWithUserReserve,
-      debt,
-    });
-
-    hfAfterSwapFn = hfAfterSwap;
-
-    // If the selected collateral asset is frozen, a flashloan must be used. When a flashloan isn't used,
-    // the remaining amount after the swap is deposited into the pool, which will fail for frozen assets.
-    shouldUseFlashloan =
-      useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
-      collateralReserveData?.isFrozen;
-  }
+  hfAfterSwapFn = hfAfterSwap;
+  // If the selected collateral asset is frozen, a flashloan must be used. When a flashloan isn't used,
+  // the remaining amount after the swap is deposited into the pool, which will fail for frozen assets.
+  shouldUseFlashloan =
+    useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
+    collateralReserveData?.isFrozen;
+  //}
 
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
@@ -321,19 +306,6 @@ export function CollateralRepayModalContent({
         symbol={poolReserve.symbol}
       />
     );
-
-  // console.log('---------------------');
-  // console.log('swapVariant', swapVariant);
-  // console.log('inputAmount', inputAmount);
-  // console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
-  // console.log('repayTokens', repayTokens);
-  // console.log('tokenToRepayWith', tokenToRepayWith);
-  // console.log('tokenToRepayWithBalance', tokenToRepayWithBalance);
-  // console.log('---------------------');\
-
-  console.log('collateralReserveData', collateralReserveData);
-
-  console.log('amountRepaid ----', amountRepaid);
 
   return (
     <>

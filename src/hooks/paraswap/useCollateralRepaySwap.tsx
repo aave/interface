@@ -167,11 +167,6 @@ export const useCollateralRepaySwap = ({
     maxSlippage,
   ]);
 
-  console.log('outputAmount', outputAmount);
-  console.log('outputAmountUSD', outputAmountUSD);
-  console.log('inputAmount', inputAmount);
-  console.log('inputAmountUSD', inputAmountUSD);
-
   return {
     outputAmount,
     outputAmountUSD,
