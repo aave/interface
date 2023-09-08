@@ -200,7 +200,7 @@ export const SupplyActions = React.memo(
         requiresAmount
         amount={amountToSupply}
         symbol={symbol}
-        preparingTransactions={loadingTxns}
+        preparingTransactions={loadingTxns || !approvedAmount}
         actionText={<Trans>Supply {symbol}</Trans>}
         actionInProgressText={<Trans>Supplying {symbol}</Trans>}
         handleApproval={approval}
