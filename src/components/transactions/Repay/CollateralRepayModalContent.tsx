@@ -195,7 +195,7 @@ export function CollateralRepayModalContent({
 
   // health factor calculations for aToken repayments
   // we use usd values instead of MarketreferenceCurrency so it has same precision
-  let newHF = user?.healthFactor;
+  let newHFWithATokens = user?.healthFactor;
   if (amount && repayWithATokens) {
     let collateralBalanceMarketReferenceCurrency: BigNumberValue = user?.totalCollateralUSD || '0';
     if (repayWithATokens && usageAsCollateralEnabledOnUser) {
@@ -215,19 +215,15 @@ export function CollateralRepayModalContent({
       currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
     });
 
-    newHF =
+    newHFWithATokens =
       calculatedHealthFactor.isLessThan(0) && !calculatedHealthFactor.eq(-1)
         ? '0'
         : calculatedHealthFactor.toString(10);
   }
 
-  let hfAfterSwapFn: number | BigNumber = 0;
-  let shouldUseFlashloan = false;
-  // if (!repayWithATokens) {
   const repayWithUserReserve = userReserves.find(
     (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
   );
-
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
@@ -241,14 +237,11 @@ export function CollateralRepayModalContent({
     repayWithUserReserve,
     debt,
   });
-
-  hfAfterSwapFn = hfAfterSwap;
   // If the selected collateral asset is frozen, a flashloan must be used. When a flashloan isn't used,
   // the remaining amount after the swap is deposited into the pool, which will fail for frozen assets.
-  shouldUseFlashloan =
+  const shouldUseFlashloan =
     useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
     collateralReserveData?.isFrozen;
-  //}
 
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
@@ -371,7 +364,7 @@ export function CollateralRepayModalContent({
         <DetailsHFLine
           visibleHfChange={swapVariant === 'exactOut' ? !!amount : !!inputAmount}
           healthFactor={user?.healthFactor}
-          futureHealthFactor={repayWithATokens ? newHF : hfAfterSwapFn.toString(10)}
+          futureHealthFactor={repayWithATokens ? newHFWithATokens : hfAfterSwap.toString(10)}
           loading={loadingSkeleton}
         />
         <DetailsNumberLineWithSub
