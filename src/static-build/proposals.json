@@ -12100,10 +12100,10 @@
       "executionTime": 1694299931,
       "forVotes": "484906813112498755779238",
       "againstVotes": "2182367495840923548",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Queued",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 1694731931,
@@ -12182,7 +12182,7 @@
       "ipfsHash": "0x62072da4710055d1fd7be0bfe3b4c4a51d7669e3dea76ed1f3fdb26f54a032c7",
       "startTimestamp": 1694103107,
       "creationTimestamp": 1694016059,
-      "expirationTimestamp": 1694334995
+      "expirationTimestamp": 1694335151
     },
     {
       "id": 316,
@@ -12217,7 +12217,7 @@
       "ipfsHash": "0x90554befe3e2ec212b5d7f6ddc5909e6502e93fdb542ec60e192b4dacd891ba0",
       "startTimestamp": 1694266967,
       "creationTimestamp": 1694179775,
-      "expirationTimestamp": 1694497523
+      "expirationTimestamp": 1694497679
     },
     {
       "id": 317,
@@ -12252,7 +12252,7 @@
       "ipfsHash": "0xa8fae12f14e52f4f19f4f008bfc67ec6ee7d22c5b5ee50b5a12063d215a9325f",
       "startTimestamp": 1694267267,
       "creationTimestamp": 1694180075,
-      "expirationTimestamp": 1694497823
+      "expirationTimestamp": 1694497979
     },
     {
       "id": 318,
@@ -12286,16 +12286,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 18094700,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xc74f19fc8bb41498edc38f2da7cbc45e2e6d8adb1d28e50793df07328fb56377",
+      "startTimestamp": 1694299583,
       "creationTimestamp": 1694212463,
-      "startTimestamp": 1694299511,
-      "expirationTimestamp": 1694529911
+      "expirationTimestamp": 1694530067
     }
   ]
 }
