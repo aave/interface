@@ -48,7 +48,7 @@ export const NetworkSelector = ({
               display: 'flex',
               backgroundColor: 'transparent',
               border: 0,
-            }
+            },
           },
           '& .MuiOutlinedInput-notchedOutline': {
             border: 'none',

@@ -51,12 +51,12 @@ import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
 import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 // TODO: what is the better name for this type?
 export type PoolReserve = {

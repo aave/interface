@@ -1,18 +1,18 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
+import { OptimalRate } from '@paraswap/sdk';
+import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
-import { useRootStore } from 'src/store/root';
-import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
-import { queryClient } from 'pages/_app.page';
-import { QueryKeys } from 'src/ui-config/queries';
-import { OptimalRate } from '@paraswap/sdk';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 interface SwithProps {
   inputAmount: string;
@@ -41,10 +41,13 @@ export const SwitchActions = ({
   loading,
   isWrongNetwork,
   chainId,
-  route
+  route,
 }: SwithProps) => {
-
-  const [ user, generateApproval, estimateGasLimit ] = useRootStore((state) => [state.account, state.generateApproval, state.estimateGasLimit])
+  const [user, generateApproval, estimateGasLimit] = useRootStore((state) => [
+    state.account,
+    state.generateApproval,
+    state.estimateGasLimit,
+  ]);
 
   const {
     approvalTxState,
@@ -85,10 +88,8 @@ export const SwitchActions = ({
         user,
         maxSlippage: Number(slippage) * 10000,
       });
-      // const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-      // console.log(txWithGasEstimation);
-      console.log(tx)
-      const response = await sendTx(tx);
+      const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+      const response = await sendTx(txWithGasEstimation);
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
       setMainTxState({
@@ -97,7 +98,7 @@ export const SwitchActions = ({
         success: true,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
       setMainTxState({
@@ -110,7 +111,7 @@ export const SwitchActions = ({
   const approval = async () => {
     try {
       const tx = generateApproval({
-        spender: swapper,
+        spender: route.tokenTransferProxy,
         user,
         token: inputToken,
         amount: inputAmount,
@@ -136,21 +137,23 @@ export const SwitchActions = ({
     }
   };
 
-  const fetchApprovedAmount = useCallback(
-    async () => {
-      setLoadingTxns(true);
-      const rpc = getProvider(chainId);
-      const erc20Service = new ERC20Service(rpc);
-      const approvedTargetAmount = await erc20Service.approvedAmount({
-        user,
-        token: inputToken,
-        spender: swapper,
-      });
-      setApprovedAmount(approvedTargetAmount);
-      setLoadingTxns(false);
-    },
-    [chainId, setLoadingTxns, user, inputToken, swapper]
-  );
+  const fetchApprovedAmount = useCallback(async () => {
+    setLoadingTxns(true);
+    const rpc = getProvider(chainId);
+    console.log(rpc);
+    const erc20Service = new ERC20Service(rpc);
+    console.log(user);
+    console.log(inputToken);
+    console.log(swapper);
+    const approvedTargetAmount = await erc20Service.approvedAmount({
+      user,
+      token: inputToken,
+      spender: route.tokenTransferProxy,
+    });
+    console.log(approvedAmount);
+    setApprovedAmount(approvedTargetAmount);
+    setLoadingTxns(false);
+  }, [chainId, setLoadingTxns, user, inputToken, swapper]);
 
   useEffect(() => {
     fetchApprovedAmount();

@@ -134,7 +134,7 @@ export async function fetchExactInTxParams(
     maxSlippage
   );
 
-  console.log(swapCallData)
+  console.log(swapCallData);
 
   return {
     swapCallData,

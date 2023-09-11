@@ -1,9 +1,9 @@
+import { OptimalRate } from '@paraswap/sdk';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { BigNumber, PopulatedTransaction } from 'ethers';
 import { QueryKeys } from 'src/ui-config/queries';
 
 import { ExactInSwapper, FEE_CLAIMER_ADDRESS, getParaswap } from './common';
-import { OptimalRate } from '@paraswap/sdk';
-import { BigNumber, PopulatedTransaction } from 'ethers';
 
 type ParaSwapSellRatesParams = {
   amount?: string;
@@ -45,12 +45,27 @@ export const useParaswapSellRates = ({
       }
     },
     queryKey: [QueryKeys.PARASWAP_RATES, chainId, amount, srcToken, destToken, user],
-    enabled: !!(chainId && amount && srcToken && srcDecimals && destToken && destDecimals && user && amount !== '0'),
+    enabled: !!(
+      chainId &&
+      amount &&
+      srcToken &&
+      srcDecimals &&
+      destToken &&
+      destDecimals &&
+      user &&
+      amount !== '0'
+    ),
   });
 };
 
 type UseParaswapSellTxParams = {
-  srcToken: string, srcDecimals: number, destToken: string, destDecimals: number, user: string, route: OptimalRate, maxSlippage: number
+  srcToken: string;
+  srcDecimals: number;
+  destToken: string;
+  destDecimals: number;
+  user: string;
+  route: OptimalRate;
+  maxSlippage: number;
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
@@ -65,24 +80,27 @@ export const useParaswapSellTxParams = (chainId: number) => {
       maxSlippage,
     }: UseParaswapSellTxParams) => {
       const paraswap = getParaswap(chainId);
-      const response = await paraswap.buildTx({
-        srcToken,
-        srcDecimals,
-        srcAmount: route.srcAmount,
-        destToken,
-        destDecimals,
-        userAddress: user,
-        priceRoute: route,
-        slippage: maxSlippage,
-        partnerAddress: FEE_CLAIMER_ADDRESS,
-        positiveSlippageToUser: false,
-      }, { ignoreChecks: true });
+      const response = await paraswap.buildTx(
+        {
+          srcToken,
+          srcDecimals,
+          srcAmount: route.srcAmount,
+          destToken,
+          destDecimals,
+          userAddress: user,
+          priceRoute: route,
+          slippage: maxSlippage,
+          partnerAddress: FEE_CLAIMER_ADDRESS,
+          positiveSlippageToUser: false,
+        },
+        { ignoreChecks: true }
+      );
       return {
         ...response,
         gasLimit: BigNumber.from(response.gas || '10000000'),
         gasPrice: BigNumber.from(response.gasPrice),
         value: BigNumber.from(response.value || '0'),
-      }
+      };
     },
   });
 };

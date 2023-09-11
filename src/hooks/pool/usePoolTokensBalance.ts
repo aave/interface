@@ -1,29 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
+import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const usePoolsTokensBalance = () => {
-  return useQuery({});
+import { HookOpts } from '../commonTypes';
+
+export const usePoolsTokensBalance = <T = UserPoolTokensBalances[]>(
+  marketsData: MarketDataType[],
+  user: string,
+  opts?: HookOpts<UserPoolTokensBalances[][], T>
+) => {
+  const { poolTokensBalanceService } = useSharedDependencies();
+  return useQuery({
+    queryFn: () =>
+      Promise.all(
+        marketsData.map((marketData) =>
+          poolTokensBalanceService.getPoolTokensBalances(marketData, user)
+        )
+      ),
+    queryKey: [QueryKeys.POOL_TOKENS, user, marketsData],
+    enabled: !!user,
+    refetchInterval: POLLING_INTERVAL,
+    ...opts,
+  });
 };
 
 export const usePoolTokensBalance = () => {
-  const { poolTokensBalanceService } = useSharedDependencies();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
-  const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
-  const lendingPoolAddress = currentMarketData.addresses.LENDING_POOL;
-  return useQuery({
-    queryFn: () =>
-      poolTokensBalanceService.getPoolTokensBalances({ user, lendingPoolAddressProvider }),
-    queryKey: [
-      QueryKeys.POOL_TOKENS,
-      user,
-      lendingPoolAddressProvider,
-      lendingPoolAddress,
-      poolTokensBalanceService.toHash(),
-    ],
-    enabled: !!user,
-    refetchInterval: POLLING_INTERVAL,
-  });
+  return usePoolsTokensBalance([currentMarketData], user, { select: (value) => value[0] });
 };
