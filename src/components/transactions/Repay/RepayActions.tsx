@@ -85,6 +85,7 @@ export const RepayActions = ({
   setLoadingTxns(fetchingApprovedAmount);
 
   const requiresApproval =
+    !repayWithATokens &&
     Number(amountToRepay) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
@@ -111,10 +112,10 @@ export const RepayActions = ({
   });
 
   useEffect(() => {
-    if (!isFetchedAfterMount) {
+    if (!isFetchedAfterMount && !repayWithATokens) {
       fetchApprovedAmount();
     }
-  }, [fetchApprovedAmount, isFetchedAfterMount]);
+  }, [fetchApprovedAmount, isFetchedAfterMount, repayWithATokens]);
 
   const action = async () => {
     try {
