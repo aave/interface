@@ -29,7 +29,7 @@ const testData = {
 };
 
 // too slow for CI execution
-describe.skip(`GHO DASHBOARD APY TESTING`, () => {
+describe(`GHO DASHBOARD APY TESTING`, () => {
   let baseApy: number;
 
   describe(`Verify max APY for GHO`, () => {
@@ -155,7 +155,8 @@ describe.skip(`GHO DASHBOARD APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify APY updating for borrowed GHO`, () => {
+  //too slow for CI
+  describe.skip(`Verify APY updating for borrowed GHO`, () => {
     let stepBackAPY: number;
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
