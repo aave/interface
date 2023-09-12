@@ -3004,6 +3004,10 @@ msgstr "You've successfully switched tokens."
 msgid "You've successfully withdrew & switched tokens."
 msgstr "You've successfully withdrew & switched tokens."
 
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Your balance is lower than the selected amount."
+msgstr "Your balance is lower than the selected amount."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"

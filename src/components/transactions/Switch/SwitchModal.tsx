@@ -1,5 +1,6 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import { Box, CircularProgress } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
@@ -55,8 +56,6 @@ export const SwitchModal = () => {
     return acum;
   }, [] as ReserveDataHumanized[]);
 
-  console.log(networkReserves);
-
   const poolBalancesDataQueries = usePoolsTokensBalance(marketsBySupportedNetwork, user, {
     refetchInterval: 0,
   });
@@ -89,7 +88,11 @@ export const SwitchModal = () => {
           supportedNetworks={supportedNetworksWithEnabledMarket}
           reserves={reservesWithBalance}
         />
-      ) : null}
+      ) : (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+          <CircularProgress />
+        </Box>
+      )}
     </BasicModal>
   );
 };

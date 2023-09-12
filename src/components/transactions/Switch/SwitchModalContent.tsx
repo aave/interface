@@ -1,6 +1,8 @@
 import { normalizeBN } from '@aave/math-utils';
-import { Box, CircularProgress } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
@@ -126,6 +128,14 @@ export const SwitchModalContent = ({
           />
           {ratesError && <ParaswapRatesError error={ratesError} />}
 
+          {Number(inputAmount) > Number(selectedInputReserve.balance) && (
+            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+              <Typography variant="caption">
+                <Trans>Your balance is lower than the selected amount.</Trans>
+              </Typography>
+            </Warning>
+          )}
+
           {sellRates && (
             <>
               <SwitchRates
@@ -141,7 +151,7 @@ export const SwitchModalContent = ({
             inputToken={selectedInputReserve.underlyingAsset}
             outputToken={selectedOutputReserve.underlyingAsset}
             slippage={slippage}
-            blocked={!sellRates}
+            blocked={!sellRates || Number(inputAmount) > Number(selectedInputReserve.balance)}
             chainId={selectedChainId}
             route={sellRates}
           />

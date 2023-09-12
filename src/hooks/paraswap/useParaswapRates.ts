@@ -68,6 +68,8 @@ type UseParaswapSellTxParams = {
   user: string;
   route: OptimalRate;
   maxSlippage: number;
+  permit?: string;
+  deadline?: string;
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
@@ -80,6 +82,8 @@ export const useParaswapSellTxParams = (chainId: number) => {
       user,
       route,
       maxSlippage,
+      permit,
+      deadline,
     }: UseParaswapSellTxParams) => {
       const paraswap = getParaswap(chainId);
       const response = await paraswap.buildTx(
@@ -94,6 +98,8 @@ export const useParaswapSellTxParams = (chainId: number) => {
           slippage: maxSlippage,
           partnerAddress: FEE_CLAIMER_ADDRESS,
           positiveSlippageToUser: false,
+          permit,
+          deadline,
         },
         { ignoreChecks: true }
       );
