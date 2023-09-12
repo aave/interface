@@ -18,25 +18,19 @@ interface SwithProps {
   inputAmount: string;
   inputToken: string;
   outputToken: string;
-  inputDecimals: number;
-  outputDecimals: number;
   slippage: string;
   blocked: boolean;
   loading?: boolean;
-  swapper: string;
   isWrongNetwork: boolean;
   chainId: number;
-  route: OptimalRate;
+  route?: OptimalRate;
 }
 
 export const SwitchActions = ({
   inputAmount,
   inputToken,
-  inputDecimals,
   outputToken,
-  outputDecimals,
   slippage,
-  swapper,
   blocked,
   loading,
   isWrongNetwork,
@@ -77,83 +71,84 @@ export const SwitchActions = ({
   }, [approvedAmount, inputAmount, isWrongNetwork]);
 
   const action = async () => {
-    try {
-      setMainTxState({ ...mainTxState, loading: true });
-      const tx = await fetchParaswapTxParams({
-        srcToken: inputToken,
-        srcDecimals: inputDecimals,
-        destDecimals: outputDecimals,
-        destToken: outputToken,
-        route,
-        user,
-        maxSlippage: Number(slippage) * 10000,
-      });
-      const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-      const response = await sendTx(txWithGasEstimation);
-      await response.wait(1);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-      setMainTxState({
-        txHash: response.hash,
-        loading: false,
-        success: true,
-      });
-    } catch (error) {
-      console.log(error);
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setMainTxState({
-        txHash: undefined,
-        loading: false,
-      });
+    if (route) {
+      try {
+        setMainTxState({ ...mainTxState, loading: true });
+        const tx = await fetchParaswapTxParams({
+          srcToken: inputToken,
+          srcDecimals: route.srcDecimals,
+          destDecimals: route.destDecimals,
+          destToken: outputToken,
+          route,
+          user,
+          maxSlippage: Number(slippage) * 10000,
+        });
+        const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+        const response = await sendTx(txWithGasEstimation);
+        await response.wait(1);
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        setMainTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
+        });
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+        setMainTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
     }
   };
 
   const approval = async () => {
-    try {
-      const tx = generateApproval({
-        spender: route.tokenTransferProxy,
-        user,
-        token: inputToken,
-        amount: inputAmount,
-      });
-      const txWithGasEstimation = await estimateGasLimit(tx);
-      setApprovalTxState({ ...approvalTxState, loading: true });
-      const response = await sendTx(txWithGasEstimation);
-      await response.wait(1);
-      setApprovalTxState({
-        txHash: response.hash,
-        loading: false,
-        success: true,
-      });
-      setTxError(undefined);
-      fetchApprovedAmount();
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
+    if (route) {
+      try {
+        const tx = generateApproval({
+          spender: route.tokenTransferProxy,
+          user,
+          token: inputToken,
+          amount: inputAmount,
+        });
+        const txWithGasEstimation = await estimateGasLimit(tx);
+        setApprovalTxState({ ...approvalTxState, loading: true });
+        const response = await sendTx(txWithGasEstimation);
+        await response.wait(1);
+        setApprovalTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
+        });
+        setTxError(undefined);
+        fetchApprovedAmount();
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
     }
   };
 
   const fetchApprovedAmount = useCallback(async () => {
-    setLoadingTxns(true);
-    const rpc = getProvider(chainId);
-    console.log(rpc);
-    const erc20Service = new ERC20Service(rpc);
-    console.log(user);
-    console.log(inputToken);
-    console.log(swapper);
-    const approvedTargetAmount = await erc20Service.approvedAmount({
-      user,
-      token: inputToken,
-      spender: route.tokenTransferProxy,
-    });
-    console.log(approvedAmount);
-    setApprovedAmount(approvedTargetAmount);
-    setLoadingTxns(false);
-  }, [chainId, setLoadingTxns, user, inputToken, swapper]);
+    if (route) {
+      setLoadingTxns(true);
+      const rpc = getProvider(chainId);
+      const erc20Service = new ERC20Service(rpc);
+      const approvedTargetAmount = await erc20Service.approvedAmount({
+        user,
+        token: inputToken,
+        spender: route.tokenTransferProxy,
+      });
+      console.log(approvedAmount);
+      setApprovedAmount(approvedTargetAmount);
+      setLoadingTxns(false);
+    }
+  }, [chainId, setLoadingTxns, user, inputToken, route, approvedAmount]);
 
   useEffect(() => {
     fetchApprovedAmount();
@@ -178,7 +173,7 @@ export const SwitchActions = ({
       requiresAmount
       amount={inputAmount}
       handleApproval={() => approval()}
-      requiresApproval={requiresApproval}
+      requiresApproval={!blocked && requiresApproval}
       actionText={<Trans>Switch</Trans>}
       actionInProgressText={<Trans>Switching</Trans>}
       errorParams={{

@@ -55,6 +55,8 @@ export const useParaswapSellRates = ({
       user &&
       amount !== '0'
     ),
+    retry: 0,
+    refetchOnWindowFocus: (query) => (query.state.error ? false : true),
   });
 };
 

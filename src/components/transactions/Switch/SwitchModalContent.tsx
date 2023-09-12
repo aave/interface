@@ -1,41 +1,46 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { Box, CircularProgress } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { supportedNetworksWithEnabledMarket } from './common';
+import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { ParaswapRatesError } from './ParaswapRatesError';
 import { SwitchActions } from './SwitchActions';
+import { ReserveWithBalance } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
-import { useSwitchLogic } from './useSwitchLogic';
+import { SwitchTxSuccessView } from './SwitchTxSuccessView';
 
-const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+interface SwitchModalContentProps {
+  selectedChainId: number;
+  setSelectedChainId: (value: number) => void;
+  supportedNetworks: SupportedNetworkWithChainId[];
+  reserves: ReserveWithBalance[];
+}
 
-export const SwitchModalContent = () => {
+export const SwitchModalContent = ({
+  supportedNetworks,
+  selectedChainId,
+  setSelectedChainId,
+  reserves,
+}: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('0');
+  const { mainTxState: switchTxState } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const [selectedInputReserve, setSelectedInputReserve] = useState<
-    ReserveDataHumanized & { balance: string }
-  >();
+  const [selectedInputReserve, setSelectedInputReserve] = useState(reserves[0]);
   const { readOnlyModeAddress } = useWeb3Context();
-  const [selectedOutputReserve, setSelectedOutputReserve] = useState<ReserveDataHumanized>();
-  const currentChainId = useRootStore((state) => state.currentChainId);
-  const [selectedChainId, setSelectedChainId] = useState(() => {
-    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
-      return currentChainId;
-    return defaultNetwork.chainId;
-  });
+  const [selectedOutputReserve, setSelectedOutputReserve] = useState(reserves[1]);
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {
@@ -48,21 +53,31 @@ export const SwitchModalContent = () => {
     }
   };
 
-  const { reservesWithBalance, sellRates, reservesLoading, ratesLoading, ratesError } =
-    useSwitchLogic({
-      selectedChainId,
-      user,
-      inputAmount,
-      inputReserve: selectedInputReserve,
-      outputReserve: selectedOutputReserve,
-    });
+  const {
+    data: sellRates,
+    isLoading: ratesLoading,
+    error: ratesError,
+  } = useParaswapSellRates({
+    chainId: selectedChainId,
+    amount: normalizeBN(inputAmount, -1 * selectedInputReserve.decimals).toFixed(0),
+    srcToken: selectedInputReserve.underlyingAsset,
+    srcDecimals: selectedInputReserve.decimals,
+    destToken: selectedOutputReserve.underlyingAsset,
+    destDecimals: selectedOutputReserve.decimals,
+    user,
+  });
 
-  useEffect(() => {
-    if (reservesWithBalance.length > 1) {
-      setSelectedInputReserve(reservesWithBalance[0]);
-      setSelectedOutputReserve(reservesWithBalance[1]);
-    }
-  }, [reservesWithBalance]);
+  if (sellRates && switchTxState.success) {
+    return (
+      <SwitchTxSuccessView
+        txHash={switchTxState.txHash}
+        amount={inputAmount}
+        symbol={selectedInputReserve.symbol}
+        outSymbol={selectedOutputReserve.symbol}
+        outAmount={sellRates.destAmount}
+      />
+    );
+  }
 
   return (
     <>
@@ -78,18 +93,18 @@ export const SwitchModalContent = () => {
       )}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <NetworkSelector
-          networks={supportedNetworksWithEnabledMarket}
+          networks={supportedNetworks}
           selectedNetwork={selectedChainId}
           setSelectedNetwork={setSelectedChainId}
         />
         <SwitchSlippageSelector slippage={slippage} setSlippage={setSlippage} />
       </Box>
-      {reservesLoading || !selectedInputReserve || !selectedOutputReserve ? (
+      {!selectedInputReserve || !selectedOutputReserve ? (
         <CircularProgress />
       ) : (
         <>
           <AssetInput
-            assets={reservesWithBalance}
+            assets={reserves}
             value={inputAmount}
             onChange={handleInputChange}
             usdValue={sellRates?.srcUSD || '0'}
@@ -98,7 +113,7 @@ export const SwitchModalContent = () => {
             inputTitle={' '}
           />
           <AssetInput
-            assets={reservesWithBalance}
+            assets={reserves}
             value={
               sellRates ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString() : '0'
             }
@@ -118,21 +133,18 @@ export const SwitchModalContent = () => {
                 srcSymbol={selectedInputReserve.symbol}
                 destSymbol={selectedOutputReserve.symbol}
               />
-              <SwitchActions
-                isWrongNetwork={isWrongNetwork.isWrongNetwork}
-                inputAmount={inputAmount}
-                inputToken={selectedInputReserve.underlyingAsset}
-                outputToken={selectedOutputReserve.underlyingAsset}
-                slippage={slippage}
-                swapper={sellRates.contractAddress || ''}
-                blocked={false}
-                chainId={selectedChainId}
-                inputDecimals={sellRates.srcDecimals || 0}
-                outputDecimals={sellRates.destDecimals || 0}
-                route={sellRates}
-              />
             </>
           )}
+          <SwitchActions
+            isWrongNetwork={isWrongNetwork.isWrongNetwork}
+            inputAmount={inputAmount}
+            inputToken={selectedInputReserve.underlyingAsset}
+            outputToken={selectedOutputReserve.underlyingAsset}
+            slippage={slippage}
+            blocked={!sellRates}
+            chainId={selectedChainId}
+            route={sellRates}
+          />
         </>
       )}
     </>

@@ -1,4 +1,5 @@
 export type HookOpts<T, V> = {
   select?: (originalValue: T) => V;
-  refetchInterval?: number;
+  refetchInterval?: number | false | (() => number | false);
+  staleTime?: number;
 };

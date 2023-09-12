@@ -2996,6 +2996,10 @@ msgstr "You {action} <0/> {symbol}"
 msgid "You've successfully switched borrow position."
 msgstr "You've successfully switched borrow position."
 
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "You've successfully switched tokens."
+msgstr "You've successfully switched tokens."
+
 #: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
 msgid "You've successfully withdrew & switched tokens."
 msgstr "You've successfully withdrew & switched tokens."
