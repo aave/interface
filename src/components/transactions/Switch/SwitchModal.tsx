@@ -1,13 +1,14 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Box, CircularProgress } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from './common';
@@ -33,6 +34,16 @@ export const SwitchModal = () => {
     return defaultNetwork.chainId;
   });
 
+  const selectedNetworkConfig = getNetworkConfig(selectedChainId);
+
+  useEffect(() => {
+    if (supportedNetworksWithEnabledMarket.find((elem) => elem.chainId === currentChainId))
+      setSelectedChainId(currentChainId);
+    else {
+      setSelectedChainId(defaultNetwork.chainId);
+    }
+  }, [currentChainId]);
+
   const marketsBySupportedNetwork = useMemo(
     () =>
       Object.values(marketsData).filter(
@@ -46,13 +57,31 @@ export const SwitchModal = () => {
   });
 
   const networkReserves = poolReservesDataQueries.reduce((acum, elem) => {
-    if (elem.data)
-      return acum.concat(
+    if (elem.data) {
+      const wrappedBaseAsset = elem.data.reservesData.find(
+        (reserveData) => reserveData.symbol === selectedNetworkConfig.wrappedBaseAssetSymbol
+      );
+      const acumWithoutBaseAsset = acum.concat(
         elem.data.reservesData.filter(
           (reserveDataElem) =>
             !acum.find((acumElem) => acumElem.underlyingAsset === reserveDataElem.underlyingAsset)
         )
       );
+      if (
+        wrappedBaseAsset &&
+        !acum.find((acumElem) => acumElem.underlyingAsset === API_ETH_MOCK_ADDRESS)
+      )
+        return acumWithoutBaseAsset.concat({
+          ...wrappedBaseAsset,
+          underlyingAsset: API_ETH_MOCK_ADDRESS,
+          decimals: selectedNetworkConfig.baseAssetDecimals,
+          ...fetchIconSymbolAndName({
+            underlyingAsset: API_ETH_MOCK_ADDRESS,
+            symbol: selectedNetworkConfig.baseAssetSymbol,
+          }),
+        });
+      return acumWithoutBaseAsset;
+    }
     return acum;
   }, [] as ReserveDataHumanized[]);
 
@@ -69,9 +98,17 @@ export const SwitchModal = () => {
     return networkReserves.map((elem) => {
       return {
         ...elem,
+        ...fetchIconSymbolAndName({
+          underlyingAsset: elem.underlyingAsset,
+          symbol: elem.symbol,
+          name: elem.name,
+        }),
         balance: normalize(
           poolsBalances
-            .find((balance) => balance.address === elem.underlyingAsset)
+            .find(
+              (balance) =>
+                balance.address.toLocaleLowerCase() === elem.underlyingAsset.toLocaleLowerCase()
+            )
             ?.amount.toString() || '0',
           elem.decimals
         ),
@@ -83,6 +120,7 @@ export const SwitchModal = () => {
     <BasicModal open={type === ModalType.Switch} setOpen={close}>
       {reservesWithBalance.length > 1 ? (
         <SwitchModalContent
+          key={selectedChainId}
           selectedChainId={selectedChainId}
           setSelectedChainId={setSelectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}

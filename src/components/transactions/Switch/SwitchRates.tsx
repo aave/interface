@@ -1,4 +1,4 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, ButtonBase, SvgIcon, Typography } from '@mui/material';
@@ -17,9 +17,9 @@ export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) 
   const [isSwitched, setIsSwitched] = useState(false);
 
   const rate = useMemo(() => {
-    const price1 = valueToBigNumber(rates.srcAmount);
-    const price2 = valueToBigNumber(rates.destAmount);
-    return isSwitched ? price1.div(price2) : price2.div(price1);
+    const amount1 = normalizeBN(rates.srcAmount, rates.srcDecimals);
+    const amount2 = normalizeBN(rates.destAmount, rates.destDecimals);
+    return isSwitched ? amount1.div(amount2) : amount2.div(amount1);
   }, [isSwitched, rates.srcAmount, rates.destAmount]);
 
   const priceImpact = useMemo(() => {

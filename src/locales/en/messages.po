@@ -1467,9 +1467,17 @@ msgstr "Migration risks"
 msgid "Minimum GHO borrow amount"
 msgstr "Minimum GHO borrow amount"
 
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Minimum USD value received"
+msgstr "Minimum USD value received"
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
 msgstr "Minimum staked Aave amount"
+
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Minimum {0} received"
+msgstr "Minimum {0} received"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -3004,7 +3012,7 @@ msgstr "You've successfully switched tokens."
 msgid "You've successfully withdrew & switched tokens."
 msgstr "You've successfully withdrew & switched tokens."
 
-#: src/components/transactions/Switch/SwitchModalContent.tsx
+#: src/components/transactions/Switch/SwitchErrors.tsx
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
 

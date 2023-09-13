@@ -33,26 +33,9 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
   };
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Typography variant="caption" color="text.secondary">
         <Trans>Slippage</Trans>
-        <FormattedNumber
-          variant="caption"
-          color="text.primary"
-          value={slippage}
-          visibleDecimals={2}
-          percent
-        />
-        <Button
-          id="switch-slippage-selector-button"
-          sx={{ padding: 0, minWidth: 0 }}
-          onClick={handleOpen}
-          aria-controls="switch-slippage-selector"
-        >
-          <SvgIcon sx={{ fontSize: '16px' }}>
-            <CogIcon />
-          </SvgIcon>
-        </Button>
         <Menu
           anchorOrigin={{
             vertical: 'bottom',
@@ -74,35 +57,54 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
           <Typography variant="subheader2" mb={5}>
             <Trans>Max slippage</Trans>
           </Typography>
-          <ToggleButtonGroup
-            sx={{ backgroundColor: 'background.surface', borderRadius: '6px', p: '2px' }}
-            exclusive
-            onChange={(_, value) => setSlippage(value)}
-          >
-            {DEFAULT_SLIPPAGE_OPTIONS.map((option) => (
-              <ToggleButton
-                sx={{
-                  borderRadius: 1,
-                  py: 1,
-                  px: 2,
-                  borderColor: 'transparent',
-                  backgroundColor: option === slippage ? '#FFFFFF' : 'transparent',
-                }}
-                value={option}
-                key={option}
-              >
-                <FormattedNumber
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <ToggleButtonGroup
+              sx={{ backgroundColor: 'background.surface', borderRadius: '6px', p: '2px' }}
+              exclusive
+              onChange={(_, value) => setSlippage(value)}
+            >
+              {DEFAULT_SLIPPAGE_OPTIONS.map((option) => (
+                <ToggleButton
+                  sx={{
+                    borderRadius: 1,
+                    py: 1,
+                    px: 2,
+                    borderColor: 'transparent',
+                    backgroundColor: option === slippage ? '#FFFFFF' : 'transparent',
+                  }}
                   value={option}
-                  percent
-                  variant="subheader2"
-                  color="primary.main"
-                  symbolsColor="primary.main"
-                />
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+                  key={option}
+                >
+                  <FormattedNumber
+                    value={option}
+                    percent
+                    variant="subheader2"
+                    color="primary.main"
+                    symbolsColor="primary.main"
+                  />
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </Box>
         </Menu>
       </Typography>
+      <FormattedNumber
+        variant="caption"
+        color="text.primary"
+        value={slippage}
+        visibleDecimals={2}
+        percent
+      />
+      <Button
+        id="switch-slippage-selector-button"
+        sx={{ padding: 0, minWidth: 0 }}
+        onClick={handleOpen}
+        aria-controls="switch-slippage-selector"
+      >
+        <SvgIcon sx={{ fontSize: '16px' }}>
+          <CogIcon />
+        </SvgIcon>
+      </Button>
     </Box>
   );
 };

@@ -110,8 +110,8 @@ export const SwitchActions = ({
           permit: signatureParams && signatureParams.signature,
           deadline: signatureParams && signatureParams.deadline,
         });
-        // const txWithGasEstimation = await estimateGasLimit(tx, chainId);
-        const response = await sendTx(tx);
+        const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+        const response = await sendTx(txWithGasEstimation);
         await response.wait(1);
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         setMainTxState({

@@ -1,8 +1,9 @@
-import { normalizeBN } from '@aave/math-utils';
+import { normalize, normalizeBN } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,12 +13,13 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
-import { ParaswapRatesError } from './ParaswapRatesError';
 import { SwitchActions } from './SwitchActions';
+import { SwitchErrors } from './SwitchErrors';
 import { ReserveWithBalance } from './SwitchModal';
 import { SwitchRates } from './SwitchRates';
 import { SwitchSlippageSelector } from './SwitchSlippageSelector';
@@ -38,11 +40,15 @@ export const SwitchModalContent = ({
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('0');
-  const { mainTxState: switchTxState } = useModalContext();
+  const { mainTxState: switchTxState, gasLimit } = useModalContext();
   const user = useRootStore((store) => store.account);
   const [selectedInputReserve, setSelectedInputReserve] = useState(reserves[0]);
   const { readOnlyModeAddress } = useWeb3Context();
-  const [selectedOutputReserve, setSelectedOutputReserve] = useState(reserves[1]);
+  const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
+    const gho = reserves.find((reserve) => reserve.symbol === 'GHO');
+    if (gho) return gho;
+    return reserves[1];
+  });
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {
@@ -76,7 +82,7 @@ export const SwitchModalContent = ({
         amount={inputAmount}
         symbol={selectedInputReserve.symbol}
         outSymbol={selectedOutputReserve.symbol}
-        outAmount={sellRates.destAmount}
+        outAmount={normalize(sellRates.destAmount, sellRates.destDecimals)}
       />
     );
   }
@@ -126,16 +132,6 @@ export const SwitchModalContent = ({
             disableInput={true}
             inputTitle={' '}
           />
-          {ratesError && <ParaswapRatesError error={ratesError} />}
-
-          {Number(inputAmount) > Number(selectedInputReserve.balance) && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>Your balance is lower than the selected amount.</Trans>
-              </Typography>
-            </Warning>
-          )}
-
           {sellRates && (
             <>
               <SwitchRates
@@ -145,6 +141,43 @@ export const SwitchModalContent = ({
               />
             </>
           )}
+          {sellRates && (
+            <TxModalDetails gasLimit={gasLimit}>
+              <Row
+                caption={<Trans>{`Minimum ${selectedOutputReserve.symbol} received`}</Trans>}
+                captionVariant="caption"
+              >
+                <FormattedNumber
+                  compact={false}
+                  roundDown={true}
+                  variant="caption"
+                  value={
+                    Number(normalize(sellRates.destAmount, sellRates.destDecimals)) *
+                    (1 - Number(slippage) / 100)
+                  }
+                />
+              </Row>
+              <Row
+                sx={{ mt: 1 }}
+                caption={<Trans>Minimum USD value received</Trans>}
+                captionVariant="caption"
+              >
+                <FormattedNumber
+                  symbol="usd"
+                  symbolsVariant="caption"
+                  variant="caption"
+                  value={Number(sellRates.destUSD) * (1 - Number(slippage) / 100)}
+                />
+              </Row>
+            </TxModalDetails>
+          )}
+
+          <SwitchErrors
+            ratesError={ratesError}
+            balance={selectedInputReserve.balance}
+            inputAmount={inputAmount}
+          />
+
           <SwitchActions
             isWrongNetwork={isWrongNetwork.isWrongNetwork}
             inputAmount={inputAmount}

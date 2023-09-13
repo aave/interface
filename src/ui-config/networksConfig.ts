@@ -26,7 +26,7 @@ export type NetworkConfig = {
   /**
    * When this is set withdrawals will automatically be unwrapped
    */
-  wrappedBaseAssetSymbol?: string;
+  wrappedBaseAssetSymbol: string;
   baseAssetSymbol: string;
   // needed for configuring the chain on metemask when it doesn't exist yet
   baseAssetDecimals: number;
