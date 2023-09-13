@@ -40,12 +40,14 @@ export const stake = (
     checkAmount,
     tabValue,
     hasApproval,
+    changeApproval,
   }: {
     asset: { fullName: string; shortName: string; address: string };
     amount: number;
     checkAmount: string;
     tabValue: string;
     hasApproval: boolean;
+    changeApproval: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -68,6 +70,14 @@ export const stake = (
     });
     it(`Set amount`, () => {
       cy.setAmount(amount, false);
+      if (!hasApproval && changeApproval) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
+      cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
