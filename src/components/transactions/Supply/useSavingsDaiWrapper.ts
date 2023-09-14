@@ -31,7 +31,7 @@ export const useSavingsDaiWrapper = ({
     setLoading(true);
     const timeout = setTimeout(() => {
       getTokenOutForTokenIn();
-    }, 2000);
+    }, 400);
 
     return () => {
       clearTimeout(timeout);
@@ -48,16 +48,18 @@ export const useSavingsDaiWrapper = ({
 export const useDaiForSavingsDaiWrapper = ({
   withdrawAmount,
   decimals,
+  skip,
 }: {
   withdrawAmount: string;
   decimals: number;
+  skip: boolean;
 }) => {
   const getDaiForSavingsDai = useRootStore((state) => state.getDaiForSavingsDai);
   const [loading, setLoading] = useState(false);
   const [tokenInAmount, setTokenInAmount] = useState('0');
 
   useEffect(() => {
-    if (!withdrawAmount || withdrawAmount === '0') {
+    if (!withdrawAmount || withdrawAmount === '0' || skip) {
       setTokenInAmount('0');
       return;
     }
@@ -80,7 +82,7 @@ export const useDaiForSavingsDaiWrapper = ({
       clearTimeout(timeout);
       // setLoading(false);
     };
-  }, [decimals, getDaiForSavingsDai, withdrawAmount]);
+  }, [decimals, getDaiForSavingsDai, withdrawAmount, skip]);
 
   return {
     loading,

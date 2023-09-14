@@ -124,6 +124,12 @@ export interface PoolSlice {
     deadline: string,
     signature: SignatureLike
   ) => PopulatedTransaction;
+  withdrawDaiFromSavingsDai: (amount: string) => PopulatedTransaction;
+  withdrawDaiFromSavingsDaiWithPermit: (
+    amount: string,
+    deadline: string,
+    signature: SignatureLike
+  ) => PopulatedTransaction;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -376,6 +382,30 @@ export const createPoolSlice: StateCreator<
         signature,
         referralCode: '0',
       });
+    },
+    withdrawDaiFromSavingsDai: (amount: string) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.withdrawToken(amount, get().account);
+    },
+    withdrawDaiFromSavingsDaiWithPermit: (
+      amount: string,
+      deadline: string,
+      signature: SignatureLike
+    ) => {
+      const provider = get().jsonRpcProvider();
+      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
+      if (!wrapperAddress) {
+        throw Error('sDAI wrapper is not configured');
+      }
+
+      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
+      return service.withdrawTokenWithPermit(amount, get().account, deadline, signature);
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
       const poolBundle = get().getCorrectPoolBundle();

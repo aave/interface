@@ -1,13 +1,12 @@
-import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
-import { SignatureLike } from '@ethersproject/bytes';
-import { TransactionResponse } from '@ethersproject/providers';
+import { ProtocolAction } from '@aave/contract-helpers';
+import { TransactionResponse } from '@ethersproject/abstract-provider';
+import { parseUnits } from '@ethersproject/units';
 import { Trans } from '@lingui/macro';
-import { BoxProps } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
-import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -17,44 +16,31 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { QueryKeys } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { checkRequiresApproval } from '../utils';
 
-interface SignedParams {
-  signature: SignatureLike;
-  deadline: string;
-  amount: string;
-}
-
-interface SupplyWrappedTokenActionProps extends BoxProps {
-  tokenIn: string;
-  amountToSupply: string;
-  decimals: number;
-  symbol: string;
-}
-export const SupplyWrappedTokenActions = ({
-  tokenIn,
-  amountToSupply,
-  decimals,
+export const WithdrawAndUnwrapActions = ({
+  poolReserve,
+  amountToWithdraw,
   symbol,
-  sx,
-  ...props
-}: SupplyWrappedTokenActionProps) => {
+}: {
+  poolReserve: ComputedReserveData;
+  amountToWithdraw: string;
+  symbol: string;
+}) => {
   const [
     currentMarketData,
-    tryPermit,
     walletApprovalMethodPreference,
     estimateGasLimit,
     addTransaction,
-    supplyDaiAsSavingsDaiWithPermit,
-    supplyDaiAsSavingsDai,
+    withdrawDaiFromSavingsDaiWithPermit,
+    withdrawDaiFromSavingsDai,
   ] = useRootStore((state) => [
     state.currentMarketData,
-    state.tryPermit,
     state.walletApprovalMethodPreference,
     state.estimateGasLimit,
     state.addTransaction,
-    state.supplyDaiAsSavingsDaiWithPermit,
-    state.supplyDaiAsSavingsDai,
+    state.withdrawDaiFromSavingsDaiWithPermit,
+    state.withdrawDaiFromSavingsDai,
   ]);
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -67,12 +53,13 @@ export const SupplyWrappedTokenActions = ({
     setLoadingTxns,
     setMainTxState,
     setTxError,
-    setGasLimit,
   } = useModalContext();
 
   const { sendTx } = useWeb3Context();
 
   const { refetchPoolData } = useBackgroundDataProvider();
+
+  const { aTokenAddress, decimals } = poolReserve;
 
   const {
     data: approvedAmount,
@@ -80,15 +67,15 @@ export const SupplyWrappedTokenActions = ({
     isRefetching: fetchingApprovedAmount,
     isFetchedAfterMount,
   } = useApprovedAmount({
+    token: aTokenAddress,
     spender: currentMarketData.addresses.SDAI_TOKEN_WRAPPER || '',
-    token: tokenIn,
   });
 
   const requiresApproval =
-    Number(amountToSupply) !== 0 &&
+    Number(amountToWithdraw) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
-      amount: amountToSupply,
+      amount: amountToWithdraw,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
 
@@ -98,22 +85,21 @@ export const SupplyWrappedTokenActions = ({
     setApprovalTxState({});
   }
 
-  setLoadingTxns(fetchingApprovedAmount);
-
-  const permitAvailable = tryPermit(tokenIn);
-  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const { approval } = useApprovalTx({
     usePermit,
     approvedAmount,
     requiresApproval,
-    assetAddress: tokenIn,
+    assetAddress: aTokenAddress,
     symbol,
     decimals,
-    signatureAmount: amountToSupply,
+    signatureAmount: amountToWithdraw,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
+
+  setLoadingTxns(fetchingApprovedAmount);
 
   useEffect(() => {
     if (!isFetchedAfterMount) {
@@ -121,45 +107,29 @@ export const SupplyWrappedTokenActions = ({
     }
   }, [fetchApprovedAmount, isFetchedAfterMount]);
 
-  // Update gas estimation
-  let supplyGasLimit = 0;
-  if (usePermit) {
-    supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supplyWithPermit].recommended);
-  } else {
-    supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
-    if (requiresApproval && !approvalTxState.success) {
-      supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
-    }
-  }
-
-  setGasLimit(supplyGasLimit.toString());
-
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
 
       let response: TransactionResponse;
-      let action = ProtocolAction.default;
+      const action = ProtocolAction.default; // TODO
 
-      // determine if approval is signature or transaction
-      // checking user preference is not sufficient because permit may be available but the user has an existing approval
       if (usePermit && signatureParams) {
-        action = ProtocolAction.supplyWithPermit;
-        let signedSupplyWithPermitTxData = supplyDaiAsSavingsDaiWithPermit(
-          parseUnits(amountToSupply, decimals).toString(),
+        let signedTxData = withdrawDaiFromSavingsDaiWithPermit(
+          parseUnits(amountToWithdraw, decimals).toString(),
           signatureParams.deadline,
           signatureParams.signature
         );
 
-        signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
-        response = await sendTx(signedSupplyWithPermitTxData);
+        signedTxData = await estimateGasLimit(signedTxData);
+        response = await sendTx(signedTxData);
 
         await response.wait(1);
       } else {
-        action = ProtocolAction.supply;
-        let supplyTxData = supplyDaiAsSavingsDai(parseUnits(amountToSupply, decimals).toString());
-        supplyTxData = await estimateGasLimit(supplyTxData);
-        response = await sendTx(supplyTxData);
+        let txData = withdrawDaiFromSavingsDai(parseUnits(amountToWithdraw, decimals).toString());
+
+        txData = await estimateGasLimit(txData);
+        response = await sendTx(txData);
 
         await response.wait(1);
       }
@@ -173,8 +143,8 @@ export const SupplyWrappedTokenActions = ({
       addTransaction(response.hash, {
         action,
         txState: 'success',
-        asset: tokenIn,
-        amount: amountToSupply,
+        asset: aTokenAddress,
+        amount: amountToWithdraw,
         assetName: symbol,
       });
 
@@ -193,21 +163,17 @@ export const SupplyWrappedTokenActions = ({
   return (
     <TxActionsWrapper
       blocked={false} // TODO
-      mainTxState={mainTxState}
+      preparingTransactions={loadingTxns}
       approvalTxState={approvalTxState}
+      mainTxState={mainTxState}
+      amount={amountToWithdraw}
       isWrongNetwork={false} // TODO
       requiresAmount
-      amount={amountToSupply}
-      symbol={symbol}
-      preparingTransactions={loadingTxns}
-      actionText={<Trans>Supply {symbol}</Trans>}
-      actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={approval}
+      actionInProgressText={<Trans>Withdrawing {symbol}</Trans>}
+      actionText={<Trans>Withdraw {symbol}</Trans>}
       handleAction={action}
+      handleApproval={approval}
       requiresApproval={requiresApproval}
-      tryPermit={permitAvailable}
-      sx={sx}
-      {...props}
     />
   );
 };

@@ -2,12 +2,12 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Stack, SvgIcon, Typography } from '@mui/material';
+import { Stack, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
+import { RiskAcknowledge } from 'src/components/RiskAcknowledge';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -206,40 +206,22 @@ export const WithdrawModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       {displayRiskCheckbox && (
-        <>
-          <Warning severity="error" sx={{ my: 6 }}>
+        <RiskAcknowledge
+          checked={riskCheckboxAccepted}
+          onChange={(value) => {
+            setRiskCheckboxAccepted(value);
+            trackEvent(GENERAL.ACCEPT_RISK, {
+              modal: 'Withdraw',
+              riskCheckboxAccepted: value,
+            });
+          }}
+          title={
             <Trans>
               Withdrawing this amount will reduce your health factor and increase risk of
               liquidation.
             </Trans>
-          </Warning>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              mx: '24px',
-              mb: '12px',
-            }}
-          >
-            <Checkbox
-              checked={riskCheckboxAccepted}
-              onChange={() => {
-                setRiskCheckboxAccepted(!riskCheckboxAccepted),
-                  trackEvent(GENERAL.ACCEPT_RISK, {
-                    modal: 'Withdraw',
-                    riskCheckboxAccepted: riskCheckboxAccepted,
-                  });
-              }}
-              size="small"
-              data-cy={`risk-checkbox`}
-            />
-            <Typography variant="description">
-              <Trans>I acknowledge the risks involved.</Trans>
-            </Typography>
-          </Box>
-        </>
+          }
+        />
       )}
 
       <WithdrawActions

@@ -33,12 +33,19 @@ export class ApprovedAmountService implements Hashable {
     }
   }
 
-  async getApprovedAmount(user: string, token: string, spender: string): Promise<number> {
-    return this.ERC20Service.approvedAmount({
+  async getApprovedAmount(user: string, token: string, spender: string): Promise<ApproveType> {
+    const amount = await this.ERC20Service.approvedAmount({
       user,
       token,
       spender,
     });
+
+    return {
+      user,
+      token,
+      spender,
+      amount: amount.toString(),
+    };
   }
 
   public toHash() {

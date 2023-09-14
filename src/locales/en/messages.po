@@ -1160,9 +1160,7 @@ msgstr "Hide"
 msgid "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 msgstr "Holders of stkAAVE receive a discount on the GHO borrowing rate"
 
-#: src/components/transactions/Borrow/BorrowAmountWarning.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/RiskAcknowledge.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
 
@@ -1784,6 +1782,10 @@ msgstr "Read-only mode."
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Read-only mode. Connect to a wallet to perform transactions."
 msgstr "Read-only mode. Connect to a wallet to perform transactions."
+
+#: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
+msgid "Receive"
+msgstr "Receive"
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 msgid "Receive (est.)"
@@ -2867,6 +2869,7 @@ msgid "Withdraw and Switch"
 msgstr "Withdraw and Switch"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
@@ -2880,6 +2883,7 @@ msgid "Withdrawing this amount will reduce your health factor and increase risk 
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
 

@@ -1,11 +1,12 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
+import { Box, SvgIcon, Typography } from '@mui/material';
+import { ReactNode, useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { Warning } from 'src/components/primitives/Warning';
+import { RiskAcknowledge } from 'src/components/RiskAcknowledge';
 import {
+  ComputedReserveData,
   ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -14,8 +15,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { selectWrappedTokenConfig } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
-import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -28,6 +29,7 @@ import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
 import { WithdrawAndSwitchTxSuccessView } from './WithdrawAndSwitchSuccess';
+import { WithdrawAndUnwrapActions } from './WithdrawAndUnwrapActions';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -39,10 +41,9 @@ export enum ErrorType {
 export const WithdrawAndSwitchModalContent = ({
   poolReserve,
   userReserve,
-  symbol,
   isWrongNetwork,
 }: ModalWrapperProps) => {
-  const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
+  const { mainTxState: withdrawTxState } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const { user, reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -50,13 +51,8 @@ export const WithdrawAndSwitchModalContent = ({
   const [_amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>('');
-  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const [maxSlippage, setMaxSlippage] = useState('0.1');
-
-  // if the asset can be unwrapped (e.g. sDAI -> DAI) we don't need to use paraswap
-  const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId][poolReserve.underlyingAsset];
-
-  console.log(wrappedTokenOutConfig);
 
   let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -64,6 +60,7 @@ export const WithdrawAndSwitchModalContent = ({
       address: reserve.underlyingAsset,
       symbol: reserve.symbol,
       iconSymbol: reserve.iconSymbol,
+      priceInUsd: reserve.priceInUSD,
     }));
 
   // TODO: if withdrawing and unwrapping, should we show that asset at the top of the list?
@@ -74,6 +71,11 @@ export const WithdrawAndSwitchModalContent = ({
 
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
 
+  const [trackEvent, wrappedTokenConfig] = useRootStore((store) => [
+    store.trackEvent,
+    selectWrappedTokenConfig(store, poolReserve.underlyingAsset),
+  ]);
+
   const isMaxSelected = _amount === '-1';
 
   const swapTarget = user.userReservesData.find(
@@ -83,12 +85,15 @@ export const WithdrawAndSwitchModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
+  const useParaswap =
+    !wrappedTokenConfig ||
+    targetReserve.address !== wrappedTokenConfig.tokenIn.reserve.underlyingAsset;
+
   const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
     withdrawAmount: amountRef.current,
     decimals: 18,
+    skip: useParaswap,
   });
-
-  console.log(loadingDaiForSavingsDai, tokenInAmount);
 
   const {
     inputAmountUSD,
@@ -104,12 +109,16 @@ export const WithdrawAndSwitchModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
-    skip: wrappedTokenOutConfig !== undefined || withdrawTxState.loading || false,
+    skip: !useParaswap || withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
-  const loadingSkeleton = routeLoading && outputAmountUSD === '0';
-  const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
+  let loadingSkeleton = false;
+  if (useParaswap) {
+    loadingSkeleton = routeLoading && outputAmountUSD === '0';
+  } else {
+    loadingSkeleton = loadingDaiForSavingsDai;
+  }
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
 
@@ -143,41 +152,178 @@ export const WithdrawAndSwitchModalContent = ({
     healthFactorAfterWithdraw.toNumber() < 1.5 &&
     userReserve.usageAsCollateralEnabledOnUser;
 
-  // calculating input usd value
-  const usdValue = valueToBigNumber(withdrawAmount).multipliedBy(
-    userReserve?.reserve.priceInUSD || 0
-  );
+  const withdrawAmountUSD = useParaswap
+    ? inputAmountUSD
+    : valueToBigNumber(withdrawAmount)
+        .multipliedBy(userReserve?.reserve.priceInUSD || 0)
+        .toString();
+
+  const amountReceivedUSD = useParaswap
+    ? outputAmountUSD
+    : valueToBigNumber(tokenInAmount)
+        .multipliedBy(targetReserve.priceInUsd || 0)
+        .toString();
+
+  const iconSymbol = poolReserve.isWrappedBaseAsset
+    ? currentNetworkConfig.baseAssetSymbol
+    : poolReserve.iconSymbol;
 
   if (withdrawTxState.success)
     return (
       <WithdrawAndSwitchTxSuccessView
         txHash={withdrawTxState.txHash}
         amount={inputAmount}
-        symbol={
-          poolReserve.isWrappedBaseAsset ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol
-        }
+        symbol={iconSymbol}
         outSymbol={targetReserve.symbol}
         outAmount={outputAmount}
       />
     );
+
+  const props: WithdrawAndSwitchParametersProps = {
+    withdrawAmount,
+    withdrawAmountUSD,
+    outputAmount: useParaswap ? outputAmount : tokenInAmount,
+    outputAmountUSD: amountReceivedUSD,
+    maxSlippage: useParaswap ? maxSlippage : undefined,
+    healthFactorAfterWithdraw: healthFactorAfterWithdraw.toString(10),
+    targetReserve,
+    swapTargets,
+    loading: loadingSkeleton,
+    error: useParaswap ? error : '',
+    blockingError,
+    errorComponent,
+    poolReserve,
+    userReserve,
+    iconSymbol,
+    isMaxSelected,
+    showPriceImpact: useParaswap,
+    receiveInputTitle: useParaswap ? <Trans>Receive (est.)</Trans> : <Trans>Receive</Trans>,
+    onTargetReserveSelected: setTargetReserve,
+    onMaxSlippageChange: setMaxSlippage,
+    onWithdrawAmountChange: handleChange,
+  };
+
+  return (
+    <>
+      <WithdrawAndSwitchParameters {...props} />
+
+      {displayRiskCheckbox && (
+        <RiskAcknowledge
+          checked={riskCheckboxAccepted}
+          onChange={(value) => {
+            setRiskCheckboxAccepted(value);
+            trackEvent(GENERAL.ACCEPT_RISK, {
+              modal: 'Withdraw',
+              riskCheckboxAccepted: value,
+            });
+          }}
+          title={
+            <Trans>
+              Withdrawing this amount will reduce your health factor and increase risk of
+              liquidation.
+            </Trans>
+          }
+        />
+      )}
+
+      {wrappedTokenConfig ? (
+        <WithdrawAndUnwrapActions
+          poolReserve={poolReserve}
+          symbol={iconSymbol}
+          amountToWithdraw={amountRef.current}
+        />
+      ) : (
+        <WithdrawAndSwitchActions
+          poolReserve={poolReserve}
+          targetReserve={swapTarget.reserve}
+          amountToSwap={inputAmount}
+          amountToReceive={outputAmount}
+          isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
+          isWrongNetwork={isWrongNetwork}
+          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+          buildTxFn={buildTxFn}
+          sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        />
+      )}
+    </>
+  );
+};
+
+interface WithdrawAndSwitchParametersProps {
+  withdrawAmount: string;
+  withdrawAmountUSD: string;
+  outputAmount: string;
+  outputAmountUSD: string;
+  maxSlippage?: string;
+  healthFactorAfterWithdraw: string;
+  targetReserve: Asset;
+  error: string;
+  swapTargets: {
+    address: string;
+    symbol: string;
+    iconSymbol: string;
+  }[];
+  loading: boolean;
+  blockingError?: ErrorType;
+  errorComponent?: ReactNode;
+  poolReserve: ComputedReserveData;
+  userReserve: ComputedUserReserveData;
+  iconSymbol: string;
+  isMaxSelected: boolean;
+  showPriceImpact: boolean;
+  receiveInputTitle: ReactNode;
+  onTargetReserveSelected: (reserve: Asset) => void;
+  onMaxSlippageChange?: (value: string) => void;
+  onWithdrawAmountChange: (value: string) => void;
+}
+
+const WithdrawAndSwitchParameters = ({
+  withdrawAmount,
+  withdrawAmountUSD,
+  outputAmount,
+  outputAmountUSD,
+  maxSlippage,
+  healthFactorAfterWithdraw,
+  targetReserve,
+  swapTargets,
+  loading,
+  error,
+  blockingError,
+  errorComponent,
+  poolReserve,
+  userReserve,
+  iconSymbol,
+  isMaxSelected,
+  showPriceImpact,
+  receiveInputTitle,
+  onTargetReserveSelected,
+  onMaxSlippageChange,
+  onWithdrawAmountChange,
+}: WithdrawAndSwitchParametersProps) => {
+  const { user } = useAppDataContext();
+  const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
+
+  const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
+  const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
+  const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
+
+  const symbol = poolReserve.symbol;
 
   return (
     <>
       <AssetInput
         inputTitle={<Trans>Withdraw</Trans>}
         value={withdrawAmount}
-        onChange={handleChange}
+        onChange={onWithdrawAmountChange}
         symbol={symbol}
         assets={[
           {
             balance: maxAmountToWithdraw.toString(10),
-            symbol: symbol,
-            iconSymbol: poolReserve.isWrappedBaseAsset
-              ? currentNetworkConfig.baseAssetSymbol
-              : poolReserve.iconSymbol,
+            symbol,
+            iconSymbol,
           },
         ]}
-        usdValue={usdValue.toString(10)}
+        usdValue={withdrawAmountUSD}
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
         maxValue={maxAmountToWithdraw.toString(10)}
@@ -195,26 +341,28 @@ export const WithdrawAndSwitchModalContent = ({
           <ArrowDownIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip
-          loading={loadingSkeleton}
-          outputAmountUSD={outputAmountUSD}
-          inputAmountUSD={inputAmountUSD}
-        />
+        {showPriceImpact && (
+          <PriceImpactTooltip
+            loading={loading}
+            outputAmountUSD={outputAmountUSD}
+            inputAmountUSD={withdrawAmountUSD}
+          />
+        )}
       </Box>
 
       <AssetInput
         value={outputAmount}
-        onSelect={setTargetReserve}
+        onSelect={onTargetReserveSelected}
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
-        inputTitle={<Trans>Receive (est.)</Trans>}
+        inputTitle={receiveInputTitle}
         balanceText={<Trans>Supply balance</Trans>}
         disableInput
-        loading={loadingSkeleton}
+        loading={loading}
       />
 
-      {error && !loadingSkeleton && (
+      {error && !loading && (
         <Typography variant="helperText" color="error.main">
           {error}
         </Typography>
@@ -229,75 +377,24 @@ export const WithdrawAndSwitchModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          maxSlippage && onMaxSlippageChange ? (
+            <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={onMaxSlippageChange} />
+          ) : undefined
         }
       >
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(withdrawAmount || '0').toString(10)}
-          symbol={
-            poolReserve.isWrappedBaseAsset
-              ? currentNetworkConfig.baseAssetSymbol
-              : poolReserve.symbol
-          }
+          symbol={iconSymbol}
         />
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!withdrawAmount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={healthFactorAfterWithdraw.toString(10)}
+          futureHealthFactor={healthFactorAfterWithdraw}
         />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
-
-      {displayRiskCheckbox && (
-        <>
-          <Warning severity="error" sx={{ my: 6 }}>
-            <Trans>
-              Withdrawing this amount will reduce your health factor and increase risk of
-              liquidation.
-            </Trans>
-          </Warning>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              mx: '24px',
-              mb: '12px',
-            }}
-          >
-            <Checkbox
-              checked={riskCheckboxAccepted}
-              onChange={() => {
-                setRiskCheckboxAccepted(!riskCheckboxAccepted),
-                  trackEvent(GENERAL.ACCEPT_RISK, {
-                    modal: 'Withdraw',
-                    riskCheckboxAccepted: riskCheckboxAccepted,
-                  });
-              }}
-              size="small"
-              data-cy={`risk-checkbox`}
-            />
-            <Typography variant="description">
-              <Trans>I acknowledge the risks involved.</Trans>
-            </Typography>
-          </Box>
-        </>
-      )}
-
-      <WithdrawAndSwitchActions
-        poolReserve={poolReserve}
-        targetReserve={swapTarget.reserve}
-        amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
-        isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
-        isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        buildTxFn={buildTxFn}
-        sx={displayRiskCheckbox ? { mt: 0 } : {}}
-      />
     </>
   );
 };

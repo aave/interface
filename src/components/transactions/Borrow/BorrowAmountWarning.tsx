@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { RiskAcknowledge } from 'src/components/RiskAcknowledge';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -17,38 +16,22 @@ export const BorrowAmountWarning = ({
 
   return (
     <>
-      <Warning severity="error" sx={{ my: 6 }}>
-        <Trans>
-          Borrowing this amount will reduce your health factor and increase risk of liquidation.
-        </Trans>
-      </Warning>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          mx: '24px',
-          mb: '12px',
-        }}
-      >
-        <Checkbox
-          checked={riskCheckboxAccepted}
-          onChange={(event) => {
-            trackEvent(GENERAL.ACCEPT_RISK, {
-              modal: 'Borrow',
-              riskCheckboxAccepted: event.target.checked,
-            });
+      <RiskAcknowledge
+        checked={riskCheckboxAccepted}
+        onChange={(value) => {
+          trackEvent(GENERAL.ACCEPT_RISK, {
+            modal: 'Borrow',
+            riskCheckboxAccepted: value,
+          });
 
-            onRiskCheckboxChange();
-          }}
-          size="small"
-          data-cy={'risk-checkbox'}
-        />
-        <Typography variant="description">
-          <Trans>I acknowledge the risks involved.</Trans>
-        </Typography>
-      </Box>
+          onRiskCheckboxChange();
+        }}
+        title={
+          <Trans>
+            Borrowing this amount will reduce your health factor and increase risk of liquidation.
+          </Trans>
+        }
+      />
     </>
   );
 };

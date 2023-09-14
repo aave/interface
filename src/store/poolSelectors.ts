@@ -1,7 +1,8 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
+import { ReserveDataHumanized, UserReserveDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
@@ -212,4 +213,37 @@ export const selectEmodes = (state: RootStore) => {
 export const selectEmodesV3 = (state: RootStore) => {
   const reserves = selectFormatReserves(selectCurrentChainIdV3PoolReserve(state));
   return formatEmodes(reserves);
+};
+
+export const selectWrappedTokenConfig = (state: RootStore, tokenOutUnderlyingAddress: string) => {
+  const chainId = state.currentChainId;
+  const configForCurrentChainId = wrappedTokenConfig[chainId];
+  if (!configForCurrentChainId) return undefined;
+
+  const tokenIn = configForCurrentChainId[tokenOutUnderlyingAddress];
+  if (!tokenIn) return undefined;
+
+  const reserves = selectCurrentReserves(state);
+  const userReserves = selectCurrentUserReserves(state);
+
+  const isSameAddress = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+
+  return {
+    tokenIn: {
+      reserve: reserves.find((reserve) =>
+        isSameAddress(reserve.underlyingAsset, tokenIn)
+      ) as ReserveDataHumanized,
+      userReserve: userReserves.find((reserve) =>
+        isSameAddress(reserve.underlyingAsset, tokenIn)
+      ) as UserReserveDataHumanized,
+    },
+    tokenOutReserve: {
+      reserve: reserves.find((reserve) =>
+        isSameAddress(reserve.underlyingAsset, tokenOutUnderlyingAddress)
+      ) as ReserveDataHumanized,
+      userReserve: userReserves.find((reserve) =>
+        isSameAddress(reserve.underlyingAsset, tokenOutUnderlyingAddress)
+      ) as UserReserveDataHumanized,
+    },
+  };
 };
