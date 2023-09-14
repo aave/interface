@@ -116,8 +116,6 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
-  getDaiForSavingsDai: (amount: string) => Promise<BigNumber>;
-  getSavingsDaiForDai: (amount: string) => Promise<BigNumber>;
   supplyDaiAsSavingsDai: (amount: string) => PopulatedTransaction;
   supplyDaiAsSavingsDaiWithPermit: (
     amount: string,
@@ -332,26 +330,6 @@ export const createPoolSlice: StateCreator<
         useOptimizedPath: get().useOptimizedPath(),
         signature,
       });
-    },
-    getDaiForSavingsDai: (amount: string) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.getTokenInForTokenOut(amount);
-    },
-    getSavingsDaiForDai: (amount: string) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.getTokenOutForTokenIn(amount);
     },
     supplyDaiAsSavingsDai: (amount: string) => {
       const provider = get().jsonRpcProvider();

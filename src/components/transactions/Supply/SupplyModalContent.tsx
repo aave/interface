@@ -18,6 +18,7 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useSavingsDaiForDai } from 'src/hooks/useSavingsDai';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { selectWrappedTokenConfig } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
@@ -45,7 +46,6 @@ import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
-import { useSavingsDaiWrapper } from './useSavingsDaiWrapper';
 
 export enum ErrorType {
   CAP_REACHED,
@@ -288,9 +288,11 @@ export const SupplyModalContent = React.memo(
 );
 
 const ExchangeRate = ({ supplyAmount }: { supplyAmount: string }) => {
-  const { loading, tokenOutAmount } = useSavingsDaiWrapper({ supplyAmount, decimals: 18 });
-
-  console.log('tokenOutAmount', tokenOutAmount);
+  // assuming sDAI -> DAI for now since that is the only asset with this type of wrapper
+  const { tokenOutAmount, loading } = useSavingsDaiForDai({
+    amount: supplyAmount,
+    decimals: 18,
+  });
 
   return (
     <ContentWithTooltip tooltipContent={ExchangeRateTooltip}>

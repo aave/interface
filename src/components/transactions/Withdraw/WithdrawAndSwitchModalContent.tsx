@@ -13,6 +13,7 @@ import {
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useDaiForSavingsDai } from 'src/hooks/useSavingsDai';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { selectWrappedTokenConfig } from 'src/store/poolSelectors';
@@ -24,7 +25,6 @@ import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { useDaiForSavingsDaiWrapper } from '../Supply/useSavingsDaiWrapper';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
@@ -89,8 +89,8 @@ export const WithdrawAndSwitchModalContent = ({
     !wrappedTokenConfig ||
     targetReserve.address !== wrappedTokenConfig.tokenIn.reserve.underlyingAsset;
 
-  const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
-    withdrawAmount: amountRef.current,
+  const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDai({
+    amount: amountRef.current,
     decimals: 18,
     skip: useParaswap,
   });
