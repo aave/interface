@@ -788,7 +788,6 @@ msgid "Current votes"
 msgstr "Current votes"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
 
@@ -1279,7 +1278,6 @@ msgstr "Language"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
