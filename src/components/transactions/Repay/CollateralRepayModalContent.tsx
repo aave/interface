@@ -130,15 +130,27 @@ export function CollateralRepayModalContent({
     .toString();
 
   // The slippage is factored into the collateral amount because when we swap for 'exactOut', positive slippage is applied on the collateral amount.
-  const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
-    .multipliedBy(poolReserve.priceInUSD)
-    .multipliedBy(100 + Number(maxSlippage))
-    .dividedBy(100)
-    .dividedBy(
-      collateralReserveData && collateralReserveData.priceInUSD
-        ? collateralReserveData.priceInUSD
-        : poolReserve.priceInUSD
-    );
+  let collateralAmountRequiredToCoverDebt;
+  if (!repayWithATokens) {
+    collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
+      .multipliedBy(poolReserve.priceInUSD)
+      .multipliedBy(100 + Number(maxSlippage))
+      .dividedBy(100)
+      .dividedBy(
+        collateralReserveData && collateralReserveData.priceInUSD
+          ? collateralReserveData.priceInUSD
+          : poolReserve.priceInUSD
+      );
+  } else {
+    collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
+      .multipliedBy(poolReserve.priceInUSD)
+      .dividedBy(100)
+      .dividedBy(
+        collateralReserveData && collateralReserveData.priceInUSD
+          ? collateralReserveData.priceInUSD
+          : poolReserve.priceInUSD
+      );
+  }
 
   const swapIn = { ...collateralReserveData, amount: tokenToRepayWithBalance };
   const swapOut = { ...poolReserve, amount: amountRef.current };
@@ -380,6 +392,7 @@ export function CollateralRepayModalContent({
         isMaxSelected={isMaxSelected}
         maxValue={debt}
         inputTitle={<Trans>Expected amount to repay</Trans>}
+        // balanceText={<Trans>Borrow balance</Trans>}
         balanceText={<Trans>Borrow balance</Trans>}
       />
       <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
@@ -409,7 +422,9 @@ export function CollateralRepayModalContent({
         onSelect={setTokenToRepayWith}
         onChange={handleRepayAmountChange}
         inputTitle={<Trans>Collateral to repay with</Trans>}
-        balanceText={<Trans>Borrow balance</Trans>}
+        balanceText={
+          repayWithATokens ? <Trans>Collateral Balance</Trans> : <Trans>Borrow balance</Trans>
+        }
         maxValue={tokenToRepayWithBalance}
         loading={loadingSkeleton}
         disableInput
