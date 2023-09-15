@@ -10,6 +10,7 @@ import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/Backgroun
 import { useApprovalTx } from 'src/hooks/useApprovalTx';
 import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSupplyDaiAsSavingsDai } from 'src/hooks/useSavingsDai';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
@@ -45,16 +46,12 @@ export const SupplyWrappedTokenActions = ({
     walletApprovalMethodPreference,
     estimateGasLimit,
     addTransaction,
-    supplyDaiAsSavingsDaiWithPermit,
-    supplyDaiAsSavingsDai,
   ] = useRootStore((state) => [
     state.currentMarketData,
     state.tryPermit,
     state.walletApprovalMethodPreference,
     state.estimateGasLimit,
     state.addTransaction,
-    state.supplyDaiAsSavingsDaiWithPermit,
-    state.supplyDaiAsSavingsDai,
   ]);
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -103,6 +100,8 @@ export const SupplyWrappedTokenActions = ({
   const permitAvailable = tryPermit(tokenIn);
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
+  const { supply, supplyWithPermit } = useSupplyDaiAsSavingsDai();
+
   const { approval } = useApprovalTx({
     usePermit,
     approvedAmount,
@@ -145,7 +144,7 @@ export const SupplyWrappedTokenActions = ({
       // checking user preference is not sufficient because permit may be available but the user has an existing approval
       if (usePermit && signatureParams) {
         action = ProtocolAction.supplyWithPermit;
-        let signedSupplyWithPermitTxData = supplyDaiAsSavingsDaiWithPermit(
+        let signedSupplyWithPermitTxData = supplyWithPermit(
           parseUnits(amountToSupply, decimals).toString(),
           signatureParams.deadline,
           signatureParams.signature
@@ -157,7 +156,7 @@ export const SupplyWrappedTokenActions = ({
         await response.wait(1);
       } else {
         action = ProtocolAction.supply;
-        let supplyTxData = supplyDaiAsSavingsDai(parseUnits(amountToSupply, decimals).toString());
+        let supplyTxData = supply(parseUnits(amountToSupply, decimals).toString());
         supplyTxData = await estimateGasLimit(supplyTxData);
         response = await sendTx(supplyTxData);
 

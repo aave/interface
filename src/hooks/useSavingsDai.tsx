@@ -1,8 +1,9 @@
 import { SavingsDaiTokenWrapperService } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useQuery } from '@tanstack/react-query';
-import { BigNumber } from 'ethers';
-import { useEffect, useMemo, useState } from 'react';
+import { BigNumber, PopulatedTransaction } from 'ethers';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { QueryKeys } from 'src/ui-config/queries';
 
@@ -120,6 +121,40 @@ export const useGetSavingsDaiForDai = (parsedAmount: string) => {
     refetchOnMount: false,
     refetchOnReconnect: false,
   });
+};
+
+export const useSupplyDaiAsSavingsDai = () => {
+  const service = useSavingsDaiService();
+  const account = useRootStore((store) => store.account);
+
+  const supplyWithPermit: (
+    amount: string,
+    deadline: string,
+    signature: SignatureLike
+  ) => PopulatedTransaction = useCallback(
+    (amount: string, deadline: string, signature: SignatureLike) => {
+      return service.supplyTokenWithPermit({
+        amount,
+        onBehalfOf: account,
+        deadline,
+        signature,
+        referralCode: '0',
+      });
+    },
+    [service, account]
+  );
+
+  const supply: (amount: string) => PopulatedTransaction = useCallback(
+    (amount: string) => {
+      return service.supplyToken(amount, account, '0');
+    },
+    [service, account]
+  );
+
+  return {
+    supply,
+    supplyWithPermit,
+  };
 };
 
 const useSavingsDaiService = () => {
