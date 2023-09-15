@@ -4123,6 +4123,24 @@
       "ipfsHash": "QmVjqDjbytCoHR3mmaeMHQA5STcoace3K8bTHGReA6mxTm",
       "originalHash": "0x6df20d3eaefc2ad3a546f40ede47bf67b60a85d13bdd2efff2bcce73966755dc",
       "id": 321
+    },
+    {
+      "title": "Aave V3 Ethereum MKR Debt Ceiling Update",
+      "author": "Alice Rozengarden (@Rozengarden - Aave-chan initiative)",
+      "discussions": "https://governance.aave.com/t/arfc-borrowing-cap-expansion-request-mkr/14763",
+      "ipfsHash": "QmfVNFRq4uC6QTxHVNSgjLYbRuV3mqtPSqqyy59KTEBU2f",
+      "description": "\n## Simple Summary\n\nThis is a proposal to expand the current cap of borrowing against an isolated collateral (MKR) from $2.5 million to $6.0 million.\nThis proposal is compatible with Direct-to-AIP.\n\n## Motivation\n\nOrganic demand to use the MKR asset has reached the currently set ceiling.\nTo accommodate this demand and in alignment with Risk service providers teams recommendation, this AIP proposes to expand the MKR debt ceiling from 2.5M$ to 6M$\n\n## Specification\n\nThe following parameter will be modified:\n\n| Token           | Current debt ceiling | Proposed debt ceiling |\n| --------------- | -------------------- | --------------------- |\n| MKR Ethereum V3 | 2.5M$                | 6M$                   |\n\n## References\n\n- Implementation: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/20230908_AaveV3_Eth_MKRDebtCeiling/AaveV3_Ethereum_MKRDebtCeiling_20230908.sol)\n- Tests: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/20230908_AaveV3_Eth_MKRDebtCeiling/AaveV3_Ethereum_MKRDebtCeiling_20230908.t.sol)\n- [Snapshot](No snapshot for Direct-to-AIP)\n- [Discussion](https://governance.aave.com/t/arfc-borrowing-cap-expansion-request-mkr/14763)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "originalHash": "0xfed24b2f6bfc4bc8ca9fd265840761c459af90169a4b00e29776a8afbd989d4c",
+      "id": 322
+    },
+    {
+      "title": "GHO Borrow Rate Update",
+      "author": "Marc Zeller (@mzeller) - Aave-Chan Initiative",
+      "discussions": "https://governance.aave.com/t/arfc-increase-gho-borrow-rate/14612",
+      "ipfsHash": "QmaeLGYC1eC2cg8AJdKL8YQgtDfeqQaD1DW5rKuyzAAHwK",
+      "description": "\n## Simple Summary\n\nThis AIP proposes an increase in the borrow rate of GHO from the current rate of 1.5% to 2.5%. The aim is to address the peg deviation of GHO and ensure its growth and trustworthiness in the market.\n\n## Motivation\n\nGHO has witnessed a rapid growth, reaching a circulating supply of 22M in just a few weeks since its launch. One of the primary reasons for this growth, especially in the current adverse market conditions, is the GHO borrow rate set below the market price of stablecoin borrows. This low rate, combined with the current lack of holding venues and the inability to use GHO as collateral, has made single-side liquidity provision in stableswaps, such as Balancer pools, [one of the most sought-after strategies.](https://aave.tokenlogic.com.au/liquidity)\n\nWhile deep liquidity and growth are desired as a go-to-market strategy for GHO, the peg deviation of GHO (currently around $0.975) is affecting its growth and trust in the market. A consensus short-term solution to this issue is to slightly raise the GHO borrow rate from 1.5% to 2.5%. This rate remains attractive for borrowers and is still below the market average rates. However, by reducing the discount, it is anticipated to have a positive effect.\n\nThe discount for stkAave holders remains unchanged at 30%.\n\n## Specification\n\n- **Asset**: GHO\n- **Contract Address**: 0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f\n- **Current Borrow Rate**: 1.5%\n- **Proposed Borrow Rate**: 2.5%\n- **New discounted Borrow Rate**: ~1.75%\n\n## References\n\n- Implementation: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/20230904_AaveV3_Eth_GHOBorrowRateUpdate/AaveV3_Ethereum_GHOBorrowRateUpdate_20230904.sol)\n- Tests: [Ethereum](https://github.com/bgd-labs/aave-proposals/blob/main/src/20230904_AaveV3_Eth_GHOBorrowRateUpdate/AaveV3_Ethereum_GHOBorrowRateUpdate_20230904.t.sol)\n- [Snapshot](https://snapshot.org/#/aave.eth/proposal/0x4b6c0daa24e0268c86ad1aa1a0d3ee32456e6c1ee64aaaab3df4a58a1a0adc04)\n- [Discussion](https://governance.aave.com/t/arfc-increase-gho-borrow-rate/14612)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "originalHash": "0xb6d3d8b8aeaca0cb411a1eda57ba847a3ed346ecfe9e01367ed4ee62c369b426",
+      "id": 323
     }
   ]
 }
