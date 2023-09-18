@@ -31,7 +31,7 @@ export const MarketAssetsListContainer = () => {
     // Filter out any non-active reserves
     .filter((res) => res.isActive)
     // Filter out all GHO, as we deliberately display it on supported markets
-    .filter((res) => res !== ghoReserve)
+    // .filter((res) => res !== ghoReserve)
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;

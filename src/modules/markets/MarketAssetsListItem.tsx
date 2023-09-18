@@ -3,16 +3,14 @@ import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
+import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import {
-  IsolatedDisabledBadge,
-  IsolatedEnabledBadge,
-  UnavailableDueToIsolationBadge,
-} from 'src/components/isolationMode/IsolatedBadge';
+import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
@@ -32,8 +30,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
     showStableBorrowRate = false;
   }
-
-  console.log('reserve', reserve);
 
   return (
     <ListItem
@@ -76,18 +72,28 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-        <ReserveSubheader value={reserve.totalLiquidityUSD} />
+        {reserve.symbol === GHO_SYMBOL ? (
+          '--'
+        ) : (
+          <>
+            <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+            <ReserveSubheader value={reserve.totalLiquidityUSD} />
+          </>
+        )}
       </ListColumn>
 
       <ListColumn>
-        <IncentivesCard
-          value={reserve.supplyAPY}
-          incentives={reserve.aIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
-        />
+        {reserve.symbol === GHO_SYMBOL ? (
+          '--'
+        ) : (
+          <IncentivesCard
+            value={reserve.supplyAPY}
+            incentives={reserve.aIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="main16"
+            symbolsVariant="secondary16"
+          />
+        )}
       </ListColumn>
 
       <ListColumn>
