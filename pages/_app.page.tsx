@@ -5,6 +5,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Web3ReactProvider } from '@web3-react/core';
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
@@ -33,8 +34,8 @@ import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
-import { WagmiConfig, createConfig } from 'wagmi';
-import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from 'connectkit';
+import { createConfig, WagmiConfig } from 'wagmi';
+
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
@@ -138,7 +139,6 @@ export default function MyApp(props: MyAppProps) {
                     </AddressBlocked>
                   </AppGlobalStyles>
                 </Web3ContextProvider>
-                <ConnectKitButton />
               </ConnectKitProvider>
             </WagmiConfig>
           </Web3ReactProvider>
