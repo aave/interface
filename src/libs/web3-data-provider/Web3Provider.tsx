@@ -50,7 +50,9 @@ export type Web3Data = {
   readOnlyMode: boolean;
 };
 
-export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
+export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: ReactElement }>> = ({
+  children,
+}) => {
   const {
     account,
     chainId,

@@ -18,7 +18,9 @@ interface SharedDependenciesContext {
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
-export const SharedDependenciesProvider: React.FC = ({ children }) => {
+export const SharedDependenciesProvider: React.FC<React.PropsWithChildren<unknown>> = ({
+  children,
+}) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const isGovernanceFork =

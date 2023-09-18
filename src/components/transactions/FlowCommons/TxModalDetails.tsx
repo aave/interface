@@ -23,6 +23,7 @@ export interface TxModalDetailsProps {
   slippageSelector?: ReactNode;
   skipLoad?: boolean;
   disabled?: boolean;
+  children: ReactNode;
 }
 
 const ArrowRightIcon = (

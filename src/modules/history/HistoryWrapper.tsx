@@ -92,6 +92,8 @@ export const HistoryWrapper = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     (node) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();

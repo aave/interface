@@ -15,7 +15,7 @@ const Context = React.createContext<PermissionsContext>({
   isPermissionsLoading: false,
 });
 
-export const PermissionProvider: React.FC = ({ children }) => {
+export const PermissionProvider: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount: walletAddress } = useWeb3Context();
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(true);
