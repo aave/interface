@@ -33,7 +33,8 @@ import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
-
+import { WagmiConfig, createConfig } from 'wagmi';
+import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from 'connectkit';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
@@ -72,6 +73,22 @@ export default function MyApp(props: MyAppProps) {
     }
   }, [MIXPANEL_TOKEN, initializeMixpanel]);
 
+  const config = createConfig(
+    getDefaultConfig({
+      // Required API Keys
+      alchemyId: process.env.ALCHEMY_ID, // or infuraId
+      walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID,
+
+      // Required
+      appName: 'Your App Name',
+
+      // Optional
+      appDescription: 'Your App Description',
+      appUrl: 'https://family.co', // your app's url
+      appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    })
+  );
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -87,38 +104,43 @@ export default function MyApp(props: MyAppProps) {
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <PermissionProvider>
-                    <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <GasStationProvider>
-                            <SharedDependenciesProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                            </SharedDependenciesProvider>
-                          </GasStationProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
-                    </ModalContextProvider>
-                  </PermissionProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
+            <WagmiConfig config={config}>
+              <ConnectKitProvider>
+                <Web3ContextProvider>
+                  <AppGlobalStyles>
+                    <AddressBlocked>
+                      <PermissionProvider>
+                        <ModalContextProvider>
+                          <BackgroundDataProvider>
+                            <AppDataProvider>
+                              <GasStationProvider>
+                                <SharedDependenciesProvider>
+                                  {getLayout(<Component {...pageProps} />)}
+                                  <SupplyModal />
+                                  <WithdrawModal />
+                                  <BorrowModal />
+                                  <RepayModal />
+                                  <CollateralChangeModal />
+                                  <RateSwitchModal />
+                                  <DebtSwitchModal />
+                                  <ClaimRewardsModal />
+                                  <EmodeModal />
+                                  <SwapModal />
+                                  <FaucetModal />
+                                  <MigrateV3Modal />
+                                  <TransactionEventHandler />
+                                </SharedDependenciesProvider>
+                              </GasStationProvider>
+                            </AppDataProvider>
+                          </BackgroundDataProvider>
+                        </ModalContextProvider>
+                      </PermissionProvider>
+                    </AddressBlocked>
+                  </AppGlobalStyles>
+                </Web3ContextProvider>
+                <ConnectKitButton />
+              </ConnectKitProvider>
+            </WagmiConfig>
           </Web3ReactProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
