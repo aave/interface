@@ -117,9 +117,7 @@ export const HistoryWrapperMobile = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    (node) => {
+    (node: unknown) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
@@ -127,7 +125,7 @@ export const HistoryWrapperMobile = () => {
           fetchNextPage();
         }
       });
-      if (node) observer.current.observe(node);
+      if (node) observer.current.observe(node as Element);
     },
     [fetchNextPage, isLoading]
   );
