@@ -101,9 +101,11 @@ export const MarketAssetsListContainer = () => {
         </Box>
       )}
 
-      <Box mb={4}>
-        <GhoBanner reserve={ghoReserve} />
-      </Box>
+      {displayGho && (
+        <Box mb={4}>
+          <GhoBanner reserve={ghoReserve} />
+        </Box>
+      )}
 
       {/* Unfrozen assets list */}
       <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
