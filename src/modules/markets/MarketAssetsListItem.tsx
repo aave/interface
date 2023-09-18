@@ -8,7 +8,11 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
+import {
+  IsolatedDisabledBadge,
+  IsolatedEnabledBadge,
+  UnavailableDueToIsolationBadge,
+} from 'src/components/isolationMode/IsolatedBadge';
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
@@ -28,6 +32,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
     showStableBorrowRate = false;
   }
+
+  console.log('reserve', reserve);
 
   return (
     <ListItem
@@ -52,6 +58,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           <Typography variant="h4" noWrap>
             {reserve.name}
           </Typography>
+
           <Box
             sx={{
               p: { xs: '0', xsm: '3.625px 0px' },
@@ -60,6 +67,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             <Typography variant="subheader2" color="text.muted" noWrap>
               {reserve.symbol}
             </Typography>
+            {reserve.isIsolated ? <IsolatedEnabledBadge /> : ''}
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
