@@ -103,7 +103,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
               percent
               variant="main16"
             />
-            {reserve.isIsolated ? <IsolatedEnabledBadge color="green" /> : ''}
+            {reserve.isIsolated ? <IsolatedEnabledBadge /> : ''}
           </>
         )}
       </ListColumn>
