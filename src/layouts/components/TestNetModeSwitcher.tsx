@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { SETTINGS } from 'src/utils/mixPanelEvents';
 
@@ -9,10 +9,15 @@ interface TestNetModeSwitcherProps {
 }
 
 export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitcherProps) => {
-  const testnetsEnabledId = 'testnetsEnabled';
-  const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
-  const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
+  const [testnetsEnabled, setTestnetsMode] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const testnetsEnabledId = 'testnetsEnabled';
+
+  useEffect(() => {
+    const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
+    setTestnetsMode(testnetsEnabledLocalstorage);
+  }, []);
 
   const toggleTestnetsEnabled = () => {
     const newState = !testnetsEnabled;

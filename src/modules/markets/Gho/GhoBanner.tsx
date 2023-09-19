@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -20,6 +21,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
+  const router = useRouter();
 
   return (
     <Box
@@ -36,9 +38,11 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
       }}
     >
       <Box
-        component={Link}
-        href={ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket)}
+        onClick={() => {
+          router.push(ROUTES.reserveOverview(reserve?.underlyingAsset || '', currentMarket));
+        }}
         sx={(theme) => ({
+          cursor: 'pointer',
           borderRadius: {
             md: 4,
           },

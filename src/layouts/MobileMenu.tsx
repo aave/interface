@@ -16,7 +16,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
-import { moreNavigation } from '../ui-config/menu-items';
+import { getMoreNavigationItems } from '../ui-config/menu-items';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
@@ -82,7 +82,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Links</Trans>}>
               <List>
-                {moreNavigation.map((item, index) => (
+                {getMoreNavigationItems().map((item, index) => (
                   <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
                     <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
                       <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>

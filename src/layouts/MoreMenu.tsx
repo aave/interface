@@ -10,7 +10,7 @@ import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../components/primitives/Link';
-import { moreNavigation } from '../ui-config/menu-items';
+import { getMoreNavigationItems } from '../ui-config/menu-items';
 
 export function MoreMenu() {
   const { i18n } = useLingui();
@@ -61,7 +61,7 @@ export function MoreMenu() {
         onClose={handleClose}
         keepMounted={true}
       >
-        {moreNavigation.map((item, index) => (
+        {getMoreNavigationItems().map((item, index) => (
           <MenuItem
             component={Link}
             href={item.makeLink ? item.makeLink(walletAddress) : item.link}
