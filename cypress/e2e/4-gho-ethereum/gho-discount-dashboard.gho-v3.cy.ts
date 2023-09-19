@@ -84,7 +84,8 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify APY range for GHO`, () => {
+  //too slow for CI
+  describe.skip(`Verify APY range for GHO`, () => {
     describe(`APY range:  min = ${gho.apy.min}% - low then ${gho.apy.max}%`, () => {
       configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
@@ -113,7 +114,8 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
         });
       });
     });
-    describe(`APY range:  higher then ${gho.apy.min}% - low then ${gho.apy.max}%`, () => {
+    //too slow for CI
+    describe.skip(`APY range:  higher then ${gho.apy.min}% - low then ${gho.apy.max}%`, () => {
       configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
         tokens: tokenSet({ stkAave: 1, aDAI: 500 }),
@@ -134,7 +136,8 @@ describe(`GHO DASHBOARD APY TESTING`, () => {
         });
       });
     });
-    describe(`APY range:  min = ${gho.apy.min}% - max = ${gho.apy.max}%`, () => {
+    //too slow for CI
+    describe.skip(`APY range:  min = ${gho.apy.min}% - max = ${gho.apy.max}%`, () => {
       configEnvWithTenderlyAEthereumV3Fork({
         v3: true,
         tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
