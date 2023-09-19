@@ -44,7 +44,7 @@ export const IsolatedEnabledBadge = ({
       }
     >
       <Box sx={contentSx}>
-        <Typography variant="secondary12" {...typographyProps}>
+        <Typography variant="secondary12" color="text.secondary" {...typographyProps}>
           <Trans>Isolated</Trans>
         </Typography>
         <InfoIcon />
