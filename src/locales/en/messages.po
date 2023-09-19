@@ -1081,10 +1081,6 @@ msgstr "Forum discussion"
 msgid "French"
 msgstr "French"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr "Frozen or paused assets"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
@@ -1997,6 +1993,10 @@ msgstr "Share on twitter"
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
 msgstr "Show"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
+msgstr "Show Frozen or paused assets"
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"

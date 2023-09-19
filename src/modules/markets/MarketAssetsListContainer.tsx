@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -56,6 +56,11 @@ export const MarketAssetsListContainer = () => {
   const showFrozenMarketWarning =
     marketFrozen && ['Harmony', 'Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
+  const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
+
+  const handleChange = () => {
+    setShowFrozenMarketsToggle((prevState) => !prevState);
+  };
 
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
@@ -109,31 +114,41 @@ export const MarketAssetsListContainer = () => {
       {frozenOrPausedReserves.length > 0 && (
         <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
           <Typography variant="h4" mb={4}>
-            <Trans>Frozen or paused assets</Trans>
+            <Trans>Show Frozen or paused assets</Trans>
+
+            <Switch
+              checked={showFrozenMarketsToggle}
+              onChange={handleChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
           </Typography>
-          <Warning severity="info">
-            <Trans>
-              These assets are temporarily frozen or paused by Aave community decisions, meaning
-              that further supply / borrow, or rate swap of these assets are unavailable.
-              Withdrawals and debt repayments are allowed. Follow the{' '}
-              <Link
-                onClick={() => {
-                  trackEvent(GENERAL.EXTERNAL_LINK, {
-                    link: 'Frozen Market Markets Page',
-                    frozenMarket: currentNetworkConfig.name,
-                  });
-                }}
-                href="https://governance.aave.com"
-                underline="always"
-              >
-                Aave governance forum
-              </Link>{' '}
-              for further updates.
-            </Trans>
-          </Warning>
+          {showFrozenMarketsToggle && (
+            <Warning severity="info">
+              <Trans>
+                These assets are temporarily frozen or paused by Aave community decisions, meaning
+                that further supply / borrow, or rate swap of these assets are unavailable.
+                Withdrawals and debt repayments are allowed. Follow the{' '}
+                <Link
+                  onClick={() => {
+                    trackEvent(GENERAL.EXTERNAL_LINK, {
+                      link: 'Frozen Market Markets Page',
+                      frozenMarket: currentNetworkConfig.name,
+                    });
+                  }}
+                  href="https://governance.aave.com"
+                  underline="always"
+                >
+                  Aave governance forum
+                </Link>{' '}
+                for further updates.
+              </Trans>
+            </Warning>
+          )}
         </Box>
       )}
-      <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
+      {showFrozenMarketsToggle && (
+        <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
+      )}
 
       {/* Show no search results message if nothing hits in either list */}
       {!loading && filteredData.length === 0 && !displayGho && (
