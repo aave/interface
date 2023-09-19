@@ -122,7 +122,7 @@ export const MarketAssetsListContainer = () => {
               inputProps={{ 'aria-label': 'controlled' }}
             />
           </Typography>
-          {showFrozenMarketsToggle ? (
+          {showFrozenMarketsToggle && (
             <Warning severity="info">
               <Trans>
                 These assets are temporarily frozen or paused by Aave community decisions, meaning
@@ -143,15 +143,11 @@ export const MarketAssetsListContainer = () => {
                 for further updates.
               </Trans>
             </Warning>
-          ) : (
-            ''
           )}
         </Box>
       )}
-      {showFrozenMarketsToggle ? (
+      {showFrozenMarketsToggle && (
         <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
-      ) : (
-        ''
       )}
 
       {/* Show no search results message if nothing hits in either list */}

@@ -1081,6 +1081,10 @@ msgstr "Forum discussion"
 msgid "French"
 msgstr "French"
 
+#: src/layouts/components/AllMarketsSwitcher.tsx
+msgid "Frozen markets"
+msgstr "Frozen markets"
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
