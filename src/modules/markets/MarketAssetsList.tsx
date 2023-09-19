@@ -27,6 +27,10 @@ const listHeaders = [
     sortKey: 'supplyAPY',
   },
   {
+    title: <Trans>MAX LTV</Trans>,
+    sortKey: 'totalDebtUSD',
+  },
+  {
     title: <Trans>Total borrowed</Trans>,
     sortKey: 'totalDebtUSD',
   },

@@ -13,7 +13,6 @@ const contentSx = {
   cursor: 'pointer',
   '&:hover': { opacity: 0.6 },
 };
-
 const InfoIcon = () => (
   <SvgIcon
     sx={{
@@ -45,7 +44,7 @@ export const IsolatedEnabledBadge = ({
       }
     >
       <Box sx={contentSx}>
-        <Typography variant="secondary12" color="text.secondary" {...typographyProps}>
+        <Typography variant="secondary12" {...typographyProps}>
           <Trans>Isolated</Trans>
         </Typography>
         <InfoIcon />

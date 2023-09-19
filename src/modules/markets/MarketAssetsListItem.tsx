@@ -30,7 +30,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
     showStableBorrowRate = false;
   }
-
   return (
     <ListItem
       px={6}
@@ -63,7 +62,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             <Typography variant="subheader2" color="text.muted" noWrap>
               {reserve.symbol}
             </Typography>
-            {reserve.isIsolated ? <IsolatedEnabledBadge /> : ''}
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
@@ -93,6 +91,20 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             variant="main16"
             symbolsVariant="secondary16"
           />
+        )}
+      </ListColumn>
+      <ListColumn>
+        {reserve.symbol === GHO_SYMBOL ? (
+          '--'
+        ) : (
+          <>
+            <FormattedNumber
+              value={reserve.formattedBaseLTVasCollateral}
+              percent
+              variant="main16"
+            />
+            {reserve.isIsolated ? <IsolatedEnabledBadge color="green" /> : ''}
+          </>
         )}
       </ListColumn>
 
