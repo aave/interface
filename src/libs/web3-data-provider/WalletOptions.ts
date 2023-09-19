@@ -1,16 +1,14 @@
 import { ChainId } from '@aave/contract-helpers';
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { FrameConnector } from '@web3-react/frame-connector';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
-import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 
-import { WalletConnectConnector } from './WalletConnectConnector';
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { LedgerConnector } from 'wagmi/connectors/ledger'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { SafeConnector } from 'wagmi/connectors/safe'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { Connector, mainnet } from 'wagmi';
 
 export enum WalletType {
   INJECTED = 'injected',
@@ -76,46 +74,28 @@ export const getWallet = (
   wallet: WalletType,
   chainId: ChainId = ChainId.mainnet,
   currentChainId: ChainId = ChainId.mainnet
-): AbstractConnector => {
+): Connector => {
   switch (wallet) {
-    case WalletType.READ_ONLY_MODE:
-      return new ReadOnlyModeConnector();
     case WalletType.LEDGER:
-      return new LedgerHQFrameConnector({});
+      return new LedgerConnector({ options: {} });
     case WalletType.INJECTED:
-      return new InjectedConnector({});
+      return new InjectedConnector();
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
-      return new WalletLinkConnector({
-        appName: APP_NAME,
-        appLogoUrl: APP_LOGO_URL,
-        url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
+      return new CoinbaseWalletConnector({
+        options: {
+          appName: APP_NAME,
+          appLogoUrl: APP_LOGO_URL,
+          jsonRpcUrl: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
+        }
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector(currentChainId);
+      return new WalletConnectConnector({ chains: [mainnet] , options: { showQrModal: true, projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID}});
     case WalletType.GNOSIS:
       if (window) {
-        return new SafeAppConnector();
+        return new SafeConnector({ options: {}});
       }
       throw new Error('Safe app not working');
-    case WalletType.TORUS:
-      return new TorusConnector({
-        chainId,
-        initOptions: {
-          network: {
-            host: chainId === ChainId.polygon ? 'matic' : chainId,
-          },
-          showTorusButton: false,
-          enableLogging: false,
-          enabledVerifiers: false,
-        },
-      });
-    case WalletType.FRAME: {
-      if (chainId !== ChainId.mainnet) {
-        throw new UnsupportedChainIdError(chainId, [1]);
-      }
-      return new FrameConnector({ supportedChainIds: [1] });
-    }
     default: {
       throw new Error(`unsupported wallet`);
     }

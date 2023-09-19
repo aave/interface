@@ -37,6 +37,8 @@ import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProv
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { WagmiConfig, createConfig, configureChains, mainnet } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -51,6 +53,17 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+
+const { publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
+  [publicProvider()],
+)
+
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  publicClient,
+  webSocketPublicClient,
+})
 
 export const queryClient = new QueryClient();
 
@@ -86,40 +99,42 @@ export default function MyApp(props: MyAppProps) {
       />
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <PermissionProvider>
-                    <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <GasStationProvider>
-                            <SharedDependenciesProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                            </SharedDependenciesProvider>
-                          </GasStationProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
-                    </ModalContextProvider>
-                  </PermissionProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
+          <WagmiConfig config={wagmiConfig}>
+            <Web3ReactProvider getLibrary={getWeb3Library}>
+              <Web3ContextProvider>
+                <AppGlobalStyles>
+                  <AddressBlocked>
+                    <PermissionProvider>
+                      <ModalContextProvider>
+                        <BackgroundDataProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              <SharedDependenciesProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <MigrateV3Modal />
+                                <TransactionEventHandler />
+                              </SharedDependenciesProvider>
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </BackgroundDataProvider>
+                      </ModalContextProvider>
+                    </PermissionProvider>
+                  </AddressBlocked>
+                </AppGlobalStyles>
+              </Web3ContextProvider>
+            </Web3ReactProvider>
+          </WagmiConfig>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </LanguageProvider>
