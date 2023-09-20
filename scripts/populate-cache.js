@@ -66756,7 +66756,13 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.base]: {
     name: "Base",
-    publicJsonRPCUrl: ["https://mainnet.base.org"],
+    //privateJsonRPCUrl: 'https://base-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc', Endpoint is created with contract allowlist, but relays are not currently enabled
+    publicJsonRPCUrl: [
+      "https://mainnet.base.org",
+      "https://1rpc.io/base",
+      "https://base.publicnode.com",
+      "https://base-mainnet.public.blastapi.io"
+    ],
     // protocolDataUrl: '',
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",

@@ -517,7 +517,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 variant="contained"
                 onClick={onStakeRewardClaimRestakeAction}
                 disabled={stakeUserData?.userIncentivesToClaim === '0'}
-                data-cy={`claimBtn_${stakedToken}`}
+                data-cy={`restakeBtn_${stakedToken}`}
                 style={{ flex: 1 }} // marginLeft adds space between buttons
               >
                 <Trans>Restake</Trans>
