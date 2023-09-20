@@ -1,4 +1,5 @@
 import { enableMapSet } from 'immer';
+import { useEffect, useState } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import create from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
@@ -53,6 +54,46 @@ export const useRootStore = create<RootStore>()(
     })
   )
 );
+// export const useRootStore = create<RootStore>()(
+//   subscribeWithSelector(
+//     persist(
+//       devtools((...args) => {
+//         return {
+//           ...createStakeSlice(...args),
+//           ...createProtocolDataSlice(...args),
+//           ...createWalletSlice(...args),
+//           ...createPoolSlice(...args),
+//           ...createIncentiveSlice(...args),
+//           ...createGovernanceSlice(...args),
+//           ...createV3MigrationSlice(...args),
+//           ...createGhoSlice(...args),
+//           ...createWalletDomainsSlice(...args),
+//           ...createAnalyticsSlice(...args),
+//           ...createTransactionsSlice(...args),
+//           ...createLayoutSlice(...args),
+//         };
+//       }),
+//       {
+//         name: 'selectedMarket2',
+//         partialize: (state) => ({ selectedMarket: state.currentMarket }),
+//       }
+//     )
+//   )
+// );
+
+export const useStore = <T, F>(
+  store: (callback: (state: T) => unknown) => unknown,
+  callback: (state: T) => F
+) => {
+  const result = store(callback) as F;
+  const [data, setData] = useState<F>();
+
+  useEffect(() => {
+    setData(result);
+  }, [result]);
+
+  return data;
+};
 
 // hydrate state from localeStorage to not break on ssr issues
 if (typeof document !== 'undefined') {
@@ -60,7 +101,6 @@ if (typeof document !== 'undefined') {
     if (document.readyState == 'complete') {
       const selectedMarket =
         getQueryParameter('marketName') || localStorage.getItem('selectedMarket');
-
       if (selectedMarket) {
         const currentMarket = useRootStore.getState().currentMarket;
         const setCurrentMarket = useRootStore.getState().setCurrentMarket;

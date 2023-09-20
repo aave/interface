@@ -1,19 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 
 import { useRootStore } from '../../store/root';
 import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
 import { NetworkConfig } from '../../ui-config/networksConfig';
 // import { BridgeButton } from '../BridgeButton';
-// import { MarketSwitcher } from '../MarketSwitcher';
+import { MarketSwitcher } from '../MarketSwitcher';
 import { Link, ROUTES } from '../primitives/Link';
 
-const MarketSwitcher = dynamic(
-  () => import('../MarketSwitcher').then((module) => module.MarketSwitcher),
-  { ssr: false }
-);
 export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   pageTitle?: ReactNode;
   withMarketSwitcher?: boolean;

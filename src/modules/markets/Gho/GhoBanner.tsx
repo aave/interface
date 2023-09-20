@@ -9,7 +9,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useRootStore } from 'src/store/root';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 interface GhoBannerProps {
   reserve?: ComputedReserveData;
@@ -19,7 +19,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const theme = useTheme();
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { currentMarket } = useProtocolDataContext();
   const { ghoReserveData, ghoLoadingData } = useAppDataContext();
   const router = useRouter();
 
