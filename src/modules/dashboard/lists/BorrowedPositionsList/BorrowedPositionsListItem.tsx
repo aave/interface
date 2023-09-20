@@ -152,23 +152,23 @@ const BorrowedPositionsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <Button disabled={disableRepay} variant="contained" onClick={onOpenRepay}>
-          <Trans>Repay</Trans>
-        </Button>
         {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
-            variant="outlined"
+            variant="contained"
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
           >
             <Trans>Switch</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="outlined" onClick={onOpenBorrow}>
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
             <Trans>Borrow</Trans>
           </Button>
         )}
+        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
+          <Trans>Repay</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -252,19 +252,10 @@ const BorrowedPositionsListItemMobile = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={disableRepay}
-          variant="contained"
-          onClick={onOpenRepay}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Repay</Trans>
-        </Button>
         {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
-            variant="outlined"
+            variant="contained"
             fullWidth
             onClick={onDetbSwitchClick}
             data-cy={`swapButton`}
@@ -272,10 +263,19 @@ const BorrowedPositionsListItemMobile = ({
             <Trans>Switch</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="outlined" onClick={onOpenBorrow} fullWidth>
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>
             <Trans>Borrow</Trans>
           </Button>
         )}
+        <Button
+          disabled={disableRepay}
+          variant="outlined"
+          onClick={onOpenRepay}
+          sx={{ mr: 1.5 }}
+          fullWidth
+        >
+          <Trans>Repay</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );

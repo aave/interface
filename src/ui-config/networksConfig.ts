@@ -247,7 +247,13 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base]: {
     name: 'Base',
-    publicJsonRPCUrl: ['https://mainnet.base.org'],
+    //privateJsonRPCUrl: 'https://base-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc', Endpoint is created with contract allowlist, but relays are not currently enabled
+    publicJsonRPCUrl: [
+      'https://mainnet.base.org',
+      'https://1rpc.io/base',
+      'https://base.publicnode.com',
+      'https://base-mainnet.public.blastapi.io',
+    ],
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -291,11 +297,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     name: 'Optimism',
     privateJsonRPCUrl:
       'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [
-      'https://optimism-mainnet.public.blastapi.io',
-      'https://1rpc.io/op',
-      'https://rpc.ankr.com/optimism',
-    ],
+    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',

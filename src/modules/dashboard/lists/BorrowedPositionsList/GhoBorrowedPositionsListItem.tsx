@@ -55,7 +55,7 @@ export const GhoBorrowedPositionsListItem = ({
   const hasDiscount = ghoUserQualifiesForDiscount();
 
   const { isActive, isFrozen, isPaused, borrowingEnabled } = reserve;
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user));
+  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity
@@ -184,13 +184,10 @@ const GhoBorrowedPositionsListItemDesktop = ({
         </ContentWithTooltip>
       </ListColumn>
       <ListButtonsColumn>
-        <Button disabled={disableRepay} variant="contained" onClick={onRepayClick}>
-          <Trans>Repay</Trans>
-        </Button>
         {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
-            variant="outlined"
+            variant="contained"
             onClick={onSwitchClick}
             data-cy={`swapButton`}
           >
@@ -201,6 +198,9 @@ const GhoBorrowedPositionsListItemDesktop = ({
             <Trans>Borrow</Trans>
           </Button>
         )}
+        <Button disabled={disableRepay} variant="outlined" onClick={onRepayClick}>
+          <Trans>Repay</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -261,17 +261,8 @@ const GhoBorrowedPositionsListItemMobile = ({
         </ContentWithTooltip>
       </Row>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={disableRepay}
-          variant="contained"
-          onClick={onRepayClick}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Repay</Trans>
-        </Button>
         {showSwitchButton ? (
-          <Button disabled={disableSwitch} variant="outlined" fullWidth onClick={onSwitchClick}>
+          <Button disabled={disableSwitch} variant="contained" fullWidth onClick={onSwitchClick}>
             <Trans>Switch</Trans>
           </Button>
         ) : (
@@ -279,6 +270,15 @@ const GhoBorrowedPositionsListItemMobile = ({
             <Trans>Borrow</Trans>
           </Button>
         )}
+        <Button
+          disabled={disableRepay}
+          variant="outlined"
+          onClick={onRepayClick}
+          sx={{ mr: 1.5 }}
+          fullWidth
+        >
+          <Trans>Repay</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );

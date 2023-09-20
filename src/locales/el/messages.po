@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 00:15\n"
+"PO-Revision-Date: 2023-09-19 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1086,10 +1086,6 @@ msgstr "Συζήτηση φόρουμ"
 msgid "French"
 msgstr "Γαλλικά"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr ""
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Κεφάλαια στην Μονάδα Ασφάλειας"
@@ -2002,6 +1998,10 @@ msgstr "Μοιραστείτε το στο twitter"
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
 msgstr "Εμφάνιση"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
+msgstr ""
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
@@ -2927,8 +2927,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Μπορείτε να αποσύρετε τα περιουσιακά σας στοιχεία από τη Μονάδα Ασφαλείας μόνο αφού λήξει η περίοδος αναμονής και το παράθυρο ξεκλειδώματος είναι ενεργό."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr "Μπορείτε να αναφέρετε το περιστατικό στο <0>Discord</0> ή στο <1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."

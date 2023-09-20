@@ -16,7 +16,7 @@ const testData = {
   },
 };
 
-describe.skip(`GHO MODAL APY TESTING`, () => {
+describe(`GHO MODAL APY TESTING`, () => {
   describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
@@ -129,7 +129,8 @@ describe.skip(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal with changing discount for APY`, () => {
+  // too slow for CI
+  describe.skip(`Verify modal with changing discount for APY`, () => {
     let minAPYRage: number;
     let maxAPYRange: number;
     let borrowedAPY: number;

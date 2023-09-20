@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 00:15\n"
+"PO-Revision-Date: 2023-09-19 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1086,10 +1086,6 @@ msgstr ""
 msgid "French"
 msgstr ""
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr ""
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr ""
@@ -2001,6 +1997,10 @@ msgstr ""
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
+msgstr ""
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
 msgstr ""
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
@@ -2926,7 +2926,7 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
