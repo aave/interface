@@ -1,12 +1,12 @@
 import { enableMapSet } from 'immer';
-import { useEffect, useState } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import create from 'zustand';
+import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
 import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
+import { createHydrationSlice, HydrationSlice } from './HydrationSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
@@ -32,7 +32,8 @@ export type RootStore = StakeSlice &
   WalletDomainsSlice &
   AnalyticsSlice &
   TransactionsSlice &
-  LayoutSlice;
+  LayoutSlice &
+  HydrationSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -50,50 +51,11 @@ export const useRootStore = create<RootStore>()(
         ...createAnalyticsSlice(...args),
         ...createTransactionsSlice(...args),
         ...createLayoutSlice(...args),
+        ...createHydrationSlice(...args),
       };
     })
   )
 );
-// export const useRootStore = create<RootStore>()(
-//   subscribeWithSelector(
-//     persist(
-//       devtools((...args) => {
-//         return {
-//           ...createStakeSlice(...args),
-//           ...createProtocolDataSlice(...args),
-//           ...createWalletSlice(...args),
-//           ...createPoolSlice(...args),
-//           ...createIncentiveSlice(...args),
-//           ...createGovernanceSlice(...args),
-//           ...createV3MigrationSlice(...args),
-//           ...createGhoSlice(...args),
-//           ...createWalletDomainsSlice(...args),
-//           ...createAnalyticsSlice(...args),
-//           ...createTransactionsSlice(...args),
-//           ...createLayoutSlice(...args),
-//         };
-//       }),
-//       {
-//         name: 'selectedMarket2',
-//         partialize: (state) => ({ selectedMarket: state.currentMarket }),
-//       }
-//     )
-//   )
-// );
-
-export const useStore = <T, F>(
-  store: (callback: (state: T) => unknown) => unknown,
-  callback: (state: T) => F
-) => {
-  const result = store(callback) as F;
-  const [data, setData] = useState<F>();
-
-  useEffect(() => {
-    setData(result);
-  }, [result]);
-
-  return data;
-};
 
 // hydrate state from localeStorage to not break on ssr issues
 if (typeof document !== 'undefined') {
