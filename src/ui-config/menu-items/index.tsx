@@ -13,7 +13,6 @@ interface Navigation {
   dataCy?: string;
 }
 
-// TODO: make functions so t macro works
 export function getNavigationItems(): Navigation[] {
   return [
     {

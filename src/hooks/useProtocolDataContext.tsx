@@ -28,7 +28,6 @@ export const useProtocolDataContext = () => {
     store.setCurrentMarket,
   ]);
 
-  // console.log('the current market', currentMarket);
   return {
     currentMarket: currentMarketStore,
     currentMarketStore,
