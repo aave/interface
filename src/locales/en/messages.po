@@ -994,6 +994,7 @@ msgid "Enter an amount"
 msgstr "Enter an amount"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
@@ -1476,6 +1477,7 @@ msgid "NAY"
 msgstr "NAY"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
 msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
 
@@ -1500,6 +1502,7 @@ msgid "Network"
 msgstr "Network"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Network not supported for this wallet"
 msgstr "Network not supported for this wallet"
 
@@ -1652,6 +1655,7 @@ msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
@@ -1791,6 +1795,7 @@ msgid "Recipient address"
 msgstr "Recipient address"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
@@ -2561,10 +2566,12 @@ msgid "Total worth"
 msgstr "Total worth"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Track wallet"
 msgstr "Track wallet"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
 
@@ -2798,10 +2805,12 @@ msgid "Wallet balance"
 msgstr "Wallet balance"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr "Wallet not detected. Connect or install wallet and retry"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 

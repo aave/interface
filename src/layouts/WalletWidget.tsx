@@ -25,7 +25,7 @@ import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
-import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+// import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -42,7 +42,7 @@ interface WalletWidgetProps {
   headerHeight: number;
 }
 
-export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
+export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
@@ -392,7 +392,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </Menu>
       )}
 
-      <WalletModal />
+      {/* <WalletModal /> */}
     </>
   );
 }

@@ -1,10 +1,9 @@
-import { useWalletModalContext } from 'src/hooks/useWalletModal';
-
-import { WatchWalletSelector } from './WatchWalletSelector';
-
 import { XIcon } from '@heroicons/react/outline';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 import React from 'react';
+import { useWalletModalContext } from 'src/hooks/useWalletModal';
+
+import { WatchWalletSelector } from './WatchWalletSelector';
 
 export interface BasicModalProps {
   open: boolean;
@@ -18,12 +17,11 @@ export const CustomBasicModal = ({
   open,
   setOpen,
   withCloseButton = true,
-  contentMaxWidth = 420,
+  contentMaxWidth = 359,
   children,
   ...props
 }: BasicModalProps) => {
   const handleClose = () => setOpen(false);
-
   return (
     <Modal
       open={open}
@@ -34,16 +32,11 @@ export const CustomBasicModal = ({
         },
       }}
       sx={{
-        // backgroundColor: 'rgba(71,88,107,0.24)',
-        // background: 'green',
-
         display: 'flex',
         borderRadius: '20px',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        // width: '360px',
-        // height: '369px',
 
         '.MuiPaper-root': {
           outline: 'none',
@@ -60,9 +53,9 @@ export const CustomBasicModal = ({
           background: 'rgb(255, 255, 255)',
           position: 'relative',
           borderRadius: '20px',
-
+          fontFamily:
+            '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
           margin: '10px',
-          // overflowY: 'auto',
           width: '100%',
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           maxHeight: 'calc(100vh - 20px)',
@@ -84,7 +77,7 @@ export const CustomBasicModal = ({
               onClick={handleClose}
               data-cy={'close-button'}
             >
-              <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
+              <SvgIcon sx={{ fontSize: '22px', color: 'text.primary' }}>
                 <XIcon data-cy={'CloseModalIcon'} />
               </SvgIcon>
             </IconButton>

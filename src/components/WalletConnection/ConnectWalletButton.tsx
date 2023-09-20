@@ -4,7 +4,7 @@ import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
-import { WalletModal } from './WalletModal';
+// import { WalletModal } from './WalletModal';
 import { WatchWalletModal } from './WatchWalletModal';
 
 export interface ConnectWalletProps {

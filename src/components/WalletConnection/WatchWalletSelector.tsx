@@ -13,91 +13,91 @@ import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { Warning } from '../primitives/Warning';
-import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
+// import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 
 export type WalletRowProps = {
   walletName: string;
   walletType: WalletType;
 };
-const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
-  const { connectWallet, loading } = useWeb3Context();
-  const trackEvent = useRootStore((store) => store.trackEvent);
+// const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
+//   const { connectWallet, loading } = useWeb3Context();
+//   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const getWalletIcon = (walletType: WalletType) => {
-    switch (walletType) {
-      case WalletType.INJECTED:
-        return (
-          <img
-            src={`/icons/wallets/browserWallet.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      case WalletType.WALLET_CONNECT:
-        return (
-          <img
-            src={`/icons/wallets/walletConnect.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      case WalletType.WALLET_LINK:
-        return (
-          <img
-            src={`/icons/wallets/coinbase.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      case WalletType.TORUS:
-        return (
-          <img
-            src={`/icons/wallets/torus.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      case WalletType.FRAME:
-        return (
-          <img
-            src={`/icons/wallets/frame.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
-      default:
-        return null;
-    }
-  };
+//   const getWalletIcon = (walletType: WalletType) => {
+//     switch (walletType) {
+//       case WalletType.INJECTED:
+//         return (
+//           <img
+//             src={`/icons/wallets/browserWallet.svg`}
+//             width="24px"
+//             height="24px"
+//             alt={`browser wallet icon`}
+//           />
+//         );
+//       case WalletType.WALLET_CONNECT:
+//         return (
+//           <img
+//             src={`/icons/wallets/walletConnect.svg`}
+//             width="24px"
+//             height="24px"
+//             alt={`browser wallet icon`}
+//           />
+//         );
+//       case WalletType.WALLET_LINK:
+//         return (
+//           <img
+//             src={`/icons/wallets/coinbase.svg`}
+//             width="24px"
+//             height="24px"
+//             alt={`browser wallet icon`}
+//           />
+//         );
+//       case WalletType.TORUS:
+//         return (
+//           <img
+//             src={`/icons/wallets/torus.svg`}
+//             width="24px"
+//             height="24px"
+//             alt={`browser wallet icon`}
+//           />
+//         );
+//       case WalletType.FRAME:
+//         return (
+//           <img
+//             src={`/icons/wallets/frame.svg`}
+//             width="24px"
+//             height="24px"
+//             alt={`browser wallet icon`}
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
 
-  const connectWalletClick = () => {
-    trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
-    connectWallet(walletType);
-  };
-  return (
-    <Button
-      disabled={loading}
-      variant="outlined"
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        mb: '8px',
-      }}
-      size="large"
-      onClick={connectWalletClick}
-      endIcon={getWalletIcon(walletType)}
-    >
-      {walletName}
-    </Button>
-  );
-};
+//   const connectWalletClick = () => {
+//     trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
+//     connectWallet(walletType);
+//   };
+//   return (
+//     <Button
+//       disabled={loading}
+//       variant="outlined"
+//       sx={{
+//         display: 'flex',
+//         flexDirection: 'row',
+//         justifyContent: 'space-between',
+//         width: '100%',
+//         mb: '8px',
+//       }}
+//       size="large"
+//       onClick={connectWalletClick}
+//       endIcon={getWalletIcon(walletType)}
+//     >
+//       {walletName}
+//     </Button>
+//   );
+// };
 
 export enum ErrorType {
   UNSUPORTED_CHAIN,
@@ -201,8 +201,21 @@ export const WatchWalletSelector = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '369px', width: '360px' }}>
-      <TxModalTitle title="Connect a wallet" />
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Typography
+        // variant="h2"
+        sx={{
+          fontSize: '17px',
+          textAlign: 'center',
+          mb: 6,
+          lineHeight: '20px',
+          fontWeight: '600',
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"',
+        }}
+      >
+        Watch a wallet
+      </Typography>
       {error && <Warning severity="error">{handleBlocking()}</Warning>}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
