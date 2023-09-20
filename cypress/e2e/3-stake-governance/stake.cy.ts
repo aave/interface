@@ -1,22 +1,30 @@
 import assets from '../../fixtures/assets.json';
 import { skipState } from '../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
-import { activateCooldown, stake, reCallCooldown } from '../../support/steps/stake.steps';
+import {
+  activateCooldown,
+  stake,
+  reCallCooldown,
+  claimReward,
+  reStake,
+} from '../../support/steps/stake.steps';
 
 const testCases = [
   {
     asset: assets.staking.AAVE,
-    amount: 500,
-    checkAmount: '500.00',
-    checkAmountFinal: '1,000.00',
+    amount: 5,
+    checkAmount: '5.00',
+    checkAmountFinal: '10.00',
     tabValue: 'aave',
+    changeApproval: true,
   },
   {
     asset: assets.staking.ABPT,
-    amount: 500,
-    checkAmount: '500.00',
-    checkAmountFinal: '1,000.00',
+    amount: 5,
+    checkAmount: '5.00',
+    checkAmountFinal: '10.00',
     tabValue: 'bpt',
+    changeApproval: false,
   },
 ];
 
@@ -27,9 +35,9 @@ testCases.forEach(
     checkAmount: string;
     checkAmountFinal: string;
     tabValue: string;
+    changeApproval: boolean;
   }) => {
-    //skip while multiply fork eth markets present
-    describe.skip(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName} V2 MARKET`, () => {
+    describe(`STAKE INTEGRATION SPEC, ${testCase.asset.shortName}`, () => {
       const skipTestState = skipState(false);
       configEnvWithTenderlyMainnetFork({
         tokens: [{ tokenAddress: testCase.asset.address }],
@@ -41,18 +49,11 @@ testCases.forEach(
           checkAmount: testCase.checkAmount,
           tabValue: testCase.tabValue,
           hasApproval: false,
+          changeApproval: testCase.changeApproval,
         },
         skipTestState,
         true
       );
-      // skip while tenderly issue
-      // claimReward(
-      //   {
-      //     asset: testCase.asset,
-      //   },
-      //   skipTestState,
-      //   false
-      // );
       activateCooldown(
         {
           asset: testCase.asset,
@@ -60,6 +61,22 @@ testCases.forEach(
         skipTestState,
         false
       );
+      if (testCase.asset === assets.staking.AAVE) {
+        claimReward(
+          {
+            asset: testCase.asset,
+          },
+          skipTestState,
+          false
+        );
+        reStake(
+          {
+            asset: testCase.asset,
+          },
+          skipTestState,
+          false
+        );
+      }
       stake(
         {
           asset: testCase.asset,
@@ -67,6 +84,7 @@ testCases.forEach(
           checkAmount: testCase.checkAmountFinal,
           tabValue: testCase.tabValue,
           hasApproval: true,
+          changeApproval: testCase.changeApproval,
         },
         skipTestState,
         true

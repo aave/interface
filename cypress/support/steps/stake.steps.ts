@@ -40,12 +40,14 @@ export const stake = (
     checkAmount,
     tabValue,
     hasApproval,
+    changeApproval,
   }: {
     asset: { fullName: string; shortName: string; address: string };
     amount: number;
     checkAmount: string;
     tabValue: string;
     hasApproval: boolean;
+    changeApproval: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -68,6 +70,14 @@ export const stake = (
     });
     it(`Set amount`, () => {
       cy.setAmount(amount, false);
+      if (!hasApproval && changeApproval) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
+      cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
@@ -102,12 +112,14 @@ export const claimReward = (
   const _shortName = asset.shortName;
   const _actionName = `STAKE ${asset.shortName}`;
 
-  return describe(`Stake ${_shortName}`, () => {
+  return describe(`Claim reward for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open claim popup`, () => {
       cy.get(`[data-cy="claimBtn_${asset.shortName}"]`).click();
     });
     it(`Confirm`, () => {
+      cy.wait(2000);
+      cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
       cy.doConfirm(true, _actionName);
     });
     doCloseModal();
@@ -126,7 +138,7 @@ export const activateCooldown = (
   const _shortName = asset.shortName;
   const _actionName = `Cooldown to unstake`;
 
-  return describe(`Stake ${_shortName}`, () => {
+  return describe(`Activate cooldown ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`open activate cooldown`, () => {
       cy.get(`[data-cy="coolDownBtn_${asset.shortName}"]`).click();
@@ -172,5 +184,31 @@ export const reCallCooldown = (
         { timeout: 50000 }
       );
     });
+  });
+};
+
+export const reStake = (
+  {
+    asset,
+  }: {
+    asset: { fullName: string; shortName: string; address: string };
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  const _shortName = asset.shortName;
+  const _actionName = `STAKE ${asset.shortName}`;
+
+  return describe(` Re Stake ${_shortName}`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    it(`Open claim popup`, () => {
+      cy.get(`[data-cy="restakeBtn_${asset.shortName}"]`).click();
+    });
+    it(`Confirm`, () => {
+      cy.wait(2000);
+      cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
+      cy.doConfirm(true, _actionName);
+    });
+    doCloseModal();
   });
 };
