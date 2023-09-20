@@ -28,7 +28,7 @@ const listHeaders = [
   },
   {
     title: <Trans>MAX LTV</Trans>,
-    sortKey: 'totalDebtUSD',
+    sortKey: 'formattedBaseLTVasCollateral',
   },
   {
     title: <Trans>Total borrowed</Trans>,
@@ -65,7 +65,6 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-
   if (sortDesc) {
     if (sortName === 'symbol') {
       reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
@@ -94,6 +93,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       </>
     ) : (
       <>
+        <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />
