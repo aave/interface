@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-09-06 12:06\n"
+"PO-Revision-Date: 2023-09-19 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1086,10 +1086,6 @@ msgstr "Discussion de forum"
 msgid "French"
 msgstr "Français"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr ""
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Fonds dans le Safety Module"
@@ -2002,6 +1998,10 @@ msgstr "Partager sur Twitter"
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
 msgstr "Montrer"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
+msgstr ""
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
