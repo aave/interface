@@ -40,14 +40,14 @@ const testData = {
     },
     borrow: {
       asset: assets.aaveMarket.ETH,
-      amount: 0.04,
+      amount: 0.05,
       apyType: constants.borrowAPYType.variable,
       hasApproval: false,
     },
     repay: {
       asset: assets.aaveMarket.ETH,
       apyType: constants.apyType.variable,
-      amount: 0.01,
+      amount: 0.02,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
