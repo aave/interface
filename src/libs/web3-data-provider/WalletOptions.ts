@@ -1,21 +1,16 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AbstractConnector } from '@web3-react/abstract-connector';
-import { ConnectorUpdate } from '@web3-react/types';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { LedgerConnector } from 'wagmi/connectors/ledger'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { SafeConnector } from 'wagmi/connectors/safe'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { Connector, mainnet } from 'wagmi';
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { LedgerConnector } from 'wagmi/connectors/ledger';
+import { SafeConnector } from 'wagmi/connectors/safe';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 export enum WalletType {
   INJECTED = 'injected',
   WALLET_CONNECT = 'wallet_connect',
   WALLET_LINK = 'wallet_link',
-  TORUS = 'torus',
-  FRAME = 'frame',
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
   READ_ONLY_MODE = 'read_only_mode',
@@ -33,10 +28,10 @@ const mockProvider = {
  *  On activate, the connector expects a local storage item called `readOnlyModeAddress` to be set, otherwise an error is thrown.
  *  When the connector is deactivated (i.e. on disconnect, switching wallets), the local storage item is removed.
  */
-export class ReadOnlyModeConnector extends AbstractConnector {
+export class ReadOnlyModeConnector {
   readAddress = '';
 
-  activate(): Promise<ConnectorUpdate<string | number>> {
+  activate() {
     const address = localStorage.getItem('readOnlyModeAddress');
     if (!address || address === 'undefined') {
       throw new Error('No address found in local storage for read-only mode');
@@ -87,13 +82,19 @@ export const getWallet = (
           appName: APP_NAME,
           appLogoUrl: APP_LOGO_URL,
           jsonRpcUrl: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
-        }
+        },
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector({ chains: [mainnet] , options: { showQrModal: true, projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID}});
+      return new WalletConnectConnector({
+        chains: [mainnet],
+        options: {
+          showQrModal: true,
+          projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+        },
+      });
     case WalletType.GNOSIS:
       if (window) {
-        return new SafeConnector({ options: {}});
+        return new SafeConnector({ options: {} });
       }
       throw new Error('Safe app not working');
     default: {

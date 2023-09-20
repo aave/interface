@@ -1,19 +1,22 @@
 import { transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-} from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { BigNumber, PopulatedTransaction, providers } from 'ethers';
+import { TransactionResponse } from '@ethersproject/providers';
+import { BigNumber, PopulatedTransaction } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  usePublicClient,
+  useSwitchNetwork,
+  useWalletClient,
+} from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { WalletConnectConnector } from './WalletConnectConnector';
 import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
-import { Connector, useAccount, useConnect, useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi';
 
 export type ERC20TokenType = {
   address: string;
@@ -30,7 +33,6 @@ export type Web3Data = {
   currentAccount: string;
   connected: boolean;
   loading: boolean;
-  provider: JsonRpcProvider | undefined;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
@@ -38,7 +40,7 @@ export type Web3Data = {
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
-  error: Error | undefined;
+  error: Error | null;
   switchNetworkError: Error | null;
   readOnlyModeAddress: string | undefined;
   readOnlyMode: boolean;
@@ -47,20 +49,13 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: ReactElement }>> = ({
   children,
 }) => {
-  const {
-    library: provider,
-    error,
-    setError,
-  } = useWeb3React<providers.Web3Provider>();
-
+  const { data: provider } = useWalletClient();
+  const publicClient = usePublicClient();
   const { address: account, isConnected } = useAccount();
-  const { connect, isLoading: connectLoading } = useConnect();
+  const { connect, isLoading: connectLoading, error } = useConnect();
   const { disconnect, isLoading: disconnectLoading } = useDisconnect();
   const { switchNetwork, error: switchNetworkError } = useSwitchNetwork();
   const { chain } = useNetwork();
-
-  // const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [connector, setConnector] = useState<Connector>();
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [setAccount, currentChainId] = useRootStore((store) => [
     store.setAccount,
@@ -89,16 +84,10 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
         } else {
           setReadOnlyMode(false);
         }
-
-        if (connector instanceof WalletConnectConnector) {
-          connector.walletConnectProvider = undefined;
-        }
         connect({ connector });
-        setConnector(connector);
         setWalletType(wallet);
       } catch (e) {
         console.log('error on activation', e);
-        setError(e);
         setWalletType(undefined);
         // disconnectWallet();
       }
@@ -139,31 +128,34 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
   };
 
   const getTxError = async (txHash: string): Promise<string> => {
-    if (provider) {
-      const tx = await provider.getTransaction(txHash);
+    if (publicClient) {
+      const tx = await publicClient.getTransaction({ blockHash: txHash });
       // @ts-expect-error TODO: need think about "tx" type
-      const code = await provider.call(tx, tx.blockNumber);
-      const error = hexToAscii(code.substr(138));
+      const code = await publicClient.call(tx, tx.blockNumber);
+      const error = hexToAscii(code.data.substr(138));
       return error;
     }
     throw new Error('Error getting transaction. Provider not found');
   };
 
-  const addERC20Token = async ({
+  const addERC20Token = ({
     address,
     symbol,
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
-    if (connector && connector.watchAsset) {
-      return connector.watchAsset({
-        address,
-        symbol,
-        decimals,
-        image,
-      }).then(() => true).catch(() => false)
+    if (provider) {
+      return provider.watchAsset({
+        type: 'ERC20',
+        options: {
+          address,
+          symbol,
+          decimals,
+          image,
+        },
+      });
     }
-    return false;
+    return Promise.resolve(false);
   };
 
   // inject account into zustand as long as aave itnerface is using old web3 providers
@@ -182,7 +174,6 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
           connectWallet,
           connectReadOnlyMode,
           disconnectWallet,
-          provider,
           connected: isConnected,
           loading: connectLoading || disconnectLoading,
           chainId: chain?.id || 1,
