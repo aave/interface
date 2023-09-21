@@ -12,6 +12,7 @@ export default function AnalyticsBanner() {
   ]);
 
   const [bannerVisible, setBannerVisible] = useState(false);
+  const [hasUserMadeChoice, setHasUserMadeChoice] = useState(false);
 
   useEffect(() => {
     // Adds a delay before showing the banner.
@@ -22,13 +23,15 @@ export default function AnalyticsBanner() {
     return () => clearTimeout(timerId);
   }, []);
 
+  useEffect(() => {
+    const userMadeChoice = localStorage.getItem('userAcceptedAnalytics') !== null;
+    setHasUserMadeChoice(userMadeChoice);
+  }, []);
+
   const theme = useTheme();
 
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
-
-  const hasUserMadeChoice =
-    typeof window !== 'undefined' && localStorage.getItem('userAcceptedAnalytics') !== null;
 
   // Note: If they have already chosen don't show again unless configured from footer
   if (hasUserMadeChoice) return null;

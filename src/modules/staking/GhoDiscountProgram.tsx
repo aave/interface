@@ -2,13 +2,13 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { useRootStore } from 'src/store/root';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { CustomMarket, marketsData } from 'src/ui-config/marketsConfig';
 
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { currentMarket } = useProtocolDataContext();
 
   const ghoTokenAddress = marketsData[
     CustomMarket.proto_mainnet_v3

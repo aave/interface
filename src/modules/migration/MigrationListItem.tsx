@@ -13,6 +13,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
@@ -56,7 +57,8 @@ export const MigrationListItem = ({
   isSupplyList,
 }: MigrationListItemProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
+  const { currentMarketData } = useRootStore();
+  const { currentMarket } = useProtocolDataContext();
   const isMobile = useMediaQuery(theme.breakpoints.down(1125));
 
   const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';

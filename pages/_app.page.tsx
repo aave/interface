@@ -62,7 +62,10 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const initializeMixpanel = useRootStore((store) => store.initializeMixpanel);
+  const [initializeMixpanel, setHydrated] = useRootStore((store) => [
+    store.initializeMixpanel,
+    store.setHydrated,
+  ]);
 
   const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL;
   useEffect(() => {
@@ -72,6 +75,10 @@ export default function MyApp(props: MyAppProps) {
       console.log('no analytics tracking');
     }
   }, [MIXPANEL_TOKEN, initializeMixpanel]);
+
+  useEffect(() => {
+    setHydrated();
+  }, [setHydrated]);
 
   return (
     <CacheProvider value={emotionCache}>

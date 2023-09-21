@@ -68,17 +68,14 @@ export const DebtSwitchModalContent = ({
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
   const { reserves, user, ghoReserveData, ghoUserData } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
-  const [displayGho, currentMarket, ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore(
-    (state) => [
-      state.displayGho,
-      state.currentMarket,
-      state.ghoUserDataFetched,
-      state.ghoUserQualifiesForDiscount,
-    ]
-  );
+  const [displayGho, ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore((state) => [
+    state.displayGho,
+    state.ghoUserDataFetched,
+    state.ghoUserQualifiesForDiscount,
+  ]);
 
   let switchTargets = reserves
     .filter(
