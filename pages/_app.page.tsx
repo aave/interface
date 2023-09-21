@@ -4,6 +4,7 @@ import '/src/styles/variables.css';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ConnectKitProvider } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -95,38 +96,40 @@ export default function MyApp(props: MyAppProps) {
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <WagmiConfig config={wagmiConfig}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <PermissionProvider>
-                    <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <GasStationProvider>
-                            <SharedDependenciesProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                            </SharedDependenciesProvider>
-                          </GasStationProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
-                    </ModalContextProvider>
-                  </PermissionProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
+            <ConnectKitProvider>
+              <Web3ContextProvider>
+                <AppGlobalStyles>
+                  <AddressBlocked>
+                    <PermissionProvider>
+                      <ModalContextProvider>
+                        <BackgroundDataProvider>
+                          <AppDataProvider>
+                            <GasStationProvider>
+                              <SharedDependenciesProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <MigrateV3Modal />
+                                <TransactionEventHandler />
+                              </SharedDependenciesProvider>
+                            </GasStationProvider>
+                          </AppDataProvider>
+                        </BackgroundDataProvider>
+                      </ModalContextProvider>
+                    </PermissionProvider>
+                  </AddressBlocked>
+                </AppGlobalStyles>
+              </Web3ContextProvider>
+            </ConnectKitProvider>
           </WagmiConfig>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

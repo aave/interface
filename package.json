@@ -56,6 +56,7 @@
     "@visx/scale": "^2.2.2",
     "@visx/shape": "^2.12.2",
     "@visx/tooltip": "^2.16.0",
+    "connectkit": "^1.5.3",
     "d3-array": "^3.2.4",
     "d3-time-format": "^4.1.0",
     "dayjs": "^1.11.9",

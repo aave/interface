@@ -15,6 +15,9 @@ import {
   useWalletClient,
 } from 'wagmi';
 
+// import { WagmiConfig } from 'wagmi';
+// import { createConfig } from '@wagmi/core';
+// import { getDefaultConfig } from 'connectkit';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
 

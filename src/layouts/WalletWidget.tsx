@@ -18,13 +18,14 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { ConnectKitButton } from 'connectkit';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
-import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+// import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -41,7 +42,7 @@ interface WalletWidgetProps {
   headerHeight: number;
 }
 
-export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
+export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
@@ -326,42 +327,46 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
-        <Button
-          variant={connected ? 'surface' : 'gradient'}
-          aria-label="wallet"
-          id="wallet-button"
-          aria-controls={open ? 'wallet-button' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-          sx={{
-            p: connected ? '5px 8px' : undefined,
-            minWidth: hideWalletAccountText ? 'unset' : undefined,
-          }}
-          endIcon={
-            connected &&
-            !hideWalletAccountText &&
-            !md && (
-              <SvgIcon
-                sx={{
-                  display: { xs: 'none', md: 'block' },
-                }}
-              >
-                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </SvgIcon>
-            )
-          }
-        >
-          {connected ? (
-            <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
-              oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
-            />
-          ) : (
-            <Trans>Connect wallet</Trans>
-          )}
-        </Button>
+        <>
+          <ConnectKitButton />
+
+          <Button
+            variant={connected ? 'surface' : 'gradient'}
+            aria-label="wallet"
+            id="wallet-button"
+            aria-controls={open ? 'wallet-button' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            sx={{
+              p: connected ? '5px 8px' : undefined,
+              minWidth: hideWalletAccountText ? 'unset' : undefined,
+            }}
+            endIcon={
+              connected &&
+              !hideWalletAccountText &&
+              !md && (
+                <SvgIcon
+                  sx={{
+                    display: { xs: 'none', md: 'block' },
+                  }}
+                >
+                  {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </SvgIcon>
+              )
+            }
+          >
+            {connected ? (
+              <UserDisplay
+                avatarProps={{ size: AvatarSize.SM }}
+                oneLiner={true}
+                titleProps={{ variant: 'buttonM' }}
+              />
+            ) : (
+              <Trans>Connect wallet</Trans>
+            )}
+          </Button>
+        </>
       )}
 
       {md ? (
@@ -387,7 +392,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </Menu>
       )}
 
-      <WalletModal />
+      {/* <WalletModal /> */}
     </>
   );
 }
