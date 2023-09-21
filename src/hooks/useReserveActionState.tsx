@@ -13,6 +13,7 @@ import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import { useModalContext } from './useModal';
+import { useProtocolDataContext } from './useProtocolDataContext';
 
 interface ReserveActionStateProps {
   balance: string;
@@ -29,14 +30,12 @@ export const useReserveActionState = ({
 }: ReserveActionStateProps) => {
   const { user, eModes } = useAppDataContext();
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const [currentMarket, currentNetworkConfig, currentChainId, displayGho] = useRootStore(
-    (store) => [
-      store.currentMarket,
-      store.currentNetworkConfig,
-      store.currentChainId,
-      store.displayGho,
-    ]
-  );
+  const { currentMarket } = useProtocolDataContext();
+  const [currentNetworkConfig, currentChainId, displayGho] = useRootStore((store) => [
+    store.currentNetworkConfig,
+    store.currentChainId,
+    store.displayGho,
+  ]);
   const { openFaucet } = useModalContext();
 
   const { bridge, name: networkName } = currentNetworkConfig;

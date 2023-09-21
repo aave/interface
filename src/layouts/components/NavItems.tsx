@@ -6,7 +6,7 @@ import { NAV_BAR } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../../components/primitives/Link';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
-import { navigation } from '../../ui-config/menu-items';
+import { getNavigationItems } from '../../ui-config/menu-items';
 import { MoreMenu } from '../MoreMenu';
 
 interface NavItemsProps {
@@ -37,7 +37,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
       }}
       disablePadding
     >
-      {navigation
+      {getNavigationItems()
         .filter((item) => !item.isVisible || item.isVisible(currentMarketData))
         .map((item, index) => (
           <ListItem

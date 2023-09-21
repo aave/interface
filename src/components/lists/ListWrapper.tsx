@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Paper, Typography } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -31,10 +31,16 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
 }: ListWrapperProps) => {
-  const [isCollapse, setIsCollapse] = useState(
-    localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
-  );
+  const [isCollapse, setIsCollapse] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  useEffect(() => {
+    if (localStorageName) {
+      setIsCollapse(localStorage.getItem(localStorageName) === 'true');
+    } else {
+      setIsCollapse(false);
+    }
+  }, [localStorageName]);
 
   const handleTrackingEvents = () => {
     if (!isCollapse) {

@@ -3,7 +3,7 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -63,9 +63,11 @@ export const SupplyAssetsList = () => {
   const { bridge, isTestnet, baseAssetSymbol, name: networkName } = currentNetworkConfig;
 
   const localStorageName = 'showSupplyZeroAssets';
-  const [isShowZeroAssets, setIsShowZeroAssets] = useState(
-    localStorage.getItem(localStorageName) === 'true'
-  );
+  const [isShowZeroAssets, setIsShowZeroAssets] = useState(false);
+
+  useEffect(() => {
+    setIsShowZeroAssets(localStorage.getItem(localStorageName) === 'true');
+  }, []);
 
   const tokensToSupply = reserves
     .filter(

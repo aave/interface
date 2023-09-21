@@ -1,11 +1,12 @@
 import { enableMapSet } from 'immer';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import create from 'zustand';
+import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 import { AnalyticsSlice, createAnalyticsSlice } from './analyticsSlice';
 import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
+import { createHydrationSlice, HydrationSlice } from './HydrationSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
@@ -31,7 +32,8 @@ export type RootStore = StakeSlice &
   WalletDomainsSlice &
   AnalyticsSlice &
   TransactionsSlice &
-  LayoutSlice;
+  LayoutSlice &
+  HydrationSlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -49,6 +51,7 @@ export const useRootStore = create<RootStore>()(
         ...createAnalyticsSlice(...args),
         ...createTransactionsSlice(...args),
         ...createLayoutSlice(...args),
+        ...createHydrationSlice(...args),
       };
     })
   )
@@ -60,7 +63,6 @@ if (typeof document !== 'undefined') {
     if (document.readyState == 'complete') {
       const selectedMarket =
         getQueryParameter('marketName') || localStorage.getItem('selectedMarket');
-
       if (selectedMarket) {
         const currentMarket = useRootStore.getState().currentMarket;
         const setCurrentMarket = useRootStore.getState().setCurrentMarket;

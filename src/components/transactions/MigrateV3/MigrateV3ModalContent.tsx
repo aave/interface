@@ -72,7 +72,7 @@ export const MigrateV3ModalContent = () => {
   }
 
   const handleRoute = () => {
-    /* 
+    /*
 TO-DO: re-enable in merge
 if (currentMarket === CustomMarket.proto_polygon) {
       setCurrentMarket('proto_polygon_v3' as CustomMarket);

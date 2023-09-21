@@ -7,6 +7,7 @@ import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
@@ -58,7 +59,8 @@ export const MigrationList = ({
   isolatedReserveV3,
 }: MigrationListProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
+  const { currentMarketData } = useRootStore();
+  const { currentMarket } = useProtocolDataContext();
   const marketName = currentMarketData.marketTitle;
   const marketLink = ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3';
 

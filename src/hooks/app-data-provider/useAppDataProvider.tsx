@@ -82,7 +82,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * This is the only provider you'll ever need.
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
-export const AppDataProvider: React.FC = ({ children }) => {
+export const AppDataProvider: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
   const { currentMarket } = useProtocolDataContext();

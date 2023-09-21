@@ -23,6 +23,7 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
 interface PanelItemProps {
   title: ReactNode;
   className?: string;
+  children: ReactNode;
 }
 
 export const PanelItem: React.FC<PanelItemProps> = ({ title, children, className }) => {

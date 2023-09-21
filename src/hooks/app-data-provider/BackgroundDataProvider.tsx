@@ -20,7 +20,9 @@ const BackgroundDataProviderContext = React.createContext<BackgroundDataProvider
  * This context provider will run useEffects that relate to instantiating subscriptions as a poll every 60s to consistently fetch data from on-chain and update the Zustand global store.
  * @returns
  */
-export const BackgroundDataProvider: React.FC = ({ children }) => {
+export const BackgroundDataProvider: React.FC<React.PropsWithChildren<unknown>> = ({
+  children,
+}) => {
   const refetchPoolData = usePoolDataSubscription();
   const refetchIncentiveData = useIncentiveDataSubscription();
   const refetchGhoData = useGhoDataSubscription();

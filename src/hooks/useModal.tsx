@@ -1,7 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -118,8 +117,7 @@ export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
   {} as ModalContextType<ModalArgsType>
 );
 
-export const ModalContextProvider: React.FC = ({ children }) => {
-  const { setSwitchNetworkError } = useWeb3Context();
+export const ModalContextProvider: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();
   // contains arbitrary key-value pairs as a modal context
@@ -307,7 +305,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setApprovalTxState({});
           setGasLimit('');
           setTxError(undefined);
-          setSwitchNetworkError(undefined);
         },
         type,
         args,
