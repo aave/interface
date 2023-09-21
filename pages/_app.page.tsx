@@ -4,7 +4,7 @@ import '/src/styles/variables.css';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ConnectKitProvider } from 'connectkit';
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -32,9 +32,9 @@ import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
-import { configureChains, createConfig, mainnet, WagmiConfig } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
+import { createConfig, WagmiConfig } from 'wagmi';
 
+// import { publicProvider } from 'wagmi/providers/public';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
@@ -46,13 +46,27 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-const { publicClient, webSocketPublicClient } = configureChains([mainnet], [publicProvider()]);
+// const { publicClient, webSocketPublicClient } = configureChains([mainnet], [publicProvider()]);
+// const wagmiConfig = createConfig({
+//   autoConnect: true,
+//   publicClient,
+//   webSocketPublicClient,
+// });
+const wagmiConfig = createConfig(
+  getDefaultConfig({
+    // Required API Keys
+    // alchemyId: process.env.ALCHEMY_ID, // or infuraId
+    walletConnectProjectId: '5e8e618c68a73b7fb035c833dbf210b4', // process.env.WALLETCONNECT_PROJECT_ID,
 
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient,
-});
+    // Required
+    appName: 'Your App Name',
+
+    // Optional
+    appDescription: 'Your App Description',
+    appUrl: 'https://family.co', // your app's url
+    appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
+  })
+);
 
 export const queryClient = new QueryClient();
 
