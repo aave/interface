@@ -191,45 +191,7 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
     setAccountLoading(connectLoading || disconnectLoading);
   }, [connectLoading, disconnectLoading]);
 
-  // const config = createConfig(
-  //   getDefaultConfig({
-  //     // Required API Keys
-  //     alchemyId: process.env.ALCHEMY_ID, // or infuraId
-  //     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID,
-
-  //     // Required
-  //     appName: 'Your App Name',
-
-  //     // Optional
-  //     appDescription: 'Your App Description',
-  //     appUrl: 'https://family.co', // your app's url
-  //     appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  //     web3ProviderData: {
-  //       connectWallet,
-  //       connectReadOnlyMode,
-  //       disconnectWallet,
-  //       provider,
-  //       connected: active,
-  //       loading,
-  //       chainId: chainId || 1,
-  //       switchNetwork,
-  //       getTxError,
-  //       sendTx,
-  //       signTxData,
-  //       currentAccount: account?.toLowerCase() || '',
-  //       addERC20Token,
-  //       error,
-  //       switchNetworkError,
-  //       setSwitchNetworkError,
-  //       readOnlyModeAddress: readOnlyMode ? account?.toLowerCase() : undefined,
-  //       readOnlyMode,
-  //     },
-  //   })
-  // );
-
   return (
-    // <WagmiConfig config={config}>
-    //   <ConnectKitProvider>
     <Web3Context.Provider
       value={{
         web3ProviderData: {
@@ -253,9 +215,6 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
       }}
     >
       {children}
-      {/* <WagmiConfig config={config}>{children}</WagmiConfig> */}
     </Web3Context.Provider>
-    //   </ConnectKitProvider>
-    // </WagmiConfig>
   );
 };

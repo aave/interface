@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { NoEthereumProviderError } from '@web3-react/injected-connector';
+// import { UnsupportedChainIdError } from '@web3-react/core';
+// import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
+// import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -116,19 +116,21 @@ export const WatchWalletSelector = () => {
   const [unsTlds, setUnsTlds] = useState<string[]>([]);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  let blockingError: ErrorType | undefined = undefined;
-  if (error) {
-    if (error instanceof UnsupportedChainIdError) {
-      blockingError = ErrorType.UNSUPORTED_CHAIN;
-    } else if (error instanceof UserRejectedRequestError) {
-      blockingError = ErrorType.USER_REJECTED_REQUEST;
-    } else if (error instanceof NoEthereumProviderError) {
-      blockingError = ErrorType.NO_WALLET_DETECTED;
-    } else {
-      blockingError = ErrorType.UNDETERMINED_ERROR;
-    }
-    // TODO: add other errors
-  }
+  const blockingError: ErrorType | undefined = undefined;
+  // if (error) {
+  //   if (error instanceof UnsupportedChainIdError) {
+  //     blockingError = ErrorType.UNSUPORTED_CHAIN;
+  //   } else if (error instanceof UserRejectedRequestError) {
+  //     blockingError = ErrorType.USER_REJECTED_REQUEST;
+  //   }
+  //   else if (error instanceof NoEthereumProviderError) {
+  //     blockingError = ErrorType.NO_WALLET_DETECTED;
+  //   }
+  //    else {
+  //     blockingError = ErrorType.UNDETERMINED_ERROR;
+  //   }
+  //   // TODO: add other errors
+  // }
 
   // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
   useEffect(() => {
