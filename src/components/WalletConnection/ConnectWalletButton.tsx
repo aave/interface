@@ -4,7 +4,8 @@ import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
-import { WalletModal } from './WalletModal';
+// import { WalletModal } from './WalletModal';
+import { WatchWalletModal } from './WatchWalletModal';
 
 export interface ConnectWalletProps {
   funnel?: string;
@@ -25,7 +26,8 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
       >
         <Trans>Connect wallet</Trans>
       </Button>
-      <WalletModal />
+      {/* <WalletModal /> */}
+      <WatchWalletModal />
     </>
   );
 };

@@ -131,6 +131,7 @@ msgid "Asset supply is limited to a certain amount to reduce protocol exposure t
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
 msgstr "Need help connecting a wallet? <0>Read our FAQ</0>"
 
@@ -168,6 +169,7 @@ msgid "Aave is a fully decentralized, community governed protocol by the AAVE to
 msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
@@ -572,6 +574,7 @@ msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr "Wallet not detected. Connect or install wallet and retry"
 
@@ -731,6 +734,7 @@ msgid "I fully understand the risks of migrating."
 msgstr "I fully understand the risks of migrating."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
@@ -792,6 +796,7 @@ msgid "None"
 msgstr "None"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Network not supported for this wallet"
 msgstr "Network not supported for this wallet"
 
@@ -851,6 +856,7 @@ msgid "GHO is a native decentralized, collateral-backed digital asset pegged to 
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Track wallet balance in read-only mode"
 msgstr "Track wallet balance in read-only mode"
 
@@ -2380,6 +2386,7 @@ msgid "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a di
 msgstr "Users who stake AAVE in Safety Module (i.e. stkAAVE holders) receive a discount on GHO borrow interest rate. The discount applies to 100 GHO for every 1 stkAAVE held. Use the calculator below to see GHO borrow rate with the discount applied."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
@@ -2625,6 +2632,7 @@ msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
@@ -3116,6 +3124,7 @@ msgid "Not a valid address"
 msgstr "Not a valid address"
 
 #: src/components/WalletConnection/WalletSelector.tsx
+#: src/components/WalletConnection/WatchWalletSelector.tsx
 msgid "Track wallet"
 msgstr "Track wallet"
 
