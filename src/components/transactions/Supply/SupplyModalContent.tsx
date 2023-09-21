@@ -174,6 +174,7 @@ export const SupplyModalContent = React.memo(
       symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
       blocked: false,
       decimals: poolReserve.decimals,
+      isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
     };
 
     if (supplyTxState.success)
