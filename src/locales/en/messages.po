@@ -1598,7 +1598,6 @@ msgid "Covered debt"
 msgstr "Covered debt"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
 msgstr "Connect wallet"
 

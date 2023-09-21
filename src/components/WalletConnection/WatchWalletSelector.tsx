@@ -149,6 +149,7 @@ export const WatchWalletSelector = () => {
   }, []);
 
   const handleBlocking = () => {
+    if (!blockingError) return null;
     switch (blockingError) {
       case ErrorType.UNSUPORTED_CHAIN:
         return <Trans>Network not supported for this wallet</Trans>;

@@ -21,7 +21,7 @@ import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
-import WalletWidget from './WalletWidget';
+import { WalletWidget } from './WalletWidget';
 
 interface Props {
   children: React.ReactElement;

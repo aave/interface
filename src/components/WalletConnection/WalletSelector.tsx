@@ -82,6 +82,7 @@ export enum ErrorType {
   UNSUPORTED_CHAIN,
   UNDETERMINED_ERROR,
   NO_WALLET_DETECTED,
+  USER_REJECTED_REQUEST,
 }
 
 export const WalletSelector = () => {

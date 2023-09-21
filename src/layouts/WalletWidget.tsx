@@ -1,5 +1,5 @@
 import { ClockIcon, DuplicateIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -20,19 +20,19 @@ import {
 } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 // import { WalletModal } from 'src/components/WalletConnection/WalletModal';
-import { useWalletModalContext } from 'src/hooks/useWalletModal';
+// import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH, GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link, ROUTES } from '../components/primitives/Link';
-import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
 
@@ -42,19 +42,23 @@ interface WalletWidgetProps {
   headerHeight: number;
 }
 
-export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
+export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps) => {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
+  const theme = useTheme();
+
   const router = useRouter();
-  const { setWalletModalOpen } = useWalletModalContext();
+  // const { setWalletModalOpen } = useWalletModalContext();
 
   const { breakpoints, palette } = useTheme();
-  const xsm = useMediaQuery(breakpoints.down('xsm'));
+  // const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+
+  const connectButtonRef = useRef(null);
 
   const networkConfig = getNetworkConfig(chainId);
   let networkColor = '';
@@ -70,13 +74,14 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
     setOpen(false);
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = (open: () => void) => {
     if (!connected) {
-      trackEvent(GENERAL.OPEN_MODAL, { modal: 'Connect Waller' });
-      setWalletModalOpen(true);
+      trackEvent(GENERAL.OPEN_MODAL, { modal: 'Connect Wallet' });
+      // setWalletModalOpen(true);
+      open();
     } else {
       setOpen(true);
-      setAnchorEl(event.currentTarget);
+      setAnchorEl(connectButtonRef.current);
     }
   };
 
@@ -94,18 +99,18 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
     handleClose();
   };
 
-  const handleSwitchWallet = (): void => {
-    setWalletModalOpen(true);
-    trackEvent(AUTH.SWITCH_WALLET);
-    handleClose();
-  };
+  // const handleSwitchWallet = (): void => {
+  //   setWalletModalOpen(true);
+  //   trackEvent(AUTH.SWITCH_WALLET);
+  //   handleClose();
+  // };
 
   const handleViewOnExplorer = (): void => {
     trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'Etherscan for Wallet' });
     handleClose();
   };
 
-  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
+  // const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
 
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
@@ -147,7 +152,7 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
       </Box>
       {!md && (
         <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{
               padding: '0 5px',
@@ -157,7 +162,7 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
             onClick={handleSwitchWallet}
           >
             Switch wallet
-          </Button>
+          </Button> */}
           <Button
             variant="outlined"
             sx={{
@@ -289,7 +294,7 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
         <>
           <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
           <Box sx={{ padding: '16px 16px 10px' }}>
-            <Button
+            {/* <Button
               sx={{
                 marginBottom: '16px',
                 background: '#383D51',
@@ -301,7 +306,7 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
               onClick={handleSwitchWallet}
             >
               Switch wallet
-            </Button>
+            </Button> */}
             <Button
               sx={{
                 background: '#383D51',
@@ -328,44 +333,24 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <>
-          <ConnectKitButton />
-
-          <Button
-            variant={connected ? 'surface' : 'gradient'}
-            aria-label="wallet"
-            id="wallet-button"
-            aria-controls={open ? 'wallet-button' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-            sx={{
-              p: connected ? '5px 8px' : undefined,
-              minWidth: hideWalletAccountText ? 'unset' : undefined,
-            }}
-            endIcon={
-              connected &&
-              !hideWalletAccountText &&
-              !md && (
-                <SvgIcon
-                  sx={{
-                    display: { xs: 'none', md: 'block' },
-                  }}
-                >
-                  {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                </SvgIcon>
-              )
-            }
-          >
-            {connected ? (
-              <UserDisplay
-                avatarProps={{ size: AvatarSize.SM }}
-                oneLiner={true}
-                titleProps={{ variant: 'buttonM' }}
-              />
-            ) : (
-              <Trans>Connect wallet</Trans>
-            )}
-          </Button>
+          <Box ref={connectButtonRef}>
+            <ConnectKitButton
+              onClick={handleClick}
+              customTheme={{
+                '--ck-connectbutton-background': connected
+                  ? theme.palette.background.surface
+                  : theme.palette.gradients.aaveGradient,
+                '--ck-connectbutton-hover-background': connected
+                  ? '#1B2030'
+                  : theme.palette.gradients.aaveGradient,
+                '--ck-connectbutton-active-background': connected
+                  ? theme.palette.background.surface
+                  : theme.palette.gradients.aaveGradient,
+                '--ck-connectbutton-border-radius': '4px',
+                '--ck-connectbutton-font-size': '0.875rem',
+              }}
+            />
+          </Box>
         </>
       )}
 
@@ -391,8 +376,6 @@ export default function ({ open, setOpen, headerHeight }: WalletWidgetProps) {
           </MenuList>
         </Menu>
       )}
-
-      {/* <WalletModal /> */}
     </>
   );
-}
+};

@@ -13,7 +13,7 @@ import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 interface AddTokenDropdownProps {
   poolReserve: ComputedReserveData;
   downToSM: boolean;
-  switchNetwork: (chainId: number) => Promise<void>;
+  switchNetwork: (chainId: number) => void;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   currentChainId: number;
   connectedChainId: number;
@@ -134,9 +134,8 @@ export const AddTokenDropdown = ({
           divider
           onClick={() => {
             if (currentChainId !== connectedChainId) {
-              switchNetwork(currentChainId).then(() => {
-                setChangingNetwork(true);
-              });
+              switchNetwork(currentChainId);
+              setChangingNetwork(true);
             } else {
               trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
                 type: 'Underlying token',
@@ -171,9 +170,8 @@ export const AddTokenDropdown = ({
               value="atoken"
               onClick={() => {
                 if (currentChainId !== connectedChainId) {
-                  switchNetwork(currentChainId).then(() => {
-                    setChangingNetwork(true);
-                  });
+                  switchNetwork(currentChainId);
+                  setChangingNetwork(true);
                 } else {
                   trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
                     asset: poolReserve.underlyingAsset,
