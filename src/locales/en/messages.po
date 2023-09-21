@@ -1597,10 +1597,6 @@ msgstr "Migration risks"
 msgid "Covered debt"
 msgstr "Covered debt"
 
-#: src/components/WalletConnection/ConnectWalletButton.tsx
-msgid "Connect wallet"
-msgstr "Connect wallet"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
