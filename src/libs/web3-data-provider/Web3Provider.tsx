@@ -1,22 +1,39 @@
 import { transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { BigNumber, PopulatedTransaction } from 'ethers';
+import { BigNumber, PopulatedTransaction, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
 import {
+  type WalletClient,
   useAccount,
   useConnect,
   useDisconnect,
   useNetwork,
-  usePublicClient,
   useSwitchNetwork,
   useWalletClient,
 } from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
+
+export function walletClientToProvider(walletClient: WalletClient) {
+  const { chain, transport } = walletClient;
+  const network = {
+    chainId: chain.id,
+    name: chain.name,
+    ensAddress: chain.contracts?.ensRegistry?.address,
+  };
+  return new providers.Web3Provider(transport, network);
+}
+
+export function walletClientToSigner(walletClient: WalletClient) {
+  const { account } = walletClient;
+  const provider = walletClientToProvider(walletClient);
+  const signer = provider.getSigner(account.address);
+  return signer;
+}
 
 export type ERC20TokenType = {
   address: string;
@@ -34,7 +51,7 @@ export type Web3Data = {
   connected: boolean;
   loading: boolean;
   chainId: number;
-  switchNetwork: (chainId: number) => Promise<void>;
+  switchNetwork: (chainId: number) => void;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
@@ -49,12 +66,11 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: ReactElement }>> = ({
   children,
 }) => {
-  const { data: provider } = useWalletClient();
-  const publicClient = usePublicClient();
+  const { data: walletClient } = useWalletClient();
   const { address: account, isConnected } = useAccount();
   const { connect, isLoading: connectLoading, error } = useConnect();
   const { disconnect, isLoading: disconnectLoading } = useDisconnect();
-  const { switchNetwork, error: switchNetworkError } = useSwitchNetwork();
+  const { switchNetwork: _switchNetwork, error: switchNetworkError } = useSwitchNetwork();
   const { chain } = useNetwork();
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [setAccount, currentChainId] = useRootStore((store) => [
@@ -89,11 +105,14 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
       } catch (e) {
         console.log('error on activation', e);
         setWalletType(undefined);
-        // disconnectWallet();
       }
     },
-    [disconnectWallet, currentChainId]
+    [currentChainId, chain?.id, connect, setWalletType]
   );
+
+  const switchNetwork = (chainId: number) => {
+    if (_switchNetwork) _switchNetwork(chainId);
+  };
 
   // Tx methods
 
@@ -102,9 +121,9 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
   const sendTx = async (
     txData: transactionType | PopulatedTransaction
   ): Promise<TransactionResponse> => {
-    if (provider) {
+    if (walletClient) {
       const { from, ...data } = txData;
-      const signer = provider.getSigner(from);
+      const signer = walletClientToSigner(walletClient);
       const txResponse: TransactionResponse = await signer.sendTransaction({
         ...data,
         value: data.value ? BigNumber.from(data.value) : undefined,
@@ -116,7 +135,8 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
 
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
-    if (provider && account) {
+    if (walletClient && account) {
+      const provider = walletClientToProvider(walletClient);
       const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
         account,
         unsignedData,
@@ -128,11 +148,12 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
   };
 
   const getTxError = async (txHash: string): Promise<string> => {
-    if (publicClient) {
-      const tx = await publicClient.getTransaction({ blockHash: txHash });
+    if (walletClient) {
+      const provider = walletClientToProvider(walletClient);
+      const tx = await provider.getTransaction(txHash);
       // @ts-expect-error TODO: need think about "tx" type
-      const code = await publicClient.call(tx, tx.blockNumber);
-      const error = hexToAscii(code.data.substr(138));
+      const code = await provider.call(tx, tx.blockNumber);
+      const error = hexToAscii(code.substr(138));
       return error;
     }
     throw new Error('Error getting transaction. Provider not found');
@@ -144,8 +165,8 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
-    if (provider) {
-      return provider.watchAsset({
+    if (walletClient) {
+      return walletClient.watchAsset({
         type: 'ERC20',
         options: {
           address,

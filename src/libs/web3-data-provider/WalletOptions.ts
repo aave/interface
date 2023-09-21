@@ -70,6 +70,7 @@ export const getWallet = (
   chainId: ChainId = ChainId.mainnet,
   currentChainId: ChainId = ChainId.mainnet
 ): Connector => {
+  console.log(currentChainId);
   switch (wallet) {
     case WalletType.LEDGER:
       return new LedgerConnector({ options: {} });
