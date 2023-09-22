@@ -125,6 +125,7 @@ export default function MyApp(props: MyAppProps) {
                 '--ck-body-background-secondary': '#383D51', // surface, dark
                 '--ck-primary-button-border-radius': '4px',
                 '--ck-border-radius': '4px',
+                '--ck-spinner-color': '#B6509E',
               }}
             >
               <Web3ContextProvider>
