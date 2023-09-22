@@ -1,5 +1,5 @@
 import { ClockIcon, DuplicateIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import { useRouter } from 'next/router';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
@@ -32,7 +32,7 @@ import { useRootStore } from 'src/store/root';
 import { AUTH, GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link, ROUTES } from '../components/primitives/Link';
-import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
 
@@ -46,19 +46,15 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
 
-  const theme = useTheme();
-
   const router = useRouter();
   // const { setWalletModalOpen } = useWalletModalContext();
 
   const { breakpoints, palette } = useTheme();
-  // const xsm = useMediaQuery(breakpoints.down('xsm'));
+  const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-
-  const connectButtonRef = useRef(null);
 
   const networkConfig = getNetworkConfig(chainId);
   let networkColor = '';
@@ -74,14 +70,17 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
     setOpen(false);
   };
 
-  const handleClick = (open: () => void) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    show: (() => void) | undefined
+  ) => {
     if (!connected) {
       trackEvent(GENERAL.OPEN_MODAL, { modal: 'Connect Wallet' });
       // setWalletModalOpen(true);
-      open();
+      show && show();
     } else {
       setOpen(true);
-      setAnchorEl(connectButtonRef.current);
+      setAnchorEl(event.currentTarget);
     }
   };
 
@@ -110,7 +109,7 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
     handleClose();
   };
 
-  // const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
+  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
 
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
@@ -333,24 +332,46 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <>
-          <Box ref={connectButtonRef}>
-            <ConnectKitButton
-              onClick={handleClick}
-              customTheme={{
-                '--ck-connectbutton-background': connected
-                  ? theme.palette.background.surface
-                  : theme.palette.gradients.aaveGradient,
-                '--ck-connectbutton-hover-background': connected
-                  ? '#1B2030'
-                  : theme.palette.gradients.aaveGradient,
-                '--ck-connectbutton-active-background': connected
-                  ? theme.palette.background.surface
-                  : theme.palette.gradients.aaveGradient,
-                '--ck-connectbutton-border-radius': '4px',
-                '--ck-connectbutton-font-size': '0.875rem',
-              }}
-            />
-          </Box>
+          <ConnectKitButton.Custom>
+            {({ show }) => (
+              <Button
+                onClick={(event) => handleClick(event, show)}
+                variant={connected ? 'surface' : 'gradient'}
+                aria-label="wallet"
+                id="wallet-button"
+                aria-controls={open ? 'wallet-button' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                sx={{
+                  p: connected ? '5px 8px' : undefined,
+                  minWidth: hideWalletAccountText ? 'unset' : undefined,
+                }}
+                endIcon={
+                  connected &&
+                  !hideWalletAccountText &&
+                  !md && (
+                    <SvgIcon
+                      sx={{
+                        display: { xs: 'none', md: 'block' },
+                      }}
+                    >
+                      {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                    </SvgIcon>
+                  )
+                }
+              >
+                {connected ? (
+                  <UserDisplay
+                    avatarProps={{ size: AvatarSize.SM }}
+                    oneLiner={true}
+                    titleProps={{ variant: 'buttonM' }}
+                  />
+                ) : (
+                  <Trans>Connect wallet</Trans>
+                )}
+              </Button>
+            )}
+          </ConnectKitButton.Custom>
         </>
       )}
 
