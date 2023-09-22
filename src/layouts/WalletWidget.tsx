@@ -18,13 +18,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { ConnectKitButton } from 'connectkit';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 // import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 // import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -332,46 +332,26 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <>
-          <ConnectKitButton.Custom>
-            {({ show }) => (
-              <Button
-                onClick={(event) => handleClick(event, show)}
-                variant={connected ? 'surface' : 'gradient'}
-                aria-label="wallet"
-                id="wallet-button"
-                aria-controls={open ? 'wallet-button' : undefined}
-                aria-expanded={open ? 'true' : undefined}
-                aria-haspopup="true"
-                sx={{
-                  p: connected ? '5px 8px' : undefined,
-                  minWidth: hideWalletAccountText ? 'unset' : undefined,
-                }}
-                endIcon={
-                  connected &&
-                  !hideWalletAccountText &&
-                  !md && (
-                    <SvgIcon
-                      sx={{
-                        display: { xs: 'none', md: 'block' },
-                      }}
-                    >
-                      {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                    </SvgIcon>
-                  )
-                }
-              >
-                {connected ? (
-                  <UserDisplay
-                    avatarProps={{ size: AvatarSize.SM }}
-                    oneLiner={true}
-                    titleProps={{ variant: 'buttonM' }}
-                  />
-                ) : (
-                  <Trans>Connect wallet</Trans>
-                )}
-              </Button>
-            )}
-          </ConnectKitButton.Custom>
+          <ConnectWalletButton
+            onClick={(event, show) => handleClick(event, show)}
+            buttonProps={{
+              'aria-label': 'wallet',
+              id: 'wallet-button',
+              'aria-controls': open ? 'wallet-button' : undefined,
+              'aria-expanded': open ? 'true' : undefined,
+              'aria-haspopup': 'true',
+              sx: { minWidth: hideWalletAccountText ? 'unset' : undefined },
+              endIcon: connected && !hideWalletAccountText && !md && (
+                <SvgIcon
+                  sx={{
+                    display: { xs: 'none', md: 'block' },
+                  }}
+                >
+                  {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </SvgIcon>
+              ),
+            }}
+          />
         </>
       )}
 
