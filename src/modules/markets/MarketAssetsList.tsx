@@ -27,10 +27,6 @@ const listHeaders = [
     sortKey: 'supplyAPY',
   },
   {
-    title: <Trans>MAX LTV</Trans>,
-    sortKey: 'formattedBaseLTVasCollateral',
-  },
-  {
     title: <Trans>Total borrowed</Trans>,
     sortKey: 'totalDebtUSD',
   },
@@ -93,8 +89,6 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       </>
     ) : (
       <>
-        <MarketAssetsListItemLoader />
-        <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />
         <MarketAssetsListItemLoader />

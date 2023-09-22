@@ -9,7 +9,6 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -61,6 +60,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           >
             <Typography variant="subheader2" color="text.muted" noWrap>
               {reserve.symbol}
+              {reserve.isIsolated && (
+                <span style={{ marginLeft: '8px' }}>
+                  <IsolatedEnabledBadge />
+                </span>
+              )}
             </Typography>
           </Box>
         </Box>
@@ -70,42 +74,20 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        {reserve.symbol === GHO_SYMBOL ? (
-          '--'
-        ) : (
-          <>
-            <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-            <ReserveSubheader value={reserve.totalLiquidityUSD} />
-          </>
-        )}
+        <>
+          <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+          <ReserveSubheader value={reserve.totalLiquidityUSD} />
+        </>
       </ListColumn>
 
       <ListColumn>
-        {reserve.symbol === GHO_SYMBOL ? (
-          '--'
-        ) : (
-          <IncentivesCard
-            value={reserve.supplyAPY}
-            incentives={reserve.aIncentivesData || []}
-            symbol={reserve.symbol}
-            variant="main16"
-            symbolsVariant="secondary16"
-          />
-        )}
-      </ListColumn>
-      <ListColumn>
-        {reserve.symbol === GHO_SYMBOL ? (
-          '--'
-        ) : (
-          <>
-            <FormattedNumber
-              value={reserve.formattedBaseLTVasCollateral}
-              percent
-              variant="main16"
-            />
-            {reserve.isIsolated ? <IsolatedEnabledBadge /> : ''}
-          </>
-        )}
+        <IncentivesCard
+          value={reserve.supplyAPY}
+          incentives={reserve.aIncentivesData || []}
+          symbol={reserve.symbol}
+          variant="main16"
+          symbolsVariant="secondary16"
+        />
       </ListColumn>
 
       <ListColumn>

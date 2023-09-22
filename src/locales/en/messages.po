@@ -1360,10 +1360,6 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 msgid "MAX"
 msgstr "MAX"
 
-#: src/modules/markets/MarketAssetsList.tsx
-msgid "MAX LTV"
-msgstr "MAX LTV"
-
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "Manage analytics"
