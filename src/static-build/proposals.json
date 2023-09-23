@@ -12572,7 +12572,7 @@
       "ipfsHash": "0x8bf25c23b2a76b18cf3aa637b9d3056e2e491556d588126d430b6f80b4f53b7a",
       "startTimestamp": 1695306755,
       "creationTimestamp": 1695219731,
-      "expirationTimestamp": 1695538763
+      "expirationTimestamp": 1695538871
     },
     {
       "id": 326,
@@ -12598,16 +12598,16 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 18192728,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xfea70c498653dd3f664e41a129a7c43222ba79061846cc67bac3fb6cee674879",
+      "startTimestamp": 1695489179,
       "creationTimestamp": 1695402047,
-      "startTimestamp": 1695489095,
-      "expirationTimestamp": 1695719495
+      "expirationTimestamp": 1695719603
     }
   ]
 }
