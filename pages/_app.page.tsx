@@ -57,7 +57,6 @@ const wagmiConfig = createConfig(
     // Required API Keys
     // alchemyId: process.env.ALCHEMY_ID, // or infuraId
     walletConnectProjectId: '5e8e618c68a73b7fb035c833dbf210b4', // process.env.WALLETCONNECT_PROJECT_ID,
-
     // Required
     appName: 'Your App Name',
 
