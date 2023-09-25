@@ -2572,7 +2572,6 @@ msgstr "Track wallet balance in read-only mode"
 msgid "Transaction failed"
 msgstr "Transaction failed"
 
-#: src/layouts/WalletWidget.tsx
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr "Transaction history"
@@ -2728,6 +2727,10 @@ msgstr "Version 3"
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "View"
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "View Transactions"
+msgstr "View Transactions"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
