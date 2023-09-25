@@ -1,34 +1,62 @@
 // import { Trans } from '@lingui/macro';
-import { useTheme } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Button, ButtonProps } from '@mui/material';
 import { ConnectKitButton } from 'connectkit';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
+import { AvatarSize } from '../Avatar';
+import { UserDisplay } from '../UserDisplay';
+
 export interface ConnectWalletProps {
   funnel?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, show: () => void) => void;
+  buttonProps?: ButtonProps;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) => {
+export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({
+  funnel,
+  onClick,
+  buttonProps,
+}) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const theme = useTheme();
 
-  const onClick = (open: () => void) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    show: (() => void) | undefined
+  ) => {
+    if (!show) return;
+
     trackEvent(AUTH.CONNECT_WALLET, { funnel });
-    open();
+    if (onClick) {
+      onClick(event, show);
+    } else {
+      show();
+    }
   };
 
   return (
-    <>
-      <ConnectKitButton
-        onClick={onClick}
-        customTheme={{
-          '--ck-connectbutton-background': theme.palette.gradients.aaveGradient,
-          '--ck-connectbutton-hover-background': theme.palette.gradients.aaveGradient,
-          '--ck-connectbutton-active-background': theme.palette.gradients.aaveGradient,
-          '--ck-connectbutton-border-radius': '4px',
-          '--ck-connectbutton-font-size': '0.875rem',
-        }}
-      />
-    </>
+    <ConnectKitButton.Custom>
+      {({ show, isConnected }) => (
+        <Button
+          onClick={(event) => handleClick(event, show)}
+          variant={isConnected ? 'surface' : 'gradient'}
+          sx={{
+            p: isConnected ? '5px 8px' : undefined,
+          }}
+          {...buttonProps}
+        >
+          {isConnected ? (
+            <UserDisplay
+              avatarProps={{ size: AvatarSize.SM }}
+              oneLiner={true}
+              titleProps={{ variant: 'buttonM' }}
+            />
+          ) : (
+            <Trans>Connect wallet</Trans>
+          )}
+        </Button>
+      )}
+    </ConnectKitButton.Custom>
   );
 };

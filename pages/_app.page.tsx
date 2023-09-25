@@ -109,7 +109,24 @@ export default function MyApp(props: MyAppProps) {
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <WagmiConfig config={wagmiConfig}>
-            <ConnectKitProvider>
+            <ConnectKitProvider
+              customTheme={{
+                '--ck-body-background': '#292E41', // paper, dark
+                '--ck-primary-button-background': '#383D51', // surface, dark
+                '--ck-primary-button-hover-background': 'rgba(56, 61, 81, 0.6)',
+                '--ck-secondary-button-background': '#383D51', // surface, dark
+                '--ck-secondary-button-hover-background': 'rgba(56, 61, 81, 0.6)',
+                '--ck-tooltip-background': '#383D51', // surface, dark
+                '--ck-tooltip-color': '#8E92A3', // text muted, dark
+                '--ck-body-divider': '#EBEBEF14', // divider, dark
+                '--ck-qr-border-color': '#EBEBEF14', // divider, dark
+                '--ck-body-action-color': '#FFFFFF',
+                '--ck-body-background-secondary': '#383D51', // surface, dark
+                '--ck-primary-button-border-radius': '4px',
+                '--ck-border-radius': '4px',
+                '--ck-spinner-color': '#B6509E',
+              }}
+            >
               <Web3ContextProvider>
                 <AppGlobalStyles>
                   <AddressBlocked>
