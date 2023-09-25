@@ -2729,6 +2729,7 @@ msgid "View"
 msgstr "View"
 
 #: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/dashboard/DashboardContentWrapper.tsx
 msgid "View Transactions"
 msgstr "View Transactions"
 

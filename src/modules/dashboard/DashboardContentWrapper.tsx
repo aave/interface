@@ -25,6 +25,9 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
+
+  const downToSM = useMediaQuery(breakpoints.down('sm'));
+
   return (
     <Box>
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
@@ -37,10 +40,29 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
       >
         <Box
           sx={{
+            position: 'relative',
+
             display: { xs: isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
         >
+          {currentAccount && !isBorrow && (
+            <Box>
+              <Button
+                sx={{ position: 'absolute', top: downToSM ? '-90px' : '-50px', right: '0px' }}
+                onClick={() => {
+                  router.push(ROUTES.history);
+                  trackEvent(AUTH.VIEW_TX_HISTORY);
+                }}
+                component="a"
+                variant="surface"
+                size="small"
+              >
+                <Trans>View Transactions</Trans>
+              </Button>
+            </Box>
+          )}
+
           <SuppliedPositionsList />
           <SupplyAssetsList />
         </Box>
@@ -49,12 +71,12 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           sx={{
             position: 'relative',
 
-            display: { xs: !isBorrow ? 'none' : 'block', lg: 'block', color: 'green' },
+            display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
         >
           {currentAccount && (
-            <Box sx={{ position: 'absolute', top: '-50px', right: '0px' }}>
+            <Box sx={{ position: 'absolute', top: downToSM ? '-90px' : '-50px', right: '0px' }}>
               <Button
                 onClick={() => {
                   router.push(ROUTES.history);
