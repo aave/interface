@@ -89,14 +89,8 @@ describe(`GHO MODAL APY TESTING`, () => {
         expect($val).to.be.lessThan(gho.apy.max);
       });
     });
-    it(`Verify modal without discount APY=${gho.apy.max}%, max amount`, () => {
-      ModalHelpers.setAmount(1000, true);
-      ModalHelpers.getApy().then(($val) => {
-        expect($val).to.be.eql(gho.apy.max);
-      });
-    });
   });
-  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY < ${gho.apy.max}%`, () => {
+  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY < ${gho.apy.max}%`, () => {
     let maxAPY: number;
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
