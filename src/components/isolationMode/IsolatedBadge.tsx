@@ -33,7 +33,6 @@ export const IsolatedEnabledBadge = ({
   const theme = useTheme();
 
   const sx = {
-    // border: `1px solid green`,
     border: `1px solid ${theme.palette.warning.main}`,
     color: theme.palette.warning.main,
     ...contentSx,
@@ -53,7 +52,14 @@ export const IsolatedEnabledBadge = ({
       }
     >
       <Box sx={sx}>
-        <Typography variant="secondary12" color={theme.palette.warning.main} {...typographyProps}>
+        <Typography
+          variant="secondary12"
+          sx={{
+            lineHeight: '0.75rem',
+          }}
+          color={theme.palette.warning.main}
+          {...typographyProps}
+        >
           <Trans>Isolated</Trans>
         </Typography>
         {/* <InfoIcon /> */}
