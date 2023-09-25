@@ -74,10 +74,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <>
-          <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-          <ReserveSubheader value={reserve.totalLiquidityUSD} />
-        </>
+        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+        <ReserveSubheader value={reserve.totalLiquidityUSD} />
       </ListColumn>
 
       <ListColumn>
