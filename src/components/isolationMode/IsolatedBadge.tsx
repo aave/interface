@@ -14,11 +14,15 @@ const contentSx = {
   cursor: 'pointer',
   '&:hover': { opacity: 0.6 },
 };
-const InfoIcon = () => (
+
+interface InfoIconProps {
+  color?: string;
+}
+const InfoIcon = ({ color }: InfoIconProps) => (
   <SvgIcon
     sx={{
       ml: '3px',
-      color: 'text.muted',
+      color: color ? color : 'text.muted',
       fontSize: '14px',
     }}
   >
@@ -62,7 +66,7 @@ export const IsolatedEnabledBadge = ({
         >
           <Trans>Isolated</Trans>
         </Typography>
-        {/* <InfoIcon /> */}
+        <InfoIcon color={theme.palette.warning.main} />
       </Box>
     </ContentWithTooltip>
   );
