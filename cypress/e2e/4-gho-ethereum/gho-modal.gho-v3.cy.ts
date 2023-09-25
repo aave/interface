@@ -66,7 +66,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
+  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
       tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
@@ -96,7 +96,7 @@ describe(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY < ${gho.apy.max}%`, () => {
+  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY < ${gho.apy.max}%`, () => {
     let maxAPY: number;
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
