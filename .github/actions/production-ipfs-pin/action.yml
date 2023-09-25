@@ -77,6 +77,23 @@ runs:
           --replication-min=1 --name='app-aave-${{ github.sha }}' \
           "${IPFS_HASH}"
 
+    - name: Upload an decompress build to IPFS dev server
+      id: ipfs-scp
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no -i ./key -P \${{ inputs.IPFS_STAGING_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_STAGING_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} 'tar -zxvf app.tar.gz '
+
+    - name: Add build to IPFS dev server
+      id: ipfs-build-add
+      continue-on-error: false
+      shell: bash
+      run: |
+        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/") "
+        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs pin add $IPFS_HASH "
+
     - name: Prepare env and Compress build on IPFS Primary Server
       id: ipfs-hash
       continue-on-error: false

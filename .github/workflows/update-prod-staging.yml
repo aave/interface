@@ -119,6 +119,9 @@ jobs:
           IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
           IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
+          IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
+          IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
+          IPFS_STAGING_KEY: '${{ secrets.IPFS_STAGING_KEY }}'
 
       - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:
