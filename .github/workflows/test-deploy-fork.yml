@@ -137,11 +137,7 @@ jobs:
         id: dev-ipfs
         uses: ./.github/actions/dev-ipfs-pin
         with:
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
           BUILD_PATH: 'out'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
           IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
           IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
