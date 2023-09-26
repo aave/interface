@@ -47,22 +47,18 @@ runs:
         echo -n "${{ inputs.IPFS_SECONDARY_SERVER_KEY }}" | base64 -d >> ./s_key
         echo -n "${{ inputs.IPFS_TERTIARY_KEY }}" | base64 -d >> ./key
         chmod 400 ./p_key ./s_key ./key
-        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
     - name: Upload build to IPFS Primary Server
       id: ipfs-scp-primary
       continue-on-error: false
       shell: bash
       run: |
-        scp -o StrictHostKeyChecking=no \
-        -i ./p_key \
-        -P \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }}:.
+        tar -czf './${{ inputs.BUILD_PATH }}' | ssh -o StrictHostKeyChecking=no \
+        -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
+        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "tar -zxf - -C ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "tar -zxf app.tar.gz "
-        ssh -o StrictHostKeyChecking=no \
-        -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" >> /tmp/hash
+        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" > /tmp/hash
         IPFS_HASH="$(cat /tmp/hash | awk '{print $2}')"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
@@ -73,12 +69,9 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
-        scp -o StrictHostKeyChecking=no \
-        -i ./s_key \
-        -P \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }}:.
-        ssh -o StrictHostKeyChecking=no \
+        tar -czf './${{ inputs.BUILD_PATH }}' | ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
-        -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "tar -zxf app.tar.gz "
+        -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "tar -zxf - -C ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
         -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/"
@@ -92,19 +85,18 @@ runs:
       continue-on-error: false
       shell: bash
       run: |
-        scp -o StrictHostKeyChecking=no \
-        -i ./key \
-        -P \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }}:.
+        tar -czf './${{ inputs.BUILD_PATH }}' | ssh -o StrictHostKeyChecking=no \
+        -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "tar -zxf - -C ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "tar -zxf app.tar.gz "
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/"
+        IPFS_HASH="$(ssh -o StrictHostKeyChecking=no \
+        -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/ | awk '{print $2}' ")"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/"
-        IPFS_HASH="$(cat /tmp/hash | awk '{print $2}')"
-        ssh -o StrictHostKeyChecking=no \
-        -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH "
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH "
 
     - name: Clean build and tmp directory on Servers
       continue-on-error: false
@@ -113,11 +105,11 @@ runs:
       run: |
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_IPFS_PRIMARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
+        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
-        -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
+        -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/"
         rm -rf ./p_* ./s_* ./ke*
