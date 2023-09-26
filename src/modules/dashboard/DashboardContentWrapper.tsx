@@ -46,7 +46,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
-          {currentAccount && !isBorrow && (
+          {currentAccount && !isBorrow && downToSM && (
             <Box>
               <Button
                 sx={{ position: 'absolute', top: downToSM ? '-90px' : '-50px', right: '0px' }}
