@@ -23,6 +23,7 @@ interface ListMobileItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  isIsolated?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -38,6 +39,7 @@ export const ListMobileItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  isIsolated = false,
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
@@ -62,6 +64,7 @@ export const ListMobileItemWrapper = ({
 
   return (
     <ListMobileItem
+      isIsolated={isIsolated}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
