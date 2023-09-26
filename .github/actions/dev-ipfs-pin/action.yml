@@ -1,15 +1,6 @@
-name: Pin to staging cluster
+name: Pin to ipfs cluster and nodes
 description: Upload build to ipfs node
 inputs:
-  IPFS_STAGING_SERVER_PORT:
-    description: ''
-    required: true
-  IPFS_STAGING_SERVER:
-    description: ''
-    required: true
-  IPFS_STAGING_KEY:
-    description: ''
-    required: true
   BUILD_PATH:
     description: path to the build directory
     required: true
@@ -46,34 +37,31 @@ inputs:
   IPFS_SECONDARY_SERVER_KEY:
     description: ''
     required: true
+  IPFS_TERTIARY_SERVER_PORT:
+    description: ''
+    required: true
+  IPFS_TERTIARY_SERVER:
+    description: ''
+    required: true
+  IPFS_TERTIARY_KEY:
+    description: ''
+    required: true
+
 runs:
   using: 'composite'
   steps:
-    - name: Prepare env and Compress build to IPFS dev server
-      id: ipfs-hash
-      continue-on-error: false
-      shell: bash
-      run: |
-        echo -n "${{ inputs.IPFS_STAGING_KEY }}" | base64 -d >> ./key
-        chmod 400 ./key
-        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
-
-    - name: Upload an decompress build to IPFS dev server
-      id: ipfs-scp
-      continue-on-error: false
-      shell: bash
-      run: |
-        scp -o StrictHostKeyChecking=no -i ./key -P \${{ inputs.IPFS_STAGING_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_STAGING_SERVER }}:.
-        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} 'tar -zxvf app.tar.gz '
-
-    - name: Add build to IPFS dev server
-      id: ipfs-build-add
-      continue-on-error: false
-      shell: bash
-      run: |
-        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/") "
-        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
-        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "ipfs pin add $IPFS_HASH "
+    - name: GCP Auth
+      uses: google-github-actions/auth@ceee102ec2387dd9e844e01b530ccd4ec87ce955 # v0.8.0
+      with:
+        credentials_json: '${{ inputs.GCP_SA_KEY }}'
+    - name: Get GKE credentials
+      uses: google-github-actions/get-gke-credentials@054fdb05e32039f72764f03e69e6acb20caa6f56 # v0.8.0
+      with:
+        cluster_name: '${{ inputs.GKE_CLUSTER }}'
+        location: '${{ inputs.GKE_CLUSTER_REGION }}'
+    - uses: azure/setup-kubectl@7f7e5ba5ea3e491b92e6e8e5819963f8f3a1f076 # v3
+      with:
+        version: 'v1.22.13'
 
     - name: ipfs cluster pin
       shell: bash
@@ -100,7 +88,7 @@ runs:
           "${IPFS_HASH}"
 
     - name: Prepare env and Compress build on IPFS Primary Server
-      id: ipfs-hash
+      id: ipfs-hash-primary
       continue-on-error: false
       shell: bash
       run: |
@@ -109,7 +97,7 @@ runs:
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
     - name: Upload an decompress build to IPFS Primary Server
-      id: ipfs-scp
+      id: ipfs-scp-primary
       continue-on-error: false
       shell: bash
       run: |
@@ -118,7 +106,7 @@ runs:
 
     - name: Add build to IPFS Primary Server
       continue-on-error: false
-      id: ipfs-build-add
+      id: ipfs-build-add-primary
       shell: bash
       run: |
         UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" ) "
@@ -127,14 +115,14 @@ runs:
 
     - name: Clean build and tmp directory  Primary Server
       continue-on-error: false
-      id: ipfs-clean
+      id: ipfs-clean-primary
       shell: bash
       run: |
         ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
 
     - name: Prepare env and Compress build on IPFS Secondary Server
       continue-on-error: false
-      id: ipfs-hash
+      id: ipfs-hash-secondary
       shell: bash
       run: |
         echo -n "${{ inputs.IPFS_SECONDARY_SERVER_KEY }}" | base64 -d >> ./s_key
@@ -142,7 +130,7 @@ runs:
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
 
     - name: Upload an decompress build to IPFS Secondary Server
-      id: ipfs-scp
+      id: ipfs-scp-secondary
       continue-on-error: false
       shell: bash
       run: |
@@ -151,23 +139,49 @@ runs:
 
     - name: Add build to IPFS Secondary Server
       continue-on-error: false
-      id: ipfs-build-add
+      id: ipfs-build-add-secondary
       shell: bash
       run: |
         UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/" ) "
         IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
         ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "ipfs pin add $IPFS_HASH "
 
-    - name: Clean build and directory
+    - name: Clean build and tmp directory ipfs secondary
+      id: ipfs-clean-secondary
       continue-on-error: false
-      id: ipfs-clean
       shell: bash
       run: |
-        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ ./app.tar.gz"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" 
 
-    - name: Clean build and tmp directory
-      id: ipfs-clean
+    - name: Prepare env and Compress build to IPFS tertiary server
+      id: ipfs-hash-tertiary
       continue-on-error: false
       shell: bash
       run: |
-        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_STAGING_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_STAGING_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" 
+        echo -n "${{ inputs.IPFS_TERTIARY_KEY }}" | base64 -d >> ./key
+        chmod 400 ./key
+        tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
+
+    - name: Upload an decompress build to IPFS tertiary server
+      id: ipfs-scp-tertiary
+      continue-on-error: false
+      shell: bash
+      run: |
+        scp -o StrictHostKeyChecking=no -i ./key -P \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }}:.
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} 'tar -zxvf app.tar.gz '
+
+    - name: Add build to IPFS tertiary server
+      id: ipfs-build-add-tertiary
+      continue-on-error: false
+      shell: bash
+      run: |
+        UPLOAD_IPFS="$(ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/") "
+        IPFS_HASH="$(echo $UPLOAD_IPFS | awk '{print $2}')"
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs pin add $IPFS_HASH "
+
+    - name: Clean build and tmp directory ipfs tertiary
+      id: ipfs-clean-tertiary
+      continue-on-error: false
+      shell: bash
+      run: |
+        ssh -o StrictHostKeyChecking=no -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "rm -rf app.tar.gz ./${{ inputs.BUILD_PATH }}/" 

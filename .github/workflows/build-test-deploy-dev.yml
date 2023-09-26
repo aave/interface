@@ -122,13 +122,13 @@ jobs:
           PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
           IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_TERTIARY_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
           IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_TERTIARY_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
           IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          IPFS_STAGING_SERVER_PORT: '${{ secrets.IPFS_STAGING_SERVER_PORT }}'
-          IPFS_STAGING_SERVER: '${{ secrets.IPFS_STAGING_SERVER }}'
-          IPFS_STAGING_KEY: '${{ secrets.IPFS_STAGING_KEY }}'
+          IPFS_TERTIARY_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_SERVER_KEY }}'
           BUILD_PATH: 'out'
 
   cypress_full_v2:
