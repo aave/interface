@@ -128,7 +128,7 @@ jobs:
           IPFS_TERTIARY_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
           IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          IPFS_TERTIARY_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_SERVER_KEY }}'
+          IPFS_TERTIARY_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
           BUILD_PATH: 'out'
 
   cypress_full_v2:

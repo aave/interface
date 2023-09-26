@@ -50,7 +50,7 @@ jobs:
           IPFS_TERTIARY_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
           IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          IPFS_TERTIARY_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_SERVER_KEY }}'
+          IPFS_TERTIARY_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
 
       - name: crust
         uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
