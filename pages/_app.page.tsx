@@ -4,7 +4,7 @@ import '/src/styles/variables.css';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
+import { ConnectKitProvider, getDefaultConfig, getDefaultConnectors } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -25,47 +25,53 @@ import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
+import { WatchWalletModal } from 'src/components/WalletConnection/WatchWalletModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
+import { ReadOnlyConnector } from 'src/libs/web3-data-provider/ReadOnlyConnector';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { createConfig, WagmiConfig } from 'wagmi';
 
-// import { publicProvider } from 'wagmi/providers/public';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
-// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-// const { publicClient, webSocketPublicClient } = configureChains([mainnet], [publicProvider()]);
-// const wagmiConfig = createConfig({
-//   autoConnect: true,
-//   publicClient,
-//   webSocketPublicClient,
-// });
-const wagmiConfig = createConfig(
-  getDefaultConfig({
+const wagmiConfig = createConfig({
+  ...getDefaultConfig({
+    connectors: [
+      ...getDefaultConnectors({
+        app: {
+          name: 'Aave',
+          description: 'Your App Description',
+          url: 'app.aave.com',
+          icon: 'https://app.aave.com/favicon.ico',
+        },
+        walletConnectProjectId: '5e8e618c68a73b7fb035c833dbf210b4',
+      }),
+      new ReadOnlyConnector(),
+    ],
     // Required API Keys
     // alchemyId: process.env.ALCHEMY_ID, // or infuraId
     walletConnectProjectId: '5e8e618c68a73b7fb035c833dbf210b4', // process.env.WALLETCONNECT_PROJECT_ID,
     // Required
-    appName: 'Your App Name',
+    appName: 'Aave',
 
     // Optional
     appDescription: 'Your App Description',
     appUrl: 'https://family.co', // your app's url
     appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  })
-);
+  }),
+});
 
 export const queryClient = new QueryClient();
 
@@ -137,6 +143,7 @@ export default function MyApp(props: MyAppProps) {
                             <GasStationProvider>
                               <SharedDependenciesProvider>
                                 {getLayout(<Component {...pageProps} />)}
+                                <WatchWalletModal />
                                 <SupplyModal />
                                 <WithdrawModal />
                                 <BorrowModal />

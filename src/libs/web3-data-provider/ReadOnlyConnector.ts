@@ -1,11 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { MockConnector } from '@wagmi/connectors/mock';
+import invariant from 'tiny-invariant';
 import { createWalletClient, custom } from 'viem';
 import { Chain, Connector, mainnet } from 'wagmi';
-
-interface ReadOnlyConnectorOptions {
-  address: `0x${string}`;
-}
 
 export const createReadOnlyConnector = (address: `0x${string}`) => {
   return new MockConnector({
@@ -22,34 +19,39 @@ export const createReadOnlyConnector = (address: `0x${string}`) => {
   });
 };
 
-export class ReadOnlyConnector extends Connector<undefined, ReadOnlyConnectorOptions> {
-  readonly id = 'readOnlyConnector';
+export const READ_ONLY_CONNECTOR_ID = 'readOnlyConnector';
+
+export class ReadOnlyConnector extends Connector<undefined, undefined> {
+  readonly id = READ_ONLY_CONNECTOR_ID;
   readonly name = 'Read Only Connector';
   readonly ready = true;
-  private readonly address: `0x${string}`;
 
-  constructor({ chains, options }: { chains?: Chain[]; options: ReadOnlyConnectorOptions }) {
+  constructor({ chains }: { chains?: Chain[] } = {}) {
     super({
       chains,
-      options,
+      options: undefined,
     });
-    this.address = options.address;
   }
 
   async connect() {
-    return Promise.resolve({
-      account: this.address,
+    const address = await this.getAccount();
+    invariant(address, 'Failed to fetch address from local storage');
+    return {
+      account: address,
       chain: {
         id: ChainId.mainnet,
         unsupported: false,
       },
-    });
+    };
   }
   disconnect() {
+    window.localStorage.removeItem('readOnlyModeAddress');
     return Promise.resolve();
   }
   getAccount() {
-    return Promise.resolve(this.address);
+    const address = localStorage.getItem('readOnlyModeAddress') as `0x${string}`;
+    invariant(address, 'Failed to fetch address from local storage');
+    return Promise.resolve(address);
   }
   getChainId() {
     return Promise.resolve(ChainId.mainnet);
@@ -57,21 +59,20 @@ export class ReadOnlyConnector extends Connector<undefined, ReadOnlyConnectorOpt
   getProvider() {
     return Promise.resolve(undefined);
   }
-  getWalletClient() {
-    return Promise.resolve(
-      createWalletClient({
-        account: this.address,
-        transport: custom({
-          async request() {
-            return Promise.resolve();
-          },
-        }),
-        chain: mainnet,
-      })
-    );
+  async getWalletClient() {
+    const address = await this.getAccount();
+    return createWalletClient({
+      account: address,
+      transport: custom({
+        async request() {
+          return Promise.resolve();
+        },
+      }),
+      chain: mainnet,
+    });
   }
-  isAuthorized() {
-    return Promise.resolve(false);
+  async isAuthorized() {
+    return !!localStorage.getItem('readOnlyModeAddress');
   }
   protected onAccountsChanged() {}
   protected onChainChanged() {}

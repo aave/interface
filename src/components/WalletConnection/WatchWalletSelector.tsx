@@ -1,103 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
-// import { UnsupportedChainIdError } from '@web3-react/core';
-// import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-// import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
-import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useRootStore } from 'src/store/root';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
 import { Warning } from '../primitives/Warning';
-// import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-
-export type WalletRowProps = {
-  walletName: string;
-  walletType: WalletType;
-};
-// const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
-//   const { connectWallet, loading } = useWeb3Context();
-//   const trackEvent = useRootStore((store) => store.trackEvent);
-
-//   const getWalletIcon = (walletType: WalletType) => {
-//     switch (walletType) {
-//       case WalletType.INJECTED:
-//         return (
-//           <img
-//             src={`/icons/wallets/browserWallet.svg`}
-//             width="24px"
-//             height="24px"
-//             alt={`browser wallet icon`}
-//           />
-//         );
-//       case WalletType.WALLET_CONNECT:
-//         return (
-//           <img
-//             src={`/icons/wallets/walletConnect.svg`}
-//             width="24px"
-//             height="24px"
-//             alt={`browser wallet icon`}
-//           />
-//         );
-//       case WalletType.WALLET_LINK:
-//         return (
-//           <img
-//             src={`/icons/wallets/coinbase.svg`}
-//             width="24px"
-//             height="24px"
-//             alt={`browser wallet icon`}
-//           />
-//         );
-//       case WalletType.TORUS:
-//         return (
-//           <img
-//             src={`/icons/wallets/torus.svg`}
-//             width="24px"
-//             height="24px"
-//             alt={`browser wallet icon`}
-//           />
-//         );
-//       case WalletType.FRAME:
-//         return (
-//           <img
-//             src={`/icons/wallets/frame.svg`}
-//             width="24px"
-//             height="24px"
-//             alt={`browser wallet icon`}
-//           />
-//         );
-//       default:
-//         return null;
-//     }
-//   };
-
-//   const connectWalletClick = () => {
-//     trackEvent(AUTH.CONNECT_WALLET, { walletType: walletType, walletName: walletName });
-//     connectWallet(walletType);
-//   };
-//   return (
-//     <Button
-//       disabled={loading}
-//       variant="outlined"
-//       sx={{
-//         display: 'flex',
-//         flexDirection: 'row',
-//         justifyContent: 'space-between',
-//         width: '100%',
-//         mb: '8px',
-//       }}
-//       size="large"
-//       onClick={connectWalletClick}
-//       endIcon={getWalletIcon(walletType)}
-//     >
-//       {walletName}
-//     </Button>
-//   );
-// };
 
 export enum ErrorType {
   UNSUPORTED_CHAIN,
@@ -117,20 +28,6 @@ export const WatchWalletSelector = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const blockingError: ErrorType | undefined = undefined;
-  // if (error) {
-  //   if (error instanceof UnsupportedChainIdError) {
-  //     blockingError = ErrorType.UNSUPORTED_CHAIN;
-  //   } else if (error instanceof UserRejectedRequestError) {
-  //     blockingError = ErrorType.USER_REJECTED_REQUEST;
-  //   }
-  //   else if (error instanceof NoEthereumProviderError) {
-  //     blockingError = ErrorType.NO_WALLET_DETECTED;
-  //   }
-  //    else {
-  //     blockingError = ErrorType.UNDETERMINED_ERROR;
-  //   }
-  //   // TODO: add other errors
-  // }
 
   // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
   useEffect(() => {

@@ -2,24 +2,20 @@ import { transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { BigNumber, PopulatedTransaction, providers } from 'ethers';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useRootStore } from 'src/store/root';
 import { hexToAscii } from 'src/utils/utils';
 import {
   type WalletClient,
   useAccount,
   useConnect,
-  useDisconnect,
   useNetwork,
   useSwitchNetwork,
   useWalletClient,
 } from 'wagmi';
 
-// import { WagmiConfig } from 'wagmi';
-// import { createConfig } from '@wagmi/core';
-// import { getDefaultConfig } from 'connectkit';
 import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
+import { READ_ONLY_CONNECTOR_ID, ReadOnlyConnector } from './ReadOnlyConnector';
 
 export function walletClientToProvider(walletClient: WalletClient) {
   const { chain, transport } = walletClient;
@@ -47,9 +43,7 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType) => Promise<void>;
   connectReadOnlyMode: (address: string) => Promise<void>;
-  disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
   loading: boolean;
@@ -70,48 +64,36 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
   children,
 }) => {
   const { data: walletClient } = useWalletClient();
-  const { address: account, isConnected } = useAccount();
+  const {
+    address: account,
+    isConnected,
+    connector,
+  } = useAccount({
+    onConnect: ({ address, connector }) => {
+      if (connector) {
+        setWalletType(connector.id);
+        setAccount(address);
+      }
+    },
+    onDisconnect: () => {
+      setWalletType(undefined);
+    },
+  });
+
+  const readOnlyMode = connector?.id === READ_ONLY_CONNECTOR_ID;
+
   const { connect, isLoading: connectLoading, error } = useConnect();
-  const { disconnect, isLoading: disconnectLoading } = useDisconnect();
   const { switchNetwork: _switchNetwork, error: switchNetworkError } = useSwitchNetwork();
   const { chain } = useNetwork();
-  const [readOnlyMode, setReadOnlyMode] = useState(false);
-  const [setAccount, currentChainId] = useRootStore((store) => [
-    store.setAccount,
-    store.currentChainId,
-  ]);
+  const setAccount = useRootStore((store) => store.setAccount);
   const setAccountLoading = useRootStore((store) => store.setAccountLoading);
   const setWalletType = useRootStore((store) => store.setWalletType);
 
-  const disconnectWallet = useCallback(async () => {
-    disconnect();
-    setWalletType(undefined);
-  }, [disconnect, setWalletType]);
-
-  const connectReadOnlyMode = (address: string): Promise<void> => {
-    localStorage.setItem('readOnlyModeAddress', address);
-    return connectWallet(WalletType.READ_ONLY_MODE);
+  const connectReadOnlyMode = async (address: string): Promise<void> => {
+    const readOnlyConnector = new ReadOnlyConnector();
+    window.localStorage.setItem('readOnlyModeAddress', address);
+    connect({ connector: readOnlyConnector });
   };
-
-  const connectWallet = useCallback(
-    async (wallet: WalletType) => {
-      try {
-        const connector = getWallet(wallet, chain?.id, currentChainId);
-
-        if (connector instanceof ReadOnlyModeConnector) {
-          setReadOnlyMode(true);
-        } else {
-          setReadOnlyMode(false);
-        }
-        connect({ connector });
-        setWalletType(wallet);
-      } catch (e) {
-        console.log('error on activation', e);
-        setWalletType(undefined);
-      }
-    },
-    [currentChainId, chain?.id, connect, setWalletType]
-  );
 
   const switchNetwork = (chainId: number) => {
     if (_switchNetwork) _switchNetwork(chainId);
@@ -182,24 +164,17 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{ children: R
     return Promise.resolve(false);
   };
 
-  // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
-    setAccount(account?.toLowerCase());
-  }, [account]);
-
-  useEffect(() => {
-    setAccountLoading(connectLoading || disconnectLoading);
-  }, [connectLoading, disconnectLoading]);
+    setAccountLoading(connectLoading);
+  }, [connectLoading, setAccountLoading]);
 
   return (
     <Web3Context.Provider
       value={{
         web3ProviderData: {
-          connectWallet,
           connectReadOnlyMode,
-          disconnectWallet,
           connected: isConnected,
-          loading: connectLoading || disconnectLoading,
+          loading: connectLoading,
           chainId: chain?.id || 1,
           switchNetwork,
           getTxError,

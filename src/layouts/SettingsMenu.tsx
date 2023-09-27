@@ -9,6 +9,7 @@ import { SETTINGS } from 'src/utils/mixPanelEvents';
 
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
+import { ReadOnlyButton } from './components/ReadOnlyButton';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 
 export const LANG_MAP = {
@@ -89,6 +90,7 @@ export function SettingsMenu() {
 
         <DarkModeSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
+        <ReadOnlyButton component={MenuItem} />
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>
 

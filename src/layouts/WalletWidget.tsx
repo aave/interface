@@ -25,11 +25,10 @@ import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-// import { WalletModal } from 'src/components/WalletConnection/WalletModal';
-// import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH, GENERAL } from 'src/utils/mixPanelEvents';
+import { useDisconnect } from 'wagmi';
 
 import { Link, ROUTES } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
@@ -43,8 +42,9 @@ interface WalletWidgetProps {
 }
 
 export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps) => {
-  const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
-    useWeb3Context();
+  const { currentAccount, connected, chainId, loading, readOnlyModeAddress } = useWeb3Context();
+
+  const { disconnect } = useDisconnect();
 
   const router = useRouter();
   // const { setWalletModalOpen } = useWalletModalContext();
@@ -86,7 +86,7 @@ export const WalletWidget = ({ open, setOpen, headerHeight }: WalletWidgetProps)
 
   const handleDisconnect = () => {
     if (connected) {
-      disconnectWallet();
+      disconnect();
       trackEvent(AUTH.DISCONNECT_WALLET);
       handleClose();
     }
