@@ -10,10 +10,9 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
@@ -47,15 +46,13 @@ export const ModalWrapper: React.FC<{
   children,
   requiredChainId: _requiredChainId,
   title,
-  requiredPermission,
   keepWrappedSymbol,
 }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
-  const { permissions } = usePermissions();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
 
@@ -63,14 +60,14 @@ export const ModalWrapper: React.FC<{
     return <TxErrorView txError={txError} />;
   }
 
-  if (
-    requiredPermission &&
-    isFeatureEnabled.permissions(currentMarketData) &&
-    !permissions.includes(requiredPermission) &&
-    currentMarketData.permissionComponent
-  ) {
-    return <>{currentMarketData.permissionComponent}</>;
-  }
+  // if (
+  //   requiredPermission &&
+  //   isFeatureEnabled.permissions(currentMarketData) &&
+  //   !permissions.includes(requiredPermission) &&
+  //   currentMarketData.permissionComponent
+  // ) {
+  //   return <>{currentMarketData.permissionComponent}</>;
+  // }
 
   const poolReserve = reserves.find((reserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())

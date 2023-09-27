@@ -7,29 +7,16 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ConnectKitProvider, getDefaultConfig, getDefaultConnectors } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
-import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
-import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
-import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
-import { DebtSwitchModal } from 'src/components/transactions/DebtSwitch/DebtSwitchModal';
-import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
-import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
-import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
-import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
-import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
-import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
-import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
-import { WatchWalletModal } from 'src/components/WalletConnection/WatchWalletModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
-import { PermissionProvider } from 'src/hooks/usePermissions';
 import { ReadOnlyConnector } from 'src/libs/web3-data-provider/ReadOnlyConnector';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
@@ -40,6 +27,52 @@ import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
+const SwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/SwapModal').then((mod) => mod.SwapModal)
+);
+const RateSwitchModal = dynamic(() =>
+  import('src/components/transactions/RateSwitch/RateSwitchModal').then(
+    (mod) => mod.RateSwitchModal
+  )
+);
+const MigrateV3Modal = dynamic(() =>
+  import('src/components/transactions/MigrateV3/MigrateV3Modal').then((mod) => mod.MigrateV3Modal)
+);
+const BorrowModal = dynamic(() =>
+  import('src/components/transactions/Borrow/BorrowModal').then((mod) => mod.BorrowModal)
+);
+const ClaimRewardsModal = dynamic(() =>
+  import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
+    (mod) => mod.ClaimRewardsModal
+  )
+);
+const CollateralChangeModal = dynamic(() =>
+  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
+    (mod) => mod.CollateralChangeModal
+  )
+);
+const DebtSwitchModal = dynamic(() =>
+  import('src/components/transactions/DebtSwitch/DebtSwitchModal').then(
+    (mod) => mod.DebtSwitchModal
+  )
+);
+const SupplyModal = dynamic(() =>
+  import('src/components/transactions/Supply/SupplyModal').then((mod) => mod.SupplyModal)
+);
+const WithdrawModal = dynamic(() =>
+  import('src/components/transactions/Withdraw/WithdrawModal').then((mod) => mod.WithdrawModal)
+);
+const RepayModal = dynamic(() =>
+  import('src/components/transactions/Repay/RepayModal').then((mod) => mod.RepayModal)
+);
+const EmodeModal = dynamic(() =>
+  import('src/components/transactions/Emode/EmodeModal').then((mod) => mod.EmodeModal)
+);
+const FaucetModal = dynamic(() =>
+  import('src/components/transactions/Faucet/FaucetModal').then((mod) => mod.FaucetModal)
+);
+
+// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
@@ -136,33 +169,30 @@ export default function MyApp(props: MyAppProps) {
               <Web3ContextProvider>
                 <AppGlobalStyles>
                   <AddressBlocked>
-                    <PermissionProvider>
-                      <ModalContextProvider>
-                        <BackgroundDataProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              <SharedDependenciesProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <WatchWalletModal />
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <RateSwitchModal />
-                                <DebtSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <SwapModal />
-                                <FaucetModal />
-                                <MigrateV3Modal />
-                                <TransactionEventHandler />
-                              </SharedDependenciesProvider>
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </BackgroundDataProvider>
-                      </ModalContextProvider>
-                    </PermissionProvider>
+                    <ModalContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            <SharedDependenciesProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <DebtSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <SwapModal />
+                              <FaucetModal />
+                              <MigrateV3Modal />
+                              <TransactionEventHandler />
+                            </SharedDependenciesProvider>
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </ModalContextProvider>
                   </AddressBlocked>
                 </AppGlobalStyles>
               </Web3ContextProvider>
