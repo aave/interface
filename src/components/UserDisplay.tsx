@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import makeBlockie from 'ethereum-blockies-base64';
+import { blo } from 'blo';
 import { useMemo } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -37,7 +37,10 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
     shallow
   );
   const { readOnlyMode } = useWeb3Context();
-  const fallbackImage = useMemo(() => (account ? makeBlockie(account) : undefined), [account]);
+  const fallbackImage = useMemo(
+    () => (account ? blo(account as `0x${string}`) : undefined),
+    [account]
+  );
   const loading = domainsLoading || accountLoading;
 
   return (
@@ -97,7 +100,10 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
 }) => {
   const { name, avatar } = useGetEns(address);
 
-  const fallbackImage = useMemo(() => (address ? makeBlockie(address) : undefined), [address]);
+  const fallbackImage = useMemo(
+    () => (address ? blo(address as `0x${string}`) : undefined),
+    [address]
+  );
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Avatar image={avatar} fallbackImage={fallbackImage} {...avatarProps} />
