@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, NoSsr, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -21,54 +21,56 @@ export default function Home() {
   const { isPermissionsLoading } = usePermissions();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const [mode, setMode] = useState<'supply' | 'borrow' | ''>('supply');
+  const [mode, setMode] = useState<'supply' | 'borrow'>('supply');
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Dashboard',
       Market: currentMarket,
     });
-  }, [trackEvent]);
+  }, [trackEvent, currentMarket]);
 
   return (
     <>
       <DashboardTopPanel />
 
-      <ContentContainer>
-        {currentAccount && !isPermissionsLoading && (
-          <Box
-            sx={{
-              display: { xs: 'flex', lg: 'none' },
-              justifyContent: { xs: 'center', xsm: 'flex-start' },
-              mb: { xs: 3, xsm: 4 },
-            }}
-          >
-            <StyledToggleButtonGroup
-              color="primary"
-              value={mode}
-              exclusive
-              onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+      <NoSsr>
+        <ContentContainer>
+          {currentAccount && !isPermissionsLoading && (
+            <Box
+              sx={{
+                display: { xs: 'flex', lg: 'none' },
+                justifyContent: { xs: 'center', xsm: 'flex-start' },
+                mb: { xs: 3, xsm: 4 },
+              }}
             >
-              <StyledToggleButton value="supply" disabled={mode === 'supply'}>
-                <Typography variant="subheader1">
-                  <Trans>Supply</Trans>
-                </Typography>
-              </StyledToggleButton>
-              <StyledToggleButton value="borrow" disabled={mode === 'borrow'}>
-                <Typography variant="subheader1">
-                  <Trans>Borrow</Trans>
-                </Typography>
-              </StyledToggleButton>
-            </StyledToggleButtonGroup>
-          </Box>
-        )}
+              <StyledToggleButtonGroup
+                color="primary"
+                value={mode}
+                exclusive
+                onChange={(_, value) => setMode(value)}
+                sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+              >
+                <StyledToggleButton value="supply" disabled={mode === 'supply'}>
+                  <Typography component="span" variant="subheader1">
+                    <Trans>Supply</Trans>
+                  </Typography>
+                </StyledToggleButton>
+                <StyledToggleButton value="borrow" disabled={mode === 'borrow'}>
+                  <Typography component="span" variant="subheader1">
+                    <Trans>Borrow</Trans>
+                  </Typography>
+                </StyledToggleButton>
+              </StyledToggleButtonGroup>
+            </Box>
+          )}
 
-        {currentAccount && !isPermissionsLoading ? (
-          <DashboardContentWrapper isBorrow={mode === 'borrow'} />
-        ) : (
-          <ConnectWalletPaper loading={web3Loading} />
-        )}
-      </ContentContainer>
+          {currentAccount && !isPermissionsLoading ? (
+            <DashboardContentWrapper isBorrow={mode === 'borrow'} />
+          ) : (
+            <ConnectWalletPaper loading={web3Loading} />
+          )}
+        </ContentContainer>
+      </NoSsr>
     </>
   );
 }
