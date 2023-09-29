@@ -99,11 +99,7 @@ runs:
         -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "cat - > ./app.tar.gz"
         ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
         -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "tar zxvf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/" > /tmp/hash
-        IPFS_HASH="$(cat /tmp/hash | grep -i bafy)"
-        ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
-        -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH"
+        -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "tar zxvf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
 
     - name: Upload build to IPFS Secondary Server
       id: ipfs-scp-secondary
@@ -116,10 +112,6 @@ runs:
         ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
         -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
         -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER }} "tar zxvf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
-        IPFS_HASH="$(cat /tmp/hash | grep -i bafy)"
-        ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
-        -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
-        -i ./s_key ipfs@\${{ inputs.IPFS_SECONDARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH"
 
     - name: Upload build to IPFS Tertiary Server
       id: ipfs-scp-tertiary
@@ -131,13 +123,7 @@ runs:
         -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "cat - > ./app.tar.gz"
         ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
         -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "tar zxvf app.tar.gz  && ipfs add -r ./${{ inputs.BUILD_PATH }}/"
-        IPFS_HASH="$(ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=200 \
-        -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "ipfs add -r ./${{ inputs.BUILD_PATH }}/ | awk '{print $2}' ")"
-        ssh -o StrictHostKeyChecking=no  -o ServerAliveInterval=200\
-        -p \${{ inputs.IPFS_TERTIARY_SERVER_PORT }} \
-        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER_PORT }} "ipfs pin add $IPFS_HASH"
+        -i ./key ipfs@\${{ inputs.IPFS_TERTIARY_SERVER }} "tar zxvf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
 
     - name: Clean build and tmp directory on Servers
       continue-on-error: false
