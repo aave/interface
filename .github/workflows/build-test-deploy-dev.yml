@@ -112,6 +112,16 @@ jobs:
           name: out
           path: out
 
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        with:
+          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
+          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
+          BUILD_LOCATION: './out'
+          CID_VERSION: 1
+
       - name: dev-ipfs
         id: dev-ipfs
         uses: ./.github/actions/dev-ipfs-pin
