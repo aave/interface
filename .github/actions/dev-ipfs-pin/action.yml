@@ -131,7 +131,7 @@ runs:
       shell: bash
       run: |
         ssh -o StrictHostKeyChecking=no \
-        -p \${{ inputs.IPFS_IPFS_PRIMARY_SERVER_PORT }} \
+        -p \${{ inputs.IPFS_PRIMARY_SERVER_PORT }} \
         -i ./p_key ipfs@\${{ inputs.IPFS_PRIMARY_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/"
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SECONDARY_SERVER_PORT }} \
