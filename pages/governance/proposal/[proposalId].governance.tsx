@@ -263,7 +263,7 @@ export default function ProposalPage({
                             Link: 'Share on lens',
                           })
                         }
-                        href={`https://lenster.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
+                        href={`https://hey.xyz/?url=${url}&text=Check out this proposal on aave governance 👻👻 - ${ipfs.title}&hashtags=Aave&preview=true`}
                         startIcon={
                           <LensIcon
                             color={
