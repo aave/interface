@@ -9,7 +9,7 @@ import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { AssetInput } from '../AssetInput';
@@ -30,6 +30,7 @@ interface SwitchModalContentProps {
   setSelectedChainId: (value: number) => void;
   supportedNetworks: SupportedNetworkWithChainId[];
   reserves: ReserveWithBalance[];
+  selectedNetworkConfig: NetworkConfig;
 }
 
 export const SwitchModalContent = ({
@@ -37,6 +38,7 @@ export const SwitchModalContent = ({
   selectedChainId,
   setSelectedChainId,
   reserves,
+  selectedNetworkConfig,
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('0');
@@ -66,7 +68,7 @@ export const SwitchModalContent = ({
     isLoading: ratesLoading,
     error: ratesError,
   } = useParaswapSellRates({
-    chainId: selectedChainId,
+    chainId: selectedNetworkConfig.underlyingChainId ?? selectedChainId,
     amount: normalizeBN(inputAmount, -1 * selectedInputReserve.decimals).toFixed(0),
     srcToken: selectedInputReserve.underlyingAsset,
     srcDecimals: selectedInputReserve.decimals,

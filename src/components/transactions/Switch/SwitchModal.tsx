@@ -125,6 +125,7 @@ export const SwitchModal = () => {
           setSelectedChainId={setSelectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}
           reserves={reservesWithBalance}
+          selectedNetworkConfig={selectedNetworkConfig}
         />
       ) : (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
