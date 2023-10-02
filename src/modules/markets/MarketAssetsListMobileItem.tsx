@@ -32,6 +32,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
+      isIsolated={reserve.isIsolated}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <Box

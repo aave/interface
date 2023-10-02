@@ -66686,7 +66686,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.avalanche]: {
     name: "Avalanche",
-    privateJsonRPCUrl: "https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc",
+    privateJsonRPCUrl: "https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://api.avax.network/ext/bc/C/rpc",
       "https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc",
@@ -66756,7 +66756,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.base]: {
     name: "Base",
-    //privateJsonRPCUrl: 'https://base-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc', Endpoint is created with contract allowlist, but relays are not currently enabled
+    privateJsonRPCUrl: "https://base-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://mainnet.base.org",
       "https://1rpc.io/base",

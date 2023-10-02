@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
+import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -28,7 +29,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
     showStableBorrowRate = false;
   }
-
   return (
     <ListItem
       px={6}
@@ -52,6 +52,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           <Typography variant="h4" noWrap>
             {reserve.name}
           </Typography>
+
           <Box
             sx={{
               p: { xs: '0', xsm: '3.625px 0px' },
@@ -59,6 +60,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           >
             <Typography variant="subheader2" color="text.muted" noWrap>
               {reserve.symbol}
+              {reserve.isIsolated && (
+                <span style={{ marginLeft: '8px' }}>
+                  <IsolatedEnabledBadge />
+                </span>
+              )}
             </Typography>
           </Box>
         </Box>

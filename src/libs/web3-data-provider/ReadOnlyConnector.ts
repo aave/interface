@@ -74,9 +74,6 @@ export class ReadOnlyConnector extends Connector<undefined, undefined> {
   async isAuthorized() {
     return !!localStorage.getItem('readOnlyModeAddress');
   }
-  protected onAccountsChanged() {}
-  protected onChainChanged() {}
-  protected onDisconnect() {}
   protected getBlockExplorerUrls() {
     return [];
   }
