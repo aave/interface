@@ -294,6 +294,10 @@ export const marketsData: {
     chainId: ChainId.base,
     enabledFeatures: {
       incentives: true,
+      liquiditySwap: true,
+
+      collateralRepay: true,
+      debtSwitch: true,
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
@@ -307,8 +311,8 @@ export const marketsData: {
       L2_ENCODER: AaveV3Base.L2_ENCODER,
       COLLECTOR: AaveV3Base.COLLECTOR,
 
-      REPAY_WITH_COLLATERAL_ADAPTER: '0x9B6F2dc5475B3c27F46b2b47Fd554Bf404353c35',
-      SWAP_COLLATERAL_ADAPTER: '0x7CFa3f3d1cded0Da930881c609D4Dbf0012c14Bb',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x7CFa3f3d1cded0Da930881c609D4Dbf0012c14Bb',
+      SWAP_COLLATERAL_ADAPTER: '0xb13Cfa6f8B2Eed2C37fB00fF0c1A59807C585810',
       // WALLET_BALANCE_PROVIDER: AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
 
       // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
