@@ -79,11 +79,11 @@ runs:
       shell: bash
       run: |
         scp -o StrictHostKeyChecking=no \
-        -i ./p_key \
+        -i ./key \
         -P \${{ inputs.IPFS_SERVER_PORT }} app.tar.gz ipfs@\${{ inputs.IPFS_SERVER }}:.
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_SERVER }} "tar zxf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
+        -i ./key ipfs@\${{ inputs.IPFS_SERVER }} "tar zxf app.tar.gz  && ipfs add -rQ --cid-version=1 ./${{ inputs.BUILD_PATH }}/"
 
     - name: Clean build and tmp directory on Servers
       continue-on-error: false
@@ -92,4 +92,4 @@ runs:
       run: |
         ssh -o StrictHostKeyChecking=no \
         -p \${{ inputs.IPFS_SERVER_PORT }} \
-        -i ./p_key ipfs@\${{ inputs.IPFS_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ app.tar.gz"
+        -i ./key ipfs@\${{ inputs.IPFS_SERVER }} "rm -rf ./${{ inputs.BUILD_PATH }}/ app.tar.gz"
