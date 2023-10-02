@@ -122,22 +122,40 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
-      - name: dev-ipfs
-        id: dev-ipfs
+      - name: Pin to primary IPFS server
+        id: ipfs-primary
         uses: ./.github/actions/dev-ipfs-pin
         with:
           GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
           GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
           GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
-          IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
-          IPFS_TERTIARY_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
-          IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
-          IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
-          IPFS_TERTIARY_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
-          IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
-          IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          IPFS_TERTIARY_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
+          BUILD_PATH: 'out'
+
+      - name: Pin to secondary IPFS server
+        id: ipfs-secondary
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
+          BUILD_PATH: 'out'
+
+      - name: Pin to tertiary IPFS server
+        id: ipfs-tertiary
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
           BUILD_PATH: 'out'
 
   cypress_full_v2:
