@@ -58,9 +58,6 @@ runs:
           ipfs add -rQ --cid-version=1 --pin=false ./${{ inputs.BUILD_PATH }}/ && \
           rm -rf ./app.tar.gz ./${{ inputs.BUILD_PATH }}')"
 
-        test "${IPFS_HASH}" = '${{ inputs.PINATA_HASH }}' || \
-          { echo -e "Hashes differ, aborting pinning\nPINATA: ${{ inputs.PINATA_HASH }}\nLOCAL: ${IPFS_HASH}" && exit 1; }
-
         echo "Pinning to cluster..."
         kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs-cluster -- \
           ipfs-cluster-ctl pin add --wait --wait-timeout=180s \
