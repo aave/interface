@@ -18,13 +18,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
-import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -34,6 +34,10 @@ import { Link, ROUTES } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
+
+const WalletModal = dynamic(() =>
+  import('../components/WalletConnection/WalletModal').then((module) => module.WalletModal)
+);
 
 interface WalletWidgetProps {
   open: boolean;
