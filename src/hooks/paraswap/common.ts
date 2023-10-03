@@ -1,5 +1,6 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
 import {
   constructBuildTx,
   constructFetchFetcher,
@@ -78,9 +79,9 @@ export const getParaswap = (chainId: ChainId) => {
 };
 
 const getFeeClaimerAddress = (chainId: ChainId) => {
-  if (ChainId.base === chainId) return '0xAe940e61E9863178b71500c9B5faE2a04Da361a1';
+  if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
 
-  return '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
+  return MiscEthereum.PARASWAP_FEE_CLAIMER;
 };
 
 const MESSAGE_MAP: { [key: string]: string } = {
