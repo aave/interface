@@ -67,6 +67,7 @@ export type MarketDataType = {
     V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
+    PARASWAP_FEE_CLAIMER?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -141,6 +142,7 @@ export const marketsData: {
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Ethereum.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -171,6 +173,7 @@ export const marketsData: {
       COLLECTOR: AaveV2Ethereum.COLLECTOR,
       V3_MIGRATOR: AaveV2Ethereum.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Ethereum.DEBT_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV2Ethereum.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -236,6 +239,7 @@ export const marketsData: {
       COLLECTOR: AaveV2Polygon.COLLECTOR,
       V3_MIGRATOR: AaveV2Polygon.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Polygon.DEBT_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV2Polygon.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -264,6 +268,7 @@ export const marketsData: {
       COLLECTOR: AaveV2Avalanche.COLLECTOR,
       V3_MIGRATOR: AaveV2Avalanche.MIGRATION_HELPER,
       DEBT_SWITCH_ADAPTER: AaveV2Avalanche.DEBT_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV2Avalanche.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -311,14 +316,15 @@ export const marketsData: {
       L2_ENCODER: AaveV3Base.L2_ENCODER,
       COLLECTOR: AaveV3Base.COLLECTOR,
 
-      REPAY_WITH_COLLATERAL_ADAPTER: '0x7CFa3f3d1cded0Da930881c609D4Dbf0012c14Bb',
-      SWAP_COLLATERAL_ADAPTER: '0xb13Cfa6f8B2Eed2C37fB00fF0c1A59807C585810',
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
       // WALLET_BALANCE_PROVIDER: AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
 
       // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
       // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
       // DEBT_SWITCH_ADAPTER: '0x5f4d15d761528c57a5C30c43c1DAb26Fc5452731',
       DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Base.PARASWAP_FEE_CLAIMER,
     },
   },
 
@@ -347,6 +353,7 @@ export const marketsData: {
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Arbitrum.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Arbitrum.WITHDRAW_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Arbitrum.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -397,6 +404,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Avalanche.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -549,6 +557,7 @@ export const marketsData: {
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Optimism.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Optimism.WITHDRAW_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Optimism.PARASWAP_FEE_CLAIMER,
     },
   },
   [CustomMarket.proto_polygon_v3]: {
@@ -575,6 +584,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Polygon.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
+      PARASWAP_FEE_CLAIMER: AaveV3Polygon.PARASWAP_FEE_CLAIMER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

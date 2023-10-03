@@ -14,8 +14,6 @@ import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
-const FEE_CLAIMER_ADDRESS = '0xAe940e61E9863178b71500c9B5faE2a04Da361a1';
-
 export type UseSwapProps = {
   chainId: ChainId;
   max: boolean;
@@ -77,6 +75,12 @@ export const getParaswap = (chainId: ChainId) => {
   if (ChainId.base === chainId) return baseParaswap;
 
   throw new Error('chain not supported');
+};
+
+const getFeeClaimerAddress = (chainId: ChainId) => {
+  if (ChainId.base === chainId) return '0xAe940e61E9863178b71500c9B5faE2a04Da361a1';
+
+  return '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
 };
 
 const MESSAGE_MAP: { [key: string]: string } = {
@@ -294,6 +298,7 @@ export async function fetchExactOutRate(
 
 const ExactInSwapper = (chainId: ChainId) => {
   const paraSwap = getParaswap(chainId);
+  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
   const getRate = async (
     amount: string,
@@ -405,6 +410,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
       .multipliedBy(100 + maxSlippage)
       .dividedBy(100)
       .toFixed(0);
+    const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
     try {
       const params = await paraSwap.buildTx(
