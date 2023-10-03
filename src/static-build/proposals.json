@@ -12780,7 +12780,7 @@
       "startBlock": 18249091,
       "endBlock": 18268291,
       "executionTime": 0,
-      "forVotes": "573747146080483068079607",
+      "forVotes": "635078862009882890876658",
       "againstVotes": "15306250359901245",
       "executed": false,
       "canceled": false,
@@ -12794,7 +12794,7 @@
       "ipfsHash": "0x6be4bbc3c31295b1f77832d14a45bc8c85e9e159305e5d9ddb1f9fde279ae588",
       "startTimestamp": 1696083827,
       "creationTimestamp": 1695996815,
-      "expirationTimestamp": 1696315187
+      "expirationTimestamp": 1696315247
     },
     {
       "id": 332,
@@ -12815,7 +12815,7 @@
       "startBlock": 18249113,
       "endBlock": 18268313,
       "executionTime": 0,
-      "forVotes": "635007750190880566996312",
+      "forVotes": "635037545628736086970672",
       "againstVotes": "3256939613876996969",
       "executed": false,
       "canceled": false,
@@ -12829,7 +12829,7 @@
       "ipfsHash": "0xade079d8319f8290a121a2b50ceb0cb85e7438eb0bdb5df78e7d52682c8b4f5c",
       "startTimestamp": 1696084091,
       "creationTimestamp": 1695997079,
-      "expirationTimestamp": 1696315451
+      "expirationTimestamp": 1696315511
     },
     {
       "id": 333,
@@ -12863,8 +12863,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xe39c059166060f85b98f1c6ac25a0e954d21cae2f6420502859180e2d1f8fbe4",
       "creationTimestamp": 1696241519,
-      "startTimestamp": 1696328111,
-      "expirationTimestamp": 1696558511
+      "startTimestamp": 1696328171,
+      "expirationTimestamp": 1696558571
     },
     {
       "id": 334,
@@ -12898,8 +12898,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xe12df3fc3a36823ca5acf1443be4ae93ea829bb058c9c6a676b73f29c513d3c2",
       "creationTimestamp": 1696241723,
-      "startTimestamp": 1696328315,
-      "expirationTimestamp": 1696558715
+      "startTimestamp": 1696328375,
+      "expirationTimestamp": 1696558775
     },
     {
       "id": 335,
@@ -12933,8 +12933,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x29b067e7a40655570b2ef0b52a4f3fe3259460ea62a33ac07cff9e30a0fb58f9",
       "creationTimestamp": 1696265699,
-      "startTimestamp": 1696352171,
-      "expirationTimestamp": 1696582571
+      "startTimestamp": 1696352231,
+      "expirationTimestamp": 1696582631
     }
   ]
 }
