@@ -45,7 +45,7 @@ runs:
       with:
         version: 'v1.22.13'
 
-    - name: ipfs cluster pin
+    - name: GKE ipfs cluster pin
       shell: bash
       run: |
         export POD_NAME="ipfs-cluster-$(($RANDOM % 3))"
