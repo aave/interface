@@ -135,6 +135,21 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
+      - name: dev-ipfs
+        id: dev-ipfs
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          BUILD_PATH: 'out'
+          IPFS_PRIMARY_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
+          IPFS_SECONDARY_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_PRIMARY_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
+          IPFS_SECONDARY_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_PRIMARY_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
+          IPFS_SECONDARY_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
+          IPFS_TERTIARY_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
+          IPFS_TERTIARY_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
+          IPFS_TERTIARY_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
+
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
