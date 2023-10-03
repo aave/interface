@@ -14,7 +14,7 @@ import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
-const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
+const FEE_CLAIMER_ADDRESS = '0xAe940e61E9863178b71500c9B5faE2a04Da361a1';
 
 export type UseSwapProps = {
   chainId: ChainId;
