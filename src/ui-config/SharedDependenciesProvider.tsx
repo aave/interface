@@ -23,7 +23,6 @@ const SharedDependenciesContext = createContext<SharedDependenciesContext | null
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
   const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const bundle = useRootStore((state) => state.getCorrectPoolBundle());
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
@@ -57,11 +56,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     stakeConfig.stakeDataProvider,
     stakingChainId
   );
-  const approvedAmountService = new ApprovedAmountService(
-    bundle,
-    currentMarketData,
-    currentProvider
-  );
+  const approvedAmountService = new ApprovedAmountService(currentMarketData, currentProvider);
 
   return (
     <SharedDependenciesContext.Provider
