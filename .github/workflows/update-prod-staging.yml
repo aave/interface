@@ -119,7 +119,7 @@ jobs:
           BUILD_LOCATION: './out_staging'
           CID_VERSION: 1
 
-      - name: ipfs-primary
+      - name: Pin to primary IPFS server
         id: ipfs-primary
         uses: ./.github/actions/production-ipfs-pin
         with:
@@ -131,9 +131,9 @@ jobs:
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
           BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
+          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
-      - name: ipfs-secondary
+      - name: Pin to secondary IPFS server
         id: ipfs-secondary
         uses: ./.github/actions/production-ipfs-pin
         with:
@@ -145,9 +145,9 @@ jobs:
           IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
           BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
+          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
-      - name: ipfs-tertiary
+      - name: Pin to tertiary IPFS server
         id: ipfs-tertiary
         uses: ./.github/actions/production-ipfs-pin
         with:
@@ -159,7 +159,7 @@ jobs:
           IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
           BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
+          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
       - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:
