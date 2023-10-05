@@ -1,5 +1,6 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { MiscBase, MiscEthereum } from '@bgd-labs/aave-address-book';
 import {
   constructBuildTx,
   constructFetchFetcher,
@@ -13,8 +14,6 @@ import {
 import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
-
-const FEE_CLAIMER_ADDRESS = '0x9abf798f5314BFd793A9E57A654BEd35af4A1D60';
 
 export type UseSwapProps = {
   chainId: ChainId;
@@ -65,6 +64,7 @@ const avalancheParaswap = ParaSwap(ChainId.avalanche);
 const fantomParaswap = ParaSwap(ChainId.fantom);
 const arbitrumParaswap = ParaSwap(ChainId.arbitrum_one);
 const optimismParaswap = ParaSwap(ChainId.optimism);
+const baseParaswap = ParaSwap(ChainId.base);
 
 export const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
@@ -73,7 +73,15 @@ export const getParaswap = (chainId: ChainId) => {
   if (ChainId.fantom === chainId) return fantomParaswap;
   if (ChainId.arbitrum_one === chainId) return arbitrumParaswap;
   if (ChainId.optimism === chainId) return optimismParaswap;
+  if (ChainId.base === chainId) return baseParaswap;
+
   throw new Error('chain not supported');
+};
+
+const getFeeClaimerAddress = (chainId: ChainId) => {
+  if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
+
+  return MiscEthereum.PARASWAP_FEE_CLAIMER;
 };
 
 const MESSAGE_MAP: { [key: string]: string } = {
@@ -291,6 +299,7 @@ export async function fetchExactOutRate(
 
 const ExactInSwapper = (chainId: ChainId) => {
   const paraSwap = getParaswap(chainId);
+  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
   const getRate = async (
     amount: string,
@@ -402,6 +411,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
       .multipliedBy(100 + maxSlippage)
       .dividedBy(100)
       .toFixed(0);
+    const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 
     try {
       const params = await paraSwap.buildTx(
