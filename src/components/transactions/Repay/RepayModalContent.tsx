@@ -225,7 +225,7 @@ export const RepayModalContent = ({
       <TxSuccessView
         action={<Trans>repaid</Trans>}
         amount={amountRef.current}
-        symbol={tokenToRepayWith.symbol}
+        symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
       />
     );
 
