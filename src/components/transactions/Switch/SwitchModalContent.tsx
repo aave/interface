@@ -1,9 +1,10 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useParaswapSellRates } from 'src/hooks/paraswap/useParaswapRates';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
@@ -16,6 +17,7 @@ import { AssetInput } from '../AssetInput';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SupportedNetworkWithChainId } from './common';
 import { NetworkSelector } from './NetworkSelector';
 import { SwitchActions } from './SwitchActions';
@@ -42,7 +44,7 @@ export const SwitchModalContent = ({
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('0');
-  const { mainTxState: switchTxState, gasLimit } = useModalContext();
+  const { mainTxState: switchTxState, gasLimit, txError } = useModalContext();
   const user = useRootStore((store) => store.account);
   const [selectedInputReserve, setSelectedInputReserve] = useState(reserves[0]);
   const { readOnlyModeAddress } = useWeb3Context();
@@ -143,8 +145,8 @@ export const SwitchModalContent = ({
               />
             </>
           )}
-          {sellRates && (
-            <TxModalDetails gasLimit={gasLimit}>
+          {sellRates && user && (
+            <TxModalDetails gasLimit={gasLimit} chainId={selectedChainId}>
               <Row
                 caption={<Trans>{`Minimum ${selectedOutputReserve.symbol} received`}</Trans>}
                 captionVariant="caption"
@@ -173,23 +175,35 @@ export const SwitchModalContent = ({
               </Row>
             </TxModalDetails>
           )}
-
-          <SwitchErrors
-            ratesError={ratesError}
-            balance={selectedInputReserve.balance}
-            inputAmount={inputAmount}
-          />
-
-          <SwitchActions
-            isWrongNetwork={isWrongNetwork.isWrongNetwork}
-            inputAmount={inputAmount}
-            inputToken={selectedInputReserve.underlyingAsset}
-            outputToken={selectedOutputReserve.underlyingAsset}
-            slippage={slippage}
-            blocked={!sellRates || Number(inputAmount) > Number(selectedInputReserve.balance)}
-            chainId={selectedChainId}
-            route={sellRates}
-          />
+          {user ? (
+            <>
+              <SwitchErrors
+                ratesError={ratesError}
+                balance={selectedInputReserve.balance}
+                inputAmount={inputAmount}
+              />
+              {txError && <ParaswapErrorDisplay txError={txError} />}
+              <SwitchActions
+                isWrongNetwork={isWrongNetwork.isWrongNetwork}
+                inputAmount={inputAmount}
+                inputToken={selectedInputReserve.underlyingAsset}
+                outputToken={selectedOutputReserve.underlyingAsset}
+                slippage={slippage}
+                blocked={
+                  !sellRates || Number(inputAmount) > Number(selectedInputReserve.balance) || !user
+                }
+                chainId={selectedChainId}
+                route={sellRates}
+              />
+            </>
+          ) : (
+            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
+              <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+                <Trans>Please connect your wallet to be able to switch your tokens.</Trans>
+              </Typography>
+              <ConnectWalletButton />
+            </Box>
+          )}
         </>
       )}
     </>

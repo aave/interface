@@ -14,7 +14,7 @@ import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { QueryKeys } from 'src/ui-config/queries';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT } from '../utils';
@@ -75,14 +75,16 @@ export const SwitchActions = ({
   } = useModalContext();
 
   const { sendTx, signTxData } = useWeb3Context();
+  const networkConfig = getNetworkConfig(chainId);
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
-  const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(chainId);
-
-  const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-
+  const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(
+    networkConfig.underlyingChainId ?? chainId
+  );
   const tryPermit = permitByChainAndToken[chainId]?.[inputToken];
+
+  const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT && tryPermit;
 
   const requiresApproval = useMemo(() => {
     if (
@@ -110,6 +112,8 @@ export const SwitchActions = ({
           permit: signatureParams && signatureParams.signature,
           deadline: signatureParams && signatureParams.deadline,
         });
+        tx.chainId = chainId;
+        console.log(tx);
         const txWithGasEstimation = await estimateGasLimit(tx, chainId);
         const response = await sendTx(txWithGasEstimation);
         await response.wait(1);
@@ -121,6 +125,7 @@ export const SwitchActions = ({
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        console.log(parsedError);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
@@ -142,10 +147,13 @@ export const SwitchActions = ({
       try {
         if (useSignature) {
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const signatureRequest = await generateSignatureRequest({
-            ...approvalData,
-            deadline,
-          });
+          const signatureRequest = await generateSignatureRequest(
+            {
+              ...approvalData,
+              deadline,
+            },
+            { chainId }
+          );
           setApprovalTxState({ ...approvalTxState, loading: true });
           const response = await signTxData(signatureRequest);
           const splitedSignature = splitSignature(response);
@@ -173,7 +181,7 @@ export const SwitchActions = ({
             success: true,
           });
         } else {
-          const tx = generateApproval(approvalData);
+          const tx = generateApproval(approvalData, { chainId });
           const txWithGasEstimation = await estimateGasLimit(tx);
           setApprovalTxState({ ...approvalTxState, loading: true });
           const response = await sendTx(txWithGasEstimation);
@@ -219,8 +227,10 @@ export const SwitchActions = ({
   }, [chainId, setLoadingTxns, user, inputToken, route?.tokenTransferProxy, setApprovalTxState]);
 
   useEffect(() => {
-    fetchApprovedAmount();
-  }, [fetchApprovedAmount]);
+    if (user) {
+      fetchApprovedAmount();
+    }
+  }, [fetchApprovedAmount, user]);
 
   useEffect(() => {
     let switchGasLimit = 0;
@@ -246,7 +256,7 @@ export const SwitchActions = ({
       actionInProgressText={<Trans>Switching</Trans>}
       errorParams={{
         loading: false,
-        disabled: blocked || !approvalTxState?.success,
+        disabled: blocked || (!approvalTxState.success && requiresApproval),
         content: <Trans>Switch</Trans>,
         handleClick: action,
       }}

@@ -24,8 +24,7 @@ export const usePoolsTokensBalance = <T = UserPoolTokensBalances[]>(
   });
 };
 
-export const usePoolTokensBalance = () => {
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
+export const usePoolTokensBalance = (marketData: MarketDataType) => {
   const user = useRootStore((store) => store.account);
-  return usePoolsTokensBalance([currentMarketData], user)[0];
+  return usePoolsTokensBalance([marketData], user)[0];
 };
