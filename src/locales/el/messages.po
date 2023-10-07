@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-09-19 18:04\n"
+"PO-Revision-Date: 2023-10-06 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2578,7 +2578,6 @@ msgstr ""
 msgid "Transaction failed"
 msgstr "Η συναλλαγή απέτυχε"
 
-#: src/layouts/WalletWidget.tsx
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr ""
@@ -2733,6 +2732,11 @@ msgstr ""
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "View Transactions"
 msgstr ""
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
