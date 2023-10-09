@@ -1,1 +1,1 @@
-All Rights Reserved © AaveCo
+All Rights Reserved © Aave Labs
