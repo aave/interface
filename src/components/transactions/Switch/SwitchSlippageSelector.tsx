@@ -70,7 +70,7 @@ export const SwitchSlippageSelector = ({ slippage, setSlippage }: SwitchSlippage
                     py: 1,
                     px: 2,
                     borderColor: 'transparent',
-                    backgroundColor: option === slippage ? '#FFFFFF' : 'transparent',
+                    backgroundColor: option === slippage ? 'background.paper' : 'transparent',
                   }}
                   value={option}
                   key={option}
