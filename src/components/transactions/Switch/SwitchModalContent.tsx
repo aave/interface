@@ -116,7 +116,9 @@ export const SwitchModalContent = ({
       ) : (
         <>
           <AssetInput
-            assets={reserves}
+            assets={reserves.filter(
+              (elem) => elem.underlyingAsset !== selectedOutputReserve.underlyingAsset
+            )}
             value={inputAmount}
             onChange={handleInputChange}
             usdValue={sellRates?.srcUSD || '0'}
@@ -125,7 +127,9 @@ export const SwitchModalContent = ({
             inputTitle={' '}
           />
           <AssetInput
-            assets={reserves}
+            assets={reserves.filter(
+              (elem) => elem.underlyingAsset !== selectedInputReserve.underlyingAsset
+            )}
             value={
               sellRates ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString() : '0'
             }

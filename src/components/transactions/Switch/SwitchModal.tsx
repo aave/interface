@@ -116,15 +116,19 @@ export const SwitchModal = () => {
     });
   }, [networkReserves, poolsBalances]);
 
+  const reserversWithBalanceSortedByBalance = reservesWithBalance.sort(
+    (a, b) => Number(b.balance) - Number(a.balance)
+  );
+
   return (
     <BasicModal open={type === ModalType.Switch} setOpen={close}>
-      {reservesWithBalance.length > 1 ? (
+      {reserversWithBalanceSortedByBalance.length > 1 ? (
         <SwitchModalContent
           key={selectedChainId}
           selectedChainId={selectedChainId}
           setSelectedChainId={setSelectedChainId}
           supportedNetworks={supportedNetworksWithEnabledMarket}
-          reserves={reservesWithBalance}
+          reserves={reserversWithBalanceSortedByBalance}
           selectedNetworkConfig={selectedNetworkConfig}
         />
       ) : (
