@@ -175,6 +175,7 @@ export function AppHeader() {
           onClick={handleSwitchClick}
           variant="surface"
           sx={{ p: '7px 8px', minWidth: 'unset', mr: 2 }}
+          aria-label="Switch tool"
         >
           <SvgIcon fontSize="small">
             <SwitchHorizontalIcon />
