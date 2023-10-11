@@ -27,20 +27,20 @@ const testData = {
     },
     repay: [
       //skip while swap is not enabled
-      // {
-      //   asset: assets.baseV3Market.USDbC,
-      //   apyType: constants.apyType.variable,
-      //   amount: 2,
-      //   hasApproval: false,
-      //   repayOption: constants.repayType.collateral,
-      // },
-      // {
-      //   asset: assets.baseV3Market.USDbC,
-      //   apyType: constants.apyType.variable,
-      //   amount: 2,
-      //   hasApproval: true,
-      //   repayOption: constants.repayType.wallet,
-      // },
+      {
+        asset: assets.baseV3Market.USDbC,
+        apyType: constants.apyType.variable,
+        amount: 2,
+        hasApproval: false,
+        repayOption: constants.repayType.collateral,
+      },
+      {
+        asset: assets.baseV3Market.USDbC,
+        apyType: constants.apyType.variable,
+        amount: 2,
+        hasApproval: true,
+        repayOption: constants.repayType.wallet,
+      },
       {
         asset: assets.baseV3Market.USDbC,
         apyType: constants.apyType.variable,
@@ -69,7 +69,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.baseV3Market.USDbC.shortName,
-        amount: 48.0, //46.0
+        amount: 44.0, //46.0
         apyType: constants.borrowAPYType.variable,
       },
     ],

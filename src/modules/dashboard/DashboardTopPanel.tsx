@@ -237,7 +237,6 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
       </TopInfoPanel>
-
       <LiquidationRiskParametresInfoModal
         open={open}
         setOpen={setOpen}

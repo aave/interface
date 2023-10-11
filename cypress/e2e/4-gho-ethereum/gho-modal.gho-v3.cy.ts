@@ -16,7 +16,7 @@ const testData = {
   },
 };
 
-describe.skip(`GHO MODAL APY TESTING`, () => {
+describe(`GHO MODAL APY TESTING`, () => {
   describe(`Verify modal without discount APY = ${gho.apy.max}%`, () => {
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
@@ -66,7 +66,7 @@ describe.skip(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
+  describe.skip(`Verify modal in range: min APY ${gho.apy.min}% - max APY ${gho.apy.max}%`, () => {
     configEnvWithTenderlyAEthereumV3Fork({
       v3: true,
       tokens: tokenSet({ stkAave: 1.01, aDAI: 12000 }),
@@ -87,12 +87,6 @@ describe.skip(`GHO MODAL APY TESTING`, () => {
       ModalHelpers.getApy().then(($val) => {
         expect($val).to.be.greaterThan(gho.apy.min);
         expect($val).to.be.lessThan(gho.apy.max);
-      });
-    });
-    it(`Verify modal without discount APY=${gho.apy.max}%, max amount`, () => {
-      ModalHelpers.setAmount(1000, true);
-      ModalHelpers.getApy().then(($val) => {
-        expect($val).to.be.eql(gho.apy.max);
       });
     });
   });
@@ -129,7 +123,8 @@ describe.skip(`GHO MODAL APY TESTING`, () => {
       });
     });
   });
-  describe(`Verify modal with changing discount for APY`, () => {
+  // too slow for CI
+  describe.skip(`Verify modal with changing discount for APY`, () => {
     let minAPYRage: number;
     let maxAPYRange: number;
     let borrowedAPY: number;

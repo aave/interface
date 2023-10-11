@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 12:05\n"
+"PO-Revision-Date: 2023-10-09 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1086,10 +1086,6 @@ msgstr "Hilo de discusión del foro"
 msgid "French"
 msgstr "Francés"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr "Activos congelados o pausados"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Fondos en el módulo de seguridad"
@@ -2003,6 +1999,10 @@ msgstr "Compartir en twitter"
 msgid "Show"
 msgstr "Mostrar"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
+msgstr "Mostrar activos congelados o pausados"
+
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Mostrar activos con 0 balance"
@@ -2577,7 +2577,6 @@ msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
 msgid "Transaction failed"
 msgstr "Error en la transacción"
 
-#: src/layouts/WalletWidget.tsx
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr "Historial de transacciones"
@@ -2733,6 +2732,11 @@ msgstr "Versión 3"
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "Ver"
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "View Transactions"
+msgstr "Ver Transacciones"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
@@ -2926,8 +2930,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Solo puedes retirar tus activos del Módulo de Seguridad después de que finalice el período de cooldown y la ventana de unstakeo esté activa."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr "Puedes reportar un incidente a nuestro <0>Discord</0> o <1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
+msgstr "Puedes reportar cualquier incidente a nuestro <0>Discord</0> o <1>Github</1>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."

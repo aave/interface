@@ -1,11 +1,12 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Link, SvgIcon, Typography, TypographyProps } from '@mui/material';
+import { Box, Link, SvgIcon, Typography, TypographyProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 
 const contentSx = {
+  borderRadius: '4px',
   display: 'inline-flex',
   alignItems: 'center',
   p: '2px',
@@ -14,11 +15,14 @@ const contentSx = {
   '&:hover': { opacity: 0.6 },
 };
 
-const InfoIcon = () => (
+interface InfoIconProps {
+  color?: string;
+}
+const InfoIcon = ({ color }: InfoIconProps) => (
   <SvgIcon
     sx={{
       ml: '3px',
-      color: 'text.muted',
+      color: color ? color : 'text.muted',
       fontSize: '14px',
     }}
   >
@@ -30,6 +34,13 @@ export const IsolatedEnabledBadge = ({
 }: {
   typographyProps?: TypographyProps;
 }) => {
+  const theme = useTheme();
+
+  const sx = {
+    border: `1px solid ${theme.palette.warning.main}`,
+    color: theme.palette.warning.main,
+    ...contentSx,
+  };
   return (
     <ContentWithTooltip
       withoutHover
@@ -44,11 +55,18 @@ export const IsolatedEnabledBadge = ({
         />
       }
     >
-      <Box sx={contentSx}>
-        <Typography variant="secondary12" color="text.secondary" {...typographyProps}>
+      <Box sx={sx}>
+        <Typography
+          variant="secondary12"
+          sx={{
+            lineHeight: '0.75rem',
+          }}
+          color={theme.palette.warning.main}
+          {...typographyProps}
+        >
           <Trans>Isolated</Trans>
         </Typography>
-        <InfoIcon />
+        <InfoIcon color={theme.palette.warning.main} />
       </Box>
     </ContentWithTooltip>
   );

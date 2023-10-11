@@ -28,7 +28,6 @@ import { ReactNode } from 'react';
 
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
-
 export type MarketDataType = {
   v3?: boolean;
   marketTitle: string;
@@ -139,7 +138,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Ethereum.COLLECTOR,
       GHO_TOKEN_ADDRESS: AaveV3Ethereum.GHO_TOKEN,
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
-      WITHDRAW_SWITCH_ADAPTER: '0x78F8Bd884C3D738B74B420540659c82f392820e0',
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
     },
     halIntegration: {
@@ -294,6 +293,10 @@ export const marketsData: {
     chainId: ChainId.base,
     enabledFeatures: {
       incentives: true,
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
@@ -306,9 +309,11 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Base.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3Base.L2_ENCODER,
       COLLECTOR: AaveV3Base.COLLECTOR,
-      // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
-      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
-      // DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
+      // WALLET_BALANCE_PROVIDER: AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Base.WITHDRAW_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
     },
   },
 
@@ -336,7 +341,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Arbitrum.SWAP_COLLATERAL_ADAPTER,
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Arbitrum.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Arbitrum.DEBT_SWAP_ADAPTER,
-      WITHDRAW_SWITCH_ADAPTER: '0x5598BbFA2f4fE8151f45bBA0a3edE1b54B51a0a9',
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Arbitrum.WITHDRAW_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -386,7 +391,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Avalanche.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
-      WITHDRAW_SWITCH_ADAPTER: '0x78F8Bd884C3D738B74B420540659c82f392820e0',
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -538,7 +543,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Optimism.SWAP_COLLATERAL_ADAPTER,
       REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Optimism.REPAY_WITH_COLLATERAL_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Optimism.DEBT_SWAP_ADAPTER,
-      WITHDRAW_SWITCH_ADAPTER: '0x78F8Bd884C3D738B74B420540659c82f392820e0',
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Optimism.WITHDRAW_SWAP_ADAPTER,
     },
   },
   [CustomMarket.proto_polygon_v3]: {
@@ -564,7 +569,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Polygon.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
-      WITHDRAW_SWITCH_ADAPTER: '0x78F8Bd884C3D738B74B420540659c82f392820e0',
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-08-31 00:15\n"
+"PO-Revision-Date: 2023-10-06 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1086,10 +1086,6 @@ msgstr "Discussion de forum"
 msgid "French"
 msgstr "Français"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Frozen or paused assets"
-msgstr ""
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Fonds dans le Safety Module"
@@ -2003,6 +1999,10 @@ msgstr "Partager sur Twitter"
 msgid "Show"
 msgstr "Montrer"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show Frozen or paused assets"
+msgstr ""
+
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
 msgstr "Afficher les actifs avec 0 solde"
@@ -2577,7 +2577,6 @@ msgstr ""
 msgid "Transaction failed"
 msgstr "La transaction a échoué"
 
-#: src/layouts/WalletWidget.tsx
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr ""
@@ -2732,6 +2731,11 @@ msgstr ""
 
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "View Transactions"
 msgstr ""
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
@@ -2926,8 +2930,8 @@ msgid "You can only withdraw your assets from the Security Module after the cool
 msgstr "Vous ne pouvez retirer vos actifs du module de sécurité qu'après la fin de la période de refroidissement et que la fenêtre de retrait est active."
 
 #: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr "Vous pouvez signaler un incident sur notre <0>Discord</0> ou <1>Github</1>."
+msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."

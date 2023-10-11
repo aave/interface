@@ -1,5 +1,6 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -18,6 +19,7 @@ interface ListMobileItemProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  isIsolated: boolean;
 }
 
 export const ListMobileItem = ({
@@ -32,9 +34,9 @@ export const ListMobileItem = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  isIsolated,
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-
   return (
     <Box>
       <Divider />
@@ -60,9 +62,16 @@ export const ListMobileItem = ({
                 <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} />
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4">{name}</Typography>
-                  <Typography variant="subheader2" color="text.muted">
-                    {symbol}
-                  </Typography>
+                  <Box display="flex" alignItems="center">
+                    <Typography variant="subheader2" color="text.muted">
+                      {symbol}
+                    </Typography>
+                    {isIsolated && (
+                      <span style={{ marginLeft: '8px' }}>
+                        <IsolatedEnabledBadge />
+                      </span>
+                    )}
+                  </Box>
                 </Box>
                 {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
                 {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
