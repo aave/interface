@@ -103,6 +103,8 @@ const StyledLink = styled('a')({
   color: 'inherit',
 });
 
+function patchAIPDescriptions(description: string) {}
+
 export default function ProposalPage({
   proposal: initialProposal,
   ipfs,
@@ -313,6 +315,8 @@ export default function ProposalPage({
                         },
                         img({ src: _src, alt }) {
                           if (!_src) return null;
+                          // aave aip repo recommends ppl to reference images via relative imports, but doesn't upload them to ipfs or similar
+                          // therefore ../ needs to be replaced with a link to the repository
                           const src = /^\.\.\//.test(_src)
                             ? _src.replace(
                                 '../',
@@ -321,8 +325,15 @@ export default function ProposalPage({
                             : _src;
                           return <CenterAlignedImage src={src} alt={alt} />;
                         },
-                        a({ node, ...rest }) {
-                          return <StyledLink {...rest} />;
+                        a({ node, href: _href, ...rest }) {
+                          // a lot of aips directly reference the aave-proposals main branch
+                          // for governance v3 though the main branch will remove outdated code & therefore break links
+                          // this patch replaces the links to main with a git hash before the removal
+                          const href = _href?.replace(
+                            'aave-proposals/blob/main',
+                            'aave-proposals/blob/ea342f785cc47c48c48ce7d96213543ff8a95c0d'
+                          );
+                          return <StyledLink {...rest} href={href} />;
                         },
                         h2({ node, ...rest }) {
                           return (
