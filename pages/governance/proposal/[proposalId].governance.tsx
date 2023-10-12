@@ -103,8 +103,6 @@ const StyledLink = styled('a')({
   color: 'inherit',
 });
 
-function patchAIPDescriptions(description: string) {}
-
 export default function ProposalPage({
   proposal: initialProposal,
   ipfs,
