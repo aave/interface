@@ -11,6 +11,7 @@ import {
   IncentivesController,
   IncentivesControllerV2,
   IncentivesControllerV2Interface,
+  InterestRate,
   LendingPool,
   LendingPoolBundle,
   LendingPoolBundleInterface,
@@ -47,7 +48,6 @@ import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
-import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
@@ -65,6 +65,21 @@ export type PoolReserve = {
   baseCurrencyData?: PoolBaseCurrencyHumanized;
   userEmodeCategoryId?: number;
   userReserves?: UserReserveDataHumanized[];
+};
+
+type RepayWithPermitArgs = {
+  amountToRepay: string;
+  poolAddress: string;
+  debtType: InterestRate;
+  signature: SignatureLike;
+  deadline: string;
+};
+
+type RepayArgs = {
+  amountToRepay: string;
+  poolAddress: string;
+  debtType: InterestRate;
+  repayWithATokens: boolean;
 };
 
 // TODO: add chain/provider/account mapping
@@ -93,14 +108,9 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  repay: (args: RepayActionProps) => PopulatedTransaction;
+  repay: (args: RepayArgs) => PopulatedTransaction;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
-  repayWithPermit: (
-    args: RepayActionProps & {
-      signature: SignatureLike;
-      deadline: string;
-    }
-  ) => PopulatedTransaction;
+  repayWithPermit: (args: RepayWithPermitArgs) => PopulatedTransaction;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -586,6 +596,7 @@ export const createPoolSlice: StateCreator<
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
       const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const currentAccount = get().account;
+      const stringSignature = utils.joinSignature(signature);
       return poolBundle.repayTxBuilder.generateSignedTxData({
         user: currentAccount,
         reserve: poolAddress,
@@ -593,7 +604,7 @@ export const createPoolSlice: StateCreator<
         useOptimizedPath: get().useOptimizedPath(),
         interestRateMode: debtType,
         deadline,
-        signature,
+        signature: stringSignature,
       });
     },
     swapCollateral: async ({

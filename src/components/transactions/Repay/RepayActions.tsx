@@ -29,6 +29,7 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   repayWithATokens: boolean;
   blocked?: boolean;
+  maxApproveNeeded: string;
 }
 
 export const RepayActions = ({
@@ -41,6 +42,7 @@ export const RepayActions = ({
   debtType,
   repayWithATokens,
   blocked,
+  maxApproveNeeded,
   ...props
 }: RepayActionProps) => {
   const [
@@ -89,7 +91,7 @@ export const RepayActions = ({
     Number(amountToRepay) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
-      amount: amountToRepay,
+      amount: Number(amountToRepay) === -1 ? maxApproveNeeded : amountToRepay,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
 
@@ -106,7 +108,7 @@ export const RepayActions = ({
     assetAddress: poolAddress,
     symbol,
     decimals: poolReserve.decimals,
-    signatureAmount: amountToRepay,
+    signatureAmount: Number(amountToRepay) === -1 ? maxApproveNeeded : amountToRepay,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
@@ -116,6 +118,8 @@ export const RepayActions = ({
       fetchApprovedAmount();
     }
   }, [fetchApprovedAmount, isFetchedAfterMount, repayWithATokens]);
+
+  console.log(approvedAmount);
 
   const action = async () => {
     try {
@@ -128,12 +132,8 @@ export const RepayActions = ({
         action = ProtocolAction.repayWithPermit;
         let signedSupplyWithPermitTxData = repayWithPermit({
           amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
-          poolReserve,
-          isWrongNetwork,
           poolAddress,
-          symbol,
           debtType,
-          repayWithATokens,
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
         });
@@ -148,9 +148,6 @@ export const RepayActions = ({
           poolAddress,
           repayWithATokens,
           debtType,
-          poolReserve,
-          isWrongNetwork,
-          symbol,
         });
         supplyTxData = await estimateGasLimit(supplyTxData);
         response = await sendTx(supplyTxData);

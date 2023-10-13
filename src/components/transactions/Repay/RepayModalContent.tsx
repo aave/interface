@@ -274,6 +274,7 @@ export const RepayModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <RepayActions
+        maxApproveNeeded={safeAmountToRepayAll.toString(10)}
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
         poolAddress={
