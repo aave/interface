@@ -45,6 +45,7 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
+
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
 
   const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
@@ -60,6 +61,7 @@ export const RepayModalContent = ({
     balance: tokenBalance,
   });
   const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
+
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
@@ -240,7 +242,6 @@ export const RepayModalContent = ({
         maxValue={maxAmountToRepay.toString(10)}
         balanceText={<Trans>Wallet balance</Trans>}
       />
-
       {maxRepayWithDustRemaining && (
         <Typography color="warning.main" variant="helperText">
           <Trans>
@@ -250,7 +251,6 @@ export const RepayModalContent = ({
           </Trans>
         </Typography>
       )}
-
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
@@ -270,9 +270,7 @@ export const RepayModalContent = ({
           futureHealthFactor={newHF}
         />
       </TxModalDetails>
-
       {txError && <GasEstimationError txError={txError} />}
-
       <RepayActions
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}

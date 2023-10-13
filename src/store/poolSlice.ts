@@ -422,6 +422,7 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
+
       return pool.paraswapRepayWithCollateral({
         user,
         fromAsset: fromAssetData.underlyingAsset,
