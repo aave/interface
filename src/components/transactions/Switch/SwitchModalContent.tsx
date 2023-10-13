@@ -1,6 +1,7 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
+import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -46,7 +47,12 @@ export const SwitchModalContent = ({
   const [inputAmount, setInputAmount] = useState('0');
   const { mainTxState: switchTxState, gasLimit, txError } = useModalContext();
   const user = useRootStore((store) => store.account);
-  const [selectedInputReserve, setSelectedInputReserve] = useState(reserves[0]);
+  const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
+    if (reserves[0].symbol === 'GHO') {
+      return reserves[1];
+    }
+    return reserves[0];
+  });
   const { readOnlyModeAddress } = useWeb3Context();
   const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
     const gho = reserves.find((reserve) => reserve.symbol === 'GHO');
@@ -91,6 +97,17 @@ export const SwitchModalContent = ({
     );
   }
 
+  const onSwitchReserves = () => {
+    const fromReserve = selectedInputReserve;
+    const toReserve = selectedOutputReserve;
+    const toInput = sellRates
+      ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString()
+      : '0';
+    setSelectedInputReserve(toReserve);
+    setSelectedOutputReserve(fromReserve);
+    setInputAmount(toInput);
+  };
+
   return (
     <>
       <TxModalTitle title="Switch tokens" />
@@ -115,31 +132,59 @@ export const SwitchModalContent = ({
         <CircularProgress />
       ) : (
         <>
-          <AssetInput
-            assets={reserves.filter(
-              (elem) => elem.underlyingAsset !== selectedOutputReserve.underlyingAsset
-            )}
-            value={inputAmount}
-            onChange={handleInputChange}
-            usdValue={sellRates?.srcUSD || '0'}
-            symbol={selectedInputReserve?.symbol}
-            onSelect={setSelectedInputReserve}
-            inputTitle={' '}
-          />
-          <AssetInput
-            assets={reserves.filter(
-              (elem) => elem.underlyingAsset !== selectedInputReserve.underlyingAsset
-            )}
-            value={
-              sellRates ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString() : '0'
-            }
-            usdValue={sellRates?.destUSD || '0'}
-            symbol={selectedOutputReserve?.symbol}
-            loading={inputAmount !== '0' && ratesLoading && !ratesError}
-            onSelect={setSelectedOutputReserve}
-            disableInput={true}
-            inputTitle={' '}
-          />
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '15px',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+          >
+            <AssetInput
+              assets={reserves.filter(
+                (elem) => elem.underlyingAsset !== selectedOutputReserve.underlyingAsset
+              )}
+              value={inputAmount}
+              onChange={handleInputChange}
+              usdValue={sellRates?.srcUSD || '0'}
+              symbol={selectedInputReserve?.symbol}
+              onSelect={setSelectedInputReserve}
+              inputTitle={' '}
+              sx={{ width: '100%' }}
+            />
+            <IconButton
+              onClick={onSwitchReserves}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                position: 'absolute',
+                backgroundColor: 'background.paper',
+              }}
+            >
+              <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
+                <ArrowDownIcon />
+              </SvgIcon>
+            </IconButton>
+            <AssetInput
+              assets={reserves.filter(
+                (elem) => elem.underlyingAsset !== selectedInputReserve.underlyingAsset
+              )}
+              value={
+                sellRates
+                  ? normalizeBN(sellRates.destAmount, sellRates.destDecimals).toString()
+                  : '0'
+              }
+              usdValue={sellRates?.destUSD || '0'}
+              symbol={selectedOutputReserve?.symbol}
+              loading={inputAmount !== '0' && ratesLoading && !ratesError}
+              onSelect={setSelectedOutputReserve}
+              disableInput={true}
+              inputTitle={' '}
+              sx={{ width: '100%' }}
+            />
+          </Box>
           {sellRates && (
             <>
               <SwitchRates
