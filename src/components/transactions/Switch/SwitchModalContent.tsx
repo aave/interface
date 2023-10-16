@@ -1,5 +1,5 @@
 import { normalize, normalizeBN } from '@aave/math-utils';
-import { ArrowDownIcon } from '@heroicons/react/outline';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
@@ -34,6 +34,7 @@ interface SwitchModalContentProps {
   supportedNetworks: SupportedNetworkWithChainId[];
   reserves: ReserveWithBalance[];
   selectedNetworkConfig: NetworkConfig;
+  defaultAsset?: string;
 }
 
 export const SwitchModalContent = ({
@@ -42,12 +43,15 @@ export const SwitchModalContent = ({
   setSelectedChainId,
   reserves,
   selectedNetworkConfig,
+  defaultAsset,
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('0');
   const { mainTxState: switchTxState, gasLimit, txError } = useModalContext();
   const user = useRootStore((store) => store.account);
   const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
+    const defaultReserve = reserves.find((elem) => elem.underlyingAsset === defaultAsset);
+    if (defaultReserve) return defaultReserve;
     if (reserves[0].symbol === 'GHO') {
       return reserves[1];
     }
@@ -57,7 +61,13 @@ export const SwitchModalContent = ({
   const [selectedOutputReserve, setSelectedOutputReserve] = useState(() => {
     const gho = reserves.find((reserve) => reserve.symbol === 'GHO');
     if (gho) return gho;
-    return reserves[1];
+    return (
+      reserves.find(
+        (elem) =>
+          elem.underlyingAsset !== defaultAsset &&
+          elem.underlyingAsset !== reserves[0].underlyingAsset
+      ) || reserves[1]
+    );
   });
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
@@ -164,7 +174,7 @@ export const SwitchModalContent = ({
               }}
             >
               <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
-                <ArrowDownIcon />
+                <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
             <AssetInput

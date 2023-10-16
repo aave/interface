@@ -4,7 +4,7 @@ import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { usePoolsReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { usePoolsTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
-import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -21,9 +21,11 @@ export interface ReserveWithBalance extends ReserveDataHumanized {
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
 
 export const SwitchModal = () => {
-  const { type, close } = useModalContext() as ModalContextType<{
-    underlyingAsset: string;
-  }>;
+  const {
+    type,
+    close,
+    args: { underlyingAsset },
+  } = useModalContext();
 
   const currentChainId = useRootStore((store) => store.currentChainId);
   const user = useRootStore((store) => store.account);
@@ -130,6 +132,7 @@ export const SwitchModal = () => {
           supportedNetworks={supportedNetworksWithEnabledMarket}
           reserves={reserversWithBalanceSortedByBalance}
           selectedNetworkConfig={selectedNetworkConfig}
+          defaultAsset={underlyingAsset}
         />
       ) : (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>

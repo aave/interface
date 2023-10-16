@@ -100,7 +100,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
-  openSwitch: () => void;
+  openSwitch: (underlyingAsset?: string) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -302,9 +302,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
           setType(ModalType.V3Migration);
         },
-        openSwitch: () => {
+        openSwitch: (underlyingAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
           setType(ModalType.Switch);
+          setArgs({ underlyingAsset });
         },
         close: () => {
           setType(undefined);
