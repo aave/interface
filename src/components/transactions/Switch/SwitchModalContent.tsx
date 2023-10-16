@@ -237,6 +237,8 @@ export const SwitchModalContent = ({
                 inputAmount={inputAmount}
                 inputToken={selectedInputReserve.underlyingAsset}
                 outputToken={selectedOutputReserve.underlyingAsset}
+                inputName={selectedInputReserve.name}
+                outputName={selectedOutputReserve.name}
                 slippage={slippage}
                 blocked={
                   !sellRates || Number(inputAmount) > Number(selectedInputReserve.balance) || !user

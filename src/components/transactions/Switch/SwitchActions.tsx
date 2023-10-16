@@ -1,7 +1,7 @@
 import { ERC20Service, gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { OptimalRate } from '@paraswap/sdk';
-import { defaultAbiCoder, splitSignature } from 'ethers/lib/utils';
+import { defaultAbiCoder, formatUnits, splitSignature } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
@@ -29,6 +29,8 @@ interface SwithProps {
   isWrongNetwork: boolean;
   chainId: number;
   route?: OptimalRate;
+  inputName: string;
+  outputName: string;
 }
 
 interface SignedParams {
@@ -41,6 +43,8 @@ interface SignedParams {
 export const SwitchActions = ({
   inputAmount,
   inputToken,
+  inputName,
+  outputName,
   outputToken,
   slippage,
   blocked,
@@ -55,12 +59,14 @@ export const SwitchActions = ({
     estimateGasLimit,
     walletApprovalMethodPreference,
     generateSignatureRequest,
+    addTransaction,
   ] = useRootStore((state) => [
     state.account,
     state.generateApproval,
     state.estimateGasLimit,
     state.walletApprovalMethodPreference,
     state.generateSignatureRequest,
+    state.addTransaction,
   ]);
 
   const {
@@ -113,19 +119,46 @@ export const SwitchActions = ({
           deadline: signatureParams && signatureParams.deadline,
         });
         tx.chainId = chainId;
-        console.log(tx);
         const txWithGasEstimation = await estimateGasLimit(tx, chainId);
         const response = await sendTx(txWithGasEstimation);
-        await response.wait(1);
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        setMainTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
+        const txData = {
+          action: 'switch',
+          asset: route.srcToken,
+          assetName: inputName,
+          amount: formatUnits(route.srcAmount, route.srcDecimals),
+          amountUsd: route.srcUSD,
+          outAsset: route.destToken,
+          outAmount: formatUnits(route.destAmount, route.destDecimals),
+          outAmountUsd: route.destUSD,
+          outAssetName: outputName,
+        };
+        try {
+          await response.wait(1);
+          addTransaction(
+            response.hash,
+            {
+              txState: 'success',
+              ...txData,
+            },
+            {
+              chainId,
+              market: null,
+            }
+          );
+          setMainTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
+          });
+          queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        } catch (error) {
+          addTransaction(response.hash, {
+            txState: 'failed',
+            ...txData,
+          });
+        }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        console.log(parsedError);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
