@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-09-20 12:06\n"
+"PO-Revision-Date: 2023-10-09 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2577,7 +2577,6 @@ msgstr "Haz un seguimiento del balance de la cartera en el modo de solo lectura"
 msgid "Transaction failed"
 msgstr "Error en la transacción"
 
-#: src/layouts/WalletWidget.tsx
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr "Historial de transacciones"
@@ -2733,6 +2732,11 @@ msgstr "Versión 3"
 #: src/modules/history/TransactionRowItem.tsx
 msgid "View"
 msgstr "Ver"
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+msgid "View Transactions"
+msgstr "Ver Transacciones"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"

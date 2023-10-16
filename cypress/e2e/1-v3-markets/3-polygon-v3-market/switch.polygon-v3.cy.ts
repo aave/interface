@@ -36,7 +36,6 @@ const testData = {
     ],
   },
 };
-// tenderly unstable
 describe.skip('SWITCH BORROWED, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
