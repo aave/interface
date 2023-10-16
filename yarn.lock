@@ -4818,6 +4818,11 @@ blakejs@^1.1.0:
   resolved "https://registry.npmjs.org/blakejs/-/blakejs-1.1.1.tgz"
   integrity sha512-bLG6PHOCZJKNshTjGRBvET0vTciwQE6zFKOKKXPDJfwFBd4Ac0yBfPZqcGvGJap50l7ktvlpFqc2jGVaUgbJgg==
 
+blo@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/blo/-/blo-1.1.1.tgz#ed781c5c516fba484ec8ec86105dc27f6c553209"
+  integrity sha512-1uGZInlRD4X1WQP2G1QjDGwGZ8HdGgFKqnzyRdA2TYYc0MOQCmCi37RTQ8oJuI0UF6DYFKXHwV/t1kZkO/fTaA==
+
 blob-util@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/blob-util/-/blob-util-2.0.2.tgz#3b4e3c281111bb7f11128518006cdc60b403a1eb"
@@ -6655,13 +6660,6 @@ eth-sig-util@^1.4.2:
   dependencies:
     ethereumjs-abi "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util "^5.1.1"
-
-ethereum-blockies-base64@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/ethereum-blockies-base64/-/ethereum-blockies-base64-1.0.2.tgz"
-  integrity sha512-Vg2HTm7slcWNKaRhCUl/L3b4KrB8ohQXdd5Pu3OI897EcR6tVRvUqdTwAyx+dnmoDzj8e2bwBLDQ50ByFmcz6w==
-  dependencies:
-    pnglib "0.0.1"
 
 ethereum-bloom-filters@^1.0.6:
   version "1.0.10"
@@ -10322,11 +10320,6 @@ pngjs@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-5.0.0.tgz#e79dd2b215767fd9c04561c01236df960bce7fbb"
   integrity sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==
-
-pnglib@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/pnglib/-/pnglib-0.0.1.tgz"
-  integrity sha1-+atvnGiPSp1Xmti+KIeKcW4wwJY=
 
 pofile@^1.1.0:
   version "1.1.3"
