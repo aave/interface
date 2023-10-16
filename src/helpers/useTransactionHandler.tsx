@@ -1,4 +1,5 @@
 import {
+  eEthereumTxType,
   EthereumTransactionTypeExtended,
   gasLimitRecommendations,
   ProtocolAction,
@@ -66,21 +67,28 @@ export const useTransactionHandler = ({
   const [
     signPoolERC20Approval,
     walletApprovalMethodPreference,
+    maxApprovalPreference,
     generateCreditDelegationSignatureRequest,
     generatePermitPayloadForMigrationSupplyAsset,
     addTransaction,
     signStakingApproval,
     currentMarketData,
+    currentAccount,
+    repayWithoutMaxApproval
   ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
+    state.maxApprovalPreference,
     state.generateCreditDelegationSignatureRequest,
     state.generatePermitPayloadForMigrationSupplyAsset,
     state.addTransaction,
     state.signStakingApproval,
     state.currentMarketData,
+    state.account,
+    state.repayWithoutMaxApproval
   ]);
 
+  const [useMaxApproval, setUseMaxApproval] = useState(false);
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [usePermit, setUsePermit] = useState(false);
@@ -92,6 +100,10 @@ export const useTransactionHandler = ({
       mounted.current = false;
     }; // ... and to false on unmount
   }, []);
+
+  useEffect(() => {
+    setUseMaxApproval(maxApprovalPreference)
+  }, [maxApprovalPreference])
   /**
    * Executes the transactions and handles loading & error states.
    * @param fn
@@ -231,6 +243,18 @@ export const useTransactionHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
+          if (protocolAction === ProtocolAction.repay && !useMaxApproval && approvals && approvalTxes[0].txType === eEthereumTxType.ERC20_APPROVAL) {
+            let txs = approvalTxes;
+            let approvalTx = await repayWithoutMaxApproval({
+              user: currentAccount,
+              token: approvals[0].underlyingAsset,
+              amount: approvals[0].amount,
+              spender: currentMarketData.addresses.LENDING_POOL
+
+            })
+            txs[0] = approvalTx;
+            setApprovalTxes(txs);
+          }
           const params = await Promise.all(approvalTxes.map((approvalTx) => approvalTx.tx()));
           const approvalResponses = await Promise.all(
             params.map(
@@ -433,7 +457,7 @@ export const useTransactionHandler = ({
       setApprovalTxes(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
+  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference,useMaxApproval]);
 
   return {
     approval,

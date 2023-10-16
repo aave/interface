@@ -58,6 +58,7 @@ export const SupplyActions = React.memo(
       generateSignatureRequest,
       generateApproval,
       walletApprovalMethodPreference,
+      maxApprovalPreference,
       estimateGasLimit,
       addTransaction,
     ] = useRootStore((state) => [
@@ -68,6 +69,7 @@ export const SupplyActions = React.memo(
       state.generateSignatureRequest,
       state.generateApproval,
       state.walletApprovalMethodPreference,
+      state.maxApprovalPreference,
       state.estimateGasLimit,
       state.addTransaction,
     ]);
@@ -86,6 +88,7 @@ export const SupplyActions = React.memo(
     const { signTxData, sendTx } = useWeb3Context();
 
     const [usePermit, setUsePermit] = useState(false);
+    const [useMaxApproval, setUseMaxApproval] = useState(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -150,6 +153,10 @@ export const SupplyActions = React.memo(
       setUsePermit(preferPermit);
     }, [permitAvailable, walletApprovalMethodPreference]);
 
+    useEffect(() => {
+      setUseMaxApproval(maxApprovalPreference)
+    }, [maxApprovalPreference])
+
     const approval = async () => {
       try {
         if (requiresApproval && approvedAmount) {
@@ -169,7 +176,7 @@ export const SupplyActions = React.memo(
               success: true,
             });
           } else {
-            let approveTxData = generateApproval(approvedAmount);
+            let approveTxData = generateApproval({ ...approvedAmount, amount: useMaxApproval ? MAX_UINT_AMOUNT : parseUnits(amountToSupply, decimals).toString() });
             setApprovalTxState({ ...approvalTxState, loading: true });
             approveTxData = await estimateGasLimit(approveTxData);
             const response = await sendTx(approveTxData);
@@ -183,7 +190,7 @@ export const SupplyActions = React.memo(
               action: ProtocolAction.approval,
               txState: 'success',
               asset: poolAddress,
-              amount: MAX_UINT_AMOUNT,
+              amount: useMaxApproval ? MAX_UINT_AMOUNT : parseUnits(amountToSupply, decimals).toString(),
               assetName: symbol,
             });
             fetchApprovedAmount(true);

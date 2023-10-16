@@ -19,6 +19,8 @@ export interface WalletSlice {
   setWalletModalOpen: (open: boolean) => void;
   walletApprovalMethodPreference: ApprovalMethod;
   setWalletApprovalMethodPreference: (method: ApprovalMethod) => void;
+  maxApprovalPreference: boolean;
+  setMaxApprovalPreference: (maxApproval: boolean) => void;
   refreshWalletApprovalMethod: () => void;
 }
 
@@ -66,6 +68,10 @@ export const createWalletSlice: StateCreator<
         walletApprovalMethodPreference: method,
       }));
     }
+  },
+  maxApprovalPreference: false,
+  setMaxApprovalPreference(maxApproval) {
+    set({ maxApprovalPreference: maxApproval })
   },
   refreshWalletApprovalMethod: () => {
     const account = get().account;

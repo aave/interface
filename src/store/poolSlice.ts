@@ -41,7 +41,7 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
-import { splitSignature } from 'ethers/lib/utils';
+import { splitSignature , parseUnits } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
@@ -94,6 +94,12 @@ export interface PoolSlice {
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  repayWithoutMaxApproval: (args: {
+    user: string,
+    token: string,
+    amount: string,
+    spender: string
+  }) => Promise<EthereumTransactionTypeExtended>;
   repayWithPermit: (
     args: RepayActionProps & {
       signature: SignatureLike;
@@ -282,7 +288,7 @@ export const createPoolSlice: StateCreator<
     generateApproval: (args: ApproveType) => {
       const provider = get().jsonRpcProvider();
       const tokenERC20Service = new ERC20Service(provider);
-      return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
+      return tokenERC20Service.approveTxData({ ...args });
     },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
       const poolBundle = getCorrectPoolBundle();
@@ -580,6 +586,19 @@ export const createPoolSlice: StateCreator<
           useOptimizedPath: get().useOptimizedPath(),
         });
       }
+    },
+    repayWithoutMaxApproval: async({ user, token, amount, spender }) => {
+      const pool = getCorrectPool();
+      const { getTokenData } = pool.erc20Service;
+      const { decimals } = await getTokenData(token);
+
+      return pool.erc20Service.approve({
+        user,
+        token,
+        amount: parseUnits(amount, decimals).toString(),
+        spender
+      })
+
     },
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
       // Better to get rid of direct assert
