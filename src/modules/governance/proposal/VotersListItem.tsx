@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
-import makeBlockie from 'ethereum-blockies-base64';
+import { blo } from 'blo';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -16,7 +16,7 @@ type VotersListItemProps = {
 
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
   const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
-  const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
+  const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.

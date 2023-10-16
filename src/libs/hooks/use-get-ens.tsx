@@ -1,4 +1,4 @@
-import makeBlockie from 'ethereum-blockies-base64';
+import { blo } from 'blo';
 import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -31,7 +31,7 @@ const useGetEns = (address: string): EnsResponse => {
         )
       ).json();
       setEnsAvatar(
-        result && result.background_image ? result.background_image : makeBlockie(address)
+        result && result.background_image ? result.background_image : blo(address as `0x${string}`)
       );
     } catch (error) {
       console.error('ENS avatar lookup error', error);
@@ -40,7 +40,7 @@ const useGetEns = (address: string): EnsResponse => {
 
   useEffect(() => {
     if (address) {
-      setEnsAvatar(makeBlockie(address));
+      setEnsAvatar(blo(address as `0x${string}`));
       getName(address);
     } else {
       setEnsName(undefined);
