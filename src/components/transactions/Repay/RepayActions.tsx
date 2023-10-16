@@ -33,7 +33,10 @@ export const RepayActions = ({
 }: RepayActionProps) => {
   const { repay, repayWithPermit, tryPermit } = useRootStore();
 
-  const usingPermit = tryPermit(poolAddress);
+  const usingPermit = tryPermit({
+    reserveAddress: poolAddress,
+    isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
+  });
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: usingPermit,
