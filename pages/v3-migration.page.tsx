@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Divider, useMediaQuery, useTheme } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { MigrateV3Modal } from 'src/components/transactions/MigrateV3/MigrateV3Modal';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
@@ -24,6 +24,12 @@ import {
   selectV3UserSummary,
   selectV3UserSummaryAfterMigration,
 } from 'src/store/v3MigrationSelectors';
+
+const MigrateV3Modal = dynamic(() =>
+  import('src/components/transactions/MigrateV3/MigrateV3Modal').then(
+    (module) => module.MigrateV3Modal
+  )
+);
 
 export default function V3Migration() {
   const { loading } = useAppDataContext();

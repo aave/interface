@@ -2,16 +2,12 @@ import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
-import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
-import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
-import { StakeRewardClaimRestakeModal } from 'src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModal';
-import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -24,6 +20,30 @@ import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+
+const StakeModal = dynamic(() =>
+  import('../src/components/transactions/Stake/StakeModal').then((module) => module.StakeModal)
+);
+const StakeCooldownModal = dynamic(() =>
+  import('../src/components/transactions/StakeCooldown/StakeCooldownModal').then(
+    (module) => module.StakeCooldownModal
+  )
+);
+const StakeRewardClaimModal = dynamic(() =>
+  import('../src/components/transactions/StakeRewardClaim/StakeRewardClaimModal').then(
+    (module) => module.StakeRewardClaimModal
+  )
+);
+const StakeRewardClaimRestakeModal = dynamic(() =>
+  import(
+    '../src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModal'
+  ).then((module) => module.StakeRewardClaimRestakeModal)
+);
+const UnStakeModal = dynamic(() =>
+  import('../src/components/transactions/UnStake/UnStakeModal').then(
+    (module) => module.UnStakeModal
+  )
+);
 
 export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();

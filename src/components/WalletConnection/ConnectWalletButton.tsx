@@ -1,10 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/mixPanelEvents';
 
-import { WalletModal } from './WalletModal';
+const WalletModal = dynamic(() => import('./WalletModal').then((module) => module.WalletModal));
 
 export interface ConnectWalletProps {
   funnel?: string;
