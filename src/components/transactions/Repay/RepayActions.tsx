@@ -81,7 +81,10 @@ export const RepayActions = ({
     isFetchedAfterMount,
   } = usePoolApprovedAmount(poolAddress);
 
-  const permitAvailable = tryPermit(poolAddress);
+  const permitAvailable = tryPermit({
+    reserveAddress: poolAddress,
+    isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
+  });
   const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   setLoadingTxns(fetchingApprovedAmount);
