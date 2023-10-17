@@ -1,5 +1,6 @@
 import { ApproveType, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
+import { constants } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -56,7 +57,10 @@ export const useApprovalTx = ({
           const signatureRequest = await generateSignatureRequest({
             ...approvedAmount,
             deadline,
-            amount: parseUnits(signatureAmount, decimals).toString(),
+            amount:
+              signatureAmount === '-1'
+                ? constants.MaxUint256.toString()
+                : parseUnits(signatureAmount, decimals).toString(),
           });
 
           const response = await signTxData(signatureRequest);

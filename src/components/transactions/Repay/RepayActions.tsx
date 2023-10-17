@@ -2,7 +2,6 @@ import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/con
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { constants } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
@@ -112,7 +111,7 @@ export const RepayActions = ({
     assetAddress: poolAddress,
     symbol,
     decimals: poolReserve.decimals,
-    signatureAmount: Number(amountToRepay) === -1 ? constants.MaxUint256.toString() : amountToRepay,
+    signatureAmount: amountToRepay,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
