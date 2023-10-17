@@ -2,7 +2,8 @@ import { normalize, normalizeBN } from '@aave/math-utils';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, IconButton, SvgIcon, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useMemo, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
@@ -46,7 +47,8 @@ export const SwitchModalContent = ({
   defaultAsset,
 }: SwitchModalContentProps) => {
   const [slippage, setSlippage] = useState('0.001');
-  const [inputAmount, setInputAmount] = useState('0');
+  const [inputAmount, setInputAmount] = useState('');
+  const [debounceInputAmount, setDebounceInputAmount] = useState('');
   const { mainTxState: switchTxState, gasLimit, txError } = useModalContext();
   const user = useRootStore((store) => store.account);
   const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
@@ -72,22 +74,31 @@ export const SwitchModalContent = ({
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {
-    if (value === '') {
-      setInputAmount('0');
-    } else if (value === '-1' && selectedInputReserve) {
+    if (value === '-1') {
       setInputAmount(selectedInputReserve.balance);
+      debouncedInputChange(selectedInputReserve.balance);
     } else {
       setInputAmount(value);
+      debouncedInputChange(value);
     }
   };
 
+  const debouncedInputChange = useMemo(() => {
+    return debounce((value: string) => {
+      setDebounceInputAmount(value);
+    }, 300);
+  }, [setDebounceInputAmount]);
+
   const {
     data: sellRates,
-    isLoading: ratesLoading,
     error: ratesError,
+    isFetching: ratesLoading,
   } = useParaswapSellRates({
     chainId: selectedNetworkConfig.underlyingChainId ?? selectedChainId,
-    amount: normalizeBN(inputAmount, -1 * selectedInputReserve.decimals).toFixed(0),
+    amount:
+      debounceInputAmount === ''
+        ? '0'
+        : normalizeBN(debounceInputAmount, -1 * selectedInputReserve.decimals).toFixed(0),
     srcToken: selectedInputReserve.underlyingAsset,
     srcDecimals: selectedInputReserve.decimals,
     destToken: selectedOutputReserve.underlyingAsset,
@@ -99,10 +110,13 @@ export const SwitchModalContent = ({
     return (
       <SwitchTxSuccessView
         txHash={switchTxState.txHash}
-        amount={inputAmount}
+        amount={debounceInputAmount}
         symbol={selectedInputReserve.symbol}
         outSymbol={selectedOutputReserve.symbol}
-        outAmount={normalize(sellRates.destAmount, sellRates.destDecimals)}
+        outAmount={(
+          Number(normalize(sellRates.destAmount, sellRates.destDecimals)) *
+          (1 - Number(slippage))
+        ).toString()}
       />
     );
   }
@@ -116,6 +130,7 @@ export const SwitchModalContent = ({
     setSelectedInputReserve(toReserve);
     setSelectedOutputReserve(fromReserve);
     setInputAmount(toInput);
+    setDebounceInputAmount(toInput);
   };
 
   return (
@@ -188,7 +203,12 @@ export const SwitchModalContent = ({
               }
               usdValue={sellRates?.destUSD || '0'}
               symbol={selectedOutputReserve?.symbol}
-              loading={inputAmount !== '0' && ratesLoading && !ratesError}
+              loading={
+                debounceInputAmount !== '0' &&
+                debounceInputAmount !== '' &&
+                ratesLoading &&
+                !ratesError
+              }
               onSelect={setSelectedOutputReserve}
               disableInput={true}
               inputTitle={' '}
@@ -216,7 +236,7 @@ export const SwitchModalContent = ({
                   variant="caption"
                   value={
                     Number(normalize(sellRates.destAmount, sellRates.destDecimals)) *
-                    (1 - Number(slippage) / 100)
+                    (1 - Number(slippage))
                   }
                 />
               </Row>
@@ -229,7 +249,7 @@ export const SwitchModalContent = ({
                   symbol="usd"
                   symbolsVariant="caption"
                   variant="caption"
-                  value={Number(sellRates.destUSD) * (1 - Number(slippage) / 100)}
+                  value={Number(sellRates.destUSD) * (1 - Number(slippage))}
                 />
               </Row>
             </TxModalDetails>
@@ -239,19 +259,21 @@ export const SwitchModalContent = ({
               <SwitchErrors
                 ratesError={ratesError}
                 balance={selectedInputReserve.balance}
-                inputAmount={inputAmount}
+                inputAmount={debounceInputAmount}
               />
               {txError && <ParaswapErrorDisplay txError={txError} />}
               <SwitchActions
                 isWrongNetwork={isWrongNetwork.isWrongNetwork}
-                inputAmount={inputAmount}
+                inputAmount={debounceInputAmount}
                 inputToken={selectedInputReserve.underlyingAsset}
                 outputToken={selectedOutputReserve.underlyingAsset}
                 inputName={selectedInputReserve.name}
                 outputName={selectedOutputReserve.name}
                 slippage={slippage}
                 blocked={
-                  !sellRates || Number(inputAmount) > Number(selectedInputReserve.balance) || !user
+                  !sellRates ||
+                  Number(debounceInputAmount) > Number(selectedInputReserve.balance) ||
+                  !user
                 }
                 chainId={selectedChainId}
                 route={sellRates}
