@@ -1,7 +1,9 @@
 import { gasLimitRecommendations, InterestRate, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useEffect, useState } from 'react';
@@ -111,7 +113,13 @@ export const RepayActions = ({
     assetAddress: poolAddress,
     symbol,
     decimals: poolReserve.decimals,
-    signatureAmount: Number(amountToRepay) === -1 ? maxApproveNeeded : amountToRepay,
+    signatureAmount:
+      Number(amountToRepay) === -1
+        ? valueToBigNumber(maxApproveNeeded)
+            .multipliedBy('1.0025')
+            .decimalPlaces(18, BigNumber.ROUND_UP)
+            .toString()
+        : amountToRepay,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
   });
@@ -122,8 +130,6 @@ export const RepayActions = ({
     }
   }, [fetchApprovedAmount, isFetchedAfterMount, repayWithATokens]);
 
-  console.log(approvedAmount);
-
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
@@ -133,6 +139,7 @@ export const RepayActions = ({
 
       if (usePermit && signatureParams) {
         action = ProtocolAction.repayWithPermit;
+        console.log(1);
         let signedSupplyWithPermitTxData = repayWithPermit({
           amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
@@ -140,7 +147,6 @@ export const RepayActions = ({
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
         });
-
         signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
         response = await sendTx(signedSupplyWithPermitTxData);
         await response.wait(1);

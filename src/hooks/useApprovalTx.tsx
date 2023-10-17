@@ -51,6 +51,7 @@ export const useApprovalTx = ({
     try {
       if (requiresApproval && approvedAmount) {
         if (usePermit) {
+          setApprovalTxState({ ...approvalTxState, loading: true });
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const signatureRequest = await generateSignatureRequest({
             ...approvedAmount,
@@ -62,7 +63,7 @@ export const useApprovalTx = ({
           if (onSignTxCompleted) {
             onSignTxCompleted({ signature: response, deadline, amount: signatureAmount });
           }
-
+          setTxError(undefined);
           setApprovalTxState({
             txHash: MOCK_SIGNED_HASH,
             loading: false,
@@ -79,6 +80,7 @@ export const useApprovalTx = ({
             loading: false,
             success: true,
           });
+          setTxError(undefined);
           addTransaction(response.hash, {
             action: ProtocolAction.approval,
             txState: 'success',
@@ -86,7 +88,6 @@ export const useApprovalTx = ({
             amount: MAX_UINT_AMOUNT,
             assetName: symbol,
           });
-
           if (onApprovalTxConfirmed) {
             onApprovalTxConfirmed();
           }
