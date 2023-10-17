@@ -57,7 +57,6 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   FAI: 'Fei USD',
   GHST: 'Aavegotchi GHST',
   GUSD: 'Gemini Dollar',
-  KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
   MAI: 'MAI (mimatic)',
   MANA: 'Decentraland',
@@ -99,6 +98,11 @@ interface IconMapInterface {
 
 export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSymbolInterface) {
   const underlyingAssetMap: Record<string, IconMapInterface> = {
+    '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
+      name: 'Kyber Legacy',
+      symbol: 'KNC',
+      iconSymbol: 'KNCL',
+    },
     '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
@@ -138,25 +142,3 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     symbol,
   };
 }
-
-// tokens flagged stable will be sorted on top when no other sorting is selected
-export const STABLE_ASSETS = [
-  'DAI',
-  'TUSD',
-  'BUSD',
-  'GUSD',
-  'USDC',
-  'USDT',
-  'EUROS',
-  'FEI',
-  'FRAX',
-  'PAX',
-  'USDP',
-  'SUSD',
-  'UST',
-  'EURS',
-  'JEUR',
-  'AGEUR',
-  'LUSD',
-  'MAI',
-];
