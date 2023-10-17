@@ -140,26 +140,32 @@ export const RepayActions = ({
       if (usePermit && signatureParams) {
         action = ProtocolAction.repayWithPermit;
         console.log(1);
-        let signedSupplyWithPermitTxData = repayWithPermit({
-          amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
+        const signedRepayWithPermitTxData = repayWithPermit({
+          amountToRepay:
+            amountToRepay === '-1'
+              ? amountToRepay
+              : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
           debtType,
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
         });
-        signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
-        response = await sendTx(signedSupplyWithPermitTxData);
+        // signedRepayWithPermitTxData = await estimateGasLimit(signedRepayWithPermitTxData);
+        response = await sendTx(signedRepayWithPermitTxData);
         await response.wait(1);
       } else {
         action = ProtocolAction.repay;
-        let supplyTxData = repay({
-          amountToRepay: parseUnits(amountToRepay, poolReserve.decimals).toString(),
+        let repayTxData = repay({
+          amountToRepay:
+            amountToRepay === '-1'
+              ? amountToRepay
+              : parseUnits(amountToRepay, poolReserve.decimals).toString(),
           poolAddress,
           repayWithATokens,
           debtType,
         });
-        supplyTxData = await estimateGasLimit(supplyTxData);
-        response = await sendTx(supplyTxData);
+        repayTxData = await estimateGasLimit(repayTxData);
+        response = await sendTx(repayTxData);
         await response.wait(1);
       }
       setMainTxState({
