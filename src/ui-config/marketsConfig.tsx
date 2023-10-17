@@ -301,6 +301,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       collateralRepay: true,
       debtSwitch: true,
+      switch: true,
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
@@ -470,7 +471,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
       liquiditySwap: true,
-      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-fantom',
     addresses: {
