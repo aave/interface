@@ -31,6 +31,7 @@ export interface SupplyActionProps extends BoxProps {
   symbol: string;
   blocked: boolean;
   decimals: number;
+  isWrappedBaseAsset: boolean;
 }
 
 interface SignedParams {
@@ -48,6 +49,7 @@ export const SupplyActions = React.memo(
     symbol,
     blocked,
     decimals,
+    isWrappedBaseAsset,
     ...props
   }: SupplyActionProps) => {
     const [
@@ -82,7 +84,7 @@ export const SupplyActions = React.memo(
       setTxError,
     } = useModalContext();
     const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
-    const permitAvailable = tryPermit(poolAddress);
+    const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
     const { signTxData, sendTx } = useWeb3Context();
 
     const [usePermit, setUsePermit] = useState(false);

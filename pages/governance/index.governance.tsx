@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
@@ -13,6 +13,12 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
+
+const GovDelegationModal = dynamic(() =>
+  import('../../src/components/transactions/GovDelegation/GovDelegationModal').then(
+    (module) => module.GovDelegationModal
+  )
+);
 
 export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();

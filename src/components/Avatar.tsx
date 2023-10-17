@@ -4,7 +4,7 @@ import {
   Badge,
   Skeleton,
 } from '@mui/material';
-import makeBlockie from 'ethereum-blockies-base64';
+import { blo } from 'blo';
 import { ReactNode, useEffect, useState } from 'react';
 
 export enum AvatarSize {
@@ -26,7 +26,7 @@ export interface AvatarProps extends Omit<MaterialAvatarProps, 'src'> {
 
 export const Avatar: React.FC<AvatarProps> = ({
   image,
-  fallbackImage = makeBlockie('default'),
+  fallbackImage = blo('0x'),
   size = AvatarSize.MD,
   sx,
   loading = false,
