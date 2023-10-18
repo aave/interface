@@ -113,7 +113,9 @@ export const SwitchModalContent = ({
         txHash={switchTxState.txHash}
         amount={debounceInputAmount}
         symbol={selectedInputReserve.symbol}
+        iconSymbol={selectedInputReserve.iconSymbol}
         outSymbol={selectedOutputReserve.symbol}
+        outIconSymbol={selectedOutputReserve.iconSymbol}
         outAmount={(
           Number(normalize(sellRates.destAmount, sellRates.destDecimals)) *
           (1 - Number(slippage))

@@ -16,6 +16,7 @@ import { SwitchModalContent } from './SwitchModalContent';
 
 export interface ReserveWithBalance extends ReserveDataHumanized {
   balance: string;
+  iconSymbol: string;
 }
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
