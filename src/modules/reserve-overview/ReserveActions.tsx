@@ -28,7 +28,6 @@ import {
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
@@ -67,14 +66,16 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { currentAccount, loading: loadingWeb3Context } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
   const { openBorrow, openSupply } = useModalContext();
-  const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     ghoReserveData,
     user,
     loading: loadingReserves,
     marketReferencePriceInUsd,
   } = useAppDataContext();
-  const { walletBalances, loading: loadingWalletBalance } = useWalletBalances();
+  const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
 
   const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,

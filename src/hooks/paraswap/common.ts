@@ -297,7 +297,7 @@ export async function fetchExactOutRate(
   );
 }
 
-const ExactInSwapper = (chainId: ChainId) => {
+export const ExactInSwapper = (chainId: ChainId) => {
   const paraSwap = getParaswap(chainId);
   const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
 

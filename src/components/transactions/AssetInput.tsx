@@ -2,6 +2,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
+  BoxProps,
   Button,
   CircularProgress,
   FormControl,
@@ -83,6 +84,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   event?: TrackEventProps;
   selectOptionHeader?: ReactNode;
   selectOption?: (asset: T) => ReactNode;
+  sx?: BoxProps;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -103,6 +105,7 @@ export const AssetInput = <T extends Asset = Asset>({
   event,
   selectOptionHeader,
   selectOption,
+  sx = {},
 }: AssetInputProps<T>) => {
   const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -118,7 +121,7 @@ export const AssetInput = <T extends Asset = Asset>({
       : assets && (assets.find((asset) => asset.symbol === symbol) as T);
 
   return (
-    <Box>
+    <Box {...sx}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Typography color="text.secondary">
           {inputTitle ? inputTitle : <Trans>Amount</Trans>}

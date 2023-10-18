@@ -11,8 +11,8 @@ import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -51,8 +51,9 @@ export const ModalWrapper: React.FC<{
   keepWrappedSymbol,
 }) => {
   const { readOnlyModeAddress } = useWeb3Context();
-  const { walletBalances } = useWalletBalances();
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const { walletBalances } = useWalletBalances(currentMarketData);
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
   const { permissions } = usePermissions();

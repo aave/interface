@@ -2,11 +2,7 @@ import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { Hashable } from 'src/utils/types';
-
-type BatchBalanceOfArgs = {
-  user: string;
-};
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 interface GovernanceTokensBalance {
   aave: string;
@@ -14,32 +10,28 @@ interface GovernanceTokensBalance {
   aAave: string;
 }
 
-type GetPoolWalletBalances = {
-  user: string;
-  lendingPoolAddressProvider: string;
-};
-
-type UserPoolTokensBalances = {
+export type UserPoolTokensBalances = {
   address: string;
   amount: string;
 };
 
-export class WalletBalanceService implements Hashable {
-  private readonly walletBalanceService: WalletBalanceProvider;
+export class WalletBalanceService {
+  constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  constructor(
-    provider: Provider,
-    walletBalanceProviderAddress: string,
-    public readonly chainId: number
-  ) {
-    this.walletBalanceService = new WalletBalanceProvider({
-      walletBalanceProviderAddress,
+  private getWalletBalanceService(marketData: MarketDataType) {
+    const provider = this.getProvider(marketData.chainId);
+    return new WalletBalanceProvider({
+      walletBalanceProviderAddress: marketData.addresses.WALLET_BALANCE_PROVIDER,
       provider,
     });
   }
 
-  async getGovernanceTokensBalance({ user }: BatchBalanceOfArgs): Promise<GovernanceTokensBalance> {
-    const balances = await this.walletBalanceService.batchBalanceOf(
+  async getGovernanceTokensBalance(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<GovernanceTokensBalance> {
+    const walletBalanceService = this.getWalletBalanceService(marketData);
+    const balances = await walletBalanceService.batchBalanceOf(
       [user],
       [
         governanceConfig.aaveTokenAddress,
@@ -54,23 +46,20 @@ export class WalletBalanceService implements Hashable {
     };
   }
 
-  async getPoolTokensBalances({
-    user,
-    lendingPoolAddressProvider,
-  }: GetPoolWalletBalances): Promise<UserPoolTokensBalances[]> {
+  async getPoolTokensBalances(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<UserPoolTokensBalances[]> {
+    const walletBalanceService = this.getWalletBalanceService(marketData);
     const { 0: tokenAddresses, 1: balances } =
-      await this.walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
+      await walletBalanceService.getUserWalletBalancesForLendingPoolProvider(
         user,
-        lendingPoolAddressProvider
+        marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
       );
     const mappedBalances = tokenAddresses.map((address, ix) => ({
       address: address.toLowerCase(),
       amount: balances[ix].toString(),
     }));
     return mappedBalances;
-  }
-
-  public toHash() {
-    return this.chainId.toString();
   }
 }

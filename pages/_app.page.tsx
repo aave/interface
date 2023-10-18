@@ -27,6 +27,10 @@ import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
+const SwitchModal = dynamic(() =>
+  import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
+);
+
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
@@ -148,6 +152,7 @@ export default function MyApp(props: MyAppProps) {
                               <FaucetModal />
                               <MigrateV3Modal />
                               <TransactionEventHandler />
+                              <SwitchModal />
                             </SharedDependenciesProvider>
                           </GasStationProvider>
                         </AppDataProvider>

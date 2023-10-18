@@ -20,7 +20,6 @@ import {
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -44,15 +43,17 @@ const head = [
 ];
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig, currentChainId, currentMarketData, currentMarket } =
-    useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const {
     user,
     reserves,
     marketReferencePriceInUsd,
     loading: loadingReserves,
   } = useAppDataContext();
-  const { walletBalances, loading } = useWalletBalances();
+  const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

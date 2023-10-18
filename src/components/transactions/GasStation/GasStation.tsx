@@ -1,4 +1,5 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { normalize } from '@aave/math-utils';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Box, CircularProgress, Stack } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
@@ -7,12 +8,14 @@ import React, { ReactNode } from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { Warning } from 'src/components/primitives/Warning';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import invariant from 'tiny-invariant';
 
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { GasPriceData } from '../../../hooks/useGetGasPrices';
+import { GasPriceData, useGasPrice } from '../../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { GasOption } from './GasStationProvider';
 
@@ -21,6 +24,7 @@ export interface GasStationProps {
   skipLoad?: boolean;
   disabled?: boolean;
   rightComponent?: ReactNode;
+  chainId?: number;
 }
 
 export const getGasCosts = (
@@ -42,28 +46,36 @@ export const GasStation: React.FC<GasStationProps> = ({
   skipLoad,
   disabled,
   rightComponent,
+  chainId,
 }) => {
-  const {
-    state,
-    gasPriceData: { data },
-  } = useGasStation();
-
-  const { walletBalances } = useWalletBalances();
+  const { state } = useGasStation();
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const selectedChainId = chainId ?? currentChainId;
+  // TODO: find a better way to query base token price instead of using a random market.
+  const marketOnNetwork = Object.values(marketsData).find(
+    (elem) => elem.chainId === selectedChainId
+  );
+  invariant(marketOnNetwork, 'No market for this network');
+  const { data: poolReserves } = usePoolReservesHumanized(marketOnNetwork);
+  const { data: gasPrice } = useGasPrice(selectedChainId);
+  const { walletBalances } = useWalletBalances(marketOnNetwork);
   const nativeBalanceUSD = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD;
-
-  const { reserves } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const { name, baseAssetSymbol, wrappedBaseAssetSymbol } = currentNetworkConfig;
+  const { name, baseAssetSymbol } = getNetworkConfig(selectedChainId);
 
   const { loadingTxns } = useModalContext();
 
-  const wrappedAsset = reserves.find(
-    (token) => token.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
-  );
-
   const totalGasCostsUsd =
-    data && wrappedAsset
-      ? getGasCosts(gasLimit, state.gasOption, state.customGas, data, wrappedAsset.priceInUSD)
+    gasPrice && poolReserves?.baseCurrencyData
+      ? getGasCosts(
+          gasLimit,
+          state.gasOption,
+          state.customGas,
+          gasPrice,
+          normalize(
+            poolReserves?.baseCurrencyData.networkBaseTokenPriceInUsd,
+            poolReserves?.baseCurrencyData.networkBaseTokenPriceDecimals
+          )
+        )
       : undefined;
 
   return (

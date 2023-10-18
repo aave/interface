@@ -100,7 +100,7 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
   const underlyingAssetMap: Record<string, IconMapInterface> = {
     '0xdd974d5c2e2928dea5f71b9825b8b646686bd200': {
       name: 'Kyber Legacy',
-      symbol: 'KNC',
+      symbol: 'KNCL',
       iconSymbol: 'KNCL',
     },
     '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {

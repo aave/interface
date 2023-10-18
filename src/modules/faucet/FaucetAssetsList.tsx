@@ -14,18 +14,19 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { FaucetItemLoader } from './FaucetItemLoader';
 import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
-  const { walletBalances } = useWalletBalances();
   const { openFaucet } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { currentMarket } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { walletBalances } = useWalletBalances(currentMarketData);
 
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

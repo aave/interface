@@ -1,11 +1,8 @@
 import { FeeData } from '@ethersproject/abstract-provider';
-import { useState } from 'react';
+import { useQueries } from '@tanstack/react-query';
 import { GasOption } from 'src/components/transactions/GasStation/GasStationProvider';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
-import { useModalContext } from './useModal';
-import { usePolling } from './usePolling';
-import { useProtocolDataContext } from './useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { QueryKeys } from 'src/ui-config/queries';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -41,41 +38,20 @@ export const rawToGasPriceData = (feeData: FeeData): GasPriceData => {
   };
 };
 
-const useGetGasPrices = (): GetGasPricesHook => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [data, setData] = useState<GasPriceData | null>();
-  const { type } = useModalContext();
-  const { currentChainId, jsonRpcProvider } = useProtocolDataContext();
-  const { connected } = useWeb3Context();
-
-  const web3Request = async () => {
-    const feeData = await jsonRpcProvider().getFeeData();
-    setData(rawToGasPriceData(feeData));
-    setError(false);
-  };
-
-  const estimateGasPrice = async () => {
-    let apiRequestError;
-
-    try {
-      await web3Request();
-    } catch (web3ProviderError) {
-      // Only output errors if all estimation methods fails
-      console.error('Gas price retrieval from API failed', apiRequestError);
-      console.error('Gas price retrieval from Web3 provider failed.', web3ProviderError);
-      setError(true);
-    }
-    setLoading(false);
-  };
-
-  usePolling(estimateGasPrice, POLLING_INTERVAL, type === undefined, [
-    connected,
-    currentChainId,
-    type,
-  ]);
-
-  return { loading, data, error };
+export const useGasPrices = (chainIds: number[]) => {
+  const jsonRpcProvider = useRootStore((store) => store.jsonRpcProvider);
+  return useQueries({
+    queries: chainIds.map((chainId) => ({
+      queryKey: [QueryKeys.GAS_PRICES, chainId],
+      queryFn: () =>
+        jsonRpcProvider(chainId)
+          .getFeeData()
+          .then((feeData) => rawToGasPriceData(feeData)),
+      refetchInterval: POLLING_INTERVAL,
+    })),
+  });
 };
 
-export default useGetGasPrices;
+export const useGasPrice = (chainId: number) => {
+  return useGasPrices([chainId])[0];
+};

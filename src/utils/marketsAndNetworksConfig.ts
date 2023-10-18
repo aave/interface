@@ -156,6 +156,7 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
   debtSwitch: (data: MarketDataType) => data.enabledFeatures?.debtSwitch,
   withdrawAndSwitch: (data: MarketDataType) => data.enabledFeatures?.withdrawAndSwitch,
+  switch: (data: MarketDataType) => data.enabledFeatures?.switch,
 };
 
 const providers: { [network: string]: ethersProviders.Provider } = {};
