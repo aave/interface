@@ -24,7 +24,7 @@ export const TransactionEventHandler = () => {
             tokenAmount: tx.amount,
             assetName: tx.assetName,
             asset: tx.asset,
-            market: tx.market,
+            market: tx.market === null ? undefined : tx.market,
             txHash: txHash,
             proposalId: tx.proposalId,
             support: tx.support,
@@ -33,6 +33,8 @@ export const TransactionEventHandler = () => {
             outAsset: tx.outAsset,
             outAmount: tx.outAmount,
             outAssetName: tx.outAssetName,
+            amountUsd: tx.amountUsd,
+            outAmountUsd: tx.outAmountUsd,
           });
 
           // update local state
