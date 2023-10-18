@@ -49,7 +49,7 @@ export const SwitchModalContent = ({
   const [slippage, setSlippage] = useState('0.001');
   const [inputAmount, setInputAmount] = useState('');
   const [debounceInputAmount, setDebounceInputAmount] = useState('');
-  const { mainTxState: switchTxState, gasLimit, txError } = useModalContext();
+  const { mainTxState: switchTxState, gasLimit, txError, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
   const [selectedInputReserve, setSelectedInputReserve] = useState(() => {
     const defaultReserve = reserves.find((elem) => elem.underlyingAsset === defaultAsset);
@@ -74,6 +74,7 @@ export const SwitchModalContent = ({
   const isWrongNetwork = useIsWrongNetwork(selectedChainId);
 
   const handleInputChange = (value: string) => {
+    setTxError(undefined);
     if (value === '-1') {
       setInputAmount(selectedInputReserve.balance);
       debouncedInputChange(selectedInputReserve.balance);
@@ -131,6 +132,22 @@ export const SwitchModalContent = ({
     setSelectedOutputReserve(fromReserve);
     setInputAmount(toInput);
     setDebounceInputAmount(toInput);
+    setTxError(undefined);
+  };
+
+  const handleSelectedInputReserve = (reserve: ReserveWithBalance) => {
+    setTxError(undefined);
+    setSelectedInputReserve(reserve);
+  };
+
+  const handleSelectedOutputReserve = (reserve: ReserveWithBalance) => {
+    setTxError(undefined);
+    setSelectedOutputReserve(reserve);
+  };
+
+  const handleSelectedNetworkChange = (value: number) => {
+    setTxError(undefined);
+    setSelectedChainId(value);
   };
 
   return (
@@ -149,7 +166,7 @@ export const SwitchModalContent = ({
         <NetworkSelector
           networks={supportedNetworks}
           selectedNetwork={selectedChainId}
-          setSelectedNetwork={setSelectedChainId}
+          setSelectedNetwork={handleSelectedNetworkChange}
         />
         <SwitchSlippageSelector slippage={slippage} setSlippage={setSlippage} />
       </Box>
@@ -175,7 +192,7 @@ export const SwitchModalContent = ({
               onChange={handleInputChange}
               usdValue={sellRates?.srcUSD || '0'}
               symbol={selectedInputReserve?.symbol}
-              onSelect={setSelectedInputReserve}
+              onSelect={handleSelectedInputReserve}
               inputTitle={' '}
               sx={{ width: '100%' }}
             />
@@ -209,7 +226,7 @@ export const SwitchModalContent = ({
                 ratesLoading &&
                 !ratesError
               }
-              onSelect={setSelectedOutputReserve}
+              onSelect={handleSelectedOutputReserve}
               disableInput={true}
               inputTitle={' '}
               sx={{ width: '100%' }}

@@ -13,6 +13,7 @@ export type ExplorerLinkBuilderConfig = {
 
 export type NetworkConfig = {
   name: string;
+  displayName?: string;
   privateJsonRPCUrl?: string; // private rpc will be used for rpc queries inside the client. normally has private api key and better rate
   privateJsonRPCWSUrl?: string;
   publicJsonRPCUrl: readonly string[]; // public rpc used if not private found, and used to add specific network to wallets if user don't have them. Normally with slow rates
@@ -112,6 +113,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
+    displayName: 'Polygon',
     privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://polygon-rpc.com',

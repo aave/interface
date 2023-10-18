@@ -10,14 +10,10 @@ import {
 } from '@mui/material';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 
-interface Network {
-  name: string;
-  chainId: number;
-  networkLogoPath: string;
-}
+import { SupportedNetworkWithChainId } from './common';
 
 interface NetworkSelectorProps {
-  networks: Network[];
+  networks: SupportedNetworkWithChainId[];
   selectedNetwork: number;
   setSelectedNetwork: (value: number) => void;
 }
@@ -66,7 +62,7 @@ export const NetworkSelector = ({
                 }}
               />
               <Typography variant="subheader2" color="#4D6EEE">
-                {network.name}
+                {network.displayName || network.name}
               </Typography>
             </Box>
           </MenuItem>

@@ -88,9 +88,9 @@ export const useParaswapSellTxParams = (chainId: number) => {
       );
       return {
         ...response,
-        gasLimit: BigNumber.from(response.gas || '10000000'),
+        gasLimit: BigNumber.from(response.gas || '400000'),
         gasPrice: BigNumber.from(response.gasPrice),
-        value: BigNumber.from(response.value || '0'),
+        value: BigNumber.from(response.value),
       };
     },
   });

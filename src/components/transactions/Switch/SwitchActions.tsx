@@ -152,6 +152,12 @@ export const SwitchActions = ({
           });
           queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         } catch (error) {
+          const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: response.hash,
+            loading: false,
+          });
           addTransaction(response.hash, {
             txState: 'failed',
             ...txData,
