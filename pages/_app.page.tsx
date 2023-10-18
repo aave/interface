@@ -15,7 +15,6 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { SwitchModal } from 'src/components/transactions/Switch/SwitchModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
@@ -27,6 +26,10 @@ import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProv
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+
+const SwitchModal = dynamic(() =>
+  import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
+);
 
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
