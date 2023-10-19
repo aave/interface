@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { selectSuccessfulTransactions } from 'src/store/transactionsSelectors';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export const TransactionEventHandler = () => {
@@ -14,10 +15,10 @@ export const TransactionEventHandler = () => {
   useEffect(() => {
     Object.keys(successfulTransactions).forEach((chainId) => {
       const chainIdNumber = +chainId;
+      const networkConfig = getNetworkConfig(chainIdNumber);
       Object.keys(successfulTransactions[chainIdNumber]).forEach((txHash) => {
         if (!postedTransactions[chainIdNumber]?.includes(txHash)) {
           const tx = successfulTransactions[chainIdNumber][txHash];
-
           // const event = actionToEvent(tx.action);
           trackEvent(GENERAL.TRANSACTION, {
             transactionType: tx.action,
@@ -35,6 +36,8 @@ export const TransactionEventHandler = () => {
             outAssetName: tx.outAssetName,
             amountUsd: tx.amountUsd,
             outAmountUsd: tx.outAmountUsd,
+            chainId: chainIdNumber,
+            chainName: networkConfig.displayName || networkConfig.name,
           });
 
           // update local state
