@@ -142,7 +142,6 @@ export const SwitchActions = ({
             },
             {
               chainId,
-              market: null,
             }
           );
           setMainTxState({
