@@ -68879,7 +68879,8 @@ var marketsData = {
       collateralRepay: true,
       incentives: true,
       withdrawAndSwitch: true,
-      debtSwitch: true
+      debtSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3",
     addresses: {
@@ -68911,7 +68912,8 @@ var marketsData = {
       liquiditySwap: true,
       collateralRepay: true,
       incentives: true,
-      debtSwitch: true
+      debtSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
@@ -69004,7 +69006,8 @@ var marketsData = {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
-      debtSwitch: true
+      debtSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche",
     addresses: {
@@ -69052,7 +69055,8 @@ var marketsData = {
       liquiditySwap: true,
       withdrawAndSwitch: true,
       collateralRepay: true,
-      debtSwitch: true
+      debtSwitch: true,
+      switch: true
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
@@ -69081,7 +69085,8 @@ var marketsData = {
       liquiditySwap: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwitch: true
+      withdrawAndSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum",
     addresses: {
@@ -69132,7 +69137,8 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwitch: true
+      withdrawAndSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche",
     addresses: {
@@ -69283,7 +69289,8 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true,
       debtSwitch: true,
-      withdrawAndSwitch: true
+      withdrawAndSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism",
     addresses: {
@@ -69310,7 +69317,8 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
       debtSwitch: true,
-      withdrawAndSwitch: true
+      withdrawAndSwitch: true,
+      switch: true
     },
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon",
     addresses: {
@@ -69492,6 +69500,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.polygon]: {
     name: "Polygon POS",
+    displayName: "Polygon",
     privateJsonRPCUrl: "https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://polygon-rpc.com",
