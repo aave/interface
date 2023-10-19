@@ -157,10 +157,16 @@ export const SwitchActions = ({
             txHash: response.hash,
             loading: false,
           });
-          addTransaction(response.hash, {
-            txState: 'failed',
-            ...txData,
-          });
+          addTransaction(
+            response.hash,
+            {
+              txState: 'failed',
+              ...txData,
+            },
+            {
+              chainId,
+            }
+          );
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
