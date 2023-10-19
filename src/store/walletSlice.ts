@@ -71,7 +71,7 @@ export const createWalletSlice: StateCreator<
   },
   maxApprovalPreference: false,
   setMaxApprovalPreference(maxApproval) {
-    set({ maxApprovalPreference: maxApproval })
+    set({ maxApprovalPreference: maxApproval });
   },
   refreshWalletApprovalMethod: () => {
     const account = get().account;

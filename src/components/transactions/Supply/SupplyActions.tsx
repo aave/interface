@@ -154,8 +154,8 @@ export const SupplyActions = React.memo(
     }, [permitAvailable, walletApprovalMethodPreference]);
 
     useEffect(() => {
-      setUseMaxApproval(maxApprovalPreference)
-    }, [maxApprovalPreference])
+      setUseMaxApproval(maxApprovalPreference);
+    }, [maxApprovalPreference]);
 
     const approval = async () => {
       try {
@@ -176,7 +176,12 @@ export const SupplyActions = React.memo(
               success: true,
             });
           } else {
-            let approveTxData = generateApproval({ ...approvedAmount, amount: useMaxApproval ? MAX_UINT_AMOUNT : parseUnits(amountToSupply, decimals).toString() });
+            let approveTxData = generateApproval({
+              ...approvedAmount,
+              amount: useMaxApproval
+                ? MAX_UINT_AMOUNT
+                : parseUnits(amountToSupply, decimals).toString(),
+            });
             setApprovalTxState({ ...approvalTxState, loading: true });
             approveTxData = await estimateGasLimit(approveTxData);
             const response = await sendTx(approveTxData);
@@ -190,7 +195,9 @@ export const SupplyActions = React.memo(
               action: ProtocolAction.approval,
               txState: 'success',
               asset: poolAddress,
-              amount: useMaxApproval ? MAX_UINT_AMOUNT : parseUnits(amountToSupply, decimals).toString(),
+              amount: useMaxApproval
+                ? MAX_UINT_AMOUNT
+                : parseUnits(amountToSupply, decimals).toString(),
               assetName: symbol,
             });
             fetchApprovedAmount(true);

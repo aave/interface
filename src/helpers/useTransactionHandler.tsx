@@ -74,7 +74,7 @@ export const useTransactionHandler = ({
     signStakingApproval,
     currentMarketData,
     currentAccount,
-    repayWithoutMaxApproval
+    repayWithoutMaxApproval,
   ] = useRootStore((state) => [
     state.signERC20Approval,
     state.walletApprovalMethodPreference,
@@ -85,7 +85,7 @@ export const useTransactionHandler = ({
     state.signStakingApproval,
     state.currentMarketData,
     state.account,
-    state.repayWithoutMaxApproval
+    state.repayWithoutMaxApproval,
   ]);
 
   const [useMaxApproval, setUseMaxApproval] = useState(false);
@@ -102,8 +102,8 @@ export const useTransactionHandler = ({
   }, []);
 
   useEffect(() => {
-    setUseMaxApproval(maxApprovalPreference)
-  }, [maxApprovalPreference])
+    setUseMaxApproval(maxApprovalPreference);
+  }, [maxApprovalPreference]);
   /**
    * Executes the transactions and handles loading & error states.
    * @param fn
@@ -243,15 +243,19 @@ export const useTransactionHandler = ({
       } else {
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
-          if (protocolAction === ProtocolAction.repay && !useMaxApproval && approvals && approvalTxes[0].txType === eEthereumTxType.ERC20_APPROVAL) {
-            let txs = approvalTxes;
-            let approvalTx = await repayWithoutMaxApproval({
+          if (
+            protocolAction === ProtocolAction.repay &&
+            !useMaxApproval &&
+            approvals &&
+            approvalTxes[0].txType === eEthereumTxType.ERC20_APPROVAL
+          ) {
+            const txs = approvalTxes;
+            const approvalTx = await repayWithoutMaxApproval({
               user: currentAccount,
               token: approvals[0].underlyingAsset,
               amount: approvals[0].amount,
-              spender: currentMarketData.addresses.LENDING_POOL
-
-            })
+              spender: currentMarketData.addresses.LENDING_POOL,
+            });
             txs[0] = approvalTx;
             setApprovalTxes(txs);
           }
@@ -457,7 +461,7 @@ export const useTransactionHandler = ({
       setApprovalTxes(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference,useMaxApproval]);
+  }, [skip, ...deps, tryPermit, walletApprovalMethodPreference, useMaxApproval]);
 
   return {
     approval,

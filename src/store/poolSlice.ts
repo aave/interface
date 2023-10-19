@@ -41,7 +41,7 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
-import { splitSignature , parseUnits } from 'ethers/lib/utils';
+import { parseUnits, splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
@@ -95,10 +95,10 @@ export interface PoolSlice {
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repayWithoutMaxApproval: (args: {
-    user: string,
-    token: string,
-    amount: string,
-    spender: string
+    user: string;
+    token: string;
+    amount: string;
+    spender: string;
   }) => Promise<EthereumTransactionTypeExtended>;
   repayWithPermit: (
     args: RepayActionProps & {
@@ -587,7 +587,7 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    repayWithoutMaxApproval: async({ user, token, amount, spender }) => {
+    repayWithoutMaxApproval: async ({ user, token, amount, spender }) => {
       const pool = getCorrectPool();
       const { getTokenData } = pool.erc20Service;
       const { decimals } = await getTokenData(token);
@@ -596,9 +596,8 @@ export const createPoolSlice: StateCreator<
         user,
         token,
         amount: parseUnits(amount, decimals).toString(),
-        spender
-      })
-
+        spender,
+      });
     },
     repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
       // Better to get rid of direct assert

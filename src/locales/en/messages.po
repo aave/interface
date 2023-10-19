@@ -248,6 +248,10 @@ msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
+msgid "Approve Maximum"
+msgstr "Approve Maximum"
+
+#: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Approve with"
 msgstr "Approve with"
 
