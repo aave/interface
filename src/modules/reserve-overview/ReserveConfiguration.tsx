@@ -7,7 +7,10 @@ import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
-import { BUSDOffBoardingWarning } from 'src/components/Warnings/BUSDOffBoardingWarning';
+import {
+  AssetsBeingOffboarded,
+  OffboardingWarning,
+} from 'src/components/Warnings/OffboardingWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -38,10 +41,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
   const trackEvent = useRootStore((store) => store.trackEvent);
 
+  const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+
   return (
     <>
       <Box>
-        {reserve.isFrozen && reserve.symbol != 'BUSD' ? (
+        {reserve.isFrozen && !offboardingDiscussion ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
@@ -53,9 +58,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </Link>
             </Trans>
           </Warning>
-        ) : reserve.symbol === 'BUSD' ? (
+        ) : offboardingDiscussion ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-            <BUSDOffBoardingWarning />
+            <OffboardingWarning discussionLink={offboardingDiscussion} />
           </Warning>
         ) : (
           reserve.symbol == 'AMPL' && (

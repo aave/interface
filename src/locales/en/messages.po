@@ -2475,7 +2475,7 @@ msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
 
-#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+#: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 

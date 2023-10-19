@@ -45,7 +45,14 @@ export const TokenLinkDropdown = ({
   if (!poolReserve) {
     return null;
   }
-  const showDebtTokenHeader = poolReserve.borrowingEnabled || poolReserve.stableBorrowRateEnabled;
+
+  const showVariableDebtToken =
+    poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0;
+
+  const showStableDebtToken =
+    poolReserve.stableBorrowRateEnabled || Number(poolReserve.totalStableDebt) > 0;
+
+  const showDebtTokenHeader = showVariableDebtToken || showStableDebtToken;
 
   return (
     <>
@@ -147,7 +154,7 @@ export const TokenLinkDropdown = ({
             </Typography>
           </Box>
         )}
-        {poolReserve.borrowingEnabled && (
+        {showVariableDebtToken && (
           <MenuItem
             component="a"
             href={currentNetworkConfig.explorerLinkBuilder({
@@ -171,7 +178,7 @@ export const TokenLinkDropdown = ({
             </Typography>
           </MenuItem>
         )}
-        {poolReserve.stableBorrowRateEnabled && (
+        {showStableDebtToken && (
           <MenuItem
             component="a"
             href={currentNetworkConfig.explorerLinkBuilder({

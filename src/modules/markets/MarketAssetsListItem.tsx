@@ -1,14 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
+import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -25,10 +25,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  let showStableBorrowRate = Number(reserve.totalStableDebtUSD) > 0;
-  if (currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'TUSD') {
-    showStableBorrowRate = false;
-  }
+  const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+
   return (
     <ListItem
       px={6}
@@ -70,7 +68,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}
         {reserve.symbol === 'renFIL' && <RenFILToolTip />}
-        {reserve.symbol === 'BUSD' && <BUSDOffBoardingTooltip />}
+        {offboardingDiscussion && <OffboardingTooltip discussionLink={offboardingDiscussion} />}
       </ListColumn>
 
       <ListColumn>
@@ -114,7 +112,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={showStableBorrowRate ? reserve.stableBorrowAPY : '-1'}
+          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"

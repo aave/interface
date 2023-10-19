@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
-import { BUSDOffBoardingTooltip } from 'src/components/infoTooltips/BUSDOffboardingToolTip';
+import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
+import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
@@ -46,7 +47,8 @@ export const ListMobileItemWrapper = ({
     const showRenFilTooltip = frozen && symbol === 'renFIL';
     const showAmplTooltip = !frozen && symbol === 'AMPL';
     const showstETHTooltip = symbol == 'stETH';
-    const showBUSDOffBoardingTooltip = symbol == 'BUSD';
+    const offboardingDiscussion =
+      currentMarket && symbol ? AssetsBeingOffboarded[currentMarket]?.[symbol] : '';
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
     return (
       <>
@@ -54,7 +56,7 @@ export const ListMobileItemWrapper = ({
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}
         {showstETHTooltip && <StETHCollateralToolTip />}
-        {showBUSDOffBoardingTooltip && <BUSDOffBoardingTooltip />}
+        {offboardingDiscussion && <OffboardingTooltip discussionLink={offboardingDiscussion} />}
         {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
         )}
