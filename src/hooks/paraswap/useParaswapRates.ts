@@ -1,4 +1,5 @@
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
+import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
 import { QueryKeys } from 'src/ui-config/queries';
@@ -13,6 +14,7 @@ type ParaSwapSellRatesParams = {
   destDecimals: number;
   chainId: number;
   user: string;
+  options?: RateOptions;
 };
 
 export const useParaswapSellRates = ({
@@ -23,6 +25,7 @@ export const useParaswapSellRates = ({
   destToken,
   destDecimals,
   user,
+  options = {},
 }: ParaSwapSellRatesParams) => {
   return useQuery<OptimalRate | undefined>({
     queryFn: () => {
@@ -35,6 +38,7 @@ export const useParaswapSellRates = ({
         destDecimals,
         userAddress: user ? user : constants.AddressZero,
         side: SwapSide.SELL,
+        options,
       });
     },
     queryKey: [QueryKeys.PARASWAP_RATES, chainId, amount, srcToken, destToken, user],
@@ -54,6 +58,7 @@ type UseParaswapSellTxParams = {
   maxSlippage: number;
   permit?: string;
   deadline?: string;
+  partner?: string;
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
@@ -69,6 +74,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
       maxSlippage,
       permit,
       deadline,
+      partner,
     }: UseParaswapSellTxParams) => {
       const paraswap = getParaswap(chainId);
       const response = await paraswap.buildTx(
@@ -82,7 +88,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
           priceRoute: route,
           slippage: maxSlippage,
           takeSurplus: true,
-          partner: 'aave-widget',
+          partner,
           partnerAddress: FEE_CLAIMER_ADDRESS,
           permit,
           deadline,

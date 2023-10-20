@@ -105,6 +105,9 @@ export const SwitchModalContent = ({
     destToken: selectedOutputReserve.underlyingAsset,
     destDecimals: selectedOutputReserve.decimals,
     user,
+    options: {
+      partner: 'aave-widget',
+    },
   });
 
   if (sellRates && switchTxState.success) {
