@@ -38,7 +38,10 @@ export const useParaswapSellRates = ({
         destDecimals,
         userAddress: user ? user : constants.AddressZero,
         side: SwapSide.SELL,
-        options,
+        options: {
+          ...options,
+          excludeDEXS: ['ParaSwapPool', 'ParaSwapLimitOrders'],
+        },
       });
     },
     queryKey: [QueryKeys.PARASWAP_RATES, chainId, amount, srcToken, destToken, user],
