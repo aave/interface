@@ -1,24 +1,36 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ReservesDataHumanized } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
+import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
-import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
-import { usePoolTokensBalance } from '../pool/usePoolTokensBalance';
-import { useProtocolDataContext } from '../useProtocolDataContext';
+import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
+import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
 
 export interface WalletBalance {
   address: string;
   amount: string;
 }
 
-export const useWalletBalances = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const { data: balances, isLoading: balancesLoading } = usePoolTokensBalance();
-  const [reserves, baseCurrencyData] = useRootStore((state) => [
-    selectCurrentReserves(state),
-    selectCurrentBaseCurrencyData(state),
-  ]);
+type FormatAggregatedBalanceParams = {
+  reservesHumanized?: ReservesDataHumanized;
+  balances?: UserPoolTokensBalances[];
+  marketData: MarketDataType;
+};
+
+const formatAggregatedBalance = ({
+  reservesHumanized,
+  balances,
+  marketData,
+}: FormatAggregatedBalanceParams) => {
+  const reserves = reservesHumanized?.reservesData || [];
+  const baseCurrencyData = reservesHumanized?.baseCurrencyData || {
+    marketReferenceCurrencyDecimals: 0,
+    marketReferenceCurrencyPriceInUsd: '0',
+    networkBaseTokenPriceInUsd: '0',
+    networkBaseTokenPriceDecimals: 0,
+  };
 
   const walletBalances = balances ?? [];
   // process data
@@ -28,7 +40,7 @@ export const useWalletBalances = () => {
       if (reserve.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
         return (
           poolReserve.symbol.toLowerCase() ===
-          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
+          networkConfigs[marketData.chainId].wrappedBaseAssetSymbol?.toLowerCase()
         );
       }
       return poolReserve.underlyingAsset.toLowerCase() === reserve.address;
@@ -54,6 +66,34 @@ export const useWalletBalances = () => {
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
-    loading: balancesLoading || !reserves.length,
+  };
+};
+
+export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
+  const user = useRootStore((store) => store.account);
+  const tokensBalanceQueries = usePoolsTokensBalance(marketDatas, user);
+  const poolsBalancesQueries = usePoolsReservesHumanized(marketDatas);
+  const isLoading =
+    tokensBalanceQueries.find((elem) => elem.isLoading) ||
+    poolsBalancesQueries.find((elem) => elem.isLoading);
+  const walletBalances = poolsBalancesQueries.map((query, index) =>
+    formatAggregatedBalance({
+      reservesHumanized: query.data,
+      balances: tokensBalanceQueries[index]?.data,
+      marketData: marketDatas[index],
+    })
+  );
+  return {
+    walletBalances,
+    isLoading,
+  };
+};
+
+export const useWalletBalances = (marketData: MarketDataType) => {
+  const { walletBalances, isLoading } = usePoolsWalletBalances([marketData]);
+  return {
+    walletBalances: walletBalances[0].walletBalances,
+    hasEmptyWallet: walletBalances[0].hasEmptyWallet,
+    loading: isLoading,
   };
 };

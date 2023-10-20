@@ -1,6 +1,6 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
@@ -10,6 +10,10 @@ import { CustomProposalType } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import ProposalPage from './[proposalId].governance';
+
+const GovVoteModal = dynamic(() =>
+  import('src/components/transactions/GovVote/GovVoteModal').then((module) => module.GovVoteModal)
+);
 
 export default function DynamicProposal() {
   const router = useRouter();

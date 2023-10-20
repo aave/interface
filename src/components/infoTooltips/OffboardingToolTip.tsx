@@ -2,14 +2,14 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { Box, SvgIcon } from '@mui/material';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
-import { BUSDOffBoardingWarning } from '../Warnings/BUSDOffBoardingWarning';
+import { OffboardingWarning } from '../Warnings/OffboardingWarning';
 
-export const BUSDOffBoardingTooltip = () => {
+export const OffboardingTooltip = ({ discussionLink }: { discussionLink: string }) => {
   return (
     <ContentWithTooltip
       tooltipContent={
         <Box>
-          <BUSDOffBoardingWarning />
+          <OffboardingWarning discussionLink={discussionLink} />
         </Box>
       }
     >
