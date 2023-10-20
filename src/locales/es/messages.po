@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-19 00:15\n"
+"PO-Revision-Date: 2023-10-20 00:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2480,7 +2480,7 @@ msgstr "Este activo está congelado debido a una decisión del Gobierno del Prot
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "Este activo está congelado debido a una decisión de la comunidad de Aave. <0>Más información</0>"
 
-#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+#: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "Está previsto que este activo se desvincule debido a una decisión del Gobierno del Protocolo Aave. <0>Más detalles</0>"
 
