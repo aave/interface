@@ -78,7 +78,7 @@ export const getParaswap = (chainId: ChainId) => {
   throw new Error('chain not supported');
 };
 
-const getFeeClaimerAddress = (chainId: ChainId) => {
+export const getFeeClaimerAddress = (chainId: ChainId) => {
   if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
 
   return MiscEthereum.PARASWAP_FEE_CLAIMER;

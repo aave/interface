@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
 import { QueryKeys } from 'src/ui-config/queries';
 
-import { getParaswap } from './common';
+import { getFeeClaimerAddress, getParaswap } from './common';
 
 type ParaSwapSellRatesParams = {
   amount: string;
@@ -57,6 +57,7 @@ type UseParaswapSellTxParams = {
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
+  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
   return useMutation<PopulatedTransaction, unknown, UseParaswapSellTxParams>({
     mutationFn: async ({
       srcToken,
@@ -80,7 +81,9 @@ export const useParaswapSellTxParams = (chainId: number) => {
           userAddress: user,
           priceRoute: route,
           slippage: maxSlippage,
-          positiveSlippageToUser: true,
+          takeSurplus: true,
+          partner: 'aave-widget',
+          partnerAddress: FEE_CLAIMER_ADDRESS,
           permit,
           deadline,
         },
