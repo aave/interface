@@ -1,9 +1,10 @@
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
+import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
 import { QueryKeys } from 'src/ui-config/queries';
 
-import { getParaswap } from './common';
+import { getFeeClaimerAddress, getParaswap } from './common';
 
 type ParaSwapSellRatesParams = {
   amount: string;
@@ -13,6 +14,7 @@ type ParaSwapSellRatesParams = {
   destDecimals: number;
   chainId: number;
   user: string;
+  options?: RateOptions;
 };
 
 export const useParaswapSellRates = ({
@@ -23,6 +25,7 @@ export const useParaswapSellRates = ({
   destToken,
   destDecimals,
   user,
+  options = {},
 }: ParaSwapSellRatesParams) => {
   return useQuery<OptimalRate | undefined>({
     queryFn: () => {
@@ -35,6 +38,10 @@ export const useParaswapSellRates = ({
         destDecimals,
         userAddress: user ? user : constants.AddressZero,
         side: SwapSide.SELL,
+        options: {
+          ...options,
+          excludeDEXS: ['ParaSwapPool', 'ParaSwapLimitOrders'],
+        },
       });
     },
     queryKey: [QueryKeys.PARASWAP_RATES, chainId, amount, srcToken, destToken, user],
@@ -54,9 +61,11 @@ type UseParaswapSellTxParams = {
   maxSlippage: number;
   permit?: string;
   deadline?: string;
+  partner?: string;
 };
 
 export const useParaswapSellTxParams = (chainId: number) => {
+  const FEE_CLAIMER_ADDRESS = getFeeClaimerAddress(chainId);
   return useMutation<PopulatedTransaction, unknown, UseParaswapSellTxParams>({
     mutationFn: async ({
       srcToken,
@@ -68,6 +77,7 @@ export const useParaswapSellTxParams = (chainId: number) => {
       maxSlippage,
       permit,
       deadline,
+      partner,
     }: UseParaswapSellTxParams) => {
       const paraswap = getParaswap(chainId);
       const response = await paraswap.buildTx(
@@ -80,7 +90,9 @@ export const useParaswapSellTxParams = (chainId: number) => {
           userAddress: user,
           priceRoute: route,
           slippage: maxSlippage,
-          positiveSlippageToUser: true,
+          takeSurplus: true,
+          partner,
+          partnerAddress: FEE_CLAIMER_ADDRESS,
           permit,
           deadline,
         },
