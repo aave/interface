@@ -104,7 +104,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
           >
             <Trans>of</Trans>
           </Typography>
-          <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketMaxCapacity.toString()} />
+          <ReserveSubheader value={ghoReserveData.aaveFacilitatorRemainingCapacity.toString()} />
         </Box>
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
