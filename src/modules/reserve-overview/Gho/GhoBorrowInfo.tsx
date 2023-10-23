@@ -144,7 +144,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
               <Trans>of</Trans>
             </Typography>
             <FormattedNumber
-              value={ghoReserveData.aaveFacilitatorBucketMaxCapacity}
+              value={ghoReserveData.aaveFacilitatorRemainingCapacity}
               variant="main16"
             />
           </Box>
