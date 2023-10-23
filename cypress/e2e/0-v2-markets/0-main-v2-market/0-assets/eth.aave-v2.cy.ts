@@ -6,6 +6,7 @@ import {
   borrow,
   changeCollateral,
   changeCollateralNegative,
+  repay,
   supply,
   withdraw,
 } from '../../../../support/steps/main.steps';
@@ -46,7 +47,7 @@ const testData = {
     repay: {
       asset: assets.aaveMarket.ETH,
       apyType: constants.apyType.variable,
-      amount: 0.03,
+      amount: 0.02,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
@@ -54,13 +55,13 @@ const testData = {
       {
         asset: assets.aaveMarket.ETH,
         isCollateral: true,
-        amount: 0.02,
+        amount: 0.01,
         hasApproval: false,
       },
       {
         asset: assets.aaveMarket.ETH,
         isCollateral: true,
-        amount: 0.02,
+        amount: 0.01,
         hasApproval: true,
         forWrapped: true,
       },
@@ -80,7 +81,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.aaveMarket.ETH.shortName,
         wrapped: assets.aaveMarket.ETH.wrapped,
-        amount: 0.05,
+        amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
     ],
@@ -99,7 +100,7 @@ describe('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
   });
   borrow(testData.testCases.borrow, skipTestState, true);
   changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
-  // repay(testData.testCases.repay, skipTestState, false);
+  repay(testData.testCases.repay, skipTestState, false);
   testData.testCases.withdraw.forEach((withdrawCase) => {
     withdraw(withdrawCase, skipTestState, false);
   });
