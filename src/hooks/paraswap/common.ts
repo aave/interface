@@ -78,7 +78,7 @@ export const getParaswap = (chainId: ChainId) => {
   throw new Error('chain not supported');
 };
 
-const getFeeClaimerAddress = (chainId: ChainId) => {
+export const getFeeClaimerAddress = (chainId: ChainId) => {
   if (ChainId.base === chainId) return MiscBase.PARASWAP_FEE_CLAIMER;
 
   return MiscEthereum.PARASWAP_FEE_CLAIMER;
@@ -350,7 +350,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
-          positiveSlippageToUser: false,
+          takeSurplus: true,
         },
         { ignoreChecks: true }
       );
@@ -423,7 +423,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
           priceRoute: route,
           userAddress: user,
           partnerAddress: FEE_CLAIMER_ADDRESS,
-          positiveSlippageToUser: false,
+          takeSurplus: true,
           srcDecimals,
           destDecimals,
         },
