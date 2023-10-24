@@ -411,6 +411,7 @@ export const useTransactionHandler = ({
                   }
                 }
               } catch (error) {
+                if (!mounted.current) return;
                 const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
                 setTxError(parsedError);
               }
