@@ -706,6 +706,7 @@ export const changeCollateralNegative = (
     });
     it(`Close Modal`, () => {
       cy.get('[data-cy=Modal]').get('[data-cy=CloseModalIcon]').click();
+      cy.wait(2000); // to refresh modal failed state
     });
   });
 };
