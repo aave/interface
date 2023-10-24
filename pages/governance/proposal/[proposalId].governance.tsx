@@ -21,6 +21,7 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -30,7 +31,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
-import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
@@ -53,6 +53,12 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { LensIcon } from '../../../src/components/icons/LensIcon';
+
+const GovVoteModal = dynamic(() =>
+  import('../../../src/components/transactions/GovVote/GovVoteModal').then(
+    (module) => module.GovVoteModal
+  )
+);
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();

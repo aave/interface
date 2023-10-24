@@ -34,7 +34,7 @@ export const createAnalyticsSlice: StateCreator<
   // @ts-ignore
 > = (set, get) => {
   return {
-    trackEvent: (eventName: string, properties?: TrackEventProperties) => {
+    trackEvent: (eventName: string, properties: TrackEventProperties = {}) => {
       const EXCLUDED_NETWORKS = ['fork_proto_mainnet', 'fork_proto_mainnet_v3'];
       const trackingEnable = get().isTrackingEnabled;
 
@@ -43,7 +43,7 @@ export const createAnalyticsSlice: StateCreator<
       const eventProperties = {
         ...properties,
         walletAddress: get().account,
-        market: get().currentMarket,
+        market: properties.market ?? get().currentMarket,
         walletType: get().walletType,
       };
 

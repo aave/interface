@@ -17,7 +17,6 @@ import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { currentMarket } = useProtocolDataContext();
-
   const { isPermissionsLoading } = usePermissions();
   const trackEvent = useRootStore((store) => store.trackEvent);
 

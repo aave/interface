@@ -1,0 +1,238 @@
+name: Build and deploy to IPFS
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'push' && github.event_name == 'pull_request') ||
+      (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
+      !contains(github.head_ref, 'dependabot'))
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Build App
+        uses: ./.github/actions/build
+        with:
+          NEXT_PUBLIC_ENV: 'prod'
+          NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.pull_request.number)] }}
+          NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.pull_request.number)]  }}
+          NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.pull_request.number)]  }}
+          NEXT_PUBLIC_MIXPANEL: ${{ secrets.NEXT_PUBLIC_MIXPANEL }}
+          NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
+          NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
+
+      - name: Upload artifacts
+        uses: ./.github/actions/upload-artifacts
+        with:
+          BUILD_ARTIFACT_NAME: 'out'
+
+  cypress_smoke_v2:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - ethereum
+          - polygon
+          - avalanche
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.ts
+
+  cypress_smoke_v3:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - polygon
+          - avalanche
+          - optimism
+          - ethereum
+          - base
+          - gho
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
+
+  next_js_analyze:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: download build
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        with:
+          name: nextjs_build
+          path: .next
+
+      - uses: ./.github/actions/analyze-comment
+        if: github.event_name == 'pull_request'
+        with:
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: download build
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        with:
+          name: out
+          path: out
+
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@a3409e26f4cb859a2d9984109317caac53db5f68
+        with:
+          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
+          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
+          BUILD_LOCATION: './out'
+          CID_VERSION: 1
+
+      - name: Pin to primary IPFS server
+        id: ipfs-primary
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
+          BUILD_PATH: 'out'
+
+      - name: Pin to secondary IPFS server
+        id: ipfs-secondary
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
+          BUILD_PATH: 'out'
+
+      - name: Pin to tertiary IPFS server
+        id: ipfs-tertiary
+        uses: ./.github/actions/dev-ipfs-pin
+        with:
+          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
+          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
+          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
+          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
+          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
+          BUILD_PATH: 'out'
+
+  cypress_full_v2:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v2
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - ethereum
+          - polygon
+          - avalanche
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
+
+  cypress_full_v3:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v2
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - polygon
+          - avalanche
+          - optimism
+          - ethereum
+          - gho
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
+
+  cypress_app_functionality:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v2
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        scoupe:
+          - settings
+          - mobile
+          - governance-stake
+          - widgets
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts

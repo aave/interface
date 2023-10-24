@@ -6,7 +6,7 @@ import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 
 const USER_DENIED_SIGNATURE = 'MetaMask Message Signature: User denied message signature.';
-const USER_DENIED_TRANSACTION = 'MetaMask Message Signature: User denied message signature.';
+const USER_DENIED_TRANSACTION = 'MetaMask Tx Signature: User denied transaction signature.';
 
 interface ErrorProps {
   txError: TxErrorType;

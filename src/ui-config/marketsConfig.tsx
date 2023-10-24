@@ -28,7 +28,6 @@ import { ReactNode } from 'react';
 
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
-
 export type MarketDataType = {
   v3?: boolean;
   marketTitle: string;
@@ -44,6 +43,7 @@ export type MarketDataType = {
     permissions?: boolean;
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
+    switch?: boolean;
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -125,6 +125,7 @@ export const marketsData: {
       incentives: true,
       withdrawAndSwitch: true,
       debtSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3',
     addresses: {
@@ -157,6 +158,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
       debtSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
@@ -250,6 +252,7 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
       debtSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
     addresses: {
@@ -294,6 +297,11 @@ export const marketsData: {
     chainId: ChainId.base,
     enabledFeatures: {
       incentives: true,
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      switch: true,
     },
     // TODO: Need subgraph, currently not supported
     // subgraphUrl: '',
@@ -306,9 +314,11 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Base.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3Base.L2_ENCODER,
       COLLECTOR: AaveV3Base.COLLECTOR,
-      // SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
-      // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
-      // DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
+      REPAY_WITH_COLLATERAL_ADAPTER: AaveV3Base.REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
+      // WALLET_BALANCE_PROVIDER: AaveV2Ethereum.WALLET_BALANCE_PROVIDER,
+      WITHDRAW_SWITCH_ADAPTER: AaveV3Base.WITHDRAW_SWAP_ADAPTER,
+      DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
     },
   },
 
@@ -322,6 +332,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum',
     addresses: {
@@ -373,6 +384,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-avalanche',
     addresses: {
@@ -524,6 +536,7 @@ export const marketsData: {
       liquiditySwap: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-optimism',
     addresses: {
@@ -551,6 +564,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
+      switch: true,
     },
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v3-polygon',
     addresses: {
