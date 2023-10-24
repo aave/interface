@@ -103,7 +103,7 @@ export const SETTINGS = {
 
 export const GHO_SUCCESS_MODAL = {
   GHO_SHARE_TWITTER: 'Click share GHO borrow on Twitter',
-  GHO_SHARE_LENSTER: 'Click share GHO borrow on Lenster',
+  GHO_SHARE_HEY: 'Click share GHO borrow on Hey',
   GHO_COPY_IMAGE: 'Click copy image on GHO borrow',
   GHO_DOWNLOAD_IMAGE: 'Click download image on GHO borrow',
   GHO_BORROW_VIEW_TX_DETAILS: 'Click view TX details on GHO borrow',
