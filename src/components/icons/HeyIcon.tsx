@@ -1,11 +1,11 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export const LensterIcon = ({ sx, ...rest }: SvgIconProps) => {
+export const HeyIcon = ({ sx, ...rest }: SvgIconProps) => {
   return (
     <SvgIcon
       sx={{ ...sx }}
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Lenster"
+      aria-label="Hey"
       viewBox="0 0 16 16"
       {...rest}
     >

@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import dynamic from 'next/dynamic.js';
 import { ReactNode, useRef, useState } from 'react';
-import { LensterIcon } from 'src/components/icons/LensterIcon';
+import { HeyIcon } from 'src/components/icons/HeyIcon';
 import { compactNumber, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -283,14 +283,14 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
               )}
               <IconButtonCustom
                 target="_blank"
-                href={`https://lenster.xyz/?url=${
+                href={`https://hey.xyz/?url=${
                   window.location.href
                 }&text=${`I just minted ${finalNumber} GHO`}&hashtags=Aave&preview=true`}
                 size="small"
                 sx={{ ml: 'auto' }}
-                onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_SHARE_LENSTER)}
+                onClick={() => trackEvent(GHO_SUCCESS_MODAL.GHO_SHARE_HEY)}
               >
-                <LensterIcon sx={{ fill: '#845EEE' }} fontSize="small" />
+                <HeyIcon sx={{ fill: '#845EEE' }} fontSize="small" />
               </IconButtonCustom>
               <IconButtonCustom
                 target="_blank"
