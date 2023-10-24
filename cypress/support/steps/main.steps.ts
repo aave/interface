@@ -257,6 +257,7 @@ export const repay = (
           .click();
       }
       cy.doConfirm(hasApproval, _actionName, _shortName);
+      cy.wait(1000);
     });
     doCloseModal();
   });

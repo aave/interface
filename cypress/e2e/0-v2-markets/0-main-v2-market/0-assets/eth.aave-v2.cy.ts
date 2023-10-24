@@ -55,7 +55,7 @@ const testData = {
       {
         asset: assets.aaveMarket.ETH,
         isCollateral: true,
-        amount: 0.01,
+        amount: 0.02,
         hasApproval: false,
       },
       {
@@ -73,7 +73,7 @@ const testData = {
         type: constants.dashboardTypes.deposit,
         assetName: assets.aaveMarket.ETH.shortName,
         wrapped: assets.aaveMarket.ETH.wrapped,
-        amount: 1.07,
+        amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
