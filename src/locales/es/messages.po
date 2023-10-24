@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-20 00:15\n"
+"PO-Revision-Date: 2023-10-23 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -1398,7 +1398,7 @@ msgstr "Max slashing"
 
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Max slippage"
-msgstr ""
+msgstr "Deslizamiento máximo"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
@@ -1473,7 +1473,7 @@ msgstr "Cantidad de préstamo mínima de GHO"
 
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum USD value received"
-msgstr ""
+msgstr "Valor mínimo en USD recibido"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
@@ -1481,7 +1481,7 @@ msgstr "Cantidad mínima de Aave stakeado"
 
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Minimum {0} received"
-msgstr ""
+msgstr "Mínimo {0} recibido"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1652,7 +1652,7 @@ msgstr "Por favor conecta una cartera para ver tu información personal aquí."
 
 #: src/components/transactions/Switch/SwitchModalContent.tsx
 msgid "Please connect your wallet to be able to switch your tokens."
-msgstr ""
+msgstr "Por favor conecta tu cartera para cambiar tus tokens."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
@@ -1706,7 +1706,7 @@ msgstr "Los datos de los precios no están disponibles actualmente para esta res
 
 #: src/components/transactions/Switch/SwitchRates.tsx
 msgid "Price impact"
-msgstr ""
+msgstr "Impacto del precio"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -2052,7 +2052,7 @@ msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los 
 
 #: src/components/transactions/Switch/SwitchSlippageSelector.tsx
 msgid "Slippage"
-msgstr ""
+msgstr "Deslizamiento"
 
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
@@ -3022,7 +3022,7 @@ msgstr "Has cambiado con éxito la posición de préstamo."
 
 #: src/components/transactions/Switch/SwitchTxSuccessView.tsx
 msgid "You've successfully switched tokens."
-msgstr ""
+msgstr "Has cambiado los tokens con éxito."
 
 #: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
 msgid "You've successfully withdrew & switched tokens."
@@ -3030,7 +3030,7 @@ msgstr "Has retirado y cambiado tokens con éxito."
 
 #: src/components/transactions/Switch/SwitchErrors.tsx
 msgid "Your balance is lower than the selected amount."
-msgstr ""
+msgstr "Tu balance es más bajo que la cantidad seleccionada."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
