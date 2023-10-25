@@ -48,17 +48,23 @@ export const RepayActions = ({
   const [
     repay,
     repayWithPermit,
+    encodeRepayParams,
+    encodeRepayWithPermit,
     tryPermit,
     walletApprovalMethodPreference,
     estimateGasLimit,
     addTransaction,
+    optimizedPath,
   ] = useRootStore((store) => [
     store.repay,
     store.repayWithPermit,
+    store.encodeRepayParams,
+    store.encodeRepayWithPermitParams,
     store.tryPermit,
     store.walletApprovalMethodPreference,
     store.estimateGasLimit,
     store.addTransaction,
+    store.useOptimizedPath,
   ]);
   const { sendTx } = useWeb3Context();
   const { refetchGhoData, refetchIncentiveData, refetchPoolData } = useBackgroundDataProvider();
@@ -130,24 +136,33 @@ export const RepayActions = ({
       let action = ProtocolAction.default;
 
       if (usePermit && signatureParams) {
-        action = ProtocolAction.repayWithPermit;
-        console.log(1);
-        const signedRepayWithPermitTxData = repayWithPermit({
-          amountToRepay:
+        const repayWithPermitParams = {
+          amount:
             amountToRepay === '-1'
               ? amountToRepay
               : parseUnits(amountToRepay, poolReserve.decimals).toString(),
-          poolAddress,
-          debtType,
+          reserve: poolAddress,
+          interestRateMode: debtType,
           signature: signatureParams.signature,
           deadline: signatureParams.deadline,
+        };
+
+        let encodedParams: [string, string, string] | undefined;
+        if (optimizedPath()) {
+          encodedParams = await encodeRepayWithPermit(repayWithPermitParams);
+        }
+
+        action = ProtocolAction.repayWithPermit;
+        let signedRepayWithPermitTxData = repayWithPermit({
+          ...repayWithPermitParams,
+          encodedTxData: encodedParams ? encodedParams[0] : undefined,
         });
-        // signedRepayWithPermitTxData = await estimateGasLimit(signedRepayWithPermitTxData);
+
+        signedRepayWithPermitTxData = await estimateGasLimit(signedRepayWithPermitTxData);
         response = await sendTx(signedRepayWithPermitTxData);
         await response.wait(1);
       } else {
-        action = ProtocolAction.repay;
-        let repayTxData = repay({
+        const repayParams = {
           amountToRepay:
             amountToRepay === '-1'
               ? amountToRepay
@@ -155,6 +170,17 @@ export const RepayActions = ({
           poolAddress,
           repayWithATokens,
           debtType,
+        };
+
+        let encodedParams: string | undefined;
+        if (optimizedPath()) {
+          encodedParams = await encodeRepayParams(repayParams);
+        }
+
+        action = ProtocolAction.repay;
+        let repayTxData = repay({
+          ...repayParams,
+          encodedTxData: encodedParams,
         });
         repayTxData = await estimateGasLimit(repayTxData);
         response = await sendTx(repayTxData);

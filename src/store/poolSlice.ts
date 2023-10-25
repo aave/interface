@@ -36,11 +36,11 @@ import {
   LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
 import {
+  LPRepayWithPermitParamsType,
   LPSignERC20ApprovalType,
   LPSupplyParamsType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
-import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
@@ -67,19 +67,12 @@ export type PoolReserve = {
   userReserves?: UserReserveDataHumanized[];
 };
 
-type RepayWithPermitArgs = {
-  amountToRepay: string;
-  poolAddress: string;
-  debtType: InterestRate;
-  signature: SignatureLike;
-  deadline: string;
-};
-
 type RepayArgs = {
   amountToRepay: string;
   poolAddress: string;
   debtType: InterestRate;
   repayWithATokens: boolean;
+  encodedTxData?: string;
 };
 
 // TODO: add chain/provider/account mapping
@@ -108,9 +101,13 @@ export interface PoolSlice {
   claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  repay: (args: RepayArgs) => PopulatedTransaction;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
-  repayWithPermit: (args: RepayWithPermitArgs) => PopulatedTransaction;
+  repay: (args: RepayArgs) => PopulatedTransaction;
+  encodeRepayParams: (args: RepayArgs) => Promise<string>;
+  repayWithPermit: (args: Omit<LPRepayWithPermitParamsType, 'user'>) => PopulatedTransaction;
+  encodeRepayWithPermitParams: (
+    args: Omit<LPRepayWithPermitParamsType, 'user'>
+  ) => Promise<[string, string, string]>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -562,7 +559,7 @@ export const createPoolSlice: StateCreator<
         },
       });
     },
-    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
+    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType, encodedTxData }) => {
       const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
@@ -573,6 +570,7 @@ export const createPoolSlice: StateCreator<
             amount: amountToRepay,
             useOptimizedPath: get().useOptimizedPath(),
             rateMode: debtType,
+            encodedTxData,
           });
         } else {
           return poolBundle.repayTxBuilder.generateTxData({
@@ -581,6 +579,7 @@ export const createPoolSlice: StateCreator<
             amount: amountToRepay,
             useOptimizedPath: get().useOptimizedPath(),
             interestRateMode: debtType,
+            encodedTxData,
           });
         }
       } else {
@@ -593,19 +592,54 @@ export const createPoolSlice: StateCreator<
         });
       }
     },
-    repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
+    repayWithPermit: ({
+      reserve,
+      amount,
+      interestRateMode,
+      deadline,
+      signature,
+      encodedTxData,
+    }) => {
       const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const currentAccount = get().account;
       const stringSignature = utils.joinSignature(signature);
       return poolBundle.repayTxBuilder.generateSignedTxData({
         user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToRepay,
+        reserve,
+        amount,
         useOptimizedPath: get().useOptimizedPath(),
-        interestRateMode: debtType,
+        interestRateMode,
+        deadline,
+        signature: stringSignature,
+        encodedTxData,
+      });
+    },
+    encodeRepayWithPermitParams: ({ reserve, amount, interestRateMode, deadline, signature }) => {
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      const stringSignature = utils.joinSignature(signature);
+      return poolBundle.repayTxBuilder.encodeRepayWithPermitParams({
+        reserve,
+        amount,
+        interestRateMode,
         deadline,
         signature: stringSignature,
       });
+    },
+    encodeRepayParams: ({ amountToRepay, poolAddress, debtType, repayWithATokens }) => {
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      if (repayWithATokens) {
+        return poolBundle.repayWithATokensTxBuilder.encodeRepayWithATokensParams({
+          reserve: poolAddress,
+          amount: amountToRepay,
+          rateMode: debtType,
+        });
+      } else {
+        return poolBundle.repayTxBuilder.encodeRepayParams({
+          reserve: poolAddress,
+          amount: amountToRepay,
+          interestRateMode: debtType,
+        });
+      }
     },
     swapCollateral: async ({
       poolReserve,
