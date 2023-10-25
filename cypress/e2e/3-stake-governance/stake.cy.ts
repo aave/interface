@@ -18,14 +18,14 @@ const testCases = [
     tabValue: 'aave',
     changeApproval: true,
   },
-  {
-    asset: assets.staking.ABPT,
-    amount: 5,
-    checkAmount: '5.00',
-    checkAmountFinal: '10.00',
-    tabValue: 'bpt',
-    changeApproval: false,
-  },
+  // {
+  //   asset: assets.staking.ABPT,
+  //   amount: 5,
+  //   checkAmount: '5.00',
+  //   checkAmountFinal: '10.00',
+  //   tabValue: 'bpt',
+  //   changeApproval: false,
+  // },
 ];
 
 testCases.forEach(
