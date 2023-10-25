@@ -3,10 +3,10 @@ import { skipState } from '../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 import {
   activateCooldown,
-  stake,
-  reCallCooldown,
   claimReward,
+  reCallCooldown,
   reStake,
+  stake,
 } from '../../support/steps/stake.steps';
 
 const testCases = [
