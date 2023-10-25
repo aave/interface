@@ -23,7 +23,7 @@ export interface ProtocolDataSlice {
   currentMarketData: MarketDataType;
   currentChainId: number;
   currentNetworkConfig: NetworkConfig;
-  jsonRpcProvider: () => providers.Provider;
+  jsonRpcProvider: (chainId?: number) => providers.Provider;
   setCurrentMarket: (market: CustomMarket, omitQueryParameterUpdate?: boolean) => void;
   tryPermit: ({ reserveAddress, isWrappedBaseAsset }: TypePermitParams) => boolean;
 }
@@ -41,7 +41,7 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
-    jsonRpcProvider: () => getProvider(get().currentChainId),
+    jsonRpcProvider: (chainId) => getProvider(chainId ?? get().currentChainId),
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];

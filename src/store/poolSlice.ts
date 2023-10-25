@@ -75,6 +75,14 @@ type RepayArgs = {
   encodedTxData?: string;
 };
 
+type GenerateApprovalOpts = {
+  chainId?: number;
+};
+
+type GenerateSignatureRequestOpts = {
+  chainId?: number;
+};
+
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
   data: Map<number, Map<string, PoolReserve>>;
@@ -111,14 +119,17 @@ export interface PoolSlice {
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
-  generateSignatureRequest: (args: {
-    token: string;
-    amount: string;
-    deadline: string;
-    spender: string;
-  }) => Promise<string>;
+  generateSignatureRequest: (
+    args: {
+      token: string;
+      amount: string;
+      deadline: string;
+      spender: string;
+    },
+    opts?: GenerateSignatureRequestOpts
+  ) => Promise<string>;
   // PoolBundle and LendingPoolBundle methods
-  generateApproval: (args: ApproveType) => PopulatedTransaction;
+  generateApproval: (args: ApproveType, opts?: GenerateApprovalOpts) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
@@ -132,8 +143,8 @@ export interface PoolSlice {
     }
   ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
-  estimateGasLimit: (tx: PopulatedTransaction) => Promise<PopulatedTransaction>;
   getCorrectPoolBundle: () => PoolBundleInterface | LendingPoolBundleInterface;
+  estimateGasLimit: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -287,8 +298,8 @@ export const createPoolSlice: StateCreator<
       const v3MarketData = selectCurrentChainIdV3MarketData(get());
       get().refreshPoolData(v3MarketData);
     },
-    generateApproval: (args: ApproveType) => {
-      const provider = get().jsonRpcProvider();
+    generateApproval: (args: ApproveType, ops = {}) => {
+      const provider = get().jsonRpcProvider(ops.chainId);
       const tokenERC20Service = new ERC20Service(provider);
       return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
     },
@@ -812,8 +823,8 @@ export const createPoolSlice: StateCreator<
         return min || '0.001';
       },
     },
-    generateSignatureRequest: async ({ token, amount, deadline, spender }) => {
-      const provider = get().jsonRpcProvider();
+    generateSignatureRequest: async ({ token, amount, deadline, spender }, opts = {}) => {
+      const provider = get().jsonRpcProvider(opts.chainId);
       const tokenERC20Service = new ERC20Service(provider);
       const tokenERC2612Service = new ERC20_2612Service(provider);
       const { name } = await tokenERC20Service.getTokenData(token);
@@ -852,8 +863,8 @@ export const createPoolSlice: StateCreator<
       };
       return JSON.stringify(typeData);
     },
-    estimateGasLimit: async (tx: PopulatedTransaction) => {
-      const provider = get().jsonRpcProvider();
+    estimateGasLimit: async (tx: PopulatedTransaction, chainId?: number) => {
+      const provider = get().jsonRpcProvider(chainId);
       const defaultGasLimit: BigNumber = tx.gasLimit ? tx.gasLimit : BigNumber.from('0');
       delete tx.gasLimit;
       let estimatedGas = await provider.estimateGas(tx);

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-09 12:06\n"
+"PO-Revision-Date: 2023-10-23 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,6 +17,10 @@ msgstr ""
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+msgid "..."
+msgstr "..."
 
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -831,7 +835,6 @@ msgstr "Poder delegado"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
@@ -1393,6 +1396,10 @@ msgstr "LTV máximo"
 msgid "Max slashing"
 msgstr "Max slashing"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Max slippage"
+msgstr "Deslizamiento máximo"
+
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "La cantidad máxima disponible para tomar prestado contra este activo está limitada porque el límite de deuda está al {0}%."
@@ -1464,9 +1471,17 @@ msgstr "Riesgos de migración"
 msgid "Minimum GHO borrow amount"
 msgstr "Cantidad de préstamo mínima de GHO"
 
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Minimum USD value received"
+msgstr "Valor mínimo en USD recibido"
+
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum staked Aave amount"
 msgstr "Cantidad mínima de Aave stakeado"
+
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Minimum {0} received"
+msgstr "Mínimo {0} recibido"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1635,6 +1650,10 @@ msgstr "Por favor ten siempre en cuenta tu <0>factor de salud (HF)</0> cuando mi
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Por favor conecta una cartera para ver tu información personal aquí."
 
+#: src/components/transactions/Switch/SwitchModalContent.tsx
+msgid "Please connect your wallet to be able to switch your tokens."
+msgstr "Por favor conecta tu cartera para cambiar tus tokens."
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
 msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
@@ -1684,6 +1703,10 @@ msgstr "Precio"
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Los datos de los precios no están disponibles actualmente para esta reserva en el subgraph del protocolo"
+
+#: src/components/transactions/Switch/SwitchRates.tsx
+msgid "Price impact"
+msgstr "Impacto del precio"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -2027,6 +2050,10 @@ msgstr "Dado que este activo está congelado, las únicas acciones disponibles s
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los activos si tienes ETH en tu cartera"
 
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Slippage"
+msgstr "Deslizamiento"
+
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "El deslizamiento es la diferencia entre las cantidades calculadas y las recibidas debido a las condiciones cambiantes del mercado entre el momento en que se envía la transacción y su verificación."
@@ -2218,6 +2245,8 @@ msgstr "Suministrando {symbol}"
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
@@ -2262,6 +2291,7 @@ msgstr "Cambiado"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Switch/SwitchActions.tsx
 msgid "Switching"
 msgstr "Cambiando"
 
@@ -2450,7 +2480,7 @@ msgstr "Este activo está congelado debido a una decisión del Gobierno del Prot
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "Este activo está congelado debido a una decisión de la comunidad de Aave. <0>Más información</0>"
 
-#: src/components/Warnings/BUSDOffBoardingWarning.tsx
+#: src/components/Warnings/OffboardingWarning.tsx
 msgid "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "Está previsto que este activo se desvincule debido a una decisión del Gobierno del Protocolo Aave. <0>Más detalles</0>"
 
@@ -2990,9 +3020,17 @@ msgstr "Tu {action} <0/> {symbol}"
 msgid "You've successfully switched borrow position."
 msgstr "Has cambiado con éxito la posición de préstamo."
 
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+msgid "You've successfully switched tokens."
+msgstr "Has cambiado los tokens con éxito."
+
 #: src/components/transactions/Withdraw/WithdrawAndSwitchSuccess.tsx
 msgid "You've successfully withdrew & switched tokens."
 msgstr "Has retirado y cambiado tokens con éxito."
+
+#: src/components/transactions/Switch/SwitchErrors.tsx
+msgid "Your balance is lower than the selected amount."
+msgstr "Tu balance es más bajo que la cantidad seleccionada."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx

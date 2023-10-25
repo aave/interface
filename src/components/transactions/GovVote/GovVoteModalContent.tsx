@@ -89,7 +89,7 @@ export const GovVoteModalContent = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent(AIP.SHARE_VOTE_ON_LENS)}
-              href={`https://lenster.xyz/?url=${
+              href={`https://hey.xyz/?url=${
                 window.location.href
               }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
               startIcon={
