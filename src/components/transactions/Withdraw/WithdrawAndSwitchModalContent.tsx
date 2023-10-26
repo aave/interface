@@ -10,6 +10,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
+import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -23,11 +24,11 @@ import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { useDaiForSavingsDaiWrapper } from '../Supply/useSavingsDaiWrapper';
 import { zeroLTVBlockingWithdraw } from '../utils';
 import { calculateMaxWithdrawAmount } from './utils';
 import { WithdrawAndSwitchActions } from './WithdrawAndSwitchActions';
 import { WithdrawAndSwitchTxSuccessView } from './WithdrawAndSwitchSuccess';
+import { WithdrawAndUnwrapAction } from './WithdrawAndUnwrapActions';
 import { useWithdrawError } from './WithdrawError';
 
 export enum ErrorType {
@@ -54,9 +55,9 @@ export const WithdrawAndSwitchModalContent = ({
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   // if the asset can be unwrapped (e.g. sDAI -> DAI) we don't need to use paraswap
-  const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId][poolReserve.underlyingAsset];
-
-  console.log(wrappedTokenOutConfig);
+  const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId].find(
+    (c) => c.tokenOut.underlyingAsset === poolReserve.underlyingAsset
+  );
 
   let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -83,12 +84,25 @@ export const WithdrawAndSwitchModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
-  const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
-    withdrawAmount: amountRef.current,
-    decimals: 18,
-  });
+  // const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
+  //   withdrawAmount: amountRef.current,
+  //   decimals: 18,
+  // });
 
-  console.log(loadingDaiForSavingsDai, tokenInAmount);
+  // console.log(loadingDaiForSavingsDai, tokenInAmount);
+
+  let withdrawAndUnwrap = false;
+  if (wrappedTokenOutConfig) {
+    withdrawAndUnwrap = targetReserve.address === wrappedTokenOutConfig.tokenIn.underlyingAsset;
+  }
+
+  const { data: unwrappedAmount } = useTokenInForTokenOut(
+    amountRef.current,
+    poolReserve.decimals,
+    wrappedTokenOutConfig?.tokenWrapperContractAddress || ''
+  );
+
+  console.log('unwrappedAmount', unwrappedAmount);
 
   const {
     inputAmountUSD,
@@ -104,7 +118,7 @@ export const WithdrawAndSwitchModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance),
-    skip: wrappedTokenOutConfig !== undefined || withdrawTxState.loading || false,
+    skip: withdrawAndUnwrap || withdrawTxState.loading || false,
     maxSlippage: Number(maxSlippage),
   });
 
@@ -203,7 +217,7 @@ export const WithdrawAndSwitchModalContent = ({
       </Box>
 
       <AssetInput
-        value={outputAmount}
+        value={withdrawAndUnwrap ? unwrappedAmount || '' : outputAmount}
         onSelect={setTargetReserve}
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
@@ -287,17 +301,26 @@ export const WithdrawAndSwitchModalContent = ({
         </>
       )}
 
-      <WithdrawAndSwitchActions
-        poolReserve={poolReserve}
-        targetReserve={swapTarget.reserve}
-        amountToSwap={inputAmount}
-        amountToReceive={outputAmount}
-        isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
-        isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        buildTxFn={buildTxFn}
-        sx={displayRiskCheckbox ? { mt: 0 } : {}}
-      />
+      {withdrawAndUnwrap && wrappedTokenOutConfig ? (
+        <WithdrawAndUnwrapAction
+          poolReserve={poolReserve}
+          amountToWithdraw={amountRef.current}
+          isWrongNetwork={isWrongNetwork}
+          tokenWrapperAddress={wrappedTokenOutConfig.tokenWrapperContractAddress}
+        />
+      ) : (
+        <WithdrawAndSwitchActions
+          poolReserve={poolReserve}
+          targetReserve={swapTarget.reserve}
+          amountToSwap={inputAmount}
+          amountToReceive={outputAmount}
+          isMaxSelected={isMaxSelected && maxAmountToWithdraw.eq(underlyingBalance)}
+          isWrongNetwork={isWrongNetwork}
+          blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+          buildTxFn={buildTxFn}
+          sx={displayRiskCheckbox ? { mt: 0 } : {}}
+        />
+      )}
     </>
   );
 };

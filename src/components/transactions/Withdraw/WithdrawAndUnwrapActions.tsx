@@ -1,18 +1,24 @@
-import { MAX_UINT_AMOUNT, ProtocolAction, TokenWrapperService } from '@aave/contract-helpers';
+import { gasLimitRecommendations, ProtocolAction, valueToWei } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
+import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
-import { parseUnits } from 'ethers/lib/utils';
-import { useState } from 'react';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { constants } from 'ethers';
+import { queryClient } from 'pages/_app.page';
+import { useEffect, useState } from 'react';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-import { useApprovedAmount } from '../Supply/useApprovedAmount';
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { checkRequiresApproval } from '../utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 interface SignedParams {
   signature: SignatureLike;
@@ -21,52 +27,31 @@ interface SignedParams {
 }
 
 interface WithdrawAndUnwrapActionProps {
-  reserve: string;
+  poolReserve: ComputedReserveData;
   amountToWithdraw: string;
   isWrongNetwork: boolean;
-  tokenIn: string;
-  tokenOut: string;
   tokenWrapperAddress: string;
-  decimals: number;
-  symbol: string;
 }
 
 export const WithdrawAndUnwrapAction = ({
-  reserve,
+  poolReserve,
   amountToWithdraw,
   isWrongNetwork,
-  tokenIn,
-  tokenOut,
   tokenWrapperAddress,
-  decimals,
-  symbol,
 }: WithdrawAndUnwrapActionProps) => {
-  const [
-    provider,
-    wrapperAddress,
-    account,
-    estimateGasLimit,
-    walletApprovalMethodPreference,
-    tryPermit,
-    generateSignatureRequest,
-    generateApproval,
-    addTransaction,
-  ] = useRootStore((state) => [
-    state.jsonRpcProvider,
-    state.currentMarketData.addresses.SDAI_TOKEN_WRAPPER,
-    state.account,
-    state.estimateGasLimit,
-    state.walletApprovalMethodPreference,
-    state.tryPermit,
-    state.generateSignatureRequest,
-    state.generateApproval,
-    state.addTransaction,
-  ]);
+  const [account, estimateGasLimit, walletApprovalMethodPreference, user] = useRootStore(
+    (state) => [
+      state.account,
+      state.estimateGasLimit,
+      state.walletApprovalMethodPreference,
+      state.account,
+    ]
+  );
 
-  const { signTxData, sendTx } = useWeb3Context();
+  const { sendTx } = useWeb3Context();
 
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-
+  const { refetchPoolData } = useBackgroundDataProvider();
   const {
     approvalTxState,
     mainTxState,
@@ -78,81 +63,86 @@ export const WithdrawAndUnwrapAction = ({
     setTxError,
   } = useModalContext();
 
-  const { loading: loadingApprovedAmount, approval } = useApprovedAmount({
-    spender: tokenWrapperAddress,
-    tokenAddress: tokenIn,
-  });
+  const { tokenWrapperService } = useSharedDependencies();
+
+  const {
+    data: approvedAmount,
+    isFetching: fetchingApprovedAmount,
+    refetch: fetchApprovedAmount,
+  } = useApprovedAmount(poolReserve.aTokenAddress, tokenWrapperAddress);
+
+  setLoadingTxns(fetchingApprovedAmount);
 
   let requiresApproval = false;
-  if (approval) {
+  if (approvedAmount !== undefined) {
     requiresApproval = checkRequiresApproval({
-      approvedAmount: approval.amount,
+      approvedAmount: approvedAmount.toString(),
       amount: amountToWithdraw,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
   }
 
-  const permitAvailable = tryPermit(tokenIn);
+  // const permitAvailable = tryPermit(tokenIn);
 
-  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
-  const approvalAction = async () => {
-    try {
-      if (requiresApproval && approval) {
-        if (usePermit) {
-          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const signatureRequest = await generateSignatureRequest({
-            ...approval,
-            deadline,
-            amount: parseUnits(amountToWithdraw, decimals).toString(),
-          });
-
-          const response = await signTxData(signatureRequest);
-          setSignatureParams({ signature: response, deadline, amount: amountToWithdraw });
-          setApprovalTxState({
-            txHash: MOCK_SIGNED_HASH,
-            loading: false,
-            success: true,
-          });
-        } else {
-          let approveTxData = generateApproval(approval);
-          setApprovalTxState({ ...approvalTxState, loading: true });
-          approveTxData = await estimateGasLimit(approveTxData);
-          const response = await sendTx(approveTxData);
-          await response.wait(1);
-          setApprovalTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
-          addTransaction(response.hash, {
-            action: ProtocolAction.approval,
-            txState: 'success',
-            asset: tokenIn,
-            amount: MAX_UINT_AMOUNT,
-            assetName: symbol,
-          });
-          // fetchApprovedAmount(true);
-        }
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
-    }
-  };
+  const { approval: approvalAction } = useApprovalTx({
+    usePermit,
+    approvedAmount: {
+      amount: approvedAmount?.toString() || '0',
+      spender: tokenWrapperAddress,
+      token: poolReserve.aTokenAddress,
+      user,
+    },
+    requiresApproval,
+    assetAddress: poolReserve.aTokenAddress,
+    symbol: poolReserve.symbol,
+    decimals: poolReserve.decimals,
+    signatureAmount: amountToWithdraw,
+    onApprovalTxConfirmed: fetchApprovedAmount,
+    onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+  });
 
   const action = async () => {
     try {
-      const service = new TokenWrapperService(provider(), wrapperAddress || '');
-      let txData = service.withdrawToken(amountToWithdraw, account);
-      txData = await estimateGasLimit(txData);
-      const response = await sendTx(txData);
+      setMainTxState({ ...mainTxState, loading: true });
 
-      await response.wait(1);
+      let response: TransactionResponse;
+
+      const convertedAmount: string =
+        amountToWithdraw === '-1'
+          ? constants.MaxUint256.toString()
+          : valueToWei(amountToWithdraw, poolReserve.decimals);
+
+      if (usePermit && signatureParams) {
+        let signedTxData = await tokenWrapperService.withdrawWrappedTokenWithPermit(
+          convertedAmount,
+          tokenWrapperAddress,
+          user,
+          signatureParams.deadline,
+          signatureParams.signature
+        );
+        signedTxData = await estimateGasLimit(signedTxData);
+        response = await sendTx(signedTxData);
+        await response.wait(1);
+      } else {
+        let txData = await tokenWrapperService.withdrawWrappedToken(
+          convertedAmount,
+          tokenWrapperAddress,
+          account
+        );
+        txData = await estimateGasLimit(txData);
+        response = await sendTx(txData);
+        await response.wait(1);
+      }
+      setMainTxState({
+        txHash: response.hash,
+        loading: false,
+        success: true,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
@@ -162,6 +152,16 @@ export const WithdrawAndUnwrapAction = ({
       });
     }
   };
+
+  useEffect(() => {
+    let supplyGasLimit = 0;
+    supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.withdraw].recommended);
+    if (requiresApproval && !approvalTxState.success) {
+      supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
+    }
+
+    setGasLimit(supplyGasLimit.toString());
+  }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
 
   return (
     <TxActionsWrapper
@@ -175,7 +175,8 @@ export const WithdrawAndUnwrapAction = ({
       actionInProgressText={<Trans>Withdrawing</Trans>}
       actionText={<Trans>Withdraw</Trans>}
       handleAction={action}
-      requiresApproval={false}
+      requiresApproval={requiresApproval}
+      handleApproval={approvalAction}
     />
   );
 };

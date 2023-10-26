@@ -23,7 +23,6 @@ import {
   PoolBundleInterface,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
-  SavingsDaiTokenWrapperService,
   UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
@@ -42,7 +41,6 @@ import {
   LPSupplyParamsType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
-import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
@@ -134,14 +132,6 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType, opts?: GenerateApprovalOpts) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
-  getDaiForSavingsDai: (amount: string) => Promise<BigNumber>;
-  getSavingsDaiForDai: (amount: string) => Promise<BigNumber>;
-  supplyDaiAsSavingsDai: (amount: string) => PopulatedTransaction;
-  supplyDaiAsSavingsDaiWithPermit: (
-    amount: string,
-    deadline: string,
-    signature: SignatureLike
-  ) => PopulatedTransaction;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -343,56 +333,6 @@ export const createPoolSlice: StateCreator<
         deadline: args.deadline,
         useOptimizedPath: get().useOptimizedPath(),
         signature,
-      });
-    },
-    getDaiForSavingsDai: (amount: string) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.getTokenInForTokenOut(amount);
-    },
-    getSavingsDaiForDai: (amount: string) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.getTokenOutForTokenIn(amount);
-    },
-    supplyDaiAsSavingsDai: (amount: string) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.supplyToken(amount, get().account, '0');
-    },
-    supplyDaiAsSavingsDaiWithPermit: (
-      amount: string,
-      deadline: string,
-      signature: SignatureLike
-    ) => {
-      const provider = get().jsonRpcProvider();
-      const wrapperAddress = get().currentMarketData.addresses.SDAI_TOKEN_WRAPPER;
-      if (!wrapperAddress) {
-        throw Error('sDAI wrapper is not configured');
-      }
-
-      const service = new SavingsDaiTokenWrapperService(provider, wrapperAddress);
-      return service.supplyTokenWithPermit({
-        amount,
-        onBehalfOf: get().account,
-        deadline,
-        signature,
-        referralCode: '0',
       });
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {

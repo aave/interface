@@ -7,13 +7,15 @@ import {
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useTokenOutForTokenIn } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -44,7 +46,6 @@ import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
-import { useSavingsDaiWrapper } from './useSavingsDaiWrapper';
 
 interface SupplyAsset extends Asset {
   balance: string;
@@ -66,6 +67,7 @@ export const SupplyModalContent = React.memo(
     const { marketReferencePriceInUsd, user } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+    const { walletBalances } = useWalletBalances(currentMarketData);
     const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
     const minRemainingBaseTokenBalance = useRootStore(
       (state) => state.poolComputed.minRemainingBaseTokenBalance
@@ -79,35 +81,52 @@ export const SupplyModalContent = React.memo(
       balance: tokenBalance,
     });
     const [amount, setAmount] = useState('');
+
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
     const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
+
+    const wrappedTokenInConfig = wrappedTokenConfig[currentMarketData.chainId].find(
+      (c) => c.tokenOut.underlyingAsset === poolReserve.underlyingAsset
+    );
 
     const supplyApy = poolReserve.supplyAPY;
     const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
       poolReserve;
 
-    // Calculate max amount to supply
-    const maxAmountToSupply = useMemo(
-      () =>
-        getMaxAmountAvailableToSupply(
-          walletBalance,
-          { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
-          underlyingAsset,
-          minRemainingBaseTokenBalance
-        ),
-      [
-        walletBalance,
-        supplyCap,
-        totalLiquidity,
-        isFrozen,
-        decimals,
-        debtCeiling,
-        isolationModeTotalDebt,
-        underlyingAsset,
-        minRemainingBaseTokenBalance,
-      ]
+    const maxAmountToSupply = getMaxAmountAvailableToSupply(
+      walletBalance,
+      { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
+      underlyingAsset,
+      minRemainingBaseTokenBalance
     );
+
+    const assets = [
+      {
+        balance: maxAmountToSupply,
+        symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+        iconSymbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.iconSymbol,
+        address: poolReserve.underlyingAsset,
+      },
+    ];
+
+    let supplyingWrappedToken = false;
+    if (wrappedTokenInConfig) {
+      const tokenToWrapBalance =
+        walletBalances[wrappedTokenInConfig.tokenIn.underlyingAsset]?.amount || '0';
+
+      if (tokenToWrapBalance !== '0') {
+        assets.push({
+          balance: tokenToWrapBalance,
+          symbol: wrappedTokenInConfig.tokenIn.symbol,
+          iconSymbol: wrappedTokenInConfig.tokenIn.symbol,
+          address: wrappedTokenInConfig.tokenIn.underlyingAsset,
+        });
+      }
+
+      supplyingWrappedToken =
+        tokenToSupply.address === wrappedTokenInConfig.tokenIn.underlyingAsset;
+    }
 
     const handleChange = (value: string) => {
       if (value === '-1') {
@@ -205,26 +224,6 @@ export const SupplyModalContent = React.memo(
         />
       );
 
-    const assets = [
-      {
-        balance: maxAmountToSupply,
-        symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-        iconSymbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.iconSymbol,
-      },
-    ];
-
-    const wrappedTokenInConfig =
-      wrappedTokenConfig[currentMarketData.chainId][poolReserve.underlyingAsset];
-    if (wrappedTokenInConfig) {
-      assets.push({
-        balance: maxAmountToSupply,
-        symbol: 'DAI', // TODO
-        iconSymbol: 'DAI', // TODO
-      });
-    }
-
-    const supplyingWrappedToken = tokenToSupply.address === wrappedTokenInConfig;
-
     return (
       <>
         {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
@@ -260,8 +259,13 @@ export const SupplyModalContent = React.memo(
             },
           }}
           exchangeRateComponent={
-            poolReserve.symbol === 'sDAI' &&
-            tokenToSupply.symbol === 'DAI' && <ExchangeRate supplyAmount={amount} />
+            supplyingWrappedToken &&
+            wrappedTokenInConfig && (
+              <ExchangeRate
+                supplyAmount={amount}
+                tokenWrapperAddress={wrappedTokenInConfig.tokenWrapperContractAddress}
+              />
+            )
           }
         />
 
@@ -281,9 +285,10 @@ export const SupplyModalContent = React.memo(
 
         {txError && <GasEstimationError txError={txError} />}
 
-        {supplyingWrappedToken ? (
+        {supplyingWrappedToken && wrappedTokenInConfig ? (
           <SupplyWrappedTokenActions
-            tokenIn={wrappedTokenInConfig}
+            tokenWrapperAddress={wrappedTokenInConfig.tokenWrapperContractAddress}
+            tokenIn={wrappedTokenInConfig.tokenIn.underlyingAsset}
             amountToSupply={amount}
             decimals={18}
             symbol="DAI"
@@ -296,8 +301,18 @@ export const SupplyModalContent = React.memo(
   }
 );
 
-const ExchangeRate = ({ supplyAmount }: { supplyAmount: string }) => {
-  const { loading, tokenOutAmount } = useSavingsDaiWrapper({ supplyAmount, decimals: 18 });
+const ExchangeRate = ({
+  supplyAmount,
+  tokenWrapperAddress,
+}: {
+  supplyAmount: string;
+  tokenWrapperAddress: string;
+}) => {
+  const { isFetching: loading, data: tokenOutAmount } = useTokenOutForTokenIn(
+    supplyAmount,
+    18,
+    tokenWrapperAddress
+  );
 
   console.log('tokenOutAmount', tokenOutAmount);
 
@@ -311,7 +326,7 @@ const ExchangeRate = ({ supplyAmount }: { supplyAmount: string }) => {
         ) : (
           <>
             <FormattedNumber
-              value={tokenOutAmount}
+              value={tokenOutAmount || ''}
               variant="subheader2"
               color="text.primary"
               visibleDecimals={2}

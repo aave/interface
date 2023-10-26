@@ -3,14 +3,7 @@ import { useRootStore } from 'src/store/root';
 import { QueryKeys } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const useApprovedAmount = ({
-  token,
-  spender,
-}: {
-  user: string;
-  token: string;
-  spender: string;
-}) => {
+export const useApprovedAmount = (token: string, spender: string) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({

@@ -1,20 +1,24 @@
-import { gasLimitRecommendations, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
+import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import { queryClient } from 'pages/_app.page';
 import { useState } from 'react';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { useApprovalTx } from 'src/hooks/useApprovalTx';
+import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { QueryKeys } from 'src/ui-config/queries';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-import { useApprovedAmount } from './useApprovedAmount';
 
 interface SignedParams {
   signature: SignatureLike;
@@ -27,37 +31,28 @@ interface SupplyWrappedTokenActionProps extends BoxProps {
   amountToSupply: string;
   decimals: number;
   symbol: string;
+  tokenWrapperAddress: string;
 }
 export const SupplyWrappedTokenActions = ({
   tokenIn,
   amountToSupply,
   decimals,
   symbol,
+  tokenWrapperAddress,
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
-  const [
-    currentMarketData,
-    tryPermit,
-    walletApprovalMethodPreference,
-    generateSignatureRequest,
-    generateApproval,
-    estimateGasLimit,
-    addTransaction,
-    supplyDaiAsSavingsDaiWithPermit,
-    supplyDaiAsSavingsDai,
-  ] = useRootStore((state) => [
-    state.currentMarketData,
-    state.tryPermit,
-    state.walletApprovalMethodPreference,
-    state.generateSignatureRequest,
-    state.generateApproval,
-    state.estimateGasLimit,
-    state.addTransaction,
-    state.supplyDaiAsSavingsDaiWithPermit,
-    state.supplyDaiAsSavingsDai,
-  ]);
+  const [user, walletApprovalMethodPreference, estimateGasLimit, addTransaction] = useRootStore(
+    (state) => [
+      state.account,
+      state.walletApprovalMethodPreference,
+      state.estimateGasLimit,
+      state.addTransaction,
+    ]
+  );
 
+  const { refetchPoolData } = useBackgroundDataProvider();
+  const { tokenWrapperService } = useSharedDependencies();
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
   const {
@@ -70,25 +65,24 @@ export const SupplyWrappedTokenActions = ({
     setGasLimit,
   } = useModalContext();
 
-  const { signTxData, sendTx } = useWeb3Context();
+  const { sendTx } = useWeb3Context();
 
-  const { loading: loadingApprovedAmount, approval } = useApprovedAmount({
-    spender: currentMarketData.addresses.SDAI_TOKEN_WRAPPER || '',
-    tokenAddress: tokenIn,
-  });
+  const {
+    data: approvedAmount,
+    isFetching,
+    refetch: fetchApprovedAmount,
+  } = useApprovedAmount(tokenIn, tokenWrapperAddress);
 
   let requiresApproval = false;
-  if (approval) {
+  if (approvedAmount !== undefined) {
     requiresApproval = checkRequiresApproval({
-      approvedAmount: approval.amount,
+      approvedAmount: approvedAmount.toString(),
       amount: amountToSupply,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
   }
 
-  const permitAvailable = tryPermit(tokenIn);
-
-  const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  const usePermit = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   // Update gas estimation
   let supplyGasLimit = 0;
@@ -103,57 +97,31 @@ export const SupplyWrappedTokenActions = ({
 
   setGasLimit(supplyGasLimit.toString());
 
-  console.log('loading approved amount', loadingApprovedAmount);
-  console.log('approval', approval);
+  console.log('loading approved amount', isFetching);
+  console.log('approved amount', approvedAmount);
 
-  const approvalAction = async () => {
-    try {
-      if (requiresApproval && approval) {
-        if (usePermit) {
-          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const signatureRequest = await generateSignatureRequest({
-            ...approval,
-            deadline,
-            amount: parseUnits(amountToSupply, decimals).toString(),
-          });
+  if (requiresApproval && approvalTxState?.success) {
+    // There was a successful approval tx, but the approval amount is not enough.
+    // Clear the state to prompt for another approval.
+    setApprovalTxState({});
+  }
 
-          const response = await signTxData(signatureRequest);
-          setSignatureParams({ signature: response, deadline, amount: amountToSupply });
-          setApprovalTxState({
-            txHash: MOCK_SIGNED_HASH,
-            loading: false,
-            success: true,
-          });
-        } else {
-          let approveTxData = generateApproval(approval);
-          setApprovalTxState({ ...approvalTxState, loading: true });
-          approveTxData = await estimateGasLimit(approveTxData);
-          const response = await sendTx(approveTxData);
-          await response.wait(1);
-          setApprovalTxState({
-            txHash: response.hash,
-            loading: false,
-            success: true,
-          });
-          addTransaction(response.hash, {
-            action: ProtocolAction.approval,
-            txState: 'success',
-            asset: tokenIn,
-            amount: MAX_UINT_AMOUNT,
-            assetName: symbol,
-          });
-          // fetchApprovedAmount(true);
-        }
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setApprovalTxState({
-        txHash: undefined,
-        loading: false,
-      });
-    }
-  };
+  const { approval: approvalAction } = useApprovalTx({
+    usePermit,
+    approvedAmount: {
+      amount: approvedAmount?.toString() || '0',
+      spender: tokenWrapperAddress,
+      token: tokenIn,
+      user,
+    },
+    requiresApproval,
+    assetAddress: tokenIn,
+    symbol,
+    decimals: decimals,
+    signatureAmount: amountToSupply,
+    onApprovalTxConfirmed: fetchApprovedAmount,
+    onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+  });
 
   const action = async () => {
     try {
@@ -166,8 +134,10 @@ export const SupplyWrappedTokenActions = ({
       // checking user preference is not sufficient because permit may be available but the user has an existing approval
       if (usePermit && signatureParams) {
         action = ProtocolAction.supplyWithPermit;
-        let signedSupplyWithPermitTxData = supplyDaiAsSavingsDaiWithPermit(
+        let signedSupplyWithPermitTxData = await tokenWrapperService.supplyWrappedTokenWithPermit(
           parseUnits(amountToSupply, decimals).toString(),
+          tokenWrapperAddress,
+          user,
           signatureParams.deadline,
           signatureParams.signature
         );
@@ -178,7 +148,11 @@ export const SupplyWrappedTokenActions = ({
         await response.wait(1);
       } else {
         action = ProtocolAction.supply;
-        let supplyTxData = supplyDaiAsSavingsDai(parseUnits(amountToSupply, decimals).toString());
+        let supplyTxData = await tokenWrapperService.supplyWrappedToken(
+          parseUnits(amountToSupply, decimals).toString(),
+          tokenWrapperAddress,
+          user
+        );
         supplyTxData = await estimateGasLimit(supplyTxData);
         response = await sendTx(supplyTxData);
 
@@ -199,10 +173,8 @@ export const SupplyWrappedTokenActions = ({
         assetName: symbol,
       });
 
-      // queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-      // refetchPoolData && refetchPoolData();
-      // refetchIncentiveData && refetchIncentiveData();
-      // refetchGhoData && refetchGhoData();
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      refetchPoolData && refetchPoolData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
@@ -228,7 +200,7 @@ export const SupplyWrappedTokenActions = ({
       handleApproval={() => approvalAction()}
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit={permitAvailable}
+      tryPermit={usePermit}
       sx={sx}
       {...props}
     />

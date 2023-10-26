@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { GovernanceService } from 'src/services/GovernanceService';
+import { TokenWrapperService } from 'src/services/TokenWrapperService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
@@ -20,6 +21,7 @@ interface SharedDependenciesContext {
   approvedAmountService: ApprovedAmountService;
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
+  tokenWrapperService: TokenWrapperService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
@@ -61,6 +63,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
+  const tokenWrapperService = new TokenWrapperService(currentMarketData.chainId, currentProvider);
 
   return (
     <SharedDependenciesContext.Provider
@@ -72,6 +75,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         approvedAmountService,
         uiPoolService,
         uiIncentivesService,
+        tokenWrapperService,
       }}
     >
       {children}
