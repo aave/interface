@@ -142,7 +142,6 @@ export interface PoolSlice {
     deadline: string,
     signature: SignatureLike
   ) => PopulatedTransaction;
-  getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -395,15 +394,6 @@ export const createPoolSlice: StateCreator<
         signature,
         referralCode: '0',
       });
-    },
-    getApprovedAmount: async (args: { token: string }) => {
-      const poolBundle = getCorrectPoolBundle();
-      const user = get().account;
-      if (poolBundle instanceof PoolBundle) {
-        return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
-      } else {
-        return poolBundle.depositTxBuilder.getApprovedAmount({ user, token: args.token });
-      }
     },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
       const poolBundle = get().getCorrectPoolBundle();
