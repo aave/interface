@@ -13569,22 +13569,22 @@
       ],
       "startBlock": 18421130,
       "endBlock": 18440330,
-      "executionTime": 0,
+      "executionTime": 1698481463,
       "forVotes": "586104215496599013774553",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1698913463,
       "proposalCreated": 18413930,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x7660944ede5190c84a6fb96925cdae82a269bff787c407d8f903f4d4db5fead5",
       "startTimestamp": 1698162743,
       "creationTimestamp": 1698075731,
-      "expirationTimestamp": 1698395003
+      "expirationTimestamp": 1698393143
     },
     {
       "id": 354,
@@ -13605,7 +13605,7 @@
       "startBlock": 18421499,
       "endBlock": 18440699,
       "executionTime": 0,
-      "forVotes": "497687388879617104886900",
+      "forVotes": "497687768229515631856214",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -13619,7 +13619,7 @@
       "ipfsHash": "0xf763d59548ffa89cfbf72d7bada1991158abe4bd30e31bce58dbdd377151031f",
       "startTimestamp": 1698167219,
       "creationTimestamp": 1698080171,
-      "expirationTimestamp": 1698399431
+      "expirationTimestamp": 1698399491
     },
     {
       "id": 355,
@@ -13660,7 +13660,7 @@
       "startBlock": 18427718,
       "endBlock": 18446918,
       "executionTime": 0,
-      "forVotes": "248971310969081019392365",
+      "forVotes": "248971669225386989979204",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -13674,7 +13674,7 @@
       "ipfsHash": "0x5c177ff12395df30ed114155fd302bf8807de841a841b7274912cd7723c9ee0d",
       "startTimestamp": 1698242579,
       "creationTimestamp": 1698155339,
-      "expirationTimestamp": 1698474059
+      "expirationTimestamp": 1698474119
     }
   ]
 }
