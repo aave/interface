@@ -20,6 +20,9 @@ export const useTokenInForTokenOut = (
     },
     queryKey: [tokenWrapperAddress, amount],
     select: (data) => formatUnits(data.toString(), decimals),
+    enabled: tokenWrapperAddress !== '',
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 };
 
@@ -41,5 +44,7 @@ export const useTokenOutForTokenIn = (
     queryKey: [tokenWrapperAddress, amount],
     select: (data) => formatUnits(data.toString(), decimals),
     enabled: tokenWrapperAddress !== '',
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 };

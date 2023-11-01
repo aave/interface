@@ -52,6 +52,7 @@ export const SupplyAssetsList = () => {
     reserves,
     marketReferencePriceInUsd,
     loading: loadingReserves,
+    wrappedTokenReserves,
   } = useAppDataContext();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const [displayGho] = useRootStore((store) => [store.displayGho]);
@@ -167,9 +168,23 @@ export const SupplyAssetsList = () => {
   const sortedSupplyReserves = tokensToSupply.sort((a, b) =>
     +a.walletBalanceUSD > +b.walletBalanceUSD ? -1 : 1
   );
-  const filteredSupplyReserves = sortedSupplyReserves.filter(
-    (reserve) => reserve.availableToDepositUSD !== '0'
-  );
+
+  const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
+    if (reserve.availableToDepositUSD !== '0') {
+      return true;
+    }
+
+    const wrappedTokenConfig = wrappedTokenReserves.find(
+      (r) => r.tokenOut.underlyingAsset === reserve.underlyingAsset
+    );
+
+    if (!wrappedTokenConfig) {
+      return false;
+    }
+
+    // The asset can be supplied if the user has a 'token in' balance, (DAI as sDAI for example)
+    return walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset]?.amount !== '0';
+  });
 
   // Filter out reserves
   const supplyReserves: unknown = isShowZeroAssets

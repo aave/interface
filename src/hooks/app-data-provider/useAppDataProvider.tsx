@@ -17,6 +17,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { GHO_SUPPORTED_MARKETS, GHO_SYMBOL, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
@@ -58,6 +59,19 @@ export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<Compu
   userEmodeCategoryId: number;
 };
 
+export type WrappedToken = {
+  symbol: string;
+  underlyingAsset: string;
+  decimals: number;
+  priceInUSD: string;
+};
+
+export type WrappedTokenConfig = {
+  tokenIn: WrappedToken;
+  tokenOut: WrappedToken;
+  tokenWrapperAddress: string;
+};
+
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
@@ -65,6 +79,7 @@ export interface AppDataContextType {
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
   user: ExtendedFormattedUser;
+  wrappedTokenReserves: WrappedTokenConfig[];
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 
@@ -98,6 +113,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     formattedPoolReserves,
     userSummary,
     displayGho,
+    currentChainId,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -110,6 +126,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
     state.displayGho,
+    state.currentChainId,
   ]);
 
   const formattedGhoReserveData: FormattedGhoReserveData = formatGhoReserveData({
@@ -241,6 +258,40 @@ export const AppDataProvider: React.FC = ({ children }) => {
     (debtAPY || 0) *
       (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
 
+  const wrappedTokens = wrappedTokenConfig[currentChainId] ?? [];
+  let wrappedTokenReserves: WrappedTokenConfig[] = [];
+  if (user.userReservesData.length > 0) {
+    wrappedTokenReserves = wrappedTokens.map<WrappedTokenConfig>((config) => {
+      const tokenInReserve = user.userReservesData.find(
+        (userReserve) => userReserve.underlyingAsset === config.tokenIn.underlyingAsset
+      );
+
+      const tokenOutReserve = user.userReservesData.find(
+        (userReserve) => userReserve.underlyingAsset === config.tokenOut.underlyingAsset
+      );
+
+      if (!tokenInReserve || !tokenOutReserve) {
+        throw new Error('no wrapped token reserves');
+      }
+
+      return {
+        tokenIn: {
+          symbol: tokenInReserve.reserve.symbol,
+          underlyingAsset: tokenInReserve.reserve.underlyingAsset,
+          decimals: tokenInReserve.reserve.decimals,
+          priceInUSD: tokenInReserve.reserve.priceInUSD,
+        },
+        tokenOut: {
+          symbol: tokenOutReserve.reserve.symbol,
+          underlyingAsset: tokenOutReserve.reserve.underlyingAsset,
+          decimals: tokenOutReserve.reserve.decimals,
+          priceInUSD: tokenOutReserve.reserve.priceInUSD,
+        },
+        tokenWrapperAddress: config.tokenWrapperContractAddress,
+      };
+    });
+  }
+
   return (
     <AppDataContext.Provider
       value={{
@@ -273,6 +324,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         },
         ghoUserData: formattedGhoUserData,
         ghoLoadingData: !ghoReserveDataFetched,
+        wrappedTokenReserves,
       }}
     >
       {children}

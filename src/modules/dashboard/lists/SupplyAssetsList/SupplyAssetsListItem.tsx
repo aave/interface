@@ -1,9 +1,15 @@
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, ListItemText, Menu, MenuItem, SvgIcon } from '@mui/material';
+import { Box, Button, ListItemText, Menu, MenuItem, Stack, SvgIcon } from '@mui/material';
 import { useState } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -40,6 +46,9 @@ export const SupplyAssetsListItem = ({
 }: DashboardReserve) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
+  const { wrappedTokenReserves } = useAppDataContext();
+  const { walletBalances } = useWalletBalances(currentMarketData);
+
   const { openSupply, openSwitch } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
@@ -55,7 +64,20 @@ export const SupplyAssetsListItem = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
+
+  const wrappedToken = wrappedTokenReserves.find(
+    (r) => r.tokenOut.underlyingAsset === underlyingAsset
+  );
+
+  const canSupplyAsWrappedToken =
+    wrappedToken &&
+    walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
+
+  const disableSupply =
+    !isActive ||
+    isFreezed ||
+    (Number(walletBalance) <= 0 && !canSupplyAsWrappedToken) ||
+    isMaxCapReached;
 
   const onDetailsClick = () => {
     trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
@@ -82,21 +104,61 @@ export const SupplyAssetsListItem = ({
       currentMarket={currentMarket}
       showDebtCeilingTooltips
     >
-      <ListValueColumn
-        symbol={symbol}
-        value={Number(walletBalance)}
-        subValue={walletBalanceUSD}
-        withTooltip
-        disabled={Number(walletBalance) === 0 || isMaxCapReached}
-        capsComponent={
-          <CapsHint
-            capType={CapType.supplyCap}
-            capAmount={supplyCap}
-            totalAmount={totalLiquidity}
-            withoutText
-          />
-        }
-      />
+      {canSupplyAsWrappedToken && walletBalance === '0' ? (
+        <ListColumn>
+          <ContentWithTooltip
+            tooltipContent={
+              <WrappedTokenTooltipContent
+                decimals={wrappedToken.tokenIn.decimals}
+                tokenWrapperAddress={wrappedToken.tokenWrapperAddress}
+                tokenInSymbol={wrappedToken.tokenIn.symbol}
+                tokenOutSymbol={wrappedToken.tokenOut.symbol}
+              />
+            }
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FormattedNumber
+                value={0}
+                variant="secondary14"
+                sx={{ mb: '2px' }}
+                symbolsColor="common.white"
+              />
+              <Stack direction="row" alignItems="center">
+                <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
+                <FormattedNumber
+                  value={walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount}
+                  visibleDecimals={2}
+                  variant="secondary12"
+                  color="text.secondary"
+                />
+              </Stack>
+            </Box>
+          </ContentWithTooltip>
+        </ListColumn>
+      ) : (
+        <ListValueColumn
+          symbol={symbol}
+          value={Number(walletBalance)}
+          subValue={walletBalanceUSD}
+          withTooltip
+          disabled={Number(walletBalance) === 0 || isMaxCapReached}
+          capsComponent={
+            <CapsHint
+              capType={CapType.supplyCap}
+              capAmount={supplyCap}
+              totalAmount={totalLiquidity}
+              withoutText
+            />
+          }
+        />
+      )}
 
       <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
 

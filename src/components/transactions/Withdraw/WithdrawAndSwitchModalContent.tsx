@@ -16,9 +16,9 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
-import { wrappedTokenConfig } from 'src/ui-config/wrappedTokenConfig';
 import { calculateHFAfterWithdraw } from 'src/utils/hfUtils';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -42,6 +42,7 @@ export const WithdrawAndSwitchModalContent = ({
   userReserve,
   symbol,
   isWrongNetwork,
+  wrappedTokenConfig,
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
@@ -53,11 +54,6 @@ export const WithdrawAndSwitchModalContent = ({
   const amountRef = useRef<string>('');
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
-
-  // if the asset can be unwrapped (e.g. sDAI -> DAI) we don't need to use paraswap
-  const wrappedTokenOutConfig = wrappedTokenConfig[currentChainId].find(
-    (c) => c.tokenOut.underlyingAsset === poolReserve.underlyingAsset
-  );
 
   let swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -84,22 +80,15 @@ export const WithdrawAndSwitchModalContent = ({
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
 
-  // const { loading: loadingDaiForSavingsDai, tokenInAmount } = useDaiForSavingsDaiWrapper({
-  //   withdrawAmount: amountRef.current,
-  //   decimals: 18,
-  // });
-
-  // console.log(loadingDaiForSavingsDai, tokenInAmount);
-
   let withdrawAndUnwrap = false;
-  if (wrappedTokenOutConfig) {
-    withdrawAndUnwrap = targetReserve.address === wrappedTokenOutConfig.tokenIn.underlyingAsset;
+  if (wrappedTokenConfig) {
+    withdrawAndUnwrap = targetReserve.address === wrappedTokenConfig.tokenIn.underlyingAsset;
   }
 
-  const { data: unwrappedAmount } = useTokenInForTokenOut(
+  const { data: unwrappedAmount, isFetching: loadingTokenInForTokenOut } = useTokenInForTokenOut(
     amountRef.current,
     poolReserve.decimals,
-    wrappedTokenOutConfig?.tokenWrapperContractAddress || ''
+    wrappedTokenConfig?.tokenWrapperAddress || ''
   );
 
   console.log('unwrappedAmount', unwrappedAmount);
@@ -122,7 +111,16 @@ export const WithdrawAndSwitchModalContent = ({
     maxSlippage: Number(maxSlippage),
   });
 
-  const loadingSkeleton = routeLoading && outputAmountUSD === '0';
+  let outputUSD = outputAmountUSD;
+  if (withdrawAndUnwrap) {
+    outputUSD = valueToBigNumber(unwrappedAmount || '0')
+      .multipliedBy(wrappedTokenConfig?.tokenIn.priceInUSD || 0)
+      .toString();
+  }
+
+  const loadingSkeleton =
+    (routeLoading && outputAmountUSD === '0') || (withdrawAndUnwrap && loadingTokenInForTokenOut);
+
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
 
   const assetsBlockingWithdraw: string[] = zeroLTVBlockingWithdraw(user);
@@ -145,8 +143,9 @@ export const WithdrawAndSwitchModalContent = ({
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
-    setAmount(value);
+    const truncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
+    amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : truncatedValue;
+    setAmount(truncatedValue);
     if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
       trackEvent(GENERAL.MAX_INPUT_SELECTION, { type: 'withdraw' });
     }
@@ -162,18 +161,25 @@ export const WithdrawAndSwitchModalContent = ({
     userReserve?.reserve.priceInUSD || 0
   );
 
-  if (withdrawTxState.success)
+  if (withdrawTxState.success) {
+    let amount = inputAmount;
+    let outAmount = outputAmount;
+    if (withdrawAndUnwrap) {
+      amount = amountRef.current;
+      outAmount = unwrappedAmount || '0';
+    }
     return (
       <WithdrawAndSwitchTxSuccessView
         txHash={withdrawTxState.txHash}
-        amount={inputAmount}
+        amount={amount}
         symbol={
           poolReserve.isWrappedBaseAsset ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol
         }
         outSymbol={targetReserve.symbol}
-        outAmount={outputAmount}
+        outAmount={outAmount}
       />
     );
+  }
 
   return (
     <>
@@ -219,7 +225,7 @@ export const WithdrawAndSwitchModalContent = ({
       <AssetInput
         value={withdrawAndUnwrap ? unwrappedAmount || '' : outputAmount}
         onSelect={setTargetReserve}
-        usdValue={outputAmountUSD}
+        usdValue={outputUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         inputTitle={<Trans>Receive (est.)</Trans>}
@@ -228,7 +234,7 @@ export const WithdrawAndSwitchModalContent = ({
         loading={loadingSkeleton}
       />
 
-      {error && !loadingSkeleton && (
+      {error && !loadingSkeleton && !withdrawAndUnwrap && (
         <Typography variant="helperText" color="error.main">
           {error}
         </Typography>
@@ -243,7 +249,9 @@ export const WithdrawAndSwitchModalContent = ({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          withdrawAndUnwrap ? null : (
+            <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+          )
         }
       >
         <DetailsNumberLine
@@ -301,12 +309,12 @@ export const WithdrawAndSwitchModalContent = ({
         </>
       )}
 
-      {withdrawAndUnwrap && wrappedTokenOutConfig ? (
+      {withdrawAndUnwrap ? (
         <WithdrawAndUnwrapAction
           poolReserve={poolReserve}
           amountToWithdraw={amountRef.current}
           isWrongNetwork={isWrongNetwork}
-          tokenWrapperAddress={wrappedTokenOutConfig.tokenWrapperContractAddress}
+          tokenWrapperAddress={wrappedTokenConfig?.tokenWrapperAddress || ''}
         />
       ) : (
         <WithdrawAndSwitchActions

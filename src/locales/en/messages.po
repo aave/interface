@@ -791,6 +791,7 @@ msgstr "Current v2 balance"
 msgid "Current votes"
 msgstr "Current votes"
 
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
@@ -1011,6 +1012,11 @@ msgstr "Estimated compounding interest, including discount for Staking {0}AAVE i
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
 msgid "Exceeds the discount"
 msgstr "Exceeds the discount"
+
+#: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Exchange rate"
+msgstr "Exchange rate"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
@@ -1274,7 +1280,6 @@ msgstr "Language"
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 #: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/MarketWarning.tsx
@@ -2173,6 +2178,7 @@ msgid "Static interest rate that is determined by Aave Governance. This rate may
 msgstr "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "Supplied"
 
@@ -2192,6 +2198,7 @@ msgstr "Supplied asset amount"
 msgid "Supply"
 msgstr "Supply"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -2832,6 +2839,7 @@ msgstr "Wallet Balance"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
