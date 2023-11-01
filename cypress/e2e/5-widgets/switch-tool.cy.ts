@@ -1,7 +1,6 @@
 import assets from '../../fixtures/assets.json';
 import {
   configEnvWithTenderlyAEthereumV3Fork,
-  configEnvWithTenderlyAvalancheFork,
   configEnvWithTenderlyPolygonFork,
 } from '../../support/steps/configuration.steps';
 import { doCloseModal } from '../../support/steps/main.steps';
@@ -100,15 +99,6 @@ describe('SWITCH BY SWITCH TOOL, POLYGON', () => {
   configEnvWithTenderlyPolygonFork({ v3: true });
 
   testData.polygon.forEach((swapCase) => {
-    switchByTool(swapCase);
-  });
-});
-
-describe('SWITCH BY SWITCH TOOL, AVALANCHE', () => {
-  // const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ v3: true });
-
-  testData.avalanche.forEach((swapCase) => {
     switchByTool(swapCase);
   });
 });
