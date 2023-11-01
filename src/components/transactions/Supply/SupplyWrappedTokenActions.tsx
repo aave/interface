@@ -97,9 +97,6 @@ export const SupplyWrappedTokenActions = ({
 
   setGasLimit(supplyGasLimit.toString());
 
-  console.log('loading approved amount', isFetching);
-  console.log('approved amount', approvedAmount);
-
   if (requiresApproval && approvalTxState?.success) {
     // There was a successful approval tx, but the approval amount is not enough.
     // Clear the state to prompt for another approval.
@@ -194,7 +191,7 @@ export const SupplyWrappedTokenActions = ({
       requiresAmount
       amount={amountToSupply}
       symbol={symbol}
-      preparingTransactions={loadingTxns}
+      preparingTransactions={loadingTxns || isFetching}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
       handleApproval={() => approvalAction()}
