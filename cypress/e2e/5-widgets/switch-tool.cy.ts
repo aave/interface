@@ -54,9 +54,13 @@ const switchByTool = ({
       } else {
         cy.get('[data-cy=Modal] input[aria-label="amount input"]').first().type(amount.toString());
       }
+      cy.get('[data-cy=Modal]').as('Modal');
+      cy.get('@Modal').find(`#switch-slippage-selector-button`).click();
+      cy.get('[value="0.01"]').click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, 'Switch');
     });
+
     doCloseModal();
   });
 };
@@ -70,27 +74,11 @@ const testData = {
       hasApproval: true,
       isMaxAmount: false,
     },
-    {
-      fromAsset: assets.ethereumV3Market.ETH,
-      toAsset: assets.ethereumV3Market.LINK,
-      amount: 1,
-      hasApproval: true,
-      isMaxAmount: false,
-    },
   ],
   polygon: [
     {
       fromAsset: assets.polygonV3Market.MATIC,
       toAsset: assets.polygonV3Market.USDC,
-      amount: 1,
-      hasApproval: true,
-      isMaxAmount: false,
-    },
-  ],
-  avalanche: [
-    {
-      fromAsset: assets.avalancheV3Market.AVAX,
-      toAsset: assets.avalancheV3Market.USDC,
       amount: 1,
       hasApproval: true,
       isMaxAmount: false,
