@@ -29,7 +29,6 @@ import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
-import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 const head = [
@@ -299,11 +298,7 @@ export const SupplyAssetsList = () => {
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              {downToXSM ? (
-                <SupplyAssetsListMobileItem {...item} key={item.id} />
-              ) : (
-                <SupplyAssetsListItem {...item} key={item.id} />
-              )}
+              <SupplyAssetsListItem {...item} key={item.id} />
             </AssetCapsProvider>
           </Fragment>
         ))}
