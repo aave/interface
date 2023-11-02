@@ -50,7 +50,7 @@ export const BorrowAssetsListItem = ({
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
-        withTooltip
+        withTooltip={false}
         capsComponent={
           <CapsHint
             capType={CapType.borrowCap}
