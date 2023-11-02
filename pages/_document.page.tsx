@@ -10,10 +10,14 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content="#1B2030" />
-          <link rel="shortcut icon" sizes="32x32" href="/favicon32.ico" />
-          <link rel="apple-touch-icon" sizes="16x16" href="/favicon.png" />
-          <link rel="apple-touch-icon" sizes="32x32" href="/favicon32.png" />
-          <link rel="apple-touch-icon" sizes="64x64" href="/favicon64.png" />
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+          <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
+          <link
+            rel="apple-touch-icon"
+            href="/apple-icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
           <link rel="manifest" href="/manifest.json" />
           {
             // Inject MUI styles first to match with the prepend: true configuration.
