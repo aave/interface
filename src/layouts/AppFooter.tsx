@@ -27,7 +27,7 @@ const FOOTER_ICONS = [
     title: 'Aave',
   },
   {
-    href: 'https://twitter.com/aaveaave?s=11&t=ZixFmUt1SIHLEMvx18gUGw',
+    href: 'https://twitter.com/aave',
     icon: <Twitter />,
     title: 'Lens',
   },
