@@ -263,7 +263,7 @@ export const repay = (
 };
 
 /**
- * This full step for withdraw any availble assets
+ * This full step for withdraw any available assets
  * @example
  *```
  * // Withdraw ETH
