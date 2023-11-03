@@ -9,6 +9,7 @@ interface WrappedTokenConfig {
 interface Token {
   underlyingAsset: string;
   symbol: string;
+  decimals?: number;
 }
 
 // TODO: need to consider v2/v3 markets
@@ -27,6 +28,7 @@ export const wrappedTokenConfig: { [chainId: number]: WrappedTokenConfig[] } = {
     },
     {
       tokenIn: {
+        decimals: 18,
         underlyingAsset: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase(),
         symbol: 'stETH',
       },

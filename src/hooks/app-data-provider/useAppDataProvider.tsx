@@ -270,16 +270,16 @@ export const AppDataProvider: React.FC = ({ children }) => {
         (userReserve) => userReserve.underlyingAsset === config.tokenOut.underlyingAsset
       );
 
-      if (!tokenInReserve || !tokenOutReserve) {
+      if (!tokenOutReserve) {
         throw new Error('no wrapped token reserves');
       }
 
       return {
         tokenIn: {
-          symbol: tokenInReserve.reserve.symbol,
-          underlyingAsset: tokenInReserve.reserve.underlyingAsset,
-          decimals: tokenInReserve.reserve.decimals,
-          priceInUSD: tokenInReserve.reserve.priceInUSD,
+          symbol: config.tokenIn.symbol,
+          underlyingAsset: config.tokenIn.underlyingAsset,
+          decimals: 18,
+          priceInUSD: tokenOutReserve.reserve.priceInUSD,
         },
         tokenOut: {
           symbol: tokenOutReserve.reserve.symbol,

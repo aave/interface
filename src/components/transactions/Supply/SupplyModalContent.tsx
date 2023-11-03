@@ -1,10 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
+import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
@@ -480,12 +480,6 @@ const ExchangeRate = ({
   tokenOutSymbol: string;
   tokenWrapperAddress: string;
 }) => {
-  const { isFetching: loadingExchangeRate, data: exchangeRate } = useTokenInForTokenOut(
-    '1',
-    decimals,
-    tokenWrapperAddress
-  );
-
   const { isFetching: loading, data: tokenOutAmount } = useTokenOutForTokenIn(
     supplyAmount,
     decimals,
@@ -514,44 +508,12 @@ const ExchangeRate = ({
         </>
       )}
       <TextWithTooltip>
-        <Stack direction="column" gap={3}>
-          <Typography variant="tooltip">
-            <Trans>
-              DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave
-              reserve. Switching incurs no additional costs and no slippage.
-            </Trans>
-          </Typography>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Box>
-              <Typography variant="secondary12">
-                <Trans>Exchange rate</Trans>
-              </Typography>
-            </Box>
-            {loadingExchangeRate ? (
-              <Skeleton variant="rectangular" width={120} height={14} />
-            ) : (
-              <Stack direction="row" alignItems="center" gap={1}>
-                <FormattedNumber
-                  value="1"
-                  visibleDecimals={0}
-                  variant="secondary12"
-                  color="text.primary"
-                />
-                <Typography variant="tooltip">{tokenOutSymbol}</Typography>
-                <SvgIcon color="primary" sx={{ fontSize: '12px' }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
-                <FormattedNumber
-                  value={exchangeRate || '0'}
-                  visibleDecimals={4}
-                  variant="secondary12"
-                  color="text.primary"
-                />
-                <Typography variant="tooltip">{tokenInSymbol}</Typography>
-              </Stack>
-            )}
-          </Stack>
-        </Stack>
+        <WrappedTokenTooltipContent
+          decimals={decimals}
+          tokenWrapperAddress={tokenWrapperAddress}
+          tokenInSymbol={tokenInSymbol}
+          tokenOutSymbol={tokenOutSymbol}
+        />
       </TextWithTooltip>
     </Stack>
   );

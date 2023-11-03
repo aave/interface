@@ -1,7 +1,7 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
-import { useTokenInForTokenOut } from 'src/hooks/token-wrapper/useTokenWrapper';
+import { useTokenOutForTokenIn } from 'src/hooks/token-wrapper/useTokenWrapper';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 
@@ -16,7 +16,7 @@ export const WrappedTokenTooltipContent = ({
   tokenInSymbol: string;
   tokenOutSymbol: string;
 }) => {
-  const { isFetching: loadingExchangeRate, data: exchangeRate } = useTokenInForTokenOut(
+  const { isFetching: loadingExchangeRate, data: exchangeRate } = useTokenOutForTokenIn(
     '1',
     decimals,
     tokenWrapperAddress
@@ -46,7 +46,7 @@ export const WrappedTokenTooltipContent = ({
               variant="secondary12"
               color="text.primary"
             />
-            <Typography variant="tooltip">{tokenOutSymbol}</Typography>
+            <Typography variant="tooltip">{tokenInSymbol}</Typography>
             <SvgIcon color="primary" sx={{ fontSize: '12px' }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
@@ -56,7 +56,7 @@ export const WrappedTokenTooltipContent = ({
               variant="secondary12"
               color="text.primary"
             />
-            <Typography variant="tooltip">{tokenInSymbol}</Typography>
+            <Typography variant="tooltip">{tokenOutSymbol}</Typography>
           </Stack>
         )}
       </Stack>
