@@ -225,6 +225,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
+    privateJsonRPCUrl: 'https://arbitrum-one.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: [
       'https://arb1.arbitrum.io/rpc',
       'https://rpc.ankr.com/arbitrum',
