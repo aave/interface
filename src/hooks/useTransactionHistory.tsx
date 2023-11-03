@@ -23,7 +23,7 @@ export const applyTxHistoryFilters = ({
 }: HistoryFilters & { txns: TransactionHistoryItemUnion[] }) => {
   let filteredTxns: TransactionHistoryItemUnion[];
 
-  // Apply seach filter
+  // Apply search filter
   if (searchQuery.length > 0) {
     const lowerSearchQuery = searchQuery.toLowerCase();
 
