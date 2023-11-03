@@ -261,7 +261,7 @@ export const changeBorrowTypeBlocked = (
 /**
  * This full step to verification dashboard health factor
  *
- * Could be use one value by 'value' - varibale
+ * Could be use one value by 'value' - variable
  *
  * Could be use range by valueFrom and valueTo
  *
