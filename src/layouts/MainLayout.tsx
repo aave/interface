@@ -14,7 +14,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       {currentMarket === 'proto_mainnet' || currentMarket === 'proto_avalanche_v3' ? (
-        <TopBarNotify notifyText="An issue in a certain feature of the Aave Protocol was identified. Some markets are temporarily paused on Aave V2. No funds are at risk." />
+        <TopBarNotify notifyText="An issue in a certain feature of the Aave Protocol was identified. Some markets or assets are temporarily paused. No funds are at risk." />
       ) : null}
 
       <AppHeader />
