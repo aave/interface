@@ -2447,6 +2447,10 @@ msgstr "This action will reduce your health factor. Please be mindful of the inc
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "This address is blocked on app.aave.com because it is associated with one or more"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
+msgstr "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
