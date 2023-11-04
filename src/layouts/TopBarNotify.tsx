@@ -12,7 +12,7 @@ import { useRootStore } from 'src/store/root';
 
 interface TopBarNotifyProps {
   notifyText: ReactNode;
-  learnMoreLink: string;
+  learnMoreLink?: string;
 }
 
 export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotifyProps) {
@@ -65,7 +65,8 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
           <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
             <Typography component="div">
               <Trans>{notifyText}</Trans>
-              {md ? (
+
+              {learnMoreLink && md ? (
                 <Link
                   sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
                   target={'_blank'}
@@ -77,7 +78,7 @@ export default function TopBarNotify({ notifyText, learnMoreLink }: TopBarNotify
             </Typography>
           </Box>
           <Box>
-            {!md ? (
+            {!md && learnMoreLink ? (
               <Button
                 component="a"
                 target={'_blank'}
