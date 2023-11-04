@@ -30,6 +30,7 @@ export const SupplyAssetsListMobileItem = ({
   isFreezed,
   underlyingAsset,
   detailsAddress,
+  isPaused,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
@@ -38,7 +39,8 @@ export const SupplyAssetsListMobileItem = ({
   const { supplyCap: supplyCapUsage } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
-  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
+  const disableSupply =
+    !isActive || isPaused || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   return (
     <ListMobileItemWrapper
