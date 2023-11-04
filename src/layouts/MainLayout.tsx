@@ -13,7 +13,10 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {currentMarket === 'proto_mainnet' || currentMarket === 'proto_avalanche_v3' ? (
+      {currentMarket === 'proto_mainnet' ||
+      currentMarket === 'proto_avalanche_v3' ||
+      currentMarket === 'proto_polygon_v3' ||
+      currentMarket === 'proto_optimism_v3' ? (
         <TopBarNotify notifyText="An issue in a certain feature of the Aave Protocol was identified. Some markets or assets are temporarily paused. No funds are at risk." />
       ) : null}
 
