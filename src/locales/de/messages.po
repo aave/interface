@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-31 06:05\n"
+"PO-Revision-Date: 2023-11-05 00:17\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2451,6 +2451,10 @@ msgstr "Diese Maßnahme wird Ihren Gesundheitsfaktor verringern. Bitte beachten 
 #: src/components/AddressBlockedModal.tsx
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "Diese Adresse ist auf app.aave.com blockiert, da sie mit einem oder mehreren"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
+msgstr ""
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
