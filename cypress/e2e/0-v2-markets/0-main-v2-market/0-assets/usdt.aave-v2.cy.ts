@@ -103,7 +103,8 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, AAVE V2 MARKET', () => {
+//due asset frozen
+describe.skip('USDT INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);
