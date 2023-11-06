@@ -427,9 +427,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://gnosisscan.io',
     isTestnet: false,
-    networkLogoPath: '/icons/networks/gnosis.png',
+    networkLogoPath: '/icons/networks/gnosis.svg',
     bridge: {
-      icon: '/icons/bridge/gnosis.svg',
+      icon: '/icons/networks/gnosis.svg',
       name: 'xDai Bridge',
       url: 'https://bridge.gnosischain.com/',
     },
