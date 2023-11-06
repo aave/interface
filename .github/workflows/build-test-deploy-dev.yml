@@ -44,7 +44,6 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - ethereum
           - polygon
           - avalanche
     steps:
@@ -170,7 +169,6 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - ethereum
           - polygon
           - avalanche
     steps:
@@ -196,7 +194,6 @@ jobs:
       matrix:
         market:
           - polygon
-          - avalanche
           - optimism
           - ethereum
           - gho
