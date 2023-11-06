@@ -261,7 +261,7 @@ const BorrowedPositionsListItemMobile = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         {showSwitchButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
             <Button
               disabled={disableSwitch}
               variant="contained"
@@ -273,13 +273,13 @@ const BorrowedPositionsListItemMobile = ({
             </Button>
           </ListItemPausedTooltipWrapper>
         ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
             <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>
               <Trans>Borrow</Trans>
             </Button>
           </ListItemPausedTooltipWrapper>
         )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused}>
+        <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
           <Button
             disabled={disableRepay}
             variant="outlined"

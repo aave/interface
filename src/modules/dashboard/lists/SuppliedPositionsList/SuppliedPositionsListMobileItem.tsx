@@ -106,7 +106,7 @@ export const SuppliedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         {isSwapButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
             <Button
               disabled={disableSwap}
               variant="contained"
@@ -117,7 +117,7 @@ export const SuppliedPositionsListMobileItem = ({
             </Button>
           </ListItemPausedTooltipWrapper>
         ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
             <Button
               disabled={disableSupply}
               variant="contained"
@@ -128,7 +128,7 @@ export const SuppliedPositionsListMobileItem = ({
             </Button>
           </ListItemPausedTooltipWrapper>
         )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused}>
+        <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
           <Button
             disabled={disableWithdraw}
             variant="outlined"

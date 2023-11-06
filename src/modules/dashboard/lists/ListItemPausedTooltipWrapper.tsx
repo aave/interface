@@ -6,9 +6,11 @@ import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 export const ListItemPausedTooltipWrapper = ({
   isPaused,
   children,
+  fullWidth,
 }: {
   isPaused: boolean;
   children: ReactNode;
+  fullWidth?: boolean;
 }) => {
   if (!isPaused) {
     return <>{children}</>;
@@ -25,7 +27,7 @@ export const ListItemPausedTooltipWrapper = ({
         </Stack>
       }
     >
-      <span style={{ width: '100%' }}>{children}</span>
+      <span style={{ width: fullWidth ? '100%' : 'unset' }}>{children}</span>
     </Tooltip>
   );
 };
