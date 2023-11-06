@@ -12,6 +12,7 @@ import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
+import { ListItemPausedTooltipWrapper } from '../ListItemPausedTooltipWrapper';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -50,6 +51,7 @@ export const SuppliedPositionsListItem = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      paused={isPaused}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
         canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}
@@ -90,42 +92,48 @@ export const SuppliedPositionsListItem = ({
 
       <ListButtonsColumn>
         {isSwapButton ? (
-          <Button
-            disabled={disableSwap}
-            variant="contained"
-            onClick={() => {
-              // track
+          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+            <Button
+              disabled={disableSwap}
+              variant="contained"
+              onClick={() => {
+                // track
 
-              trackEvent(GENERAL.OPEN_MODAL, {
-                modal: 'Swap Collateral',
-                market: currentMarket,
-                assetName: reserve.name,
-                asset: underlyingAsset,
-              });
-              openSwap(underlyingAsset);
-            }}
-            data-cy={`swapButton`}
-          >
-            <Trans>Switch</Trans>
-          </Button>
+                trackEvent(GENERAL.OPEN_MODAL, {
+                  modal: 'Swap Collateral',
+                  market: currentMarket,
+                  assetName: reserve.name,
+                  asset: underlyingAsset,
+                });
+                openSwap(underlyingAsset);
+              }}
+              data-cy={`swapButton`}
+            >
+              <Trans>Switch</Trans>
+            </Button>
+          </ListItemPausedTooltipWrapper>
         ) : (
-          <Button
-            disabled={disableSupply}
-            variant="contained"
-            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          >
-            <Trans>Supply</Trans>
-          </Button>
+          <ListItemPausedTooltipWrapper isPaused={isPaused}>
+            <Button
+              disabled={disableSupply}
+              variant="contained"
+              onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+            >
+              <Trans>Supply</Trans>
+            </Button>
+          </ListItemPausedTooltipWrapper>
         )}
-        <Button
-          disabled={disableWithdraw}
-          variant="outlined"
-          onClick={() => {
-            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
-          }}
-        >
-          <Trans>Withdraw</Trans>
-        </Button>
+        <ListItemPausedTooltipWrapper isPaused={isPaused}>
+          <Button
+            disabled={disableWithdraw}
+            variant="outlined"
+            onClick={() => {
+              openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+            }}
+          >
+            <Trans>Withdraw</Trans>
+          </Button>
+        </ListItemPausedTooltipWrapper>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
