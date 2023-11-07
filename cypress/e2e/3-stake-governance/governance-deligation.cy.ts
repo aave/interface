@@ -26,6 +26,7 @@ const testData = {
     mask: '0x36...49e2',
   },
 };
+
 // skip while tenderly issue
 describe.skip(`DELEGATION SPEC`, () => {
   const skipTestState = skipState(false);

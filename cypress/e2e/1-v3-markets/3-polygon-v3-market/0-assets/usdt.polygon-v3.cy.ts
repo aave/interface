@@ -108,7 +108,8 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+//due asset frozen
+describe.skip('USDT INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
 

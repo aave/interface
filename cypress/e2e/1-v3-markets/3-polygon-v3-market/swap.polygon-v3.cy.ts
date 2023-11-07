@@ -39,8 +39,8 @@ const testData = {
     ],
   },
 };
-
-describe('SWAP, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
+//due frozen assets
+describe.skip('SWAP, POLYGON V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
 

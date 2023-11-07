@@ -45,8 +45,8 @@ const testData = {
     ],
   },
 };
-
-describe('E-MODE SPEC, POLYGON V3 MARKET', () => {
+//due frozen assets
+describe.skip('E-MODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
   describe('Prepare min health factor state, with stable coins', () => {
