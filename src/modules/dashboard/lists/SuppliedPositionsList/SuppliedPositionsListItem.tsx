@@ -12,7 +12,6 @@ import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
-import { ListItemPausedTooltipWrapper } from '../ListItemPausedTooltipWrapper';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -92,48 +91,42 @@ export const SuppliedPositionsListItem = ({
 
       <ListButtonsColumn>
         {isSwapButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
-            <Button
-              disabled={disableSwap}
-              variant="contained"
-              onClick={() => {
-                // track
-
-                trackEvent(GENERAL.OPEN_MODAL, {
-                  modal: 'Swap Collateral',
-                  market: currentMarket,
-                  assetName: reserve.name,
-                  asset: underlyingAsset,
-                });
-                openSwap(underlyingAsset);
-              }}
-              data-cy={`swapButton`}
-            >
-              <Trans>Switch</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
-            <Button
-              disabled={disableSupply}
-              variant="contained"
-              onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-            >
-              <Trans>Supply</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused}>
           <Button
-            disabled={disableWithdraw}
-            variant="outlined"
+            disabled={disableSwap}
+            variant="contained"
             onClick={() => {
-              openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+              // track
+
+              trackEvent(GENERAL.OPEN_MODAL, {
+                modal: 'Swap Collateral',
+                market: currentMarket,
+                assetName: reserve.name,
+                asset: underlyingAsset,
+              });
+              openSwap(underlyingAsset);
             }}
+            data-cy={`swapButton`}
           >
-            <Trans>Withdraw</Trans>
+            <Trans>Switch</Trans>
           </Button>
-        </ListItemPausedTooltipWrapper>
+        ) : (
+          <Button
+            disabled={disableSupply}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
+        <Button
+          disabled={disableWithdraw}
+          variant="outlined"
+          onClick={() => {
+            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+          }}
+        >
+          <Trans>Withdraw</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );

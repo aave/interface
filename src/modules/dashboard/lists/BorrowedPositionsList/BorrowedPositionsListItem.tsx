@@ -15,7 +15,6 @@ import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
-import { ListItemPausedTooltipWrapper } from '../ListItemPausedTooltipWrapper';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -155,28 +154,22 @@ const BorrowedPositionsListItemDesktop = ({
 
       <ListButtonsColumn>
         {showSwitchButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
-            <Button
-              disabled={disableSwitch}
-              variant="contained"
-              onClick={onDetbSwitchClick}
-              data-cy={`swapButton`}
-            >
-              <Trans>Switch</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused}>
-            <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
-              <Trans>Borrow</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused}>
-          <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
-            <Trans>Repay</Trans>
+          <Button
+            disabled={disableSwitch}
+            variant="contained"
+            onClick={onDetbSwitchClick}
+            data-cy={`swapButton`}
+          >
+            <Trans>Switch</Trans>
           </Button>
-        </ListItemPausedTooltipWrapper>
+        ) : (
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
+            <Trans>Borrow</Trans>
+          </Button>
+        )}
+        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
+          <Trans>Repay</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -261,35 +254,29 @@ const BorrowedPositionsListItemMobile = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         {showSwitchButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
-            <Button
-              disabled={disableSwitch}
-              variant="contained"
-              fullWidth
-              onClick={onDetbSwitchClick}
-              data-cy={`swapButton`}
-            >
-              <Trans>Switch</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
-            <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>
-              <Trans>Borrow</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
           <Button
-            disabled={disableRepay}
-            variant="outlined"
-            onClick={onOpenRepay}
-            sx={{ ml: 1.5 }}
+            disabled={disableSwitch}
+            variant="contained"
             fullWidth
+            onClick={onDetbSwitchClick}
+            data-cy={`swapButton`}
           >
-            <Trans>Repay</Trans>
+            <Trans>Switch</Trans>
           </Button>
-        </ListItemPausedTooltipWrapper>
+        ) : (
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>
+            <Trans>Borrow</Trans>
+          </Button>
+        )}
+        <Button
+          disabled={disableRepay}
+          variant="outlined"
+          onClick={onOpenRepay}
+          sx={{ ml: 1.5 }}
+          fullWidth
+        >
+          <Trans>Repay</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );

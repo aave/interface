@@ -9,7 +9,6 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
-import { ListItemPausedTooltipWrapper } from '../ListItemPausedTooltipWrapper';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -106,39 +105,33 @@ export const SuppliedPositionsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         {isSwapButton ? (
-          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
-            <Button
-              disabled={disableSwap}
-              variant="contained"
-              onClick={() => openSwap(underlyingAsset)}
-              fullWidth
-            >
-              <Trans>Switch</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        ) : (
-          <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
-            <Button
-              disabled={disableSupply}
-              variant="contained"
-              onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-              fullWidth
-            >
-              <Trans>Supply</Trans>
-            </Button>
-          </ListItemPausedTooltipWrapper>
-        )}
-        <ListItemPausedTooltipWrapper isPaused={isPaused} fullWidth>
           <Button
-            disabled={disableWithdraw}
-            variant="outlined"
-            onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-            sx={{ ml: 1.5 }}
+            disabled={disableSwap}
+            variant="contained"
+            onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
-            <Trans>Withdraw</Trans>
+            <Trans>Switch</Trans>
           </Button>
-        </ListItemPausedTooltipWrapper>
+        ) : (
+          <Button
+            disabled={disableSupply}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+            fullWidth
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
+        <Button
+          disabled={disableWithdraw}
+          variant="outlined"
+          onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+          sx={{ ml: 1.5 }}
+          fullWidth
+        >
+          <Trans>Withdraw</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );
