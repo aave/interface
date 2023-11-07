@@ -1,8 +1,8 @@
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { SvgIcon } from '@mui/material';
+import { Stack, SvgIcon, Tooltip } from '@mui/material';
 
-import { ContentWithTooltip } from '../ContentWithTooltip';
+import { PopperComponent } from '../ContentWithTooltip';
 
 export const PausedTooltipText = () => {
   return (
@@ -15,10 +15,19 @@ export const PausedTooltipText = () => {
 
 export const PausedTooltip = () => {
   return (
-    <ContentWithTooltip tooltipContent={<PausedTooltipText />}>
+    <Tooltip
+      arrow
+      placement="top"
+      PopperComponent={PopperComponent}
+      title={
+        <Stack sx={{ py: 4, px: 6 }} spacing={1}>
+          <PausedTooltipText />
+        </Stack>
+      }
+    >
       <SvgIcon sx={{ fontSize: '20px', color: 'error.main', ml: 2 }}>
         <ExclamationIcon />
       </SvgIcon>
-    </ContentWithTooltip>
+    </Tooltip>
   );
 };
