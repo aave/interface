@@ -37,6 +37,7 @@ export const SupplyAssetsListItem = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
+  isPaused,
 }: DashboardReserve) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -55,7 +56,8 @@ export const SupplyAssetsListItem = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const disableSupply = !isActive || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
+  const disableSupply =
+    !isActive || isPaused || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   const onDetailsClick = () => {
     trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
@@ -86,7 +88,7 @@ export const SupplyAssetsListItem = ({
         symbol={symbol}
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
-        withTooltip
+        withTooltip={false}
         disabled={Number(walletBalance) === 0 || isMaxCapReached}
         capsComponent={
           <CapsHint

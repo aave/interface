@@ -349,7 +349,7 @@ export const useTransactionHandler = ({
   };
 
   // populate txns
-  // fetches standard txs (optional aproval + action), then based off availability and user preference, set tx flow and gas estimation to permit or approve
+  // fetches standard txs (optional approval + action), then based off availability and user preference, set tx flow and gas estimation to permit or approve
   useEffect(() => {
     if (!skip) {
       setLoadingTxns(true);
@@ -368,7 +368,7 @@ export const useTransactionHandler = ({
               handleGetPermitTxns &&
               permitAction;
             if (approvalTransactions.length > 0 && preferPermit) {
-              // For permit flow, jsut use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
+              // For permit flow, just use recommendation for gas limit as estimation will always fail without signature and tx must be rebuilt with signature anyways
               setUsePermit(true);
               const gas = gasLimitRecommendations[permitAction];
               setGasLimit(gas.limit || '');
@@ -411,6 +411,7 @@ export const useTransactionHandler = ({
                   }
                 }
               } catch (error) {
+                if (!mounted.current) return;
                 const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
                 setTxError(parsedError);
               }

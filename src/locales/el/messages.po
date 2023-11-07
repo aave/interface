@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-20 00:15\n"
+"PO-Revision-Date: 2023-11-05 00:17\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -648,7 +648,7 @@ msgstr "Διεκδίκηση {0}"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "Claim {symbol}"
-msgstr ""
+msgstr "Διεκδίκηση {symbol}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
@@ -929,7 +929,7 @@ msgstr "Κατηγορία E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "E-Mode category"
-msgstr ""
+msgstr "Κατηγορία E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -1297,7 +1297,7 @@ msgstr "Μάθετε περισσότερα στον οδηγό <0>Συχνών 
 
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Learn more."
-msgstr ""
+msgstr "Μάθετε περισσότερα."
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -1706,7 +1706,7 @@ msgstr ""
 
 #: src/components/transactions/Switch/SwitchRates.tsx
 msgid "Price impact"
-msgstr ""
+msgstr "Επίδραση στην τιμή"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
@@ -2453,6 +2453,10 @@ msgstr ""
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr ""
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
+msgstr ""
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει σχεδόν φτάσει στο όριο δανεισμού του. Υπάρχει μόνο {messageValue} διαθέσιμο για δανεισμό από αυτή την αγορά."
@@ -3082,7 +3086,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets."
-msgstr ""
+msgstr "Το πορτοφόλι σας {name} είναι άδειο. Αγοράστε ή μεταφέρετε περιουσιακά στοιχεία."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
@@ -3110,15 +3114,15 @@ msgstr "αντιγράψτε το σφάλμα"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
-msgstr ""
+msgstr "απενεργοποιημένο"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "documentation"
-msgstr ""
+msgstr "τεκμηρίωση"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "enabled"
-msgstr ""
+msgstr "ενεργοποιημένο"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
@@ -3243,7 +3247,7 @@ msgstr "{m}λ"
 #: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "{networkName} Faucet"
-msgstr ""
+msgstr "{networkName} Βρύση"
 
 #: src/layouts/TopBarNotify.tsx
 msgid "{notifyText}"
