@@ -15,6 +15,7 @@ import {
   AaveV3Fantom,
   AaveV3FantomTestnet,
   AaveV3Fuji,
+  AaveV3Gnosis,
   AaveV3Harmony,
   AaveV3Metis,
   AaveV3Mumbai,
@@ -78,7 +79,6 @@ export type MarketDataType = {
     marketName: string;
   };
 };
-
 export enum CustomMarket {
   // v3 test networks, all v3.0.1
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
@@ -98,6 +98,7 @@ export enum CustomMarket {
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   proto_metis_v3 = 'proto_metis_v3',
   proto_base_v3 = 'proto_base_v3',
+  proto_gnosis_v3 = 'proto_gnosis_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -677,6 +678,21 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
       marketName: 'polygon',
+    },
+  },
+  [CustomMarket.proto_gnosis_v3]: {
+    marketTitle: 'Gnosis',
+    chainId: ChainId.xdai,
+    v3: true,
+    // subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Gnosis.POOL,
+      WETH_GATEWAY: AaveV3Gnosis.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Gnosis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Gnosis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Gnosis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Gnosis.COLLECTOR,
     },
   },
 } as const;
