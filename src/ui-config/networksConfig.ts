@@ -413,4 +413,25 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
   },
+
+  [ChainId.xdai]: {
+    name: 'Gnosis Chain',
+    privateJsonRPCUrl:
+      'https://gnosischain-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+
+    publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
+    publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'xDAI',
+    wrappedBaseAssetSymbol: 'WXDAI',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://gnosisscan.io',
+    isTestnet: false,
+    networkLogoPath: '/icons/networks/gnosis.svg',
+    bridge: {
+      icon: '/icons/networks/gnosis.svg',
+      name: 'xDai Bridge',
+      url: 'https://bridge.gnosischain.com/',
+    },
+  },
 } as const;
