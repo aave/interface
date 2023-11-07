@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
@@ -88,10 +89,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             </Warning>
           ) : (
             <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-              <Trans>
-                This asset been paused due to a community decision. Supply, borrows and repays are
-                impacted.{' '}
-              </Trans>
+              <PausedTooltipText />
             </Warning>
           )
         ) : null}
