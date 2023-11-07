@@ -130,6 +130,7 @@ const BorrowedPositionsListItemDesktop = ({
       detailsAddress={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      paused={reserve.isPaused}
       borrowEnabled={reserve.borrowingEnabled}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
@@ -271,7 +272,7 @@ const BorrowedPositionsListItemMobile = ({
           disabled={disableRepay}
           variant="outlined"
           onClick={onOpenRepay}
-          sx={{ mr: 1.5 }}
+          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Repay</Trans>
