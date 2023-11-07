@@ -24,6 +24,7 @@ export interface TxModalDetailsProps {
   skipLoad?: boolean;
   disabled?: boolean;
   chainId?: number;
+  hideGasStation?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -39,6 +40,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   disabled,
   children,
   chainId,
+  hideGasStation = false,
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
@@ -59,13 +61,15 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         {children}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation
-          chainId={chainId}
-          gasLimit={parseUnits(gasLimit || '0', 'wei')}
-          skipLoad={skipLoad}
-          disabled={disabled}
-          rightComponent={slippageSelector}
-        />
+        {!hideGasStation && (
+          <GasStation
+            chainId={chainId}
+            gasLimit={parseUnits(gasLimit || '0', 'wei')}
+            skipLoad={skipLoad}
+            disabled={disabled}
+            rightComponent={slippageSelector}
+          />
+        )}
       </Box>
     </Box>
   );
