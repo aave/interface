@@ -16,6 +16,10 @@ interface GhoUtilMintingAvailableParams {
   currentMarket: string;
 }
 
+export const displayGho = ({ symbol, currentMarket }: GhoUtilMintingAvailableParams): boolean => {
+  return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
+};
+
 export interface GhoSlice {
   ghoReserveData: GhoReserveData;
   ghoUserData: GhoUserData;

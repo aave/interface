@@ -8,9 +8,10 @@ import {
 import { Variant } from '@mui/material/styles/createTypography';
 import { OverridableStringUnion } from '@mui/types';
 import React from 'react';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
+import { useRootStore } from 'src/store/root';
+import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
 
 interface GhoBorrowApyRangeProps extends TypographyProps {
   minVal?: number;
@@ -31,9 +32,10 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
   hyphenVariant,
   ...rest
 }) => {
-  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { isLoading: ghoLoadingData, data: ghoReserveData, error: ghoReserveDataError } = useGhoPoolFormattedReserve(currentMarketData);
 
-  if (ghoLoadingData) return <Skeleton width={70} height={24} />;
+  if (ghoLoadingData || ghoReserveDataError) return <Skeleton width={70} height={24} />;
 
   // Check precision, could be different by small amount but show same
   const lowRangeValue = minVal ?? ghoReserveData.ghoBorrowAPYWithMaxDiscount;
