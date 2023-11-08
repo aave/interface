@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-05 00:17\n"
+"PO-Revision-Date: 2023-11-08 00:15\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2453,10 +2453,6 @@ msgstr ""
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
-msgstr ""
-
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει σχεδόν φτάσει στο όριο δανεισμού του. Υπάρχει μόνο {messageValue} διαθέσιμο για δανεισμό από αυτή την αγορά."
@@ -2464,6 +2460,10 @@ msgstr "Αυτό το περιουσιακό στοιχείο έχει σχεδ�
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει σχεδόν φτάσει στο όριο της προσφοράς του. Μόνο {messageValue} μπορεί να παρασχεθεί σε αυτή την αγορά."
+
+#: src/components/infoTooltips/PausedTooltip.tsx
+msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+msgstr ""
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
