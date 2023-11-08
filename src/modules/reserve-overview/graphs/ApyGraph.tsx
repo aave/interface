@@ -146,50 +146,52 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
     let avgLine: ReactNode = null;
     if (avgFieldName) {
       const avg = data.reduce((acc, cur) => acc + cur[avgFieldName], 0) / data.length;
-      const avgFormatted = (avg * 100).toFixed(2);
-      const avgArray = data.map((d) => {
-        return {
-          ...d,
-          [avgFieldName]: avg,
-        };
-      });
+      if (avg > 0) {
+        const avgFormatted = (avg * 100).toFixed(2);
+        const avgArray = data.map((d) => {
+          return {
+            ...d,
+            [avgFieldName]: avg,
+          };
+        });
 
-      const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 70;
-      const annotationY = (yValueScale(getData(avgArray[0], avgFieldName)) ?? 0) - 8;
+        const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 70;
+        const annotationY = (yValueScale(getData(avgArray[0], avgFieldName)) ?? 0) - 8;
 
-      avgLine = (
-        <>
-          <LinePath
-            key="avg"
-            data={avgArray}
-            strokeDasharray="3,3"
-            stroke={theme.palette.text.muted}
-            strokeWidth={2}
-            x={(d) => dateScale(getDate(d)) ?? 0}
-            y={(d) => yValueScale(getData(d, avgFieldName)) ?? 0}
-          />
-          <Annotation x={annotationX} y={annotationY}>
-            <HtmlLabel showAnchorLine={false}>
-              <Stack
-                alignItems="center"
-                direction="row"
-                justifyContent="center"
-                sx={{
-                  mx: 2,
-                  my: 0.5,
-                  fontSize: 12,
-                  background: theme.palette.divider,
-                  borderRadius: '99px',
-                }}
-              >
-                <Typography sx={{ m: 1 }} noWrap variant="secondary12">
-                  Avg {avgFormatted}%
-                </Typography>
-              </Stack>
-            </HtmlLabel>
-          </Annotation>
-        </>
-      );
+        avgLine = (
+          <>
+            <LinePath
+              key="avg"
+              data={avgArray}
+              strokeDasharray="3,5"
+              stroke="#D2D4DC"
+              strokeWidth={2}
+              x={(d) => dateScale(getDate(d)) ?? 0}
+              y={(d) => yValueScale(getData(d, avgFieldName)) ?? 0}
+            />
+            <Annotation x={annotationX} y={annotationY}>
+              <HtmlLabel showAnchorLine={false}>
+                <Stack
+                  alignItems="center"
+                  direction="row"
+                  justifyContent="center"
+                  sx={{
+                    mx: 2,
+                    my: 0.5,
+                    fontSize: 12,
+                    background: theme.palette.divider,
+                    borderRadius: '99px',
+                  }}
+                >
+                  <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                    Avg {avgFormatted}%
+                  </Typography>
+                </Stack>
+              </HtmlLabel>
+            </Annotation>
+          </>
+        );
+      }
     }
 
     return (
