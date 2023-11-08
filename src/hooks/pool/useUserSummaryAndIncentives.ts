@@ -4,7 +4,7 @@ import {
   UserReservesIncentivesDataHumanized,
 } from '@aave/contract-helpers';
 import { formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives } from '@aave/math-utils';
-import { memoize } from 'cypress/types/lodash';
+import { memoize } from 'lodash';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 

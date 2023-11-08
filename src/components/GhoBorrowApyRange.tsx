@@ -8,10 +8,10 @@ import {
 import { Variant } from '@mui/material/styles/createTypography';
 import { OverridableStringUnion } from '@mui/types';
 import React from 'react';
+import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
+import { useRootStore } from 'src/store/root';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
-import { useRootStore } from 'src/store/root';
-import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
 
 interface GhoBorrowApyRangeProps extends TypographyProps {
   minVal?: number;
@@ -33,7 +33,11 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
   ...rest
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { isLoading: ghoLoadingData, data: ghoReserveData, error: ghoReserveDataError } = useGhoPoolFormattedReserve(currentMarketData);
+  const {
+    isLoading: ghoLoadingData,
+    data: ghoReserveData,
+    error: ghoReserveDataError,
+  } = useGhoPoolFormattedReserve(currentMarketData);
 
   if (ghoLoadingData || ghoReserveDataError) return <Skeleton width={70} height={24} />;
 

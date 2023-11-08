@@ -5,9 +5,9 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
-  ComputedReserveData,
-  useAppDataContext,
+  ComputedReserveData
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
@@ -19,7 +19,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const { ghoReserveData, ghoLoadingData } = useAppDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { data: ghoReserveData, isLoading: ghoReserveDataLoading, error: ghoReserveDataError } = useGhoPoolFormattedReserve(currentMarketData)
 
   return (
     <Box
@@ -206,7 +207,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoLoadingData ? (
+                {(ghoReserveDataLoading || ghoReserveDataError) ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <FormattedNumber
@@ -240,8 +241,8 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               }}
             >
               <GhoBorrowApyRange
-                minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
-                maxVal={ghoReserveData.ghoVariableBorrowAPY}
+                minVal={ghoReserveData?.ghoBorrowAPYWithMaxDiscount}
+                maxVal={ghoReserveData?.ghoVariableBorrowAPY}
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}

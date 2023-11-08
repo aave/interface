@@ -11,17 +11,16 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { MarketLogo } from 'src/components/MarketSwitcher';
+import { usePoolFormattedReserves } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
+import { displayGho } from 'src/store/ghoSlice';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../hooks/app-data-provider/useAppDataProvider';
+import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { AddTokenDropdown } from './AddTokenDropdown';
 import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
@@ -29,20 +28,30 @@ import { TokenLinkDropdown } from './TokenLinkDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
+  marketData: MarketDataType;
 }
 
-export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
+export const ReserveTopDetailsWrapper = ({
+  underlyingAsset,
+  marketData,
+}: ReserveTopDetailsProps) => {
   const router = useRouter();
-  const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentChainId } = useProtocolDataContext();
-  const { market, network } = getMarketInfoById(currentMarket);
+  const {
+    data: formattedReserves,
+    isLoading: formattedReservesLoading,
+    error: formattedReservesError,
+  } = usePoolFormattedReserves(marketData);
+
+  const loading = !!formattedReservesError || formattedReservesLoading;
+
+  const chainId = marketData.chainId;
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
-  const [displayGho] = useRootStore((store) => [store.displayGho]);
+  const networkConfig = getNetworkConfig(marketData.chainId);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const poolReserve = reserves.find(
+  const poolReserve = (formattedReserves || []).find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
@@ -73,7 +82,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     );
   };
 
-  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket });
+  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket: marketData.market });
 
   return (
     <TopInfoPanel
@@ -109,11 +118,11 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo size={20} logo={network.networkLogoPath} />
+              <MarketLogo size={20} logo={networkConfig.networkLogoPath} />
               <Typography variant="subheader1" sx={{ color: 'common.white' }}>
-                {market.marketTitle} <Trans>Market</Trans>
+                {marketData.marketTitle} <Trans>Market</Trans>
               </Typography>
-              {market.v3 && (
+              {marketData.v3 && (
                 <Box
                   sx={{
                     color: '#fff',
@@ -155,7 +164,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                           downToSM={downToSM}
                           switchNetwork={switchNetwork}
                           addERC20Token={addERC20Token}
-                          currentChainId={currentChainId}
+                          currentChainId={chainId}
                           connectedChainId={connectedChainId}
                           hideAToken={isGho}
                         />
@@ -192,7 +201,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                     downToSM={downToSM}
                     switchNetwork={switchNetwork}
                     addERC20Token={addERC20Token}
-                    currentChainId={currentChainId}
+                    currentChainId={chainId}
                     connectedChainId={connectedChainId}
                     hideAToken={isGho}
                   />

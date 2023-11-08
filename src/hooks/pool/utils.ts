@@ -1,13 +1,12 @@
 import { UseQueryResult } from '@tanstack/react-query';
 
-export type SimplifiedUseQueryResult<TData = unknown, TError = unknown> = Pick<
-  UseQueryResult<TData, TError>,
-  'data' | 'error' | 'isLoading'
-> | {
-  isLoading: false;
-  data: TData;
-  error: null;
-};
+export type SimplifiedUseQueryResult<TData = unknown, TError = unknown> =
+  | Pick<UseQueryResult<TData, TError>, 'data' | 'error' | 'isLoading'>
+  | {
+      isLoading: false;
+      data: TData;
+      error: null;
+    };
 
 export const combineQueries = <Queries extends readonly SimplifiedUseQueryResult[], P>(
   queries: Queries,
@@ -28,7 +27,7 @@ export const combineQueries = <Queries extends readonly SimplifiedUseQueryResult
       isLoading: false,
       data: combiner(...allData),
       error: null,
-    }
+    };
   }
   return {
     isLoading: isLoading,

@@ -79,15 +79,17 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   // pool hooks
 
-  const { data: reservesData, isLoading: reservesDataLoading } = usePoolReservesHumanized(currentMarketData);
-  const { data: formattedPoolReserves, isLoading: formattedPoolReservesLoading } = usePoolFormattedReserves(currentMarketData);
+  const { data: reservesData, isLoading: reservesDataLoading } =
+    usePoolReservesHumanized(currentMarketData);
+  const { data: formattedPoolReserves, isLoading: formattedPoolReservesLoading } =
+    usePoolFormattedReserves(currentMarketData);
   const baseCurrencyData = reservesData?.baseCurrencyData;
-  const reserves = reservesData?.reservesData;
-
   // user hooks
 
-  const { data: userReservesData, isLoading: userReservesDataLoading } = useUserPoolReservesHumanized(currentMarketData);
-  const { data: userSummary, isLoading: userSummaryLoading } = useUserSummaryAndIncentives(currentMarketData);
+  const { data: userReservesData, isLoading: userReservesDataLoading } =
+    useUserPoolReservesHumanized(currentMarketData);
+  const { data: userSummary, isLoading: userSummaryLoading } =
+    useUserSummaryAndIncentives(currentMarketData);
   const { data: yields, isLoading: userYieldsLoading } = useUserYield(currentMarketData);
   const userEmodeCategoryId = userReservesData?.userEmodeCategoryId;
   const userReserves = userReservesData?.userReserves;
@@ -139,22 +141,22 @@ export const AppDataProvider: React.FC = ({ children }) => {
     <AppDataContext.Provider
       value={{
         loading: isReservesLoading || (!!currentAccount && isUserDataLoading),
-        reserves: formattedPoolReserves,
+        reserves: formattedPoolReserves || [],
         eModes,
         user: {
           ...user,
-          totalBorrowsUSD: user?.totalBorrowsUSD,
-          totalBorrowsMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-          userEmodeCategoryId,
-          isInEmode: userEmodeCategoryId !== 0,
-          userReservesData: user.userReservesData.sort((a, b) =>
+          totalBorrowsUSD: user?.totalBorrowsUSD || '0',
+          totalBorrowsMarketReferenceCurrency: user?.totalBorrowsMarketReferenceCurrency || '0',
+          userEmodeCategoryId: userEmodeCategoryId || 0,
+          isInEmode: (userEmodeCategoryId || 0) !== 0,
+          userReservesData: user?.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
-          ),
+          ) || [],
           earnedAPY: yields?.earnedAPY || 0,
           debtAPY: yields?.debtAPY || 0,
           netAPY: yields?.netAPY || 0,
         },
-        userReserves,
+        userReserves: userReserves || [],
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
         marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,

@@ -7,7 +7,7 @@ import { formatReservesAndIncentives } from '@aave/math-utils';
 import { memoize } from 'lodash';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { fetchIconSymbolAndName, IconSymbolInterface } from 'src/ui-config/reservePatches';
+import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reservePatches';
 import { getNetworkConfig, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { selectBaseCurrencyData, selectReserves } from './selectors';
@@ -16,12 +16,12 @@ import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
 export type FormattedReservesAndIncentives = ReturnType<
-  typeof formatReservesAndIncentives<ReserveDataHumanized>
+  typeof formatReservesAndIncentives
 >[number] &
-  IconSymbolInterface & {
+  IconMapInterface & {
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
-  };
+  } & ReserveDataHumanized;
 
 const formatReserves = memoize(
   (
