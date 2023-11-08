@@ -8,7 +8,7 @@ msgstr ""
 "Language: ru\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-05 00:17\n"
+"PO-Revision-Date: 2023-11-08 00:15\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
@@ -2452,10 +2452,6 @@ msgstr "Это действие снизит ваш фактор здоровь�
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "Этот адрес заблокирован на app.aave.com, так как он связан с одним или несколькими"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
-msgstr ""
-
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "Этот актив почти достиг своего лимита заимствований. Есть только {messageValue} можно взять взаймы на этом рынке."
@@ -2463,6 +2459,10 @@ msgstr "Этот актив почти достиг своего лимита з
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "Этот актив почти достиг своего лимита предложения. Может быть только {messageValue} поставляемых на этот рынок."
+
+#: src/components/infoTooltips/PausedTooltip.tsx
+msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+msgstr ""
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
