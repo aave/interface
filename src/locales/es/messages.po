@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-08 00:15\n"
+"PO-Revision-Date: 2023-11-08 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2462,7 +2462,7 @@ msgstr "Este activo casi ha alcanzado su límite de suministro. Solo se puede su
 
 #: src/components/infoTooltips/PausedTooltip.tsx
 msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
-msgstr ""
+msgstr "Este activo ha sido pausado debido a una decisión de la comunidad. El suministro, los retiros, los préstamos y los pagos se han visto afectados."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
