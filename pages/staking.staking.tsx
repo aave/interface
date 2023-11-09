@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
@@ -12,20 +11,13 @@ import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
-import {
-  ENABLE_TESTNET,
-  FORK_ENABLED,
-  getNetworkConfig,
-  STAGING_ENV,
-} from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -59,8 +51,6 @@ export default function Staking() {
   const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData();
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
     useGeneralStakeUiData();
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  const { currentChainId } = useProtocolDataContext();
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 
@@ -83,17 +73,6 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
-  useEffect(() => {
-    const previousMarket = currentMarket;
-    // Automatically set staking to ETH mainnet and revert back on unmount
-    if (currentChainId !== ChainId.mainnet && !FORK_ENABLED) {
-      setCurrentMarket('proto_mainnet' as CustomMarket);
-    }
-
-    return () => {
-      setCurrentMarket(previousMarket);
-    };
-  }, []);
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatUnits(
     BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
