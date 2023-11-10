@@ -160,7 +160,7 @@ export const ClaimRewardsModalContent = () => {
       )}
 
       {selectedReward && (
-        <TxModalDetails gasLimit={gasLimit}>
+        <TxModalDetails chainId={connectedChainId} gasLimit={gasLimit}>
           {selectedRewardSymbol === 'all' && (
             <>
               <Row
