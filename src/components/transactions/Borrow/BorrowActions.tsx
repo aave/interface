@@ -68,7 +68,7 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
@@ -135,9 +135,10 @@ export const BorrowActions = React.memo(
         });
 
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
-        refetchGhoData && refetchGhoData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

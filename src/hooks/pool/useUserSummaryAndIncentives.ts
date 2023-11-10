@@ -3,7 +3,10 @@ import {
   ReservesIncentiveDataHumanized,
   UserReservesIncentivesDataHumanized,
 } from '@aave/contract-helpers';
-import { formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives } from '@aave/math-utils';
+import {
+  formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives,
+  FormatUserSummaryAndIncentivesResponse,
+} from '@aave/math-utils';
 import { memoize } from 'lodash';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -21,7 +24,10 @@ import { usePoolsReservesHumanized } from './usePoolReserves';
 import { usePoolsReservesIncentivesHumanized } from './usePoolReservesIncentives';
 import { useUserPoolsReservesHumanized } from './useUserPoolReserves';
 import { useUserPoolsReservesIncentivesHumanized } from './useUserPoolReservesIncentives';
-import { combineQueries } from './utils';
+import { combineQueries, SimplifiedUseQueryResult } from './utils';
+
+export type UserSummaryAndIncentives =
+  FormatUserSummaryAndIncentivesResponse<FormattedReservesAndIncentives>;
 
 const formatUserSummaryAndIncentivesss = memoize(
   (
@@ -47,7 +53,9 @@ const formatUserSummaryAndIncentivesss = memoize(
   }
 );
 
-export const useUserSummariesAndIncentives = (marketsData: MarketDataType[]) => {
+export const useUserSummariesAndIncentives = (
+  marketsData: MarketDataType[]
+): SimplifiedUseQueryResult<UserSummaryAndIncentives>[] => {
   const poolsReservesQuery = usePoolsReservesHumanized(marketsData);
   const userPoolsReservesQuery = useUserPoolsReservesHumanized(marketsData);
   const formattedReserves = usePoolsFormattedReserves(marketsData);

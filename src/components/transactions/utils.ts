@@ -1,9 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { CollateralType } from 'src/helpers/types';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,

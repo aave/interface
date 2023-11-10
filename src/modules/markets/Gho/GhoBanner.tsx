@@ -4,9 +4,7 @@ import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import {
-  ComputedReserveData
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
 import { useRootStore } from 'src/store/root';
 
@@ -20,7 +18,11 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: ghoReserveData, isLoading: ghoReserveDataLoading, error: ghoReserveDataError } = useGhoPoolFormattedReserve(currentMarketData)
+  const {
+    data: ghoReserveData,
+    isLoading: ghoReserveDataLoading,
+    error: ghoReserveDataError,
+  } = useGhoPoolFormattedReserve(currentMarketData);
 
   return (
     <Box
@@ -207,7 +209,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {(ghoReserveDataLoading || ghoReserveDataError) ? (
+                {ghoReserveDataLoading || ghoReserveDataError ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <FormattedNumber

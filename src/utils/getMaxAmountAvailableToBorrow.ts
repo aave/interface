@@ -2,11 +2,9 @@ import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 
-import {
-  ComputedReserveData,
-  ExtendedFormattedUser,
-} from '../hooks/app-data-provider/useAppDataProvider';
+import { ComputedReserveData } from '../hooks/app-data-provider/useAppDataProvider';
 import { roundToTokenDecimals } from './utils';
 
 // Subset of ComputedReserveData

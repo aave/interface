@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
-  ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 
 export const calculateMaxWithdrawAmount = (
   user: ExtendedFormattedUser,

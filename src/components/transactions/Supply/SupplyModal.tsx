@@ -1,6 +1,7 @@
 import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';
@@ -20,7 +21,11 @@ export const SupplyModal = () => {
         underlyingAsset={args.underlyingAsset}
         requiredPermission={PERMISSION.DEPOSITOR}
       >
-        {(params) => <SupplyModalContent {...params} />}
+        {(params) => (
+          <UserAuthenticated>
+            {(user) => <SupplyModalContent {...params} user={user} />}
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );

@@ -14,8 +14,8 @@ import { useRouter } from 'next/router';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { usePoolFormattedReserves } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { displayGho } from 'src/store/ghoSlice';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { displayGho } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';

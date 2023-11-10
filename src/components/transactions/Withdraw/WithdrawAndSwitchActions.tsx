@@ -97,7 +97,7 @@ export const WithdrawAndSwitchActions = ({
 
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
     if (
@@ -130,7 +130,8 @@ export const WithdrawAndSwitchActions = ({
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-      refetchGhoData && refetchGhoData();
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();
       setMainTxState({

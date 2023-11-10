@@ -10,6 +10,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -39,10 +40,11 @@ export const WithdrawAndSwitchModalContent = ({
   userReserve,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
-  const { user, reserves } = useAppDataContext();
+  const { reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
@@ -108,6 +110,7 @@ export const WithdrawAndSwitchModalContent = ({
   });
 
   const { blockingError, errorComponent } = useWithdrawError({
+    user,
     assetsBlockingWithdraw,
     poolReserve,
     healthFactorAfterWithdraw,

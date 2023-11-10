@@ -20,7 +20,7 @@ export const usePoolsReservesHumanized = <T = ReservesDataHumanized>(
           refetchInterval: POLLING_INTERVAL,
           meta: {},
           ...opts,
-        } as UseQueryOptions<ReservesDataHumanized, Error>)
+        } as UseQueryOptions<ReservesDataHumanized, Error, T>)
     ),
   });
 };

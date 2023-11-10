@@ -5,9 +5,8 @@ import {
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { memoize } from 'lodash';
-import { displayGho } from 'src/store/ghoSlice';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { displayGho, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { useGhoPoolsFormattedReserve } from './useGhoPoolFormattedReserve';
 import {

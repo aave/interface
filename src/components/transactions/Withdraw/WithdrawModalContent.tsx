@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -39,12 +39,13 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
+  user,
 }: ModalWrapperProps & {
   unwrap: boolean;
   setUnwrap: (unwrap: boolean) => void;
+  user: ExtendedFormattedUser;
 }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
-  const { user } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
@@ -81,6 +82,7 @@ export const WithdrawModalContent = ({
   });
 
   const { blockingError, errorComponent } = useWithdrawError({
+    user,
     assetsBlockingWithdraw,
     poolReserve,
     healthFactorAfterWithdraw,

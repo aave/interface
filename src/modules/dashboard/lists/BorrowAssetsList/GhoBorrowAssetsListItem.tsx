@@ -11,7 +11,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
@@ -36,11 +35,10 @@ export const GhoBorrowAssetsListItem = ({
   const { user } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
   const { ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { ghoUserDataFetched } = useRootStore();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
+  const maxAmountUserCanMint = user ? Number(getMaxGhoMintAmount(user, reserve)) : 0;
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity
@@ -61,7 +59,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  const ghoApyRange: [number, number] | undefined = ghoUserDataFetched
+  const ghoApyRange: [number, number] | undefined = ghoLoadingData
     ? [
         ghoUserData.userGhoAvailableToBorrowAtDiscount === 0
           ? ghoReserveData.ghoBorrowAPYWithMaxDiscount
@@ -80,7 +78,7 @@ export const GhoBorrowAssetsListItem = ({
     borrowButtonDisable,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
     ghoApyRange,
-    ghoUserDataFetched,
+    ghoUserDataFetched: ghoLoadingData,
     userBorrowApyAfterNewBorrow,
     ghoLoadingData,
     onBorrowClick: () => openBorrow(underlyingAsset, currentMarket, name, 'dashboard'),

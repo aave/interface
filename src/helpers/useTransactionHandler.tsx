@@ -59,7 +59,7 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
+  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
 
@@ -127,8 +127,9 @@ export const useTransactionHandler = ({
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
         refetchPoolData && refetchPoolData();
-        refetchGhoData && refetchGhoData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?

@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js';
 import React, { useMemo, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
+import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -50,8 +51,9 @@ export const SupplyModalContent = React.memo(
     isWrongNetwork,
     nativeBalance,
     tokenBalance,
-  }: ModalWrapperProps) => {
-    const { marketReferencePriceInUsd, user } = useAppDataContext();
+    user,
+  }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+    const { marketReferencePriceInUsd } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
