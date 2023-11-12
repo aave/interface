@@ -19,7 +19,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       currentMarket === 'proto_optimism_v3' ? (
         <TopBarNotify
           learnMoreLink="https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335"
-          notifyText="Affected Aave V3 markets have been unpaused by the Community Guardian following governance proposal execution"
+          notifyText="Affected Aave V3 markets have been unpaused by the Community Guardian following governance proposal execution."
         />
       ) : null}
 
