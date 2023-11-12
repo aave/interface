@@ -17,7 +17,10 @@ export function MainLayout({ children }: { children: ReactNode }) {
       currentMarket === 'proto_avalanche_v3' ||
       currentMarket === 'proto_polygon_v3' ||
       currentMarket === 'proto_optimism_v3' ? (
-        <TopBarNotify notifyText="An issue in a certain feature of the Aave Protocol was identified. Some markets or assets are temporarily paused. No funds are at risk." />
+        <TopBarNotify
+          learnMoreLink="https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335"
+          notifyText="Affected Aave V3 markets have been unpaused by the Community Guardian following governance proposal execution"
+        />
       ) : null}
 
       <AppHeader />
