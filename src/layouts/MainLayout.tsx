@@ -15,7 +15,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
     'An issue in a certain feature of the Aave Protocol was identified. Some markets or assets are temporarily paused. No funds are at risk.';
 
   const unPauseText =
-    'Affected Aave V3 markets have been unpaused by the Community Guardian following governance proposal execution."';
+    'Implementation of the approved governance proposal is underway for V2 markets. Your funds are secure.';
 
   return (
     <>
