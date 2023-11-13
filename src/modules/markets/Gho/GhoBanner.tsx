@@ -258,7 +258,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 color="text.secondary"
                 noWrap
               >
-                <Trans>Borrow APY, borrow rate</Trans>
+                <Trans>Borrow rate APY</Trans>
               </Typography>
             </Box>
           </Box>

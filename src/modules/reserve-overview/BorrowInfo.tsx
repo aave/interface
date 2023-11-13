@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -167,7 +166,7 @@ export const BorrowInfo = ({
             displayBlank={true}
           />
         </PanelItem>
-        {reserve.stableBorrowRateEnabled && (
+        {/* {reserve.stableBorrowRateEnabled && (
           <PanelItem
             title={
               <StableAPYTooltip
@@ -192,7 +191,7 @@ export const BorrowInfo = ({
               displayBlank={true}
             />
           </PanelItem>
-        )}
+        )} */}
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
             <FormattedNumber value={reserve.borrowCap} variant="main16" />
