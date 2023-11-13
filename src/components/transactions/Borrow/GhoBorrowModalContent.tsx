@@ -279,7 +279,7 @@ export const GhoBorrowModalContent = ({
           caption={
             <Box>
               <FixedAPYTooltip
-                text={<Trans>APY, variable rate</Trans>}
+                text={<Trans>APY, borrow rate</Trans>}
                 variant="subheader2"
                 color="text.secondary"
               />
