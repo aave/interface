@@ -99,10 +99,7 @@ msgstr "APY with discount applied"
 msgid "APY, borrow rate"
 msgstr "APY, borrow rate"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
@@ -457,15 +454,6 @@ msgstr "Borrow APY"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, borrow rate"
-msgstr "Borrow APY, borrow rate"
-
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Borrow APY, stable"
-msgstr "Borrow APY, stable"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -513,6 +501,10 @@ msgstr "Borrow info"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate APY"
+msgstr "Borrow rate APY"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
