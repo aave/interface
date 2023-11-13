@@ -96,8 +96,8 @@ msgstr "APY with discount applied"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-msgid "APY, fixed rate"
-msgstr "APY, fixed rate"
+msgid "APY, borrow rate"
+msgstr "APY, borrow rate"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -458,8 +458,8 @@ msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, fixed rate"
-msgstr "Borrow APY, fixed rate"
+msgid "Borrow APY, borrow rate"
+msgstr "Borrow APY, borrow rate"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
