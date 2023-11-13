@@ -164,7 +164,7 @@ const GhoBorrowAssetsListItemDesktop = ({
       </ListColumn>
       <ListColumn flex={2} p={2}>
         <FixedAPYTooltip
-          text={<Trans>APY, fixed rate</Trans>}
+          text={<Trans>APY, borrow rate</Trans>}
           variant="subheader2"
           color="text.secondary"
         />
@@ -228,7 +228,7 @@ const GhoBorrowAssetsListItemMobile = ({
       <Row
         caption={
           <FixedAPYTooltip
-            text={<Trans>APY, fixed rate</Trans>}
+            text={<Trans>APY, borrow rate</Trans>}
             key="APY_dash_mob_variable_ type"
             variant="description"
           />
