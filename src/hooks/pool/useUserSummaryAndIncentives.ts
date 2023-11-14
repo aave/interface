@@ -8,6 +8,7 @@ import {
   formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -46,7 +47,7 @@ const formatUserSummaryAndIncentivesss = memoize(
     const userReserves = selectUserReservesData(userPoolReserves);
     const userEmodeCategoryId = selectUserEModeCategory(userPoolReserves);
     return _formatUserSummaryAndIncentives({
-      currentTimestamp: 0,
+      currentTimestamp: dayjs().unix(),
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
       marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
       userReserves,

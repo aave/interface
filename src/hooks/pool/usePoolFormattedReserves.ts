@@ -4,6 +4,7 @@ import {
   ReservesIncentiveDataHumanized,
 } from '@aave/contract-helpers';
 import { formatReservesAndIncentives } from '@aave/math-utils';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -33,7 +34,7 @@ const formatReserves = memoize(
     const baseCurrencyData = selectBaseCurrencyData(reservesData);
     return formatReservesAndIncentives({
       reserves,
-      currentTimestamp: 0,
+      currentTimestamp: dayjs().unix(),
       marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
       reserveIncentives: incentivesData,

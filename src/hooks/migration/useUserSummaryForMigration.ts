@@ -1,4 +1,5 @@
 import { ReservesDataHumanized, ReservesIncentiveDataHumanized } from '@aave/contract-helpers';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { selectFormatUserSummaryForMigration } from 'src/store/v3MigrationSelectors';
@@ -24,7 +25,7 @@ const selector = memoize(
       toReservesIncentivesData,
       toUserReservesData.userReserves,
       toReservesData.baseCurrencyData,
-      0,
+      dayjs().unix(),
       toUserReservesData.userEmodeCategoryId
     );
   }

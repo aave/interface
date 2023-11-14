@@ -4,6 +4,7 @@ import {
   valueToWei,
 } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
@@ -70,7 +71,7 @@ const select = memoize(
         toReservesIncentivesData,
         toUserReservesData.userReserves,
         toReservesData.baseCurrencyData,
-        0,
+        dayjs().unix(),
         toUserReservesData.userEmodeCategoryId
       );
 

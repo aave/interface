@@ -1,5 +1,6 @@
 import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import { rayDiv, valueToBigNumber } from '@aave/math-utils';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { selectFormatBaseCurrencyData } from 'src/store/poolSelectors';
 import { PoolReserve } from 'src/store/poolSlice';
@@ -84,7 +85,7 @@ const select = memoize(
       fromPoolReserve?.reserveIncentives,
       userReservesFrom,
       fromBaseCurrencyData,
-      0,
+      dayjs().unix(),
       fromPoolReserve?.userEmodeCategoryId
     );
     //TODO: refactor that to be more efficient
@@ -163,7 +164,7 @@ const select = memoize(
       toPoolReserve?.reserveIncentives,
       userReserves,
       toBaseCurrencyData,
-      0,
+      dayjs().unix(),
       toPoolReserve?.userEmodeCategoryId
     );
     // return the smallest object possible for migration page

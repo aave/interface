@@ -1,4 +1,5 @@
 import { formatGhoUserData, GhoReserveData, GhoUserData } from '@aave/math-utils';
+import dayjs from 'dayjs';
 import { memoize } from 'lodash';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -10,7 +11,7 @@ const selector = memoize((ghoReserveData: GhoReserveData, ghoUserData: GhoUserDa
   return formatGhoUserData({
     ghoReserveData,
     ghoUserData,
-    currentTimestamp: 0,
+    currentTimestamp: dayjs().unix(),
   });
 });
 
