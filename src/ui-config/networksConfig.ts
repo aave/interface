@@ -269,7 +269,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Base Bridge',
       url: 'https://bridge.base.org/',
     },
-    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.harmony]: {
     name: 'Harmony',
@@ -413,6 +413,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 0, // N/A
     explorerLink: 'https://andromeda-explorer.metis.io',
     networkLogoPath: '/icons/networks/metis.svg',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
 
   [ChainId.xdai]: {
