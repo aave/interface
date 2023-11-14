@@ -1214,6 +1214,10 @@ msgstr "Interest rate rebalance conditions were not met"
 msgid "Interest rate strategy"
 msgstr "Interest rate strategy"
 
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Invalid amount to burn"
@@ -2164,10 +2168,6 @@ msgstr "Started"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
