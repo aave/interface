@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
+import { Button, ListItemIcon, ListItemText, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
@@ -61,6 +61,11 @@ export function MoreMenu() {
         onClose={handleClose}
         keepMounted={true}
       >
+        <MenuItem divider={true} component={Link} href="/v3-migration">
+          <Typography variant="subheader1">
+            <Trans>Migrate to Aave V3</Trans>
+          </Typography>
+        </MenuItem>
         {moreNavigation.map((item, index) => (
           <MenuItem
             component={Link}

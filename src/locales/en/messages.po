@@ -416,10 +416,6 @@ msgstr "Balance to revoke"
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Be mindful of the network congestion and gas prices."
-msgstr "Be mindful of the network congestion and gas prices."
-
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Because this asset is paused, no actions can be taken until further notice"
 msgstr "Because this asset is paused, no actions can be taken until further notice"
@@ -530,6 +526,10 @@ msgstr "Borrowed"
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Borrowed asset amount"
 msgstr "Borrowed asset amount"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Borrowed assets"
+msgstr "Borrowed assets"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
@@ -1124,14 +1124,6 @@ msgstr "Governance"
 msgid "Greek"
 msgstr "Greek"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v2)"
-msgstr "Health Factor ({0} v2)"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Health Factor ({0} v3)"
-msgstr "Health Factor ({0} v3)"
-
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1433,6 +1425,11 @@ msgstr "Menu"
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/MoreMenu.tsx
+msgid "Migrate to Aave V3"
+msgstr "Migrate to Aave V3"
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -1442,9 +1439,12 @@ msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/migration/MigrationTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
+
+#: src/modules/migration/MigrationBottomPanel.tsx
+msgid "Migrate your assets"
+msgstr "Migrate your assets"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Migrated"
@@ -1453,14 +1453,6 @@ msgstr "Migrated"
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 msgid "Migrating"
 msgstr "Migrating"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
-msgstr "Migrating multiple collaterals and borrowed assets at the same time can be an expensive operation and might fail in certain situations.<0>Therefore it’s not recommended to migrate positions with more than 5 assets (deposited + borrowed) at the same time.</0>"
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Migration risks"
-msgstr "Migration risks"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "Minimum GHO borrow amount"
@@ -1635,10 +1627,6 @@ msgstr "Per the community, the Fantom market has been frozen."
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the V2 AMM market has been deprecated."
 msgstr "Per the community, the V2 AMM market has been deprecated."
-
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
-msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1903,10 +1891,6 @@ msgstr "Restaking {symbol}"
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
 
-#: src/modules/migration/MigrationBottomPanel.tsx
-msgid "Review changes to continue"
-msgstr "Review changes to continue"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
 msgstr "Review tx"
@@ -1971,14 +1955,6 @@ msgstr "Select language"
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 borrows to migrate"
-msgstr "Select v2 borrows to migrate"
-
-#: src/modules/migration/MigrationLists.tsx
-msgid "Select v2 supplies to migrate"
-msgstr "Select v2 supplies to migrate"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
@@ -2174,6 +2150,10 @@ msgstr "Supplied"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supplied asset amount"
 msgstr "Supplied asset amount"
+
+#: src/modules/migration/MigrationLists.tsx
+msgid "Supplied assets"
+msgstr "Supplied assets"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
