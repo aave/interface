@@ -69720,6 +69720,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_one]: {
     name: "Arbitrum",
+    privateJsonRPCUrl: "https://arbitrum-one.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://arb1.arbitrum.io/rpc",
       "https://rpc.ankr.com/arbitrum",
@@ -69762,8 +69763,8 @@ var networkConfigs = {
       icon: "/icons/networks/base.svg",
       name: "Base Bridge",
       url: "https://bridge.base.org/"
-    }
-    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    },
+    ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: "Harmony",
@@ -69909,7 +69910,8 @@ var networkConfigs = {
     baseAssetDecimals: 0,
     // N/A
     explorerLink: "https://andromeda-explorer.metis.io",
-    networkLogoPath: "/icons/networks/metis.svg"
+    networkLogoPath: "/icons/networks/metis.svg",
+    ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
   },
   [import_contract_helpers3.ChainId.xdai]: {
     name: "Gnosis Chain",
