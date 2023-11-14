@@ -33,13 +33,9 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
   ...rest
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const {
-    isLoading: ghoLoadingData,
-    data: ghoReserveData,
-    error: ghoReserveDataError,
-  } = useGhoPoolFormattedReserve(currentMarketData);
+  const { data: ghoReserveData } = useGhoPoolFormattedReserve(currentMarketData);
 
-  if (ghoLoadingData || ghoReserveDataError) return <Skeleton width={70} height={24} />;
+  if (!ghoReserveData) return <Skeleton width={70} height={24} />;
 
   // Check precision, could be different by small amount but show same
   const lowRangeValue = minVal ?? ghoReserveData.ghoBorrowAPYWithMaxDiscount;

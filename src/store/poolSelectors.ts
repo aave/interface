@@ -1,11 +1,8 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
-import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
-import { RootStore } from './root';
 
 export const selectCurrentChainIdMarkets = (
   chainId: number,
@@ -23,10 +20,6 @@ export const selectCurrentChainIdMarkets = (
     );
 };
 
-export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
-  return state.currentMarketData;
-};
-
 export const selectCurrentChainIdV3MarketData = (
   chainId: number,
   currentNetworkConfig: NetworkConfig
@@ -34,68 +27,6 @@ export const selectCurrentChainIdV3MarketData = (
   const currentChainIdMarkets = selectCurrentChainIdMarkets(chainId, currentNetworkConfig);
   const marketData = currentChainIdMarkets.filter((marketData) => marketData.v3);
   return marketData[0];
-};
-
-export const selectCurrentChainIdV2PoolReserve = (state: RootStore) => {
-  const marketData = selectCurrentChainIdV2MarketData(state);
-  const v2MarketAddressProvider = marketData
-    ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-    : undefined;
-  const currentChainId = state.currentChainId;
-  if (v2MarketAddressProvider && currentChainId) {
-    return state.data.get(state.currentChainId)?.get(v2MarketAddressProvider);
-  }
-  return undefined;
-};
-
-export const selectCurrentChainIdV3PoolReserve = (state: RootStore) => {
-  const marketData = selectCurrentChainIdV3MarketData(
-    state.currentChainId,
-    state.currentNetworkConfig
-  );
-  const v3MarketAddressProvider = marketData
-    ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-    : undefined;
-  const currentChainId = state.currentChainId;
-  if (v3MarketAddressProvider && currentChainId) {
-    return state.data.get(state.currentChainId)?.get(v3MarketAddressProvider);
-  }
-  return undefined;
-};
-
-export const selectCurrentUserLendingPoolData = (state: RootStore) => {
-  const marketAddressProvider = state.currentMarketData
-    ? state.currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-    : undefined;
-  const currentChainId = state.currentChainId;
-  if (marketAddressProvider && currentChainId) {
-    return state.data.get(state.currentChainId)?.get(marketAddressProvider);
-  }
-  return undefined;
-};
-
-export const selectFormatUserEmodeCategoryId = (reserve?: PoolReserve) => {
-  return reserve?.userEmodeCategoryId || 0;
-};
-
-export const selectCurrentUserEmodeCategoryId = (state: RootStore): number => {
-  return selectFormatUserEmodeCategoryId(selectCurrentUserLendingPoolData(state));
-};
-
-export const selectFormatUserReserves = (reserve?: PoolReserve) => {
-  return reserve?.userReserves || [];
-};
-
-export const selectCurrentUserReserves = (state: RootStore) => {
-  return selectFormatUserReserves(selectCurrentUserLendingPoolData(state));
-};
-
-export const selectFormatReserves = (reserve?: PoolReserve) => {
-  return reserve?.reserves || [];
-};
-
-export const selectCurrentReserves = (state: RootStore) => {
-  return selectFormatReserves(selectCurrentUserLendingPoolData(state));
 };
 
 export const selectFormatBaseCurrencyData = (reserve?: PoolReserve) => {
@@ -109,10 +40,6 @@ export const selectFormatBaseCurrencyData = (reserve?: PoolReserve) => {
   );
 };
 
-export const selectCurrentBaseCurrencyData = (state: RootStore) => {
-  return selectFormatBaseCurrencyData(selectCurrentUserLendingPoolData(state));
-};
-
 export const reserveSortFn = (
   a: { totalLiquidityUSD: string },
   b: { totalLiquidityUSD: string }
@@ -121,54 +48,6 @@ export const reserveSortFn = (
   const numB = parseFloat(b.totalLiquidityUSD);
 
   return numB > numA ? 1 : -1;
-};
-
-// TODO move formatUserSummaryAndIncentives
-// export const selectSortedCurrentUserReservesData = (state: RootStore) => {};
-
-export const selectFormattedReserves = (state: RootStore, currentTimestamp: number) => {
-  const reserves = selectCurrentReserves(state);
-  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
-  const currentNetworkConfig = state.currentNetworkConfig;
-
-  const formattedPoolReserves = formatReservesAndIncentives({
-    reserves,
-    currentTimestamp,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: state.reserveIncentiveData || [],
-  })
-    .map((r) => ({
-      ...r,
-      ...fetchIconSymbolAndName(r),
-      isEmodeEnabled: r.eModeCategoryId !== 0,
-      isWrappedBaseAsset:
-        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
-    }))
-    .sort(reserveSortFn);
-
-  return formattedPoolReserves;
-};
-
-export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestamp: number) => {
-  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
-  const userReserves = selectCurrentUserReserves(state);
-  const formattedPoolReserves = selectFormattedReserves(state, currentTimestamp);
-  const userEmodeCategoryId = selectCurrentUserEmodeCategoryId(state);
-  const reserveIncentiveData = state.reserveIncentiveData;
-  const userIncentiveData = state.userIncentiveData;
-
-  // TODO: why <any>
-  return formatUserSummaryAndIncentives({
-    currentTimestamp,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    userReserves,
-    formattedReserves: formattedPoolReserves,
-    userEmodeCategoryId: userEmodeCategoryId,
-    reserveIncentives: reserveIncentiveData || [],
-    userIncentives: userIncentiveData || [],
-  });
 };
 
 export const formatEmodes = (reserves: ReserveDataHumanized[]) => {

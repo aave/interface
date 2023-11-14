@@ -9,7 +9,6 @@ import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationRe
 import { useUserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { useUserPoolReservesHumanized } from 'src/hooks/pool/useUserPoolReserves';
 import { useUserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -50,8 +49,6 @@ export default function V3Migration() {
   const { isPermissionsLoading } = usePermissions();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const currentTimeStamp = useCurrentTimestamp(10);
 
   const toMarketData = selectCurrentChainIdV3MarketData(currentChainId, currentNetworkConfig);
   const fromMarketData = currentMarketData;
@@ -96,11 +93,11 @@ export default function V3Migration() {
   };
 
   const handleToggleAllSupply = () => {
-    selectAllSupply(currentTimeStamp);
+    selectAllSupply(supplyReserves);
   };
 
   const handleToggleAllBorrow = () => {
-    selectAllBorrow(currentTimeStamp);
+    selectAllBorrow(borrowReserves);
   };
 
   const userControlledCollateral =

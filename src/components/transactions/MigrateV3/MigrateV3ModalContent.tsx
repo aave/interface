@@ -2,9 +2,9 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useCallback } from 'react';
-import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { UserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
+import { UserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import {
@@ -22,21 +22,36 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { MigrateV3Actions } from './MigrateV3Actions';
 import { MigrateV3ModalAssetsList } from './MigrateV3ModalAssetsList';
 
-export const MigrateV3ModalContent = () => {
-  const currentTimeStamp = useCurrentTimestamp(10);
+interface MigrationV3ModalContentProps {
+  toUserSummaryForMigration: UserSummaryForMigration;
+  userMigrationReserves: UserMigrationReserves;
+}
 
+export const MigrateV3ModalContent = ({
+  toUserSummaryForMigration,
+  userMigrationReserves,
+}: MigrationV3ModalContentProps) => {
   const { supplyPositions, borrowPositions } = useRootStore(
     useCallback(
       (state) => ({
-        supplyPositions: selectedUserSupplyReservesForMigration(state, currentTimeStamp),
-        borrowPositions: selectSelectedBorrowReservesForMigrationV3(state, currentTimeStamp),
+        supplyPositions: selectedUserSupplyReservesForMigration(
+          state.selectedMigrationSupplyAssets,
+          userMigrationReserves.supplyReserves,
+          userMigrationReserves.isolatedReserveV3
+        ),
+        borrowPositions: selectSelectedBorrowReservesForMigrationV3(
+          state.selectedMigrationBorrowAssets,
+          toUserSummaryForMigration,
+          userMigrationReserves
+        ),
       }),
-      [currentTimeStamp]
+      [userMigrationReserves, toUserSummaryForMigration]
     )
   );
 
+  const currentChainId = useRootStore((store) => store.currentChainId);
+
   const { gasLimit, mainTxState: migrateTxState, txError } = useModalContext();
-  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -126,7 +141,14 @@ if (currentMarket === CustomMarket.proto_polygon) {
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <MigrateV3Actions isWrongNetwork={isWrongNetwork} blocked={false} />
+      {userMigrationReserves && toUserSummaryForMigration && (
+        <MigrateV3Actions
+          isWrongNetwork={isWrongNetwork}
+          blocked={false}
+          userMigrationReserves={userMigrationReserves}
+          toUserSummaryForMigration={toUserSummaryForMigration}
+        />
+      )}
     </>
   );
 };

@@ -6,9 +6,11 @@ import { selectFormatBaseCurrencyData } from 'src/store/poolSelectors';
 import { PoolReserve } from 'src/store/poolSlice';
 import { useRootStore } from 'src/store/root';
 import {
+  selectedUserSupplyReservesForMigration,
   selectFormatUserSummaryForMigration,
   selectMigrationSelectedSupplyIndex,
   selectMigrationUnderluingAssetWithExceptionsByV3Key,
+  selectSelectedBorrowReservesForMigrationV3,
 } from 'src/store/v3MigrationSelectors';
 import {
   MigrationException,
@@ -89,12 +91,24 @@ const select = memoize(
       fromPoolReserve?.userEmodeCategoryId
     );
     //TODO: refactor that to be more efficient
-    const suppliesMap = userMigrationReserves.supplyReserves.reduce((obj, item) => {
+
+    const supplies = selectedUserSupplyReservesForMigration(
+      selectedMigrationSupplyAssets,
+      userMigrationReserves.supplyReserves,
+      userMigrationReserves.isolatedReserveV3
+    );
+    const borrows = selectSelectedBorrowReservesForMigrationV3(
+      selectedMigrationBorrowAssets,
+      toUserSummary,
+      userMigrationReserves
+    );
+
+    const suppliesMap = supplies.reduce((obj, item) => {
       obj[item.underlyingAsset] = item;
       return obj;
     }, {} as Record<string, typeof userMigrationReserves.supplyReserves[0]>);
 
-    const borrowsMap = userMigrationReserves.borrowReserves.reduce((obj, item) => {
+    const borrowsMap = borrows.reduce((obj, item) => {
       obj[item.debtKey] = item;
       return obj;
     }, {} as Record<string, typeof userMigrationReserves.borrowReserves[0]>);

@@ -15,7 +15,7 @@ export const useUserPoolsReservesHumanized = <T = UserReservesDataHumanized>(
   const user = useRootStore((store) => store.account);
   return useQueries({
     queries: marketsData.map((marketData) => ({
-      queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED, marketData],
+      queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED, marketData, user],
       queryFn: () => uiPoolService.getUserReservesHumanized(marketData, user),
       enabled: !!user,
       refetchInterval: POLLING_INTERVAL,

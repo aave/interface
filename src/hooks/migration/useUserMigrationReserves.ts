@@ -232,7 +232,7 @@ const select = memoize(
       };
     });
 
-    return {
+    const result = {
       totalCollateralUSD: v2ReservesUserSummary.totalCollateralUSD,
       totalBorrowsUSD: v2ReservesUserSummary.totalBorrowsUSD,
       healthFactor: v2ReservesUserSummary.healthFactor,
@@ -240,6 +240,7 @@ const select = memoize(
       supplyReserves: mappedSupplyReserves,
       isolatedReserveV3,
     };
+    return result;
   }
 );
 
