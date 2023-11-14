@@ -11,6 +11,7 @@ import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralW
 import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -21,10 +22,7 @@ import { displayGho } from 'src/utils/ghoUtilities';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { amountToUsd } from 'src/utils/utils';
 
-import {
-  ComputedUserReserveData,
-  useAppDataContext,
-} from '../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, getAssetCollateralType, useFlashloan, zeroLTVBlockingWithdraw } from '../utils';
@@ -64,7 +62,7 @@ export const SwapModalContent = ({
 
   const swapTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
-  ) as ComputedUserReserveData;
+  ) as FormattedUserReserves;
 
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
   const maxAmountToSwap = BigNumber.min(

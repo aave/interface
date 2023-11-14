@@ -4,43 +4,30 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { usePoolFormattedReserves } from 'src/hooks/pool/usePoolFormattedReserves';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from 'src/hooks/pool/usePoolFormattedReserves';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
 import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTopDetailsWrapper';
 import { useRootStore } from 'src/store/root';
-import { MarketDataType, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 
-export default function ReserveOverviewWrapper() {
+export default function ReserveOverview() {
   const router = useRouter();
   const underlyingAsset = router.query.underlyingAsset as string;
-  const marketName = router.query.marketName as string;
-  const market = marketsData[marketName];
-  if (!market || !underlyingAsset) {
-    router.push('/');
-    return null;
-  }
-  return <ReserveOverview underlyingAsset={underlyingAsset} marketData={market} />;
-}
-
-interface ReserveOverviewProps {
-  underlyingAsset: string;
-  marketData: MarketDataType;
-}
-
-function ReserveOverview({ underlyingAsset, marketData }: ReserveOverviewProps) {
+  const marketData = useRootStore((store) => store.currentMarketData);
   const { data: reserves } = usePoolFormattedReserves(marketData);
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const reserve = (reserves || []).find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+  ) as FormattedReservesAndIncentives;
 
   const [pageEventCalled, setPageEventCalled] = useState(false);
 

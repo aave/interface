@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { CollateralType } from 'src/helpers/types';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,
@@ -57,7 +57,7 @@ export const zeroLTVBlockingWithdraw = (user: ExtendedFormattedUser): string[] =
 };
 
 export const getAssetCollateralType = (
-  userReserve: ComputedUserReserveData,
+  userReserve: FormattedUserReserves,
   userTotalCollateralUSD: string,
   userIsInIsolationMode: boolean,
   debtCeilingIsMaxed: boolean

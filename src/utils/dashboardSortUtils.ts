@@ -1,12 +1,8 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { BorrowAssetsItem } from 'src/modules/dashboard/lists/BorrowAssetsList/types';
 import { SupplyAssetsItem } from 'src/modules/dashboard/lists/SupplyAssetsList/types';
-
-// Sorting keys
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-} from '../hooks/app-data-provider/useAppDataProvider';
 
 // Helpers
 export const DASHBOARD_LIST_COLUMN_WIDTHS = {
@@ -17,8 +13,8 @@ export const DASHBOARD_LIST_COLUMN_WIDTHS = {
 
 // Note: Create a single type that works with all four dashboards list and all 8 list item components
 // Each list item may need a combination of a few types but not all, i.e. positions vs assets and supplied vs borrowed
-type DashboardReserveData = ComputedUserReserveData &
-  ComputedReserveData &
+type DashboardReserveData = FormattedUserReserves &
+  FormattedReservesAndIncentives &
   BorrowAssetsItem &
   SupplyAssetsItem;
 
@@ -26,7 +22,7 @@ export type DashboardReserve = DashboardReserveData & {
   // Additions
   borrowRateMode: InterestRate; // for the borrow positions list
   // Overrides
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
 };
 
 export const handleSortDashboardReserves = (

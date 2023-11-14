@@ -3,11 +3,11 @@ import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 
-import { ComputedReserveData } from '../hooks/app-data-provider/useAppDataProvider';
 import { roundToTokenDecimals } from './utils';
 
-// Subset of ComputedReserveData
+// Subset of FormattedReservesAndIncentives
 interface PoolReserveBorrowSubset {
   borrowCap: string;
   availableLiquidityUSD: string;
@@ -157,7 +157,7 @@ export function assetCanBeBorrowedByUser(
     eModeCategoryId,
     isFrozen,
     isPaused,
-  }: ComputedReserveData,
+  }: FormattedReservesAndIncentives,
   user: ExtendedFormattedUser
 ) {
   if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;

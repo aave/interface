@@ -18,6 +18,7 @@ import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalD
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -31,10 +32,7 @@ import {
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
 
-import {
-  ComputedUserReserveData,
-  useAppDataContext,
-} from '../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
@@ -110,7 +108,7 @@ export const DebtSwitchModalContent = ({
 
   const switchTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
-  ) as ComputedUserReserveData;
+  ) as FormattedUserReserves;
 
   const maxAmountToSwitch =
     currentRateMode === InterestRate.Variable

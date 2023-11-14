@@ -6,7 +6,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
@@ -53,7 +53,7 @@ const listHeaders = [
 ];
 
 type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
+  reserves: FormattedReservesAndIncentives[];
   loading: boolean;
 };
 

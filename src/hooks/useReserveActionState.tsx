@@ -3,23 +3,21 @@ import { Button, Stack, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGho } from 'src/utils/ghoUtilities';
 
+import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
 import { useModalContext } from './useModal';
 
 interface ReserveActionStateProps {
   balance: string;
   maxAmountToSupply: string;
   maxAmountToBorrow: string;
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
 }
 
 export const useReserveActionState = ({

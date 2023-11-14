@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
 interface AddTokenDropdownProps {
-  poolReserve: ComputedReserveData;
+  poolReserve: FormattedReservesAndIncentives;
   downToSM: boolean;
   switchNetwork: (chainId: number) => Promise<void>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;

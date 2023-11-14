@@ -13,7 +13,7 @@ import {
 } from '@paraswap/sdk';
 import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 
-import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from '../pool/usePoolFormattedReserves';
 
 export type UseSwapProps = {
   chainId: ChainId;
@@ -25,7 +25,7 @@ export type UseSwapProps = {
   skip: boolean;
 };
 
-export type SwapReserveData = ComputedReserveData & { amount: string };
+export type SwapReserveData = FormattedReservesAndIncentives & { amount: string };
 
 export type SwapData = Pick<
   SwapReserveData,

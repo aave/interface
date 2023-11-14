@@ -17,11 +17,12 @@ export const useUserGhoPoolsReserve = <T = GhoUserData>(
     queries: marketsData.map(
       (marketData) =>
         ({
-          queryKey: [QueryKeys.GHO_USER_RESERVE_DATA, marketData],
+          queryKey: [QueryKeys.GHO_USER_RESERVE_DATA, marketData, user],
           queryFn: () => uiGhoService.getGhoUserData(marketData, user),
           refetchInterval: POLLING_INTERVAL,
+          enabled: !!user && !!marketData.addresses.GHO_TOKEN_ADDRESS,
           ...opts,
-        } as UseQueryOptions<GhoUserData, Error, T>)
+        } as UseQueryOptions<GhoUserData | null, Error, T>)
     ),
   });
 };

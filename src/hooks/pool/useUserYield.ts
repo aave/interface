@@ -26,8 +26,8 @@ export interface UserYield {
 const formatUserYield = memoize(
   (
     formattedPoolReserves: FormattedReservesAndIncentives[],
-    formattedGhoReserveData: FormattedGhoReserveData,
-    formattedGhoUserData: FormattedGhoUserData,
+    formattedGhoReserveData: FormattedGhoReserveData | undefined,
+    formattedGhoUserData: FormattedGhoUserData | undefined,
     user: FormatUserSummaryAndIncentivesResponse,
     currentMarket: string
   ) => {
@@ -52,7 +52,11 @@ const formatUserYield = memoize(
           }
           if (value.variableBorrowsUSD !== '0') {
             // TODO: Export to unified helper function
-            if (displayGho({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+            if (
+              displayGho({ symbol: reserve.symbol, currentMarket: currentMarket }) &&
+              formattedGhoUserData &&
+              formattedGhoReserveData
+            ) {
               const borrowRateAfterDiscount = weightedAverageAPY(
                 formattedGhoReserveData.ghoVariableBorrowAPY,
                 formattedGhoUserData.userGhoBorrowBalance,
@@ -150,15 +154,23 @@ export const useUserYields = (
         marketData.market
       );
     };
-    return combineQueries(
-      [
-        elem,
-        ghoPoolsFormattedReserveQuery[index],
-        userGhoPoolsFormattedReserveQuery[index],
-        userSummaryQuery[index],
-      ] as const,
-      selector
-    );
+    const ghoSelector = (
+      formattedPoolReserves: FormattedReservesAndIncentives[],
+      user: FormatUserSummaryAndIncentivesResponse
+    ) => {
+      return formatUserYield(formattedPoolReserves, undefined, undefined, user, marketData.market);
+    };
+    if (marketData.addresses.GHO_TOKEN_ADDRESS)
+      return combineQueries(
+        [
+          elem,
+          ghoPoolsFormattedReserveQuery[index],
+          userGhoPoolsFormattedReserveQuery[index],
+          userSummaryQuery[index],
+        ] as const,
+        selector
+      );
+    return combineQueries([elem, userSummaryQuery[index]] as const, ghoSelector);
   });
 };
 

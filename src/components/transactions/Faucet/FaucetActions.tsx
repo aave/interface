@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type FaucetActionsProps = {
-  poolReserve: ComputedReserveData;
+  poolReserve: FormattedReservesAndIncentives;
   isWrongNetwork: boolean;
   blocked: boolean;
 };

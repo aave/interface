@@ -1,15 +1,13 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 export const calculateMaxWithdrawAmount = (
   user: ExtendedFormattedUser,
-  userReserve: ComputedUserReserveData,
-  poolReserve: ComputedReserveData
+  userReserve: FormattedUserReserves,
+  poolReserve: FormattedReservesAndIncentives
 ) => {
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);

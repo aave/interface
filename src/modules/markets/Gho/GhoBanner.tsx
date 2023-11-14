@@ -4,12 +4,12 @@ import GhoBorrowApyRange from 'src/components/GhoBorrowApyRange';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 
 interface GhoBannerProps {
-  reserve?: ComputedReserveData;
+  reserve?: FormattedReservesAndIncentives;
 }
 
 export const GhoBanner = ({ reserve }: GhoBannerProps) => {
@@ -209,7 +209,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   alignItems: 'flex-start',
                 }}
               >
-                {ghoReserveDataLoading || ghoReserveDataError ? (
+                {ghoReserveDataLoading || ghoReserveDataError || !ghoReserveData ? (
                   <Skeleton width={70} height={25} />
                 ) : (
                   <FormattedNumber

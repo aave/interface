@@ -7,7 +7,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 import { GENERAL, RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
 
@@ -16,7 +16,7 @@ import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 import { PanelRow, PanelTitle } from './ReservePanels';
 
 type ReserverEModePanelProps = {
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
 };
 
 export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }) => {

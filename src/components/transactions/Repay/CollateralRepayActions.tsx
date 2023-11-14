@@ -8,8 +8,8 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -18,8 +18,8 @@ interface CollateralRepayBaseProps extends BoxProps {
   rateMode: InterestRate;
   repayAmount: string;
   repayWithAmount: string;
-  fromAssetData: ComputedReserveData;
-  poolReserve: ComputedReserveData;
+  fromAssetData: FormattedReservesAndIncentives;
+  poolReserve: FormattedReservesAndIncentives;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;

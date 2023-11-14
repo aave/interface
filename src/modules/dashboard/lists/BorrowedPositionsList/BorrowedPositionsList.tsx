@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
@@ -15,10 +16,7 @@ import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeToolt
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import {
-  ComputedUserReserveData,
-  useAppDataContext,
-} from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -103,7 +101,7 @@ export const BorrowedPositionsList = () => {
         });
       }
       return acc;
-    }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
+    }, [] as (FormattedUserReserves & { borrowRateMode: InterestRate })[]) || [];
 
   // Move GHO to top of borrowed positions list
   const ghoReserve = borrowPositions.filter((pos) => pos.reserve.symbol === GHO_SYMBOL);

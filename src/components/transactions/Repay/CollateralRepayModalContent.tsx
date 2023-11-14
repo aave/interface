@@ -6,13 +6,11 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SwapVariant } from 'src/hooks/paraswap/common';
 import { useCollateralRepaySwap } from 'src/hooks/paraswap/useCollateralRepaySwap';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -71,7 +69,7 @@ export function CollateralRepayModalContent({
 
   const collateralReserveData = reserves.find(
     (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedReserveData;
+  ) as FormattedReservesAndIncentives;
 
   const debt =
     debtType === InterestRate.Stable

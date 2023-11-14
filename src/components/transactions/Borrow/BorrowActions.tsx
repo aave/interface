@@ -11,8 +11,7 @@ import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -23,7 +22,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 export interface BorrowActionsProps extends BoxProps {
-  poolReserve: ComputedReserveData;
+  poolReserve: FormattedReservesAndIncentives;
   amountToBorrow: string;
   poolAddress: string;
   interestRateMode: InterestRate;
@@ -68,7 +67,6 @@ export const BorrowActions = React.memo(
       setLoadingTxns,
       setApprovalTxState,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const { sendTx } = useWeb3Context();
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
@@ -137,8 +135,14 @@ export const BorrowActions = React.memo(
         queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.USER_POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
+        });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES_DATA_HUMANIZED] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED] });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

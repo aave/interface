@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import BigNumber from 'bignumber.js';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useModalContext } from 'src/hooks/useModal';
 
 enum ErrorType {
@@ -13,7 +13,7 @@ enum ErrorType {
 
 interface WithdrawErrorProps {
   assetsBlockingWithdraw: string[];
-  poolReserve: ComputedReserveData;
+  poolReserve: FormattedReservesAndIncentives;
   healthFactorAfterWithdraw: BigNumber;
   withdrawAmount: string;
   user: ExtendedFormattedUser;

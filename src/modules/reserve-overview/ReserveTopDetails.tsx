@@ -4,15 +4,13 @@ import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -28,7 +26,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+  ) as FormattedReservesAndIncentives;
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';

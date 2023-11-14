@@ -2,12 +2,15 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, marketsData, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { PoolReserve } from './poolSlice';
 import { RootStore } from './root';
 
-export const selectCurrentChainIdMarkets = (state: RootStore) => {
+export const selectCurrentChainIdMarkets = (
+  chainId: number,
+  currentNetworkConfig: NetworkConfig
+) => {
   const marketNames = Object.keys(marketsData);
   return Object.values(marketsData)
     .map((marketData, index) => ({
@@ -16,8 +19,7 @@ export const selectCurrentChainIdMarkets = (state: RootStore) => {
     }))
     .filter(
       (marketData) =>
-        marketData.chainId == state.currentChainId &&
-        state.currentNetworkConfig.isFork == marketData.isFork
+        marketData.chainId == chainId && currentNetworkConfig.isFork == marketData.isFork
     );
 };
 
@@ -25,8 +27,11 @@ export const selectCurrentChainIdV2MarketData = (state: RootStore) => {
   return state.currentMarketData;
 };
 
-export const selectCurrentChainIdV3MarketData = (state: RootStore) => {
-  const currentChainIdMarkets = selectCurrentChainIdMarkets(state);
+export const selectCurrentChainIdV3MarketData = (
+  chainId: number,
+  currentNetworkConfig: NetworkConfig
+) => {
+  const currentChainIdMarkets = selectCurrentChainIdMarkets(chainId, currentNetworkConfig);
   const marketData = currentChainIdMarkets.filter((marketData) => marketData.v3);
   return marketData[0];
 };
@@ -44,7 +49,10 @@ export const selectCurrentChainIdV2PoolReserve = (state: RootStore) => {
 };
 
 export const selectCurrentChainIdV3PoolReserve = (state: RootStore) => {
-  const marketData = selectCurrentChainIdV3MarketData(state);
+  const marketData = selectCurrentChainIdV3MarketData(
+    state.currentChainId,
+    state.currentNetworkConfig
+  );
   const v3MarketAddressProvider = marketData
     ? marketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
     : undefined;

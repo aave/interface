@@ -1,7 +1,4 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
-  ComputedUserReserve,
-  formatReservesAndIncentives,
   FormattedGhoReserveData,
   FormattedGhoUserData,
   formatUserSummaryWithDiscount,
@@ -21,7 +18,10 @@ import {
   useExtendedUserSummaryAndIncentives,
 } from '../pool/useExtendedUserSummaryAndIncentives';
 import { useGhoPoolFormattedReserve } from '../pool/useGhoPoolFormattedReserve';
-import { usePoolFormattedReserves } from '../pool/usePoolFormattedReserves';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from '../pool/usePoolFormattedReserves';
 import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
@@ -35,18 +35,9 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
   return symbol.toUpperCase().replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), '');
 };
 
-export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized & {
-    iconSymbol: string;
-    isEmodeEnabled: boolean;
-    isWrappedBaseAsset: boolean;
-  };
-
-export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
-
 export interface AppDataContextType {
   loading: boolean;
-  reserves: ComputedReserveData[];
+  reserves: FormattedReservesAndIncentives[];
   eModes: Record<number, EmodeCategory>;
   isUserHasDeposits: boolean;
   user?: ExtendedFormattedUser;

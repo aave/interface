@@ -1,5 +1,5 @@
 import { FormattedGhoReserveData, GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 
 export const GHO_SYMBOL = 'GHO';
 
@@ -11,7 +11,7 @@ export const GHO_SYMBOL = 'GHO';
 
 export const GHO_SUPPORTED_MARKETS = ['proto_mainnet_v3', 'fork_proto_mainnet_v3'];
 
-export const getGhoReserve = (reserves: ComputedReserveData[]) => {
+export const getGhoReserve = (reserves: FormattedReservesAndIncentives[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
 };
 

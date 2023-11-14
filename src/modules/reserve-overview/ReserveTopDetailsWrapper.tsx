@@ -12,7 +12,10 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { MarketLogo } from 'src/components/MarketSwitcher';
-import { usePoolFormattedReserves } from 'src/hooks/pool/usePoolFormattedReserves';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from 'src/hooks/pool/usePoolFormattedReserves';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho } from 'src/utils/ghoUtilities';
@@ -20,7 +23,6 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { AddTokenDropdown } from './AddTokenDropdown';
 import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
@@ -53,7 +55,7 @@ export const ReserveTopDetailsWrapper = ({
 
   const poolReserve = (formattedReserves || []).find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+  ) as FormattedReservesAndIncentives;
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 

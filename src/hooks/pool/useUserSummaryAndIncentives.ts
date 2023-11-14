@@ -4,6 +4,7 @@ import {
   UserReservesIncentivesDataHumanized,
 } from '@aave/contract-helpers';
 import {
+  ComputedUserReserve,
   formatUserSummaryAndIncentives as _formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
 } from '@aave/math-utils';
@@ -26,8 +27,12 @@ import { useUserPoolsReservesHumanized } from './useUserPoolReserves';
 import { useUserPoolsReservesIncentivesHumanized } from './useUserPoolReservesIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
+export type FormattedUserReserves = ComputedUserReserve<FormattedReservesAndIncentives>;
+
 export type UserSummaryAndIncentives =
-  FormatUserSummaryAndIncentivesResponse<FormattedReservesAndIncentives>;
+  FormatUserSummaryAndIncentivesResponse<FormattedReservesAndIncentives> & {
+    userReservesData: FormattedUserReserves[];
+  };
 
 const formatUserSummaryAndIncentivesss = memoize(
   (

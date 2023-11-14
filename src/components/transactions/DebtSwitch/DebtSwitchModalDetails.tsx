@@ -11,15 +11,15 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { GhoRange } from './DebtSwitchModalContent';
 
 export type DebtSwitchModalDetailsProps = {
-  switchSource: ComputedUserReserveData;
-  switchTarget: ComputedUserReserveData;
+  switchSource: FormattedUserReserves;
+  switchTarget: FormattedUserReserves;
   toAmount: string;
   fromAmount: string;
   loading: boolean;

@@ -1,13 +1,13 @@
 import { InterestRate, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type RateSwitchActionsProps = {
-  poolReserve: ComputedReserveData;
+  poolReserve: FormattedReservesAndIncentives;
   isWrongNetwork: boolean;
   currentRateMode: InterestRate;
   blocked: boolean;

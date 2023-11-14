@@ -27,7 +27,7 @@ import {
   selectUserSupplyIncreasedReservesForMigrationPermits,
 } from './v3MigrationSelectors';
 
-type MigrationSelectedAsset = {
+export type MigrationSelectedAsset = {
   underlyingAsset: string;
   enforced: boolean;
 };
@@ -47,20 +47,19 @@ const MIGRATION_ASSETS_EXCEPTIONS: Record<number, string[]> = {
   [1]: ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84'],
 };
 
+export type MigrationException = {
+  v2UnderlyingAsset: string;
+  v3UnderlyingAsset: string;
+  amount: string;
+};
+
 export type V3MigrationSlice = {
   //STATE
   exceptionsBalancesLoading: boolean;
   selectedMigrationSupplyAssets: MigrationSelectedAsset[];
   selectedMigrationBorrowAssets: MigrationSelectedBorrowAsset[];
   migrationServiceInstances: Record<string, V3MigrationHelperService>;
-  migrationExceptions: Record<
-    string,
-    {
-      v2UnderlyingAsset: string;
-      v3UnderlyingAsset: string;
-      amount: string;
-    }
-  >;
+  migrationExceptions: Record<string, MigrationException>;
   timestamp: number;
   approvalPermitsForMigrationAssets: Array<Approval>;
   // ACTIONS
@@ -183,7 +182,10 @@ export const createV3MigrationSlice: StateCreator<
     enforceAsCollateral: (underlyingAsset: string) => {
       set((state) =>
         produce(state, (draft) => {
-          const assetIndex = selectMigrationSelectedSupplyIndex(get(), underlyingAsset);
+          const assetIndex = selectMigrationSelectedSupplyIndex(
+            get().selectedMigrationSupplyAssets,
+            underlyingAsset
+          );
           const assetEnforced = draft.selectedMigrationSupplyAssets[assetIndex]?.enforced;
           if (assetIndex >= 0) {
             draft.selectedMigrationSupplyAssets.forEach((asset) => {
@@ -211,7 +213,11 @@ export const createV3MigrationSlice: StateCreator<
         const nonSelectedSupplies = supplyReserves
           .filter((supplyAsset) => supplyAsset.migrationDisabled === undefined)
           .filter(
-            ({ underlyingAsset }) => selectMigrationSelectedSupplyIndex(get(), underlyingAsset) < 0
+            ({ underlyingAsset }) =>
+              selectMigrationSelectedSupplyIndex(
+                get().selectedMigrationSupplyAssets,
+                underlyingAsset
+              ) < 0
           )
           .map(({ underlyingAsset }) => ({ underlyingAsset, enforced: false }));
 
@@ -328,7 +334,10 @@ export const createV3MigrationSlice: StateCreator<
       const migratorAddress = get().getMigratorAddress();
 
       // TODO: make it dynamic when network switch will be there
-      const currentMarketV3Data = selectCurrentChainIdV3MarketData(get());
+      const currentMarketV3Data = selectCurrentChainIdV3MarketData(
+        get().currentChainId,
+        get().currentNetworkConfig
+      );
       const pool = new Pool(provider, {
         POOL: currentMarketV3Data.addresses.LENDING_POOL,
         REPAY_WITH_COLLATERAL_ADAPTER: currentMarketV3Data.addresses.REPAY_WITH_COLLATERAL_ADAPTER,

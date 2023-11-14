@@ -15,7 +15,6 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
@@ -94,7 +93,13 @@ function getWeb3Library(provider: any): providers.Web3Provider {
   return library;
 }
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -134,29 +139,27 @@ export default function MyApp(props: MyAppProps) {
                 <AddressBlocked>
                   <PermissionProvider>
                     <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <MigrateV3Modal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </BackgroundDataProvider>
+                      <SharedDependenciesProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <DebtSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <MigrateV3Modal />
+                            <TransactionEventHandler />
+                            <SwitchModal />
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </SharedDependenciesProvider>
                     </ModalContextProvider>
                   </PermissionProvider>
                 </AddressBlocked>

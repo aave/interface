@@ -14,7 +14,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
@@ -33,7 +33,7 @@ interface MigrationListMobileItemProps {
   isIsolated?: boolean;
   enteringIsolation: boolean;
   borrowApyType?: string;
-  userReserve: ComputedUserReserveData;
+  userReserve: FormattedUserReserves;
   v3Rates?: V3Rates;
   showCollateralToggle?: boolean;
   isSupplyList: boolean;

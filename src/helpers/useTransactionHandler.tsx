@@ -7,7 +7,6 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { queryClient } from 'pages/_app.page';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -59,7 +58,6 @@ export const useTransactionHandler = ({
     setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
 
@@ -129,8 +127,14 @@ export const useTransactionHandler = ({
         queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
         queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.USER_POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
+        });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES_DATA_HUMANIZED] });
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED] });
       } catch (e) {
         // TODO: what to do with this error?
         try {

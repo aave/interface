@@ -13,15 +13,14 @@ import {
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
-
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
   healthFactor: string;
   healthFactorAfterSwap: string;
-  swapSource: ComputedUserReserveData & { collateralType: CollateralType };
-  swapTarget: ComputedUserReserveData & { collateralType: CollateralType };
+  swapSource: FormattedUserReserves & { collateralType: CollateralType };
+  swapTarget: FormattedUserReserves & { collateralType: CollateralType };
   toAmount: string;
   fromAmount: string;
   loading: boolean;

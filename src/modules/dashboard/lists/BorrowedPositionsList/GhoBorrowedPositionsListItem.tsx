@@ -7,7 +7,9 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -16,11 +18,7 @@ import { ghoUserQualifiesForDiscount, weightedAverageAPY } from 'src/utils/ghoUt
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-  useAppDataContext,
-} from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
@@ -30,7 +28,7 @@ import { ListValueRow } from '../ListValueRow';
 export const GhoBorrowedPositionsListItem = ({
   reserve,
   borrowRateMode,
-}: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+}: FormattedUserReserves & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
@@ -102,7 +100,7 @@ export const GhoBorrowedPositionsListItem = ({
 };
 
 interface GhoBorrowedPositionsListItemProps {
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
   borrowRateMode: InterestRate;
   userGhoBorrowBalance: number;
   hasDiscount: boolean;

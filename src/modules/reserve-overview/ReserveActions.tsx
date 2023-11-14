@@ -21,11 +21,9 @@ import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -58,7 +56,7 @@ const amountToUSD = (
 };
 
 interface ReserveActionsProps {
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
 }
 
 export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
@@ -299,7 +297,7 @@ interface ActionProps {
   symbol: string;
   disable: boolean;
   onActionClicked: () => void;
-  reserve: ComputedReserveData;
+  reserve: FormattedReservesAndIncentives;
 }
 
 const SupplyAction = ({
