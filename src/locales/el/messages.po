@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-14 00:15\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1209,6 +1209,10 @@ msgstr "Δεν τηρήθηκαν οι όροι επανεξισορρόπηση
 msgid "Interest rate strategy"
 msgstr ""
 
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Μη έγκυρη ποσότητα προς καύση"
@@ -2159,10 +2163,6 @@ msgstr "Ξεκίνησε"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "Κατάσταση"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr ""
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
