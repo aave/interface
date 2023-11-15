@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-14 00:15\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -509,7 +509,7 @@ msgstr "Capacidad de préstamo utilizada"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Borrow rate APY"
-msgstr ""
+msgstr "APY de préstamo"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
@@ -1208,6 +1208,10 @@ msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
 msgstr "Estrategia de tasa de interés"
+
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -2159,10 +2163,6 @@ msgstr "Iniciado"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "Estado"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Tasa de interés estática determinada por el Gobierno de Aave. Esta tasa puede ser cambiada con el tiempo dependiendo de la necesidad de que el suministro de GHO se reduzca/expanda. <0>Aprende más</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"

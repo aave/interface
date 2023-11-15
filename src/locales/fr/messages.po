@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-14 00:15\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1209,6 +1209,10 @@ msgstr "Les conditions de rééquilibrage des taux d'intérêt n'ont pas été r
 msgid "Interest rate strategy"
 msgstr "Stratégie de taux d’intérêt"
 
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Montant non valide à brûler"
@@ -2159,10 +2163,6 @@ msgstr "Commencé"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "État"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Taux d’intérêt statique déterminé par Aave Governance. Ce taux peut être modifié au fil du temps en fonction de la nécessité pour l’approvisionnement en GHO de se contracter ou de s’étendre. <0>Pour en savoir plus</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
