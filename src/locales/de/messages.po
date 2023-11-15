@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-14 00:15\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1209,6 +1209,10 @@ msgstr "Die Bedingungen für die Neugewichtung der Zinssätze wurden nicht erfü
 msgid "Interest rate strategy"
 msgstr "Zinsstrategie"
 
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Ungültige Menge zum Verbrennen"
@@ -2159,10 +2163,6 @@ msgstr "Gestartet"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "Zustand"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Statischer Zinssatz, der von Aave Governance festgelegt wird. Dieser Satz kann sich im Laufe der Zeit ändern, je nachdem, ob das GHO-Angebot schrumpfen/erweitert werden muss. <0>Weitere Informationen</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"

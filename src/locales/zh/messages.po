@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-14 00:15\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -1209,6 +1209,10 @@ msgstr "利率再平衡条件未得到满足"
 msgid "Interest rate strategy"
 msgstr "利率策略"
 
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "无效的燃烧量"
@@ -2159,10 +2163,6 @@ msgstr "开始"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "州"
-
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "由 Aave Governance 确定的静态利率。该速率可能会随着时间的推移而变化，具体取决于 GHO 供应收缩/扩展的需要。 <0>了解更多信息</0>"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
