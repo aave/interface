@@ -48,9 +48,12 @@ const UnStakeModal = dynamic(() =>
 export default function Staking() {
   const { currentAccount, loading, chainId } = useWeb3Context();
 
-  const { data: stakeUserResult, isLoading: stakeUserResultLoading } = useUserStakeUiData();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+
+  const { data: stakeUserResult, isLoading: stakeUserResultLoading } =
+    useUserStakeUiData(currentMarketData);
   const { data: stakeGeneralResult, isLoading: stakeGeneralResultLoading } =
-    useGeneralStakeUiData();
+    useGeneralStakeUiData(currentMarketData);
 
   const stakeDataLoading = stakeUserResultLoading || stakeGeneralResultLoading;
 

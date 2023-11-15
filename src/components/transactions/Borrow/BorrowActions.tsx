@@ -16,7 +16,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -132,17 +132,8 @@ export const BorrowActions = React.memo(
           assetName: poolReserve.name,
         });
 
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
-        queryClient.invalidateQueries({
-          queryKey: [QueryKeys.POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [QueryKeys.USER_POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
-        });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES_DATA_HUMANIZED] });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED] });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

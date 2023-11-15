@@ -5,8 +5,7 @@ import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
-import { useRootStore } from 'src/store/root';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
 
 import { governanceConfig } from './governanceConfig';
@@ -25,38 +24,28 @@ interface SharedDependenciesContext {
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
-  const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
-  const currentMarketData = useRootStore((state) => state.currentMarketData);
-  const isGovernanceFork =
-    currentNetworkConfig.isFork &&
-    currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const isStakeFork =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
-
-  const governanceChainId = isGovernanceFork ? currentMarketData.chainId : governanceConfig.chainId;
-  const stakingChainId = isStakeFork ? currentMarketData.chainId : stakeConfig.chainId;
-
   // providers
-  const currentProvider = getProvider(currentMarketData.chainId);
-  const governanceProvider = isGovernanceFork
-    ? currentProvider
-    : getProvider(governanceConfig.chainId);
-  const stakeProvider = isStakeFork ? currentProvider : getProvider(stakeConfig.chainId);
+
+  const getGovernanceProvider = (chainId: number) => {
+    const networkConfig = getNetworkConfig(chainId);
+    const isGovernanceFork =
+      networkConfig.isFork && networkConfig.underlyingChainId === governanceConfig.chainId;
+    return isGovernanceFork ? getProvider(chainId) : getProvider(governanceConfig.chainId);
+  };
+  const getStakeProvider = (chainId: number) => {
+    const networkConfig = getNetworkConfig(chainId);
+    const isStakeFork =
+      networkConfig.isFork && networkConfig.underlyingChainId === stakeConfig.chainId;
+    return isStakeFork ? getProvider(chainId) : getProvider(stakeConfig.chainId);
+  };
 
   // services
-  const governanceService = new GovernanceService(governanceProvider, governanceChainId);
 
-  const getGovernanceProvider = () => {
-    return isGovernanceFork ? currentProvider : getProvider(governanceConfig.chainId);
-  };
+  const governanceService = new GovernanceService(getGovernanceProvider);
 
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);
   const poolTokensBalanceService = new WalletBalanceService(getProvider);
-  const uiStakeDataService = new UiStakeDataService(
-    stakeProvider,
-    stakeConfig.stakeDataProvider,
-    stakingChainId
-  );
+  const uiStakeDataService = new UiStakeDataService(getStakeProvider);
 
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);

@@ -7,12 +7,13 @@ import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { usePowers } from 'src/hooks/governance/usePowers';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export function VotingPowerInfoPanel() {
-  const { currentAccount } = useWeb3Context();
-  const { data: powers } = usePowers();
+  const user = useRootStore((store) => store.account);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { data: powers } = usePowers(currentMarketData);
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
@@ -32,7 +33,7 @@ export function VotingPowerInfoPanel() {
         }}
         funnel={'Your info: Governance'}
       />
-      {currentAccount && (
+      {user && (
         <Box sx={{ display: 'flex', mt: 6 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', mr: '25%' }}>
             <TextWithTooltip
