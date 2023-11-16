@@ -14220,7 +14220,7 @@
       "ipfsHash": "0xb104d0e864fe799782bcca3f0c509021868c1963ab4d2b3bc4a9c710ee7e5483",
       "startTimestamp": 1699980203,
       "creationTimestamp": 1699893395,
-      "expirationTimestamp": 1700211683
+      "expirationTimestamp": 1700211719
     },
     {
       "id": 370,
@@ -14241,7 +14241,7 @@
       "startBlock": 18572695,
       "endBlock": 18591895,
       "executionTime": 0,
-      "forVotes": "345427975574317597324317",
+      "forVotes": "432207699996821988205421",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -14255,7 +14255,7 @@
       "ipfsHash": "0xccfdf54fafdb4daeaa9e6284a43173ad78364158bd45915946393dcf7fe9d3df",
       "startTimestamp": 1699995731,
       "creationTimestamp": 1699908899,
-      "expirationTimestamp": 1700227079
+      "expirationTimestamp": 1700227115
     },
     {
       "id": 371,
@@ -14290,7 +14290,7 @@
       "ipfsHash": "0x06c3c9f405af0104ba5e02911399c0ac432f02961206208a4a075780f6bd6599",
       "startTimestamp": 1700057447,
       "creationTimestamp": 1699970351,
-      "expirationTimestamp": 1700288279
+      "expirationTimestamp": 1700288315
     }
   ]
 }
