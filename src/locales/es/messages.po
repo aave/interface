@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-15 00:16\n"
+"PO-Revision-Date: 2023-11-15 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1211,7 +1211,7 @@ msgstr "Estrategia de tasa de interés"
 
 #: src/components/infoTooltips/FixedAPYTooltip.tsx
 msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr ""
+msgstr "Tasa de interés determinada por el gobierno de Aave. Esta tasa puede cambiar con el tiempo dependiendo de la necesidad de que el suministro de GHO se contraiga/expanda. <0>Aprende más</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
