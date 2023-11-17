@@ -264,6 +264,10 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens or unstake them without any cooldown period. Learn more"
+msgstr "As a result of governance decisions, the existing ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens or unstake them without any cooldown period. Learn more"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -2104,24 +2108,16 @@ msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/staking/StakingPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Stake"
 msgstr "Stake"
-
-#: pages/staking.staking.tsx
-msgid "Stake AAVE"
-msgstr "Stake AAVE"
-
-#: pages/staking.staking.tsx
-msgid "Stake ABPT"
-msgstr "Stake ABPT"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Staked"
@@ -2641,6 +2637,10 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
 msgstr "Underlying token"
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "Unstake"
+msgstr "Unstake"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
