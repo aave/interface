@@ -13,7 +13,7 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -60,6 +60,7 @@ export const SwitchActions = ({
     walletApprovalMethodPreference,
     generateSignatureRequest,
     addTransaction,
+    currentMarketData,
   ] = useRootStore((state) => [
     state.account,
     state.generateApproval,
@@ -67,6 +68,7 @@ export const SwitchActions = ({
     state.walletApprovalMethodPreference,
     state.generateSignatureRequest,
     state.addTransaction,
+    state.currentMarketData,
   ]);
 
   const {
@@ -150,7 +152,9 @@ export const SwitchActions = ({
             loading: false,
             success: true,
           });
-          queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+          queryClient.invalidateQueries({
+            queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
+          });
         } catch (error) {
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
           setTxError(parsedError);

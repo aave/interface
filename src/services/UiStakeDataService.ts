@@ -1,34 +1,26 @@
 import { UiStakeDataProvider } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
-import { Hashable } from 'src/utils/types';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 
-type GetUserStakeUIDataHumanizedParams = {
-  user: string;
-};
+export class UiStakeDataService {
+  constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-export class UiStakeDataService implements Hashable {
-  private readonly stakeDataService: UiStakeDataProvider;
-
-  constructor(
-    provider: Provider,
-    stakeDataProviderAddress: string,
-    public readonly chainId: number
-  ) {
-    this.stakeDataService = new UiStakeDataProvider({
-      uiStakeDataProvider: stakeDataProviderAddress,
+  private getUiStakeDataService(marketData: MarketDataType) {
+    const provider = this.getProvider(marketData.chainId);
+    return new UiStakeDataProvider({
+      uiStakeDataProvider: stakeConfig.stakeDataProvider,
       provider,
     });
   }
 
-  async getGeneralStakeUIDataHumanized() {
-    return this.stakeDataService.getGeneralStakeUIDataHumanized();
+  async getGeneralStakeUIDataHumanized(marketData: MarketDataType) {
+    const uiStakeDataService = this.getUiStakeDataService(marketData);
+    return uiStakeDataService.getGeneralStakeUIDataHumanized();
   }
 
-  async getUserStakeUIDataHumanized({ user }: GetUserStakeUIDataHumanizedParams) {
-    return this.stakeDataService.getUserStakeUIDataHumanized({ user });
-  }
-
-  public toHash() {
-    return this.chainId.toString();
+  async getUserStakeUIDataHumanized(marketData: MarketDataType, user: string) {
+    const uiStakeDataService = this.getUiStakeDataService(marketData);
+    return uiStakeDataService.getUserStakeUIDataHumanized({ user });
   }
 }

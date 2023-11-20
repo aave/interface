@@ -10,7 +10,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -115,7 +115,7 @@ export const useParaSwapTransactionHandler = ({
           txState: 'success',
           action: protocolAction || ProtocolAction.default,
         });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
       } catch (e) {

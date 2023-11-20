@@ -18,7 +18,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -249,7 +249,7 @@ export const SupplyActions = React.memo(
           assetName: symbol,
         });
 
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
         refetchGhoData && refetchGhoData();
