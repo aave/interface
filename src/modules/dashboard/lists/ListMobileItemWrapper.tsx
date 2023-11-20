@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
+import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -20,6 +21,7 @@ interface ListMobileItemWrapperProps {
   loading?: boolean;
   currentMarket?: CustomMarket;
   frozen?: boolean;
+  paused?: boolean;
   borrowEnabled?: boolean;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
@@ -36,6 +38,7 @@ export const ListMobileItemWrapper = ({
   loading,
   currentMarket,
   frozen,
+  paused,
   borrowEnabled = true,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
@@ -52,6 +55,7 @@ export const ListMobileItemWrapper = ({
     const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
     return (
       <>
+        {paused && <PausedTooltip />}
         {showFrozenTooltip && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {showRenFilTooltip && <RenFILToolTip />}
         {showAmplTooltip && <AMPLToolTip />}

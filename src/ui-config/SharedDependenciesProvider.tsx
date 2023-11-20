@@ -40,7 +40,6 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   };
 
   // services
-
   const governanceService = new GovernanceService(getGovernanceProvider);
 
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);

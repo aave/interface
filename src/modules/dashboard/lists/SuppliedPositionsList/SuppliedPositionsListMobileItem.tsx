@@ -128,7 +128,7 @@ export const SuppliedPositionsListMobileItem = ({
           disabled={disableWithdraw}
           variant="outlined"
           onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          sx={{ mr: 1.5 }}
+          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Withdraw</Trans>

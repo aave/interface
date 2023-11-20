@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -104,7 +103,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: FormattedReservesAndI
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
       </Row>
-      <Row
+      {/* <Row
         caption={
           <StableAPYTooltip
             text={<Trans>Borrow APY, stable</Trans>}
@@ -128,7 +127,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: FormattedReservesAndI
             Number(reserve.totalStableDebt) > 0 &&
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
-      </Row>
+      </Row> */}
 
       <Button
         variant="outlined"

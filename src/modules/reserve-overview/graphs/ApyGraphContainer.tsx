@@ -146,6 +146,7 @@ export const ApyGraphContainer = ({
               data={data}
               fields={fields}
               selectedTimeRange={selectedTimeRange}
+              avgFieldName={graphKey === 'supply' ? 'liquidityRate' : 'variableBorrowRate'}
             />
           )}
         </ParentSize>

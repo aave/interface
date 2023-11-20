@@ -8,7 +8,7 @@ export const queryKeysFactory = {
   gho: ['gho'] as const,
   market: (marketData: MarketDataType) => [
     marketData.chainId,
-    marketData.isFork,
+    !!marketData.isFork,
     marketData.market,
   ],
   user: (user: string) => [user],

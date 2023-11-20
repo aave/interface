@@ -173,7 +173,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
             disabled
             data-cy={`apyButton_fixed`}
           >
-            FIXED RATE
+            GHO RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />
             </SvgIcon>
@@ -250,7 +250,7 @@ const GhoBorrowedPositionsListItemMobile = ({
       <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
           <Button variant="outlined" size="small" color="primary">
-            FIXED RATE
+            GHO RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />
             </SvgIcon>

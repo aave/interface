@@ -6,9 +6,9 @@ import { SupplyAssetsItem } from 'src/modules/dashboard/lists/SupplyAssetsList/t
 
 // Helpers
 export const DASHBOARD_LIST_COLUMN_WIDTHS = {
-  ASSET: 110,
+  ASSET: 130,
   BUTTONS: 160,
-  CELL: 110,
+  CELL: 130,
 };
 
 // Note: Create a single type that works with all four dashboards list and all 8 list item components
