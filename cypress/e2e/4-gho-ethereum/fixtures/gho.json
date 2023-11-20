@@ -4,7 +4,7 @@
   "collateral": false,
   "wrapped": false,
   "apy": {
-    "min": 2.13,
-    "max": 3.05
+    "min": 3.38,
+    "max": 4.83
   }
 }
