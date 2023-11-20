@@ -34,9 +34,9 @@ type StakingType = 'aave' | 'bpt';
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentChainId = useRootStore((store) => store.currentChainId);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
 
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
