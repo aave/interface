@@ -24,7 +24,7 @@ export const SuppliedPositionsListItem = ({
   underlyingAsset,
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
-  const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
+  const { isIsolated, aIncentivesData, isFrozen, isActive, isPaused } = reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
@@ -38,9 +38,9 @@ export const SuppliedPositionsListItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const disableSwap = !isActive || reserve.symbol == 'stETH';
-  const disableWithdraw = !isActive;
-  const disableSupply = !isActive || isFrozen;
+  const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive || isPaused;
+  const disableSupply = !isActive || isFrozen || isPaused;
 
   return (
     <ListItemWrapper
@@ -50,6 +50,7 @@ export const SuppliedPositionsListItem = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      paused={isPaused}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
         canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}
@@ -71,6 +72,7 @@ export const SuppliedPositionsListItem = ({
 
       <ListColumn>
         <ListItemUsedAsCollateral
+          disabled={reserve.isPaused}
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}

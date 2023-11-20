@@ -96,13 +96,10 @@ msgstr "APY with discount applied"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-msgid "APY, fixed rate"
-msgstr "APY, fixed rate"
+msgid "APY, borrow rate"
+msgstr "APY, borrow rate"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
@@ -457,15 +454,6 @@ msgstr "Borrow APY"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, fixed rate"
-msgstr "Borrow APY, fixed rate"
-
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Borrow APY, stable"
-msgstr "Borrow APY, stable"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -513,6 +501,10 @@ msgstr "Borrow info"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate APY"
+msgstr "Borrow rate APY"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
@@ -1211,6 +1203,10 @@ msgstr "Interest rate rebalance conditions were not met"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
 msgstr "Interest rate strategy"
+
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -2163,10 +2159,6 @@ msgstr "Started"
 msgid "State"
 msgstr "State"
 
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "Supplied"
@@ -2454,6 +2446,10 @@ msgstr "This asset has almost reached its borrow cap. There is only {messageValu
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
+
+#: src/components/infoTooltips/PausedTooltip.tsx
+msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+msgstr "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."

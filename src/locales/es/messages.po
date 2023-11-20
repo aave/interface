@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-23 12:06\n"
+"PO-Revision-Date: 2023-11-15 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -101,13 +101,10 @@ msgstr "APY con descuento aplicado"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-msgid "APY, fixed rate"
-msgstr "APY, interés fijo"
+msgid "APY, borrow rate"
+msgstr "APY, tasa de préstamo"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, estable"
 
@@ -462,15 +459,6 @@ msgstr "APY préstamo"
 msgid "Borrow APY rate"
 msgstr "Tasa de interés de préstamo APY"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, fixed rate"
-msgstr "APY préstamo, interés fijo"
-
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Borrow APY, stable"
-msgstr "APY préstamo, estable"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -518,6 +506,10 @@ msgstr "Información de préstamo"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Capacidad de préstamo utilizada"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate APY"
+msgstr "APY de préstamo"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
@@ -1216,6 +1208,10 @@ msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
 msgstr "Estrategia de tasa de interés"
+
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr "Tasa de interés determinada por el gobierno de Aave. Esta tasa puede cambiar con el tiempo dependiendo de la necesidad de que el suministro de GHO se contraiga/expanda. <0>Aprende más</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -2168,10 +2164,6 @@ msgstr "Iniciado"
 msgid "State"
 msgstr "Estado"
 
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "Tasa de interés estática determinada por el Gobierno de Aave. Esta tasa puede ser cambiada con el tiempo dependiendo de la necesidad de que el suministro de GHO se reduzca/expanda. <0>Aprende más</0>"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "Suministrado"
@@ -2459,6 +2451,10 @@ msgstr "Este activo casi ha alcanzado su límite de préstamo. Solo hay {message
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "Este activo casi ha alcanzado su límite de suministro. Solo se puede suministrar {messageValue} a este mercado."
+
+#: src/components/infoTooltips/PausedTooltip.tsx
+msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+msgstr "Este activo ha sido pausado debido a una decisión de la comunidad. El suministro, los retiros, los préstamos y los pagos se han visto afectados."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."

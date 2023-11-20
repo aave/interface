@@ -4918,7 +4918,7 @@ var require_lib4 = __commonJS({
     exports2.deepCopy = deepCopy;
     var Description = (
       /** @class */
-      function() {
+      /* @__PURE__ */ function() {
         function Description2(info) {
           for (var key in info) {
             this[key] = deepCopy(info[key]);
@@ -4945,7 +4945,7 @@ var require_version5 = __commonJS({
 var require_fragments = __commonJS({
   "node_modules/@ethersproject/abi/lib/fragments.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -6984,7 +6984,7 @@ var require_lib7 = __commonJS({
 var require_address = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/address.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7042,7 +7042,7 @@ var require_address = __commonJS({
 var require_anonymous = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/anonymous.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7095,7 +7095,7 @@ var require_anonymous = __commonJS({
 var require_array = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/array.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7329,7 +7329,7 @@ var require_array = __commonJS({
 var require_boolean = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/boolean.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7380,7 +7380,7 @@ var require_boolean = __commonJS({
 var require_bytes = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/bytes.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7449,7 +7449,7 @@ var require_bytes = __commonJS({
 var require_fixed_bytes = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/fixed-bytes.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7509,7 +7509,7 @@ var require_fixed_bytes = __commonJS({
 var require_null = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/null.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -7666,7 +7666,7 @@ var require_lib8 = __commonJS({
 var require_number = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/number.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -8239,7 +8239,7 @@ var require_lib9 = __commonJS({
 var require_string = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/string.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -8291,7 +8291,7 @@ var require_string = __commonJS({
 var require_tuple = __commonJS({
   "node_modules/@ethersproject/abi/lib/coders/tuple.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -9191,7 +9191,7 @@ var require_lib10 = __commonJS({
 var require_interface = __commonJS({
   "node_modules/@ethersproject/abi/lib/interface.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -15842,7 +15842,7 @@ var require_wordlist = __commonJS({
 var require_lang_cz = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-cz.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -15906,7 +15906,7 @@ var require_lang_cz = __commonJS({
 var require_lang_en = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-en.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -15970,7 +15970,7 @@ var require_lang_en = __commonJS({
 var require_lang_es = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-es.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16063,7 +16063,7 @@ var require_lang_es = __commonJS({
 var require_lang_fr = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-fr.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16155,7 +16155,7 @@ var require_lang_fr = __commonJS({
 var require_lang_ja = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-ja.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16301,7 +16301,7 @@ var require_lang_ja = __commonJS({
 var require_lang_ko = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-ko.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16395,7 +16395,7 @@ var require_lang_ko = __commonJS({
 var require_lang_it = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-it.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16459,7 +16459,7 @@ var require_lang_it = __commonJS({
 var require_lang_zh = __commonJS({
   "node_modules/@ethersproject/wordlists/lib/lang-zh.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -16978,7 +16978,7 @@ var require_aes_js = __commonJS({
         }
         targetArray.set(sourceArray, targetStart);
       }
-      var convertUtf8 = function() {
+      var convertUtf8 = /* @__PURE__ */ function() {
         function toBytes(text) {
           var result = [], i = 0;
           text = encodeURI(text);
@@ -17015,7 +17015,7 @@ var require_aes_js = __commonJS({
           fromBytes
         };
       }();
-      var convertHex = function() {
+      var convertHex = /* @__PURE__ */ function() {
         function toBytes(text) {
           var result = [];
           for (var i = 0; i < text.length; i += 2) {
@@ -17556,7 +17556,7 @@ var require_utils4 = __commonJS({
 var require_crowdsale = __commonJS({
   "node_modules/@ethersproject/json-wallets/lib/crowdsale.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -18214,7 +18214,7 @@ var require_lib20 = __commonJS({
 var require_keystore = __commonJS({
   "node_modules/@ethersproject/json-wallets/lib/keystore.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -18919,7 +18919,7 @@ var require_version18 = __commonJS({
 var require_lib24 = __commonJS({
   "node_modules/@ethersproject/abstract-provider/lib/index.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -19194,7 +19194,7 @@ var require_version19 = __commonJS({
 var require_lib25 = __commonJS({
   "node_modules/@ethersproject/abstract-signer/lib/index.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -19706,7 +19706,7 @@ var require_version20 = __commonJS({
 var require_lib26 = __commonJS({
   "node_modules/@ethersproject/wallet/lib/index.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -21142,7 +21142,7 @@ var require_version22 = __commonJS({
 var require_lib28 = __commonJS({
   "node_modules/@ethersproject/contracts/lib/index.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -23564,7 +23564,7 @@ var require_formatter = __commonJS({
 var require_base_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/base-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -25993,7 +25993,7 @@ var require_base_provider = __commonJS({
 var require_json_rpc_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/json-rpc-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -30028,7 +30028,7 @@ var require_ws2 = __commonJS({
 var require_websocket_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/websocket-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -30449,7 +30449,7 @@ var require_websocket_provider = __commonJS({
 var require_url_json_rpc_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/url-json-rpc-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -30669,7 +30669,7 @@ var require_url_json_rpc_provider = __commonJS({
 var require_alchemy_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/alchemy-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -30802,7 +30802,7 @@ var require_alchemy_provider = __commonJS({
 var require_cloudflare_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/cloudflare-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -30985,7 +30985,7 @@ var require_cloudflare_provider = __commonJS({
 var require_etherscan_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/etherscan-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -31591,7 +31591,7 @@ var require_etherscan_provider = __commonJS({
 var require_fallback_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/fallback-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32382,7 +32382,7 @@ var require_fallback_provider = __commonJS({
 var require_ipc_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/ipc-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32468,7 +32468,7 @@ var require_ipc_provider = __commonJS({
 var require_infura_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/infura-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32630,7 +32630,7 @@ var require_infura_provider = __commonJS({
 var require_json_rpc_batch_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/json-rpc-batch-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32737,7 +32737,7 @@ var require_json_rpc_batch_provider = __commonJS({
 var require_nodesmith_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/nodesmith-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32813,7 +32813,7 @@ var require_nodesmith_provider = __commonJS({
 var require_pocket_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/pocket-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -32950,7 +32950,7 @@ var require_pocket_provider = __commonJS({
 var require_web3_provider = __commonJS({
   "node_modules/@ethersproject/providers/lib/web3-provider.js"(exports2) {
     "use strict";
-    var __extends2 = exports2 && exports2.__extends || function() {
+    var __extends2 = exports2 && exports2.__extends || /* @__PURE__ */ function() {
       var extendStatics2 = function(d, b) {
         extendStatics2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
@@ -34163,7 +34163,7 @@ var require_bignumber2 = __commonJS({
             sum = sum.plus(args[i++]);
           return sum;
         };
-        convertBase = function() {
+        convertBase = /* @__PURE__ */ function() {
           var decimal = "0123456789";
           function toBaseOut(str2, baseIn, baseOut, alphabet) {
             var j, arr = [0], arrL, i = 0, len = str2.length;
@@ -34243,7 +34243,7 @@ var require_bignumber2 = __commonJS({
             return str2;
           };
         }();
-        div = function() {
+        div = /* @__PURE__ */ function() {
           function multiply(x, k, base) {
             var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE2, khi = k / SQRT_BASE2 | 0;
             for (x = x.slice(); i--; ) {
@@ -34467,7 +34467,7 @@ var require_bignumber2 = __commonJS({
           }
           return n;
         }
-        parseNumeric = function() {
+        parseNumeric = /* @__PURE__ */ function() {
           var basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i, dotAfter = /^([^.]+)\.$/, dotBefore = /^\.([^.]+)$/, isInfinityOrNaN = /^-?(Infinity|NaN)$/, whitespaceOrPlus = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
           return function(x, str2, isNum, b) {
             var base, s = isNum ? str2 : str2.replace(whitespaceOrPlus, "");
@@ -42880,14 +42880,14 @@ var require_lendingPool_contract = __commonJS({
     var LendingPool = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, ILendingPool__factory_1.ILendingPool__factory);
-        const { LENDING_POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER11, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER11, WETH_GATEWAY: WETH_GATEWAY23 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        const { LENDING_POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER11, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER11, WETH_GATEWAY: WETH_GATEWAY24 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
         this.lendingPoolAddress = LENDING_POOL !== null && LENDING_POOL !== void 0 ? LENDING_POOL : "";
         this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER !== null && FLASH_LIQUIDATION_ADAPTER !== void 0 ? FLASH_LIQUIDATION_ADAPTER : "";
         this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER11 !== null && SWAP_COLLATERAL_ADAPTER11 !== void 0 ? SWAP_COLLATERAL_ADAPTER11 : "";
         this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER11 !== null && REPAY_WITH_COLLATERAL_ADAPTER11 !== void 0 ? REPAY_WITH_COLLATERAL_ADAPTER11 : "";
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER11);
         this.repayWithCollateralAdapterService = new repayWithCollateralAdapter_contract_1.RepayWithCollateralAdapterService(provider, REPAY_WITH_COLLATERAL_ADAPTER11);
         this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER11);
@@ -43586,12 +43586,12 @@ var require_lendingPool_contract_bundle = __commonJS({
     var LendingPoolBundle = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, ILendingPool__factory_1.ILendingPool__factory);
-        const { LENDING_POOL, WETH_GATEWAY: WETH_GATEWAY23 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        const { LENDING_POOL, WETH_GATEWAY: WETH_GATEWAY24 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
         this.lendingPoolAddress = LENDING_POOL !== null && LENDING_POOL !== void 0 ? LENDING_POOL : "";
-        this.wethGatewayAddress = WETH_GATEWAY23 !== null && WETH_GATEWAY23 !== void 0 ? WETH_GATEWAY23 : "";
+        this.wethGatewayAddress = WETH_GATEWAY24 !== null && WETH_GATEWAY24 !== void 0 ? WETH_GATEWAY24 : "";
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.contractInterface = ILendingPool__factory_1.ILendingPool__factory.createInterface();
         this.depositTxBuilder = {
           getApprovedAmount: (props) => __async(this, null, function* () {
@@ -49951,16 +49951,16 @@ var require_v3_pool_contract = __commonJS({
     var Pool = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, IPool__factory_1.IPool__factory);
-        const { POOL: POOL24, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER11, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER11, WETH_GATEWAY: WETH_GATEWAY23, L2_ENCODER: L2_ENCODER8 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
-        this.poolAddress = POOL24 !== null && POOL24 !== void 0 ? POOL24 : "";
+        const { POOL: POOL25, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER: REPAY_WITH_COLLATERAL_ADAPTER11, SWAP_COLLATERAL_ADAPTER: SWAP_COLLATERAL_ADAPTER11, WETH_GATEWAY: WETH_GATEWAY24, L2_ENCODER: L2_ENCODER9 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.poolAddress = POOL25 !== null && POOL25 !== void 0 ? POOL25 : "";
         this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER !== null && FLASH_LIQUIDATION_ADAPTER !== void 0 ? FLASH_LIQUIDATION_ADAPTER : "";
         this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER11 !== null && SWAP_COLLATERAL_ADAPTER11 !== void 0 ? SWAP_COLLATERAL_ADAPTER11 : "";
         this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER11 !== null && REPAY_WITH_COLLATERAL_ADAPTER11 !== void 0 ? REPAY_WITH_COLLATERAL_ADAPTER11 : "";
-        this.l2EncoderAddress = L2_ENCODER8 !== null && L2_ENCODER8 !== void 0 ? L2_ENCODER8 : "";
+        this.l2EncoderAddress = L2_ENCODER9 !== null && L2_ENCODER9 !== void 0 ? L2_ENCODER9 : "";
         this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER11);
         this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER11);
         this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
@@ -50953,15 +50953,15 @@ var require_v3_pool_contract_bundle = __commonJS({
     var PoolBundle = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, IPool__factory_1.IPool__factory);
-        const { POOL: POOL24, WETH_GATEWAY: WETH_GATEWAY23, L2_ENCODER: L2_ENCODER8 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
-        this.poolAddress = POOL24 !== null && POOL24 !== void 0 ? POOL24 : "";
-        this.l2EncoderAddress = L2_ENCODER8 !== null && L2_ENCODER8 !== void 0 ? L2_ENCODER8 : "";
-        this.wethGatewayAddress = WETH_GATEWAY23 !== null && WETH_GATEWAY23 !== void 0 ? WETH_GATEWAY23 : "";
+        const { POOL: POOL25, WETH_GATEWAY: WETH_GATEWAY24, L2_ENCODER: L2_ENCODER9 } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        this.poolAddress = POOL25 !== null && POOL25 !== void 0 ? POOL25 : "";
+        this.l2EncoderAddress = L2_ENCODER9 !== null && L2_ENCODER9 !== void 0 ? L2_ENCODER9 : "";
+        this.wethGatewayAddress = WETH_GATEWAY24 !== null && WETH_GATEWAY24 !== void 0 ? WETH_GATEWAY24 : "";
         this.v3PoolService = new v3_pool_contract_1.Pool(provider, lendingPoolConfig);
         this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
-        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY23);
+        this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY24);
         this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
           l2PoolAddress: this.poolAddress,
           encoderAddress: this.l2EncoderAddress
@@ -56529,7 +56529,7 @@ var require_lodash = __commonJS({
           }
           return new LodashWrapper(value);
         }
-        var baseCreate = function() {
+        var baseCreate = /* @__PURE__ */ function() {
           function object() {
           }
           return function(proto) {
@@ -59836,7 +59836,7 @@ var require_lodash = __commonJS({
         var gte = createRelationalOperation(function(value, other) {
           return value >= other;
         });
-        var isArguments = baseIsArguments(function() {
+        var isArguments = baseIsArguments(/* @__PURE__ */ function() {
           return arguments;
         }()) ? baseIsArguments : function(value) {
           return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
@@ -64883,11 +64883,11 @@ __export(AaveV2EthereumAMM_exports, {
   ASSETS: () => ASSETS,
   CHAIN_ID: () => CHAIN_ID,
   COLLECTOR: () => COLLECTOR,
+  CONFIG_ENGINE: () => CONFIG_ENGINE,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN,
   EMISSION_MANAGER: () => EMISSION_MANAGER,
   LENDING_RATE_ORACLE: () => LENDING_RATE_ORACLE,
-  LISTING_ENGINE: () => LISTING_ENGINE,
   MIGRATION_HELPER: () => MIGRATION_HELPER,
   ORACLE: () => ORACLE,
   POOL: () => POOL,
@@ -64907,12 +64907,12 @@ var POOL_CONFIGURATOR = "0x23A875eDe3F1030138701683e42E9b16A7F87768";
 var ORACLE = "0xA50ba011c48153De246E5192C8f9258A2ba79Ca9";
 var LENDING_RATE_ORACLE = "0x8A32f49FFbA88aba6EFF96F45D8BD1D4b3f35c7D";
 var AAVE_PROTOCOL_DATA_PROVIDER = "0x0000000000000000000000000000000000000000";
-var POOL_ADMIN = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
+var POOL_ADMIN = "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A";
 var EMERGENCY_ADMIN = "0xB9062896ec3A615a4e4444DF183F0531a77218AE";
 var COLLECTOR = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
 var DEFAULT_INCENTIVES_CONTROLLER = "0x0000000000000000000000000000000000000000";
 var EMISSION_MANAGER = "0x0000000000000000000000000000000000000000";
-var LISTING_ENGINE = "0xcfC26009618ec2Ca8787180116a37Caa354a465C";
+var CONFIG_ENGINE = "0xcfC26009618ec2Ca8787180116a37Caa354a465C";
 var MIGRATION_HELPER = "0x3cd1dFB81C50A5300C60a181ED145a7286d81e0a";
 var POOL_ADDRESSES_PROVIDER_REGISTRY = "0x52D306e36E3B6B02c153d0266ff0f85d18BCD413";
 var RATES_FACTORY = "0x6e4D068105052C3877116DCF86f5FF36B7eCa2B8";
@@ -65138,12 +65138,12 @@ __export(AaveV2Ethereum_exports, {
   ASSETS: () => ASSETS2,
   CHAIN_ID: () => CHAIN_ID2,
   COLLECTOR: () => COLLECTOR2,
+  CONFIG_ENGINE: () => CONFIG_ENGINE2,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER2,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN2,
   EMISSION_MANAGER: () => EMISSION_MANAGER2,
   LENDING_RATE_ORACLE: () => LENDING_RATE_ORACLE2,
-  LISTING_ENGINE: () => LISTING_ENGINE2,
   MIGRATION_HELPER: () => MIGRATION_HELPER2,
   ORACLE: () => ORACLE2,
   POOL: () => POOL2,
@@ -65165,13 +65165,13 @@ var POOL_CONFIGURATOR2 = "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756";
 var ORACLE2 = "0xA50ba011c48153De246E5192C8f9258A2ba79Ca9";
 var LENDING_RATE_ORACLE2 = "0x8A32f49FFbA88aba6EFF96F45D8BD1D4b3f35c7D";
 var AAVE_PROTOCOL_DATA_PROVIDER2 = "0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d";
-var POOL_ADMIN2 = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
+var POOL_ADMIN2 = "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A";
 var EMERGENCY_ADMIN2 = "0xCA76Ebd8617a03126B6FB84F9b1c1A0fB71C2633";
 var COLLECTOR2 = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
 var DEFAULT_INCENTIVES_CONTROLLER2 = "0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5";
 var EMISSION_MANAGER2 = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
 var DEBT_SWAP_ADAPTER = "0x6A6FA664D4Fa49a6a780a1D6143f079f8dd7C33d";
-var LISTING_ENGINE2 = "0x9eCed0293e7B73CFf4a2b4F9C82aAc8346158bd9";
+var CONFIG_ENGINE2 = "0x9eCed0293e7B73CFf4a2b4F9C82aAc8346158bd9";
 var MIGRATION_HELPER2 = "0xB748952c7BC638F31775245964707Bcc5DDFabFC";
 var POOL_ADDRESSES_PROVIDER_REGISTRY2 = "0x52D306e36E3B6B02c153d0266ff0f85d18BCD413";
 var RATES_FACTORY2 = "0xbD37610BBB1ddc2a22797F7e3f531B59902b7bA7";
@@ -65351,7 +65351,7 @@ var ASSETS2 = {
     A_TOKEN: "0x101cc05f4A51C0319f570d5E146a8C625198e636",
     S_TOKEN: "0x7f38d60D94652072b2C44a18c0e14A481EC3C0dd",
     V_TOKEN: "0x01C0eb1f8c6F1C1bF74ae028697ce7AA2a8b0E92",
-    INTEREST_RATE_STRATEGY: "0x531F1D684c35e570eE580D6881D0844caee682cd",
+    INTEREST_RATE_STRATEGY: "0xb70e28437Aec70a8cfE5240F54c463cF849bE17C",
     ORACLE: "0x3886BA987236181D98F2401c507Fb8BeA7871dF2"
   },
   USDC: {
@@ -65525,12 +65525,12 @@ __export(AaveV2Polygon_exports, {
   ASSETS: () => ASSETS3,
   CHAIN_ID: () => CHAIN_ID3,
   COLLECTOR: () => COLLECTOR3,
+  CONFIG_ENGINE: () => CONFIG_ENGINE3,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER2,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER3,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN3,
   EMISSION_MANAGER: () => EMISSION_MANAGER3,
   LENDING_RATE_ORACLE: () => LENDING_RATE_ORACLE3,
-  LISTING_ENGINE: () => LISTING_ENGINE3,
   MIGRATION_HELPER: () => MIGRATION_HELPER3,
   ORACLE: () => ORACLE3,
   POOL: () => POOL3,
@@ -65552,13 +65552,13 @@ var POOL_CONFIGURATOR3 = "0x26db2B833021583566323E3b8985999981b9F1F3";
 var ORACLE3 = "0x0229F777B0fAb107F9591a41d5F02E4e98dB6f2d";
 var LENDING_RATE_ORACLE3 = "0x17F73aEaD876CC4059089ff815EDA37052960dFB";
 var AAVE_PROTOCOL_DATA_PROVIDER3 = "0x7551b5D2763519d4e37e8B81929D336De671d46d";
-var POOL_ADMIN3 = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
+var POOL_ADMIN3 = "0xDf7d0e6454DB638881302729F5ba99936EaAB233";
 var EMERGENCY_ADMIN3 = "0x1450F2898D6bA2710C98BE9CAF3041330eD5ae58";
 var COLLECTOR3 = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
 var DEFAULT_INCENTIVES_CONTROLLER3 = "0x357D51124f59836DeD84c8a1730D72B749d8BC23";
 var EMISSION_MANAGER3 = "0x2bB25175d9B0F8965780209EB558Cc3b56cA6d32";
 var DEBT_SWAP_ADAPTER2 = "0x1E623A311948b531B07B6EA7CC34a9A2bCADADd0";
-var LISTING_ENGINE3 = "0x9eCed0293e7B73CFf4a2b4F9C82aAc8346158bd9";
+var CONFIG_ENGINE3 = "0x9eCed0293e7B73CFf4a2b4F9C82aAc8346158bd9";
 var MIGRATION_HELPER3 = "0x3db487975aB1728DB5787b798866c2021B24ec52";
 var POOL_ADDRESSES_PROVIDER_REGISTRY3 = "0x3ac4e9aa29940770aeC38fe853a4bbabb2dA9C19";
 var RATES_FACTORY3 = "0xD05003a24A17d9117B11eC04cF9743b050779c08";
@@ -66116,12 +66116,12 @@ __export(AaveV2Avalanche_exports, {
   ASSETS: () => ASSETS7,
   CHAIN_ID: () => CHAIN_ID7,
   COLLECTOR: () => COLLECTOR7,
+  CONFIG_ENGINE: () => CONFIG_ENGINE4,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER3,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER7,
   EMERGENCY_ADMIN: () => EMERGENCY_ADMIN7,
   EMISSION_MANAGER: () => EMISSION_MANAGER7,
   LENDING_RATE_ORACLE: () => LENDING_RATE_ORACLE7,
-  LISTING_ENGINE: () => LISTING_ENGINE4,
   MIGRATION_HELPER: () => MIGRATION_HELPER4,
   ORACLE: () => ORACLE7,
   POOL: () => POOL7,
@@ -66145,13 +66145,13 @@ var POOL_CONFIGURATOR7 = "0x230B618aD4C475393A7239aE03630042281BD86e";
 var ORACLE7 = "0xdC336Cd4769f4cC7E9d726DA53e6d3fC710cEB89";
 var LENDING_RATE_ORACLE7 = "0xc34254642B504484465F38Cb1CC396d45a9c7c80";
 var AAVE_PROTOCOL_DATA_PROVIDER7 = "0x65285E9dfab318f57051ab2b139ccCf232945451";
-var POOL_ADMIN7 = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
+var POOL_ADMIN7 = "0x3C06dce358add17aAf230f2234bCCC4afd50d090";
 var EMERGENCY_ADMIN7 = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
 var COLLECTOR7 = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
 var DEFAULT_INCENTIVES_CONTROLLER7 = "0x01D83Fe6A10D2f2B7AF17034343746188272cAc9";
 var EMISSION_MANAGER7 = "0x5CfCd7E6D055Ba4f7B998914336254aDE3F69f26";
 var DEBT_SWAP_ADAPTER3 = "0xc1D40f4cF36e4aE4108Ffa08818cD16c2d9aEF73";
-var LISTING_ENGINE4 = "0x7902F3c60f05b5A6b7e4Ce0Cac11Cb17bC8e607c";
+var CONFIG_ENGINE4 = "0x7902F3c60f05b5A6b7e4Ce0Cac11Cb17bC8e607c";
 var MIGRATION_HELPER4 = "0xf50a080aC535e531EC33cC05b227E910De2fb1fA";
 var POOL_ADDRESSES_PROVIDER_REGISTRY7 = "0x4235E22d9C3f28DCDA82b58276cb6370B01265C2";
 var PROOF_OF_RESERVE = "0x7fc3FCb14eF04A48Bb0c12f0c39CD74C249c37d8";
@@ -66240,6 +66240,7 @@ __export(AaveV3Ethereum_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD,
   CHAIN_ID: () => CHAIN_ID8,
   COLLECTOR: () => COLLECTOR8,
+  CONFIG_ENGINE: () => CONFIG_ENGINE5,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER4,
   DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_1,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER8,
@@ -66248,8 +66249,8 @@ __export(AaveV3Ethereum_exports, {
   DELEGATION_AWARE_A_TOKEN_IMPL_REV_1: () => DELEGATION_AWARE_A_TOKEN_IMPL_REV_1,
   EMISSION_MANAGER: () => EMISSION_MANAGER8,
   E_MODES: () => E_MODES,
+  FREEZING_STEWARD: () => FREEZING_STEWARD,
   GHO_TOKEN: () => GHO_TOKEN,
-  LISTING_ENGINE: () => LISTING_ENGINE5,
   ORACLE: () => ORACLE8,
   POOL: () => POOL8,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER8,
@@ -66274,7 +66275,7 @@ var ORACLE8 = "0x54586bE62E3c3580375aE3723C145253060Ca0C2";
 var PRICE_ORACLE_SENTINEL = "0x0000000000000000000000000000000000000000";
 var AAVE_PROTOCOL_DATA_PROVIDER8 = "0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3";
 var ACL_MANAGER = "0xc2aaCf6553D20d1e9d78E365AAba8032af9c85b0";
-var ACL_ADMIN = "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
+var ACL_ADMIN = "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A";
 var COLLECTOR8 = "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c";
 var DEFAULT_INCENTIVES_CONTROLLER8 = "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb";
 var DEFAULT_A_TOKEN_IMPL_REV_1 = "0x7EfFD7b47Bfd17e52fB7559d3f924201b9DbfF3d";
@@ -66282,10 +66283,11 @@ var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1 = "0xaC725CB59D16C81061BDeA61041a8A5e
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1 = "0x15C5620dfFaC7c7366EED66C20Ad222DDbB1eD57";
 var EMISSION_MANAGER8 = "0x223d844fc4B006D67c0cDbd39371A9F73f69d974";
 var CAPS_PLUS_RISK_STEWARD = "0x82dcCF206Ae2Ab46E2099e663F70DeE77caE7778";
+var FREEZING_STEWARD = "0x2eE68ACb6A1319de1b49DC139894644E424fefD6";
 var DEBT_SWAP_ADAPTER4 = "0x8761e0370f94f68Db8EaA731f4fC581f6AD0Bd68";
 var DELEGATION_AWARE_A_TOKEN_IMPL_REV_1 = "0x21714092D90c7265F52fdfDae068EC11a23C6248";
 var GHO_TOKEN = "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f";
-var LISTING_ENGINE5 = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
+var CONFIG_ENGINE5 = "0xA3e44d830440dF5098520F62Ebec285B1198c51E";
 var POOL_ADDRESSES_PROVIDER_REGISTRY8 = "0xbaA999AC55EAce41CcAE355c77809e68Bb345170";
 var RATES_FACTORY5 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
 var REPAY_WITH_COLLATERAL_ADAPTER4 = "0x02e7B8511831B1b02d9018215a0f8f500Ea5c6B3";
@@ -66505,7 +66507,7 @@ var ASSETS8 = {
     A_TOKEN: "0x00907f9921424583e7ffBfEdf84F92B7B2Be4977",
     S_TOKEN: "0x3f3DF7266dA30102344A813F1a3D07f5F041B5AC",
     V_TOKEN: "0x786dBff3f1292ae8F92ea68Cf93c30b34B1ed04B",
-    INTEREST_RATE_STRATEGY: "0x9210E5477dCA5bdF579ef0E1Ae84F9E823a5A3bA",
+    INTEREST_RATE_STRATEGY: "0x1255fC8DC8E76761995aCF544eea54f1B7fB0459",
     ORACLE: "0xD110cac5d8682A3b045D5524a9903E031d70FCCd",
     STATA_TOKEN: "0x0000000000000000000000000000000000000000"
   },
@@ -66527,6 +66529,26 @@ var ASSETS8 = {
     V_TOKEN: "0x8Db9D35e117d8b93C6Ca9b644b25BaD5d9908141",
     INTEREST_RATE_STRATEGY: "0xdef8F50155A6cf21181E29E400E8CffAE2d50968",
     ORACLE: "0x29081f7aB5a644716EfcDC10D5c926c5fEe9F72B",
+    STATA_TOKEN: "0x0000000000000000000000000000000000000000"
+  },
+  STG: {
+    decimals: 18,
+    UNDERLYING: "0xAf5191B0De278C7286d6C7CC6ab6BB8A73bA2Cd6",
+    A_TOKEN: "0x1bA9843bD4327c6c77011406dE5fA8749F7E3479",
+    S_TOKEN: "0xc3115D0660b93AeF10F298886ae22E3Dd477E482",
+    V_TOKEN: "0x655568bDd6168325EC7e58Bf39b21A856F906Dc2",
+    INTEREST_RATE_STRATEGY: "0x27eFE5db315b71753b2a38ED3d5dd7E9362ba93F",
+    ORACLE: "0x7A9f34a0Aa917D438e9b6E630067062B7F8f6f3d",
+    STATA_TOKEN: "0x0000000000000000000000000000000000000000"
+  },
+  KNC: {
+    decimals: 18,
+    UNDERLYING: "0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202",
+    A_TOKEN: "0x5b502e3796385E1e9755d7043B9C945C3aCCeC9C",
+    S_TOKEN: "0xdfEE0C9eA1309cB9611F33972E72a72166fcF548",
+    V_TOKEN: "0x253127Ffc04981cEA8932F406710661c2f2c3fD2",
+    INTEREST_RATE_STRATEGY: "0xf6733B9842883BFE0e0a940eA2F572676af31bde",
+    ORACLE: "0xf8fF43E991A81e6eC886a3D281A2C6cC19aE70Fc",
     STATA_TOKEN: "0x0000000000000000000000000000000000000000"
   }
 };
@@ -66670,6 +66692,7 @@ __export(AaveV3Polygon_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD2,
   CHAIN_ID: () => CHAIN_ID10,
   COLLECTOR: () => COLLECTOR10,
+  CONFIG_ENGINE: () => CONFIG_ENGINE6,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER5,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_2,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER10,
@@ -66677,7 +66700,7 @@ __export(AaveV3Polygon_exports, {
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2,
   EMISSION_MANAGER: () => EMISSION_MANAGER10,
   E_MODES: () => E_MODES3,
-  LISTING_ENGINE: () => LISTING_ENGINE6,
+  FREEZING_STEWARD: () => FREEZING_STEWARD2,
   ORACLE: () => ORACLE10,
   POOL: () => POOL10,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER10,
@@ -66701,7 +66724,7 @@ var ORACLE10 = "0xb023e699F5a33916Ea823A16485e259257cA8Bd1";
 var PRICE_ORACLE_SENTINEL3 = "0x0000000000000000000000000000000000000000";
 var AAVE_PROTOCOL_DATA_PROVIDER10 = "0x9441B65EE553F70df9C77d45d3283B6BC24F222d";
 var ACL_MANAGER3 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN3 = "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772";
+var ACL_ADMIN3 = "0xDf7d0e6454DB638881302729F5ba99936EaAB233";
 var COLLECTOR10 = "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383";
 var DEFAULT_INCENTIVES_CONTROLLER10 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
 var DEFAULT_A_TOKEN_IMPL_REV_2 = "0xCf85FF1c37c594a10195F7A9Ab85CBb0a03f69dE";
@@ -66709,8 +66732,9 @@ var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2 = "0x79b5e91037AE441dE0d9e6fd3Fd85b96
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2 = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
 var EMISSION_MANAGER10 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var CAPS_PLUS_RISK_STEWARD2 = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
+var FREEZING_STEWARD2 = "0xa7b40ed4dfAC9255EA9Dd218A3874f380D9FbBEB";
 var DEBT_SWAP_ADAPTER5 = "0xb58Fd91558fa213D97Ac94C97F831c7289278084";
-var LISTING_ENGINE6 = "0xE202F2fc4b6A37Ba53cfD15bE42a762A645FCA07";
+var CONFIG_ENGINE6 = "0xfFD6F13c9574bedb3f4E131e9C4320186AF83c1D";
 var POOL_ADDRESSES_PROVIDER_REGISTRY9 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var RATES_FACTORY6 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
 var REPAY_WITH_COLLATERAL_ADAPTER5 = "0xE3090207A2de94A856EA10a7e1Bd36dD6145712B";
@@ -67138,6 +67162,7 @@ __export(AaveV3Avalanche_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD3,
   CHAIN_ID: () => CHAIN_ID12,
   COLLECTOR: () => COLLECTOR12,
+  CONFIG_ENGINE: () => CONFIG_ENGINE7,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER6,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_22,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER12,
@@ -67145,7 +67170,7 @@ __export(AaveV3Avalanche_exports, {
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_22,
   EMISSION_MANAGER: () => EMISSION_MANAGER12,
   E_MODES: () => E_MODES5,
-  LISTING_ENGINE: () => LISTING_ENGINE7,
+  FREEZING_STEWARD: () => FREEZING_STEWARD3,
   ORACLE: () => ORACLE12,
   POOL: () => POOL12,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER12,
@@ -67171,7 +67196,7 @@ var ORACLE12 = "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C";
 var PRICE_ORACLE_SENTINEL5 = "0x0000000000000000000000000000000000000000";
 var AAVE_PROTOCOL_DATA_PROVIDER12 = "0x50ddd0Cd4266299527d25De9CBb55fE0EB8dAc30";
 var ACL_MANAGER5 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN5 = "0xa35b76E4935449E33C56aB24b23fcd3246f13470";
+var ACL_ADMIN5 = "0x3C06dce358add17aAf230f2234bCCC4afd50d090";
 var COLLECTOR12 = "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0";
 var DEFAULT_INCENTIVES_CONTROLLER12 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
 var DEFAULT_A_TOKEN_IMPL_REV_22 = "0x1E81af09001aD208BDa68FF022544dB2102A752d";
@@ -67179,8 +67204,9 @@ var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_22 = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_22 = "0x893411580e590D62dDBca8a703d61Cc4A8c7b2b9";
 var EMISSION_MANAGER12 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
 var CAPS_PLUS_RISK_STEWARD3 = "0xD2C92b5A793e196aB11dBefBe3Af6BddeD6c3DD5";
+var FREEZING_STEWARD3 = "0x6d4F341d8Bb3Dc5ABe822Aa940F1884508C13f99";
 var DEBT_SWAP_ADAPTER6 = "0x8A9b2c132EA7676EE267F5b97b622083d6E3a2d4";
-var LISTING_ENGINE7 = "0x49581e5575F49263f556b91daf8fb41D7854D94B";
+var CONFIG_ENGINE7 = "0x0587B66Bc824368cFA5849bc56216a59260Df2c5";
 var POOL_ADDRESSES_PROVIDER_REGISTRY10 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var PROOF_OF_RESERVE2 = "0xab22988D93d5F942fC6B6c6Ea285744809D1d9Cc";
 var PROOF_OF_RESERVE_AGGREGATOR2 = "0x80f2c02224a2E548FC67c0bF705eBFA825dd5439";
@@ -67457,6 +67483,7 @@ __export(AaveV3Base_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD4,
   CHAIN_ID: () => CHAIN_ID14,
   COLLECTOR: () => COLLECTOR14,
+  CONFIG_ENGINE: () => CONFIG_ENGINE8,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER7,
   DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_15,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER14,
@@ -67464,8 +67491,8 @@ __export(AaveV3Base_exports, {
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_15,
   EMISSION_MANAGER: () => EMISSION_MANAGER14,
   E_MODES: () => E_MODES7,
+  FREEZING_STEWARD: () => FREEZING_STEWARD4,
   L2_ENCODER: () => L2_ENCODER,
-  LISTING_ENGINE: () => LISTING_ENGINE8,
   ORACLE: () => ORACLE14,
   POOL: () => POOL14,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER14,
@@ -67488,7 +67515,7 @@ var ORACLE14 = "0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156";
 var PRICE_ORACLE_SENTINEL7 = "0xe34949A48cd2E6f5CD41753e449bd2d43993C9AC";
 var AAVE_PROTOCOL_DATA_PROVIDER14 = "0x2d8A3C5677189723C4cB8873CfC9C8976FDF38Ac";
 var ACL_MANAGER7 = "0x43955b0899Ab7232E3a454cf84AedD22Ad46FD33";
-var ACL_ADMIN7 = "0xA9F30e6ED4098e9439B2ac8aEA2d3fc26BcEbb45";
+var ACL_ADMIN7 = "0x9390B1735def18560c509E2d0bc090E9d6BA257a";
 var COLLECTOR14 = "0xBA9424d650A4F5c80a0dA641254d1AcCE2A37057";
 var DEFAULT_INCENTIVES_CONTROLLER14 = "0xf9cc4F0D883F1a1eb2c253bdb46c254Ca51E1F44";
 var DEFAULT_A_TOKEN_IMPL_REV_15 = "0x98F409Fc4A42F34AE3c326c7f48ED01ae8cAeC69";
@@ -67496,11 +67523,12 @@ var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_15 = "0x2425A746911128c2eAA7bEBDc9Bc452
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_15 = "0xe0b9B4f959fa8B52B7228c8D78875482b8813349";
 var EMISSION_MANAGER14 = "0x6533A273F3aC84Df91DCD654D6EBAbA73687e246";
 var CAPS_PLUS_RISK_STEWARD4 = "0x12DEB4025b79f2B43f6aeF079F9D77C3f9a67bb6";
+var FREEZING_STEWARD4 = "0x4A4c73d563395ad827511F70097d4Ef82E653805";
 var DEBT_SWAP_ADAPTER7 = "0x5f4d15d761528c57a5C30c43c1DAb26Fc5452731";
 var WITHDRAW_SWAP_ADAPTER4 = "0x5598BbFA2f4fE8151f45bBA0a3edE1b54B51a0a9";
 var SWAP_COLLATERAL_ADAPTER7 = "0x2E549104c516b8657A7D888494DfbAbD7C70b464";
 var REPAY_WITH_COLLATERAL_ADAPTER7 = "0x78F8Bd884C3D738B74B420540659c82f392820e0";
-var LISTING_ENGINE8 = "0xc7751400F809cdB0C167F87985083C558a0610F7";
+var CONFIG_ENGINE8 = "0xc7751400F809cdB0C167F87985083C558a0610F7";
 var RATES_FACTORY8 = "0x0D1Fe8eAdb0a3e44C4Cc9D73De8dA50C1E475832";
 var L2_ENCODER = "0x39e97c588B2907Fb67F44fea256Ae3BA064207C5";
 var POOL_ADDRESSES_PROVIDER_REGISTRY11 = "0x2f6571d3Eb9a4e350C68C36bCD2afe39530078E2";
@@ -67553,14 +67581,15 @@ __export(AaveV3Metis_exports, {
   CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD5,
   CHAIN_ID: () => CHAIN_ID15,
   COLLECTOR: () => COLLECTOR15,
+  CONFIG_ENGINE: () => CONFIG_ENGINE9,
   DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_16,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER15,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_16,
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_16,
   EMISSION_MANAGER: () => EMISSION_MANAGER15,
   E_MODES: () => E_MODES8,
+  FREEZING_STEWARD: () => FREEZING_STEWARD5,
   L2_ENCODER: () => L2_ENCODER2,
-  LISTING_ENGINE: () => LISTING_ENGINE9,
   ORACLE: () => ORACLE15,
   POOL: () => POOL15,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER15,
@@ -67579,7 +67608,7 @@ var ORACLE15 = "0x38D36e85E47eA6ff0d18B0adF12E5fC8984A6f8e";
 var PRICE_ORACLE_SENTINEL8 = "0xE2566C39db9559D318fB3a00D7B5992CBeeA8567";
 var AAVE_PROTOCOL_DATA_PROVIDER15 = "0x99411FC17Ad1B56f49719E3850B2CDcc0f9bBFd8";
 var ACL_MANAGER8 = "0xcDCb65fc657B701a5100a12eFB663978E7e8fFB8";
-var ACL_ADMIN8 = "0x8EC77963068474a45016938Deb95E603Ca82a029";
+var ACL_ADMIN8 = "0x6fD45D32375d5aDB8D76275A3932c740F03a8718";
 var COLLECTOR15 = "0xB5b64c7E00374e766272f8B442Cd261412D4b118";
 var DEFAULT_INCENTIVES_CONTROLLER15 = "0x30C1b8F0490fa0908863d6Cbd2E36400b4310A6B";
 var DEFAULT_A_TOKEN_IMPL_REV_16 = "0x246405C70461f93513C74606815615c24c5C8C79";
@@ -67587,8 +67616,9 @@ var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_16 = "0xE7fA271BD76FC9c6F2F968976E9f4f5
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_16 = "0x52aC2476Fc6F788B4c5A9B12Cfcb7fDB163955f4";
 var EMISSION_MANAGER15 = "0xfDb2580A1ac4CDc67E4236738b28af59e2022Dd2";
 var CAPS_PLUS_RISK_STEWARD5 = "0x5f4d15d761528c57a5C30c43c1DAb26Fc5452731";
+var FREEZING_STEWARD5 = "0x2C77153fF4a1e83A8d8D750735FB101ECB55949f";
 var L2_ENCODER2 = "0x9f3A1B399A9074eBA63Dc4fc274bE2A2b2d80cB9";
-var LISTING_ENGINE9 = "0x857720ad258db0ACb180e76A5526c72CFCe6F8A7";
+var CONFIG_ENGINE9 = "0x8be473dCfA93132658821E67CbEB684ec8Ea2E74";
 var POOL_ADDRESSES_PROVIDER_REGISTRY12 = "0x9E7B73ffD9D2026F3ff4212c29E209E09C8A91F5";
 var RATES_FACTORY9 = "0x87Aaba7cf8e1F319d0E3402d68017171201dEcd5";
 var UI_INCENTIVE_DATA_PROVIDER15 = "0x3e7BC5EcE0f22DbB16c3e3EeA288a10A57d68927";
@@ -67646,55 +67676,114 @@ var E_MODES8 = {
   NONE: 0
 };
 
-// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.mjs
-var AaveV3ArbitrumGoerli_exports = {};
-__export(AaveV3ArbitrumGoerli_exports, {
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3Gnosis.mjs
+var AaveV3Gnosis_exports = {};
+__export(AaveV3Gnosis_exports, {
   AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER16,
   ACL_ADMIN: () => ACL_ADMIN9,
   ACL_MANAGER: () => ACL_MANAGER9,
   ASSETS: () => ASSETS16,
+  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD6,
   CHAIN_ID: () => CHAIN_ID16,
   COLLECTOR: () => COLLECTOR16,
+  CONFIG_ENGINE: () => CONFIG_ENGINE10,
   DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_17,
   DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER16,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_17,
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_17,
   EMISSION_MANAGER: () => EMISSION_MANAGER16,
   E_MODES: () => E_MODES9,
-  FAUCET: () => FAUCET7,
+  FREEZING_STEWARD: () => FREEZING_STEWARD6,
   L2_ENCODER: () => L2_ENCODER3,
   ORACLE: () => ORACLE16,
   POOL: () => POOL16,
   POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER16,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY13,
   POOL_CONFIGURATOR: () => POOL_CONFIGURATOR16,
   PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL9,
+  RATES_FACTORY: () => RATES_FACTORY10,
   UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER16,
   UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER16,
   WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER16,
   WETH_GATEWAY: () => WETH_GATEWAY15
 });
-var POOL_ADDRESSES_PROVIDER16 = "0xD64dDe119f11C88850FD596BE11CE398CC5893e6";
-var POOL16 = "0x20fa38a4f8Af2E36f1Cc14caad2E603fbA5C535c";
-var POOL_CONFIGURATOR16 = "0x4850e2E7c92Fe5cC80E64FD9FA32216E0C30E2E9";
-var ORACLE16 = "0x4C0EBa43c13ac25885fE0edf3E8Fd4fe32b528dE";
+var POOL_ADDRESSES_PROVIDER16 = "0x36616cf17557639614c1cdDb356b1B83fc0B2132";
+var POOL16 = "0xb50201558B00496A145fE76f7424749556E326D8";
+var POOL_CONFIGURATOR16 = "0x7304979ec9E4EaA0273b6A037a31c4e9e5A75D16";
+var ORACLE16 = "0xeb0a051be10228213BAEb449db63719d6742F7c4";
 var PRICE_ORACLE_SENTINEL9 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER16 = "0x7E4025a4e9Ae4e7EcA533cDFF1ba269eDD31146F";
-var ACL_MANAGER9 = "0xFBeB1c59e7aBb71A93ddc36359e57a116E602668";
-var ACL_ADMIN9 = "0x9973Ce75946D56fA3B0C6aa3647d67D440BDAec8";
-var COLLECTOR16 = "0xbE46486f69fc2882e5E4769CFBCe704E3EfecD25";
-var DEFAULT_INCENTIVES_CONTROLLER16 = "0xC8283AA1fAD9cc32f13334B914a602037772984D";
-var DEFAULT_A_TOKEN_IMPL_REV_17 = "0x23eA12332Ef09AF8C30799D299A1085a09149d4D";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_17 = "0x4579e891f735E4d3C0B10aEE041E4672f04636cb";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_17 = "0x64be7D8Aed08c7adAEeBBCcca7eC41d5E49f9e74";
-var EMISSION_MANAGER16 = "0xEF6a0951fE054F78Adc90ee9181297e40637C061";
+var AAVE_PROTOCOL_DATA_PROVIDER16 = "0x501B4c19dd9C2e06E94dA7b6D5Ed4ddA013EC741";
+var ACL_MANAGER9 = "0xEc710f59005f48703908bC519D552Df5B8472614";
+var ACL_ADMIN9 = "0x1dF462e2712496373A347f8ad10802a5E95f053D";
+var COLLECTOR16 = "0x3e652E97ff339B73421f824F5b03d75b62F1Fb51";
+var DEFAULT_INCENTIVES_CONTROLLER16 = "0xaD4F91D26254B6B0C6346b390dDA2991FDE2F20d";
+var DEFAULT_A_TOKEN_IMPL_REV_17 = "0x589750BA8aF186cE5B55391B0b7148cAD43a1619";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_17 = "0xBeC519531F0E78BcDdB295242fA4EC5251B38574";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_17 = "0x06C35Cfd3FC61eC2aC437f0d08840d5776b945af";
+var EMISSION_MANAGER16 = "0x41585C50524fb8c3899B43D7D797d9486AAc94DB";
+var L2_ENCODER3 = "0xab923C4BD40eab9824C0b86FD8562eEcb933b56a";
+var CONFIG_ENGINE10 = "0x3238FC1d642b60F41a35f62570237656C85F4744";
+var POOL_ADDRESSES_PROVIDER_REGISTRY13 = "0x1236010CECea55998384e795B59815D871f5f94d";
+var RATES_FACTORY10 = "0x73dDE2A75c06a108912bf7Ff600eDdCE9d96Ed25";
+var UI_INCENTIVE_DATA_PROVIDER16 = "0xCFDAdA7DCd2e785cF706BaDBC2B8Af5084d595e9";
+var UI_POOL_DATA_PROVIDER16 = "0x86E2938daE289763D4e09a7e42c5cCcA62Cf9809";
+var WALLET_BALANCE_PROVIDER16 = "0x4172E6aAEC070ACB31aaCE343A58c93E4C70f44D";
+var WETH_GATEWAY15 = "0xb7E51aA2A5f4dD478F183A593F67637ed6F1d1D9";
+var CAPS_PLUS_RISK_STEWARD6 = "0x33AE1f41546a2e05368Bf789b3d868813c0Ae658";
+var FREEZING_STEWARD6 = "0x3Ceaf9b6CAb92dFe6302D0CC3F1BA880C28d35e5";
+var CHAIN_ID16 = 100;
+var ASSETS16 = {};
+var E_MODES9 = {};
+
+// node_modules/@bgd-labs/aave-address-book/dist/AaveV3ArbitrumGoerli.mjs
+var AaveV3ArbitrumGoerli_exports = {};
+__export(AaveV3ArbitrumGoerli_exports, {
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER17,
+  ACL_ADMIN: () => ACL_ADMIN10,
+  ACL_MANAGER: () => ACL_MANAGER10,
+  ASSETS: () => ASSETS17,
+  CHAIN_ID: () => CHAIN_ID17,
+  COLLECTOR: () => COLLECTOR17,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_18,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER17,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_18,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_18,
+  EMISSION_MANAGER: () => EMISSION_MANAGER17,
+  E_MODES: () => E_MODES10,
+  FAUCET: () => FAUCET7,
+  L2_ENCODER: () => L2_ENCODER4,
+  ORACLE: () => ORACLE17,
+  POOL: () => POOL17,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER17,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR17,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL10,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER17,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER17,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER17,
+  WETH_GATEWAY: () => WETH_GATEWAY16
+});
+var POOL_ADDRESSES_PROVIDER17 = "0xD64dDe119f11C88850FD596BE11CE398CC5893e6";
+var POOL17 = "0x20fa38a4f8Af2E36f1Cc14caad2E603fbA5C535c";
+var POOL_CONFIGURATOR17 = "0x4850e2E7c92Fe5cC80E64FD9FA32216E0C30E2E9";
+var ORACLE17 = "0x4C0EBa43c13ac25885fE0edf3E8Fd4fe32b528dE";
+var PRICE_ORACLE_SENTINEL10 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER17 = "0x7E4025a4e9Ae4e7EcA533cDFF1ba269eDD31146F";
+var ACL_MANAGER10 = "0xFBeB1c59e7aBb71A93ddc36359e57a116E602668";
+var ACL_ADMIN10 = "0x9973Ce75946D56fA3B0C6aa3647d67D440BDAec8";
+var COLLECTOR17 = "0xbE46486f69fc2882e5E4769CFBCe704E3EfecD25";
+var DEFAULT_INCENTIVES_CONTROLLER17 = "0xC8283AA1fAD9cc32f13334B914a602037772984D";
+var DEFAULT_A_TOKEN_IMPL_REV_18 = "0x23eA12332Ef09AF8C30799D299A1085a09149d4D";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_18 = "0x4579e891f735E4d3C0B10aEE041E4672f04636cb";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_18 = "0x64be7D8Aed08c7adAEeBBCcca7eC41d5E49f9e74";
+var EMISSION_MANAGER17 = "0xEF6a0951fE054F78Adc90ee9181297e40637C061";
 var FAUCET7 = "0xc1b3cc37cf2f922abDFE7F01A17bc932F4078665";
-var L2_ENCODER3 = "0x46605375317C3E8bd19E0ED70987354Cb6D16720";
-var UI_INCENTIVE_DATA_PROVIDER16 = "0x159E642e34ad712242F6057477277b093eb43950";
-var UI_POOL_DATA_PROVIDER16 = "0x1d5a0287E4ac7Ff805D8399D0177c75C8C95d4dC";
-var WALLET_BALANCE_PROVIDER16 = "0x8c7914af3926CfA5131Ce294c48E03C6d3aDc916";
-var WETH_GATEWAY15 = "0xcD1065F2c3A0e0a94d543Ce41720BFF515f753B7";
-var CHAIN_ID16 = 421613;
-var ASSETS16 = {
+var L2_ENCODER4 = "0x46605375317C3E8bd19E0ED70987354Cb6D16720";
+var UI_INCENTIVE_DATA_PROVIDER17 = "0x159E642e34ad712242F6057477277b093eb43950";
+var UI_POOL_DATA_PROVIDER17 = "0x1d5a0287E4ac7Ff805D8399D0177c75C8C95d4dC";
+var WALLET_BALANCE_PROVIDER17 = "0x8c7914af3926CfA5131Ce294c48E03C6d3aDc916";
+var WETH_GATEWAY16 = "0xcD1065F2c3A0e0a94d543Ce41720BFF515f753B7";
+var CHAIN_ID17 = 421613;
+var ASSETS17 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0xe73C6dA65337ef99dBBc014C7858973Eba40a10b",
@@ -67768,7 +67857,7 @@ var ASSETS16 = {
     ORACLE: "0x796F08fA985C4AA91CB6da871cc8eCd8410375eC"
   }
 };
-var E_MODES9 = {
+var E_MODES10 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -67776,68 +67865,70 @@ var E_MODES9 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Arbitrum.mjs
 var AaveV3Arbitrum_exports = {};
 __export(AaveV3Arbitrum_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER17,
-  ACL_ADMIN: () => ACL_ADMIN10,
-  ACL_MANAGER: () => ACL_MANAGER10,
-  ASSETS: () => ASSETS17,
-  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD6,
-  CHAIN_ID: () => CHAIN_ID17,
-  COLLECTOR: () => COLLECTOR17,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER18,
+  ACL_ADMIN: () => ACL_ADMIN11,
+  ACL_MANAGER: () => ACL_MANAGER11,
+  ASSETS: () => ASSETS18,
+  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD7,
+  CHAIN_ID: () => CHAIN_ID18,
+  COLLECTOR: () => COLLECTOR18,
+  CONFIG_ENGINE: () => CONFIG_ENGINE11,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER8,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_23,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER17,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER18,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_23,
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_23,
-  EMISSION_MANAGER: () => EMISSION_MANAGER17,
-  E_MODES: () => E_MODES10,
-  L2_ENCODER: () => L2_ENCODER4,
-  LISTING_ENGINE: () => LISTING_ENGINE10,
-  ORACLE: () => ORACLE17,
-  POOL: () => POOL17,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER17,
-  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY13,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR17,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL10,
-  RATES_FACTORY: () => RATES_FACTORY10,
+  EMISSION_MANAGER: () => EMISSION_MANAGER18,
+  E_MODES: () => E_MODES11,
+  FREEZING_STEWARD: () => FREEZING_STEWARD7,
+  L2_ENCODER: () => L2_ENCODER5,
+  ORACLE: () => ORACLE18,
+  POOL: () => POOL18,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER18,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY14,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR18,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL11,
+  RATES_FACTORY: () => RATES_FACTORY11,
   REPAY_WITH_COLLATERAL_ADAPTER: () => REPAY_WITH_COLLATERAL_ADAPTER8,
   STATIC_A_TOKEN_FACTORY: () => STATIC_A_TOKEN_FACTORY4,
   SWAP_COLLATERAL_ADAPTER: () => SWAP_COLLATERAL_ADAPTER8,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER17,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER17,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER17,
-  WETH_GATEWAY: () => WETH_GATEWAY16,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER18,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER18,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER18,
+  WETH_GATEWAY: () => WETH_GATEWAY17,
   WITHDRAW_SWAP_ADAPTER: () => WITHDRAW_SWAP_ADAPTER5
 });
-var POOL_ADDRESSES_PROVIDER17 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
-var POOL17 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-var POOL_CONFIGURATOR17 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
-var ORACLE17 = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
-var PRICE_ORACLE_SENTINEL10 = "0xF876d26041a4Fdc7A787d209DC3D2795dDc74f1e";
-var AAVE_PROTOCOL_DATA_PROVIDER17 = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
-var ACL_MANAGER10 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN10 = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
-var COLLECTOR17 = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
-var DEFAULT_INCENTIVES_CONTROLLER17 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
+var POOL_ADDRESSES_PROVIDER18 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
+var POOL18 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+var POOL_CONFIGURATOR18 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
+var ORACLE18 = "0xb56c2F0B653B2e0b10C9b928C8580Ac5Df02C7C7";
+var PRICE_ORACLE_SENTINEL11 = "0xF876d26041a4Fdc7A787d209DC3D2795dDc74f1e";
+var AAVE_PROTOCOL_DATA_PROVIDER18 = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
+var ACL_MANAGER11 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
+var ACL_ADMIN11 = "0xFF1137243698CaA18EE364Cc966CF0e02A4e6327";
+var COLLECTOR18 = "0x053D55f9B5AF8694c503EB288a1B7E552f590710";
+var DEFAULT_INCENTIVES_CONTROLLER18 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
 var DEFAULT_A_TOKEN_IMPL_REV_23 = "0x1Be1798b70aEe431c2986f7ff48d9D1fa350786a";
 var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_23 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_23 = "0x0c2C95b24529664fE55D4437D7A31175CFE6c4f7";
-var EMISSION_MANAGER17 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
-var CAPS_PLUS_RISK_STEWARD6 = "0xADf86b537eF08591c2777E144322E8b0Ca7E82a7";
+var EMISSION_MANAGER18 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
+var CAPS_PLUS_RISK_STEWARD7 = "0xADf86b537eF08591c2777E144322E8b0Ca7E82a7";
+var FREEZING_STEWARD7 = "0xe59470B3BE3293534603487E00A44C72f2CD466d";
 var DEBT_SWAP_ADAPTER8 = "0x9E8e9D6b0D24216F59043db68BDda1620892f549";
-var L2_ENCODER4 = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
-var LISTING_ENGINE10 = "0x0EfdfC1A940DE4E7E6acC9Bb801481f81B17fd20";
-var POOL_ADDRESSES_PROVIDER_REGISTRY13 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
-var RATES_FACTORY10 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
+var L2_ENCODER5 = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
+var CONFIG_ENGINE11 = "0xc5de989E0D1BF605d19478Fdd32Aa827a10b464f";
+var POOL_ADDRESSES_PROVIDER_REGISTRY14 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
+var RATES_FACTORY11 = "0xcC47c4Fe1F7f29ff31A8b62197023aC8553C7896";
 var REPAY_WITH_COLLATERAL_ADAPTER8 = "0x28201C152DC5B69A86FA54FCfd21bcA4C0eff3BA";
 var STATIC_A_TOKEN_FACTORY4 = "0xD9419920a9768d6EdaBbe5b93cB4B5B9F3019823";
 var SWAP_COLLATERAL_ADAPTER8 = "0xF3C3F14dd7BDb7E03e6EBc3bc5Ffc6D66De12251";
-var UI_INCENTIVE_DATA_PROVIDER17 = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
-var UI_POOL_DATA_PROVIDER17 = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
-var WALLET_BALANCE_PROVIDER17 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
-var WETH_GATEWAY16 = "0xB5Ee21786D28c5Ba61661550879475976B707099";
+var UI_INCENTIVE_DATA_PROVIDER18 = "0xDA67AF3403555Ce0AE3ffC22fDb7354458277358";
+var UI_POOL_DATA_PROVIDER18 = "0x145dE30c929a065582da84Cf96F88460dB9745A7";
+var WALLET_BALANCE_PROVIDER18 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
+var WETH_GATEWAY17 = "0xB5Ee21786D28c5Ba61661550879475976B707099";
 var WITHDRAW_SWAP_ADAPTER5 = "0x5598BbFA2f4fE8151f45bBA0a3edE1b54B51a0a9";
-var CHAIN_ID17 = 42161;
-var ASSETS17 = {
+var CHAIN_ID18 = 42161;
+var ASSETS18 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
@@ -67884,7 +67975,7 @@ var ASSETS17 = {
     A_TOKEN: "0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8",
     S_TOKEN: "0xD8Ad37849950903571df17049516a5CD4cbE55F6",
     V_TOKEN: "0x0c84331e39d6658Cd6e6b9ba04736cC4c4734351",
-    INTEREST_RATE_STRATEGY: "0xdef8F50155A6cf21181E29E400E8CffAE2d50968",
+    INTEREST_RATE_STRATEGY: "0x9a158802cD924747EF336cA3F9DE3bdb60Cf43D3",
     ORACLE: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
     STATA_TOKEN: "0x18468b6eBA332285c6d9BB03Fe7fb52e108c4596"
   },
@@ -67989,7 +68080,7 @@ var ASSETS17 = {
     STATA_TOKEN: "0x0000000000000000000000000000000000000000"
   }
 };
-var E_MODES10 = {
+var E_MODES11 = {
   NONE: 0,
   STABLECOINS: 1,
   ETH_CORRELATED: 2
@@ -67998,52 +68089,52 @@ var E_MODES10 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3OptimismGoerli.mjs
 var AaveV3OptimismGoerli_exports = {};
 __export(AaveV3OptimismGoerli_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER18,
-  ACL_ADMIN: () => ACL_ADMIN11,
-  ACL_MANAGER: () => ACL_MANAGER11,
-  ASSETS: () => ASSETS18,
-  CHAIN_ID: () => CHAIN_ID18,
-  COLLECTOR: () => COLLECTOR18,
-  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_18,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER18,
-  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_18,
-  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_18,
-  EMISSION_MANAGER: () => EMISSION_MANAGER18,
-  E_MODES: () => E_MODES11,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER19,
+  ACL_ADMIN: () => ACL_ADMIN12,
+  ACL_MANAGER: () => ACL_MANAGER12,
+  ASSETS: () => ASSETS19,
+  CHAIN_ID: () => CHAIN_ID19,
+  COLLECTOR: () => COLLECTOR19,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_19,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER19,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_19,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_19,
+  EMISSION_MANAGER: () => EMISSION_MANAGER19,
+  E_MODES: () => E_MODES12,
   FAUCET: () => FAUCET8,
-  L2_ENCODER: () => L2_ENCODER5,
-  ORACLE: () => ORACLE18,
-  POOL: () => POOL18,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER18,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR18,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL11,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER18,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER18,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER18,
-  WETH_GATEWAY: () => WETH_GATEWAY17
+  L2_ENCODER: () => L2_ENCODER6,
+  ORACLE: () => ORACLE19,
+  POOL: () => POOL19,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER19,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR19,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL12,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER19,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER19,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER19,
+  WETH_GATEWAY: () => WETH_GATEWAY18
 });
-var POOL_ADDRESSES_PROVIDER18 = "0xf3a4595bD9FBf129DEb80802a4785873F0ceB65c";
-var POOL18 = "0x52dCE39f4A3823b335732178364f5590bDacb25D";
-var POOL_CONFIGURATOR18 = "0x54Ad998A389A82e4ACf9dC03A92512694EF25035";
-var ORACLE18 = "0xFd8Ec04CeC4B1A734A58E4920f76baFa9a1326D8";
-var PRICE_ORACLE_SENTINEL11 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER18 = "0x586370F91E4a73659989a213C969487Cb2B2E7cD";
-var ACL_MANAGER11 = "0x00f7fecFAEbEd9499e1f3f9d04E755a21E5fc47C";
-var ACL_ADMIN11 = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
-var COLLECTOR18 = "0xd06dC54Fcc044A86D33454091b193B7E2104b50D";
-var DEFAULT_INCENTIVES_CONTROLLER18 = "0xF76301d2D80FE71314c8448E6FA4F4Ee2583046B";
-var DEFAULT_A_TOKEN_IMPL_REV_18 = "0xABa01108c4964731AAc2B6DA8d731A58c1DfA8cF";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_18 = "0xCAeB08beA60BE1cA547cbD19A5bC9ba372AE9f0e";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_18 = "0xd550780aaD654d03Cd355EAB6bB444BaF764Baae";
-var EMISSION_MANAGER18 = "0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A";
+var POOL_ADDRESSES_PROVIDER19 = "0xf3a4595bD9FBf129DEb80802a4785873F0ceB65c";
+var POOL19 = "0x52dCE39f4A3823b335732178364f5590bDacb25D";
+var POOL_CONFIGURATOR19 = "0x54Ad998A389A82e4ACf9dC03A92512694EF25035";
+var ORACLE19 = "0xFd8Ec04CeC4B1A734A58E4920f76baFa9a1326D8";
+var PRICE_ORACLE_SENTINEL12 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER19 = "0x586370F91E4a73659989a213C969487Cb2B2E7cD";
+var ACL_MANAGER12 = "0x00f7fecFAEbEd9499e1f3f9d04E755a21E5fc47C";
+var ACL_ADMIN12 = "0xfA0e305E0f46AB04f00ae6b5f4560d61a2183E00";
+var COLLECTOR19 = "0xd06dC54Fcc044A86D33454091b193B7E2104b50D";
+var DEFAULT_INCENTIVES_CONTROLLER19 = "0xF76301d2D80FE71314c8448E6FA4F4Ee2583046B";
+var DEFAULT_A_TOKEN_IMPL_REV_19 = "0xABa01108c4964731AAc2B6DA8d731A58c1DfA8cF";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_19 = "0xCAeB08beA60BE1cA547cbD19A5bC9ba372AE9f0e";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_19 = "0xd550780aaD654d03Cd355EAB6bB444BaF764Baae";
+var EMISSION_MANAGER19 = "0x69B9843A16a6E9933125EBD97659BA3CCbE2Ef8A";
 var FAUCET8 = "0x387d311e47e80b498169e6fb51d3193167d89F7D";
-var L2_ENCODER5 = "0x19cdecE64EDE475ba0EB114ff4E319d64Ef8ECCf";
-var UI_INCENTIVE_DATA_PROVIDER18 = "0x72A9c57cD5E2Ff20450e409cF6A542f1E6c710fc";
-var UI_POOL_DATA_PROVIDER18 = "0xD2f5680976c86ADd3978b7ad3422Ee5c7690ddb4";
-var WALLET_BALANCE_PROVIDER18 = "0x56033E114c61183590d39BA847400F02022Ebe47";
-var WETH_GATEWAY17 = "0xf556C102F47d806E21E8E78438E58ac06A14A29E";
-var CHAIN_ID18 = 420;
-var ASSETS18 = {
+var L2_ENCODER6 = "0x19cdecE64EDE475ba0EB114ff4E319d64Ef8ECCf";
+var UI_INCENTIVE_DATA_PROVIDER19 = "0x72A9c57cD5E2Ff20450e409cF6A542f1E6c710fc";
+var UI_POOL_DATA_PROVIDER19 = "0xD2f5680976c86ADd3978b7ad3422Ee5c7690ddb4";
+var WALLET_BALANCE_PROVIDER19 = "0x56033E114c61183590d39BA847400F02022Ebe47";
+var WETH_GATEWAY18 = "0xf556C102F47d806E21E8E78438E58ac06A14A29E";
+var CHAIN_ID19 = 420;
+var ASSETS19 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0xCD4e0d6D2b1252E2A709B8aE97DBA31164C5a709",
@@ -68117,7 +68208,7 @@ var ASSETS18 = {
     ORACLE: "0x34A3919db9CFB2eD29Da9E76747e70449e138A69"
   }
 };
-var E_MODES11 = {
+var E_MODES12 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -68125,68 +68216,70 @@ var E_MODES11 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Optimism.mjs
 var AaveV3Optimism_exports = {};
 __export(AaveV3Optimism_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER19,
-  ACL_ADMIN: () => ACL_ADMIN12,
-  ACL_MANAGER: () => ACL_MANAGER12,
-  ASSETS: () => ASSETS19,
-  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD7,
-  CHAIN_ID: () => CHAIN_ID19,
-  COLLECTOR: () => COLLECTOR19,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER20,
+  ACL_ADMIN: () => ACL_ADMIN13,
+  ACL_MANAGER: () => ACL_MANAGER13,
+  ASSETS: () => ASSETS20,
+  CAPS_PLUS_RISK_STEWARD: () => CAPS_PLUS_RISK_STEWARD8,
+  CHAIN_ID: () => CHAIN_ID20,
+  COLLECTOR: () => COLLECTOR20,
+  CONFIG_ENGINE: () => CONFIG_ENGINE12,
   DEBT_SWAP_ADAPTER: () => DEBT_SWAP_ADAPTER9,
   DEFAULT_A_TOKEN_IMPL_REV_2: () => DEFAULT_A_TOKEN_IMPL_REV_24,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER19,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER20,
   DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_24,
   DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_2: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_24,
-  EMISSION_MANAGER: () => EMISSION_MANAGER19,
-  E_MODES: () => E_MODES12,
-  L2_ENCODER: () => L2_ENCODER6,
-  LISTING_ENGINE: () => LISTING_ENGINE11,
-  ORACLE: () => ORACLE19,
-  POOL: () => POOL19,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER19,
-  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY14,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR19,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL12,
-  RATES_FACTORY: () => RATES_FACTORY11,
+  EMISSION_MANAGER: () => EMISSION_MANAGER20,
+  E_MODES: () => E_MODES13,
+  FREEZING_STEWARD: () => FREEZING_STEWARD8,
+  L2_ENCODER: () => L2_ENCODER7,
+  ORACLE: () => ORACLE20,
+  POOL: () => POOL20,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER20,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY15,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR20,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL13,
+  RATES_FACTORY: () => RATES_FACTORY12,
   REPAY_WITH_COLLATERAL_ADAPTER: () => REPAY_WITH_COLLATERAL_ADAPTER9,
   STATIC_A_TOKEN_FACTORY: () => STATIC_A_TOKEN_FACTORY5,
   SWAP_COLLATERAL_ADAPTER: () => SWAP_COLLATERAL_ADAPTER9,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER19,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER19,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER19,
-  WETH_GATEWAY: () => WETH_GATEWAY18,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER20,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER20,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER20,
+  WETH_GATEWAY: () => WETH_GATEWAY19,
   WITHDRAW_SWAP_ADAPTER: () => WITHDRAW_SWAP_ADAPTER6
 });
-var POOL_ADDRESSES_PROVIDER19 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
-var POOL19 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-var POOL_CONFIGURATOR19 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
-var ORACLE19 = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
-var PRICE_ORACLE_SENTINEL12 = "0xB1ba0787Ca0A45f086F8CA03c97E7593636E47D5";
-var AAVE_PROTOCOL_DATA_PROVIDER19 = "0xd9Ca4878dd38B021583c1B669905592EAe76E044";
-var ACL_MANAGER12 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN12 = "0x7d9103572bE58FfE99dc390E8246f02dcAe6f611";
-var COLLECTOR19 = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
-var DEFAULT_INCENTIVES_CONTROLLER19 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
+var POOL_ADDRESSES_PROVIDER20 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
+var POOL20 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+var POOL_CONFIGURATOR20 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
+var ORACLE20 = "0xD81eb3728a631871a7eBBaD631b5f424909f0c77";
+var PRICE_ORACLE_SENTINEL13 = "0xB1ba0787Ca0A45f086F8CA03c97E7593636E47D5";
+var AAVE_PROTOCOL_DATA_PROVIDER20 = "0xd9Ca4878dd38B021583c1B669905592EAe76E044";
+var ACL_MANAGER13 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
+var ACL_ADMIN13 = "0x746c675dAB49Bcd5BB9Dc85161f2d7Eb435009bf";
+var COLLECTOR20 = "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf";
+var DEFAULT_INCENTIVES_CONTROLLER20 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
 var DEFAULT_A_TOKEN_IMPL_REV_24 = "0xbCb167bDCF14a8F791d6f4A6EDd964aed2F8813B";
 var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_24 = "0x04a8D477eE202aDCE1682F5902e1160455205b12";
 var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_24 = "0x6b4E260b765B3cA1514e618C0215A6B7839fF93e";
-var EMISSION_MANAGER19 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
-var CAPS_PLUS_RISK_STEWARD7 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
+var EMISSION_MANAGER20 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
+var CAPS_PLUS_RISK_STEWARD8 = "0x5E76E98E0963EcDC6A065d1435F84065b7523f39";
+var FREEZING_STEWARD8 = "0x3829943c53F2d00e20B58475aF19716724bF90Ba";
 var DEBT_SWAP_ADAPTER9 = "0xcFaE0D8c5707FCc6478D6a65fFA31efADeF8b8EC";
-var L2_ENCODER6 = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
-var LISTING_ENGINE11 = "0x7A9A9c14B35E58ffa1cC84aB421acE0FdcD289E3";
-var POOL_ADDRESSES_PROVIDER_REGISTRY14 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
-var RATES_FACTORY11 = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
+var L2_ENCODER7 = "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC";
+var CONFIG_ENGINE12 = "0x893411580e590D62dDBca8a703d61Cc4A8c7b2b9";
+var POOL_ADDRESSES_PROVIDER_REGISTRY15 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
+var RATES_FACTORY12 = "0xDd81E6F85358292075B78fc8D5830BE8434aF8BA";
 var REPAY_WITH_COLLATERAL_ADAPTER9 = "0xa12734e64417f61f8442E7D5132EdBFdbDDeF0fa";
 var STATIC_A_TOKEN_FACTORY5 = "0xD9419920a9768d6EdaBbe5b93cB4B5B9F3019823";
 var SWAP_COLLATERAL_ADAPTER9 = "0x830C5A67a0C95D69dA5fb7801Ac1773c6fB53857";
-var UI_INCENTIVE_DATA_PROVIDER19 = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
-var UI_POOL_DATA_PROVIDER19 = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
-var WALLET_BALANCE_PROVIDER19 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
-var WETH_GATEWAY18 = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
+var UI_INCENTIVE_DATA_PROVIDER20 = "0x6F143FE2F7B02424ad3CaD1593D6f36c0Aab69d7";
+var UI_POOL_DATA_PROVIDER20 = "0xbd83DdBE37fc91923d59C8c1E0bDe0CccCa332d5";
+var WALLET_BALANCE_PROVIDER20 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
+var WETH_GATEWAY19 = "0x76D3030728e52DEB8848d5613aBaDE88441cbc59";
 var WITHDRAW_SWAP_ADAPTER6 = "0x78F8Bd884C3D738B74B420540659c82f392820e0";
-var CHAIN_ID19 = 10;
-var ASSETS19 = {
+var CHAIN_ID20 = 10;
+var ASSETS20 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
@@ -68233,7 +68326,7 @@ var ASSETS19 = {
     A_TOKEN: "0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8",
     S_TOKEN: "0xD8Ad37849950903571df17049516a5CD4cbE55F6",
     V_TOKEN: "0x0c84331e39d6658Cd6e6b9ba04736cC4c4734351",
-    INTEREST_RATE_STRATEGY: "0xF9336Bb69654fdd665AaC6618309a8cba078D8fE",
+    INTEREST_RATE_STRATEGY: "0x5f58C25D17C09c9e1892F45DE6dA45ed973A5326",
     ORACLE: "0x13e3Ee699D1909E989722E753853AE30b17e08c5",
     STATA_TOKEN: "0x6b1440b08f467A2A68E562aC38bB5e2256d5C60E"
   },
@@ -68318,7 +68411,7 @@ var ASSETS19 = {
     STATA_TOKEN: "0x0000000000000000000000000000000000000000"
   }
 };
-var E_MODES12 = {
+var E_MODES13 = {
   NONE: 0,
   STABLECOINS: 1,
   ETH_CORRELATED: 2
@@ -68327,52 +68420,52 @@ var E_MODES12 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3ScrollSepolia.mjs
 var AaveV3ScrollSepolia_exports = {};
 __export(AaveV3ScrollSepolia_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER20,
-  ACL_ADMIN: () => ACL_ADMIN13,
-  ACL_MANAGER: () => ACL_MANAGER13,
-  ASSETS: () => ASSETS20,
-  CHAIN_ID: () => CHAIN_ID20,
-  COLLECTOR: () => COLLECTOR20,
-  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_19,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER20,
-  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_19,
-  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_19,
-  EMISSION_MANAGER: () => EMISSION_MANAGER20,
-  E_MODES: () => E_MODES13,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER21,
+  ACL_ADMIN: () => ACL_ADMIN14,
+  ACL_MANAGER: () => ACL_MANAGER14,
+  ASSETS: () => ASSETS21,
+  CHAIN_ID: () => CHAIN_ID21,
+  COLLECTOR: () => COLLECTOR21,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_110,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER21,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_110,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_110,
+  EMISSION_MANAGER: () => EMISSION_MANAGER21,
+  E_MODES: () => E_MODES14,
   FAUCET: () => FAUCET9,
-  L2_ENCODER: () => L2_ENCODER7,
-  ORACLE: () => ORACLE20,
-  POOL: () => POOL20,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER20,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR20,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL13,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER20,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER20,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER20,
-  WETH_GATEWAY: () => WETH_GATEWAY19
+  L2_ENCODER: () => L2_ENCODER8,
+  ORACLE: () => ORACLE21,
+  POOL: () => POOL21,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER21,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR21,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL14,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER21,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER21,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER21,
+  WETH_GATEWAY: () => WETH_GATEWAY20
 });
-var POOL_ADDRESSES_PROVIDER20 = "0x52A27dC690F8652288194Dd2bc523863eBdEa236";
-var POOL20 = "0x48914C788295b5db23aF2b5F0B3BE775C4eA9440";
-var POOL_CONFIGURATOR20 = "0x63BB78Fbac521998BD6E33f1a960677c7a1d4F10";
-var ORACLE20 = "0x4B7C7D2EbcDc1015D35F617596318C15d9d24e59";
-var PRICE_ORACLE_SENTINEL13 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER20 = "0xaE58b3Be9E159bDEc67Ada8507CA3001c80725Ee";
-var ACL_MANAGER13 = "0x166601A0Cc6Cf979e2f0eF94EC5363B6BC24061C";
-var ACL_ADMIN13 = "0xA5bf8BC3c35D9F92b038254B9B8675266f6b62c0";
-var COLLECTOR20 = "0x104Cd7695C9247096F7AD37d3258B63c9675A00e";
-var DEFAULT_INCENTIVES_CONTROLLER20 = "0xa76F05D0cdf599E0186dec880F2FA480fd0c5280";
-var DEFAULT_A_TOKEN_IMPL_REV_19 = "0x0Eae78c97347bf6FCF784Aa91CABC4aCdB5cc2dd";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_19 = "0xAb8eaAE8383Abe28203cB6e6FAa0477B2fb97f07";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_19 = "0xC696d1c66Aa9F42764eE44fCc454a07a24aCe256";
-var EMISSION_MANAGER20 = "0x01dd3Ad7D942406C47acd5b70cBad28fd377c6f2";
+var POOL_ADDRESSES_PROVIDER21 = "0x52A27dC690F8652288194Dd2bc523863eBdEa236";
+var POOL21 = "0x48914C788295b5db23aF2b5F0B3BE775C4eA9440";
+var POOL_CONFIGURATOR21 = "0x63BB78Fbac521998BD6E33f1a960677c7a1d4F10";
+var ORACLE21 = "0x4B7C7D2EbcDc1015D35F617596318C15d9d24e59";
+var PRICE_ORACLE_SENTINEL14 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER21 = "0xaE58b3Be9E159bDEc67Ada8507CA3001c80725Ee";
+var ACL_MANAGER14 = "0x166601A0Cc6Cf979e2f0eF94EC5363B6BC24061C";
+var ACL_ADMIN14 = "0xA5bf8BC3c35D9F92b038254B9B8675266f6b62c0";
+var COLLECTOR21 = "0x104Cd7695C9247096F7AD37d3258B63c9675A00e";
+var DEFAULT_INCENTIVES_CONTROLLER21 = "0xa76F05D0cdf599E0186dec880F2FA480fd0c5280";
+var DEFAULT_A_TOKEN_IMPL_REV_110 = "0x0Eae78c97347bf6FCF784Aa91CABC4aCdB5cc2dd";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_110 = "0xAb8eaAE8383Abe28203cB6e6FAa0477B2fb97f07";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_110 = "0xC696d1c66Aa9F42764eE44fCc454a07a24aCe256";
+var EMISSION_MANAGER21 = "0x01dd3Ad7D942406C47acd5b70cBad28fd377c6f2";
 var FAUCET9 = "0x2F826FD1a0071476330a58dD1A9B36bcF7da832d";
-var L2_ENCODER7 = "0x3Bb33c67908D0d58F8d7349cBe726ff3b059e0fC";
-var UI_INCENTIVE_DATA_PROVIDER20 = "0xBf67A725F976d4A7C1fa9ea5303FD57D13CA0A37";
-var UI_POOL_DATA_PROVIDER20 = "0xDC55BcFC0963608401A4bA6298624E5895f8250a";
-var WALLET_BALANCE_PROVIDER20 = "0x6c68e975764a56e62AF3d1C8209F789779Eb763B";
-var WETH_GATEWAY19 = "0x57ce905CfD7f986A929A26b006f797d181dB706e";
-var CHAIN_ID20 = 534351;
-var ASSETS20 = {
+var L2_ENCODER8 = "0x3Bb33c67908D0d58F8d7349cBe726ff3b059e0fC";
+var UI_INCENTIVE_DATA_PROVIDER21 = "0xBf67A725F976d4A7C1fa9ea5303FD57D13CA0A37";
+var UI_POOL_DATA_PROVIDER21 = "0xDC55BcFC0963608401A4bA6298624E5895f8250a";
+var WALLET_BALANCE_PROVIDER21 = "0x6c68e975764a56e62AF3d1C8209F789779Eb763B";
+var WETH_GATEWAY20 = "0x57ce905CfD7f986A929A26b006f797d181dB706e";
+var CHAIN_ID21 = 534351;
+var ASSETS21 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0x7984E363c38b590bB4CA35aEd5133Ef2c6619C40",
@@ -68446,7 +68539,7 @@ var ASSETS20 = {
     ORACLE: "0xC6C58919440AD9daBF04D85b29820477AE7E808E"
   }
 };
-var E_MODES13 = {
+var E_MODES14 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -68454,50 +68547,50 @@ var E_MODES13 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3FantomTestnet.mjs
 var AaveV3FantomTestnet_exports = {};
 __export(AaveV3FantomTestnet_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER21,
-  ACL_ADMIN: () => ACL_ADMIN14,
-  ACL_MANAGER: () => ACL_MANAGER14,
-  ASSETS: () => ASSETS21,
-  CHAIN_ID: () => CHAIN_ID21,
-  COLLECTOR: () => COLLECTOR21,
-  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_110,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER21,
-  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_110,
-  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_110,
-  EMISSION_MANAGER: () => EMISSION_MANAGER21,
-  E_MODES: () => E_MODES14,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER22,
+  ACL_ADMIN: () => ACL_ADMIN15,
+  ACL_MANAGER: () => ACL_MANAGER15,
+  ASSETS: () => ASSETS22,
+  CHAIN_ID: () => CHAIN_ID22,
+  COLLECTOR: () => COLLECTOR22,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_111,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER22,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_111,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_111,
+  EMISSION_MANAGER: () => EMISSION_MANAGER22,
+  E_MODES: () => E_MODES15,
   FAUCET: () => FAUCET10,
-  ORACLE: () => ORACLE21,
-  POOL: () => POOL21,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER21,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR21,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL14,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER21,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER21,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER21,
-  WETH_GATEWAY: () => WETH_GATEWAY20
+  ORACLE: () => ORACLE22,
+  POOL: () => POOL22,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER22,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR22,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL15,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER22,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER22,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER22,
+  WETH_GATEWAY: () => WETH_GATEWAY21
 });
-var POOL_ADDRESSES_PROVIDER21 = "0x1558c6FadDe1bEaf0f6628BDd1DFf3461185eA24";
-var POOL21 = "0x56Ab717d882F7A8d4a3C2b191707322c5Cc70db8";
-var POOL_CONFIGURATOR21 = "0x257a6f06192D532e40F66b3DDfE2cBBaf8373822";
-var ORACLE21 = "0x18a8d31dA46eeb9138a16dfC429E74C04ff523F4";
-var PRICE_ORACLE_SENTINEL14 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER21 = "0x3c9F4EEa18B02ee331218646Fea59EE3661d2A61";
-var ACL_MANAGER14 = "0xD5D4f4fe4BfC8e8193f38927EfafDbfbB66dd7e0";
-var ACL_ADMIN14 = "0x9973Ce75946D56fA3B0C6aa3647d67D440BDAec8";
-var COLLECTOR21 = "0x445e52B0C18704448f4589C4304f63Ea287c2eb0";
-var DEFAULT_INCENTIVES_CONTROLLER21 = "0x9F749B597414eD4F53a0F23971327bb60f16ad94";
-var DEFAULT_A_TOKEN_IMPL_REV_110 = "0x6056C29483433A095eF98Fb0d01F2827F5FCeB99";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_110 = "0x67F50B454972F7557c359AfE2DD3caef9930d665";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_110 = "0x979667835fE95F39609220C7582C7f21DaF1ce11";
-var EMISSION_MANAGER21 = "0xBAdD48c3EB42A10dB791D7b02E3c07Fbf95B3155";
+var POOL_ADDRESSES_PROVIDER22 = "0x1558c6FadDe1bEaf0f6628BDd1DFf3461185eA24";
+var POOL22 = "0x56Ab717d882F7A8d4a3C2b191707322c5Cc70db8";
+var POOL_CONFIGURATOR22 = "0x257a6f06192D532e40F66b3DDfE2cBBaf8373822";
+var ORACLE22 = "0x18a8d31dA46eeb9138a16dfC429E74C04ff523F4";
+var PRICE_ORACLE_SENTINEL15 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER22 = "0x3c9F4EEa18B02ee331218646Fea59EE3661d2A61";
+var ACL_MANAGER15 = "0xD5D4f4fe4BfC8e8193f38927EfafDbfbB66dd7e0";
+var ACL_ADMIN15 = "0x9973Ce75946D56fA3B0C6aa3647d67D440BDAec8";
+var COLLECTOR22 = "0x445e52B0C18704448f4589C4304f63Ea287c2eb0";
+var DEFAULT_INCENTIVES_CONTROLLER22 = "0x9F749B597414eD4F53a0F23971327bb60f16ad94";
+var DEFAULT_A_TOKEN_IMPL_REV_111 = "0x6056C29483433A095eF98Fb0d01F2827F5FCeB99";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_111 = "0x67F50B454972F7557c359AfE2DD3caef9930d665";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_111 = "0x979667835fE95F39609220C7582C7f21DaF1ce11";
+var EMISSION_MANAGER22 = "0xBAdD48c3EB42A10dB791D7b02E3c07Fbf95B3155";
 var FAUCET10 = "0x021BE22Bdfa497D6643D4035E530095E7b452967";
-var UI_INCENTIVE_DATA_PROVIDER21 = "0xf24dc19cFb9A25bbc4DDcaAdb116DfD17472207B";
-var UI_POOL_DATA_PROVIDER21 = "0xC91dB4F736b6Acf5A2e379a58280D1b06BD24E7d";
-var WALLET_BALANCE_PROVIDER21 = "0x49cC86071dEcC7999BA656763b8389f23058bB34";
-var WETH_GATEWAY20 = "0xd2B0C9778d088Fc79C28Da719bC02158E64796bD";
-var CHAIN_ID21 = 4002;
-var ASSETS21 = {
+var UI_INCENTIVE_DATA_PROVIDER22 = "0xf24dc19cFb9A25bbc4DDcaAdb116DfD17472207B";
+var UI_POOL_DATA_PROVIDER22 = "0xC91dB4F736b6Acf5A2e379a58280D1b06BD24E7d";
+var WALLET_BALANCE_PROVIDER22 = "0x49cC86071dEcC7999BA656763b8389f23058bB34";
+var WETH_GATEWAY21 = "0xd2B0C9778d088Fc79C28Da719bC02158E64796bD";
+var CHAIN_ID22 = 4002;
+var ASSETS22 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2",
@@ -68589,7 +68682,7 @@ var ASSETS21 = {
     ORACLE: "0xcDA8dE50b65cB2Affc8B89f35C40A97Eed4B270F"
   }
 };
-var E_MODES14 = {
+var E_MODES15 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -68597,54 +68690,54 @@ var E_MODES14 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Fantom.mjs
 var AaveV3Fantom_exports = {};
 __export(AaveV3Fantom_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER22,
-  ACL_ADMIN: () => ACL_ADMIN15,
-  ACL_MANAGER: () => ACL_MANAGER15,
-  ASSETS: () => ASSETS22,
-  CHAIN_ID: () => CHAIN_ID22,
-  COLLECTOR: () => COLLECTOR22,
-  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_111,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER22,
-  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_111,
-  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_111,
-  EMISSION_MANAGER: () => EMISSION_MANAGER22,
-  E_MODES: () => E_MODES15,
-  ORACLE: () => ORACLE22,
-  POOL: () => POOL22,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER22,
-  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY15,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR22,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL15,
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER23,
+  ACL_ADMIN: () => ACL_ADMIN16,
+  ACL_MANAGER: () => ACL_MANAGER16,
+  ASSETS: () => ASSETS23,
+  CHAIN_ID: () => CHAIN_ID23,
+  COLLECTOR: () => COLLECTOR23,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_112,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER23,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_112,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_112,
+  EMISSION_MANAGER: () => EMISSION_MANAGER23,
+  E_MODES: () => E_MODES16,
+  ORACLE: () => ORACLE23,
+  POOL: () => POOL23,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER23,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY16,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR23,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL16,
   REPAY_WITH_COLLATERAL_ADAPTER: () => REPAY_WITH_COLLATERAL_ADAPTER10,
   SWAP_COLLATERAL_ADAPTER: () => SWAP_COLLATERAL_ADAPTER10,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER22,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER22,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER22,
-  WETH_GATEWAY: () => WETH_GATEWAY21
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER23,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER23,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER23,
+  WETH_GATEWAY: () => WETH_GATEWAY22
 });
-var POOL_ADDRESSES_PROVIDER22 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
-var POOL22 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-var POOL_CONFIGURATOR22 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
-var ORACLE22 = "0xfd6f3c1845604C8AE6c6E402ad17fb9885160754";
-var PRICE_ORACLE_SENTINEL15 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER22 = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
-var ACL_MANAGER15 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN15 = "0x39CB97b105173b56b5a2b4b33AD25d6a50E6c949";
-var COLLECTOR22 = "0xBe85413851D195fC6341619cD68BfDc26a25b928";
-var DEFAULT_INCENTIVES_CONTROLLER22 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-var DEFAULT_A_TOKEN_IMPL_REV_111 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_111 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_111 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
-var EMISSION_MANAGER22 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
-var POOL_ADDRESSES_PROVIDER_REGISTRY15 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
+var POOL_ADDRESSES_PROVIDER23 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
+var POOL23 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+var POOL_CONFIGURATOR23 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
+var ORACLE23 = "0xfd6f3c1845604C8AE6c6E402ad17fb9885160754";
+var PRICE_ORACLE_SENTINEL16 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER23 = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+var ACL_MANAGER16 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
+var ACL_ADMIN16 = "0x39CB97b105173b56b5a2b4b33AD25d6a50E6c949";
+var COLLECTOR23 = "0xBe85413851D195fC6341619cD68BfDc26a25b928";
+var DEFAULT_INCENTIVES_CONTROLLER23 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
+var DEFAULT_A_TOKEN_IMPL_REV_112 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_112 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_112 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+var EMISSION_MANAGER23 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
+var POOL_ADDRESSES_PROVIDER_REGISTRY16 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
 var REPAY_WITH_COLLATERAL_ADAPTER10 = "0x1408401B2A7E28cB747b3e258D0831Fc926bAC51";
 var SWAP_COLLATERAL_ADAPTER10 = "0xE387c6053CE8EC9f8C3fa5cE085Af73114a695d3";
-var UI_INCENTIVE_DATA_PROVIDER22 = "0x67Da261c14fd94cE7fDd77a0A8476E5b244089A9";
-var UI_POOL_DATA_PROVIDER22 = "0xddf65434502E459C22263BE2ed7cF0f1FaFD44c0";
-var WALLET_BALANCE_PROVIDER22 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
-var WETH_GATEWAY21 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
-var CHAIN_ID22 = 250;
-var ASSETS22 = {
+var UI_INCENTIVE_DATA_PROVIDER23 = "0x67Da261c14fd94cE7fDd77a0A8476E5b244089A9";
+var UI_POOL_DATA_PROVIDER23 = "0xddf65434502E459C22263BE2ed7cF0f1FaFD44c0";
+var WALLET_BALANCE_PROVIDER23 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
+var WETH_GATEWAY22 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
+var CHAIN_ID23 = 250;
+var ASSETS23 = {
   DAI: {
     decimals: 18,
     UNDERLYING: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E",
@@ -68736,7 +68829,7 @@ var ASSETS22 = {
     ORACLE: "0xCcc059a1a17577676c8673952Dc02070D29e5a66"
   }
 };
-var E_MODES15 = {
+var E_MODES16 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -68744,50 +68837,50 @@ var E_MODES15 = {
 // node_modules/@bgd-labs/aave-address-book/dist/AaveV3Harmony.mjs
 var AaveV3Harmony_exports = {};
 __export(AaveV3Harmony_exports, {
-  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER23,
-  ACL_ADMIN: () => ACL_ADMIN16,
-  ACL_MANAGER: () => ACL_MANAGER16,
-  ASSETS: () => ASSETS23,
-  CHAIN_ID: () => CHAIN_ID23,
-  COLLECTOR: () => COLLECTOR23,
-  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_112,
-  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER23,
-  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_112,
-  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_112,
-  EMISSION_MANAGER: () => EMISSION_MANAGER23,
-  E_MODES: () => E_MODES16,
-  ORACLE: () => ORACLE23,
-  POOL: () => POOL23,
-  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER23,
-  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY16,
-  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR23,
-  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL16,
-  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER23,
-  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER23,
-  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER23,
-  WETH_GATEWAY: () => WETH_GATEWAY22
+  AAVE_PROTOCOL_DATA_PROVIDER: () => AAVE_PROTOCOL_DATA_PROVIDER24,
+  ACL_ADMIN: () => ACL_ADMIN17,
+  ACL_MANAGER: () => ACL_MANAGER17,
+  ASSETS: () => ASSETS24,
+  CHAIN_ID: () => CHAIN_ID24,
+  COLLECTOR: () => COLLECTOR24,
+  DEFAULT_A_TOKEN_IMPL_REV_1: () => DEFAULT_A_TOKEN_IMPL_REV_113,
+  DEFAULT_INCENTIVES_CONTROLLER: () => DEFAULT_INCENTIVES_CONTROLLER24,
+  DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_113,
+  DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_1: () => DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_113,
+  EMISSION_MANAGER: () => EMISSION_MANAGER24,
+  E_MODES: () => E_MODES17,
+  ORACLE: () => ORACLE24,
+  POOL: () => POOL24,
+  POOL_ADDRESSES_PROVIDER: () => POOL_ADDRESSES_PROVIDER24,
+  POOL_ADDRESSES_PROVIDER_REGISTRY: () => POOL_ADDRESSES_PROVIDER_REGISTRY17,
+  POOL_CONFIGURATOR: () => POOL_CONFIGURATOR24,
+  PRICE_ORACLE_SENTINEL: () => PRICE_ORACLE_SENTINEL17,
+  UI_INCENTIVE_DATA_PROVIDER: () => UI_INCENTIVE_DATA_PROVIDER24,
+  UI_POOL_DATA_PROVIDER: () => UI_POOL_DATA_PROVIDER24,
+  WALLET_BALANCE_PROVIDER: () => WALLET_BALANCE_PROVIDER24,
+  WETH_GATEWAY: () => WETH_GATEWAY23
 });
-var POOL_ADDRESSES_PROVIDER23 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
-var POOL23 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-var POOL_CONFIGURATOR23 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
-var ORACLE23 = "0x3C90887Ede8D65ccb2777A5d577beAb2548280AD";
-var PRICE_ORACLE_SENTINEL16 = "0x0000000000000000000000000000000000000000";
-var AAVE_PROTOCOL_DATA_PROVIDER23 = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
-var ACL_MANAGER16 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
-var ACL_ADMIN16 = "0xb2f0C5f37f4beD2cB51C44653cD5D84866BDcd2D";
-var COLLECTOR23 = "0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31";
-var DEFAULT_INCENTIVES_CONTROLLER23 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
-var DEFAULT_A_TOKEN_IMPL_REV_112 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
-var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_112 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
-var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_112 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
-var EMISSION_MANAGER23 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
-var POOL_ADDRESSES_PROVIDER_REGISTRY16 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
-var UI_INCENTIVE_DATA_PROVIDER23 = "0xf7a60467aBb8A3240A0382b22E1B03c7d4F59Da5";
-var UI_POOL_DATA_PROVIDER23 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
-var WALLET_BALANCE_PROVIDER23 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
-var WETH_GATEWAY22 = "0xE387c6053CE8EC9f8C3fa5cE085Af73114a695d3";
-var CHAIN_ID23 = 16666e5;
-var ASSETS23 = {
+var POOL_ADDRESSES_PROVIDER24 = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb";
+var POOL24 = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+var POOL_CONFIGURATOR24 = "0x8145eddDf43f50276641b55bd3AD95944510021E";
+var ORACLE24 = "0x3C90887Ede8D65ccb2777A5d577beAb2548280AD";
+var PRICE_ORACLE_SENTINEL17 = "0x0000000000000000000000000000000000000000";
+var AAVE_PROTOCOL_DATA_PROVIDER24 = "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654";
+var ACL_MANAGER17 = "0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B";
+var ACL_ADMIN17 = "0xb2f0C5f37f4beD2cB51C44653cD5D84866BDcd2D";
+var COLLECTOR24 = "0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31";
+var DEFAULT_INCENTIVES_CONTROLLER24 = "0x929EC64c34a17401F460460D4B9390518E5B473e";
+var DEFAULT_A_TOKEN_IMPL_REV_113 = "0xa5ba6E5EC19a1Bf23C857991c857dB62b2Aa187B";
+var DEFAULT_VARIABLE_DEBT_TOKEN_IMPL_REV_113 = "0x81387c40EB75acB02757C1Ae55D5936E78c9dEd3";
+var DEFAULT_STABLE_DEBT_TOKEN_IMPL_REV_113 = "0x52A1CeB68Ee6b7B5D13E0376A1E0E4423A8cE26e";
+var EMISSION_MANAGER24 = "0x048f2228D7Bf6776f99aB50cB1b1eaB4D1d4cA73";
+var POOL_ADDRESSES_PROVIDER_REGISTRY17 = "0x770ef9f4fe897e59daCc474EF11238303F9552b6";
+var UI_INCENTIVE_DATA_PROVIDER24 = "0xf7a60467aBb8A3240A0382b22E1B03c7d4F59Da5";
+var UI_POOL_DATA_PROVIDER24 = "0x1DcDA4de2Bf6c7AD9a34788D22aE6b7d55016e1f";
+var WALLET_BALANCE_PROVIDER24 = "0xBc790382B3686abffE4be14A030A96aC6154023a";
+var WETH_GATEWAY23 = "0xE387c6053CE8EC9f8C3fa5cE085Af73114a695d3";
+var CHAIN_ID24 = 16666e5;
+var ASSETS24 = {
   ONE_DAI: {
     decimals: 18,
     UNDERLYING: "0xEf977d2f931C1978Db5F6747666fa1eACB0d0339",
@@ -68861,7 +68954,7 @@ var ASSETS23 = {
     ORACLE: "0xdCD81FbbD6c4572A69a534D8b8152c562dA8AbEF"
   }
 };
-var E_MODES16 = {
+var E_MODES17 = {
   NONE: 0,
   STABLECOINS: 1
 };
@@ -69433,6 +69526,21 @@ var marketsData = {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
       marketName: "polygon"
     }
+  },
+  ["proto_gnosis_v3" /* proto_gnosis_v3 */]: {
+    marketTitle: "Gnosis",
+    chainId: import_contract_helpers2.ChainId.xdai,
+    v3: true,
+    // subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis_exports.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Gnosis_exports.POOL,
+      WETH_GATEWAY: AaveV3Gnosis_exports.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Gnosis_exports.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Gnosis_exports.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Gnosis_exports.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Gnosis_exports.COLLECTOR
+    }
   }
 };
 
@@ -69612,6 +69720,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_one]: {
     name: "Arbitrum",
+    privateJsonRPCUrl: "https://arbitrum-one.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://arb1.arbitrum.io/rpc",
       "https://rpc.ankr.com/arbitrum",
@@ -69654,8 +69763,8 @@ var networkConfigs = {
       icon: "/icons/networks/base.svg",
       name: "Base Bridge",
       url: "https://bridge.base.org/"
-    }
-    // ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    },
+    ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: "Harmony",
@@ -69801,7 +69910,26 @@ var networkConfigs = {
     baseAssetDecimals: 0,
     // N/A
     explorerLink: "https://andromeda-explorer.metis.io",
-    networkLogoPath: "/icons/networks/metis.svg"
+    networkLogoPath: "/icons/networks/metis.svg",
+    ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history"
+  },
+  [import_contract_helpers3.ChainId.xdai]: {
+    name: "Gnosis Chain",
+    privateJsonRPCUrl: "https://gnosischain-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: ["https://rpc.ankr.com/gnosis", "https://rpc.gnosischain.com"],
+    publicJsonRPCWSUrl: "wss://rpc.gnosischain.com/wss",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "xDAI",
+    wrappedBaseAssetSymbol: "WXDAI",
+    baseAssetDecimals: 18,
+    explorerLink: "https://gnosisscan.io",
+    isTestnet: false,
+    networkLogoPath: "/icons/networks/gnosis.svg",
+    bridge: {
+      icon: "/icons/networks/gnosis.svg",
+      name: "xDai Bridge",
+      url: "https://bridge.gnosischain.com/"
+    }
   }
 };
 
@@ -70770,7 +70898,7 @@ function clone(configObject) {
       sum = sum.plus(args[i++]);
     return sum;
   };
-  convertBase = function() {
+  convertBase = /* @__PURE__ */ function() {
     var decimal = "0123456789";
     function toBaseOut(str2, baseIn, baseOut, alphabet) {
       var j, arr = [0], arrL, i = 0, len = str2.length;
@@ -70850,7 +70978,7 @@ function clone(configObject) {
       return str2;
     };
   }();
-  div = function() {
+  div = /* @__PURE__ */ function() {
     function multiply(x, k, base) {
       var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE, khi = k / SQRT_BASE | 0;
       for (x = x.slice(); i--; ) {
@@ -71074,7 +71202,7 @@ function clone(configObject) {
     }
     return n;
   }
-  parseNumeric = function() {
+  parseNumeric = /* @__PURE__ */ function() {
     var basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i, dotAfter = /^([^.]+)\.$/, dotBefore = /^\.([^.]+)$/, isInfinityOrNaN = /^-?(Infinity|NaN)$/, whitespaceOrPlus = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
     return function(x, str2, isNum, b) {
       var base, s = isNum ? str2 : str2.replace(whitespaceOrPlus, "");

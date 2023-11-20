@@ -33,8 +33,8 @@
   },
   "dependencies": {
     "@aave/contract-helpers": "1.21.1-0efe71955bfd19d178a3edef77416ca0612598b9.0",
-    "@aave/math-utils": "1.20.1-8d191bf193b4e5f74af4086481eb6f23a17f39e5.0",
-    "@bgd-labs/aave-address-book": "^2.7.0",
+    "@aave/math-utils": "1.21.1-0efe71955bfd19d178a3edef77416ca0612598b9.0",
+    "@bgd-labs/aave-address-book": "^2.10.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -46,6 +46,7 @@
     "@mui/material": "^5.10.9",
     "@paraswap/sdk": "6.2.4",
     "@tanstack/react-query": "^4.28.0",
+    "@visx/annotation": "^3.3.0",
     "@visx/axis": "^2.14.0",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",

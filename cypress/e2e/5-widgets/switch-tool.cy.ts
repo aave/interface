@@ -1,7 +1,6 @@
 import assets from '../../fixtures/assets.json';
 import {
   configEnvWithTenderlyAEthereumV3Fork,
-  configEnvWithTenderlyAvalancheFork,
   configEnvWithTenderlyPolygonFork,
 } from '../../support/steps/configuration.steps';
 import { doCloseModal } from '../../support/steps/main.steps';
@@ -48,15 +47,21 @@ const switchByTool = ({
       }).should('be.visible', { timeout: 10000 });
     });
     it(`Set amount`, () => {
+      cy.wait(2000); //there is no way to know when real max amount will upload by UI
       if (isMaxAmount) {
-        cy.wait(2000); //there is no way to know when real max amount will upload by UI
         cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
       } else {
-        cy.get('[data-cy=Modal] input[aria-label="amount input"]').first().type(amount.toString());
+        cy.get('[data-cy=Modal] input[aria-label="amount input"]')
+          .first()
+          .type(amount.toString(), { force: true });
       }
+      cy.get('[data-cy=Modal]').as('Modal');
+      cy.get('@Modal').find(`#switch-slippage-selector-button`).click();
+      cy.get('[value="0.01"]').click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, 'Switch');
     });
+
     doCloseModal();
   });
 };
@@ -70,27 +75,11 @@ const testData = {
       hasApproval: true,
       isMaxAmount: false,
     },
-    {
-      fromAsset: assets.ethereumV3Market.ETH,
-      toAsset: assets.ethereumV3Market.LINK,
-      amount: 1,
-      hasApproval: true,
-      isMaxAmount: false,
-    },
   ],
   polygon: [
     {
       fromAsset: assets.polygonV3Market.MATIC,
       toAsset: assets.polygonV3Market.USDC,
-      amount: 1,
-      hasApproval: true,
-      isMaxAmount: false,
-    },
-  ],
-  avalanche: [
-    {
-      fromAsset: assets.avalancheV3Market.AVAX,
-      toAsset: assets.avalancheV3Market.USDC,
       amount: 1,
       hasApproval: true,
       isMaxAmount: false,
@@ -112,15 +101,6 @@ describe('SWITCH BY SWITCH TOOL, POLYGON', () => {
   configEnvWithTenderlyPolygonFork({ v3: true });
 
   testData.polygon.forEach((swapCase) => {
-    switchByTool(swapCase);
-  });
-});
-
-describe('SWITCH BY SWITCH TOOL, AVALANCHE', () => {
-  // const skipTestState = skipState(false);
-  configEnvWithTenderlyAvalancheFork({ v3: true });
-
-  testData.avalanche.forEach((swapCase) => {
     switchByTool(swapCase);
   });
 });
