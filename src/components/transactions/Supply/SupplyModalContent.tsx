@@ -274,6 +274,7 @@ export const SupplyWrappedTokenModalContent = ({
   debtCeilingWarning,
   addTokenProps,
   collateralType,
+  isWrongNetwork,
 }: SupplyModalContentProps) => {
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
@@ -311,19 +312,16 @@ export const SupplyWrappedTokenModalContent = ({
   const [tokenToSupply, setTokenToSupply] = useState<SupplyAsset>(assets[0]);
   const [amount, setAmount] = useState('');
   const [convertedTokenInAmount, setConvertedTokenInAmount] = useState<string>('0');
-  const { isFetching: loadingExchangeRate, data: exchangeRate } = useTokenInForTokenOut(
+  const { data: exchangeRate } = useTokenInForTokenOut(
     '1',
     poolReserve.decimals,
     wrappedTokenConfig.tokenWrapperAddress
   );
 
-  console.log('loadingExchangeRate', loadingExchangeRate);
-
   useEffect(() => {
     if (!exchangeRate) return;
     const convertedAmount = valueToBigNumber(tokenInBalance).multipliedBy(exchangeRate).toString();
     setConvertedTokenInAmount(convertedAmount);
-    console.log('convertedAmount', convertedAmount);
   }, [exchangeRate, tokenInBalance]);
 
   const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
@@ -348,8 +346,6 @@ export const SupplyWrappedTokenModalContent = ({
       .toString();
   }
 
-  console.log(maxAmountOfTokenInToSupply);
-
   let supplyingWrappedToken = false;
   if (wrappedTokenConfig) {
     supplyingWrappedToken = tokenToSupply.address === wrappedTokenConfig.tokenIn.underlyingAsset;
@@ -369,7 +365,9 @@ export const SupplyWrappedTokenModalContent = ({
   };
 
   const amountInEth = new BigNumber(amount).multipliedBy(
-    poolReserve.formattedPriceInMarketReferenceCurrency
+    supplyingWrappedToken
+      ? wrappedTokenConfig.tokenIn.formattedPriceInMarketReferenceCurrency
+      : poolReserve.formattedPriceInMarketReferenceCurrency
   );
 
   const amountInUsd = amountInEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
@@ -378,15 +376,22 @@ export const SupplyWrappedTokenModalContent = ({
 
   const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
 
-  if (supplyTxState.success)
+  if (supplyTxState.success) {
+    const successModalAmount = supplyingWrappedToken
+      ? BigNumber(amount)
+          .multipliedBy(exchangeRate || '1')
+          .toString()
+      : amount;
+
     return (
       <TxSuccessView
         action={<Trans>Supplied</Trans>}
-        amount={amount}
+        amount={successModalAmount}
         symbol={poolReserve.symbol}
         addToken={addTokenProps}
       />
     );
+  }
 
   return (
     <>
@@ -451,10 +456,11 @@ export const SupplyWrappedTokenModalContent = ({
           amountToSupply={amount}
           decimals={18}
           symbol={wrappedTokenConfig.tokenIn.symbol}
+          isWrongNetwork={isWrongNetwork}
         />
       ) : (
         <SupplyActions
-          isWrongNetwork={false}
+          isWrongNetwork={isWrongNetwork}
           amountToSupply={amount}
           poolAddress={poolReserve.underlyingAsset}
           symbol={poolReserve.symbol}
@@ -485,8 +491,6 @@ const ExchangeRate = ({
     decimals,
     tokenWrapperAddress
   );
-
-  console.log('tokenOutAmount', tokenOutAmount);
 
   return (
     <Stack direction="row" alignItems="center" gap={1}>

@@ -792,10 +792,6 @@ msgstr "Current v2 balance"
 msgid "Current votes"
 msgstr "Current votes"
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
-msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI to Aave reserve. Switching incurs no additional costs and no slippage."
-
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
@@ -1019,7 +1015,6 @@ msgid "Exceeds the discount"
 msgstr "Exceeds the discount"
 
 #: src/components/infoTooltips/WrappedTokenToolTipContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Exchange rate"
 msgstr "Exchange rate"
 

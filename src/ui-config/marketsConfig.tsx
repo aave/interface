@@ -67,7 +67,6 @@ export type MarketDataType = {
     V3_MIGRATOR?: string;
     GHO_TOKEN_ADDRESS?: string;
     GHO_UI_DATA_PROVIDER?: string;
-    SDAI_TOKEN_WRAPPER?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -143,7 +142,6 @@ export const marketsData: {
       GHO_UI_DATA_PROVIDER: AaveV3Ethereum.UI_GHO_DATA_PROVIDER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Ethereum.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Ethereum.DEBT_SWAP_ADAPTER,
-      SDAI_TOKEN_WRAPPER: '0x437f428930669cd06adab2df4a8d4b203ac729c6',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

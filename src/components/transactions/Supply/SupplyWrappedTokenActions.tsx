@@ -32,6 +32,7 @@ interface SupplyWrappedTokenActionProps extends BoxProps {
   decimals: number;
   symbol: string;
   tokenWrapperAddress: string;
+  isWrongNetwork: boolean;
 }
 export const SupplyWrappedTokenActions = ({
   tokenIn,
@@ -39,6 +40,7 @@ export const SupplyWrappedTokenActions = ({
   decimals,
   symbol,
   tokenWrapperAddress,
+  isWrongNetwork,
   sx,
   ...props
 }: SupplyWrappedTokenActionProps) => {
@@ -187,7 +189,7 @@ export const SupplyWrappedTokenActions = ({
       blocked={false} // TODO
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
-      isWrongNetwork={false} // TODO
+      isWrongNetwork={isWrongNetwork}
       requiresAmount
       amount={amountToSupply}
       symbol={symbol}
@@ -197,7 +199,7 @@ export const SupplyWrappedTokenActions = ({
       handleApproval={() => approvalAction()}
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit={usePermit}
+      tryPermit
       sx={sx}
       {...props}
     />

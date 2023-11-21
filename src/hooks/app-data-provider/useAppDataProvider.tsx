@@ -64,6 +64,7 @@ export type WrappedToken = {
   underlyingAsset: string;
   decimals: number;
   priceInUSD: string;
+  formattedPriceInMarketReferenceCurrency: string;
 };
 
 export type WrappedTokenConfig = {
@@ -270,22 +271,26 @@ export const AppDataProvider: React.FC = ({ children }) => {
         (userReserve) => userReserve.underlyingAsset === config.tokenOut.underlyingAsset
       );
 
-      if (!tokenOutReserve) {
-        throw new Error('no wrapped token reserves');
+      if (!tokenInReserve || !tokenOutReserve) {
+        throw new Error('wrapped token reserves not found');
       }
 
       return {
         tokenIn: {
           symbol: config.tokenIn.symbol,
           underlyingAsset: config.tokenIn.underlyingAsset,
-          decimals: 18,
-          priceInUSD: tokenOutReserve.reserve.priceInUSD,
+          decimals: tokenInReserve.reserve.decimals,
+          priceInUSD: tokenInReserve.reserve.priceInUSD,
+          formattedPriceInMarketReferenceCurrency:
+            tokenInReserve.reserve.formattedPriceInMarketReferenceCurrency,
         },
         tokenOut: {
           symbol: tokenOutReserve.reserve.symbol,
           underlyingAsset: tokenOutReserve.reserve.underlyingAsset,
           decimals: tokenOutReserve.reserve.decimals,
           priceInUSD: tokenOutReserve.reserve.priceInUSD,
+          formattedPriceInMarketReferenceCurrency:
+            tokenOutReserve.reserve.formattedPriceInMarketReferenceCurrency,
         },
         tokenWrapperAddress: config.tokenWrapperContractAddress,
       };

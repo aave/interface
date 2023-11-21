@@ -9,7 +9,6 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
-import { useTokenInBalances } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -54,8 +53,6 @@ export const SupplyAssetsList = () => {
     loading: loadingReserves,
     wrappedTokenReserves,
   } = useAppDataContext();
-  const foo = useTokenInBalances(wrappedTokenReserves);
-  console.log('FOOOO', foo.data);
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const [displayGho] = useRootStore((store) => [store.displayGho]);
   const theme = useTheme();
