@@ -98,7 +98,7 @@
     "@ethersproject/providers": "^5.5.3",
     "@lingui/cli": "^3.17.2",
     "@lingui/macro": "^3.17.2",
-    "@next/bundle-analyzer": "^12.3.4",
+    "@next/bundle-analyzer": "^12.1.0",
     "@svgr/webpack": "^6.5.1",
     "@tanstack/react-query-devtools": "^4.35.3",
     "@testing-library/dom": "^9.3.3",
