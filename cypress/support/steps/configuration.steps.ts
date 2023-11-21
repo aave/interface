@@ -144,6 +144,10 @@ export const configEnvWithTenderlyAEthereumV3Fork = createConfigWithTenderlyFork
   ChainId.mainnet,
   'fork_proto_mainnet_v3'
 );
+export const configEnvWithTenderlyGnosisFork = createConfigWithTenderlyFork(
+  ChainId.xdai,
+  'fork_proto_gnosis_v3'
+);
 export const configEnvWithTenderlyGoerliGhoFork = createConfigWithTenderlyFork(
   ChainId.goerli,
   'fork_proto_goerli_gho_v3'
