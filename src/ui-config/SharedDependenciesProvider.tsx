@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
 import { GovernanceService } from 'src/services/GovernanceService';
+import { UiGhoService } from 'src/services/UiGhoService';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
@@ -17,11 +18,14 @@ interface SharedDependenciesContext {
   uiStakeDataService: UiStakeDataService;
   uiIncentivesService: UiIncentivesService;
   uiPoolService: UiPoolService;
+  uiGhoService: UiGhoService;
 }
 
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
+  // providers
+
   const getGovernanceProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);
     const isGovernanceFork =
@@ -45,6 +49,8 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const uiPoolService = new UiPoolService(getProvider);
   const uiIncentivesService = new UiIncentivesService(getProvider);
 
+  const uiGhoService = new UiGhoService(getProvider);
+
   return (
     <SharedDependenciesContext.Provider
       value={{
@@ -54,6 +60,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
         uiStakeDataService,
         uiPoolService,
         uiIncentivesService,
+        uiGhoService,
       }}
     >
       {children}

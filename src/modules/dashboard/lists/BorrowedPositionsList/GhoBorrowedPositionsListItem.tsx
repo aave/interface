@@ -12,7 +12,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { ghoUserQualifiesForDiscount, weightedAverageAPY } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -34,10 +34,6 @@ export const GhoBorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const { currentMarket, currentMarketData } = useProtocolDataContext();
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
-  const [ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore((store) => [
-    store.ghoUserDataFetched,
-    store.ghoUserQualifiesForDiscount,
-  ]);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 

@@ -84,10 +84,6 @@ export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshIncentiveData();
 }, 60000);
 
-export const useGhoDataSubscription = createSingletonSubscriber(() => {
-  return useRootStore.getState().refreshGhoData();
-}, 60000);
-
 useRootStore.subscribe(
   (state) => state.account,
   (account) => {

@@ -16,6 +16,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
+import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -23,7 +24,11 @@ import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { weightedAverageAPY } from 'src/utils/ghoUtilities';
+import {
+  displayGho,
+  ghoUserQualifiesForDiscount,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import {
   ComputedUserReserveData,
@@ -67,18 +72,14 @@ export const DebtSwitchModalContent = ({
   isWrongNetwork,
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
-  const { reserves, user, ghoReserveData, ghoUserData } = useAppDataContext();
+  const { reserves, user, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
-  const [displayGho, currentMarket, ghoUserDataFetched, ghoUserQualifiesForDiscount] = useRootStore(
-    (state) => [
-      state.displayGho,
-      state.currentMarket,
-      state.ghoUserDataFetched,
-      state.ghoUserQualifiesForDiscount,
-    ]
-  );
+
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
 
   let switchTargets = reserves
     .filter(
@@ -232,10 +233,12 @@ export const DebtSwitchModalContent = ({
       ghoUserData.userGhoAvailableToBorrowAtDiscount,
       ghoReserveData.ghoBorrowAPYWithMaxDiscount
     );
-    const ghoApyRange: [number, number] | undefined = ghoUserDataFetched
+    const ghoApyRange: [number, number] | undefined = ghoLoadingData
       ? [userCurrentBorrowApy, userBorrowApyAfterMaxSwitchTo]
       : undefined;
-    qualifiesForDiscount = ghoUserQualifiesForDiscount(maxAmountToSwitch);
+    qualifiesForDiscount = _ghoUserData
+      ? ghoUserQualifiesForDiscount(ghoReserveData, _ghoUserData, maxAmountToSwitch)
+      : false;
     ghoTargetData = {
       qualifiesForDiscount,
       ghoApyRange,

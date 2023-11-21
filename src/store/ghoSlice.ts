@@ -1,7 +1,5 @@
-import { GhoService } from '@aave/contract-helpers';
 import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
@@ -23,7 +21,6 @@ export interface GhoSlice {
   ghoUserDataFetched: boolean;
   ghoUserQualifiesForDiscount: (futureBorrowAmount?: string) => boolean;
   ghoMarketConfig: () => GhoMarketConfig | undefined;
-  refreshGhoData: () => Promise<void>;
   displayGho: ({ symbol, currentMarket }: GhoUtilMintingAvailableParams) => boolean;
 }
 
@@ -96,47 +93,6 @@ export const createGhoSlice: StateCreator<
         ghoTokenAddress,
         uiGhoDataProviderAddress,
       };
-    },
-    refreshGhoData: async () => {
-      const ghoConfig = get().ghoMarketConfig();
-      if (!ghoConfig) return;
-
-      const account = get().account;
-
-      const ghoService = new GhoService({
-        provider: getProvider(get().currentMarketData.chainId),
-        uiGhoDataProviderAddress: ghoConfig.uiGhoDataProviderAddress,
-      });
-
-      if (account) {
-        try {
-          const [ghoReserveData, ghoUserData] = await Promise.all([
-            ghoService.getGhoReserveData(),
-            ghoService.getGhoUserData(account),
-          ]);
-
-          set({
-            ghoReserveData: ghoReserveData,
-            ghoUserData: ghoUserData,
-            ghoReserveDataFetched: true,
-            ghoUserDataFetched: true,
-          });
-        } catch (err) {
-          console.log('error', err);
-        }
-      } else {
-        try {
-          const ghoReserveData = await ghoService.getGhoReserveData();
-
-          set({
-            ghoReserveData: ghoReserveData,
-            ghoReserveDataFetched: true,
-            ghoUserDataFetched: false,
-          });
-        } catch (err) {
-          console.log('error', err);
-        }
-      }
     },
   };
 };
