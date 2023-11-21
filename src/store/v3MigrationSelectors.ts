@@ -739,13 +739,12 @@ export const selectV3UserSummaryAfterMigration = (store: RootStore, currentTimes
   const suppliesMap = supplies.reduce((obj, item) => {
     obj[item.underlyingAsset] = item;
     return obj;
-  }, {} as Record<string, typeof supplies[0]>);
+  }, {} as Record<string, (typeof supplies)[0]>);
 
   const borrowsMap = borrows.reduce((obj, item) => {
     obj[item.debtKey] = item;
     return obj;
-  }, {} as Record<string, typeof borrows[0]>);
-
+  }, {} as Record<string, (typeof borrows)[0]>);
   const userReserves = poolReserveV3Summary.userReservesData.map((userReserveData) => {
     const stableBorrowAsset = borrowsMap[userReserveData.reserve.stableDebtTokenAddress];
     const variableBorrowAsset = borrowsMap[userReserveData.reserve.variableDebtTokenAddress];
