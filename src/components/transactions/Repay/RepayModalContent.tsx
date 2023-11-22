@@ -17,6 +17,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { displayGho } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -47,9 +48,8 @@ export const RepayModalContent = ({
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
 
-  const [minRemainingBaseTokenBalance, displayGho] = useRootStore((store) => [
+  const [minRemainingBaseTokenBalance] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,
-    store.displayGho,
   ]);
 
   // states

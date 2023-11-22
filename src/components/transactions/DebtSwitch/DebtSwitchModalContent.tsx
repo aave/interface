@@ -18,7 +18,6 @@ import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalD
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
@@ -73,7 +72,8 @@ export const DebtSwitchModalContent = ({
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
   const { reserves, user, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
 

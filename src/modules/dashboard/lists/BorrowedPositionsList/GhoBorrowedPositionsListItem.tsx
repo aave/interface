@@ -7,8 +7,8 @@ import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FixedAPYTooltipText } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
+import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
@@ -32,8 +32,10 @@ export const GhoBorrowedPositionsListItem = ({
   borrowRateMode,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
+  const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -48,7 +50,9 @@ export const GhoBorrowedPositionsListItem = ({
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
 
-  const hasDiscount = ghoUserQualifiesForDiscount();
+  const hasDiscount = _ghoUserData
+    ? ghoUserQualifiesForDiscount(ghoReserveData, _ghoUserData)
+    : false;
 
   const { isActive, isFrozen, isPaused, borrowingEnabled } = reserve;
   const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
@@ -63,7 +67,7 @@ export const GhoBorrowedPositionsListItem = ({
     userGhoBorrowBalance: ghoUserData.userGhoBorrowBalance,
     hasDiscount,
     ghoLoadingData,
-    ghoUserDataFetched,
+    ghoUserDataFetched: ghoLoadingData,
     borrowRateAfterDiscount,
     currentMarket,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,

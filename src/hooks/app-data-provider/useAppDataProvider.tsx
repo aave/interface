@@ -15,7 +15,7 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { GHO_SUPPORTED_MARKETS, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import { displayGho, GHO_SUPPORTED_MARKETS, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -94,7 +94,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     eModes,
     formattedPoolReserves,
     userSummary,
-    displayGho,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -103,7 +102,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectEmodes(state),
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
-    state.displayGho,
   ]);
 
   const currentMarketData = useRootStore((state) => state.currentMarketData);
