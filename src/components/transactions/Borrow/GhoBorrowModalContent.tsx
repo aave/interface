@@ -116,7 +116,7 @@ export const GhoBorrowModalContent = ({
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const customMarket = useRootStore((store) => store.currentMarket);
+  const currentMarket = useRootStore((store) => store.currentMarket);
   const { marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
@@ -302,7 +302,7 @@ export const GhoBorrowModalContent = ({
                 discountAvailable={discountAvailable}
                 userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
                 underlyingAsset={underlyingAsset}
-                customMarket={customMarket}
+                customMarket={currentMarket}
                 currentBorrowAPY={currentBorrowAPY}
                 futureBorrowAPY={futureBorrowAPY}
                 onDetailsClick={() => closeModal()}

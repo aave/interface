@@ -117,7 +117,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     const baseCurrencyData = reservesData.baseCurrencyData;
     if (formattedGhoUserData.userDiscountedGhoInterest > 0 && user) {
       const userSummaryWithDiscount = formatUserSummaryWithDiscount({
-        userGhoDiscountedInterest: formattedGhoUserData.userDiscountedGhoInterest,
+        userGhoDiscountedInterest: formattedGhoUserDataWithDefault.userDiscountedGhoInterest,
         user,
         marketReferenceCurrencyPriceUSD: Number(
           formatUnits(baseCurrencyData.marketReferenceCurrencyPriceInUsd, USD_DECIMALS)

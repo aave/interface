@@ -11,7 +11,7 @@ import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedR
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { ghoUserQualifiesForDiscount, weightedAverageAPY } from 'src/utils/ghoUtilities';
@@ -30,7 +30,8 @@ export const GhoBorrowedPositionsListItem = ({
   borrowRateMode,
 }: FormattedUserReserves & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
-  const { currentMarket, currentMarketData } = useProtocolDataContext();
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
   const theme = useTheme();

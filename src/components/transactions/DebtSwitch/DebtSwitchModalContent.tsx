@@ -20,7 +20,6 @@ import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndI
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
@@ -73,9 +72,10 @@ export const DebtSwitchModalContent = ({
   user,
 }: ModalWrapperProps & { currentRateMode: InterestRate; user: ExtendedFormattedUser }) => {
   const { reserves, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
