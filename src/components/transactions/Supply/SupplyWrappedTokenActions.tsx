@@ -199,7 +199,7 @@ export const SupplyWrappedTokenActions = ({
       handleApproval={() => approvalAction()}
       handleAction={action}
       requiresApproval={requiresApproval}
-      tryPermit
+      tryPermit={false} // TODO
       sx={sx}
       {...props}
     />
