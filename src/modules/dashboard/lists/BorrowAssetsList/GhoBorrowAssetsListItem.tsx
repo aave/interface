@@ -38,7 +38,7 @@ export const GhoBorrowAssetsListItem = ({
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const maxAmountUserCanMint = Number(getMaxGhoMintAmount(user, reserve));
+  const maxAmountUserCanMint = user ? Number(getMaxGhoMintAmount(user, reserve)) : 0;
   const availableBorrows = Math.min(
     maxAmountUserCanMint,
     ghoReserveData.aaveFacilitatorRemainingCapacity

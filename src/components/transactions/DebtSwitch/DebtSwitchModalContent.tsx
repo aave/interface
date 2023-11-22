@@ -31,6 +31,7 @@ import {
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -70,8 +71,9 @@ export const DebtSwitchModalContent = ({
   userReserve,
   isWrongNetwork,
   currentRateMode,
-}: ModalWrapperProps & { currentRateMode: InterestRate }) => {
-  const { reserves, user, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
+  user,
+}: ModalWrapperProps & { currentRateMode: InterestRate; user: ExtendedFormattedUser }) => {
+  const { reserves, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { currentAccount } = useWeb3Context();

@@ -100,7 +100,7 @@ export const BorrowAssetsList = () => {
   const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow = reserves
-    .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
+    .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))

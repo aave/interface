@@ -64,7 +64,7 @@ export interface AppDataContextType {
   eModes: Record<number, EmodeCategory>;
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
-  user: ExtendedFormattedUser;
+  user?: ExtendedFormattedUser;
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 

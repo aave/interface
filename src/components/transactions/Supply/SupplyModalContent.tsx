@@ -19,7 +19,10 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -50,8 +53,9 @@ export const SupplyModalContent = React.memo(
     isWrongNetwork,
     nativeBalance,
     tokenBalance,
-  }: ModalWrapperProps) => {
-    const { marketReferencePriceInUsd, user } = useAppDataContext();
+    user,
+  }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
+    const { marketReferencePriceInUsd } = useAppDataContext();
     const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();

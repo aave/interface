@@ -7,6 +7,7 @@ import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactToolt
 import { Warning } from 'src/components/primitives/Warning';
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
@@ -39,10 +40,11 @@ export const WithdrawAndSwitchModalContent = ({
   userReserve,
   symbol,
   isWrongNetwork,
-}: ModalWrapperProps) => {
+  user,
+}: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
-  const { user, reserves } = useAppDataContext();
+  const { reserves } = useAppDataContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
@@ -112,6 +114,7 @@ export const WithdrawAndSwitchModalContent = ({
     poolReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
+    user,
   });
 
   const handleChange = (value: string) => {

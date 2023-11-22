@@ -1,6 +1,7 @@
 import { PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
+import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -39,17 +40,22 @@ export const BorrowModal = () => {
         keepWrappedSymbol={!borrowUnWrapped}
         requiredPermission={PERMISSION.BORROWER}
       >
-        {(params) =>
-          displayGho({ symbol: params.symbol, currentMarket }) ? (
-            <GhoBorrowModalContent {...params} />
-          ) : (
-            <BorrowModalContent
-              {...params}
-              unwrap={borrowUnWrapped}
-              setUnwrap={handleBorrowUnwrapped}
-            />
-          )
-        }
+        {(params) => (
+          <UserAuthenticated>
+            {(user) =>
+              displayGho({ symbol: params.symbol, currentMarket }) ? (
+                <GhoBorrowModalContent {...params} user={user} />
+              ) : (
+                <BorrowModalContent
+                  {...params}
+                  user={user}
+                  unwrap={borrowUnWrapped}
+                  setUnwrap={handleBorrowUnwrapped}
+                />
+              )
+            }
+          </UserAuthenticated>
+        )}
       </ModalWrapper>
     </BasicModal>
   );
