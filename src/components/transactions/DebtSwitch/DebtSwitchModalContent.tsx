@@ -72,10 +72,10 @@ export const DebtSwitchModalContent = ({
   user,
 }: ModalWrapperProps & { currentRateMode: InterestRate; user: ExtendedFormattedUser }) => {
   const { reserves, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { currentAccount } = useWeb3Context();
-  const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const { currentAccount } = useWeb3Context();
+  const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);

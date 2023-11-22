@@ -82,11 +82,11 @@ export const WithdrawModalContent = ({
   });
 
   const { blockingError, errorComponent } = useWithdrawError({
-    user,
     assetsBlockingWithdraw,
     poolReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
+    user,
   });
 
   const displayRiskCheckbox =

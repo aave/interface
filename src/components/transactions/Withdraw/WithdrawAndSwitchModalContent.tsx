@@ -108,11 +108,11 @@ export const WithdrawAndSwitchModalContent = ({
   });
 
   const { blockingError, errorComponent } = useWithdrawError({
-    user,
     assetsBlockingWithdraw,
     poolReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
+    user,
   });
 
   const handleChange = (value: string) => {

@@ -34,8 +34,9 @@ export const DashboardTopPanel = () => {
   const { openClaimRewards } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-  const showMigrateButton =
-    user && isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0;
+  const showMigrateButton = user
+    ? isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0
+    : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -163,9 +164,9 @@ export const DashboardTopPanel = () => {
           loading={loading}
           hideIcon
         >
-          {currentAccount && Number(user?.netWorthUSD) > 0 ? (
+          {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
-              value={user?.netAPY || 0}
+              value={user ? user.netAPY : 0}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent

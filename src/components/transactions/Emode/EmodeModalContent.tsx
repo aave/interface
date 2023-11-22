@@ -64,7 +64,10 @@ function getInitialEmode(
   return eModes[0];
 }
 
-export const EmodeModalContent = ({ mode, user }: EmodeModalContentProps) => {
+export const EmodeModalContent = ({
+  mode,
+  user,
+}: EmodeModalContentProps & { user: ExtendedFormattedUser }) => {
   const {
     reserves,
     eModes,
