@@ -50,10 +50,6 @@ import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
 
-interface SupplyAsset extends Asset {
-  balance: string;
-}
-
 export enum ErrorType {
   CAP_REACHED,
 }
@@ -309,7 +305,7 @@ export const SupplyWrappedTokenModalContent = ({
     });
   }
 
-  const [tokenToSupply, setTokenToSupply] = useState<SupplyAsset>(assets[0]);
+  const [tokenToSupply, setTokenToSupply] = useState<Asset>(assets[0]);
   const [amount, setAmount] = useState('');
   const [convertedTokenInAmount, setConvertedTokenInAmount] = useState<string>('0');
   const { data: exchangeRate } = useTokenInForTokenOut(
