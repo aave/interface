@@ -20,8 +20,10 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -135,7 +137,7 @@ export const GhoBorrowModalContent = ({
     : false;
 
   // amount calculations
-  let maxAmountToBorrow = user ? getMaxGhoMintAmount(user, poolReserve) : '0';
+  let maxAmountToBorrow = getMaxGhoMintAmount(user, poolReserve);
   maxAmountToBorrow = Math.min(
     Number(maxAmountToBorrow),
     ghoReserveData.aaveFacilitatorRemainingCapacity

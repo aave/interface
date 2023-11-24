@@ -1,10 +1,12 @@
 import { API_ETH_MOCK_ADDRESS, PERMISSION } from '@aave/contract-helpers';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
-import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
@@ -20,8 +22,8 @@ import { TxErrorView } from './Error';
 
 export interface ModalWrapperProps {
   underlyingAsset: string;
-  poolReserve: FormattedReservesAndIncentives;
-  userReserve: FormattedUserReserves;
+  poolReserve: ComputedReserveData;
+  userReserve: ComputedUserReserveData;
   symbol: string;
   tokenBalance: string;
   nativeBalance: string;
@@ -75,13 +77,13 @@ export const ModalWrapper: React.FC<{
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
       return reserve.isWrappedBaseAsset;
     return underlyingAsset === reserve.underlyingAsset;
-  }) as FormattedReservesAndIncentives;
+  }) as ComputedReserveData;
 
   const userReserve = user?.userReservesData.find((userReserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
       return userReserve.reserve.isWrappedBaseAsset;
     return underlyingAsset === userReserve.underlyingAsset;
-  }) as FormattedUserReserves;
+  }) as ComputedUserReserveData;
 
   const symbol =
     poolReserve.isWrappedBaseAsset && !keepWrappedSymbol

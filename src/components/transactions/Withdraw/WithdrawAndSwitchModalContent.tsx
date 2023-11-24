@@ -5,10 +5,12 @@ import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { Warning } from 'src/components/primitives/Warning';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
-import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -70,7 +72,7 @@ export const WithdrawAndSwitchModalContent = ({
 
   const swapTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
-  ) as FormattedUserReserves;
+  ) as ComputedUserReserveData;
 
   const maxAmountToWithdraw = calculateMaxWithdrawAmount(user, userReserve, poolReserve);
   const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');

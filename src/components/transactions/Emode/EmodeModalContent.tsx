@@ -9,9 +9,9 @@ import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import {
   AppDataContextType,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -43,7 +43,6 @@ export enum EmodeModalType {
 
 export interface EmodeModalContentProps {
   mode: EmodeModalType;
-  user: ExtendedFormattedUser;
 }
 
 function getInitialEmode(

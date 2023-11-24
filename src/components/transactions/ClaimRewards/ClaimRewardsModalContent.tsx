@@ -7,8 +7,10 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Reward } from 'src/helpers/types';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import {
+  ComputedReserveData,
+  ExtendedFormattedUser,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -33,7 +35,7 @@ export enum ErrorType {
 
 interface ClaimRewardsModalContentProps {
   user: ExtendedFormattedUser;
-  reserves: FormattedReservesAndIncentives[];
+  reserves: ComputedReserveData[];
 }
 
 export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalContentProps) => {

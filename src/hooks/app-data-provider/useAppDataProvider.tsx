@@ -14,7 +14,7 @@ import { GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 
 import { formatEmodes } from '../../store/poolSelectors';
 import {
-  ExtendedFormattedUser,
+  ExtendedFormattedUser as _ExtendedFormattedUser,
   useExtendedUserSummaryAndIncentives,
 } from '../pool/useExtendedUserSummaryAndIncentives';
 import { useGhoPoolFormattedReserve } from '../pool/useGhoPoolFormattedReserve';
@@ -25,6 +25,7 @@ import {
 import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 
 /**
  * removes the marketPrefix from a symbol
@@ -34,6 +35,21 @@ import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 export const unPrefixSymbol = (symbol: string, prefix: string) => {
   return symbol.toUpperCase().replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), '');
 };
+
+/**
+ * @deprecated Use FormattedReservesAndIncentives type from usePoolFormattedReserves hook
+ */
+export type ComputedReserveData = FormattedReservesAndIncentives;
+
+/**
+ * @deprecated Use FormattedUserReserves type from useUserSummaryAndIncentives hook
+ */
+export type ComputedUserReserveData = FormattedUserReserves;
+
+/**
+ * @deprecated Use ExtendedFormattedUser type from useExtendedUserSummaryAndIncentives hook
+ */
+export type ExtendedFormattedUser = _ExtendedFormattedUser;
 
 export interface AppDataContextType {
   loading: boolean;
