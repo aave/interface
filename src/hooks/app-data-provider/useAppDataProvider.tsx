@@ -27,7 +27,7 @@ import {
   selectFormattedReserves,
   selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
-import { useGhoPoolFormattedReserve } from '../pool/useGhoPoolFormattedReserves';
+import { useGhoPoolFormattedReserve } from '../pool/useGhoPoolFormattedReserve';
 import { useUserGhoPoolFormattedReserve } from '../pool/useUserGhoPoolFormattedReserve';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
