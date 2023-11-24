@@ -39,7 +39,6 @@ import {
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
-import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
@@ -50,11 +49,12 @@ import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
+import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData } from './poolSelectors';
 import { RootStore } from './root';
 
 // TODO: what is the better name for this type?
@@ -97,7 +97,9 @@ export interface PoolSlice {
   debtSwitch: (args: DebtSwitchActionProps) => PopulatedTransaction;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
-  claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
+  claimRewards: (
+    args: ClaimRewardsActionsProps & { formattedReserves: FormattedReservesAndIncentives[] }
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
@@ -715,14 +717,12 @@ export const createPoolSlice: StateCreator<
         user,
       });
     },
-    claimRewards: async ({ selectedReward }) => {
+    claimRewards: async ({ formattedReserves, selectedReward }) => {
       // TODO: think about moving timestamp from hook to EventEmitter
-      const timestamp = dayjs().unix();
-      const reserves = selectFormattedReserves(get(), timestamp);
       const currentAccount = get().account;
 
       const allReserves: string[] = [];
-      reserves.forEach((reserve) => {
+      formattedReserves.forEach((reserve) => {
         if (reserve.aIncentivesData && reserve.aIncentivesData.length > 0) {
           allReserves.push(reserve.aTokenAddress);
         }

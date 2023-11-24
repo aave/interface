@@ -10,7 +10,6 @@ import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
@@ -92,7 +91,6 @@ export const DebtSwitchActions = ({
     setApprovalTxState,
   } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
   const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
   const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
   const [useSignature, setUseSignature] = useState(false);
@@ -203,8 +201,6 @@ export const DebtSwitchActions = ({
 
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
-      refetchPoolData && refetchPoolData();
-      refetchIncentiveData && refetchIncentiveData();
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

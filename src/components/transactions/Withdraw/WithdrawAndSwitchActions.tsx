@@ -6,7 +6,6 @@ import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
@@ -97,7 +96,6 @@ export const WithdrawAndSwitchActions = ({
 
   const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
 
   const requiresApproval = useMemo(() => {
     if (
@@ -131,8 +129,6 @@ export const WithdrawAndSwitchActions = ({
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
-      refetchPoolData && refetchPoolData();
-      refetchIncentiveData && refetchIncentiveData();
       setMainTxState({
         txHash: response.hash,
         loading: false,

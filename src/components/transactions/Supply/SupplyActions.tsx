@@ -12,7 +12,6 @@ import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -83,7 +82,6 @@ export const SupplyActions = React.memo(
       setGasLimit,
       setTxError,
     } = useModalContext();
-    const { refetchPoolData, refetchIncentiveData } = useBackgroundDataProvider();
     const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
     const { signTxData, sendTx } = useWeb3Context();
 
@@ -250,8 +248,6 @@ export const SupplyActions = React.memo(
         });
 
         queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-        refetchPoolData && refetchPoolData();
-        refetchIncentiveData && refetchIncentiveData();
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
