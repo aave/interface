@@ -14,7 +14,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -23,7 +23,7 @@ import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';
 
 interface SupplyInfoProps {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
   currentMarketData: MarketDataType;
   renderCharts: boolean;
   showSupplyCapStatus: boolean;

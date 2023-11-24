@@ -53,11 +53,12 @@ const formatReserves = memoize(
 export const usePoolsFormattedReserves = (
   marketsData: MarketDataType[]
 ): SimplifiedUseQueryResult<FormattedReservesAndIncentives[]>[] => {
-  const poolsReservesQuery = usePoolsReservesHumanized(marketsData);
-  const poolsReservesIncentivesQuery = usePoolsReservesIncentivesHumanized(marketsData);
+  const poolsReservesQueries = usePoolsReservesHumanized(marketsData);
+  const poolsReservesIncentivesQueries = usePoolsReservesIncentivesHumanized(marketsData);
 
-  return poolsReservesQuery.map((elem, index) => {
+  return poolsReservesQueries.map((poolReservesQuery, index) => {
     const marketData = marketsData[index];
+    const poolReservesIncentivesQuery = poolsReservesIncentivesQueries[index];
     const networkConfig = getNetworkConfig(marketData.chainId);
     const selector = (
       reservesData: ReservesDataHumanized,
@@ -65,7 +66,7 @@ export const usePoolsFormattedReserves = (
     ) => {
       return formatReserves(reservesData, incentivesData, networkConfig);
     };
-    return combineQueries([elem, poolsReservesIncentivesQuery[index]] as const, selector);
+    return combineQueries([poolReservesQuery, poolReservesIncentivesQuery] as const, selector);
   });
 };
 

@@ -16,11 +16,8 @@ import { Warning } from 'src/components/primitives/Warning';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useDebtSwitch } from 'src/hooks/paraswap/useDebtSwitch';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
-import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { useRootStore } from 'src/store/root';
@@ -32,7 +29,11 @@ import {
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
 
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
@@ -73,9 +74,11 @@ export const DebtSwitchModalContent = ({
   user,
 }: ModalWrapperProps & { currentRateMode: InterestRate; user: ExtendedFormattedUser }) => {
   const { reserves, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState, txError, setTxError } = useModalContext();
+
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
@@ -108,7 +111,7 @@ export const DebtSwitchModalContent = ({
 
   const switchTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
-  ) as FormattedUserReserves;
+  ) as ComputedUserReserveData;
 
   const maxAmountToSwitch =
     currentRateMode === InterestRate.Variable

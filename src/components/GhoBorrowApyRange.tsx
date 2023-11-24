@@ -8,8 +8,7 @@ import {
 import { Variant } from '@mui/material/styles/createTypography';
 import { OverridableStringUnion } from '@mui/types';
 import React from 'react';
-import { useGhoPoolFormattedReserve } from 'src/hooks/pool/useGhoPoolFormattedReserve';
-import { useRootStore } from 'src/store/root';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
@@ -32,10 +31,9 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
   hyphenVariant,
   ...rest
 }) => {
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: ghoReserveData } = useGhoPoolFormattedReserve(currentMarketData);
+  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
 
-  if (!ghoReserveData) return <Skeleton width={70} height={24} />;
+  if (ghoLoadingData) return <Skeleton width={70} height={24} />;
 
   // Check precision, could be different by small amount but show same
   const lowRangeValue = minVal ?? ghoReserveData.ghoBorrowAPYWithMaxDiscount;

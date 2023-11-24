@@ -6,14 +6,14 @@ import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -22,8 +22,8 @@ import { APPROVAL_GAS_LIMIT } from '../utils';
 interface WithdrawAndSwitchProps extends BoxProps {
   amountToSwap: string;
   amountToReceive: string;
-  poolReserve: FormattedReservesAndIncentives;
-  targetReserve: FormattedReservesAndIncentives;
+  poolReserve: ComputedReserveData;
+  targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   blocked: boolean;
   isMaxSelected: boolean;
@@ -127,17 +127,9 @@ export const WithdrawAndSwitchActions = ({
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_RESERVE_DATA] });
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.GHO_USER_RESERVE_DATA] });
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.USER_POOL_RESERVES_INCENTIVE_DATA_HUMANIZED],
-      });
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_RESERVES_DATA_HUMANIZED] });
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_POOL_RESERVES_DATA_HUMANIZED] });
+
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
       setMainTxState({
         txHash: response.hash,
         loading: false,

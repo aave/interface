@@ -12,7 +12,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
@@ -31,7 +31,7 @@ interface MigrationListItemProps {
   enableAsCollateral?: () => void;
   isIsolated?: boolean;
   borrowApyType?: string;
-  userReserve: FormattedUserReserves;
+  userReserve: ComputedUserReserveData;
   v3Rates?: V3Rates;
   enteringIsolation: boolean;
   userControlledCollateral?: boolean;

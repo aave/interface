@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { displayGho } from 'src/utils/ghoUtilities';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -16,7 +17,8 @@ export const BorrowModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
-  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { currentMarket } = useProtocolDataContext();
+
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [trackEvent] = useRootStore((store) => [store.trackEvent]);
 
@@ -31,7 +33,6 @@ export const BorrowModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Borrow} setOpen={close}>
-      {}
       <ModalWrapper
         action="borrow"
         title={<Trans>Borrow</Trans>}

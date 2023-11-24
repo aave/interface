@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
 
 type InteresetRateModelGraphContainerProps = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
 };
 
 export type Field = 'stableBorrowRate' | 'variableBorrowRate' | 'utilizationRate';

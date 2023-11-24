@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-05 00:17\n"
+"PO-Revision-Date: 2023-11-15 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -101,13 +101,10 @@ msgstr "应用折扣的 APY"
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
 #: src/modules/reserve-overview/Gho/GhoBorrowInfo.tsx
-msgid "APY, fixed rate"
-msgstr "APY，固定利率"
+msgid "APY, borrow rate"
+msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY，稳定"
 
@@ -462,15 +459,6 @@ msgstr "借用年化收益率"
 msgid "Borrow APY rate"
 msgstr "借入年利率"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Borrow APY, fixed rate"
-msgstr "借入年化收益率，固定利率"
-
-#: src/modules/markets/MarketAssetsList.tsx
-#: src/modules/markets/MarketAssetsListMobileItem.tsx
-msgid "Borrow APY, stable"
-msgstr "借入年化收益率，稳定"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -518,6 +506,10 @@ msgstr "借用信息"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "借用功率"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate APY"
+msgstr ""
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
@@ -1216,6 +1208,10 @@ msgstr "利率再平衡条件未得到满足"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
 msgstr "利率策略"
+
+#: src/components/infoTooltips/FixedAPYTooltip.tsx
+msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -2168,10 +2164,6 @@ msgstr "开始"
 msgid "State"
 msgstr "州"
 
-#: src/components/infoTooltips/FixedAPYTooltip.tsx
-msgid "Static interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
-msgstr "由 Aave Governance 确定的静态利率。该速率可能会随着时间的推移而变化，具体取决于 GHO 供应收缩/扩展的需要。 <0>了解更多信息</0>"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "提供"
@@ -2452,10 +2444,6 @@ msgstr "此操作将降低您的健康因素。请注意抵押品清算的风险
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "此地址在 app.aave.com 上被阻止，因为它与一个或多个相关联"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset been paused due to a community decision. Supply, borrows and repays are impacted."
-msgstr ""
-
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "这项资产几乎达到了借贷上限。只有 {messageValue} 可从该市场借用。"
@@ -2463,6 +2451,10 @@ msgstr "这项资产几乎达到了借贷上限。只有 {messageValue} 可从�
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "该资产几乎已达到其供应上限。只能有 {messageValue} 供应给这个市场。"
+
+#: src/components/infoTooltips/PausedTooltip.tsx
+msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+msgstr ""
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."

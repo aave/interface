@@ -7,8 +7,8 @@ import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -16,8 +16,8 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 interface SwapBaseProps extends BoxProps {
   amountToSwap: string;
   amountToReceive: string;
-  poolReserve: FormattedReservesAndIncentives;
-  targetReserve: FormattedReservesAndIncentives;
+  poolReserve: ComputedReserveData;
+  targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;

@@ -20,8 +20,10 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -115,8 +117,8 @@ export const GhoBorrowModalContent = ({
   user,
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { mainTxState: borrowTxState, gasLimit, txError, close: closeModal } = useModalContext();
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const customMarket = useRootStore((store) => store.currentMarket);
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const currentMarket = useRootStore((state) => state.currentMarket);
   const { marketReferencePriceInUsd, ghoReserveData, ghoUserData, ghoLoadingData } =
     useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
@@ -135,7 +137,7 @@ export const GhoBorrowModalContent = ({
     : false;
 
   // amount calculations
-  let maxAmountToBorrow = user ? getMaxGhoMintAmount(user, poolReserve) : '0';
+  let maxAmountToBorrow = getMaxGhoMintAmount(user, poolReserve);
   maxAmountToBorrow = Math.min(
     Number(maxAmountToBorrow),
     ghoReserveData.aaveFacilitatorRemainingCapacity
@@ -283,7 +285,7 @@ export const GhoBorrowModalContent = ({
           caption={
             <Box>
               <FixedAPYTooltip
-                text={<Trans>APY, fixed rate</Trans>}
+                text={<Trans>APY, borrow rate</Trans>}
                 variant="subheader2"
                 color="text.secondary"
               />
@@ -302,7 +304,7 @@ export const GhoBorrowModalContent = ({
                 discountAvailable={discountAvailable}
                 userDiscountTokenBalance={ghoUserData.userDiscountTokenBalance}
                 underlyingAsset={underlyingAsset}
-                customMarket={customMarket}
+                customMarket={currentMarket}
                 currentBorrowAPY={currentBorrowAPY}
                 futureBorrowAPY={futureBorrowAPY}
                 onDetailsClick={() => closeModal()}

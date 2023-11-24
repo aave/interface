@@ -5,14 +5,14 @@ import * as React from 'react';
 import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
 
 interface TokenLinkDropdownProps {
-  poolReserve: FormattedReservesAndIncentives;
+  poolReserve: ComputedReserveData;
   downToSM: boolean;
   hideAToken?: boolean;
 }

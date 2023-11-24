@@ -11,18 +11,17 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { MarketLogo } from 'src/components/MarketSwitcher';
-import {
-  FormattedReservesAndIncentives,
-  usePoolFormattedReserves,
-} from 'src/hooks/pool/usePoolFormattedReserves';
+import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { displayGho } from 'src/utils/ghoUtilities';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../hooks/app-data-provider/useAppDataProvider';
 import { AddTokenDropdown } from './AddTokenDropdown';
 import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
@@ -30,32 +29,21 @@ import { TokenLinkDropdown } from './TokenLinkDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
-  marketData: MarketDataType;
 }
 
-export const ReserveTopDetailsWrapper = ({
-  underlyingAsset,
-  marketData,
-}: ReserveTopDetailsProps) => {
+export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
-  const {
-    data: formattedReserves,
-    isLoading: formattedReservesLoading,
-    error: formattedReservesError,
-  } = usePoolFormattedReserves(marketData);
-
-  const loading = !!formattedReservesError || formattedReservesLoading;
-
-  const chainId = marketData.chainId;
+  const { reserves, loading } = useAppDataContext();
+  const { currentMarket, currentChainId } = useProtocolDataContext();
+  const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
-  const networkConfig = getNetworkConfig(marketData.chainId);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const poolReserve = (formattedReserves || []).find(
+  const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as FormattedReservesAndIncentives;
+  ) as ComputedReserveData;
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 
@@ -84,7 +72,7 @@ export const ReserveTopDetailsWrapper = ({
     );
   };
 
-  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket: marketData.market });
+  const isGho = displayGho({ symbol: poolReserve.symbol, currentMarket });
 
   return (
     <TopInfoPanel
@@ -120,11 +108,11 @@ export const ReserveTopDetailsWrapper = ({
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo size={20} logo={networkConfig.networkLogoPath} />
+              <MarketLogo size={20} logo={network.networkLogoPath} />
               <Typography variant="subheader1" sx={{ color: 'common.white' }}>
-                {marketData.marketTitle} <Trans>Market</Trans>
+                {market.marketTitle} <Trans>Market</Trans>
               </Typography>
-              {marketData.v3 && (
+              {market.v3 && (
                 <Box
                   sx={{
                     color: '#fff',
@@ -166,7 +154,7 @@ export const ReserveTopDetailsWrapper = ({
                           downToSM={downToSM}
                           switchNetwork={switchNetwork}
                           addERC20Token={addERC20Token}
-                          currentChainId={chainId}
+                          currentChainId={currentChainId}
                           connectedChainId={connectedChainId}
                           hideAToken={isGho}
                         />
@@ -203,7 +191,7 @@ export const ReserveTopDetailsWrapper = ({
                     downToSM={downToSM}
                     switchNetwork={switchNetwork}
                     addERC20Token={addERC20Token}
-                    currentChainId={chainId}
+                    currentChainId={currentChainId}
                     connectedChainId={connectedChainId}
                     hideAToken={isGho}
                   />

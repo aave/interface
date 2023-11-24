@@ -9,7 +9,6 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -17,7 +16,10 @@ import { displayGho } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
-import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
@@ -68,11 +70,11 @@ export const SupplyAssetsList = () => {
 
   const tokensToSupply = reserves
     .filter(
-      (reserve: FormattedReservesAndIncentives) =>
+      (reserve: ComputedReserveData) =>
         !(reserve.isFrozen || reserve.isPaused) &&
         !displayGho({ symbol: reserve.symbol, currentMarket })
     )
-    .map((reserve: FormattedReservesAndIncentives) => {
+    .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
       let availableToDeposit = valueToBigNumber(walletBalance);

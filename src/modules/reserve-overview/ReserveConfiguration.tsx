@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
@@ -11,7 +12,7 @@ import {
   AssetsBeingOffboarded,
   OffboardingWarning,
 } from 'src/components/Warnings/OffboardingWarning';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
@@ -25,7 +26,7 @@ import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
 
 type ReserveConfigurationProps = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
@@ -88,10 +89,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             </Warning>
           ) : (
             <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-              <Trans>
-                This asset been paused due to a community decision. Supply, borrows and repays are
-                impacted.{' '}
-              </Trans>
+              <PausedTooltipText />
             </Warning>
           )
         ) : null}

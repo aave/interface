@@ -1,7 +1,9 @@
 import { Box, CircularProgress } from '@mui/material';
 import React, { ReactNode } from 'react';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import invariant from 'tiny-invariant';
 
 interface UserAuthenticatedProps {

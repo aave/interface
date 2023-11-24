@@ -51,6 +51,7 @@ export const SuppliedPositionsListItem = ({
       detailsAddress={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      paused={isPaused}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
         canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}

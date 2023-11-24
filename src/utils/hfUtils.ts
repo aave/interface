@@ -6,24 +6,26 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
-import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
+import {
+  ComputedReserveData,
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 interface CalculateHFAfterSwapProps {
   fromAmount: BigNumberValue;
-  fromAssetData: FormattedReservesAndIncentives;
+  fromAssetData: ComputedReserveData;
   fromAssetUserData: ComputedUserReserve;
   toAmountAfterSlippage: BigNumberValue;
-  toAssetData: FormattedReservesAndIncentives;
+  toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
 }
 
 interface CalculateHFAfterSwapRepayProps {
   amountToReceiveAfterSwap: BigNumberValue;
   amountToSwap: BigNumberValue;
-  fromAssetData: FormattedReservesAndIncentives;
-  toAssetData: FormattedReservesAndIncentives;
+  fromAssetData: ComputedReserveData;
+  toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
   repayWithUserReserve?: UserReserveData;
   debt: string;
@@ -31,8 +33,8 @@ interface CalculateHFAfterSwapRepayProps {
 
 interface CalculateHFAfterWithdrawProps {
   user: ExtendedFormattedUser;
-  userReserve: FormattedUserReserves;
-  poolReserve: FormattedReservesAndIncentives;
+  userReserve: ComputedUserReserveData;
+  poolReserve: ComputedReserveData;
   withdrawAmount: string;
 }
 
