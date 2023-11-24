@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
@@ -15,7 +16,7 @@ import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { currentMarket } = useProtocolDataContext();
   const { isPermissionsLoading } = usePermissions();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -25,7 +26,7 @@ export default function Home() {
       'Page Name': 'Dashboard',
       Market: currentMarket,
     });
-  }, [trackEvent, currentMarket]);
+  }, [trackEvent]);
 
   return (
     <>
