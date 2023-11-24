@@ -361,6 +361,7 @@ msgstr "Author"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "Available"
 msgstr "Available"
 

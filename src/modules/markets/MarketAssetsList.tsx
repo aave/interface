@@ -39,6 +39,10 @@ const listHeaders = [
     ),
     sortKey: 'variableBorrowAPY',
   },
+  {
+    title: <Trans>Available</Trans>,
+    sortKey: 'availableLiquidityUSD',
+  },
   // {
   //   title: (
   //     <StableAPYTooltip

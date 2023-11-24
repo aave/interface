@@ -123,6 +123,15 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         )}
       </ListColumn> */}
 
+      <ListColumn>
+        <FormattedNumber
+          compact
+          value={Number(reserve.totalLiquidity) - Number(reserve.totalDebt)}
+          variant="main16"
+        />
+        <ReserveSubheader value={reserve.availableLiquidityUSD} />
+      </ListColumn>
+
       <ListColumn minWidth={95} maxWidth={95} align="right">
         <Button
           variant="outlined"
