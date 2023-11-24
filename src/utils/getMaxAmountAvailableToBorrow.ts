@@ -9,7 +9,7 @@ import {
 } from '../hooks/app-data-provider/useAppDataProvider';
 import { roundToTokenDecimals } from './utils';
 
-// Subset of FormattedReservesAndIncentives
+// Subset of ComputedReserveData
 interface PoolReserveBorrowSubset {
   borrowCap: string;
   availableLiquidityUSD: string;

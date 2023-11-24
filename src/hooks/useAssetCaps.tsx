@@ -123,7 +123,7 @@ export const useAssetCaps = () => {
 
 /**
  * Calculates supply cap usage and % of totalLiquidity / supplyCap.
- * @param asset FormattedReservesAndIncentives
+ * @param asset ComputedReserveData
  * @returns { supplyCapUsage: number, supplyCapReached: boolean }
  */
 export const getSupplyCapData = (asset: ComputedReserveData) => {
@@ -137,7 +137,7 @@ export const getSupplyCapData = (asset: ComputedReserveData) => {
 
 /**
  * Calculates borrow cap usage and % of totalDebt / borrowCap.
- * @param asset FormattedReservesAndIncentives
+ * @param asset ComputedReserveData
  * @returns { borrowCapUsage: number, borrowCapReached: boolean }
  */
 export const getBorrowCapData = (asset: ComputedReserveData) => {
