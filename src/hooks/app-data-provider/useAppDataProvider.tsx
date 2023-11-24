@@ -77,7 +77,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const currentMarket = useRootStore((state) => state.currentMarket);
-
   // pool hooks
 
   const { data: reservesData, isLoading: reservesDataLoading } =
@@ -95,7 +94,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     useExtendedUserSummaryAndIncentives(currentMarketData);
   const userReserves = userReservesData?.userReserves;
 
-  //g gho hooks
+  // gho hooks
   const { data: formattedGhoUserData, isLoading: isGhoUserDataLoading } =
     useUserGhoPoolFormattedReserve(currentMarketData);
   const { data: formattedGhoReserveData, isLoading: ghoReserveDataLoading } =
@@ -128,9 +127,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
 
   let user = userSummary;
+  // Factor discounted GHO interest into cumulative user fields
 
   const isGhoInMarket = GHO_SUPPORTED_MARKETS.includes(currentMarket);
-  // Factor discounted GHO interest into cumulative user fields
+
   if (isGhoInMarket && reservesData && formattedGhoUserData) {
     const baseCurrencyData = reservesData.baseCurrencyData;
     if (formattedGhoUserData.userDiscountedGhoInterest > 0 && user) {
