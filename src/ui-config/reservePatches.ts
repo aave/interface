@@ -90,7 +90,7 @@ export interface IconSymbolInterface {
   name?: string;
 }
 
-interface IconMapInterface {
+export interface IconMapInterface {
   iconSymbol: string;
   name?: string;
   symbol?: string;

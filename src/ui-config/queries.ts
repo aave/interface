@@ -65,6 +65,12 @@ export const queryKeysFactory = {
     ...queryKeysFactory.market(marketData),
     'generalStakeUiData',
   ],
+  userPoolReservesDataHumanized: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    'userPoolReservesDataHumanized',
+  ],
   userStakeUiData: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.staking,
     ...queryKeysFactory.user(user),
@@ -79,6 +85,19 @@ export const queryKeysFactory = {
     user: string
   ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
+  poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.incentives,
+    ...queryKeysFactory.market(marketData),
+    'poolReservesIncentiveDataHumanized',
+  ],
+  userPoolReservesIncentiveDataHumanized: (user: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.incentives,
+    ...queryKeysFactory.market(marketData),
+    ...queryKeysFactory.user(user),
+    'userPoolReservesIncentiveDataHumanized',
+  ],
   ghoReserveData: (marketData: MarketDataType) => [
     ...queryKeysFactory.gho,
     ...queryKeysFactory.market(marketData),
