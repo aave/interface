@@ -30,7 +30,10 @@ export class UiPoolService {
     });
   }
 
-  async getUserReservesHumanized(marketData: MarketDataType, user: string): Promise<UserReservesDataHumanized> {
+  async getUserReservesHumanized(
+    marketData: MarketDataType,
+    user: string
+  ): Promise<UserReservesDataHumanized> {
     const uiPoolDataProvider = this.getUiPoolDataService(marketData);
     return uiPoolDataProvider.getUserReservesHumanized({
       user,
