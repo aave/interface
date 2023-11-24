@@ -10,7 +10,6 @@ import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalD
 import { StETHCollateralWarning } from 'src/components/Warnings/StETHCollateralWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { getDebtCeilingData } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -23,6 +22,7 @@ import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';

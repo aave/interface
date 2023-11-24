@@ -11,10 +11,10 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { DetailsIncentivesLine } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { weightedAverageAPY } from 'src/utils/ghoUtilities';
 
+import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { GhoRange } from './DebtSwitchModalContent';
 
 export type DebtSwitchModalDetailsProps = {

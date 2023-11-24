@@ -9,7 +9,6 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGho, findAndFilterGhoReserve } from 'src/utils/ghoUtilities';
@@ -19,7 +18,10 @@ import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
-import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
@@ -99,7 +101,7 @@ export const BorrowAssetsList = () => {
 
   const tokensToBorrow = reserves
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
-    .map((reserve: FormattedReservesAndIncentives) => {
+    .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? Number(getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable))
         : 0;
@@ -130,6 +132,7 @@ export const BorrowAssetsList = () => {
           : {}),
       };
     });
+
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );

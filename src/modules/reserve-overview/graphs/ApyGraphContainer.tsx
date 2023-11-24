@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
@@ -19,7 +19,7 @@ type ApyGraphContainerKey = 'supply' | 'borrow';
 
 type ApyGraphContainerProps = {
   graphKey: ApyGraphContainerKey;
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
   currentMarketData: MarketDataType;
 };
 

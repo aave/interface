@@ -8,7 +8,7 @@ import { BorrowCapWarning } from 'src/components/transactions/Warnings/BorrowCap
 import { DebtCeilingWarning } from 'src/components/transactions/Warnings/DebtCeilingWarning';
 import { SupplyCapWarning } from 'src/components/transactions/Warnings/SupplyCapWarning';
 
-import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
+import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 
 type WarningDisplayProps = {
   supplyCap?: AssetCapData;
@@ -29,13 +29,13 @@ export type AssetCapHookData = AssetCapData & {
 };
 
 export type AssetCapUsageData = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
   supplyCap: AssetCapHookData;
   borrowCap: AssetCapHookData;
   debtCeiling: AssetCapHookData;
 };
 
-const getAssetCapData = (asset: FormattedReservesAndIncentives): AssetCapUsageData => {
+const getAssetCapData = (asset: ComputedReserveData): AssetCapUsageData => {
   const { supplyCapUsage, supplyCapReached } = getSupplyCapData(asset);
   const { borrowCapUsage, borrowCapReached } = getBorrowCapData(asset);
   const { debtCeilingUsage, debtCeilingReached } = getDebtCeilingData(asset);
@@ -92,7 +92,7 @@ export const AssetCapsProvider = ({
   asset,
 }: {
   children: ReactNode;
-  asset: FormattedReservesAndIncentives;
+  asset: ComputedReserveData;
 }): JSX.Element | null => {
   // Return if no reserve is provided
   if (!asset) {
@@ -126,7 +126,7 @@ export const useAssetCaps = () => {
  * @param asset FormattedReservesAndIncentives
  * @returns { supplyCapUsage: number, supplyCapReached: boolean }
  */
-export const getSupplyCapData = (asset: FormattedReservesAndIncentives) => {
+export const getSupplyCapData = (asset: ComputedReserveData) => {
   let supplyCapUsage: number = asset
     ? valueToBigNumber(asset.totalLiquidity).dividedBy(asset.supplyCap).toNumber() * 100
     : 0;
@@ -140,7 +140,7 @@ export const getSupplyCapData = (asset: FormattedReservesAndIncentives) => {
  * @param asset FormattedReservesAndIncentives
  * @returns { borrowCapUsage: number, borrowCapReached: boolean }
  */
-export const getBorrowCapData = (asset: FormattedReservesAndIncentives) => {
+export const getBorrowCapData = (asset: ComputedReserveData) => {
   let borrowCapUsage: number = asset
     ? valueToBigNumber(asset.totalDebt).dividedBy(asset.borrowCap).toNumber() * 100
     : 0;
@@ -154,7 +154,7 @@ export const getBorrowCapData = (asset: FormattedReservesAndIncentives) => {
  * @param asset
  * @returns {debtCeilingUsage: number, debtCeilingReached: boolean}
  */
-export const getDebtCeilingData = (asset: FormattedReservesAndIncentives) => {
+export const getDebtCeilingData = (asset: ComputedReserveData) => {
   let debtCeilingUsage: number = asset
     ? valueToBigNumber(asset.isolationModeTotalDebt).dividedBy(asset.debtCeiling).toNumber() * 100
     : 0;

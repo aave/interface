@@ -13,7 +13,8 @@ import {
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { CollateralType } from 'src/helpers/types';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+
+import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;

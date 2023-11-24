@@ -7,10 +7,10 @@ import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactToolt
 import { Warning } from 'src/components/primitives/Warning';
 import {
   ComputedUserReserveData,
+  ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';

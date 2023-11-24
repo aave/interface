@@ -2,9 +2,11 @@ import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
-import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 
+import {
+  ComputedReserveData,
+  ExtendedFormattedUser,
+} from '../hooks/app-data-provider/useAppDataProvider';
 import { roundToTokenDecimals } from './utils';
 
 // Subset of FormattedReservesAndIncentives
@@ -157,7 +159,7 @@ export function assetCanBeBorrowedByUser(
     eModeCategoryId,
     isFrozen,
     isPaused,
-  }: FormattedReservesAndIncentives,
+  }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
   if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;

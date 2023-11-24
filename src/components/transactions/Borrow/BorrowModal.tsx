@@ -18,6 +18,7 @@ export const BorrowModal = () => {
     underlyingAsset: string;
   }>;
   const { currentMarket } = useProtocolDataContext();
+
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [trackEvent] = useRootStore((store) => [store.trackEvent]);
 

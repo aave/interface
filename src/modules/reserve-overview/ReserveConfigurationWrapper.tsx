@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { displayGho } from 'src/utils/ghoUtilities';
 
 type ReserveConfigurationProps = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
 };
 
 const GhoReserveConfiguration = dynamic(() =>

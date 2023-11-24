@@ -8,7 +8,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -18,7 +18,7 @@ import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem } from './ReservePanels';
 
 interface BorrowInfoProps {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
   currentMarketData: MarketDataType;
   currentNetworkConfig: NetworkConfig;
   renderCharts: boolean;

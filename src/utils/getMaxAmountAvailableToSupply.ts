@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { roundToTokenDecimals } from './utils';
 
-// Subset of FormattedReservesAndIncentives
+// Subset of ComputedReserveData
 interface PoolReserveSupplySubset {
   supplyCap: string;
   debtCeiling: string;

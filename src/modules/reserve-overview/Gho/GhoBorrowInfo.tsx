@@ -5,14 +5,16 @@ import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { PanelItem } from '../ReservePanels';
 
-export const GhoBorrowInfo = ({ reserve }: { reserve: FormattedReservesAndIncentives }) => {
+export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => {
   const { ghoReserveData } = useAppDataContext();
   const { breakpoints } = useTheme();
   const desktopScreens = useMediaQuery(breakpoints.up('sm'));
@@ -25,7 +27,7 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: FormattedReservesAndIncent
 };
 
 interface GhoBorrowInfoProps {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
   ghoReserveData: FormattedGhoReserveData;
 }
 

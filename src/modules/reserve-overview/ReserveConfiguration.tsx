@@ -12,7 +12,7 @@ import {
   AssetsBeingOffboarded,
   OffboardingWarning,
 } from 'src/components/Warnings/OffboardingWarning';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
@@ -26,7 +26,7 @@ import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
 
 type ReserveConfigurationProps = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {

@@ -2,7 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
@@ -10,7 +10,7 @@ import { GhoBorrowInfo } from './GhoBorrowInfo';
 import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 
 type GhoReserveConfigurationProps = {
-  reserve: FormattedReservesAndIncentives;
+  reserve: ComputedReserveData;
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {

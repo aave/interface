@@ -7,7 +7,6 @@ import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
-import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
@@ -18,9 +17,10 @@ import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
+import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 import { MARKETS } from '../../utils/mixPanelEvents';
 
-export const MarketAssetsListItem = ({ ...reserve }: FormattedReservesAndIncentives) => {
+export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
