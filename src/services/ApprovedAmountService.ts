@@ -1,4 +1,4 @@
-import { ApproveType, ERC20Service, LendingPoolBundle, PoolBundle } from '@aave/contract-helpers';
+import { ApproveType } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -7,11 +7,13 @@ export class ApprovedAmountService {
 
   private async getERC20Service(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
+    const ERC20Service = (await import('@aave/contract-helpers')).ERC20Service;
     return new ERC20Service(provider);
   }
 
   private async getPoolService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
+    const PoolBundle = (await import('@aave/contract-helpers')).PoolBundle;
     return new PoolBundle(provider, {
       POOL: marketData.addresses.LENDING_POOL,
       WETH_GATEWAY: marketData.addresses.WETH_GATEWAY,
@@ -21,6 +23,7 @@ export class ApprovedAmountService {
 
   private async getLendingPoolService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
+    const LendingPoolBundle = (await import('@aave/contract-helpers')).LendingPoolBundle;
     return new LendingPoolBundle(provider, {
       LENDING_POOL: marketData.addresses.LENDING_POOL,
       WETH_GATEWAY: marketData.addresses.WETH_GATEWAY,
