@@ -635,7 +635,7 @@
     },
     "USDC": {
       "fullName": "Bridged USDC",
-      "shortName": "USDC.e",
+      "shortName": "USDC.E",
       "collateral": true,
       "wrapped": false
     },
