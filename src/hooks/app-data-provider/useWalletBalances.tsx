@@ -97,10 +97,3 @@ export const useWalletBalances = (marketData: MarketDataType) => {
     loading: isLoading,
   };
 };
-
-// export const useWrappedTokenInBalances = (wrappedTokenConfig: WrappedTokenConfig[]) => {
-//   const foo = useTokenInBalances(wrappedTokenConfig);
-//   return {
-//     balances: foo.
-//   }
-// }
