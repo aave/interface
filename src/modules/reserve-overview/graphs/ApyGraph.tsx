@@ -1,4 +1,5 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Annotation, HtmlLabel } from '@visx/annotation';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
@@ -10,7 +11,7 @@ import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { bisector, extent, max } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { Fragment, ReactNode, useCallback, useMemo } from 'react';
 import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
 type TooltipData = FormattedReserveHistoryItem;
@@ -59,6 +60,7 @@ export type AreaProps = {
   data: FormattedReserveHistoryItem[];
   fields: { name: Field; color: string; text: string }[];
   selectedTimeRange: ReserveRateTimeRange;
+  avgFieldName?: Field;
 };
 
 export const ApyGraph = withTooltip<AreaProps, TooltipData>(
@@ -73,6 +75,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
     data,
     fields,
     selectedTimeRange,
+    avgFieldName,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
@@ -140,6 +143,57 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
       [showTooltip, dateScale, data, margin]
     );
 
+    let avgLine: ReactNode = null;
+    if (avgFieldName) {
+      const avg = data.reduce((acc, cur) => acc + cur[avgFieldName], 0) / data.length;
+      if (avg > 0) {
+        const avgFormatted = (avg * 100).toFixed(2);
+        const avgArray = data.map((d) => {
+          return {
+            ...d,
+            [avgFieldName]: avg,
+          };
+        });
+
+        const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 70;
+        const annotationY = (yValueScale(getData(avgArray[0], avgFieldName)) ?? 0) - 8;
+
+        avgLine = (
+          <>
+            <LinePath
+              key="avg"
+              data={avgArray}
+              strokeDasharray="3,5"
+              stroke="#D2D4DC"
+              strokeWidth={2}
+              x={(d) => dateScale(getDate(d)) ?? 0}
+              y={(d) => yValueScale(getData(d, avgFieldName)) ?? 0}
+            />
+            <Annotation x={annotationX} y={annotationY}>
+              <HtmlLabel showAnchorLine={false}>
+                <Stack
+                  alignItems="center"
+                  direction="row"
+                  justifyContent="center"
+                  sx={{
+                    mx: 2,
+                    my: 0.5,
+                    fontSize: 12,
+                    background: theme.palette.divider,
+                    borderRadius: '99px',
+                  }}
+                >
+                  <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                    Avg {avgFormatted}%
+                  </Typography>
+                </Stack>
+              </HtmlLabel>
+            </Annotation>
+          </>
+        );
+      }
+    }
+
     return (
       <>
         <svg width={width} height={height}>
@@ -166,6 +220,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                 curve={curveMonotoneX}
               />
             ))}
+
+            {avgLine}
 
             {/* X Axis */}
             <AxisBottom

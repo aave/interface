@@ -23,8 +23,6 @@ export const BorrowAssetsListItem = ({
   borrowCap,
   totalBorrows,
   variableBorrowRate,
-  stableBorrowRate,
-  sIncentivesData,
   vIncentivesData,
   underlyingAsset,
   isFreezed,
@@ -50,7 +48,7 @@ export const BorrowAssetsListItem = ({
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
-        withTooltip
+        withTooltip={false}
         capsComponent={
           <CapsHint
             capType={CapType.borrowCap}
@@ -65,11 +63,11 @@ export const BorrowAssetsListItem = ({
         incentives={vIncentivesData}
         symbol={symbol}
       />
-      <ListAPRColumn
+      {/* <ListAPRColumn
         value={Number(stableBorrowRate)}
         incentives={sIncentivesData}
         symbol={symbol}
-      />
+      /> */}
       <ListButtonsColumn>
         <Button
           disabled={disableBorrow}

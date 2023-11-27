@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
@@ -71,20 +72,26 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         )}
 
         {reserve.isPaused ? (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
-            <Trans>
-              MAI has been paused due to a community decision. Supply, borrows and repays are
-              impacted.{' '}
-              <Link
-                href={
-                  'https://governance.aave.com/t/arfc-add-mai-to-arbitrum-aave-v3-market/12759/8'
-                }
-                sx={{ textDecoration: 'underline' }}
-              >
-                <Trans>More details</Trans>
-              </Link>
-            </Trans>
-          </Warning>
+          reserve.symbol === 'MAI' ? (
+            <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+              <Trans>
+                MAI has been paused due to a community decision. Supply, borrows and repays are
+                impacted.{' '}
+                <Link
+                  href={
+                    'https://governance.aave.com/t/arfc-add-mai-to-arbitrum-aave-v3-market/12759/8'
+                  }
+                  sx={{ textDecoration: 'underline' }}
+                >
+                  <Trans>More details</Trans>
+                </Link>
+              </Trans>
+            </Warning>
+          ) : (
+            <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+              <PausedTooltipText />
+            </Warning>
+          )
         ) : null}
       </Box>
 

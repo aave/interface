@@ -25,8 +25,17 @@ export const SuppliedPositionsListMobileItem = ({
   const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
-    reserve;
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    supplyAPY,
+    isIsolated,
+    aIncentivesData,
+    isFrozen,
+    isActive,
+    isPaused,
+  } = reserve;
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
@@ -35,9 +44,9 @@ export const SuppliedPositionsListMobileItem = ({
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
-  const disableSwap = !isActive || reserve.symbol == 'stETH';
-  const disableWithdraw = !isActive;
-  const disableSupply = !isActive || isFrozen;
+  const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive || isPaused;
+  const disableSupply = !isActive || isFrozen || isPaused;
 
   return (
     <ListMobileItemWrapper
@@ -78,6 +87,7 @@ export const SuppliedPositionsListMobileItem = ({
         mb={2}
       >
         <ListItemUsedAsCollateral
+          disabled={reserve.isPaused}
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
@@ -117,7 +127,7 @@ export const SuppliedPositionsListMobileItem = ({
           disabled={disableWithdraw}
           variant="outlined"
           onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          sx={{ mr: 1.5 }}
+          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Withdraw</Trans>
