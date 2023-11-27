@@ -79,6 +79,20 @@ export const queryKeysFactory = {
     user: string
   ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
+  poolApprovedAmount: (user: string, token: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.pool,
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    token,
+    'poolApprovedAmount',
+  ],
+  approvedAmount: (user: string, token: string, spender: string, marketData: MarketDataType) => [
+    ...queryKeysFactory.user(user),
+    ...queryKeysFactory.market(marketData),
+    token,
+    spender,
+    'approvedAmount',
+  ],
 };
 
 export const POLLING_INTERVAL = 60000;
