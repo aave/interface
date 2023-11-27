@@ -634,8 +634,8 @@
       "wrapped": false
     },
     "USDC": {
-      "fullName": "USD Coin",
-      "shortName": "USDC",
+      "fullName": "Bridged USDC",
+      "shortName": "USDC.e",
       "collateral": true,
       "wrapped": false
     },
