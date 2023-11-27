@@ -33722,6 +33722,8 @@ var require_types2 = __commonJS({
       ProtocolAction2["liquidationCall"] = "liquidationCall";
       ProtocolAction2["liquidationFlash"] = "liquidationFlash";
       ProtocolAction2["repay"] = "repay";
+      ProtocolAction2["repayETH"] = "repayETH";
+      ProtocolAction2["repayWithATokens"] = "repayWithATokens";
       ProtocolAction2["swapCollateral"] = "swapCollateral";
       ProtocolAction2["repayCollateral"] = "repayCollateral";
       ProtocolAction2["withdrawETH"] = "withdrawETH";
@@ -35341,6 +35343,10 @@ var require_utils6 = __commonJS({
         limit: "300000",
         recommended: "300000"
       },
+      [types_1.ProtocolAction.repayETH]: {
+        limit: "350000",
+        recommended: "300000"
+      },
       [types_1.ProtocolAction.borrowETH]: {
         limit: "450000",
         recommended: "450000"
@@ -35369,6 +35375,10 @@ var require_utils6 = __commonJS({
         limit: "350000",
         recommended: "350000"
       },
+      [types_1.ProtocolAction.stake]: {
+        limit: "350000",
+        recommended: "350000"
+      },
       [types_1.ProtocolAction.stakeWithPermit]: {
         limit: "400000",
         recommended: "400000"
@@ -35377,10 +35387,6 @@ var require_utils6 = __commonJS({
         limit: "125000",
         recommended: "125000"
       },
-      [types_1.ProtocolAction.stake]: {
-        limit: "395000",
-        recommended: "395000"
-      },
       [types_1.ProtocolAction.claimRewards]: {
         limit: "275000",
         recommended: "275000"
@@ -35388,6 +35394,10 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.setUsageAsCollateral]: {
         limit: "138000",
         recommended: "138000"
+      },
+      [types_1.ProtocolAction.repayWithATokens]: {
+        limit: "300000",
+        recommended: "300000"
       },
       [types_1.ProtocolAction.withdrawAndSwitch]: {
         limit: "1000000",
@@ -42422,6 +42432,23 @@ var require_wethgateway_contract = __commonJS({
           };
           return actionTx;
         };
+        this.generateRepayEthTxData = ({ interestRateMode, lendingPool, amount, user, onBehalfOf }) => {
+          const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          const txData = this.wethGatewayInstance.encodeFunctionData("repayETH", [
+            lendingPool,
+            amount,
+            numericRateMode,
+            onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user
+          ]);
+          const actionTx = {
+            data: txData,
+            to: this.wethGatewayAddress,
+            from: user,
+            value: ethers_1.BigNumber.from(amount),
+            gasLimit: ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.repayETH].limit)
+          };
+          return actionTx;
+        };
       }
       depositETH({ lendingPool, user, amount, onBehalfOf, referralCode }) {
         const convertedAmount = (0, utils_1.valueToWei)(amount, 18);
@@ -43655,6 +43682,32 @@ var require_lendingPool_contract_bundle = __commonJS({
               actionTx.data = txData;
               actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
+            return actionTx;
+          }
+        };
+        this.repayTxBuilder = {
+          generateTxData: ({ user, reserve, onBehalfOf, interestRateMode, amount }) => {
+            const actionTx = {};
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              return this.wethGatewayService.generateRepayEthTxData({
+                lendingPool: this.lendingPoolAddress,
+                user,
+                amount,
+                interestRateMode,
+                onBehalfOf
+              });
+            }
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const txData = this.contractInterface.encodeFunctionData("repay", [
+              reserve,
+              amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount,
+              numericRateMode,
+              onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user
+            ]);
+            actionTx.to = this.lendingPoolAddress;
+            actionTx.from = user;
+            actionTx.data = txData;
+            actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.repay].recommended);
             return actionTx;
           }
         };
@@ -49635,6 +49688,36 @@ var require_v3_pool_rollups = __commonJS({
           actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].limit);
           return actionTx;
         };
+        this.generateEncodedRepayTxData = ({ encodedTxData, user }) => {
+          const actionTx = {};
+          const txData = this.l2PoolContractInstance.encodeFunctionData("repay", [
+            encodedTxData
+          ]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.repay].limit);
+          return actionTx;
+        };
+        this.generateEncodedRepayWithPermitTxData = ({ encodedTxData, user, signature }) => {
+          const actionTx = {};
+          const decomposedSignature = (0, utils_1.splitSignature)(signature);
+          const txData = this.l2PoolContractInstance.encodeFunctionData("repayWithPermit", [encodedTxData, decomposedSignature.r, decomposedSignature.s]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.repayWithPermit].limit);
+          return actionTx;
+        };
+        this.generateEncodedRepayWithATokensTxData = ({ encodedTxData, user }) => {
+          const actionTx = {};
+          const txData = this.l2PoolContractInstance.encodeFunctionData("repayWithATokens", [encodedTxData]);
+          actionTx.to = this.l2PoolAddress;
+          actionTx.data = txData;
+          actionTx.from = user;
+          actionTx.gasLimit = ethers_1.BigNumber.from(utils_2.gasLimitRecommendations[types_1.ProtocolAction.repayWithATokens].limit);
+          return actionTx;
+        };
       }
       supply(_0, _1) {
         return __async(this, arguments, function* ({ user, reserve, amount, referralCode }, txs) {
@@ -50974,6 +51057,12 @@ var require_v3_pool_contract_bundle = __commonJS({
             return Object.assign(Object.assign({}, props), { spender, amount: amount.toString() });
           }),
           generateTxData: ({ user, reserve, amount, onBehalfOf, referralCode, useOptimizedPath, encodedTxData }) => {
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedSupplyTxData({
+                encodedTxData,
+                user
+              });
+            }
             let actionTx = {};
             const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
             const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
@@ -50985,22 +51074,6 @@ var require_v3_pool_contract_bundle = __commonJS({
                 onBehalfOf: onBehalfOfParam,
                 referralCode: referralCodeParam
               });
-            } else if (useOptimizedPath) {
-              if (encodedTxData) {
-                actionTx = this.l2PoolService.generateEncodedSupplyTxData({
-                  encodedTxData,
-                  user
-                });
-              } else {
-                const args = {
-                  user,
-                  reserve,
-                  amount,
-                  onBehalfOf: onBehalfOfParam,
-                  referralCode: referralCodeParam
-                };
-                actionTx = this.l2PoolService.generateSupplyTxData(args);
-              }
             } else {
               const txData = this.contractInterface.encodeFunctionData("supply", [
                 reserve,
@@ -51016,52 +51089,49 @@ var require_v3_pool_contract_bundle = __commonJS({
             return actionTx;
           },
           generateSignedTxData: ({ user, reserve, amount, onBehalfOf, referralCode, useOptimizedPath, signature, deadline, encodedTxData }) => {
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedSupplyWithPermitTxData({
+                encodedTxData,
+                user,
+                signature
+              });
+            }
             const decomposedSignature = (0, bytes_1.splitSignature)(signature);
-            let populatedTx = {};
+            const populatedTx = {};
             const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
             const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
-            if (useOptimizedPath) {
-              if (encodedTxData) {
-                populatedTx = this.l2PoolService.generateEncodedSupplyWithPermitTxData({
-                  encodedTxData,
-                  user,
-                  signature
-                });
-              } else {
-                const args = {
-                  user,
-                  reserve,
-                  amount,
-                  referralCode: referralCodeParam,
-                  onBehalfOf: onBehalfOfParam,
-                  permitR: decomposedSignature.r,
-                  permitS: decomposedSignature.s,
-                  permitV: decomposedSignature.v,
-                  deadline: Number(deadline)
-                };
-                populatedTx = this.l2PoolService.generateSupplyWithPermitTxData(args);
-              }
-            } else {
-              const txData = this.contractInterface.encodeFunctionData("supplyWithPermit", [
-                reserve,
-                amount,
-                onBehalfOfParam,
-                referralCodeParam,
-                deadline,
-                decomposedSignature.v,
-                decomposedSignature.r,
-                decomposedSignature.s
-              ]);
-              populatedTx.to = this.poolAddress;
-              populatedTx.from = user;
-              populatedTx.data = txData;
-              populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].recommended);
-            }
+            const txData = this.contractInterface.encodeFunctionData("supplyWithPermit", [
+              reserve,
+              amount,
+              onBehalfOfParam,
+              referralCodeParam,
+              deadline,
+              decomposedSignature.v,
+              decomposedSignature.r,
+              decomposedSignature.s
+            ]);
+            populatedTx.to = this.poolAddress;
+            populatedTx.from = user;
+            populatedTx.data = txData;
+            populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.supplyWithPermit].recommended);
             return populatedTx;
-          }
+          },
+          encodeSupplyParams: (_0) => __async(this, [_0], function* ({ reserve, amount, referralCode }) {
+            return this.l2PoolService.getEncoder().encodeSupplyParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+          }),
+          encodeSupplyWithPermitParams: (_0) => __async(this, [_0], function* ({ reserve, amount, signature, deadline, referralCode }) {
+            const decomposedSignature = (0, bytes_1.splitSignature)(signature);
+            return this.l2PoolService.getEncoder().encodeSupplyWithPermitParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : "0", deadline, decomposedSignature.v, decomposedSignature.r, decomposedSignature.s);
+          })
         };
         this.borrowTxBuilder = {
           generateTxData: ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode, useOptimizedPath, encodedTxData }) => {
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedBorrowTxData({
+                encodedTxData,
+                user
+              });
+            }
             let actionTx = {};
             const referralCodeParam = referralCode !== null && referralCode !== void 0 ? referralCode : "0";
             const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
@@ -51078,23 +51148,6 @@ var require_v3_pool_contract_bundle = __commonJS({
                 interestRateMode,
                 referralCode: referralCodeParam
               });
-            } else if (useOptimizedPath) {
-              if (encodedTxData) {
-                actionTx = this.l2PoolService.generateEncodedBorrowTxData({
-                  encodedTxData,
-                  user
-                });
-              } else {
-                const args = {
-                  user,
-                  reserve,
-                  amount,
-                  onBehalfOf: onBehalfOfParam,
-                  referralCode: referralCodeParam,
-                  numericRateMode
-                };
-                actionTx = this.l2PoolService.generateBorrowTxData(args);
-              }
             } else {
               const txData = this.contractInterface.encodeFunctionData("borrow", [
                 reserve,
@@ -51109,7 +51162,113 @@ var require_v3_pool_contract_bundle = __commonJS({
               actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.borrow].recommended);
             }
             return actionTx;
-          }
+          },
+          encodeBorrowParams: (_0) => __async(this, [_0], function* ({ reserve, amount, interestRateMode, referralCode }) {
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            return this.l2PoolService.getEncoder().encodeBorrowParams(reserve, amount, numericRateMode, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+          })
+        };
+        this.repayTxBuilder = {
+          generateTxData: ({ user, reserve, amount, interestRateMode, onBehalfOf, useOptimizedPath, encodedTxData }) => {
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              return this.wethGatewayService.generateRepayEthTxData({
+                lendingPool: this.poolAddress,
+                user,
+                amount,
+                interestRateMode,
+                onBehalfOf: onBehalfOfParam
+              });
+            }
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedRepayTxData({
+                encodedTxData,
+                user
+              });
+            }
+            const actionTx = {};
+            const txData = this.contractInterface.encodeFunctionData("repay", [
+              reserve,
+              amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount,
+              numericRateMode,
+              onBehalfOfParam
+            ]);
+            actionTx.to = this.poolAddress;
+            actionTx.from = user;
+            actionTx.data = txData;
+            actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.repay].recommended);
+            return actionTx;
+          },
+          generateSignedTxData: ({ onBehalfOf, signature, deadline, user, reserve, amount, interestRateMode, useOptimizedPath, encodedTxData }) => {
+            const decomposedSignature = (0, bytes_1.splitSignature)(signature);
+            const populatedTx = {};
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const onBehalfOfParam = onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user;
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedRepayWithPermitTxData({
+                encodedTxData,
+                user,
+                signature
+              });
+            }
+            const txData = this.contractInterface.encodeFunctionData("repayWithPermit", [
+              reserve,
+              amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount,
+              numericRateMode,
+              onBehalfOfParam,
+              deadline,
+              decomposedSignature.v,
+              decomposedSignature.r,
+              decomposedSignature.s
+            ]);
+            populatedTx.to = this.poolAddress;
+            populatedTx.from = user;
+            populatedTx.data = txData;
+            populatedTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.repayWithPermit].recommended);
+            return populatedTx;
+          },
+          encodeRepayParams: (_0) => __async(this, [_0], function* ({ reserve, amount, interestRateMode }) {
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const repayAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount;
+            return this.l2PoolService.getEncoder().encodeRepayParams(reserve, repayAmount, numericRateMode);
+          }),
+          encodeRepayWithPermitParams: (_0) => __async(this, [_0], function* ({ reserve, amount, interestRateMode, signature, deadline }) {
+            const decomposedSignature = (0, bytes_1.splitSignature)(signature);
+            const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const repayAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount;
+            return this.l2PoolService.getEncoder().encodeRepayWithPermitParams(reserve, repayAmount, numericRateMode, deadline, decomposedSignature.v, decomposedSignature.r, decomposedSignature.s);
+          })
+        };
+        this.repayWithATokensTxBuilder = {
+          generateTxData: ({ rateMode, user, amount, reserve, useOptimizedPath, encodedTxData }) => {
+            const actionTx = {};
+            const numericRateMode = rateMode === types_1.InterestRate.Variable ? 2 : 1;
+            if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
+              throw new Error("Can not repay with aTokens with eth. Should be WETH instead");
+            }
+            if (useOptimizedPath && encodedTxData) {
+              return this.l2PoolService.generateEncodedRepayWithATokensTxData({
+                encodedTxData,
+                user
+              });
+            }
+            const txData = this.contractInterface.encodeFunctionData("repayWithATokens", [
+              reserve,
+              amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount,
+              numericRateMode
+            ]);
+            actionTx.to = this.poolAddress;
+            actionTx.from = user;
+            actionTx.data = txData;
+            actionTx.gasLimit = ethers_1.BigNumber.from(utils_1.gasLimitRecommendations[types_1.ProtocolAction.repayWithATokens].recommended);
+            return actionTx;
+          },
+          encodeRepayWithATokensParams: (_0) => __async(this, [_0], function* ({ reserve, amount, rateMode }) {
+            const numericRateMode = rateMode === types_1.InterestRate.Variable ? 2 : 1;
+            const repayAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : amount;
+            return this.l2PoolService.getEncoder().encodeRepayWithATokensParams(reserve, repayAmount, numericRateMode);
+          })
         };
       }
     };
