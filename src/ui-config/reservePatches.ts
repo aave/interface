@@ -1,3 +1,4 @@
+import { AaveV3Arbitrum, AaveV3Optimism, AaveV3Polygon } from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -103,20 +104,17 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'KNCL',
       iconSymbol: 'KNCL',
     },
-    // arbitrum
-    '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': {
+    [AaveV3Arbitrum.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
       iconSymbol: 'USDC',
     },
-    // optimism
-    '0x7f5c764cbc14f9669b88837ca1490cca17c31607': {
+    [AaveV3Optimism.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
       iconSymbol: 'USDC',
     },
-    // polygon
-    '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': {
+    [AaveV3Polygon.ASSETS.USDC.UNDERLYING.toLowerCase()]: {
       name: 'Bridged USDC',
       symbol: 'USDC.e',
       iconSymbol: 'USDC',
