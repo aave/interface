@@ -34,6 +34,7 @@ export const checkRequiresApproval = ({
   // Returns false if the user has a max approval, an approval > amountToSupply, or a valid signature for amountToSupply
   if (
     approvedAmount === '-1' ||
+    signedAmount === '-1' ||
     (approvedAmount !== '0' && Number(approvedAmount) >= Number(amount)) ||
     Number(signedAmount) >= Number(amount)
   ) {

@@ -14,11 +14,13 @@ import {
   InterestRate,
   LendingPool,
   LendingPoolBundle,
+  LendingPoolBundleInterface,
   MAX_UINT_AMOUNT,
   PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   PoolBundle,
+  PoolBundleInterface,
   ReserveDataHumanized,
   ReservesIncentiveDataHumanized,
   UiIncentiveDataProvider,
@@ -34,11 +36,11 @@ import {
   LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
 import {
+  LPRepayWithPermitParamsType,
   LPSignERC20ApprovalType,
   LPSupplyParamsType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
-import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
@@ -46,7 +48,6 @@ import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
-import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
@@ -64,6 +65,14 @@ export type PoolReserve = {
   baseCurrencyData?: PoolBaseCurrencyHumanized;
   userEmodeCategoryId?: number;
   userReserves?: UserReserveDataHumanized[];
+};
+
+type RepayArgs = {
+  amountToRepay: string;
+  poolAddress: string;
+  debtType: InterestRate;
+  repayWithATokens: boolean;
+  encodedTxData?: string;
 };
 
 type GenerateApprovalOpts = {
@@ -101,13 +110,12 @@ export interface PoolSlice {
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
-  repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
-  repayWithPermit: (
-    args: RepayActionProps & {
-      signature: SignatureLike;
-      deadline: string;
-    }
-  ) => Promise<EthereumTransactionTypeExtended[]>;
+  repay: (args: RepayArgs) => PopulatedTransaction;
+  encodeRepayParams: (args: RepayArgs) => Promise<string>;
+  repayWithPermit: (args: Omit<LPRepayWithPermitParamsType, 'user'>) => PopulatedTransaction;
+  encodeRepayWithPermitParams: (
+    args: Omit<LPRepayWithPermitParamsType, 'user'>
+  ) => Promise<[string, string, string]>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -124,7 +132,6 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType, opts?: GenerateApprovalOpts) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
-  getApprovedAmount: (args: { token: string }) => Promise<ApproveType>;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -136,6 +143,7 @@ export interface PoolSlice {
     }
   ) => Promise<string>;
   generateApproveDelegation: (args: Omit<ApproveDelegationType, 'user'>) => PopulatedTransaction;
+  getCorrectPoolBundle: () => PoolBundleInterface | LendingPoolBundleInterface;
   estimateGasLimit: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
 }
 
@@ -165,24 +173,24 @@ export const createPoolSlice: StateCreator<
       });
     }
   }
-  function getCorrectPoolBundle() {
-    const currentMarketData = get().currentMarketData;
-    const provider = get().jsonRpcProvider();
-    if (currentMarketData.v3) {
-      return new PoolBundle(provider, {
-        POOL: currentMarketData.addresses.LENDING_POOL,
-        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-        L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
-      });
-    } else {
-      return new LendingPoolBundle(provider, {
-        LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
-        WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
-      });
-    }
-  }
   return {
     data: new Map(),
+    getCorrectPoolBundle() {
+      const currentMarketData = get().currentMarketData;
+      const provider = get().jsonRpcProvider();
+      if (currentMarketData.v3) {
+        return new PoolBundle(provider, {
+          POOL: currentMarketData.addresses.LENDING_POOL,
+          WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+          L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
+        });
+      } else {
+        return new LendingPoolBundle(provider, {
+          LENDING_POOL: currentMarketData.addresses.LENDING_POOL,
+          WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+        });
+      }
+    },
     refreshPoolData: async (marketData?: MarketDataType) => {
       const account = get().account;
       const currentChainId = get().currentChainId;
@@ -296,7 +304,7 @@ export const createPoolSlice: StateCreator<
       return tokenERC20Service.approveTxData({ ...args, amount: MAX_UINT_AMOUNT });
     },
     supply: (args: Omit<LPSupplyParamsType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle();
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
         return poolBundle.supplyTxBuilder.generateTxData({
@@ -315,7 +323,7 @@ export const createPoolSlice: StateCreator<
       }
     },
     supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle() as PoolBundle;
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const user = get().account;
       const signature = utils.joinSignature(args.signature);
       return poolBundle.supplyTxBuilder.generateSignedTxData({
@@ -327,17 +335,8 @@ export const createPoolSlice: StateCreator<
         signature,
       });
     },
-    getApprovedAmount: async (args: { token: string }) => {
-      const poolBundle = getCorrectPoolBundle();
-      const user = get().account;
-      if (poolBundle instanceof PoolBundle) {
-        return poolBundle.supplyTxBuilder.getApprovedAmount({ user, token: args.token });
-      } else {
-        return poolBundle.depositTxBuilder.getApprovedAmount({ user, token: args.token });
-      }
-    },
     borrow: (args: Omit<LPBorrowParamsType, 'user'>) => {
-      const poolBundle = getCorrectPoolBundle();
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
       if (poolBundle instanceof PoolBundle) {
         return poolBundle.borrowTxBuilder.generateTxData({
@@ -571,40 +570,87 @@ export const createPoolSlice: StateCreator<
         },
       });
     },
-    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
-      const pool = getCorrectPool();
+    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType, encodedTxData }) => {
+      const poolBundle = get().getCorrectPoolBundle();
       const currentAccount = get().account;
-      if (pool instanceof Pool && repayWithATokens) {
-        return pool.repayWithATokens({
-          user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToRepay,
-          rateMode: debtType as InterestRate,
-          useOptimizedPath: get().useOptimizedPath(),
-        });
+      if (poolBundle instanceof PoolBundle) {
+        if (repayWithATokens) {
+          return poolBundle.repayWithATokensTxBuilder.generateTxData({
+            user: currentAccount,
+            reserve: poolAddress,
+            amount: amountToRepay,
+            useOptimizedPath: get().useOptimizedPath(),
+            rateMode: debtType,
+            encodedTxData,
+          });
+        } else {
+          return poolBundle.repayTxBuilder.generateTxData({
+            user: currentAccount,
+            reserve: poolAddress,
+            amount: amountToRepay,
+            useOptimizedPath: get().useOptimizedPath(),
+            interestRateMode: debtType,
+            encodedTxData,
+          });
+        }
       } else {
-        return pool.repay({
+        const lendingPool = poolBundle as LendingPoolBundle;
+        return lendingPool.repayTxBuilder.generateTxData({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToRepay,
           interestRateMode: debtType,
-          useOptimizedPath: get().useOptimizedPath(),
         });
       }
     },
-    repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
-      // Better to get rid of direct assert
-      const pool = getCorrectPool() as Pool;
+    repayWithPermit: ({
+      reserve,
+      amount,
+      interestRateMode,
+      deadline,
+      signature,
+      encodedTxData,
+    }) => {
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
       const currentAccount = get().account;
-      return pool.repayWithPermit({
+      const stringSignature = utils.joinSignature(signature);
+      return poolBundle.repayTxBuilder.generateSignedTxData({
         user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToRepay, // amountToRepay.toString(),
-        interestRateMode: debtType,
-        signature,
+        reserve,
+        amount,
         useOptimizedPath: get().useOptimizedPath(),
+        interestRateMode,
         deadline,
+        signature: stringSignature,
+        encodedTxData,
       });
+    },
+    encodeRepayWithPermitParams: ({ reserve, amount, interestRateMode, deadline, signature }) => {
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      const stringSignature = utils.joinSignature(signature);
+      return poolBundle.repayTxBuilder.encodeRepayWithPermitParams({
+        reserve,
+        amount,
+        interestRateMode,
+        deadline,
+        signature: stringSignature,
+      });
+    },
+    encodeRepayParams: ({ amountToRepay, poolAddress, debtType, repayWithATokens }) => {
+      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
+      if (repayWithATokens) {
+        return poolBundle.repayWithATokensTxBuilder.encodeRepayWithATokensParams({
+          reserve: poolAddress,
+          amount: amountToRepay,
+          rateMode: debtType,
+        });
+      } else {
+        return poolBundle.repayTxBuilder.encodeRepayParams({
+          reserve: poolAddress,
+          amount: amountToRepay,
+          interestRateMode: debtType,
+        });
+      }
     },
     swapCollateral: async ({
       poolReserve,
