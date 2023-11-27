@@ -1,18 +1,13 @@
-import {
-  ApproveType,
-  gasLimitRecommendations,
-  MAX_UINT_AMOUNT,
-  ProtocolAction,
-} from '@aave/contract-helpers';
-import { SignatureLike } from '@ethersproject/bytes';
+import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import { queryClient } from 'pages/_app.page';
-import React, { useCallback, useEffect, useState } from 'react';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import React, { useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
+import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -34,12 +29,6 @@ export interface SupplyActionProps extends BoxProps {
   isWrappedBaseAsset: boolean;
 }
 
-interface SignedParams {
-  signature: SignatureLike;
-  deadline: string;
-  amount: string;
-}
-
 export const SupplyActions = React.memo(
   ({
     amountToSupply,
@@ -56,9 +45,6 @@ export const SupplyActions = React.memo(
       tryPermit,
       supply,
       supplyWithPermit,
-      getApprovedAmount,
-      generateSignatureRequest,
-      generateApproval,
       walletApprovalMethodPreference,
       estimateGasLimit,
       addTransaction,
@@ -66,9 +52,6 @@ export const SupplyActions = React.memo(
       state.tryPermit,
       state.supply,
       state.supplyWithPermit,
-      state.getApprovedAmount,
-      state.generateSignatureRequest,
-      state.generateApproval,
       state.walletApprovalMethodPreference,
       state.estimateGasLimit,
       state.addTransaction,
@@ -84,51 +67,56 @@ export const SupplyActions = React.memo(
       setTxError,
     } = useModalContext();
     const { refetchPoolData, refetchIncentiveData, refetchGhoData } = useBackgroundDataProvider();
-    const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
-    const { signTxData, sendTx } = useWeb3Context();
+    const permitAvailable = tryPermit({
+      reserveAddress: poolAddress,
+      isWrappedBaseAsset: isWrappedBaseAsset,
+    });
+    const { sendTx } = useWeb3Context();
 
-    const [usePermit, setUsePermit] = useState(false);
-    const [approvedAmount, setApprovedAmount] = useState<ApproveType | undefined>();
-    const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-    // callback to fetch approved amount and determine execution path on dependency updates
-    const fetchApprovedAmount = useCallback(
-      async (forceApprovalCheck?: boolean) => {
-        // Check approved amount on-chain on first load or if an action triggers a re-check such as an approval being confirmed
-        if (!approvedAmount || forceApprovalCheck) {
-          setLoadingTxns(true);
-          const approvedAmount = await getApprovedAmount({ token: poolAddress });
-          setApprovedAmount(approvedAmount);
-        }
+    const {
+      data: approvedAmount,
+      refetch: fetchApprovedAmount,
+      isRefetching: fetchingApprovedAmount,
+      isFetchedAfterMount,
+    } = usePoolApprovedAmount(poolAddress);
 
-        if (approvedAmount) {
-          const fetchedRequiresApproval = checkRequiresApproval({
-            approvedAmount: approvedAmount.amount,
-            amount: amountToSupply,
-            signedAmount: signatureParams ? signatureParams.amount : '0',
-          });
-          setRequiresApproval(fetchedRequiresApproval);
-          if (fetchedRequiresApproval) setApprovalTxState({});
-        }
+    setLoadingTxns(fetchingApprovedAmount);
 
-        setLoadingTxns(false);
-      },
-      [
-        approvedAmount,
-        setLoadingTxns,
-        getApprovedAmount,
-        poolAddress,
-        amountToSupply,
-        signatureParams,
-        setApprovalTxState,
-      ]
-    );
+    const requiresApproval =
+      Number(amountToSupply) !== 0 &&
+      checkRequiresApproval({
+        approvedAmount: approvedAmount?.amount || '0',
+        amount: amountToSupply,
+        signedAmount: signatureParams ? signatureParams.amount : '0',
+      });
 
-    // Run on first load to decide execution path
+    if (requiresApproval && approvalTxState?.success) {
+      // There was a successful approval tx, but the approval amount is not enough.
+      // Clear the state to prompt for another approval.
+      setApprovalTxState({});
+    }
+
+    const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+
+    const { approval } = useApprovalTx({
+      usePermit,
+      approvedAmount,
+      requiresApproval,
+      assetAddress: poolAddress,
+      symbol,
+      decimals,
+      signatureAmount: amountToSupply,
+      onApprovalTxConfirmed: fetchApprovedAmount,
+      onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+    });
+
     useEffect(() => {
-      fetchApprovedAmount();
-    }, [fetchApprovedAmount]);
+      if (!isFetchedAfterMount) {
+        fetchApprovedAmount();
+      }
+    }, [fetchApprovedAmount, isFetchedAfterMount]);
 
     // Update gas estimation
     useEffect(() => {
@@ -145,61 +133,6 @@ export const SupplyActions = React.memo(
       }
       setGasLimit(supplyGasLimit.toString());
     }, [requiresApproval, approvalTxState, usePermit, setGasLimit]);
-
-    useEffect(() => {
-      const preferPermit =
-        permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
-      setUsePermit(preferPermit);
-    }, [permitAvailable, walletApprovalMethodPreference]);
-
-    const approval = async () => {
-      try {
-        if (requiresApproval && approvedAmount) {
-          if (usePermit) {
-            const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-            const signatureRequest = await generateSignatureRequest({
-              ...approvedAmount,
-              deadline,
-              amount: parseUnits(amountToSupply, decimals).toString(),
-            });
-
-            const response = await signTxData(signatureRequest);
-            setSignatureParams({ signature: response, deadline, amount: amountToSupply });
-            setApprovalTxState({
-              txHash: MOCK_SIGNED_HASH,
-              loading: false,
-              success: true,
-            });
-          } else {
-            let approveTxData = generateApproval(approvedAmount);
-            setApprovalTxState({ ...approvalTxState, loading: true });
-            approveTxData = await estimateGasLimit(approveTxData);
-            const response = await sendTx(approveTxData);
-            await response.wait(1);
-            setApprovalTxState({
-              txHash: response.hash,
-              loading: false,
-              success: true,
-            });
-            addTransaction(response.hash, {
-              action: ProtocolAction.approval,
-              txState: 'success',
-              asset: poolAddress,
-              amount: MAX_UINT_AMOUNT,
-              assetName: symbol,
-            });
-            fetchApprovedAmount(true);
-          }
-        }
-      } catch (error) {
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setApprovalTxState({
-          txHash: undefined,
-          loading: false,
-        });
-      }
-    };
 
     const action = async () => {
       try {
@@ -272,10 +205,10 @@ export const SupplyActions = React.memo(
         requiresAmount
         amount={amountToSupply}
         symbol={symbol}
-        preparingTransactions={loadingTxns}
+        preparingTransactions={loadingTxns || !approvedAmount}
         actionText={<Trans>Supply {symbol}</Trans>}
         actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-        handleApproval={() => approval()}
+        handleApproval={approval}
         handleAction={action}
         requiresApproval={requiresApproval}
         tryPermit={permitAvailable}
