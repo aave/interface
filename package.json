@@ -32,8 +32,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.21.0",
-    "@aave/math-utils": "^1.21.0",
+    "@aave/contract-helpers": "1.21.1",
+    "@aave/math-utils": "1.21.1",
     "@bgd-labs/aave-address-book": "^2.10.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
@@ -82,7 +82,7 @@
     "react-cookie-consent": "^8.0.1",
     "react-dom": "latest",
     "react-infinite-scroller": "^1.2.6",
-    "react-markdown": "^8.0.3",
+    "react-markdown": "^8.0.7",
     "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",

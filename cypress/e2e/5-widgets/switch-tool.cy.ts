@@ -47,11 +47,13 @@ const switchByTool = ({
       }).should('be.visible', { timeout: 10000 });
     });
     it(`Set amount`, () => {
+      cy.wait(2000); //there is no way to know when real max amount will upload by UI
       if (isMaxAmount) {
-        cy.wait(2000); //there is no way to know when real max amount will upload by UI
         cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
       } else {
-        cy.get('[data-cy=Modal] input[aria-label="amount input"]').first().type(amount.toString());
+        cy.get('[data-cy=Modal] input[aria-label="amount input"]')
+          .first()
+          .type(amount.toString(), { force: true });
       }
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find(`#switch-slippage-selector-button`).click();

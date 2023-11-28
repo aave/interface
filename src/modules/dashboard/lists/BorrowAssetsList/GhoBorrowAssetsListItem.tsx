@@ -160,7 +160,7 @@ const GhoBorrowAssetsListItemDesktop = ({
           />
         </Box>
       </ListColumn>
-      <ListColumn flex={2} p={2}>
+      <ListColumn>
         <FixedAPYTooltip
           text={<Trans>APY, borrow rate</Trans>}
           variant="subheader2"
