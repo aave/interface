@@ -26,8 +26,6 @@ interface SharedDependenciesContext {
 const SharedDependenciesContext = createContext<SharedDependenciesContext | null>(null);
 
 export const SharedDependenciesProvider: React.FC = ({ children }) => {
-  // providers
-
   const getGovernanceProvider = (chainId: number) => {
     const networkConfig = getNetworkConfig(chainId);
     const isGovernanceFork =
