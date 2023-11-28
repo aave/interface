@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { POLLING_INTERVAL, QueryKeys } from 'src/ui-config/queries';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { POLLING_INTERVAL, queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
-export const useGeneralStakeUiData = () => {
+export const useGeneralStakeUiData = (marketData: MarketDataType) => {
   const { uiStakeDataService } = useSharedDependencies();
   return useQuery({
-    queryFn: () => uiStakeDataService.getGeneralStakeUIDataHumanized(),
-    queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA, uiStakeDataService.toHash()],
+    queryFn: () => uiStakeDataService.getGeneralStakeUIDataHumanized(marketData),
+    queryKey: queryKeysFactory.generalStakeUiData(marketData),
     refetchInterval: POLLING_INTERVAL,
   });
 };

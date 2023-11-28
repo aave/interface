@@ -107,10 +107,11 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 
 export const DelegatedInfoPanel = () => {
   const address = useRootStore((store) => store.account);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     data: { aave, stkAave },
   } = useGovernanceTokens();
-  const { data: powers } = usePowers();
+  const { data: powers } = usePowers(currentMarketData);
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 

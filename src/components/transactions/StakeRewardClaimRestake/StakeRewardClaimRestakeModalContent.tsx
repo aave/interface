@@ -6,8 +6,8 @@ import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -37,10 +37,12 @@ export const StakeRewardClaimRestakeModalContent = ({
 }: StakeRewardClaimRestakeProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // hardcoded as all rewards will be in aave token

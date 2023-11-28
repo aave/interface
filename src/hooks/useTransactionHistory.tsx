@@ -14,7 +14,7 @@ import {
 } from 'src/modules/history/v2-user-history-query';
 import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { useRootStore } from 'src/store/root';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -184,12 +184,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     isError,
     error,
   }: UseInfiniteQueryResult<TransactionHistoryItemUnion[], Error> = useInfiniteQuery(
-    [
-      QueryKeys.TRANSACTION_HISTORY,
-      account,
-      currentMarketData.subgraphUrl,
-      currentMarketData.marketTitle,
-    ],
+    queryKeysFactory.transactionHistory(account, currentMarketData),
     async ({ pageParam = 0 }) => {
       const response = await fetchTransactionHistory({
         account,

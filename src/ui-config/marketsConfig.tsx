@@ -32,6 +32,7 @@ import { ReactNode } from 'react';
 export type MarketDataType = {
   v3?: boolean;
   marketTitle: string;
+  market: CustomMarket;
   // the network the market operates on
   chainId: ChainId;
   enabledFeatures?: {
@@ -116,6 +117,7 @@ export const marketsData: {
 } = {
   [CustomMarket.proto_mainnet_v3]: {
     marketTitle: 'Ethereum',
+    market: CustomMarket.proto_mainnet_v3,
     chainId: ChainId.mainnet,
     v3: true,
     enabledFeatures: {
@@ -151,6 +153,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
+    market: CustomMarket.proto_mainnet,
     chainId: ChainId.mainnet,
     enabledFeatures: {
       governance: true,
@@ -204,6 +207,7 @@ export const marketsData: {
   // },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
+    market: CustomMarket.amm_mainnet,
     chainId: ChainId.mainnet,
     subgraphUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2',
     addresses: {
@@ -219,6 +223,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
+    market: CustomMarket.proto_polygon,
     chainId: ChainId.polygon,
     enabledFeatures: {
       liquiditySwap: true,
@@ -247,6 +252,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_avalanche]: {
     marketTitle: 'Avalanche',
+    market: CustomMarket.proto_avalanche,
     chainId: ChainId.avalanche,
     enabledFeatures: {
       liquiditySwap: true,
@@ -277,6 +283,7 @@ export const marketsData: {
   // v3
   [CustomMarket.proto_sepolia_v3]: {
     marketTitle: 'Ethereum Sepolia',
+    market: CustomMarket.proto_sepolia_v3,
     v3: true,
     chainId: ChainId.sepolia,
     enabledFeatures: {
@@ -294,6 +301,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_base_v3]: {
     marketTitle: 'Base',
+    market: CustomMarket.proto_base_v3,
     v3: true,
     chainId: ChainId.base,
     enabledFeatures: {
@@ -325,6 +333,7 @@ export const marketsData: {
 
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
+    market: CustomMarket.proto_arbitrum_v3,
     v3: true,
     chainId: ChainId.arbitrum_one,
     enabledFeatures: {
@@ -357,6 +366,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_arbitrum_goerli_v3]: {
     marketTitle: 'Arbitrum Görli',
+    market: CustomMarket.proto_arbitrum_goerli_v3,
     v3: true,
     chainId: ChainId.arbitrum_goerli,
     enabledFeatures: {
@@ -377,6 +387,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
+    market: CustomMarket.proto_avalanche_v3,
     v3: true,
     chainId: ChainId.avalanche,
     enabledFeatures: {
@@ -408,6 +419,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_fuji_v3]: {
     marketTitle: 'Avalanche Fuji',
+    market: CustomMarket.proto_fuji_v3,
     v3: true,
     chainId: ChainId.fuji,
     enabledFeatures: {
@@ -427,6 +439,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_optimism_goerli_v3]: {
     marketTitle: 'Optimism Görli',
+    market: CustomMarket.proto_optimism_goerli_v3,
     v3: true,
     chainId: ChainId.optimism_goerli,
     enabledFeatures: {
@@ -447,6 +460,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_scroll_sepolia_v3]: {
     marketTitle: 'Scroll Sepolia',
+    market: CustomMarket.proto_scroll_sepolia_v3,
     v3: true,
     chainId: ChainId.scroll_sepolia,
     enabledFeatures: {
@@ -466,6 +480,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_fantom_v3]: {
     marketTitle: 'Fantom',
+    market: CustomMarket.proto_fantom_v3,
     v3: true,
     chainId: ChainId.fantom,
     enabledFeatures: {
@@ -492,6 +507,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_fantom_testnet_v3]: {
     marketTitle: 'Fantom Testnet',
+    market: CustomMarket.proto_fantom_testnet_v3,
     v3: true,
     chainId: ChainId.fantom_testnet,
     enabledFeatures: {
@@ -511,6 +527,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_harmony_v3]: {
     marketTitle: 'Harmony',
+    market: CustomMarket.proto_harmony_v3,
     v3: true,
     chainId: ChainId.harmony,
     enabledFeatures: {
@@ -529,6 +546,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_optimism_v3]: {
     marketTitle: 'Optimism',
+    market: CustomMarket.proto_optimism_v3,
     v3: true,
     chainId: ChainId.optimism,
     enabledFeatures: {
@@ -557,6 +575,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_polygon_v3]: {
     marketTitle: 'Polygon',
+    market: CustomMarket.proto_polygon_v3,
     chainId: ChainId.polygon,
     v3: true,
     enabledFeatures: {
@@ -588,6 +607,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_mumbai_v3]: {
     marketTitle: 'Polygon Mumbai',
+    market: CustomMarket.proto_mumbai_v3,
     chainId: ChainId.mumbai,
     enabledFeatures: {
       incentives: true,
@@ -607,6 +627,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_goerli]: {
     marketTitle: 'Ethereum Görli',
+    market: CustomMarket.proto_goerli,
     chainId: ChainId.goerli,
     enabledFeatures: {
       faucet: true,
@@ -624,6 +645,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_mumbai]: {
     marketTitle: 'Polygon Mumbai',
+    market: CustomMarket.proto_mumbai,
     chainId: ChainId.mumbai,
     enabledFeatures: {
       incentives: true,
@@ -642,6 +664,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
+    market: CustomMarket.proto_fuji,
     chainId: ChainId.fuji,
     enabledFeatures: {
       faucet: true,
@@ -660,6 +683,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_metis_v3]: {
     marketTitle: 'Metis',
+    market: CustomMarket.proto_metis_v3,
     chainId: ChainId.metis_andromeda,
     v3: true,
     enabledFeatures: {
@@ -682,6 +706,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_gnosis_v3]: {
     marketTitle: 'Gnosis',
+    market: CustomMarket.proto_gnosis_v3,
     chainId: ChainId.xdai,
     v3: true,
     // subgraphUrl: '',

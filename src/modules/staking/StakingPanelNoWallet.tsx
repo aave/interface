@@ -4,6 +4,7 @@ import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useRootStore } from 'src/store/root';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -16,7 +17,8 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   stakedToken,
   icon,
 }) => {
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   let stakingAPY = '';
 
   if (stakedToken == 'AAVE') stakingAPY = stakeGeneralResult?.aave.stakeApy || '0';

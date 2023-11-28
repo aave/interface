@@ -14,7 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -129,7 +129,7 @@ export const WithdrawAndSwitchActions = ({
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       refetchGhoData && refetchGhoData();
       refetchPoolData && refetchPoolData();
       refetchIncentiveData && refetchIncentiveData();

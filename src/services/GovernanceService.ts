@@ -1,14 +1,8 @@
-import {
-  AaveGovernanceService,
-  GovGetVoteOnProposal,
-  GovGetVotingAtBlockType,
-  Power,
-  tEthereumAddress,
-} from '@aave/contract-helpers';
+import { AaveGovernanceService, Power, tEthereumAddress } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { Hashable } from 'src/utils/types';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 interface Powers {
   votingPower: string;
@@ -26,37 +20,53 @@ interface VoteOnProposalData {
   support: boolean;
 }
 
-interface GetPowersArgs {
-  user: string;
-}
-
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
   delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase() ? '' : delegatee;
 
-export class GovernanceService implements Hashable {
-  private readonly governanceService: AaveGovernanceService;
+export class GovernanceService {
+  constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  constructor(provider: Provider, public readonly chainId: number) {
-    this.governanceService = new AaveGovernanceService(provider, {
+  private getAaveGovernanceService(marketData: MarketDataType) {
+    const provider = this.getProvider(marketData.chainId);
+    return new AaveGovernanceService(provider, {
       GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
       GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
       ipfsGateway: governanceConfig.ipfsGateway,
     });
   }
 
-  async getVotingPowerAt(request: GovGetVotingAtBlockType) {
-    return this.governanceService.getVotingPowerAt(request);
+  async getVotingPowerAt(
+    marketData: MarketDataType,
+    user: string,
+    strategy: string,
+    block: number
+  ) {
+    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+    return aaveGovernanceService.getVotingPowerAt({
+      user,
+      strategy,
+      block,
+    });
   }
-  async getVoteOnProposal(request: GovGetVoteOnProposal): Promise<VoteOnProposalData> {
-    const { votingPower, support } = await this.governanceService.getVoteOnProposal(request);
+  async getVoteOnProposal(
+    marketData: MarketDataType,
+    user: string,
+    proposalId: number
+  ): Promise<VoteOnProposalData> {
+    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+    const { votingPower, support } = await aaveGovernanceService.getVoteOnProposal({
+      user,
+      proposalId,
+    });
     return {
       votingPower: normalize(votingPower.toString(), 18),
       support,
     };
   }
-  async getPowers({ user }: GetPowersArgs): Promise<Powers> {
+  async getPowers(marketData: MarketDataType, user: string): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
-    const [aaveTokenPower, stkAaveTokenPower] = await this.governanceService.getTokensPower({
+    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+    const [aaveTokenPower, stkAaveTokenPower] = await aaveGovernanceService.getTokensPower({
       user: user,
       tokens: [aaveTokenAddress, stkAaveTokenAddress],
     });
@@ -90,8 +100,5 @@ export class GovernanceService implements Hashable {
       ),
     };
     return powers;
-  }
-  public toHash() {
-    return this.chainId.toString();
   }
 }

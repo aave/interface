@@ -9,8 +9,8 @@ import { DelegationType } from 'src/helpers/types';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -44,11 +44,13 @@ type GovDelegationModalContentProps = {
 export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps> = ({ type }) => {
   const { chainId: connectedChainId, readOnlyModeAddress, currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
     data: { aave, stkAave },
   } = useGovernanceTokens();
-  const { data: powers, refetch } = usePowers();
+  const { data: powers, refetch } = usePowers(currentMarketData);
   // error states
 
   // selector states

@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
-import { QueryKeys } from 'src/ui-config/queries';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export const useApprovedAmount = ({
+  marketData,
   token,
   spender,
 }: {
+  marketData: MarketDataType;
   user: string;
   token: string;
   spender: string;
@@ -14,8 +17,8 @@ export const useApprovedAmount = ({
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => approvedAmountService.getApprovedAmount(user, token, spender),
-    queryKey: [QueryKeys.APPROVED_AMOUNT, user, token, spender],
+    queryFn: () => approvedAmountService.getApprovedAmount(marketData, user, token, spender),
+    queryKey: queryKeysFactory.approvedAmount(user, token, spender, marketData),
     enabled: !!user,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -23,12 +26,12 @@ export const useApprovedAmount = ({
   });
 };
 
-export const usePoolApprovedAmount = (token: string) => {
+export const usePoolApprovedAmount = (marketData: MarketDataType, token: string) => {
   const { approvedAmountService } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
   return useQuery({
-    queryFn: () => approvedAmountService.getPoolApprovedAmount(user, token),
-    queryKey: [QueryKeys.POOL_APPROVED_AMOUNT, user, token],
+    queryFn: () => approvedAmountService.getPoolApprovedAmount(marketData, user, token),
+    queryKey: queryKeysFactory.poolApprovedAmount(user, token, marketData),
     enabled: !!user,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

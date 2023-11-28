@@ -17,7 +17,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -134,7 +134,7 @@ export const BorrowActions = React.memo(
           assetName: poolReserve.name,
         });
 
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
         refetchPoolData && refetchPoolData();
         refetchIncentiveData && refetchIncentiveData();
         refetchGhoData && refetchGhoData();
