@@ -14,9 +14,10 @@ import { useRootStore } from 'src/store/root';
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
 
-  const { data: voteOnProposal } = useVoteOnProposal({ proposalId: id });
-  const { data: powerAtProposalStart } = useVotingPowerAt({ block: startBlock, strategy });
+  const { data: voteOnProposal } = useVoteOnProposal(currentMarketData, id);
+  const { data: powerAtProposalStart } = useVotingPowerAt(currentMarketData, strategy, startBlock);
 
   const voteOngoing = state === ProposalState.Active;
 

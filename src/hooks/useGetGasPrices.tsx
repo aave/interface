@@ -2,7 +2,7 @@ import { FeeData } from '@ethersproject/abstract-provider';
 import { useQueries } from '@tanstack/react-query';
 import { GasOption } from 'src/components/transactions/GasStation/GasStationProvider';
 import { useRootStore } from 'src/store/root';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -42,7 +42,7 @@ export const useGasPrices = (chainIds: number[]) => {
   const jsonRpcProvider = useRootStore((store) => store.jsonRpcProvider);
   return useQueries({
     queries: chainIds.map((chainId) => ({
-      queryKey: [QueryKeys.GAS_PRICES, chainId],
+      queryKey: queryKeysFactory.gasPrices(chainId),
       queryFn: () =>
         jsonRpcProvider(chainId)
           .getFeeData()
