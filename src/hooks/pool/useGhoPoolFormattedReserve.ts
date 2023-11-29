@@ -1,6 +1,6 @@
 import { ReservesDataHumanized } from '@aave/contract-helpers';
 import { formatGhoReserveData, GhoReserveData } from '@aave/math-utils';
-import { memoize } from 'lodash';
+import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
@@ -29,6 +29,7 @@ const selector = memoize((ghoReserveData: GhoReserveData, reservesData: Reserves
 export const useGhoPoolsFormattedReserve = (marketsData: MarketDataType[]) => {
   const ghoReservesQueries = useGhoPoolsReserve(marketsData);
   const reservesQueries = usePoolsReservesHumanized(marketsData);
+
   return ghoReservesQueries.map((elem, index) => {
     return combineQueries([elem, reservesQueries[index]] as const, selector);
   });

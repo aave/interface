@@ -34,7 +34,8 @@ export const GhoBorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { ghoLoadingData, ghoReserveData, ghoUserData, user } = useAppDataContext();
+  const { ghoLoadingData, ghoReserveData, ghoUserData, ghoUserLoadingData, user } =
+    useAppDataContext();
   const { data: _ghoUserData } = useUserGhoPoolReserve(currentMarketData);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -67,7 +68,7 @@ export const GhoBorrowedPositionsListItem = ({
     userGhoBorrowBalance: ghoUserData.userGhoBorrowBalance,
     hasDiscount,
     ghoLoadingData,
-    ghoUserDataFetched: ghoLoadingData,
+    ghoUserDataFetched: !ghoUserLoadingData,
     borrowRateAfterDiscount,
     currentMarket,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
