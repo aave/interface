@@ -3,6 +3,7 @@ import {
   GetUserStakeUIDataHumanized,
 } from '@aave/contract-helpers/dist/esm/uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
+import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -134,11 +135,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     18 + 18 + 8 // userBalance (18), stakedTokenPriceEth (18), ethPriceUsd (8)
   );
 
+  const isPricedInEth = stakedToken === AaveSafetyModule.STK_AAVE;
+
   const claimableUSD = formatUnits(
     BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
       .mul(stakeData?.rewardTokenPriceEth || '0')
-      .mul(ethPriceUsd || '1'),
-    18 + 18 + 8 // incentivesBalance (18), rewardTokenPriceEth (18), ethPriceUsd (8)
+      .mul(isPricedInEth ? ethPriceUsd || '1' : '1'),
+    18 + 18 + (isPricedInEth ? 8 : 0) // Add 8 decimal places if ethPriceUsd is used
   );
 
   const aavePerMonth = formatEther(
