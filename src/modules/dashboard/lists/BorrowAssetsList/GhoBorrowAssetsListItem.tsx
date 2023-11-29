@@ -34,7 +34,7 @@ export const GhoBorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { user } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
-  const { ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
+  const { ghoReserveData, ghoUserData, ghoUserLoadingData, ghoLoadingData } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -59,7 +59,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoUserData.userGhoAvailableToBorrowAtDiscount,
     ghoReserveData.ghoBorrowAPYWithMaxDiscount
   );
-  const ghoApyRange: [number, number] | undefined = ghoLoadingData
+  const ghoApyRange: [number, number] | undefined = !ghoUserLoadingData
     ? [
         ghoUserData.userGhoAvailableToBorrowAtDiscount === 0
           ? ghoReserveData.ghoBorrowAPYWithMaxDiscount
@@ -78,7 +78,7 @@ export const GhoBorrowAssetsListItem = ({
     borrowButtonDisable,
     userDiscountTokenBalance: ghoUserData.userDiscountTokenBalance,
     ghoApyRange,
-    ghoUserDataFetched: ghoLoadingData,
+    ghoUserDataFetched: !ghoUserLoadingData,
     userBorrowApyAfterNewBorrow,
     ghoLoadingData,
     onBorrowClick: () => openBorrow(underlyingAsset, currentMarket, name, 'dashboard'),

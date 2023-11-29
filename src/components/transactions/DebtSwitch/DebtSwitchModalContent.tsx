@@ -71,7 +71,7 @@ export const DebtSwitchModalContent = ({
   isWrongNetwork,
   currentRateMode,
 }: ModalWrapperProps & { currentRateMode: InterestRate }) => {
-  const { reserves, user, ghoReserveData, ghoUserData, ghoLoadingData } = useAppDataContext();
+  const { reserves, user, ghoReserveData, ghoUserData, ghoUserLoadingData } = useAppDataContext();
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { currentAccount } = useWeb3Context();
@@ -233,7 +233,7 @@ export const DebtSwitchModalContent = ({
       ghoUserData.userGhoAvailableToBorrowAtDiscount,
       ghoReserveData.ghoBorrowAPYWithMaxDiscount
     );
-    const ghoApyRange: [number, number] | undefined = ghoLoadingData
+    const ghoApyRange: [number, number] | undefined = !ghoUserLoadingData
       ? [userCurrentBorrowApy, userBorrowApyAfterMaxSwitchTo]
       : undefined;
     qualifiesForDiscount = _ghoUserData
