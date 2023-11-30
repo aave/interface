@@ -14,7 +14,7 @@ import { useRootStore } from 'src/store/root';
 import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { QueryKeys } from 'src/ui-config/queries';
+import { queryKeysFactory } from 'src/ui-config/queries';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -124,9 +124,8 @@ export const useTransactionHandler = ({
           ...eventTxInfo,
         });
 
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.POOL_TOKENS] });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.GENERAL_STAKE_UI_DATA] });
-        queryClient.invalidateQueries({ queryKey: [QueryKeys.USER_STAKE_UI_DATA] });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.staking });
         refetchPoolData && refetchPoolData();
         refetchGhoData && refetchGhoData();
         refetchIncentiveData && refetchIncentiveData();

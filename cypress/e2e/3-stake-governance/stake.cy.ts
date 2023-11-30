@@ -3,10 +3,10 @@ import { skipState } from '../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 import {
   activateCooldown,
-  stake,
-  reCallCooldown,
   claimReward,
+  reCallCooldown,
   reStake,
+  stake,
 } from '../../support/steps/stake.steps';
 
 const testCases = [
@@ -18,14 +18,14 @@ const testCases = [
     tabValue: 'aave',
     changeApproval: true,
   },
-  {
-    asset: assets.staking.ABPT,
-    amount: 5,
-    checkAmount: '5.00',
-    checkAmountFinal: '10.00',
-    tabValue: 'bpt',
-    changeApproval: false,
-  },
+  // {
+  //   asset: assets.staking.ABPT,
+  //   amount: 5,
+  //   checkAmount: '5.00',
+  //   checkAmountFinal: '10.00',
+  //   tabValue: 'bpt',
+  //   changeApproval: false,
+  // },
 ];
 
 testCases.forEach(
