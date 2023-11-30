@@ -10,7 +10,6 @@ import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
@@ -41,11 +40,13 @@ type StakingType = 'aave' | 'bpt';
 export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
 
-  const { data: stakeUserResult } = useUserStakeUiData();
-  const { data: stakeGeneralResult } = useGeneralStakeUiData();
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
