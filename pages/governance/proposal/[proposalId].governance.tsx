@@ -109,6 +109,14 @@ const StyledLink = styled('a')({
   color: 'inherit',
 });
 
+const findSnapshotUrl = (aipDescription: string) => {
+  // Regular expression to match the Snapshot URL pattern
+  const snapshotRegex = /\[Snapshot\]\((https?:\/\/snapshot\.org\/[#\/\w\.-]+)\)/i;
+
+  const matches = aipDescription.match(snapshotRegex);
+  return matches ? matches[1] : null;
+};
+
 export default function ProposalPage({
   proposal: initialProposal,
   ipfs,
@@ -169,6 +177,8 @@ export default function ProposalPage({
   const proposalHasExpired: boolean = proposal
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
+
+  const snapshotUrl = findSnapshotUrl(ipfs?.description || '');
 
   return (
     <>
@@ -628,7 +638,7 @@ export default function ProposalPage({
                           </SvgIcon>
                         }
                       >
-                        <Trans>Forum discussion</Trans>
+                        <Trans>Forum</Trans>
                       </Button>
                     )}
                     {prerendered && ( // only render the button for prerendered proposals as fro them we can be sure ci already ran
@@ -652,7 +662,29 @@ export default function ProposalPage({
                           </SvgIcon>
                         }
                       >
-                        <Trans>Seatbelt report</Trans>
+                        <Trans>Seatbelt</Trans>
+                      </Button>
+                    )}
+                    {snapshotUrl && (
+                      <Button
+                        component={Link}
+                        target="_blank"
+                        rel="noopener"
+                        onClick={() =>
+                          trackEvent(GENERAL.EXTERNAL_LINK, {
+                            AIP: proposal.id,
+                            Link: 'View Snapshot',
+                          })
+                        }
+                        href={snapshotUrl}
+                        variant="outlined"
+                        endIcon={
+                          <SvgIcon>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        <Trans>Snapshot</Trans>
                       </Button>
                     )}
                   </Box>

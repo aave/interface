@@ -1069,8 +1069,8 @@ msgid "For repayment of a specific type of debt, the user needs to have debt tha
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Forum discussion"
-msgstr "Forum discussion"
+msgid "Forum"
+msgstr "Forum"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -1941,8 +1941,8 @@ msgid "Save and share"
 msgstr "Save and share"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Seatbelt report"
-msgstr "Seatbelt report"
+msgid "Seatbelt"
+msgstr "Seatbelt"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
@@ -2048,6 +2048,10 @@ msgstr "Slippage"
 #: src/components/infoTooltips/SlippageTooltip.tsx
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Snapshot"
+msgstr "Snapshot"
 
 #: src/modules/migration/MigrationList.tsx
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
