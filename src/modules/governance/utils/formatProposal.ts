@@ -64,6 +64,27 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>): FormattedPro
 
 const averageBlockTime = 12;
 
+async function getBlockTimestamp(blockNumber: number): Promise<number> {
+  const provider = getProvider(ChainId.mainnet);
+  const currentBlock = await provider.getBlock('latest');
+
+  try {
+    const block = await provider.getBlock(blockNumber);
+    if (block) {
+      return block.timestamp;
+    }
+    // NOTE If the block is not found, and it's a future block, estimate its timestamp
+    if (blockNumber > currentBlock.number) {
+      //NOTE Estimate the timestamp based on the average time it takes to mine a block
+      return currentBlock.timestamp + (blockNumber - currentBlock.number) * averageBlockTime;
+    }
+    throw new Error(`Block with number ${blockNumber} not found.`);
+  } catch (error) {
+    console.error(`Failed to get block information for block number ${blockNumber}:`, error);
+    throw error;
+  }
+}
+
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);
   if (proposal.state === ProposalState.Pending) {
@@ -78,12 +99,14 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
         currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
     };
   }
-  const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = await Promise.all([
-    provider.getBlock(proposal.startBlock),
-    provider.getBlock(proposal.proposalCreated),
+
+  const [startTimestamp, creationTimestamp] = await Promise.all([
+    getBlockTimestamp(proposal.startBlock),
+    getBlockTimestamp(proposal.proposalCreated),
   ]);
   if (proposal.state === ProposalState.Active) {
     const currentBlock = await provider.getBlock('latest');
+
     return {
       ...proposal,
       startTimestamp,
