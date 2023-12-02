@@ -86,8 +86,6 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
     provider.getBlock(proposal.proposalCreated),
   ]);
   if (proposal.state === ProposalState.Active) {
-    const currentBlock = await provider.getBlock('latest');
-
     return {
       ...proposal,
       startTimestamp,
