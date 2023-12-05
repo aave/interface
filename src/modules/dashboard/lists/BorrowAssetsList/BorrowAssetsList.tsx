@@ -147,15 +147,13 @@ export const BorrowAssetsList = () => {
   const borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
-      : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
-            availableBorrowsInUSD !== '0.00' &&
-            (totalLiquidityUSD !== '0' ||
-              displayGho({
-                symbol,
-                currentMarket,
-              }))
-        );
+      : tokensToBorrow.filter(({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) => {
+          if (displayGho({ symbol, currentMarket })) {
+            return true;
+          }
+
+          return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
+        });
 
   const { value: ghoReserve, filtered: filteredReserves } = findAndFilterGhoReserve(borrowReserves);
   const sortedReserves = handleSortDashboardReserves(
