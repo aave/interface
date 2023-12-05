@@ -69122,6 +69122,7 @@ var E_MODES17 = {
 var marketsData = {
   ["proto_mainnet_v3" /* proto_mainnet_v3 */]: {
     marketTitle: "Ethereum",
+    market: "proto_mainnet_v3" /* proto_mainnet_v3 */,
     chainId: import_contract_helpers2.ChainId.mainnet,
     v3: true,
     enabledFeatures: {
@@ -69157,6 +69158,7 @@ var marketsData = {
   },
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",
+    market: "proto_mainnet" /* proto_mainnet */,
     chainId: import_contract_helpers2.ChainId.mainnet,
     enabledFeatures: {
       governance: true,
@@ -69210,6 +69212,7 @@ var marketsData = {
   // },
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
+    market: "amm_mainnet" /* amm_mainnet */,
     chainId: import_contract_helpers2.ChainId.mainnet,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     addresses: {
@@ -69225,6 +69228,7 @@ var marketsData = {
   },
   ["proto_polygon" /* proto_polygon */]: {
     marketTitle: "Polygon",
+    market: "proto_polygon" /* proto_polygon */,
     chainId: import_contract_helpers2.ChainId.polygon,
     enabledFeatures: {
       liquiditySwap: true,
@@ -69253,6 +69257,7 @@ var marketsData = {
   },
   ["proto_avalanche" /* proto_avalanche */]: {
     marketTitle: "Avalanche",
+    market: "proto_avalanche" /* proto_avalanche */,
     chainId: import_contract_helpers2.ChainId.avalanche,
     enabledFeatures: {
       liquiditySwap: true,
@@ -69283,6 +69288,7 @@ var marketsData = {
   // v3
   ["proto_sepolia_v3" /* proto_sepolia_v3 */]: {
     marketTitle: "Ethereum Sepolia",
+    market: "proto_sepolia_v3" /* proto_sepolia_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.sepolia,
     enabledFeatures: {
@@ -69300,6 +69306,7 @@ var marketsData = {
   },
   ["proto_base_v3" /* proto_base_v3 */]: {
     marketTitle: "Base",
+    market: "proto_base_v3" /* proto_base_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.base,
     enabledFeatures: {
@@ -69330,6 +69337,7 @@ var marketsData = {
   },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
     marketTitle: "Arbitrum",
+    market: "proto_arbitrum_v3" /* proto_arbitrum_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_one,
     enabledFeatures: {
@@ -69362,6 +69370,7 @@ var marketsData = {
   },
   ["proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */]: {
     marketTitle: "Arbitrum G\xF6rli",
+    market: "proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
     enabledFeatures: {
@@ -69382,6 +69391,7 @@ var marketsData = {
   },
   ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
     marketTitle: "Avalanche",
+    market: "proto_avalanche_v3" /* proto_avalanche_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.avalanche,
     enabledFeatures: {
@@ -69413,6 +69423,7 @@ var marketsData = {
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
     marketTitle: "Avalanche Fuji",
+    market: "proto_fuji_v3" /* proto_fuji_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.fuji,
     enabledFeatures: {
@@ -69432,6 +69443,7 @@ var marketsData = {
   },
   ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
     marketTitle: "Optimism G\xF6rli",
+    market: "proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_goerli,
     enabledFeatures: {
@@ -69452,6 +69464,7 @@ var marketsData = {
   },
   ["proto_scroll_sepolia_v3" /* proto_scroll_sepolia_v3 */]: {
     marketTitle: "Scroll Sepolia",
+    market: "proto_scroll_sepolia_v3" /* proto_scroll_sepolia_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.scroll_sepolia,
     enabledFeatures: {
@@ -69471,6 +69484,7 @@ var marketsData = {
   },
   ["proto_fantom_v3" /* proto_fantom_v3 */]: {
     marketTitle: "Fantom",
+    market: "proto_fantom_v3" /* proto_fantom_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom,
     enabledFeatures: {
@@ -69497,6 +69511,7 @@ var marketsData = {
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
     marketTitle: "Fantom Testnet",
+    market: "proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom_testnet,
     enabledFeatures: {
@@ -69516,6 +69531,7 @@ var marketsData = {
   },
   ["proto_harmony_v3" /* proto_harmony_v3 */]: {
     marketTitle: "Harmony",
+    market: "proto_harmony_v3" /* proto_harmony_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.harmony,
     enabledFeatures: {
@@ -69534,6 +69550,7 @@ var marketsData = {
   },
   ["proto_optimism_v3" /* proto_optimism_v3 */]: {
     marketTitle: "Optimism",
+    market: "proto_optimism_v3" /* proto_optimism_v3 */,
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism,
     enabledFeatures: {
@@ -69562,6 +69579,7 @@ var marketsData = {
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
     marketTitle: "Polygon",
+    market: "proto_polygon_v3" /* proto_polygon_v3 */,
     chainId: import_contract_helpers2.ChainId.polygon,
     v3: true,
     enabledFeatures: {
@@ -69593,6 +69611,7 @@ var marketsData = {
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
     marketTitle: "Polygon Mumbai",
+    market: "proto_mumbai_v3" /* proto_mumbai_v3 */,
     chainId: import_contract_helpers2.ChainId.mumbai,
     enabledFeatures: {
       incentives: true,
@@ -69612,6 +69631,7 @@ var marketsData = {
   },
   ["proto_goerli" /* proto_goerli */]: {
     marketTitle: "Ethereum G\xF6rli",
+    market: "proto_goerli" /* proto_goerli */,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
       faucet: true
@@ -69629,6 +69649,7 @@ var marketsData = {
   },
   ["proto_mumbai" /* proto_mumbai */]: {
     marketTitle: "Polygon Mumbai",
+    market: "proto_mumbai" /* proto_mumbai */,
     chainId: import_contract_helpers2.ChainId.mumbai,
     enabledFeatures: {
       incentives: true,
@@ -69647,6 +69668,7 @@ var marketsData = {
   },
   ["proto_fuji" /* proto_fuji */]: {
     marketTitle: "Avalanche Fuji",
+    market: "proto_fuji" /* proto_fuji */,
     chainId: import_contract_helpers2.ChainId.fuji,
     enabledFeatures: {
       faucet: true,
@@ -69665,6 +69687,7 @@ var marketsData = {
   },
   ["proto_metis_v3" /* proto_metis_v3 */]: {
     marketTitle: "Metis",
+    market: "proto_metis_v3" /* proto_metis_v3 */,
     chainId: import_contract_helpers2.ChainId.metis_andromeda,
     v3: true,
     enabledFeatures: {
@@ -69688,6 +69711,7 @@ var marketsData = {
   },
   ["proto_gnosis_v3" /* proto_gnosis_v3 */]: {
     marketTitle: "Gnosis",
+    market: "proto_gnosis_v3" /* proto_gnosis_v3 */,
     chainId: import_contract_helpers2.ChainId.xdai,
     v3: true,
     // subgraphUrl: '',
@@ -72137,13 +72161,14 @@ var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
-    if (proposal.state === import_contract_helpers6.ProposalState.Pending) {
+    const currentBlock = yield provider.getBlock("latest");
+    if (currentBlock.number < proposal.startBlock) {
       const { timestamp: creationTimestamp2 } = yield provider.getBlock(proposal.proposalCreated);
-      const currentBlock = yield provider.getBlock("latest");
+      const currentBlock2 = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         creationTimestamp: creationTimestamp2,
-        startTimestamp: currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
-        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime
+        startTimestamp: currentBlock2.timestamp + (proposal.startBlock - currentBlock2.number) * averageBlockTime,
+        expirationTimestamp: currentBlock2.timestamp + (proposal.endBlock - currentBlock2.number) * averageBlockTime
       });
     }
     const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
@@ -72151,7 +72176,6 @@ function enhanceProposalWithTimes(proposal) {
       provider.getBlock(proposal.proposalCreated)
     ]);
     if (proposal.state === import_contract_helpers6.ProposalState.Active) {
-      const currentBlock = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         startTimestamp,
         creationTimestamp,
