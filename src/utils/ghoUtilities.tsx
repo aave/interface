@@ -1,4 +1,4 @@
-import { FormattedGhoReserveData, GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
+import { GhoReserveData, GhoUserData, normalize } from '@aave/math-utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GHO_SYMBOL = 'GHO';
@@ -105,7 +105,7 @@ interface GhoUtilMintingAvailableParams {
 }
 
 export const ghoUserQualifiesForDiscount = (
-  ghoReserveData: GhoReserveData | FormattedGhoReserveData,
+  ghoReserveData: GhoReserveData,
   ghoUserData: GhoUserData,
   futureBorrowAmount = '0'
 ) => {
