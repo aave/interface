@@ -5,6 +5,8 @@ import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useMemo, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoSearchResults } from 'src/components/NoSearchResults';
+import { useProposals } from 'src/hooks/governance/useProposals';
+import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
@@ -29,6 +31,12 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       threshold: 0.3,
     })
   );
+
+  const { data } = useProposals();
+  console.log(data);
+
+  const votes = useProposalVotes({ proposalId: '32' });
+  console.log(votes);
 
   async function fetchNewProposals() {
     try {
