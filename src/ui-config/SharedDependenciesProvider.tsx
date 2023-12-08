@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { ApprovedAmountService } from 'src/services/ApprovedAmountService';
 import { GovernanceService } from 'src/services/GovernanceService';
+import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
@@ -13,6 +14,7 @@ import { stakeConfig } from './stakeConfig';
 
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
+  governanceV3Service: GovernanceV3Service;
   governanceWalletBalanceService: WalletBalanceService;
   poolTokensBalanceService: WalletBalanceService;
   uiStakeDataService: UiStakeDataService;
@@ -39,6 +41,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
 
   // services
   const governanceService = new GovernanceService(getGovernanceProvider);
+  const governanceV3Service = new GovernanceV3Service();
 
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);
   const poolTokensBalanceService = new WalletBalanceService(getProvider);
@@ -52,6 +55,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
     <SharedDependenciesContext.Provider
       value={{
         governanceService,
+        governanceV3Service,
         governanceWalletBalanceService,
         poolTokensBalanceService,
         uiStakeDataService,

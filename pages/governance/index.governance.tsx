@@ -1,9 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { getProposals } from 'src/hooks/governance/useProposals';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
@@ -21,6 +23,15 @@ const GovDelegationModal = dynamic(() =>
 );
 
 export const getStaticProps = async () => {
+  // const queryClient = new QueryClient();
+  // await queryClient.prefetchQuery({ queryKey: ['proposals'], queryFn: () => getProposals });
+
+  // return {
+  //   props: {
+  //     dehydratedState: dehydrate(queryClient),
+  //   },
+  // };
+
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
 
@@ -39,7 +50,11 @@ export const getStaticProps = async () => {
     };
   });
 
-  return { props: { proposals: proposals.slice().reverse() } };
+  return {
+    props: {
+      proposals: proposals.slice().reverse(),
+    },
+  };
 };
 
 enum Tabs {

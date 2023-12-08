@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 type Proposal = {
   proposalId: string;
@@ -26,15 +27,31 @@ const getProposalsQuery = gql`
   }
 `;
 
+export const getProposals = request<{ proposalCreateds: Proposal[] }>(
+  GOV_CORE_SUBGRAPH_URL,
+  getProposalsQuery
+);
+
 export const useProposals = () => {
   return useQuery({
-    queryFn: () =>
-      request<{ proposalCreateds: Proposal[] }>(GOV_CORE_SUBGRAPH_URL, getProposalsQuery),
+    queryFn: () => getProposals,
     queryKey: ['proposals'],
     enabled: true,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     select: (data) => data.proposalCreateds,
+  });
+};
+
+export const useGetProposalsData = () => {
+  const { governanceV3Service } = useSharedDependencies();
+  return useQuery({
+    queryFn: () => governanceV3Service.getProposalsData(),
+    queryKey: ['proposalsData'],
+    enabled: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };

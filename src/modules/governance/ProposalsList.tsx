@@ -5,7 +5,7 @@ import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useMemo, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-import { useProposals } from 'src/hooks/governance/useProposals';
+import { useGetProposalsData, useProposals } from 'src/hooks/governance/useProposals';
 import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
@@ -38,68 +38,71 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const votes = useProposalVotes({ proposalId: '32' });
   console.log(votes);
 
-  async function fetchNewProposals() {
-    try {
-      const count = await governanceContract.getProposalsCount();
-      const nextProposals: GovernancePageProps['proposals'] = [];
-      console.log(`fetching ${count - proposals.length} new proposals`);
-      if (count - proposals.length) {
-        for (let i = proposals.length; i < count; i++) {
-          const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
-          const proposal = await enhanceProposalWithTimes(rest);
-          const proposalMetadata = await getProposalMetadata(
-            proposal.ipfsHash,
-            governanceConfig.ipfsGateway
-          );
-          nextProposals.unshift({
-            ipfs: {
-              id: i,
-              originalHash: proposal.ipfsHash,
-              ...proposalMetadata,
-            },
-            proposal: proposal,
-            prerendered: false,
-          });
-        }
-        nextProposals.map((elem) => searchEngineRef.current.add(elem));
-        setProposals((p) => [...nextProposals, ...p]);
-      }
-      setLoadingNewProposals(false);
-    } catch (e) {
-      console.log('error fetching new proposals', e);
-    }
-  }
+  const { data: proposalData } = useGetProposalsData();
+  console.log(proposalData);
 
-  async function updatePendingProposals() {
-    const pendingProposals = proposals.filter(
-      ({ proposal }) => !isProposalStateImmutable(proposal)
-    );
-    try {
-      if (pendingProposals.length) {
-        const updatedProposals = await Promise.all(
-          pendingProposals.map(async ({ proposal }) => {
-            const { values, ...rest } = await governanceContract.getProposal({
-              proposalId: proposal.id,
-            });
-            return enhanceProposalWithTimes(rest);
-          })
-        );
-        setProposals((proposals) => {
-          updatedProposals.map((proposal) => {
-            proposals[proposals.length - 1 - proposal.id].proposal = proposal;
-            proposals[proposals.length - 1 - proposal.id].prerendered = false;
-          });
-          return proposals;
-        });
-      }
-      setUpdatingPendingProposals(false);
-    } catch (e) {
-      console.log('error updating proposals', e);
-    }
-  }
+  // async function fetchNewProposals() {
+  //   try {
+  //     const count = await governanceContract.getProposalsCount();
+  //     const nextProposals: GovernancePageProps['proposals'] = [];
+  //     console.log(`fetching ${count - proposals.length} new proposals`);
+  //     if (count - proposals.length) {
+  //       for (let i = proposals.length; i < count; i++) {
+  //         const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
+  //         const proposal = await enhanceProposalWithTimes(rest);
+  //         const proposalMetadata = await getProposalMetadata(
+  //           proposal.ipfsHash,
+  //           governanceConfig.ipfsGateway
+  //         );
+  //         nextProposals.unshift({
+  //           ipfs: {
+  //             id: i,
+  //             originalHash: proposal.ipfsHash,
+  //             ...proposalMetadata,
+  //           },
+  //           proposal: proposal,
+  //           prerendered: false,
+  //         });
+  //       }
+  //       nextProposals.map((elem) => searchEngineRef.current.add(elem));
+  //       setProposals((p) => [...nextProposals, ...p]);
+  //     }
+  //     setLoadingNewProposals(false);
+  //   } catch (e) {
+  //     console.log('error fetching new proposals', e);
+  //   }
+  // }
 
-  usePolling(fetchNewProposals, 60000, false, [proposals.length]);
-  usePolling(updatePendingProposals, 30000, false, [proposals.length]);
+  // async function updatePendingProposals() {
+  //   const pendingProposals = proposals.filter(
+  //     ({ proposal }) => !isProposalStateImmutable(proposal)
+  //   );
+  //   try {
+  //     if (pendingProposals.length) {
+  //       const updatedProposals = await Promise.all(
+  //         pendingProposals.map(async ({ proposal }) => {
+  //           const { values, ...rest } = await governanceContract.getProposal({
+  //             proposalId: proposal.id,
+  //           });
+  //           return enhanceProposalWithTimes(rest);
+  //         })
+  //       );
+  //       setProposals((proposals) => {
+  //         updatedProposals.map((proposal) => {
+  //           proposals[proposals.length - 1 - proposal.id].proposal = proposal;
+  //           proposals[proposals.length - 1 - proposal.id].prerendered = false;
+  //         });
+  //         return proposals;
+  //       });
+  //     }
+  //     setUpdatingPendingProposals(false);
+  //   } catch (e) {
+  //     console.log('error updating proposals', e);
+  //   }
+  // }
+
+  // usePolling(fetchNewProposals, 60000, false, [proposals.length]);
+  // usePolling(updatePendingProposals, 30000, false, [proposals.length]);
 
   const filteredByState = useMemo(() => {
     // filters by proposal state and pins large executors at the top
