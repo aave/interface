@@ -15188,7 +15188,7 @@
       "startBlock": 18720322,
       "endBlock": 18784322,
       "executionTime": 0,
-      "forVotes": "875082220311853930443875",
+      "forVotes": "875100270314069587479582",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -15202,7 +15202,7 @@
       "ipfsHash": "0x246e03d0c98ec50855f851a54b9bc74d26ad4f654c3787ddda10f28e9d9b5a11",
       "startTimestamp": 1701781487,
       "creationTimestamp": 1701694379,
-      "expirationTimestamp": 1702552043
+      "expirationTimestamp": 1702552163
     },
     {
       "id": 396,
@@ -15258,21 +15258,21 @@
       "startBlock": 18743669,
       "endBlock": 18762869,
       "executionTime": 0,
-      "forVotes": "0",
+      "forVotes": "38106789537477600027557",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 18736469,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x6a652079bf1999538d34c8d0692dff156d8905258df798d9fb1a24c68fd15e1f",
+      "startTimestamp": 1702064303,
       "creationTimestamp": 1701976955,
-      "startTimestamp": 1702064207,
-      "expirationTimestamp": 1702294607
+      "expirationTimestamp": 1702294727
     },
     {
       "id": 398,
@@ -15293,21 +15293,21 @@
       "startBlock": 18743678,
       "endBlock": 18762878,
       "executionTime": 0,
-      "forVotes": "0",
+      "forVotes": "38106789537477600027557",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Pending",
+      "state": "Active",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
       "proposalCreated": 18736478,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xf73330ab5bbc2f9de75ecc62cc9facf2d51d14689f6fbcb8a935eed53d5b357d",
+      "startTimestamp": 1702064411,
       "creationTimestamp": 1701977063,
-      "startTimestamp": 1702064315,
-      "expirationTimestamp": 1702294715
+      "expirationTimestamp": 1702294835
     },
     {
       "id": 399,
@@ -15341,8 +15341,8 @@
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xf4aa6f8da161b0c4bbc086bf0012fb29282e511226bc72c91e50ab58471a7044",
       "creationTimestamp": 1701984887,
-      "startTimestamp": 1702071971,
-      "expirationTimestamp": 1702302371
+      "startTimestamp": 1702072091,
+      "expirationTimestamp": 1702302491
     }
   ]
 }
