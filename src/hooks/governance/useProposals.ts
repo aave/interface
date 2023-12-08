@@ -53,5 +53,20 @@ export const useGetProposalsData = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    // staleTime: Infinity, ????
+  });
+};
+
+// voting configs should rarely be changed, so set cache time to infinity
+export const useGetVotingConfig = () => {
+  const { governanceV3Service } = useSharedDependencies();
+  return useQuery({
+    queryFn: () => governanceV3Service.getVotingConfig(),
+    queryKey: ['votingConfig'],
+    enabled: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity,
   });
 };

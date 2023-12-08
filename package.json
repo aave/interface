@@ -32,7 +32,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.21.2-d78bb15dc0253e18f3f73db8e4e9bcafe75b9dc2.0",
+    "@aave/contract-helpers": "1.21.2-1b378371707b7b1c33626c342393fe20049f2fe2.0",
     "@aave/math-utils": "1.21.1",
     "@bgd-labs/aave-address-book": "^2.10.0",
     "@emotion/cache": "11.10.3",
