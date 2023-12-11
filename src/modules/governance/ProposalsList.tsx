@@ -48,6 +48,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   const { data: config } = useGetVotingConfig();
   console.log(config);
 
+  // if proposal is active, we need to query the votes from the subgraph
+
   // async function fetchNewProposals() {
   //   try {
   //     const count = await governanceContract.getProposalsCount();

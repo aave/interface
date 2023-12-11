@@ -5,6 +5,7 @@ import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { UiIncentivesService } from 'src/services/UIIncentivesService';
 import { UiPoolService } from 'src/services/UIPoolService';
 import { UiStakeDataService } from 'src/services/UiStakeDataService';
+import { VotingMachineService } from 'src/services/VotingMachineService';
 import { WalletBalanceService } from 'src/services/WalletBalanceService';
 import { getNetworkConfig, getProvider } from 'src/utils/marketsAndNetworksConfig';
 import invariant from 'tiny-invariant';
@@ -15,6 +16,7 @@ import { stakeConfig } from './stakeConfig';
 interface SharedDependenciesContext {
   governanceService: GovernanceService;
   governanceV3Service: GovernanceV3Service;
+  votingMachineSerivce: VotingMachineService;
   governanceWalletBalanceService: WalletBalanceService;
   poolTokensBalanceService: WalletBalanceService;
   uiStakeDataService: UiStakeDataService;
@@ -42,6 +44,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   // services
   const governanceService = new GovernanceService(getGovernanceProvider);
   const governanceV3Service = new GovernanceV3Service();
+  const votingMachineSerivce = new VotingMachineService();
 
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);
   const poolTokensBalanceService = new WalletBalanceService(getProvider);
@@ -56,6 +59,7 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
       value={{
         governanceService,
         governanceV3Service,
+        votingMachineSerivce,
         governanceWalletBalanceService,
         poolTokensBalanceService,
         uiStakeDataService,

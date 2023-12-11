@@ -1,14 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { getProposals } from 'src/hooks/governance/useProposals';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
-import { ProposalsList } from 'src/modules/governance/ProposalsList';
+import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
@@ -110,14 +108,14 @@ export default function Governance(props: GovernancePageProps) {
         </StyledToggleButtonGroup>
         {isMobile ? (
           mode === Tabs.PROPOSALS ? (
-            <ProposalsList {...props} />
+            <ProposalsV3List />
           ) : (
             <UserGovernanceInfo />
           )
         ) : (
           <Grid container spacing={4}>
             <Grid item md={8}>
-              <ProposalsList {...props} />
+              <ProposalsV3List />
             </Grid>
             <Grid item md={4}>
               <UserGovernanceInfo />
