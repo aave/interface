@@ -14,6 +14,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
+import { GetGhoToken } from 'src/modules/staking/GetGhoToken';
+
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
@@ -65,7 +67,7 @@ export default function Staking() {
     openStakeRewardsRestakeClaim,
   } = useModalContext();
 
-  const [mode, setMode] = useState<'aave' | 'bpt' | ''>('aave');
+  const [mode, setMode] = useState<'aave' | 'bpt' | 'g  ho'>('aave');
 
   const { name: network } = getNetworkConfig(chainId);
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -98,6 +100,8 @@ export default function Staking() {
 
   const isStakeAAVE = mode === 'aave';
 
+  console.log('stakeGeneralResult', stakeGeneralResult);
+
   return (
     <>
       <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
@@ -127,6 +131,11 @@ export default function Staking() {
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
+                  </Typography>
+                </StyledToggleButton>
+                <StyledToggleButton value="gho" disabled={mode === 'gho'}>
+                  <Typography variant="subheader1">
+                    <Trans>Stake GHO</Trans>
                   </Typography>
                 </StyledToggleButton>
               </StyledToggleButtonGroup>
@@ -179,6 +188,28 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt', 'AAVE')}
                   headerAction={<GetABPToken />}
+                />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
+              >
+                <StakingPanel
+                  stakeTitle="GHO"
+                  stakedToken="GHO"
+                  maxSlash="1" // 100%
+                  icon="gho"
+                  stakeData={stakeGeneralResult?.gho}
+                  stakeUserData={stakeUserResult?.gho}
+                  ethPriceUsd={stakeGeneralResult?.ethPriceUsd}
+                  onStakeAction={() => openStake('gho', 'gho')}
+                  onCooldownAction={() => openStakeCooldown('gho')}
+                  onUnstakeAction={() => openUnstake('gho', 'gho')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim('gho', 'AAVE')}
+                  headerAction={<GetGhoToken />}
                 />
               </Grid>
             </Grid>

@@ -44,6 +44,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
+  console.log('stakeUserResult ---', stakeUserResult);
+  console.log('stakeAssetName', stakeAssetName);
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
