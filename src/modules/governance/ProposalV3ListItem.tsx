@@ -64,7 +64,7 @@ export const ProposalV3ListItem = ({
         }}
       >
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {title}
+          {title} - proposal id: {id}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
           {/* <StateBadge state={proposal.state} loading={false} />

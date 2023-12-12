@@ -1,5 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
+import { VotingMachineService } from 'src/services/VotingMachineService';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export type SubgraphProposal = {
@@ -33,23 +35,54 @@ export const getProposals = (first: number, skip: number) =>
     skip,
   });
 
-export const useProposals = ({
-  first,
-  skip,
-  totalCount,
-}: {
-  first: number;
-  skip: number;
-  totalCount: number | undefined;
-}) => {
-  return useQuery({
-    queryFn: () => getProposals(first, skip),
+const PAGE_SIZE = 10;
+
+async function fetchProposals(
+  pageParam: number,
+  governanceV3Service: GovernanceV3Service,
+  votingMachineSerivce: VotingMachineService
+) {
+  const result = await getProposals(PAGE_SIZE, pageParam * PAGE_SIZE);
+  const proposals = result.proposalCreateds;
+
+  const fromId = proposals[0].proposalId;
+  const toId = proposals[proposals.length - 1].proposalId;
+
+  const proposalData = await governanceV3Service.getProposalsData(+fromId, +toId, PAGE_SIZE);
+
+  const votingMachineParams =
+    proposalData?.map((p) => ({
+      id: +p.id,
+      snapshotBlockHash: p.proposalData.snapshotBlockHash,
+    })) ?? [];
+
+  const votingMachingData = await votingMachineSerivce.getProposalsData(votingMachineParams);
+
+  return {
+    proposals,
+    proposalData,
+    votingMachingData,
+  };
+}
+
+export const useProposals = (totalCount: number) => {
+  const { governanceV3Service, votingMachineSerivce } = useSharedDependencies();
+  return useInfiniteQuery({
+    queryFn: async ({ pageParam = 0 }) => {
+      return fetchProposals(pageParam, governanceV3Service, votingMachineSerivce);
+    },
     queryKey: ['proposals'],
-    enabled: totalCount ? totalCount > 0 : false,
+    enabled: totalCount > 0,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    select: (data) => data.proposalCreateds,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.proposals.length < PAGE_SIZE) {
+        return undefined;
+      }
+
+      return allPages.length;
+    },
   });
 };
 
@@ -59,9 +92,7 @@ export const useGetProposalCount = () => {
     queryFn: () => governanceV3Service.getProposalCount(),
     queryKey: ['proposalCount'],
     enabled: true,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    initialData: 0,
     // staleTime: Infinity, ????
   });
 };
@@ -70,16 +101,18 @@ export const useGetProposalsData = ({
   fromId,
   toId,
   limit,
+  enabled,
 }: {
   fromId: number;
   toId: number;
   limit: number;
+  enabled: boolean;
 }) => {
   const { governanceV3Service } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceV3Service.getProposalsData(fromId, toId, limit),
-    queryKey: ['proposalsData'],
-    enabled: true,
+    queryKey: ['proposalsData', fromId, toId],
+    enabled: enabled,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -101,14 +134,17 @@ export const useGetVotingConfig = () => {
   });
 };
 
+// TODO: group proposals by chain ID, query the correct voting contract for each proposal,
+// and then merge the results together, orderd by propopsal id descending
 export const useGetVotingMachineProposalsData = (
-  proposals: Array<{ id: number; snapshotBlockHash: string }>
+  proposals: Array<{ id: number; snapshotBlockHash: string }>,
+  enabled: boolean
 ) => {
   const { votingMachineSerivce } = useSharedDependencies();
   return useQuery({
     queryFn: () => votingMachineSerivce.getProposalsData(proposals),
     queryKey: ['votingMachineProposalsData'],
-    enabled: proposals?.length > 0,
+    enabled: proposals?.length > 0 && enabled,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
