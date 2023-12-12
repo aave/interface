@@ -1,17 +1,17 @@
 import { AccessLevel, ProposalV3State } from '@aave/contract-helpers';
-import { ShieldExclamationIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
-import { CheckBadge } from 'src/components/primitives/CheckBadge';
+import { Box, Stack, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { VoteBar } from './VoteBar';
+import { StateBadge } from './StateBadge';
+import { networkConfigs } from 'src/ui-config/networksConfig';
 
 export const ProposalV3ListItem = ({
   id,
   title,
+  shortDescription,
   proposalState,
   forVotes,
   againstVotes,
@@ -20,9 +20,11 @@ export const ProposalV3ListItem = ({
   quorumReached,
   diffReached,
   accessLevel,
+  votingChainId,
 }: {
   id: string;
   title: string;
+  shortDescription: string;
   proposalState: ProposalV3State;
   accessLevel: AccessLevel;
   forVotes: number;
@@ -31,12 +33,10 @@ export const ProposalV3ListItem = ({
   diffReached: boolean;
   forPercent: number;
   againstPercent: number;
+  votingChainId: number;
 }) => {
-  // const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
-  //   formatProposal(proposal);
-  const { palette } = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const network = networkConfigs[votingChainId];
   const mightBeStale = false;
 
   return (
@@ -52,7 +52,9 @@ export const ProposalV3ListItem = ({
       onClick={() => trackEvent(GOVERNANCE_PAGE.VIEW_AIP, { AIP: id })}
       href={ROUTES.dynamicRenderedProposal(+id)}
     >
-      <Box
+      <Stack
+        direction="column"
+        gap={2}
         sx={{
           width: {
             xs: '100%',
@@ -63,18 +65,45 @@ export const ProposalV3ListItem = ({
           justifyContent: 'space-between',
         }}
       >
-        <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <Stack direction="row" gap={3} alignItems="center">
+          <StateBadge state={proposalState} loading={false} />
+          <Box
+            sx={{
+              height: 16,
+              width: 16,
+            }}
+          >
+            <img src={network.networkLogoPath} height="100%" width="100%" alt="network logo" />
+          </Box>
+          <Typography variant="description" color="text.secondary">
+            Ends in 3 days (TODO)
+          </Typography>
+        </Stack>
+        <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {title} - proposal id: {id}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-          {/* <StateBadge state={proposal.state} loading={false} />
+        <Typography
+          variant="description"
+          color="text.secondary"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: '2',
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {shortDescription}
+        </Typography>
+        {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
+          <StateBadge state={proposal.state} loading={false} />
           <FormattedProposalTime
             state={0}
             startTimestamp={proposal.startTimestamp}
             executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-          /> */}
+          />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
           <CheckBadge
             text={<Trans>Differential</Trans>}
@@ -92,8 +121,8 @@ export const ProposalV3ListItem = ({
               />
             </Box>
           ) : null}
-        </Box>
-      </Box>
+        </Box> */}
+      </Stack>
       <Box
         sx={{
           flexGrow: 1,

@@ -78,6 +78,7 @@ export const ProposalsV3List = () => {
 type FormattedProposal = {
   id: string;
   title: string;
+  shortDescription: string;
   proposalState: ProposalV3State;
   accessLevel: AccessLevel;
   forVotes: number;
@@ -86,6 +87,7 @@ type FormattedProposal = {
   againstPercent: number;
   quorumReached: boolean;
   diffReached: boolean;
+  votingChainId: number;
 };
 
 const formatProposal = (
@@ -122,6 +124,7 @@ const formatProposal = (
   return {
     id: proposalData.id,
     title: proposal.title,
+    shortDescription: `${proposal.shortDescription} and then some more stuff this is a long short description it should get cut off in the list view but it is not why is it not getting ellipsed test test why why test test borrow gho`,
     proposalState: proposalData.proposalData.state,
     forVotes,
     againstVotes,
@@ -130,5 +133,6 @@ const formatProposal = (
     quorumReached,
     diffReached,
     accessLevel: proposalData.proposalData.accessLevel,
+    votingChainId: proposalData.votingChainId,
   };
 };
