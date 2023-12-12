@@ -141,10 +141,16 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       }
 
       const data = await response.json();
+
+      if (data.errors) {
+        throw new Error(data.errors);
+      }
+
       return data.data.userTransactions || [];
     } catch (error) {
       console.error('Error fetching transaction history:', error);
-      return [];
+      console.error('Error Status:', error.status);
+      throw new Error(error);
     }
   };
 
@@ -152,27 +158,41 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     searchQuery,
     filterQuery,
   }: HistoryFilters): Promise<TransactionHistoryItemUnion[]> => {
-    const allTransactions = [];
-    const batchSize = 100;
-    let skip = 0;
-    let currentBatchSize = batchSize;
+    return new Promise(async (resolve, reject) => {
+      const allTransactions = [];
+      const batchSize = 100;
+      let skip = 0;
+      let currentBatchSize = batchSize;
 
-    while (currentBatchSize === batchSize) {
-      const currentBatch = await fetchTransactionHistory({
-        first: batchSize,
-        skip: skip,
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
+      while (currentBatchSize === batchSize) {
+        let response;
+        console.log(currentMarketData.subgraphUrl);
+        try {
+          response = await fetchTransactionHistory({
+            first: batchSize,
+            skip: skip,
+            account,
+            subgraphUrl: currentMarketData.subgraphUrl ?? '',
+            v3: !!currentMarketData.v3,
+            pool: selectedPool,
+          });
+
+          currentBatchSize = response.length;
+          allTransactions.push(...response);
+          skip += batchSize;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+      }
+
+      const filteredTxns = applyTxHistoryFilters({
+        searchQuery,
+        filterQuery,
+        txns: allTransactions,
       });
-      currentBatchSize = currentBatch.length;
-      allTransactions.push(...currentBatch);
-      skip += batchSize;
-    }
-
-    const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
-    return filteredTxns;
+      resolve(filteredTxns);
+    });
   };
 
   const {
