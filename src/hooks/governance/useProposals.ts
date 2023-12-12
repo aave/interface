@@ -54,6 +54,8 @@ async function fetchProposals(
     proposalData?.map((p) => ({
       id: +p.id,
       snapshotBlockHash: p.proposalData.snapshotBlockHash,
+      chainId: p.votingChainId,
+      votingPortalAddress: p.proposalData.votingPortal,
     })) ?? [];
 
   const votingMachingData = await votingMachineSerivce.getProposalsData(votingMachineParams);
