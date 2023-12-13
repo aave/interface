@@ -28,6 +28,7 @@ export enum ModalType {
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
   Switch,
+  GovRepresentatives,
 }
 
 export interface ModalArgsType {
@@ -101,6 +102,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string) => void;
+  openGovRepresentatives: () => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -297,6 +299,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           });
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
+        },
+        openGovRepresentatives: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Representatives' });
+          setType(ModalType.GovRepresentatives);
         },
         openV3Migration: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });

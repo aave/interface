@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 
@@ -10,6 +11,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const userWithRepChosen = '0xAd9A211D227d2D9c1B5573f73CDa0284b758Ac0C';
 
 export const RepresentativesInfoPanel = () => {
+  const { openGovRepresentatives } = useModalContext();
   const account = useRootStore((state) => state.account);
 
   const { data } = useRepresentatives(userWithRepChosen);
@@ -55,6 +57,14 @@ export const RepresentativesInfoPanel = () => {
           </Stack>
         </Stack>
       </Box>
+      <Button
+        size="large"
+        sx={{ width: '100%' }}
+        variant="contained"
+        onClick={() => openGovRepresentatives()}
+      >
+        <Trans>Set up reps</Trans>
+      </Button>
     </Paper>
   );
 };

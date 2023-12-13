@@ -20,6 +20,12 @@ const GovDelegationModal = dynamic(() =>
   )
 );
 
+const GovRepresentativesModal = dynamic(() =>
+  import('../../src/components/transactions/GovRepresentatives/GovRepresentativesModal').then(
+    (module) => module.GovRepresentativesModal
+  )
+);
+
 export const getStaticProps = async () => {
   // const queryClient = new QueryClient();
   // await queryClient.prefetchQuery({ queryKey: ['proposals'], queryFn: () => getProposals });
@@ -132,6 +138,7 @@ Governance.getLayout = function getLayout(page: React.ReactElement) {
     <MainLayout>
       {page}
       <GovDelegationModal />
+      <GovRepresentativesModal />
     </MainLayout>
   );
 };

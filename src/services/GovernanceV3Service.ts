@@ -55,4 +55,12 @@ export class GovernanceV3Service {
     );
     return representationData;
   }
+
+  updateRepresentativesForChain(
+    user: string,
+    representatives: Array<{ chainId: ChainId; representative: string }>
+  ) {
+    const coreService = this.getCoreService();
+    return coreService.updateRepresentativesForChain(user, representatives);
+  }
 }
