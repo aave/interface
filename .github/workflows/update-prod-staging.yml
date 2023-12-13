@@ -105,34 +105,6 @@ jobs:
           BUILD_PATH: 'out_staging'
           PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
-      - name: Pin to secondary IPFS server
-        id: ipfs-secondary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
-
-      - name: Pin to tertiary IPFS server
-        id: ipfs-tertiary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
-          BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
-
       - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
