@@ -1,12 +1,12 @@
-import { AccessLevel, ProposalV3State } from '@aave/contract-helpers';
+import { ProposalV3State } from '@aave/contract-helpers';
 import { Box, Stack, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+import { networkConfigs } from 'src/ui-config/networksConfig';
 import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
-import { VoteBar } from './VoteBar';
 import { StateBadge } from './StateBadge';
-import { networkConfigs } from 'src/ui-config/networksConfig';
+import { VoteBar } from './VoteBar';
 
 export const ProposalV3ListItem = ({
   id,

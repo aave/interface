@@ -8,6 +8,7 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 const govCoreAddressSepolia = '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59';
 const govDataHelperSepolia = '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA';
+const votingChainIds = [ChainId.sepolia, ChainId.fuji];
 
 export class GovernanceV3Service {
   private getDataHelperService() {
@@ -43,5 +44,15 @@ export class GovernanceV3Service {
   async getProposalCount() {
     const coreService = this.getCoreService();
     return coreService.getProposalCount();
+  }
+
+  async getRepresentationData(user: string) {
+    const dataHelperService = this.getDataHelperService();
+    const representationData = await dataHelperService.getRepresentationData(
+      govCoreAddressSepolia,
+      user,
+      votingChainIds
+    );
+    return representationData;
   }
 }
