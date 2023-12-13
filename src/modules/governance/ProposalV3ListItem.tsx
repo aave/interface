@@ -17,20 +17,14 @@ export const ProposalV3ListItem = ({
   againstVotes,
   forPercent,
   againstPercent,
-  quorumReached,
-  diffReached,
-  accessLevel,
   votingChainId,
 }: {
   id: string;
   title: string;
   shortDescription: string;
   proposalState: ProposalV3State;
-  accessLevel: AccessLevel;
   forVotes: number;
   againstVotes: number;
-  quorumReached: boolean;
-  diffReached: boolean;
   forPercent: number;
   againstPercent: number;
   votingChainId: number;
@@ -42,10 +36,10 @@ export const ProposalV3ListItem = ({
   return (
     <Box
       sx={{
-        px: 6,
-        py: 8,
+        p: 6,
         display: 'flex',
         flexWrap: 'wrap',
+        justifyContent: 'space-between',
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
@@ -60,6 +54,7 @@ export const ProposalV3ListItem = ({
             xs: '100%',
             lg: '70%',
           },
+          pr: { xs: 0, lg: 8 },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -80,7 +75,7 @@ export const ProposalV3ListItem = ({
           </Typography>
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {title} - proposal id: {id}
+          {title}
         </Typography>
         <Typography
           variant="description"
@@ -123,16 +118,18 @@ export const ProposalV3ListItem = ({
           ) : null}
         </Box> */}
       </Stack>
-      <Box
+      <Stack
+        flexGrow={1}
+        direction="column"
+        justifyContent="center"
         sx={{
-          flexGrow: 1,
           pl: { xs: 0, lg: 4 },
           mt: { xs: 7, lg: 0 },
         }}
       >
         <VoteBar yae percent={forPercent} votes={forVotes} sx={{ mb: 4 }} loading={mightBeStale} />
         <VoteBar percent={againstPercent} votes={againstVotes} loading={mightBeStale} />
-      </Box>
+      </Stack>
     </Box>
   );
 };

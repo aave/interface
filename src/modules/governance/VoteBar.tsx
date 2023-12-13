@@ -57,9 +57,9 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
               roundDown
               compact={false}
             />
-            <Typography variant="description" component="span" color="text.secondary">
+            {/* <Typography variant="description" component="span" color="text.secondary">
               AAVE
-            </Typography>
+            </Typography> */}
           </Box>
         )}
         {loading ? (

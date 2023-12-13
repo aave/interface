@@ -6,11 +6,10 @@ import {
   VotingMachineProposal,
 } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
-import { LinearProgress, Paper } from '@mui/material';
+import { Box, Paper, Skeleton, Stack } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { NoSearchResults } from 'src/components/NoSearchResults';
 import {
   SubgraphProposal,
   useGetProposalCount,
@@ -21,6 +20,7 @@ import {
 import { isDifferentialReached, isQuorumReached } from './helpers';
 import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalV3ListItem } from './ProposalV3ListItem';
+import { VoteBar } from './VoteBar';
 
 export const ProposalsV3List = () => {
   // TODO
@@ -44,7 +44,6 @@ export const ProposalsV3List = () => {
         handleProposalFilterChange={setProposalFilter}
         handleSearchQueryChange={(value: string) => console.log(value)}
       />
-      {loading && <LinearProgress />}
       {data && config ? (
         <InfiniteScroll
           loadMore={() => fetchNextPage()}
@@ -67,11 +66,72 @@ export const ProposalsV3List = () => {
               ))}
             </Fragment>
           ))}
+          {loading && Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)}
         </InfiniteScroll>
       ) : (
-        <NoSearchResults searchTerm="todo" />
+        Array.from({ length: 5 }).map((_, i) => <ProposalListSkeleton key={i} />)
       )}
     </Paper>
+  );
+};
+
+const ProposalListSkeleton = () => {
+  return (
+    <Box
+      sx={{
+        p: 6,
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+      }}
+    >
+      <Stack
+        gap={2}
+        direction="row"
+        sx={{
+          width: {
+            xs: '100%',
+            lg: '70%',
+          },
+          pr: { xs: 0, lg: 8 },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Stack
+          direction="column"
+          gap={2}
+          sx={{
+            width: {
+              xs: '100%',
+              lg: '70%',
+            },
+            pr: { xs: 0, lg: 8 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Skeleton variant="rectangular" height={22} width={220} />
+          <Skeleton variant="rectangular" height={28} width={350} />
+          <Skeleton variant="rectangular" height={40} width={500} />
+        </Stack>
+      </Stack>
+      <Stack
+        flexGrow={1}
+        direction="column"
+        justifyContent="center"
+        sx={{
+          pl: { xs: 0, lg: 4 },
+          mt: { xs: 7, lg: 0 },
+        }}
+      >
+        <VoteBar yae percent={0} votes={0} sx={{ mb: 4 }} loading />
+        <VoteBar percent={0} votes={0} loading />
+      </Stack>
+    </Box>
   );
 };
 
