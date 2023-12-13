@@ -37,34 +37,6 @@ jobs:
           BUILD_PATH: 'out'
           PINATA_HASH: '${{ inputs.PINATA_HASH }}'
 
-      - name: Pin to secondary IPFS server
-        id: ipfs-secondary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: app.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          BUILD_PATH: 'out'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
-
-      - name: Pin to tertiary IPFS server
-        id: ipfs-tertiary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: app.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
-          BUILD_PATH: 'out'
-          PINATA_HASH: '${{ inputs.PINATA_HASH }}'
-
       - name: crust
         uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
         continue-on-error: true
@@ -130,34 +102,6 @@ jobs:
           IPFS_SERVER_PORT: '${{ secrets.IPFS_PRIMARY_SERVER_PORT }}'
           IPFS_SERVER: '${{ secrets.IPFS_PRIMARY_SERVER }}'
           IPFS_SERVER_KEY: '${{ secrets.IPFS_PRIMARY_SERVER_KEY }}'
-          BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
-
-      - name: Pin to secondary IPFS server
-        id: ipfs-secondary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_SECONDARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_SECONDARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_SECONDARY_SERVER_KEY }}'
-          BUILD_PATH: 'out_staging'
-          PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
-
-      - name: Pin to tertiary IPFS server
-        id: ipfs-tertiary
-        uses: ./.github/actions/production-ipfs-pin
-        with:
-          DOMAIN: staging.aave.com
-          GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
-          GKE_CLUSTER: '${{ secrets.GKE_CLUSTER }}'
-          GKE_CLUSTER_REGION: '${{ secrets.GKE_CLUSTER_REGION }}'
-          IPFS_SERVER_PORT: '${{ secrets.IPFS_TERTIARY_SERVER_PORT }}'
-          IPFS_SERVER: '${{ secrets.IPFS_TERTIARY_SERVER }}'
-          IPFS_SERVER_KEY: '${{ secrets.IPFS_TERTIARY_KEY }}'
           BUILD_PATH: 'out_staging'
           PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 

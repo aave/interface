@@ -72161,13 +72161,14 @@ var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
-    if (proposal.state === import_contract_helpers6.ProposalState.Pending) {
+    const currentBlock = yield provider.getBlock("latest");
+    if (currentBlock.number < proposal.startBlock) {
       const { timestamp: creationTimestamp2 } = yield provider.getBlock(proposal.proposalCreated);
-      const currentBlock = yield provider.getBlock("latest");
+      const currentBlock2 = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         creationTimestamp: creationTimestamp2,
-        startTimestamp: currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
-        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime
+        startTimestamp: currentBlock2.timestamp + (proposal.startBlock - currentBlock2.number) * averageBlockTime,
+        expirationTimestamp: currentBlock2.timestamp + (proposal.endBlock - currentBlock2.number) * averageBlockTime
       });
     }
     const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
@@ -72175,7 +72176,6 @@ function enhanceProposalWithTimes(proposal) {
       provider.getBlock(proposal.proposalCreated)
     ]);
     if (proposal.state === import_contract_helpers6.ProposalState.Active) {
-      const currentBlock = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         startTimestamp,
         creationTimestamp,
