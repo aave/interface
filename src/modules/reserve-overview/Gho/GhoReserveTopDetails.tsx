@@ -1,5 +1,7 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
@@ -18,11 +20,16 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve.totalDebt),
+    valueToBigNumber(reserve.borrowCap)
+  ).toNumber();
+
   return (
     <>
       <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={reserve.totalDebt}
+          value={totalBorrowed}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

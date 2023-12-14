@@ -21,6 +21,16 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
   const { breakpoints } = useTheme();
   const desktopScreens = useMediaQuery(breakpoints.up('sm'));
 
+  const totalBorrowed = BigNumber.min(
+    valueToBigNumber(reserve.totalDebt),
+    valueToBigNumber(reserve.borrowCap)
+  ).toNumber();
+
+  const totalBorrowedUSD = BigNumber.min(
+    valueToBigNumber(reserve.totalDebtUSD),
+    valueToBigNumber(reserve.borrowCapUSD)
+  ).toString();
+
   const maxAvailableToBorrow = BigNumber.max(
     valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
     0
@@ -36,6 +46,8 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
   const props: GhoBorrowInfoProps = {
     reserve,
     ghoReserveData,
+    totalBorrowed,
+    totalBorrowedUSD,
     maxAvailableToBorrow,
     maxAvailableToBorrowUSD,
     borrowCapUsage,
@@ -51,6 +63,8 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
 interface GhoBorrowInfoProps {
   reserve: ComputedReserveData;
   ghoReserveData: FormattedGhoReserveData;
+  totalBorrowed: number;
+  totalBorrowedUSD: string;
   maxAvailableToBorrow: number;
   maxAvailableToBorrowUSD: number;
   borrowCapUsage: number;
@@ -59,6 +73,8 @@ interface GhoBorrowInfoProps {
 const GhoBorrowInfoDesktop = ({
   reserve,
   ghoReserveData,
+  totalBorrowed,
+  totalBorrowedUSD,
   maxAvailableToBorrow,
   maxAvailableToBorrowUSD,
   borrowCapUsage,
@@ -96,7 +112,7 @@ const GhoBorrowInfoDesktop = ({
         }
       >
         <Box>
-          <FormattedNumber value={reserve.totalDebt} variant="main16" compact />
+          <FormattedNumber value={totalBorrowed} variant="main16" compact />
           <Typography
             component="span"
             color="text.primary"
@@ -108,7 +124,7 @@ const GhoBorrowInfoDesktop = ({
           <FormattedNumber value={reserve.borrowCap} variant="main16" />
         </Box>
         <Box>
-          <ReserveSubheader value={reserve.totalDebt} />
+          <ReserveSubheader value={totalBorrowedUSD} />
           <Typography
             component="span"
             color="text.secondary"
@@ -117,7 +133,7 @@ const GhoBorrowInfoDesktop = ({
           >
             <Trans>of</Trans>
           </Typography>
-          <ReserveSubheader value={reserve.borrowCap} />
+          <ReserveSubheader value={reserve.borrowCapUSD} />
         </Box>
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
@@ -132,6 +148,8 @@ const GhoBorrowInfoDesktop = ({
 const GhoBorrowInfoMobile = ({
   reserve,
   ghoReserveData,
+  totalBorrowed,
+  totalBorrowedUSD,
   maxAvailableToBorrow,
   maxAvailableToBorrowUSD,
   borrowCapUsage,
@@ -149,7 +167,7 @@ const GhoBorrowInfoMobile = ({
           }
         >
           <Box>
-            <FormattedNumber value={reserve.totalDebt} variant="main16" compact />
+            <FormattedNumber value={totalBorrowed} variant="main16" />
             <Typography
               component="span"
               color="text.primary"
@@ -161,7 +179,7 @@ const GhoBorrowInfoMobile = ({
             <FormattedNumber value={reserve.borrowCap} variant="main16" />
           </Box>
           <Box>
-            <ReserveSubheader value={reserve.totalDebtUSD} />
+            <ReserveSubheader value={totalBorrowedUSD} />
             <Typography
               component="span"
               color="text.secondary"
