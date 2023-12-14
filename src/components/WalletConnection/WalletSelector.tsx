@@ -61,15 +61,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
-      case WalletType.FRAME:
-        return (
-          <img
-            src={`/icons/wallets/frame.svg`}
-            width="24px"
-            height="24px"
-            alt={`browser wallet icon`}
-          />
-        );
+      // case WalletType.FRAME:
+      //   return (
+      //     <img
+      //       src={`/icons/wallets/frame.svg`}
+      //       width="24px"
+      //       height="24px"
+      //       alt={`browser wallet icon`}
+      //     />
+      //   );
       default:
         return null;
     }
@@ -220,7 +220,7 @@ export const WalletSelector = () => {
         walletType={WalletType.WALLET_LINK}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
-      <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
+      {/* <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} /> */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
           <Trans>Track wallet balance in read-only mode</Trans>
