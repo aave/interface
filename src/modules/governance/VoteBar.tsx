@@ -34,9 +34,10 @@ interface VoteBarProps extends BoxProps {
   percent: number;
   yae?: boolean;
   loading?: boolean;
+  compact?: boolean;
 }
 
-export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps) {
+export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
@@ -55,11 +56,13 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
               sx={{ mr: 1 }}
               variant="secondary14"
               roundDown
-              compact={false}
+              compact={compact}
             />
-            {/* <Typography variant="description" component="span" color="text.secondary">
-              AAVE
-            </Typography> */}
+            {!compact && (
+              <Typography variant="description" component="span" color="text.secondary">
+                AAVE
+              </Typography>
+            )}
           </Box>
         )}
         {loading ? (

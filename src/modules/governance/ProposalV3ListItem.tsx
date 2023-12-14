@@ -31,7 +31,6 @@ export const ProposalV3ListItem = ({
 }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const network = networkConfigs[votingChainId];
-  const mightBeStale = false;
 
   return (
     <Box
@@ -123,12 +122,12 @@ export const ProposalV3ListItem = ({
         direction="column"
         justifyContent="center"
         sx={{
-          pl: { xs: 0, lg: 4 },
+          pl: { xs: 0, lg: 18 },
           mt: { xs: 7, lg: 0 },
         }}
       >
-        <VoteBar yae percent={forPercent} votes={forVotes} sx={{ mb: 4 }} loading={mightBeStale} />
-        <VoteBar percent={againstPercent} votes={againstVotes} loading={mightBeStale} />
+        <VoteBar yae percent={forPercent} votes={forVotes} sx={{ mb: 4 }} compact />
+        <VoteBar percent={againstPercent} votes={againstVotes} compact />
       </Stack>
     </Box>
   );
