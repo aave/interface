@@ -57,14 +57,16 @@ export const RepresentativesInfoPanel = () => {
           </Stack>
         </Stack>
       </Box>
-      <Button
-        size="large"
-        sx={{ width: '100%' }}
-        variant="contained"
-        onClick={() => openGovRepresentatives()}
-      >
-        <Trans>Set up reps</Trans>
-      </Button>
+      <Box sx={{ p: 6 }}>
+        <Button
+          size="large"
+          sx={{ width: '100%' }}
+          variant="contained"
+          onClick={() => openGovRepresentatives()}
+        >
+          <Trans>Set up representatives</Trans>
+        </Button>
+      </Box>
     </Paper>
   );
 };
