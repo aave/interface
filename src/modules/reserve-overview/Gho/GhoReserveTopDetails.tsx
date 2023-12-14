@@ -3,10 +3,13 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
-export const GhoReserveTopDetails = () => {
-  const { ghoLoadingData, ghoReserveData } = useAppDataContext();
+export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData }) => {
+  const { ghoLoadingData } = useAppDataContext();
 
   const loading = ghoLoadingData;
   const theme = useTheme();
@@ -19,7 +22,7 @@ export const GhoReserveTopDetails = () => {
     <>
       <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={ghoReserveData.aaveFacilitatorBucketLevel}
+          value={reserve.totalDebt}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -29,7 +32,7 @@ export const GhoReserveTopDetails = () => {
 
       <TopInfoPanelItem title={<Trans>Available to borrow</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+          value={reserve.borrowCap}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

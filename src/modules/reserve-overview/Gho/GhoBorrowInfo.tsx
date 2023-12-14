@@ -1,6 +1,7 @@
-import { FormattedGhoReserveData } from '@aave/math-utils';
+import { FormattedGhoReserveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -9,6 +10,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { getBorrowCapData } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -19,29 +21,54 @@ export const GhoBorrowInfo = ({ reserve }: { reserve: ComputedReserveData }) => 
   const { breakpoints } = useTheme();
   const desktopScreens = useMediaQuery(breakpoints.up('sm'));
 
+  const maxAvailableToBorrow = BigNumber.max(
+    valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
+    0
+  ).toNumber();
+
+  const maxAvailableToBorrowUSD = BigNumber.max(
+    valueToBigNumber(reserve.borrowCapUSD).minus(valueToBigNumber(reserve.totalDebtUSD)),
+    0
+  ).toNumber();
+
+  const borrowCapUsage = getBorrowCapData(reserve).borrowCapUsage;
+
+  const props: GhoBorrowInfoProps = {
+    reserve,
+    ghoReserveData,
+    maxAvailableToBorrow,
+    maxAvailableToBorrowUSD,
+    borrowCapUsage,
+  };
+
   if (desktopScreens) {
-    return <GhoBorrowInfoDesktop reserve={reserve} ghoReserveData={ghoReserveData} />;
+    return <GhoBorrowInfoDesktop {...props} />;
   } else {
-    return <GhoBorrowInfoMobile reserve={reserve} ghoReserveData={ghoReserveData} />;
+    return <GhoBorrowInfoMobile {...props} />;
   }
 };
 
 interface GhoBorrowInfoProps {
   reserve: ComputedReserveData;
   ghoReserveData: FormattedGhoReserveData;
+  maxAvailableToBorrow: number;
+  maxAvailableToBorrowUSD: number;
+  borrowCapUsage: number;
 }
 
-const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) => {
+const GhoBorrowInfoDesktop = ({
+  reserve,
+  ghoReserveData,
+  maxAvailableToBorrow,
+  maxAvailableToBorrowUSD,
+  borrowCapUsage,
+}: GhoBorrowInfoProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Stack direction="row">
       <CapsCircularStatus
-        value={
-          (ghoReserveData.aaveFacilitatorBucketLevel /
-            ghoReserveData.aaveFacilitatorRemainingCapacity) *
-          100
-        }
+        value={borrowCapUsage}
         onClick={(open) => {
           if (open) {
             trackEvent(GENERAL.TOOL_TIP, {
@@ -53,16 +80,9 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
           <>
             <Trans>
               Maximum amount available to borrow is{' '}
-              <FormattedNumber
-                value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-                variant="secondary12"
-              />{' '}
+              <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
               {reserve.symbol} (
-              <FormattedNumber
-                value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-                variant="secondary12"
-                symbol="USD"
-              />
+              <FormattedNumber value={maxAvailableToBorrowUSD} variant="secondary12" symbol="USD" />
               ).
             </Trans>
           </>
@@ -76,11 +96,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
         }
       >
         <Box>
-          <FormattedNumber
-            value={ghoReserveData.aaveFacilitatorBucketLevel}
-            variant="main16"
-            compact
-          />
+          <FormattedNumber value={reserve.totalDebt} variant="main16" compact />
           <Typography
             component="span"
             color="text.primary"
@@ -89,13 +105,10 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
           >
             <Trans>of</Trans>
           </Typography>
-          <FormattedNumber
-            value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-            variant="main16"
-          />
+          <FormattedNumber value={reserve.borrowCap} variant="main16" />
         </Box>
         <Box>
-          <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketLevel.toString()} />
+          <ReserveSubheader value={reserve.totalDebt} />
           <Typography
             component="span"
             color="text.secondary"
@@ -104,7 +117,7 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
           >
             <Trans>of</Trans>
           </Typography>
-          <ReserveSubheader value={ghoReserveData.aaveFacilitatorRemainingCapacity.toString()} />
+          <ReserveSubheader value={reserve.borrowCap} />
         </Box>
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
@@ -116,7 +129,13 @@ const GhoBorrowInfoDesktop = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =
   );
 };
 
-const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) => {
+const GhoBorrowInfoMobile = ({
+  reserve,
+  ghoReserveData,
+  maxAvailableToBorrow,
+  maxAvailableToBorrowUSD,
+  borrowCapUsage,
+}: GhoBorrowInfoProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
@@ -130,11 +149,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
           }
         >
           <Box>
-            <FormattedNumber
-              value={ghoReserveData.aaveFacilitatorBucketLevel}
-              variant="main16"
-              compact
-            />
+            <FormattedNumber value={reserve.totalDebt} variant="main16" compact />
             <Typography
               component="span"
               color="text.primary"
@@ -143,13 +158,10 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
             >
               <Trans>of</Trans>
             </Typography>
-            <FormattedNumber
-              value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-              variant="main16"
-            />
+            <FormattedNumber value={reserve.borrowCap} variant="main16" />
           </Box>
           <Box>
-            <ReserveSubheader value={ghoReserveData.aaveFacilitatorBucketLevel.toString()} />
+            <ReserveSubheader value={reserve.totalDebtUSD} />
             <Typography
               component="span"
               color="text.secondary"
@@ -158,7 +170,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
             >
               <Trans>of</Trans>
             </Typography>
-            <ReserveSubheader value={ghoReserveData.aaveFacilitatorRemainingCapacity.toString()} />
+            <ReserveSubheader value={reserve.borrowCapUSD} />
           </Box>
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
@@ -169,11 +181,7 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
       </Stack>
       <Box>
         <CapsCircularStatus
-          value={
-            (ghoReserveData.aaveFacilitatorBucketLevel /
-              ghoReserveData.aaveFacilitatorRemainingCapacity) *
-            100
-          }
+          value={borrowCapUsage}
           onClick={(open) => {
             if (open) {
               trackEvent(GENERAL.TOOL_TIP, {
@@ -185,13 +193,10 @@ const GhoBorrowInfoMobile = ({ reserve, ghoReserveData }: GhoBorrowInfoProps) =>
             <>
               <Trans>
                 Maximum amount available to borrow is{' '}
-                <FormattedNumber
-                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
-                  variant="secondary12"
-                />{' '}
+                <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
                 {reserve.symbol} (
                 <FormattedNumber
-                  value={ghoReserveData.aaveFacilitatorRemainingCapacity}
+                  value={maxAvailableToBorrowUSD}
                   variant="secondary12"
                   symbol="USD"
                 />
