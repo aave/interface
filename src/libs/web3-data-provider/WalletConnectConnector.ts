@@ -86,7 +86,7 @@ export class WalletConnectConnector extends AbstractConnector {
     }
   }
 
-  public async getProvider(): Promise<typeof this.walletConnectProvider | undefined> {
+  public async getProvider(): Promise<typeof this.walletConnectProvider> {
     return this.walletConnectProvider;
   }
 
