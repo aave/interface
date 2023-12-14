@@ -30,7 +30,7 @@ export const GovRepresentativesContent = () => {
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
-      <GovRepresentativesActions blocked={false} isWrongNetwork={isWrongNetwork} />
+      <GovRepresentativesActions blocked={false} isWrongNetwork={false} />
     </>
   );
 };

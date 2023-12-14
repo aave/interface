@@ -1,9 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
+import { queryClient } from 'pages/_app.page';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -47,7 +49,9 @@ export const GovRepresentativesActions = ({
         txState: 'success',
       });
 
-      // TODO: invalidate queries
+      queryClient.invalidateQueries({
+        queryKey: queryKeysFactory.governanceRepresentatives(account),
+      });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);

@@ -5,8 +5,7 @@ export const useRepresentatives = (user: string) => {
   const { governanceV3Service } = useSharedDependencies();
   return useQuery({
     queryFn: () => governanceV3Service.getRepresentationData(user),
-    queryKey: ['representatives', user],
-    enabled: true,
-    // staleTime: Infinity, ????
+    queryKey: ['governance', user, 'representatives'],
+    enabled: !!user,
   });
 };

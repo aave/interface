@@ -38,6 +38,11 @@ export const queryKeysFactory = {
     blockNumber,
     'votingPowerAt',
   ],
+  governanceRepresentatives: (user: string) => [
+    ...queryKeysFactory.governance,
+    ...queryKeysFactory.user(user),
+    'representatives',
+  ],
   governanceTokens: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),

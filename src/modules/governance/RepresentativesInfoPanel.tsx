@@ -14,11 +14,11 @@ export const RepresentativesInfoPanel = () => {
   const { openGovRepresentatives } = useModalContext();
   const account = useRootStore((state) => state.account);
 
-  const { data } = useRepresentatives(userWithRepChosen);
+  const { data } = useRepresentatives(account);
   console.log(data);
 
   const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
-    useIsContractAddress(userWithRepChosen);
+    useIsContractAddress(account);
 
   console.log(isContractAddress, fetchingIsContractAddress);
 
