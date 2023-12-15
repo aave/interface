@@ -9,8 +9,8 @@ import {
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalV3ListItem } from './ProposalV3ListItem';
-import { VoteBar } from './VoteBar';
 import { formatProposalV3 } from './utils/formatProposal';
+import { VoteBar } from './VoteBar';
 
 export const ProposalsV3List = () => {
   // TODO
@@ -18,7 +18,7 @@ export const ProposalsV3List = () => {
 
   const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
   const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
-  const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
+    const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
 
   const totalNumberOfProposalsLoaded = data?.pages.reduce(
     (acc, page) => acc + page.proposals.length,

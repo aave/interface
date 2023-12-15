@@ -4,10 +4,10 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { GovRepresentativesContent } from './GovRepresentativesModalContent';
 
 export const GovRepresentativesModal = () => {
-  const { type, close } = useModalContext();
+  const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.GovRepresentatives} setOpen={close}>
-      <GovRepresentativesContent />
+      {args.representatives && <GovRepresentativesContent representatives={args.representatives} />}
     </BasicModal>
   );
 };

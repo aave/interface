@@ -22,42 +22,64 @@ export const RepresentativesInfoPanel = () => {
 
   console.log(isContractAddress, fetchingIsContractAddress);
 
-  const representatives =
-    data?.Representatives.filter((r) => r.representative !== ZERO_ADDRESS) ?? [];
+  // const representatives =
+  //   data?.Representatives.filter((r) => r.representative !== ZERO_ADDRESS) ?? [];
 
   return (
     <Paper sx={{ mt: 2 }}>
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
-        <Typography typography="h3">
-          <Trans>Representative</Trans>
-        </Typography>
-        <Stack gap={8} sx={{ mt: 6 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography typography="h3">
+            <Trans>Linked addresses</Trans>
+          </Typography>
+          <Button onClick={() => openGovRepresentatives(data?.Representatives || [])}>
+            <Typography typography="subheader1">
+              <Trans>Edit</Trans>
+            </Typography>
+          </Button>
+        </Stack>
+        <Stack gap={8} sx={{ mt: 2 }}>
           <Stack direction="column">
             <Typography variant="description" color="text.secondary">
-              <Trans>Selected you as a representative</Trans>
+              <Trans>
+                Representative smart contract wallet (ie. Safe) addresses on other chains.
+              </Trans>
             </Typography>
           </Stack>
-          <Stack>
-            <Typography variant="description" color="text.secondary">
-              <Trans>Your representative</Trans>
-            </Typography>
-            {representatives.map((representative, i) => (
-              <Stack gap={2} key={i} direction="row" alignItems="center">
-                <img
-                  src={networkConfigs[representative.chainId].networkLogoPath}
-                  height="16px"
-                  width="16px"
-                  alt="network logo"
-                />
-                <CompactableTypography compactMode={CompactMode.MD} compact>
-                  {representative.representative}
-                </CompactableTypography>
+          <Stack alignItems="start" gap={6}>
+            {data?.Representatives.map((representative, i) => (
+              <Stack gap={4} key={i} direction="column" alignItems="self-start">
+                <Stack direction="row" alignItems="center" gap={2}>
+                  <img
+                    src={networkConfigs[representative.chainId].networkLogoPath}
+                    height="16px"
+                    width="16px"
+                    alt="network logo"
+                  />
+                  <Typography variant="subheader1">
+                    {networkConfigs[representative.chainId].name}
+                  </Typography>
+                </Stack>
+                {representative.representative === ZERO_ADDRESS ? (
+                  <Typography sx={{ ml: 4 }} color="text.secondary">
+                    <Trans>None</Trans>
+                  </Typography>
+                ) : (
+                  <CompactableTypography
+                    variant="subheader1"
+                    compactMode={CompactMode.MD}
+                    compact
+                    sx={{ ml: 4 }}
+                  >
+                    {representative.representative}
+                  </CompactableTypography>
+                )}
               </Stack>
             ))}
           </Stack>
         </Stack>
       </Box>
-      <Box sx={{ p: 6 }}>
+      {/* <Box sx={{ p: 6 }}>
         <Button
           size="large"
           sx={{ width: '100%' }}
@@ -66,7 +88,7 @@ export const RepresentativesInfoPanel = () => {
         >
           <Trans>Set up representatives</Trans>
         </Button>
-      </Box>
+      </Box> */}
     </Paper>
   );
 };

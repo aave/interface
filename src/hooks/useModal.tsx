@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { ChainId, InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -41,6 +41,7 @@ export interface ModalArgsType {
   currentRateMode?: InterestRate;
   emode?: EmodeModalType;
   isFrozen?: boolean;
+  representatives?: Array<{ chainId: ChainId; representative: string }>;
 }
 
 export type TxStateType = {
@@ -102,7 +103,9 @@ export interface ModalContextType<T extends ModalArgsType> {
   openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string) => void;
-  openGovRepresentatives: () => void;
+  openGovRepresentatives: (
+    representatives: Array<{ chainId: ChainId; representative: string }>
+  ) => void;
   close: () => void;
   type?: ModalType;
   args: T;
@@ -300,9 +303,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
         },
-        openGovRepresentatives: () => {
+        openGovRepresentatives: (representatives) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Representatives' });
           setType(ModalType.GovRepresentatives);
+          setArgs({ representatives });
         },
         openV3Migration: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
