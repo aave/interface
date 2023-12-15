@@ -1,21 +1,24 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { queryClient } from 'pages/_app.page';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { UIRepresentative } from './GovRepresentativesModalContent';
 
 export const GovRepresentativesActions = ({
   blocked,
   isWrongNetwork,
+  representatives,
 }: {
   blocked: boolean;
   isWrongNetwork: boolean;
+  representatives: UIRepresentative[];
 }) => {
   const { mainTxState, setMainTxState, setTxError } = useModalContext();
   const { governanceV3Service } = useSharedDependencies();
@@ -30,9 +33,13 @@ export const GovRepresentativesActions = ({
     setMainTxState({ ...mainTxState, loading: true });
 
     try {
-      let populatedTx = governanceV3Service.updateRepresentativesForChain(account, [
-        { chainId: ChainId.sepolia, representative: '0xf0aF78eFcC9e307884738c8d8D2B931ddee901f5' },
-      ]);
+      let populatedTx = governanceV3Service.updateRepresentativesForChain(
+        account,
+        representatives.map((r) => ({
+          chainId: r.chainId,
+          representative: r.representative === '' ? ZERO_ADDRESS : r.representative,
+        }))
+      );
 
       populatedTx = await estimateGasLimit(populatedTx);
       const response = await sendTx(populatedTx);

@@ -5,6 +5,7 @@ import { Box, Checkbox, FormControlLabel, OutlinedInput, Stack, Typography } fro
 import { isAddress } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
@@ -13,9 +14,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovRepresentativesActions } from './GovRepresentativesActions';
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-interface UIRepresentative {
+export interface UIRepresentative {
   chainId: ChainId;
   representative: string;
   remove: boolean;
@@ -161,7 +160,11 @@ export const GovRepresentativesContent = ({
         ))}
       </Stack>
       <Box sx={{ p: 3 }}>
-        <GovRepresentativesActions blocked={blocked || !isDirty} isWrongNetwork={false} />
+        <GovRepresentativesActions
+          blocked={blocked || !isDirty}
+          isWrongNetwork={false}
+          representatives={reps}
+        />
       </Box>
     </Box>
   );

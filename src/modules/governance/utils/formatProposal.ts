@@ -15,6 +15,8 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { isDifferentialReached, isQuorumReached } from '../helpers';
 
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 export type FormattedProposal = {
   id?: string;
   totalVotes: number;
