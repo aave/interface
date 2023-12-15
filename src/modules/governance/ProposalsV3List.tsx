@@ -1,26 +1,16 @@
-import {
-  AccessLevel,
-  Constants,
-  ProposalData,
-  ProposalV3State,
-  VotingMachineProposal,
-} from '@aave/contract-helpers';
-import { normalizeBN } from '@aave/math-utils';
 import { Box, Paper, Skeleton, Stack } from '@mui/material';
-import BigNumber from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import {
-  SubgraphProposal,
   useGetProposalCount,
   useGetVotingConfig,
   useProposals,
 } from 'src/hooks/governance/useProposals';
 
-import { isDifferentialReached, isQuorumReached } from './helpers';
 import { ProposalListHeader } from './ProposalListHeader';
 import { ProposalV3ListItem } from './ProposalV3ListItem';
 import { VoteBar } from './VoteBar';
+import { formatProposalV3 } from './utils/formatProposal';
 
 export const ProposalsV3List = () => {
   // TODO
@@ -56,7 +46,7 @@ export const ProposalsV3List = () => {
               {group.proposals.map((proposal, index) => (
                 <ProposalV3ListItem
                   key={proposal.proposalId}
-                  {...formatProposal(
+                  {...formatProposalV3(
                     proposal,
                     group.proposalData[index],
                     config,
@@ -133,66 +123,4 @@ const ProposalListSkeleton = () => {
       </Stack>
     </Box>
   );
-};
-
-type FormattedProposal = {
-  id: string;
-  title: string;
-  shortDescription: string;
-  proposalState: ProposalV3State;
-  accessLevel: AccessLevel;
-  forVotes: number;
-  againstVotes: number;
-  forPercent: number;
-  againstPercent: number;
-  quorumReached: boolean;
-  diffReached: boolean;
-  votingChainId: number;
-};
-
-const formatProposal = (
-  proposal: SubgraphProposal,
-  proposalData: ProposalData,
-  constants: Constants,
-  votingMachineData: VotingMachineProposal
-): FormattedProposal => {
-  const quorumReached = isQuorumReached(
-    proposalData.proposalData.forVotes,
-    constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum,
-    constants.precisionDivider
-  );
-  const diffReached = isDifferentialReached(
-    proposalData.proposalData.forVotes,
-    proposalData.proposalData.againstVotes,
-    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential,
-    constants.precisionDivider
-  );
-
-  const allVotes = new BigNumber(votingMachineData.proposalData.forVotes).plus(
-    votingMachineData.proposalData.againstVotes
-  );
-  const forPercent = allVotes.gt(0)
-    ? new BigNumber(votingMachineData.proposalData.forVotes).dividedBy(allVotes).toNumber()
-    : 0;
-  const forVotes = normalizeBN(votingMachineData.proposalData.forVotes, 18).toNumber();
-
-  const againstPercent = allVotes.gt(0)
-    ? new BigNumber(votingMachineData.proposalData.againstVotes).dividedBy(allVotes).toNumber()
-    : 0;
-  const againstVotes = normalizeBN(votingMachineData.proposalData.againstVotes, 18).toNumber();
-
-  return {
-    id: proposalData.id,
-    title: proposal.title,
-    shortDescription: `${proposal.shortDescription} and then some more stuff this is a long short description it should get cut off in the list view but it is not why is it not getting ellipsed test test why why test test borrow gho`,
-    proposalState: proposalData.proposalData.state,
-    forVotes,
-    againstVotes,
-    forPercent,
-    againstPercent,
-    quorumReached,
-    diffReached,
-    accessLevel: proposalData.proposalData.accessLevel,
-    votingChainId: proposalData.votingChainId,
-  };
 };
