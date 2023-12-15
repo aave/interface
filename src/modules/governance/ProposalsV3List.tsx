@@ -18,7 +18,7 @@ export const ProposalsV3List = () => {
 
   const { data: totalCount, isFetching: fetchingProposalCount } = useGetProposalCount();
   const { data, isFetching: fetchingProposals, fetchNextPage } = useProposals(totalCount);
-    const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
+  const { data: config, isFetching: fetchingVotingConfig } = useGetVotingConfig();
 
   const totalNumberOfProposalsLoaded = data?.pages.reduce(
     (acc, page) => acc + page.proposals.length,
@@ -41,7 +41,7 @@ export const ProposalsV3List = () => {
             totalNumberOfProposalsLoaded === undefined || totalNumberOfProposalsLoaded < totalCount
           }
         >
-          {data?.pages.map((group, i) => (
+                    {data?.pages.map((group, i) => (
             <Fragment key={i}>
               {group.proposals.map((proposal, index) => (
                 <ProposalV3ListItem
@@ -114,7 +114,7 @@ const ProposalListSkeleton = () => {
         direction="column"
         justifyContent="center"
         sx={{
-          pl: { xs: 0, lg: 4 },
+          pl: { xs: 0, lg: 18 },
           mt: { xs: 7, lg: 0 },
         }}
       >
