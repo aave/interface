@@ -1,8 +1,18 @@
-import { AccessLevel, ChainId, Constants, Proposal, ProposalData, ProposalState, ProposalV3State, VotingMachineProposal } from '@aave/contract-helpers';
+import {
+  AccessLevel,
+  ChainId,
+  Constants,
+  Proposal,
+  ProposalData,
+  ProposalState,
+  ProposalV3State,
+  VotingMachineProposal,
+} from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { SubgraphProposal } from 'src/hooks/governance/useProposals';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
 import { isDifferentialReached, isQuorumReached } from '../helpers';
 
 export type FormattedProposal = {
@@ -150,7 +160,7 @@ export const formatProposalV3 = (
   return {
     id: proposalData.id,
     title: proposal.title,
-    shortDescription: `${proposal.shortDescription} and then some more stuff this is a long short description it should get cut off in the list view but it is not why is it not getting ellipsed test test why why test test borrow gho`,
+    shortDescription: proposal.shortDescription,
     proposalState: proposalData.proposalData.state,
     forVotes,
     againstVotes,
