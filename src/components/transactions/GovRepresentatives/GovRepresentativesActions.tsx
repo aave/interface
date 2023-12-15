@@ -69,8 +69,8 @@ export const GovRepresentativesActions = ({
       mainTxState={mainTxState}
       preparingTransactions={false}
       handleAction={action}
-      actionText={<Trans>Set Representatives</Trans>}
-      actionInProgressText={<Trans>Setting Representatives</Trans>}
+      actionText={<Trans>Confirm transaction</Trans>}
+      actionInProgressText={<Trans>Confirming transaction</Trans>}
       isWrongNetwork={isWrongNetwork}
     />
   );
