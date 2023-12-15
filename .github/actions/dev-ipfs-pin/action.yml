@@ -60,7 +60,7 @@ runs:
 
         echo "Pinning to cluster..."
         kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs-cluster -- \
-          ipfs-cluster-ctl pin add --wait --wait-timeout=180s \
+          ipfs-cluster-ctl pin add --wait --wait-timeout=220s \
           --replication-min=1 --name='app-aave-${{ github.sha }}' \
           "${IPFS_HASH}"
 
