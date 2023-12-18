@@ -25,6 +25,12 @@ export const RepresentativesInfoPanel = () => {
 
   console.log(isContractAddress, fetchingIsContractAddress);
 
+  console.log(data);
+
+  const isAddressSelectedAsRepresentative = data?.Represented.some(
+    (r) => r.votersRepresented.length > 0
+  );
+
   return (
     <Paper sx={{ mt: 2 }}>
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
@@ -32,11 +38,13 @@ export const RepresentativesInfoPanel = () => {
           <Typography typography="h3">
             <Trans>Linked addresses</Trans>
           </Typography>
-          <Button onClick={() => openGovRepresentatives(data?.Representatives || [])}>
-            <Typography typography="subheader1">
-              <Trans>Edit</Trans>
-            </Typography>
-          </Button>
+          {isAddressSelectedAsRepresentative ? null : (
+            <Button onClick={() => openGovRepresentatives(data?.Representatives || [])}>
+              <Typography typography="subheader1">
+                <Trans>Edit</Trans>
+              </Typography>
+            </Button>
+          )}
         </Stack>
         <Stack gap={8} sx={{ mt: 2 }}>
           <Stack direction="column">
@@ -114,3 +122,7 @@ export const RepresentativesInfoPanel = () => {
     </Paper>
   );
 };
+
+const Representing = () => {
+
+}
