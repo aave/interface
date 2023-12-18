@@ -10,10 +10,10 @@ export type ProposalVote = {
 };
 
 export interface ProposalVotes {
-  yaeVotes: ProposalVote[],
-  nayVotes: ProposalVote[],
-  combinedVotes: ProposalVote[],
-  isFetching: boolean,
+  yaeVotes: ProposalVote[];
+  nayVotes: ProposalVote[];
+  combinedVotes: ProposalVote[];
+  isFetching: boolean;
 }
 
 const VOTING_MACHING_SUBGRAPH_URL =

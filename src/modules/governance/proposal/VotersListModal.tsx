@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
 import { FormattedProposalV3 } from '../utils/formatProposal';
 import { VoteBar } from '../VoteBar';
 import { VotersList } from './VotersList';
-import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 type VotersListModalProps = {
   open: boolean;

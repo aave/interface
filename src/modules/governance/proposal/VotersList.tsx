@@ -1,9 +1,9 @@
 import { Box, Theme } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Fragment } from 'react';
+import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
 
 import { VotersListItem } from './VotersListItem';
-import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
 
 type VotersListProps = {
   compact?: boolean;
