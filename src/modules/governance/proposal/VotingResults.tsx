@@ -1,19 +1,19 @@
-import { Trans } from "@lingui/macro";
-import { Box, Paper, Skeleton, Typography } from "@mui/material";
-import { VoteBar } from "../VoteBar";
-import { VotersListContainer } from "./VotersListContainer";
-import { Row } from "src/components/primitives/Row";
-import { StateBadge } from "../StateBadge";
-import { FormattedProposalTime } from "../FormattedProposalTime";
-import { FormattedNumber } from "src/components/primitives/FormattedNumber";
-import { CheckBadge } from "src/components/primitives/CheckBadge";
-import { FormattedProposalV3 } from "../utils/formatProposal";
-import { ProposalVotes } from "src/hooks/governance/useProposalVotes";
+import { Trans } from '@lingui/macro';
+import { Box, Paper, Skeleton, Typography } from '@mui/material';
+import { CheckBadge } from 'src/components/primitives/CheckBadge';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
+
+import { StateBadge } from '../StateBadge';
+import { FormattedProposalV3 } from '../utils/formatProposal';
+import { VoteBar } from '../VoteBar';
+import { VotersListContainer } from './VotersListContainer';
 
 interface VotingResultsPros {
-  proposal: FormattedProposalV3
+  proposal: FormattedProposalV3;
   proposalVotes: ProposalVotes;
-  loading: boolean
+  loading: boolean;
 }
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
@@ -31,13 +31,14 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             sx={{ mt: 8 }}
             loading={loading}
           />
-          <VoteBar percent={proposal.againstPercent} votes={proposal.againstVotes} sx={{ mt: 3 }} loading={loading} />
+          <VoteBar
+            percent={proposal.againstPercent}
+            votes={proposal.againstVotes}
+            sx={{ mt: 3 }}
+            loading={loading}
+          />
           <VotersListContainer proposal={proposal} proposalVotes={proposalVotes} />
-          <Row
-            caption={<Trans>State</Trans>}
-            sx={{ height: 48 }}
-            captionVariant="description"
-          >
+          <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
             <Box
               sx={{
                 display: 'flex',
@@ -46,8 +47,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               }}
             >
               <StateBadge state={proposal.proposalState} loading={loading} />
-              {
-                /*
+              {/*
               <Box sx={{ mt: 0.5 }}>
                 <FormattedProposalTime
                   state={proposal.proposalState}
@@ -57,15 +57,10 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                   executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                 />
               </Box>
-              */
-              }
+              */}
             </Box>
           </Row>
-          <Row
-            caption={<Trans>Quorum</Trans>}
-            sx={{ height: 48 }}
-            captionVariant="description"
-          >
+          <Row caption={<Trans>Quorum</Trans>} sx={{ height: 48 }} captionVariant="description">
             <CheckBadge
               loading={loading}
               text={proposal.quorumReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
@@ -93,8 +88,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                 roundDown
                 sx={{ display: 'block' }}
               />
-              {
-                /*
+              {/*
                 <FormattedNumber
                   variant="caption"
                   value={minQuorumVotes}
@@ -102,8 +96,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                   roundDown
                   color="text.muted"
                 />
-                */
-              }
+                */}
             </Box>
           </Row>
           <Row
@@ -131,8 +124,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             sx={{ height: 48 }}
             captionVariant="description"
           >
-            {
-              /*
+            {/*
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
                 value={diff}
@@ -148,11 +140,9 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                 color="text.muted"
               />
               </Box>
-              */
-            }
+              */}
           </Row>
-          {
-            /*
+          {/*
           <Row
             caption={<Trans>Total voting power</Trans>}
             sx={{ height: 48 }}
@@ -164,8 +154,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               compact={false}
             />
           </Row>
-*/
-          }
+*/}
         </>
       ) : (
         <>
@@ -175,4 +164,4 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
       )}
     </Paper>
   );
-}
+};

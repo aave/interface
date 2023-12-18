@@ -138,18 +138,18 @@ export const useGetVotingConfig = () => {
 
 // TODO: group proposals by chain ID, query the correct voting contract for each proposal,
 // and then merge the results together, orderd by propopsal id descending
-export const useGetVotingMachineProposalsData = (
-  proposals: Array<{ id: number; snapshotBlockHash: string }>,
-  enabled: boolean
-) => {
-  const { votingMachineSerivce } = useSharedDependencies();
-  return useQuery({
-    queryFn: () => votingMachineSerivce.getProposalsData(proposals),
-    queryKey: ['votingMachineProposalsData'],
-    enabled: proposals?.length > 0 && enabled,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    // staleTime: Infinity, ????
-  });
-};
+// export const useGetVotingMachineProposalsData = (
+//   proposals: Array<{ id: number; snapshotBlockHash: string }>,
+//   enabled: boolean
+// ) => {
+//   const { votingMachineSerivce } = useSharedDependencies();
+//   return useQuery({
+//     queryFn: () => votingMachineSerivce.getProposalsData(proposals),
+//     queryKey: ['votingMachineProposalsData'],
+//     enabled: proposals?.length > 0 && enabled,
+//     refetchOnMount: false,
+//     refetchOnWindowFocus: false,
+//     refetchOnReconnect: false,
+//     // staleTime: Infinity, ????
+//   });
+// };

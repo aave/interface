@@ -1,19 +1,35 @@
-import { Trans } from "@lingui/macro";
-import { Box, Button, Paper, Skeleton, SvgIcon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, useMediaQuery, useTheme } from "@mui/material";
-import { StateBadge } from "src/modules/governance/StateBadge";
-import { FormattedProposalTime } from "src/modules/governance/FormattedProposalTime";
-import ReactMarkdown from "react-markdown";
-import { IpfsType } from "src/static-build/ipfs";
-import { CustomProposalType } from "src/static-build/proposal";
-import { DownloadIcon } from "@heroicons/react/solid";
-import { GENERAL } from "src/utils/mixPanelEvents";
-import { Twitter } from "@mui/icons-material";
-import remarkGfm from "remark-gfm";
-import { useRootStore } from "src/store/root";
-import { governanceConfig } from "src/ui-config/governanceConfig";
-import { Warning } from "src/components/primitives/Warning";
-import { LensIcon } from "src/components/icons/LensIcon";
-import { EnhancedProposal } from "src/hooks/governance/useProposal";
+import { DownloadIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
+import { Twitter } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Paper,
+  Skeleton,
+  styled,
+  SvgIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { LensIcon } from 'src/components/icons/LensIcon';
+import { Warning } from 'src/components/primitives/Warning';
+import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+// import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
+import { StateBadge } from 'src/modules/governance/StateBadge';
+// import { IpfsType } from 'src/static-build/ipfs';
+// import { CustomProposalType } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { GENERAL } from 'src/utils/mixPanelEvents';
 
 const CenterAlignedImage = styled('img')({
   display: 'block',
@@ -32,10 +48,9 @@ interface ProposalOverviewProps {
 }
 
 export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewProps) => {
-
-  const trackEvent = useRootStore(store => store.trackEvent)
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const { breakpoints, palette } = useTheme();
-  const lgUp = useMediaQuery(breakpoints.up('lg'))
+  const lgUp = useMediaQuery(breakpoints.up('lg'));
 
   return (
     <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
@@ -65,11 +80,13 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   }}
                 >
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                    <StateBadge state={proposal.proposalData.proposalData.state} loading={loading} />
+                    <StateBadge
+                      state={proposal.proposalData.proposalData.state}
+                      loading={loading}
+                    />
                   </Box>
 
-                  {
-                    /*
+                  {/*
                    !loading && (
                      <FormattedProposalTime
                        state={proposal.state}
@@ -78,10 +95,9 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                        executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                        expirationTimestamp={proposal.expirationTimestamp}
                      />
-                 
+
                      )
-                     */
-                  }
+                     */}
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
@@ -90,7 +106,10 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   target="_blank"
                   rel="noopener"
                   onClick={() =>
-                    trackEvent(GENERAL.EXTERNAL_LINK, { AIP: proposal.proposal.proposalId, Link: 'Raw Ipfs' })
+                    trackEvent(GENERAL.EXTERNAL_LINK, {
+                      AIP: proposal.proposal.proposalId,
+                      Link: 'Raw Ipfs',
+                    })
                   }
                   href={`${governanceConfig.ipfsGateway}/${proposal.proposal.ipfsHash}`}
                   startIcon={
@@ -133,9 +152,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.proposal.title}&hashtags=Aave&preview=true`}
                   startIcon={
                     <LensIcon
-                      color={
-                        palette.mode === 'dark' ? palette.primary.light : palette.text.primary
-                      }
+                      color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
                     />
                   }
                 >
@@ -183,9 +200,9 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   if (!_src) return null;
                   const src = /^\.\.\//.test(_src)
                     ? _src.replace(
-                      '../',
-                      'https://raw.githubusercontent.com/aave/aip/main/content/'
-                    )
+                        '../',
+                        'https://raw.githubusercontent.com/aave/aip/main/content/'
+                      )
                     : _src;
                   return <CenterAlignedImage src={src} alt={alt} />;
                 },
@@ -193,14 +210,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return <StyledLink {...rest} />;
                 },
                 h2({ node, ...rest }) {
-                  return (
-                    <Typography
-                      variant="subheader1"
-                      sx={{ mt: 6 }}
-                      gutterBottom
-                      {...rest}
-                    />
-                  );
+                  return <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />;
                 },
                 p({ node, ...rest }) {
                   return <Typography variant="description" {...rest} />;
@@ -220,5 +230,5 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
         </Box>
       )}
     </Paper>
-  )
-}
+  );
+};

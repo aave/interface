@@ -1,4 +1,4 @@
-import { ProposalState, ProposalV3State } from '@aave/contract-helpers';
+import { ProposalV3State } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Paper, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -6,10 +6,10 @@ import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { EnhancedProposal } from 'src/hooks/governance/useProposal';
-import { useVoteOnProposal } from 'src/hooks/governance/useVoteOnProposal';
-import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
+// import { useVoteOnProposal } from 'src/hooks/governance/useVoteOnProposal';
+// import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
-import { CustomProposalType } from 'src/static-build/proposal';
+// import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
 interface VoteInfoProps {
@@ -20,15 +20,15 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-
+  console.log(currentMarketData);
   // const { data: voteOnProposal } = useVoteOnProposal(currentMarketData, id);
   // const { data: powerAtProposalStart } = useVotingPowerAt(currentMarketData, strategy, startBlock);
 
   const voteOnProposal = {
-    support: true
-  }
+    support: true,
+  };
 
-  const powerAtProposalStart = 0
+  const powerAtProposalStart = 0;
 
   const voteOngoing = proposal.proposalData.proposalData.state === ProposalV3State.Active;
 
@@ -37,13 +37,12 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
   */
-  const didVote = true
-  const showAlreadyVotedMsg = !!user && didVote
+  const didVote = true;
+  const showAlreadyVotedMsg = !!user && didVote;
 
   const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
   const showCanVoteMsg =
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
-
 
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
@@ -105,7 +104,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(+proposal.proposal.proposalId, true, powerAtProposalStart)}
+                onClick={() =>
+                  openGovVote(+proposal.proposal.proposalId, true, powerAtProposalStart)
+                }
               >
                 <Trans>Vote YAE</Trans>
               </Button>
@@ -113,7 +114,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="error"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(+proposal.proposal.proposalId, false, powerAtProposalStart)}
+                onClick={() =>
+                  openGovVote(+proposal.proposal.proposalId, false, powerAtProposalStart)
+                }
                 sx={{ mt: 2 }}
               >
                 <Trans>Vote NAY</Trans>

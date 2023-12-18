@@ -41,7 +41,7 @@ export const ProposalsV3List = () => {
             totalNumberOfProposalsLoaded === undefined || totalNumberOfProposalsLoaded < totalCount
           }
         >
-                    {data?.pages.map((group, i) => (
+          {data?.pages.map((group, i) => (
             <Fragment key={i}>
               {group.proposals.map((proposal, index) => (
                 <ProposalV3ListItem

@@ -1,5 +1,5 @@
 import { ProposalData, VotingMachineProposal } from '@aave/contract-helpers';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { VotingMachineService } from 'src/services/VotingMachineService';
@@ -15,9 +15,9 @@ export type SubgraphProposal = {
 };
 
 export interface EnhancedProposal {
-  proposal: SubgraphProposal
-  proposalData: ProposalData
-  votingMachineData: VotingMachineProposal
+  proposal: SubgraphProposal;
+  proposalData: ProposalData;
+  votingMachineData: VotingMachineProposal;
 }
 
 const GOV_CORE_SUBGRAPH_URL =
@@ -37,11 +37,15 @@ const getProposalQuery = gql`
 `;
 
 export const getProposal = async (proposalId: number) => {
-  const result = await request<{ proposalCreateds: SubgraphProposal[] }>(GOV_CORE_SUBGRAPH_URL, getProposalQuery, {
-    proposalId
-  });
+  const result = await request<{ proposalCreateds: SubgraphProposal[] }>(
+    GOV_CORE_SUBGRAPH_URL,
+    getProposalQuery,
+    {
+      proposalId,
+    }
+  );
   return result.proposalCreateds[0];
-}
+};
 
 async function fetchProposal(
   proposalId: number,
@@ -52,12 +56,16 @@ async function fetchProposal(
 
   const proposalData = (await governanceV3Service.getProposalsData(+proposalId, +proposalId, 1))[0];
 
-  const votingMachineData = (await votingMachineService.getProposalsData([{
-    id: +proposalData.id,
-    snapshotBlockHash: proposalData.proposalData.snapshotBlockHash,
-    chainId: proposalData.votingChainId,
-    votingPortalAddress: proposalData.proposalData.votingPortal
-  }]))[0];
+  const votingMachineData = (
+    await votingMachineService.getProposalsData([
+      {
+        id: +proposalData.id,
+        snapshotBlockHash: proposalData.proposalData.snapshotBlockHash,
+        chainId: proposalData.votingChainId,
+        votingPortalAddress: proposalData.proposalData.votingPortal,
+      },
+    ])
+  )[0];
 
   return {
     proposal,
@@ -76,4 +84,3 @@ export const useProposal = (proposalId: number) => {
     refetchOnReconnect: false,
   });
 };
-

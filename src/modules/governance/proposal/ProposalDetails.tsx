@@ -1,27 +1,23 @@
-import { Trans } from "@lingui/macro"
-import { Box, Paper, SvgIcon, Typography } from "@mui/material"
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Row } from "src/components/primitives/Row"
-import { useRootStore } from "src/store/root";
-import dayjs from "dayjs";
+import { Trans } from '@lingui/macro';
+import { Paper, Typography } from '@mui/material';
 
-const formatTime = (timestamp: number): string =>
-  dayjs.unix(timestamp).format('D MMM YYYY, HH:mm UTC Z');
+// const formatTime = (timestamp: number): string =>
+//   dayjs.unix(timestamp).format('D MMM YYYY, HH:mm UTC Z');
 
 export const ProposalDetails = () => {
-  const proposalHasExpired: boolean = false
+  // const proposalHasExpired: boolean = false;
   /*
    proposal
     ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
   */
-  const trackEvent = useRootStore((store) => store.trackEvent);
+  // const trackEvent = useRootStore((store) => store.trackEvent);
   return (
     <Paper sx={{ px: 6, py: 4 }}>
       <Typography variant="h3" sx={{ mb: '22px' }}>
         <Trans>Proposal details</Trans>
       </Typography>
-      {proposal ? (
+      {/* {proposal ? (
         <>
           <Row
             caption={
@@ -103,20 +99,12 @@ export const ProposalDetails = () => {
             </Row>
           )}
           {proposal.executed && (
-            <Row
-              caption={<Trans>Executed</Trans>}
-              sx={{ height: 48 }}
-              captionVariant="description"
-            >
+            <Row caption={<Trans>Executed</Trans>} sx={{ height: 48 }} captionVariant="description">
               <Typography>{formatTime(proposal.executionTime)}</Typography>
             </Row>
           )}
           {ipfs?.author && (
-            <Row
-              caption={<Trans>Author</Trans>}
-              sx={{ height: 48 }}
-              captionVariant="description"
-            >
+            <Row caption={<Trans>Author</Trans>} sx={{ height: 48 }} captionVariant="description">
               <Typography
                 sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
               >
@@ -177,7 +165,7 @@ export const ProposalDetails = () => {
         <>
           <Skeleton variant="rectangular" height={600} />
         </>
-      )}
+      )} */}
     </Paper>
-  )
-}
+  );
+};

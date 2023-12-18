@@ -12,7 +12,7 @@ import { networkConfigs } from 'src/ui-config/networksConfig';
 
 import { ZERO_ADDRESS } from './utils/formatProposal';
 
-const userWithRepChosen = '0xAd9A211D227d2D9c1B5573f73CDa0284b758Ac0C';
+// const userWithRepChosen = '0xAd9A211D227d2D9c1B5573f73CDa0284b758Ac0C';
 
 export const RepresentativesInfoPanel = () => {
   const { openGovRepresentatives } = useModalContext();
@@ -123,6 +123,6 @@ export const RepresentativesInfoPanel = () => {
   );
 };
 
-const Representing = () => {
+// const Representing = () => {
 
-}
+// }

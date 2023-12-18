@@ -80,6 +80,8 @@ export default function Governance(props: GovernancePageProps) {
   const [mode, setMode] = useState(Tabs.PROPOSALS);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
+  console.log(props);
+
   useEffect(() => {
     trackEvent('Page Viewed', {
       'Page Name': 'Governance',

@@ -2,14 +2,13 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
-import { CustomProposalType } from 'src/static-build/proposal';
+import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';
 import { AIP } from 'src/utils/mixPanelEvents';
 
-import { FormattedProposalV3, formatProposal } from '../utils/formatProposal';
+import { FormattedProposalV3 } from '../utils/formatProposal';
 import { VotersList } from './VotersList';
 import { VotersListModal } from './VotersListModal';
-import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 
 type VotersListProps = {
   proposal: FormattedProposalV3;
@@ -77,7 +76,11 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
     <Box sx={{ my: 8 }}>
       <Row sx={{ mb: 3 }}>
         <Typography variant="subheader2" color="text.secondary">
-          {proposalVotes.combinedVotes.length > 10 ? <Trans>Top 10 addresses</Trans> : <Trans>Addresses</Trans>}
+          {proposalVotes.combinedVotes.length > 10 ? (
+            <Trans>Top 10 addresses</Trans>
+          ) : (
+            <Trans>Addresses</Trans>
+          )}
         </Typography>
         <Typography variant="subheader2" color="text.secondary">
           <Trans>Votes</Trans>
