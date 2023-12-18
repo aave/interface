@@ -4,7 +4,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const pageExtensions = ['page.tsx'];
-if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
+// if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx'); // TODO: put back in
+pageExtensions.push('governance.tsx');
 if (process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
 
 /** @type {import('next').NextConfig} */
