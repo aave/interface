@@ -20,7 +20,7 @@ export const GovRepresentativesActions = ({
   isWrongNetwork: boolean;
   representatives: UIRepresentative[];
 }) => {
-  const { mainTxState, setMainTxState, setTxError } = useModalContext();
+  const { mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
   const { governanceV3Service } = useSharedDependencies();
   const { sendTx } = useWeb3Context();
   const [account, estimateGasLimit, addTransaction] = useRootStore((state) => [
@@ -37,7 +37,7 @@ export const GovRepresentativesActions = ({
         account,
         representatives.map((r) => ({
           chainId: r.chainId,
-          representative: r.representative === '' ? ZERO_ADDRESS : r.representative,
+          representative: r.representative === '' || r.remove ? ZERO_ADDRESS : r.representative,
         }))
       );
 
@@ -68,6 +68,8 @@ export const GovRepresentativesActions = ({
       });
     }
   };
+
+  setGasLimit('100000'); // TODO
 
   return (
     <TxActionsWrapper

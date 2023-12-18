@@ -1,7 +1,9 @@
 import { PlusIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
@@ -17,15 +19,11 @@ export const RepresentativesInfoPanel = () => {
   const account = useRootStore((state) => state.account);
 
   const { data } = useRepresentatives(account);
-  console.log(data);
 
   const { data: isContractAddress, isFetching: fetchingIsContractAddress } =
     useIsContractAddress(account);
 
   console.log(isContractAddress, fetchingIsContractAddress);
-
-  // const representatives =
-  //   data?.Representatives.filter((r) => r.representative !== ZERO_ADDRESS) ?? [];
 
   return (
     <Paper sx={{ mt: 2 }}>
@@ -81,30 +79,38 @@ export const RepresentativesInfoPanel = () => {
                     </Typography>
                   </Stack>
                 ) : (
-                  <CompactableTypography
-                    variant="subheader1"
-                    compactMode={CompactMode.MD}
-                    compact
-                    sx={{ ml: 4 }}
+                  <Link
+                    href={`${networkConfigs[representative.chainId].explorerLink}/address/${
+                      representative.representative
+                    }`}
                   >
-                    {representative.representative}
-                  </CompactableTypography>
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      <CompactableTypography
+                        variant="subheader1"
+                        compactMode={CompactMode.MD}
+                        compact
+                        sx={{ ml: 4 }}
+                      >
+                        {representative.representative}
+                      </CompactableTypography>
+                      <SvgIcon
+                        sx={(theme) => ({
+                          width: 14,
+                          height: 14,
+                          ml: 0.5,
+                          color: theme.palette.text.muted,
+                        })}
+                      >
+                        <ExternalLinkIcon />
+                      </SvgIcon>
+                    </Stack>
+                  </Link>
                 )}
               </Stack>
             ))}
           </Stack>
         </Stack>
       </Box>
-      {/* <Box sx={{ p: 6 }}>
-        <Button
-          size="large"
-          sx={{ width: '100%' }}
-          variant="contained"
-          onClick={() => openGovRepresentatives()}
-        >
-          <Trans>Set up representatives</Trans>
-        </Button>
-      </Box> */}
     </Paper>
   );
 };

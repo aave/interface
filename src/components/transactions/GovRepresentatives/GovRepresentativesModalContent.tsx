@@ -2,15 +2,19 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Checkbox, FormControlLabel, OutlinedInput, Stack, Typography } from '@mui/material';
-import { isAddress } from 'ethers/lib/utils';
+import { isAddress, parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
+import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovRepresentativesActions } from './GovRepresentativesActions';
 
@@ -26,6 +30,7 @@ export const GovRepresentativesContent = ({
 }: {
   representatives: Array<{ chainId: ChainId; representative: string }>;
 }) => {
+  const { mainTxState, txError } = useModalContext();
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const [currentNetworkConfig, currentChainId] = useRootStore((state) => [
     state.currentNetworkConfig,
@@ -57,7 +62,7 @@ export const GovRepresentativesContent = ({
     setReps((prev) => {
       const newReps = [...prev];
       newReps[i].representative = value;
-      newReps[i].invalid = !valid;
+      newReps[i].invalid = value !== '' && !valid;
       return newReps;
     });
   };
@@ -77,6 +82,16 @@ export const GovRepresentativesContent = ({
     );
   });
 
+  if (mainTxState.success) {
+    return (
+      <BaseSuccessView txHash={mainTxState.txHash}>
+        <></>
+      </BaseSuccessView>
+    );
+  }
+
+  console.log(reps);
+
   return (
     <Box sx={{ m: -3 }}>
       <Box sx={{ p: 3 }}>
@@ -91,10 +106,10 @@ export const GovRepresentativesContent = ({
             key={i}
             sx={(theme) => ({
               border: reps[i].remove
-                ? `1px solid ${theme.palette.text.secondary}`
+                ? `1px solid ${theme.palette.action.active}`
                 : '1px solid transparent',
               borderRadius: '8px',
-              background: reps[i].remove ? theme.palette.background.default : 'transparent',
+              background: reps[i].remove ? theme.palette.background.surface : 'transparent',
             })}
           >
             <Stack gap={2} sx={{ px: 3, py: 3 }}>
@@ -159,7 +174,9 @@ export const GovRepresentativesContent = ({
           </Box>
         ))}
       </Stack>
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ px: 3 }}>
+        <GasStation disabled={blocked || !isDirty} gasLimit={parseUnits('1000000', 'wei')} />
+        {txError && <GasEstimationError txError={txError} />}
         <GovRepresentativesActions
           blocked={blocked || !isDirty}
           isWrongNetwork={false}
