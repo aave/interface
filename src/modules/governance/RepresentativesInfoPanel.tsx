@@ -1,5 +1,6 @@
+import { PlusIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
@@ -62,9 +63,23 @@ export const RepresentativesInfoPanel = () => {
                   </Typography>
                 </Stack>
                 {representative.representative === ZERO_ADDRESS ? (
-                  <Typography sx={{ ml: 4 }} color="text.secondary">
-                    <Trans>None</Trans>
-                  </Typography>
+                  <Stack direction="row" gap={1} alignItems="center">
+                    <IconButton
+                      sx={(theme) => ({
+                        height: '24px',
+                        width: '24px',
+                        background: theme.palette.background.disabled,
+                      })}
+                      onClick={() => openGovRepresentatives(data?.Representatives || [])}
+                    >
+                      <SvgIcon sx={{ p: 1 }}>
+                        <PlusIcon />
+                      </SvgIcon>
+                    </IconButton>
+                    <Typography variant="subheader1" color="text.muted">
+                      <Trans>Connect</Trans>
+                    </Typography>
+                  </Stack>
                 ) : (
                   <CompactableTypography
                     variant="subheader1"
