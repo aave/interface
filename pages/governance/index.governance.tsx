@@ -87,7 +87,6 @@ export default function Governance(props: GovernancePageProps) {
       'Page Name': 'Governance',
     });
   }, [trackEvent]);
-
   return (
     <>
       <GovernanceTopPanel />
