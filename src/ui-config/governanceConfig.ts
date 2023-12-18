@@ -45,3 +45,59 @@ export const governanceConfig: GovernanceConfig = {
   ipfsGateway: 'https://cloudflare-ipfs.com/ipfs',
   fallbackIpfsGateway: 'https://ipfs.io/ipfs',
 };
+
+export const votingChainIds = [ChainId.sepolia, ChainId.fuji] as const;
+export type VotingChain = typeof votingChainIds[number];
+
+export interface VotingMachineConfig {
+  portalToMachineMap: { [votingPoralAddress: string]: string };
+  votingPortalDataHelperAddress: string;
+}
+
+export interface GovernanceV3Config {
+  coreChainId: ChainId;
+  votingMachineSubgraphUrl: string;
+  governanceCoreSubgraphUrl: string;
+  votingChainConfig: { [key in VotingChain]: VotingMachineConfig };
+  addresses: {
+    GOVERNANCE_CORE: string;
+    GOVERNANCE_DATA_HELPER: string;
+  };
+  votingAssets: string[];
+}
+
+const sepoliaVotingMachineConfig: VotingMachineConfig = {
+  portalToMachineMap: {
+    '0x1079bAa48E56065d43b4344866B187a485cb0A92': '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
+  },
+  votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
+};
+
+const fujiVotingMachineConfig: VotingMachineConfig = {
+  portalToMachineMap: {
+    '0x4f47EdF2577995aBd7B875Eed75b3F28a20E696F': '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
+  },
+  votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
+};
+
+export const governanceV3Config: GovernanceV3Config = {
+  coreChainId: ChainId.sepolia,
+  votingMachineSubgraphUrl:
+    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia/v1/gn',
+  governanceCoreSubgraphUrl:
+    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
+  votingChainConfig: {
+    [ChainId.sepolia]: sepoliaVotingMachineConfig,
+    [ChainId.fuji]: fujiVotingMachineConfig,
+  },
+  votingAssets: [
+    // TODO: could query the contracts for list of voting assets
+    '0xdaEcee477B931b209e8123401EA37582ACB3811d',
+    '0x354032B31339853A3D682613749F183328d07275',
+    '0x26aAB2aE39897338c2d91491C46c14a8c2a67919',
+  ],
+  addresses: {
+    GOVERNANCE_CORE: '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59',
+    GOVERNANCE_DATA_HELPER: '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA',
+  },
+};

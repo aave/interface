@@ -4,27 +4,27 @@ import {
   GovernanceCoreService,
   GovernanceDataHelperService,
 } from '@aave/contract-helpers';
+import { governanceV3Config, votingChainIds } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-
-const govCoreAddressSepolia = '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59';
-const govDataHelperSepolia = '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA';
-const votingChainIds = [ChainId.sepolia, ChainId.fuji];
 
 export class GovernanceV3Service {
   private getDataHelperService() {
     const provider = getProvider(ChainId.sepolia); // TODO: pass in market data
-    return new GovernanceDataHelperService(govDataHelperSepolia, provider);
+    return new GovernanceDataHelperService(
+      governanceV3Config.addresses.GOVERNANCE_DATA_HELPER,
+      provider
+    );
   }
 
   private getCoreService() {
     const provider = getProvider(ChainId.sepolia); // TODO: pass in market data
-    return new GovernanceCoreService(govCoreAddressSepolia, provider);
+    return new GovernanceCoreService(governanceV3Config.addresses.GOVERNANCE_CORE, provider);
   }
 
   async getProposalsData(from = 0, to = 0, limit = 10) {
     const dataHelperService = this.getDataHelperService();
     const proposals = await dataHelperService.getProposalsData(
-      govCoreAddressSepolia,
+      governanceV3Config.addresses.GOVERNANCE_CORE,
       from,
       to,
       limit
@@ -34,10 +34,10 @@ export class GovernanceV3Service {
 
   async getVotingConfig() {
     const dataHelperService = this.getDataHelperService();
-    const votingConfig = await dataHelperService.getConstants(govCoreAddressSepolia, [
-      AccessLevel.Short_Executor,
-      AccessLevel.Long_Executor,
-    ]);
+    const votingConfig = await dataHelperService.getConstants(
+      governanceV3Config.addresses.GOVERNANCE_CORE,
+      [AccessLevel.Short_Executor, AccessLevel.Long_Executor]
+    );
     return votingConfig;
   }
 
@@ -49,9 +49,9 @@ export class GovernanceV3Service {
   async getRepresentationData(user: string) {
     const dataHelperService = this.getDataHelperService();
     const representationData = await dataHelperService.getRepresentationData(
-      govCoreAddressSepolia,
+      governanceV3Config.addresses.GOVERNANCE_CORE,
       user,
-      votingChainIds
+      [...votingChainIds]
     );
     return representationData;
   }

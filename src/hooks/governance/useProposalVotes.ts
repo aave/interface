@@ -1,6 +1,7 @@
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
 export type ProposalVote = {
   proposalId: string;
@@ -16,9 +17,6 @@ export interface ProposalVotes {
   isFetching: boolean;
 }
 
-const VOTING_MACHING_SUBGRAPH_URL =
-  'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia/v1/gn';
-
 const getProposalVotes = gql`
   query getProposalVotes($proposalId: String!) {
     voteEmitteds(where: { proposalId: $proposalId }) {
@@ -33,9 +31,13 @@ const getProposalVotes = gql`
 export const useProposalVotesQuery = ({ proposalId }: { proposalId: string }) => {
   return useQuery({
     queryFn: () =>
-      request<{ voteEmitteds: ProposalVote[] }>(VOTING_MACHING_SUBGRAPH_URL, getProposalVotes, {
-        proposalId,
-      }),
+      request<{ voteEmitteds: ProposalVote[] }>(
+        governanceV3Config.votingMachineSubgraphUrl,
+        getProposalVotes,
+        {
+          proposalId,
+        }
+      ),
     queryKey: ['proposalVotes', proposalId],
     enabled: true,
     refetchOnMount: false,

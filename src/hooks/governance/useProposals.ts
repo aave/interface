@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
 import { GovernanceV3Service } from 'src/services/GovernanceV3Service';
 import { VotingMachineService } from 'src/services/VotingMachineService';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 
 export type SubgraphProposal = {
@@ -12,9 +13,6 @@ export type SubgraphProposal = {
   description: string;
   author: string;
 };
-
-const GOV_CORE_SUBGRAPH_URL =
-  'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn';
 
 const getProposalsQuery = gql`
   query getProposals($first: Int!, $skip: Int!) {
@@ -30,10 +28,14 @@ const getProposalsQuery = gql`
 `;
 
 export const getProposals = (first: number, skip: number) =>
-  request<{ proposalCreateds: SubgraphProposal[] }>(GOV_CORE_SUBGRAPH_URL, getProposalsQuery, {
-    first,
-    skip,
-  });
+  request<{ proposalCreateds: SubgraphProposal[] }>(
+    governanceV3Config.governanceCoreSubgraphUrl,
+    getProposalsQuery,
+    {
+      first,
+      skip,
+    }
+  );
 
 const PAGE_SIZE = 10;
 
@@ -135,21 +137,3 @@ export const useGetVotingConfig = () => {
     staleTime: Infinity,
   });
 };
-
-// TODO: group proposals by chain ID, query the correct voting contract for each proposal,
-// and then merge the results together, orderd by propopsal id descending
-// export const useGetVotingMachineProposalsData = (
-//   proposals: Array<{ id: number; snapshotBlockHash: string }>,
-//   enabled: boolean
-// ) => {
-//   const { votingMachineSerivce } = useSharedDependencies();
-//   return useQuery({
-//     queryFn: () => votingMachineSerivce.getProposalsData(proposals),
-//     queryKey: ['votingMachineProposalsData'],
-//     enabled: proposals?.length > 0 && enabled,
-//     refetchOnMount: false,
-//     refetchOnWindowFocus: false,
-//     refetchOnReconnect: false,
-//     // staleTime: Infinity, ????
-//   });
-// };
