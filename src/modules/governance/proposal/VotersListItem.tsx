@@ -3,19 +3,21 @@ import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import { blo } from 'blo';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
-import type { GovernanceVoter } from './VotersListContainer';
+// import type { GovernanceVoter } from './VotersListContainer';
 
 type VotersListItemProps = {
   compact: boolean;
-  voter: GovernanceVoter;
+  voter: ProposalVote;
 };
 
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
-  const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
+  // const { address, ensName, votingPower: proposalVotingPower, twitterAvatar } = voter;
+  const { voter: address } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -45,7 +47,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   // Three for 1<=n<10.
   // Two for 10<=n<1000.
   // Zero decimals for 1000<=n<Infinity.
-  const displayVotingPower = proposalVotingPower / 10 ** 18;
+  const displayVotingPower = Number(voter.votingPower) / 10 ** 18;
   const displayVotingPowerDecimals =
     displayVotingPower < 1
       ? 4
@@ -58,13 +60,13 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
       : 0;
 
   // Don't show any results that come back with zero or negative voting power
-  if (voter.votingPower <= 0) return null;
+  if (Number(voter.votingPower) <= 0) return null;
 
   return (
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={twitterAvatar ?? blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
           <Link
             href={`https://etherscan.io/address/${address}`}
             onClick={() =>
@@ -76,7 +78,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
               color="primary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
-              {displayName(ensName ?? address)}
+              {displayName(address)}
               <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
               </SvgIcon>

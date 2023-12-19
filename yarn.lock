@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.21.1":
-  version "1.21.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.21.1.tgz#7157ec7e7fe83f3fb5be1a5f4a1dfbfdfaa592a1"
-  integrity sha512-sp5m0KZ0lInlBfTfZnbR7yh0jG1Q+5wvM42H7JBMOdjxb1jWKWkAWg0DFQJzXlDsBo+bk6BS/sBHa4Eql0IA8A==
+"@aave/contract-helpers@1.21.2-d0266e10411329ea9ae0ad5e4793c390d5eca701.0":
+  version "1.21.2-d0266e10411329ea9ae0ad5e4793c390d5eca701.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.21.2-d0266e10411329ea9ae0ad5e4793c390d5eca701.0.tgz#35a93469d4c567e81d2fd04bc31a32f2908dcfe0"
+  integrity sha512-BzU3aW98cnd6Hxetk6nV4nwBgNavZs5kueoRkPJ5ZqwcqrZOj+9xD4fAFXqazh5ynf62LlpYvQxQsLq50IJSnw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -2091,6 +2091,11 @@
   integrity sha512-P0A6XgjpEwCzZpk0vjLOYuaOmXL020khJF9FQRwCYPrllPUzrGjpm5gdqExNdnefrrDUKeWUumkucoXqBaMblA==
   dependencies:
     cross-fetch "^3.1.5"
+
+"@graphql-typed-document-node/core@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
+  integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
 "@heroicons/react@^1.0.6":
   version "1.0.6"
@@ -7429,6 +7434,19 @@ grapheme-splitter@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
+
+graphql-request@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-6.1.0.tgz#f4eb2107967af3c7a5907eb3131c671eac89be4f"
+  integrity sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.2.0"
+    cross-fetch "^3.1.5"
+
+graphql@^16.8.1:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
 gray-matter@^4.0.3:
   version "4.0.3"

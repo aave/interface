@@ -1,13 +1,13 @@
 import { Box, Theme } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Fragment } from 'react';
+import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
 
-import { GovernanceVoter } from './VotersListContainer';
 import { VotersListItem } from './VotersListItem';
 
 type VotersListProps = {
   compact?: boolean;
-  voters: GovernanceVoter[];
+  voters: ProposalVote[];
   sx?: SxProps<Theme>;
 };
 
@@ -18,7 +18,7 @@ export const VotersList = ({ compact = false, voters, sx }: VotersListProps): JS
         <Box sx={{ color: 'text.secondary' }}>—</Box>
       ) : (
         voters.map((voter) => (
-          <Fragment key={voter.address}>
+          <Fragment key={voter.voter}>
             <VotersListItem voter={voter} compact={compact} />
           </Fragment>
         ))

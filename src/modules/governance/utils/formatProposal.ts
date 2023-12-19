@@ -1,7 +1,21 @@
-import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
+import {
+  AccessLevel,
+  ChainId,
+  Constants,
+  Proposal,
+  ProposalData,
+  ProposalState,
+  ProposalV3State,
+  VotingMachineProposal,
+} from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
+import { SubgraphProposal } from 'src/hooks/governance/useProposals';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import { isDifferentialReached, isQuorumReached } from '../helpers';
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export type FormattedProposal = {
   id?: string;
@@ -98,3 +112,65 @@ export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'
     startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
   return { ...proposal, startTimestamp, creationTimestamp, expirationTimestamp };
 }
+
+export type FormattedProposalV3 = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  proposalState: ProposalV3State;
+  accessLevel: AccessLevel;
+  forVotes: number;
+  againstVotes: number;
+  forPercent: number;
+  againstPercent: number;
+  quorumReached: boolean;
+  diffReached: boolean;
+  votingChainId: number;
+};
+
+export const formatProposalV3 = (
+  proposal: SubgraphProposal,
+  proposalData: ProposalData,
+  constants: Constants,
+  votingMachineData: VotingMachineProposal
+): FormattedProposalV3 => {
+  const quorumReached = isQuorumReached(
+    proposalData.proposalData.forVotes,
+    constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum,
+    constants.precisionDivider
+  );
+  const diffReached = isDifferentialReached(
+    proposalData.proposalData.forVotes,
+    proposalData.proposalData.againstVotes,
+    constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential,
+    constants.precisionDivider
+  );
+
+  const allVotes = new BigNumber(votingMachineData.proposalData.forVotes).plus(
+    votingMachineData.proposalData.againstVotes
+  );
+  const forPercent = allVotes.gt(0)
+    ? new BigNumber(votingMachineData.proposalData.forVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const forVotes = normalizeBN(votingMachineData.proposalData.forVotes, 18).toNumber();
+
+  const againstPercent = allVotes.gt(0)
+    ? new BigNumber(votingMachineData.proposalData.againstVotes).dividedBy(allVotes).toNumber()
+    : 0;
+  const againstVotes = normalizeBN(votingMachineData.proposalData.againstVotes, 18).toNumber();
+
+  return {
+    id: proposalData.id,
+    title: proposal.title,
+    shortDescription: proposal.shortDescription,
+    proposalState: proposalData.proposalData.state,
+    forVotes,
+    againstVotes,
+    forPercent,
+    againstPercent,
+    quorumReached,
+    diffReached,
+    accessLevel: proposalData.proposalData.accessLevel,
+    votingChainId: proposalData.votingChainId,
+  };
+};
