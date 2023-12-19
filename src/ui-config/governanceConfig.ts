@@ -83,7 +83,7 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
 export const governanceV3Config: GovernanceV3Config = {
   coreChainId: ChainId.sepolia,
   votingMachineSubgraphUrl:
-    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia/v1/gn',
+    'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/votingmachine-sepolia-avalanche-testnet/v2/gn',
   governanceCoreSubgraphUrl:
     'https://api.goldsky.com/api/public/project_clk74pd7lueg738tw9sjh79d6/subgraphs/governance-v3/v2.0.1/gn',
   votingChainConfig: {
