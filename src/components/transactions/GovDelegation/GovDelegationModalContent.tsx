@@ -48,7 +48,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
   const currentChainId = useRootStore((store) => store.currentChainId);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
   const { data: powers, refetch } = usePowers(currentMarketData);
   // error states
@@ -93,6 +93,15 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       symbol: 'AAVE',
       name: 'AAVE',
       amount: aave,
+      votingDelegatee: powers?.aaveVotingDelegatee,
+      propositionDelegatee: powers?.aavePropositionDelegatee,
+      type: DelegationTokenType.AAVE,
+    },
+    {
+      address: governanceConfig.aAaveTokenAddress,
+      symbol: 'aAave',
+      name: 'aAave',
+      amount: aAave,
       votingDelegatee: powers?.aaveVotingDelegatee,
       propositionDelegatee: powers?.aavePropositionDelegatee,
       type: DelegationTokenType.AAVE,
@@ -179,9 +188,10 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
         >
           <Trans>
             Choose how much voting/proposition power to give to someone else by delegating some of
-            your AAVE or stkAAVE balance. Your tokens will remain in your account, but your delegate
-            will be able to vote or propose on your behalf. If your AAVE or stkAAVE balance changes,
-            your delegate&apos;s voting/proposition power will be automatically adjusted.
+            your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your
+            delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave
+            balance changes, your delegate&apos;s voting/proposition power will be automatically
+            adjusted.
           </Trans>
         </TextWithTooltip>
       )}

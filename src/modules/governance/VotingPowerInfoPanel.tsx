@@ -14,6 +14,7 @@ export function VotingPowerInfoPanel() {
   const user = useRootStore((store) => store.account);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: powers } = usePowers(currentMarketData);
+  console.log('powers', powers);
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography

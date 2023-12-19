@@ -64,16 +64,18 @@ export class GovernanceService {
     };
   }
   async getPowers(marketData: MarketDataType, user: string): Promise<Powers> {
-    const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
+    const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } = governanceConfig;
     const aaveGovernanceService = this.getAaveGovernanceService(marketData);
     const [aaveTokenPower, stkAaveTokenPower] = await aaveGovernanceService.getTokensPower({
       user: user,
-      tokens: [aaveTokenAddress, stkAaveTokenAddress],
+      tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
     });
+    // todo setup powers for aAaveToken
     const powers = {
       votingPower: normalize(
         valueToBigNumber(aaveTokenPower.votingPower.toString())
           .plus(stkAaveTokenPower.votingPower.toString())
+          // .plust(aAaveTokenAddress.votingPower.toString())
           .toString(),
         18
       ),
