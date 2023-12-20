@@ -22,6 +22,7 @@ export enum DelegationTokenType {
   BOTH = 0,
   AAVE,
   STKAAVE,
+  aAave,
 }
 
 export type DelegationTokenSelectorProps = {
@@ -87,7 +88,7 @@ export const DelegationTokenSelector = ({
   filter,
 }: DelegationTokenSelectorProps) => {
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
 
   const filteredTokens = filter ? filterTokens(delegationTokens, delegationType) : delegationTokens;
@@ -113,7 +114,12 @@ export const DelegationTokenSelector = ({
           value={DelegationTokenType.BOTH}
           control={<Radio size="small" />}
           componentsProps={{ typography: { width: '100%' } }}
-          label={<TokenRow symbol={['AAVE', 'stkAAVE']} amount={Number(aave) + Number(stkAave)} />}
+          label={
+            <TokenRow
+              symbol={['AAVE', 'stkAAVE', 'aAave']}
+              amount={Number(aave) + Number(stkAave) + Number(aAave)}
+            />
+          }
           data-cy={`delegate-token-both`}
         />
         <FormControlLabel
@@ -129,6 +135,13 @@ export const DelegationTokenSelector = ({
           componentsProps={{ typography: { width: '100%' } }}
           label={<TokenRow symbol="stkAAVE" amount={stkAave} />}
           data-cy={`delegate-token-stkAAVE`}
+        />
+        <FormControlLabel
+          value={DelegationTokenType.aAave}
+          control={<Radio size="small" />}
+          componentsProps={{ typography: { width: '100%' } }}
+          label={<TokenRow symbol="aAave" amount={aAave} />}
+          data-cy={`delegate-token-aAave`}
         />
       </RadioGroup>
     </FormControl>

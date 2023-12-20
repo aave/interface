@@ -45,7 +45,6 @@ export const SharedDependenciesProvider: React.FC = ({ children }) => {
   const governanceService = new GovernanceService(getGovernanceProvider);
   const governanceV3Service = new GovernanceV3Service();
   const votingMachineSerivce = new VotingMachineService();
-
   const governanceWalletBalanceService = new WalletBalanceService(getGovernanceProvider);
   const poolTokensBalanceService = new WalletBalanceService(getProvider);
   const uiStakeDataService = new UiStakeDataService(getStakeProvider);

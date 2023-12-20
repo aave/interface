@@ -1,6 +1,7 @@
 import { AaveGovernanceService, Power, tEthereumAddress } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -13,6 +14,8 @@ interface Powers {
   aavePropositionDelegatee: string;
   stkAaveVotingDelegatee: string;
   stkAavePropositionDelegatee: string;
+  aAaveVotingDelegatee: string;
+  aAavePropositionDelegatee: string;
 }
 
 interface VoteOnProposalData {
@@ -21,8 +24,9 @@ interface VoteOnProposalData {
 }
 
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
-  delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase() ? '' : delegatee;
-
+  delegatee == ZERO_ADDRESS || delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase()
+    ? ''
+    : delegatee;
 export class GovernanceService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
@@ -64,27 +68,43 @@ export class GovernanceService {
     };
   }
   async getPowers(marketData: MarketDataType, user: string): Promise<Powers> {
-    const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
+    const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } = governanceConfig;
+
     const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-    const [aaveTokenPower, stkAaveTokenPower] = await aaveGovernanceService.getTokensPower({
-      user: user,
-      tokens: [aaveTokenAddress, stkAaveTokenAddress],
-    });
+
+    const [aaveTokenPower, stkAaveTokenPower, aAaveTokenPower] =
+      await aaveGovernanceService.getTokensPower({
+        user: user,
+        tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
+      });
+    // todo setup powers for aAaveToken
     const powers = {
       votingPower: normalize(
         valueToBigNumber(aaveTokenPower.votingPower.toString())
           .plus(stkAaveTokenPower.votingPower.toString())
+          .plus(aAaveTokenPower.votingPower.toString())
           .toString(),
         18
       ),
+      aAaveTokenPower,
       aaveTokenPower,
       stkAaveTokenPower,
       propositionPower: normalize(
         valueToBigNumber(aaveTokenPower.propositionPower.toString())
           .plus(stkAaveTokenPower.propositionPower.toString())
+          .plus(aAaveTokenPower.votingPower.toString())
           .toString(),
         18
       ),
+      aAaveVotingDelegatee: checkIfDelegateeIsUser(
+        aAaveTokenPower.delegatedAddressVotingPower,
+        user
+      ),
+      aAavePropositionDelegatee: checkIfDelegateeIsUser(
+        aAaveTokenPower.delegatedAddressPropositionPower,
+        user
+      ),
+
       aaveVotingDelegatee: checkIfDelegateeIsUser(aaveTokenPower.delegatedAddressVotingPower, user),
       aavePropositionDelegatee: checkIfDelegateeIsUser(
         aaveTokenPower.delegatedAddressPropositionPower,
