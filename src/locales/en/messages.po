@@ -3040,14 +3040,11 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 #: pages/governance/index.governance.tsx
 #: pages/reserve-overview.page.tsx
 #: src/modules/governance/UserGovernanceInfo.tsx
+#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
 msgstr "Your info"
-
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-msgid "Your infossss"
-msgstr "Your infossss"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
