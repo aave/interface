@@ -1,48 +1,31 @@
-import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
+import { EnhancedProposal } from 'src/hooks/governance/useProposal';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type GovVoteActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
-  proposalId: number;
+  proposal: EnhancedProposal;
   support: boolean;
 };
 
 export const GovVoteActions = ({
   isWrongNetwork,
   blocked,
-  proposalId,
+  proposal,
   support,
 }: GovVoteActionsProps) => {
-  const submitVote = useRootStore((state) => state.submitVote);
-  const { currentAccount } = useWeb3Context();
+  const { mainTxState, loadingTxns } = useModalContext();
 
-  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
-    tryPermit: false,
-    handleGetTxns: async () => {
-      return submitVote({
-        proposalId: Number(proposalId),
-        user: currentAccount,
-        support: support || false,
-      });
-    },
-    eventTxInfo: {
-      proposalId,
-      support,
-    },
-    protocolAction: ProtocolAction.vote,
-    skip: blocked,
-    deps: [],
-  });
+  const action = async () => {
+    console.log(proposal);
+  };
 
   return (
     <TxActionsWrapper
-      requiresApproval={requiresApproval}
+      requiresApproval={false}
       blocked={blocked}
       mainTxState={mainTxState}
       preparingTransactions={loadingTxns}

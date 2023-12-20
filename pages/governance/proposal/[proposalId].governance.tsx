@@ -30,6 +30,7 @@ export default function ProposalPage() {
     isLoading: newProposalLoading,
     error: newProposalError,
   } = useProposal(+proposalId);
+
   const { data: constants, isLoading: constantsLoading } = useGetVotingConfig();
   const proposalVotes = useProposalVotes({ proposalId });
 

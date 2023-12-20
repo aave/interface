@@ -27,7 +27,8 @@ export class VotingMachineService {
       snapshotBlockHash: string;
       chainId: number;
       votingPortalAddress: string;
-    }>
+    }>,
+    user?: string
   ) {
     const proposalsByVotingChainId: VotingChainProposal = proposals.reduce((acc, proposal) => {
       const chainId: VotingChain = proposal.chainId;
@@ -61,7 +62,7 @@ export class VotingMachineService {
               votingPortalAddress
             ],
             proposals,
-            ZERO_ADDRESS
+            user || ZERO_ADDRESS
           )
         );
       });

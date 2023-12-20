@@ -6,6 +6,8 @@ import {
   GovernanceDataHelperService,
   GovernancePowerType,
 } from '@aave/contract-helpers';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { governanceV3Config, votingChainIds } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
@@ -69,7 +71,6 @@ export class GovernanceV3Service {
   async getVotingPowerAt(blockHash: string, user: string, votingAssets: string[]) {
     const provider = getProvider(governanceV3Config.coreChainId);
     const block = await provider.getBlock(blockHash);
-    console.log('current block', block);
 
     const tokenServices = votingAssets.map((token) => {
       return {
@@ -77,16 +78,13 @@ export class GovernanceV3Service {
         service: new AaveTokenV3Service(token, provider),
       };
     });
-
-    const tokenPowerMap: { [token: string]: string } = {};
-    await Promise.all(
-      tokenServices.map(async (s) => {
-        const power = await s.service.getPowerAt(block.number, user, GovernancePowerType.VOTING);
-        tokenPowerMap[s.asset.toLowerCase()] = power.toString();
-      })
+    const result = await Promise.all(
+      tokenServices.map(
+        async (s) => (await s.service.getPowerAt(block.number, user, GovernancePowerType.VOTING))[0]
+      )
     );
-
-    console.log('powers', tokenPowerMap);
-    return tokenPowerMap;
+    console.log(result);
+    const totalPower = result.reduce((acum, elem) => acum.add(elem), BigNumber.from(0));
+    return formatUnits(totalPower, 18);
   }
 }

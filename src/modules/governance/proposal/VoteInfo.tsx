@@ -1,15 +1,14 @@
 import { ProposalV3State } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Paper, Typography } from '@mui/material';
+import { constants } from 'ethers';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { EnhancedProposal } from 'src/hooks/governance/useProposal';
-// import { useVoteOnProposal } from 'src/hooks/governance/useVoteOnProposal';
-// import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
+import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
-// import { CustomProposalType } from 'src/static-build/proposal';
 import { useRootStore } from 'src/store/root';
 
 interface VoteInfoProps {
@@ -19,26 +18,22 @@ interface VoteInfoProps {
 export function VoteInfo({ proposal }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  console.log(currentMarketData);
-  // const { data: voteOnProposal } = useVoteOnProposal(currentMarketData, id);
-  // const { data: powerAtProposalStart } = useVotingPowerAt(currentMarketData, strategy, startBlock);
+  const voteOnProposal = proposal.votingMachineData.votedInfo;
 
-  const voteOnProposal = {
-    support: true,
-  };
+  const blockHash =
+    proposal.proposalData.proposalData.snapshotBlockHash === constants.HashZero
+      ? 'latest'
+      : proposal.proposalData.proposalData.snapshotBlockHash;
 
-  const powerAtProposalStart = 0;
+  const { data: powerAtProposalStart } = useVotingPowerAt(
+    blockHash,
+    proposal.votingMachineData.votingAssets
+  );
 
   const voteOngoing = proposal.proposalData.proposalData.state === ProposalV3State.Active;
 
-  // Messages
-  /*
   const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
-  */
-  const didVote = true;
-  const showAlreadyVotedMsg = !!user && didVote;
 
   const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
   const showCanVoteMsg =
@@ -104,9 +99,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={() =>
-                  openGovVote(+proposal.proposal.proposalId, true, powerAtProposalStart)
-                }
+                onClick={() => openGovVote(proposal, true, powerAtProposalStart)}
               >
                 <Trans>Vote YAE</Trans>
               </Button>
@@ -114,9 +107,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="error"
                 variant="contained"
                 fullWidth
-                onClick={() =>
-                  openGovVote(+proposal.proposal.proposalId, false, powerAtProposalStart)
-                }
+                onClick={() => openGovVote(proposal, false, powerAtProposalStart)}
                 sx={{ mt: 2 }}
               >
                 <Trans>Vote NAY</Trans>
