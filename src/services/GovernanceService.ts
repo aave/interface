@@ -28,6 +28,12 @@ export class GovernanceService {
 
   private getAaveGovernanceService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
+
+    console.log(
+      'PARAMS',
+      governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+      governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER
+    );
     return new AaveGovernanceService(provider, {
       GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
       GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
@@ -65,28 +71,44 @@ export class GovernanceService {
   }
   async getPowers(marketData: MarketDataType, user: string): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } = governanceConfig;
+
     const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-    const [aaveTokenPower, stkAaveTokenPower] = await aaveGovernanceService.getTokensPower({
-      user: user,
-      tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
-    });
+
+    const [aaveTokenPower, stkAaveTokenPower, aAaveTokenPower] =
+      await aaveGovernanceService.getTokensPower({
+        user: user,
+        tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
+      });
+
+    console.log('aAaveTokenPower', aAaveTokenPower.votingPower.toString());
     // todo setup powers for aAaveToken
     const powers = {
       votingPower: normalize(
         valueToBigNumber(aaveTokenPower.votingPower.toString())
           .plus(stkAaveTokenPower.votingPower.toString())
-          // .plust(aAaveTokenAddress.votingPower.toString())
+          .plus(aAaveTokenPower.votingPower.toString())
           .toString(),
         18
       ),
+      aAaveTokenPower,
       aaveTokenPower,
       stkAaveTokenPower,
       propositionPower: normalize(
         valueToBigNumber(aaveTokenPower.propositionPower.toString())
           .plus(stkAaveTokenPower.propositionPower.toString())
+          .plus(aAaveTokenPower.votingPower.toString())
           .toString(),
         18
       ),
+      aAaveVotingDelegatee: checkIfDelegateeIsUser(
+        aAaveTokenPower.delegatedAddressVotingPower,
+        user
+      ),
+      aAavePropositionDelegatee: checkIfDelegateeIsUser(
+        aAaveTokenPower.delegatedAddressPropositionPower,
+        user
+      ),
+
       aaveVotingDelegatee: checkIfDelegateeIsUser(aaveTokenPower.delegatedAddressVotingPower, user),
       aavePropositionDelegatee: checkIfDelegateeIsUser(
         aaveTokenPower.delegatedAddressPropositionPower,
@@ -101,6 +123,8 @@ export class GovernanceService {
         user
       ),
     };
+
+    console.log('here the powers', powers);
     return powers;
   }
 }

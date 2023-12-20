@@ -131,6 +131,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     if (txState.success) refetch();
   }, [txState.success, refetch]);
 
+  console.log('whats the powers', powers);
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&

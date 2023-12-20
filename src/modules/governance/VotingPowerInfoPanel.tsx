@@ -15,13 +15,14 @@ export function VotingPowerInfoPanel() {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { data: powers } = usePowers(currentMarketData);
   console.log('powers', powers);
+  console.log('FOOOOOOO');
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
         variant="h3"
         sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}
       >
-        <Trans>Your info</Trans>
+        <Trans>Your infossss</Trans>
       </Typography>
       <UserDisplay
         withLink={true}
