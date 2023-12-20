@@ -7,6 +7,7 @@ export const useGovernanceTokens = () => {
   const { governanceWalletBalanceService } = useSharedDependencies();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const user = useRootStore((store) => store.account);
+
   return useQuery({
     queryFn: () =>
       governanceWalletBalanceService.getGovernanceTokensBalance(currentMarketData, user),

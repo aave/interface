@@ -34,6 +34,7 @@ export const useGovernanceDelegate = (
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [aaveNonce, setAaveNonce] = useState(0);
   const [stkAaveNonce, setStkAaveNonce] = useState(0);
+  const [aAaveNonce, setAAaveNonce] = useState(0);
   const [deadline, setDeadline] = useState(Math.floor(Date.now() / 1000 + 3600).toString());
   const prepareDelegateSignature = useRootStore((state) => state.prepareDelegateSignature);
   const prepareDelegateByTypeSignature = useRootStore(
@@ -91,11 +92,17 @@ export const useGovernanceDelegate = (
       setMainTxState({ ...mainTxState, loading: true });
       const { v: v1, r: r1, s: s1 } = utils.splitSignature(signatures[0]);
       const { v: v2, r: r2, s: s2 } = utils.splitSignature(signatures[1]);
+      const { v: v3, r: r3, s: s3 } = utils.splitSignature(signatures[2]);
+
       let txs: EthereumTransactionTypeExtended[] = [];
       if (delegationType === DelegationType.BOTH) {
         txs = await delegateTokensBySig({
           user,
-          tokens: [governanceConfig.aaveTokenAddress, governanceConfig.stkAaveTokenAddress],
+          tokens: [
+            governanceConfig.aaveTokenAddress,
+            governanceConfig.stkAaveTokenAddress,
+            governanceConfig.aAaveTokenAddress,
+          ],
           data: [
             {
               delegatee,
@@ -112,13 +119,25 @@ export const useGovernanceDelegate = (
               v: v2,
               r: r2,
               s: s2,
+            },
+            {
+              delegatee,
+              nonce: aAaveNonce,
+              expiry: deadline,
+              v: v3,
+              r: r3,
+              s: s3,
             },
           ],
         });
       } else {
         txs = await delegateTokensByTypeBySig({
           user,
-          tokens: [governanceConfig.aaveTokenAddress, governanceConfig.stkAaveTokenAddress],
+          tokens: [
+            governanceConfig.aaveTokenAddress,
+            governanceConfig.stkAaveTokenAddress,
+            governanceConfig.aAaveTokenAddress,
+          ],
           data: [
             {
               delegatee,
@@ -137,6 +156,15 @@ export const useGovernanceDelegate = (
               v: v2,
               r: r2,
               s: s2,
+            },
+            {
+              delegatee,
+              nonce: aAaveNonce,
+              expiry: deadline,
+              delegationType,
+              v: v3,
+              r: r3,
+              s: s3,
             },
           ],
         });
@@ -196,11 +224,13 @@ export const useGovernanceDelegate = (
       const [aaveNonce, stkAaveNonce] = await Promise.all([
         getTokenNonce(user, governanceConfig.aaveTokenAddress),
         getTokenNonce(user, governanceConfig.stkAaveTokenAddress),
+        getTokenNonce(user, governanceConfig.aAaveTokenAddress),
       ]);
       const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
       setDeadline(deadline);
       setAaveNonce(aaveNonce);
       setStkAaveNonce(stkAaveNonce);
+      setAAaveNonce(aAaveNonce);
       const txs = [
         {
           delegatee,
@@ -214,6 +244,13 @@ export const useGovernanceDelegate = (
           nonce: String(stkAaveNonce),
           governanceToken: governanceConfig.stkAaveTokenAddress,
           governanceTokenName: 'Staked Aave',
+          expiry: deadline,
+        },
+        {
+          delegatee,
+          nonce: String(aAaveNonce),
+          governanceToken: governanceConfig.aAaveTokenAddress,
+          governanceTokenName: 'aAave',
           expiry: deadline,
         },
       ];
@@ -275,7 +312,12 @@ export const useGovernanceDelegate = (
             governanceToken:
               delegationTokenType === DelegationTokenType.AAVE
                 ? governanceConfig.aaveTokenAddress
-                : governanceConfig.stkAaveTokenAddress,
+                : delegationTokenType === DelegationTokenType.STKAAVE
+                ? governanceConfig.stkAaveTokenAddress
+                : governanceConfig.aAaveTokenAddress,
+            // delegationTokenType === DelegationTokenType.AAVE
+            //   ? governanceConfig.aaveTokenAddress
+            //   : governanceConfig.stkAaveTokenAddress,
           });
         } else {
           txs = await delegateByType({
@@ -284,7 +326,12 @@ export const useGovernanceDelegate = (
             governanceToken:
               delegationTokenType === DelegationTokenType.AAVE
                 ? governanceConfig.aaveTokenAddress
-                : governanceConfig.stkAaveTokenAddress,
+                : delegationTokenType === DelegationTokenType.STKAAVE
+                ? governanceConfig.stkAaveTokenAddress
+                : governanceConfig.aAaveTokenAddress,
+            // delegationTokenType === DelegationTokenType.AAVE
+            //   ? governanceConfig.aaveTokenAddress
+            //   : governanceConfig.stkAaveTokenAddress,
           });
         }
         setActionTx(txs[0]);

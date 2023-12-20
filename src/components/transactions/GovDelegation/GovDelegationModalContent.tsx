@@ -102,9 +102,9 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       symbol: 'aAave',
       name: 'aAave',
       amount: aAave,
-      votingDelegatee: powers?.aaveVotingDelegatee,
-      propositionDelegatee: powers?.aavePropositionDelegatee,
-      type: DelegationTokenType.AAVE,
+      votingDelegatee: powers?.aAaveVotingDelegatee,
+      propositionDelegatee: powers?.aAavePropositionDelegatee,
+      type: DelegationTokenType.aAave,
     },
   ];
 
@@ -131,7 +131,6 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
     if (txState.success) refetch();
   }, [txState.success, refetch]);
 
-  console.log('whats the powers', powers);
   // is Network mismatched
   const govChain =
     currentNetworkConfig.isFork &&

@@ -1,6 +1,7 @@
 import { AaveGovernanceService, Power, tEthereumAddress } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
@@ -13,6 +14,8 @@ interface Powers {
   aavePropositionDelegatee: string;
   stkAaveVotingDelegatee: string;
   stkAavePropositionDelegatee: string;
+  aAaveVotingDelegatee: string;
+  aAavePropositionDelegatee: string;
 }
 
 interface VoteOnProposalData {
@@ -21,19 +24,14 @@ interface VoteOnProposalData {
 }
 
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
-  delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase() ? '' : delegatee;
-
+  delegatee == ZERO_ADDRESS || delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase()
+    ? ''
+    : delegatee;
 export class GovernanceService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
   private getAaveGovernanceService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
-
-    console.log(
-      'PARAMS',
-      governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-      governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER
-    );
     return new AaveGovernanceService(provider, {
       GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
       GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
@@ -79,8 +77,6 @@ export class GovernanceService {
         user: user,
         tokens: [aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress],
       });
-
-    console.log('aAaveTokenPower', aAaveTokenPower.votingPower.toString());
     // todo setup powers for aAaveToken
     const powers = {
       votingPower: normalize(
@@ -123,8 +119,6 @@ export class GovernanceService {
         user
       ),
     };
-
-    console.log('here the powers', powers);
     return powers;
   }
 }

@@ -10,6 +10,7 @@ import { ExternalUserDisplay } from 'src/components/UserDisplay';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -20,6 +21,8 @@ type DelegatedPowerProps = {
   aaveDelegatee: string;
   stkAaveDelegatee: string;
   title: string;
+  aAavePower: string;
+  aAaveDelegatee: string;
 };
 
 const DelegatedPower: React.FC<DelegatedPowerProps> = ({
@@ -28,12 +31,15 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
   stkAavePower,
   aaveDelegatee,
   stkAaveDelegatee,
+  aAaveDelegatee,
+  aAavePower,
   title,
 }) => {
   const isAaveSelfDelegated = !aaveDelegatee || user === aaveDelegatee;
   const isStkAaveSelfDelegated = !stkAaveDelegatee || user === stkAaveDelegatee;
+  const isAAaveSelfDelegated = !aAaveDelegatee || user === aAaveDelegatee;
 
-  if (isAaveSelfDelegated && isStkAaveSelfDelegated) return null;
+  if (isAaveSelfDelegated && isStkAaveSelfDelegated && isAAaveSelfDelegated) return null;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 6, mb: 2 }}>
@@ -41,7 +47,9 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
         <Trans>{title}</Trans>
       </Typography>
       <Box sx={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
-        {aaveDelegatee === stkAaveDelegatee ? (
+        {aaveDelegatee !== ZERO_ADDRESS &&
+        aaveDelegatee === stkAaveDelegatee &&
+        aaveDelegatee === aAaveDelegatee ? (
           <Row
             align="flex-start"
             caption={
@@ -98,6 +106,24 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 </Box>
               </Row>
             )}
+
+            {!isAAaveSelfDelegated && (
+              <Row
+                align="flex-start"
+                caption={
+                  <ExternalUserDisplay
+                    avatarProps={{ size: AvatarSize.XS }}
+                    titleProps={{ variant: 'subheader1' }}
+                    address={aAaveDelegatee}
+                  />
+                }
+              >
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                  <TokenIcon symbol="aAave" sx={{ width: 16, height: 16 }} />
+                  <FormattedNumber value={aAavePower} variant="subheader1" />
+                </Box>
+              </Row>
+            )}
           </>
         )}
       </Box>
@@ -109,7 +135,7 @@ export const DelegatedInfoPanel = () => {
   const address = useRootStore((store) => store.account);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const {
-    data: { aave, stkAave },
+    data: { aave, stkAave, aAave },
   } = useGovernanceTokens();
   const { data: powers } = usePowers(currentMarketData);
   const { openGovDelegation, openRevokeGovDelegation } = useModalContext();
@@ -120,16 +146,21 @@ export const DelegatedInfoPanel = () => {
   const disableButton =
     Number(aave) <= 0 &&
     Number(stkAave) <= 0 &&
+    Number(aAave) <= 0 &&
     powers.aavePropositionDelegatee === '' &&
     powers.aaveVotingDelegatee === '' &&
     powers.stkAavePropositionDelegatee === '' &&
-    powers.stkAaveVotingDelegatee === '';
+    powers.stkAaveVotingDelegatee === '' &&
+    powers.aAavePropositionDelegatee === '' &&
+    powers.aAaveVotingDelegatee === '';
 
   const showRevokeButton =
     powers.aavePropositionDelegatee !== '' ||
     powers.aaveVotingDelegatee !== '' ||
     powers.stkAavePropositionDelegatee !== '' ||
-    powers.stkAaveVotingDelegatee !== '';
+    powers.stkAaveVotingDelegatee !== '' ||
+    powers.aAaveVotingDelegatee !== '' ||
+    powers.aAavePropositionDelegatee !== '';
 
   return (
     <Paper sx={{ mt: 2 }}>
@@ -163,6 +194,8 @@ export const DelegatedInfoPanel = () => {
             <DelegatedPower
               aavePower={aave}
               stkAavePower={stkAave}
+              aAavePower={aAave}
+              aAaveDelegatee={powers.aAaveVotingDelegatee}
               aaveDelegatee={powers.aaveVotingDelegatee}
               stkAaveDelegatee={powers.stkAaveVotingDelegatee}
               user={address}
@@ -170,6 +203,8 @@ export const DelegatedInfoPanel = () => {
             />
             <DelegatedPower
               aavePower={aave}
+              aAavePower={aAave}
+              aAaveDelegatee={powers.aAavePropositionDelegatee}
               stkAavePower={stkAave}
               aaveDelegatee={powers.aavePropositionDelegatee}
               stkAaveDelegatee={powers.stkAavePropositionDelegatee}
