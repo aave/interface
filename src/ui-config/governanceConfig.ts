@@ -60,6 +60,7 @@ export interface GovernanceV3Config {
   votingMachineSubgraphUrl: string;
   governanceCoreSubgraphUrl: string;
   votingChainConfig: { [key in VotingChain]: VotingMachineConfig };
+  payloadsControllerDataHelpers: { [key in VotingChain]: string };
   addresses: {
     GOVERNANCE_CORE: string;
     GOVERNANCE_DATA_HELPER: string;
@@ -90,6 +91,10 @@ export const governanceV3Config: GovernanceV3Config = {
   votingChainConfig: {
     [ChainId.sepolia]: sepoliaVotingMachineConfig,
     [ChainId.fuji]: fujiVotingMachineConfig,
+  },
+  payloadsControllerDataHelpers: {
+    [ChainId.sepolia]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
+    [ChainId.fuji]: '0x6B9AF21B95FE20b5a878b43670c23124841ec31A',
   },
   votingAssets: [
     // TODO: could query the contracts for list of voting assets

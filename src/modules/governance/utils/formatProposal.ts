@@ -159,6 +159,8 @@ export const formatProposalV3 = (
     : 0;
   const againstVotes = normalizeBN(votingMachineData.proposalData.againstVotes, 18).toNumber();
 
+  // getProposalState(proposalData.proposalData, votingMachineData);
+
   return {
     id: proposalData.id,
     title: proposal.title,
@@ -174,3 +176,34 @@ export const formatProposalV3 = (
     votingChainId: proposalData.votingChainId,
   };
 };
+
+export enum ProposalUIState {
+  PROPOSAL_CREATED,
+  VOTING_STARTED,
+  VOTING_FINISHED,
+  PAYLOADS_EXECUTED,
+}
+
+// const getProposalState = (proposal: ProposalV3, votingMachineData: VotingMachineProposal) => {
+//   if (proposal.state === ProposalV3State.Created) {
+//     // voting start on ...
+//   }
+//   if (proposal.state === ProposalV3State.Active) {
+//     // voting ends on ...
+//   }
+//   if (proposal.state === ProposalV3State.Queued) {
+//     // can be executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Executed) {
+//     // executed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Cancelled) {
+//     // canceled on ...
+//   }
+//   if (proposal.state === ProposalV3State.Failed) {
+//     // failed on ...
+//   }
+//   if (proposal.state === ProposalV3State.Expired) {
+//     // expired on ...
+//   }
+// };
