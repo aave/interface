@@ -64,6 +64,7 @@ export interface GovernanceV3Config {
   addresses: {
     GOVERNANCE_CORE: string;
     GOVERNANCE_DATA_HELPER: string;
+    WALLET_BALANCE_PROVIDER: string;
   };
   votingAssets: string[];
 }
@@ -105,5 +106,6 @@ export const governanceV3Config: GovernanceV3Config = {
   addresses: {
     GOVERNANCE_CORE: '0xc4ABF658C3Dda84225cF8A07d7D5Bb6Aa41d9E59',
     GOVERNANCE_DATA_HELPER: '0x863f9De2f82AB502612E8B7d4f4863c8535cb8cA',
+    WALLET_BALANCE_PROVIDER: '0xCD4e0d6D2b1252E2A709B8aE97DBA31164C5a709', // AaveV3Ethereum.WALLET_BALANCE_PROVIDER,
   },
 };

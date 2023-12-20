@@ -1,9 +1,9 @@
-import { AaveGovernanceService, Power, tEthereumAddress } from '@aave/contract-helpers';
+import { AaveGovernanceService, ChainId, Power, tEthereumAddress } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Provider } from '@ethersproject/providers';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { MarketDataType } from 'src/ui-config/marketsConfig';
+// import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 interface Powers {
   votingPower: string;
@@ -18,10 +18,10 @@ interface Powers {
   aAavePropositionDelegatee: string;
 }
 
-interface VoteOnProposalData {
-  votingPower: string;
-  support: boolean;
-}
+// interface VoteOnProposalData {
+//   votingPower: string;
+//   support: boolean;
+// }
 
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
   delegatee == ZERO_ADDRESS || delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase()
@@ -30,8 +30,8 @@ const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEther
 export class GovernanceService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
-  private getAaveGovernanceService(marketData: MarketDataType) {
-    const provider = this.getProvider(marketData.chainId);
+  private getAaveGovernanceService(chainId: ChainId) {
+    const provider = this.getProvider(chainId);
     return new AaveGovernanceService(provider, {
       GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
       GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
@@ -39,38 +39,40 @@ export class GovernanceService {
     });
   }
 
-  async getVotingPowerAt(
-    marketData: MarketDataType,
-    user: string,
-    strategy: string,
-    block: number
-  ) {
-    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-    return aaveGovernanceService.getVotingPowerAt({
-      user,
-      strategy,
-      block,
-    });
-  }
-  async getVoteOnProposal(
-    marketData: MarketDataType,
-    user: string,
-    proposalId: number
-  ): Promise<VoteOnProposalData> {
-    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
-    const { votingPower, support } = await aaveGovernanceService.getVoteOnProposal({
-      user,
-      proposalId,
-    });
-    return {
-      votingPower: normalize(votingPower.toString(), 18),
-      support,
-    };
-  }
-  async getPowers(marketData: MarketDataType, user: string): Promise<Powers> {
+  // async getVotingPowerAt(
+  //   marketData: MarketDataType,
+  //   user: string,
+  //   strategy: string,
+  //   block: number
+  // ) {
+  //   const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+  //   return aaveGovernanceService.getVotingPowerAt({
+  //     user,
+  //     strategy,
+  //     block,
+  //   });
+  // }
+
+  // async getVoteOnProposal(
+  //   marketData: MarketDataType,
+  //   user: string,
+  //   proposalId: number
+  // ): Promise<VoteOnProposalData> {
+  //   const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+  //   const { votingPower, support } = await aaveGovernanceService.getVoteOnProposal({
+  //     user,
+  //     proposalId,
+  //   });
+  //   return {
+  //     votingPower: normalize(votingPower.toString(), 18),
+  //     support,
+  //   };
+  // }
+
+  async getPowers(govChainId: ChainId, user: string): Promise<Powers> {
     const { aaveTokenAddress, stkAaveTokenAddress, aAaveTokenAddress } = governanceConfig;
 
-    const aaveGovernanceService = this.getAaveGovernanceService(marketData);
+    const aaveGovernanceService = this.getAaveGovernanceService(govChainId);
 
     const [aaveTokenPower, stkAaveTokenPower, aAaveTokenPower] =
       await aaveGovernanceService.getTokensPower({
