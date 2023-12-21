@@ -139,21 +139,21 @@ export const formatProposalV3 = (
 ): FormattedProposalV3 => {
   const quorum = constants.votingConfigs[proposalData.proposalData.accessLevel].config.quorum;
   const quorumReached = isQuorumReached(
-    proposalData.proposalData.forVotes,
+    votingMachineData.proposalData.forVotes,
     quorum,
     constants.precisionDivider
   );
 
-  const forVotesBN = valueToBigNumber(proposalData.proposalData.forVotes);
-  const againstVotesBN = valueToBigNumber(proposalData.proposalData.againstVotes);
+  const forVotesBN = valueToBigNumber(votingMachineData.proposalData.forVotes);
+  const againstVotesBN = valueToBigNumber(votingMachineData.proposalData.againstVotes);
   const currentDifferential = normalizeBN(forVotesBN.minus(againstVotesBN), 18).toString();
 
   const requiredDifferential =
     constants.votingConfigs[proposalData.proposalData.accessLevel].config.differential;
 
   const differentialReached = isDifferentialReached(
-    proposalData.proposalData.forVotes,
-    proposalData.proposalData.againstVotes,
+    votingMachineData.proposalData.forVotes,
+    votingMachineData.proposalData.againstVotes,
     requiredDifferential,
     constants.precisionDivider
   );
